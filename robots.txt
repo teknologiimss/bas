@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Allow: https://www.bas.imsservice.co.id/sitemap.xml

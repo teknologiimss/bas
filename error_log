@@ -1,0 +1,39 @@
+[15-Mar-2025 15:34:16 UTC] PHP Warning:  require(/home/imsservi/public_html/bas/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/imsservi/public_html/bas/public/index.php on line 34
+[15-Mar-2025 15:34:16 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/imsservi/public_html/bas/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home/imsservi/public_html/bas/public/index.php:34
+Stack trace:
+#0 /home/imsservi/public_html/bas/index.php(21): require_once()
+#1 {main}
+  thrown in /home/imsservi/public_html/bas/public/index.php on line 34
+[15-Mar-2025 15:34:40 UTC] PHP Warning:  require(/home/imsservi/public_html/bas/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/imsservi/public_html/bas/public/index.php on line 34
+[15-Mar-2025 15:34:40 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/imsservi/public_html/bas/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home/imsservi/public_html/bas/public/index.php:34
+Stack trace:
+#0 /home/imsservi/public_html/bas/index.php(21): require_once()
+#1 {main}
+  thrown in /home/imsservi/public_html/bas/public/index.php on line 34
+[15-Mar-2025 15:35:14 UTC] PHP Warning:  require(/home/imsservi/public_html/bas/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/imsservi/public_html/bas/public/index.php on line 34
+[15-Mar-2025 15:35:14 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/imsservi/public_html/bas/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home/imsservi/public_html/bas/public/index.php:34
+Stack trace:
+#0 /home/imsservi/public_html/bas/index.php(21): require_once()
+#1 {main}
+  thrown in /home/imsservi/public_html/bas/public/index.php on line 34
+[15-Mar-2025 15:36:18 UTC] PHP Warning:  require(/home/imsservi/public_html/bas/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/imsservi/public_html/bas/public/index.php on line 34
+[15-Mar-2025 15:36:18 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/imsservi/public_html/bas/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home/imsservi/public_html/bas/public/index.php:34
+Stack trace:
+#0 /home/imsservi/public_html/bas/index.php(21): require_once()
+#1 {main}
+  thrown in /home/imsservi/public_html/bas/public/index.php on line 34
+[10-Apr-2025 09:20:21 UTC] PHP Warning:  require_once(/home/imsservi/public_html/bas/public/temp/index.php): Failed to open stream: No such file or directory in /home/imsservi/public_html/bas/index.php on line 21
+[10-Apr-2025 09:20:21 UTC] PHP Warning:  require_once(/home/imsservi/public_html/bas/public/temp/index.php): Failed to open stream: No such file or directory in /home/imsservi/public_html/bas/index.php on line 21
+[10-Apr-2025 09:20:21 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/imsservi/public_html/bas/public/temp/index.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home/imsservi/public_html/bas/index.php:21
+Stack trace:
+#0 {main}
+  thrown in /home/imsservi/public_html/bas/index.php on line 21
+[10-Apr-2025 09:20:21 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/imsservi/public_html/bas/public/temp/index.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home/imsservi/public_html/bas/index.php:21
+Stack trace:
+#0 {main}
+  thrown in /home/imsservi/public_html/bas/index.php on line 21
+[10-Apr-2025 09:20:22 UTC] PHP Warning:  require_once(/home/imsservi/public_html/bas/public/temp/index.php): Failed to open stream: No such file or directory in /home/imsservi/public_html/bas/index.php on line 21
+[10-Apr-2025 09:20:22 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/imsservi/public_html/bas/public/temp/index.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home/imsservi/public_html/bas/index.php:21
+Stack trace:
+#0 {main}
+  thrown in /home/imsservi/public_html/bas/index.php on line 21
