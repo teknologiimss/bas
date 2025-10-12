@@ -1356,6 +1356,7 @@
         // console.log("ready 123!");
         // $(document).ready(function() {
         // $('#inner-stock-form').hide();
+        // jajal
         // });
         loader(0);
 
