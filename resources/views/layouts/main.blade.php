@@ -1359,6 +1359,23 @@
         // });
         loader(0);
 
+        
+        $('#pcode').on('input', function() {
+            $("#form").hide();
+            $("#button-update").hide();
+        });
+
+        function resetForm() {
+            $('#form').trigger("reset");
+            $('#pcode').val('');
+            $("#button-update").hide();
+            $("#date").hide();
+            $('#pcode').prop("disabled", false);
+            $('#button-check').prop("disabled", false);
+        }
+
+
+
         function stockForm(type = 1) {
             $("#inner-stock-form").hide();
             resetForm();
@@ -1441,6 +1458,34 @@
             });
         }
 
+
+        function enableStockInput() {
+            $('#button-update').prop("disabled", false);
+            $("#button-update").show();
+            $('#form').show();
+        }
+
+        function disableStockInput() {
+            $('#button-update').prop("disabled", true);
+            $("#button-update").hide();
+            $('#form').hide();
+        }
+
+        // function enableStockInput() {
+        //     $('#button-update').prop("disabled", false);
+        //     $("#button-update").show();
+        //     $('#inner-stock-form').show();
+        // }
+
+        // function disableStockInput() {
+        //     $('#button-update').prop("disabled", true);
+        //     $("#button-update").hide();
+        //     $('#inner-stock-form').hide();
+        // }
+
+
+
+
         function loader(status = 1) {
             if (status == 1) {
                 $('#loader').show();
@@ -1449,62 +1494,6 @@
             }
         }
 
-
-
-        function stockUpdate() {
-            loader();
-            $('#pcode').prop("disabled", true);
-            $('#button-check').prop("disabled", true);
-            $('#button-update').prop("disabled", true);
-            disableStockInput();
-            var data = {
-                product_id: $('#pid').val(),
-                name: $('#name').val(),
-                no_nota: $('#no_nota').val(),
-                amount: $('#pamount').val(),
-                stock_date: $('#stock_date_text').val(),
-                shelf: $('#shelf').val(),
-                type: $('#type').val(),
-                proyek_id: $('#proyek_id').val()
-            }
-
-            $.ajax({
-                url: "{{ url('/products/stockUpdate') }}",
-                type: "post",
-                data: JSON.stringify(data),
-                dataType: "json",
-                contentType: 'application/json',
-                success: function(data) {
-                    loader(0);
-                    if (data.status == 1) {
-                        toastr.success(data.message);
-                        resetForm();
-                    } else {
-                        toastr.error(data.message);
-                        enableStockInput();
-                        $('#pcode').prop("disabled", false);
-                        $('#button-check').prop("disabled", false);
-                    }
-                },
-                error: function() {
-                    loader(0);
-                    toastr.error("Unknown error! Please try again later!");
-                    resetForm();
-                }
-            });
-        }
-
-        function enableStockInput() {
-            $('#button-update').prop("disabled", false);
-            $("#button-update").show();
-            $('#inner-stock-form').show();
-        }
-
-        function disableStockInput() {
-            $('#button-update').prop("disabled", true);
-            $("#button-update").hide();
-            $('#inner-stock-form').hide();
-        }
 
         function productCheck() {
             var pcode = $('#pcode').val();
@@ -1550,6 +1539,54 @@
                 toastr.error("Product Code belum diisi!");
             }
         }
+
+
+        function stockUpdate() {
+            loader();
+            $('#pcode').prop("disabled", true);
+            $('#button-check').prop("disabled", true);
+            $('#button-update').prop("disabled", true);
+            disableStockInput();
+            var data = {
+                product_id: $('#pid').val(),
+                name: $('#name').val(),
+                no_nota: $('#no_nota').val(),
+                amount: $('#pamount').val(),
+                stock_date: $('#stock_date_text').val(),
+                shelf: $('#shelf').val(),
+                type: $('#type').val(),
+                proyek_id: $('#proyek_id').val()
+            }
+
+            $.ajax({
+                url: "{{ url('/products/stockUpdate') }}",
+                type: "post",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json',
+                success: function(data) {
+                    loader(0);
+                    if (data.status == 1) {
+                        toastr.success(data.message);
+                        resetForm();
+                    } else {
+                        toastr.error(data.message);
+                        enableStockInput();
+                        $('#pcode').prop("disabled", false);
+                        $('#button-check').prop("disabled", false);
+                    }
+                },
+                error: function() {
+                    loader(0);
+                    toastr.error("Unknown error! Please try again later!");
+                    resetForm();
+                }
+            });
+        }
+
+        
+
+        
     </script>
 
     <script>
