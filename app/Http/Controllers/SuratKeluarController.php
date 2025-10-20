@@ -211,7 +211,7 @@ class SuratKeluarController extends Controller
             'type' => 'required',
             'tujuan' => 'required',
             'uraian' => 'required',
-            'file' => 'nullable|mimes:pdf|max:2048',
+            'file' => 'nullable|mimes:pdf|max:6000',
             'tanggal' => 'required|date'
         ]);
 

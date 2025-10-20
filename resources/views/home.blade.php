@@ -196,6 +196,7 @@
                 <div class="col-md-8">
                     <div class="card shadow-sm border-0 rounded-3 h-100">
                         <div class="card-header fw-bold">
+                            <canvas id="kontrakChart"></canvas>
                             <b>Daftar Kontrak Pekerjaan PT.IMSS</b>
                         </div>
                         <div class="list-group list-group-flush">
@@ -237,6 +238,53 @@
                     </div>
                 </div>
 
+
+                <div class="col-md-6 mt-4">
+                    <div class="card shadow-sm border-0 rounded-3 h-100 text-center">
+                        <div class="card-header fw-bold">
+                            <b>Nama Pekerjaan</b>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="nilaiPekerjaanChart"></canvas>
+
+                            <!-- Tabel dengan scroll -->
+                            <div style="margin-top: 20px; max-height: 250px; overflow-y: auto;">
+                                <table class="table table-sm table-bordered table-striped mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 60%;">Nama Pekerjaan</th>
+                                            <th style="width: 40%;">Total Nilai</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($nilaiPekerjaanCounts as $nama => $nilai)
+                                            <tr>
+                                                <td class="text-start">{{ $nama }}</td>
+                                                <td class="text-end">Rp {{ number_format($nilai, 0, ',', '.') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    {{-- <tfoot class="table-light fw-bold">
+                                        <tr>
+                                            <td><b>Total Nilai Semua Pekerjaan</b></td>
+                                            <td class="text-end">
+                                                <b>Rp
+                                                    {{ number_format(array_sum($nilaiPekerjaanCounts), 0, ',', '.') }}</b>
+                                            </td>
+                                        </tr>
+                                    </tfoot> --}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
             </div>
 
 
@@ -250,39 +298,98 @@
                 const labels = kontraks.map(item => item.nama_pekerjaan);
                 const statuses = kontraks.map(item => item.status);
 
-                const ctx = document.getElementById('kontrakChart').getContext('2d');
-                new Chart(ctx, {
+                // const ctx = document.getElementById('kontrakChart').getContext('2d');
+                // new Chart(ctx, {
+                //     type: 'bar',
+                //     data: {
+                //         labels: labels,
+                //         datasets: [{
+                //             label: 'Status Kontrak',
+                //             data: statuses.map(() => 1),
+                //             backgroundColor: statuses.map(s => {
+                //                 if (s === 'Kontrak') return 'green';
+                //                 if (s === 'Konfirmasi Order') return 'blue';
+                //                 if (s === '-') return 'gray';
+                //                 return 'red';
+                //             }),
+                //         }]
+                //     },
+                //     options: {
+                //         plugins: {
+                //             tooltip: {
+                //                 callbacks: {
+                //                     label: function(context) {
+                //                         return 'Status: ' + statuses[context.dataIndex];
+                //                     }
+                //                 }
+                //             },
+                //             legend: {
+                //                 display: false
+                //             }
+                //         },
+                //         scales: {
+                //             y: {
+                //                 display: false
+                //             } // Y-axis tidak penting, hanya tampil bar
+                //         }
+                //     }
+                // });
+
+                var ctxNilai = document.getElementById('nilaiPekerjaanChart').getContext('2d');
+                var nilaiPekerjaanChart = new Chart(ctxNilai, {
                     type: 'bar',
                     data: {
-                        labels: labels,
+                        labels: @json(array_keys($nilaiPekerjaanCounts)),
                         datasets: [{
-                            label: 'Status Kontrak',
-                            data: statuses.map(() => 1),
-                            backgroundColor: statuses.map(s => {
-                                if (s === 'Kontrak') return 'green';
-                                if (s === 'Konfirmasi Order') return 'blue';
-                                if (s === '-') return 'gray';
-                                return 'red';
-                            }),
+                            label: 'Total Nilai Pekerjaan',
+                            data: @json(array_values($nilaiPekerjaanCounts)),
+                            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
                         }]
                     },
                     options: {
+                        responsive: true,
                         plugins: {
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return 'Status: ' + statuses[context.dataIndex];
-                                    }
-                                }
-                            },
                             legend: {
                                 display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: function(context) {
+                                        return context[0].label; // tampilkan nama lengkap
+                                    },
+                                    label: function(context) {
+                                        return 'Rp ' + context.parsed.y.toLocaleString('id-ID');
+                                    }
+                                }
                             }
                         },
                         scales: {
                             y: {
-                                display: false
-                            } // Y-axis tidak penting, hanya tampil bar
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Nilai Pekerjaan (Rp)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Nama Pekerjaan'
+                                },
+                                ticks: {
+                                    callback: function(value, index, values) {
+                                        const label = this.getLabelForValue(value);
+                                        return label.length > 20 ? label.substring(0, 20) + '…' : label;
+                                    },
+                                    maxRotation: 45,
+                                    minRotation: 45,
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+                            }
                         }
                     }
                 });
@@ -437,28 +544,28 @@
 
 
 
-                {{-- Card Grafik Domisili --}}
+                {{-- Card Grafik Lokasi Kerja --}}
                 <div class="col-md-6">
                     <div class="card shadow-sm border-0 rounded-3 h-100 text-center">
                         <div class="card-header fw-bold">
-                            <b>Domisili Pegawai</b>
+                            <b>Lokasi Kerja Pegawai</b>
                         </div>
                         <div class="card-body">
-                            <canvas id="domisiliChart"></canvas>
+                            <canvas id="lokasiKerjaChart"></canvas>
 
                             <!-- Wrapper tabel dengan scroll -->
                             <div style="margin-top: 20px; max-height: 250px; overflow-y: auto;">
                                 <table class="table table-sm table-bordered table-striped mb-0">
                                     <thead class="table-light">
                                         <tr>
-                                            <th style="width: 60%;">Domisili</th>
+                                            <th style="width: 60%;">Lokasi Kerja</th>
                                             <th style="width: 40%;">Jumlah</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($domisiliCounts as $domisili => $jumlah)
+                                        @foreach ($lokasiKerjaCounts as $lokasi => $jumlah)
                                             <tr>
-                                                <td class="text-start">{{ $domisili }}</td>
+                                                <td class="text-start">{{ $lokasi }}</td>
                                                 <td class="text-end">{{ $jumlah }} orang</td>
                                             </tr>
                                         @endforeach
@@ -466,7 +573,7 @@
                                     <tfoot class="table-light fw-bold">
                                         <tr>
                                             <td><b>Total Pegawai</b></td>
-                                            <td class="text-end"><b>{{ array_sum($domisiliCounts) }}</b> orang</td>
+                                            <td class="text-end"><b>{{ array_sum($lokasiKerjaCounts) }}</b> orang</td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -474,6 +581,7 @@
                         </div>
                     </div>
                 </div>
+
 
 
 
@@ -533,16 +641,16 @@
 
 
                 // Grafik Domisili
-                var ctxDomisili = document.getElementById('domisiliChart').getContext('2d');
-                var domisiliChart = new Chart(ctxDomisili, {
+                var ctxLokasi = document.getElementById('lokasiKerjaChart').getContext('2d');
+                var lokasiKerjaChart = new Chart(ctxLokasi, {
                     type: 'bar',
                     data: {
-                        labels: @json(array_keys($domisiliCounts)),
+                        labels: @json(array_keys($lokasiKerjaCounts)),
                         datasets: [{
                             label: 'Jumlah Pegawai',
-                            data: @json(array_values($domisiliCounts)),
-                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
+                            data: @json(array_values($lokasiKerjaCounts)),
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1
                         }]
                     },
@@ -567,7 +675,7 @@
                             x: {
                                 title: {
                                     display: true,
-                                    text: 'Domisili'
+                                    text: 'Lokasi Kerja'
                                 }
                             }
                         }

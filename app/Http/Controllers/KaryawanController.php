@@ -74,13 +74,20 @@ class KaryawanController extends Controller
         $femaleCount = Karyawan::where('jenis_kelamin', 'Perempuan')->count();
 
         // ✅ Tambahan perhitungan domisili
-        $domisiliCounts = Karyawan::select('domisili')
+        $lokasiKerjaCounts = Karyawan::select('lokasi_kerja')
             ->selectRaw('count(*) as jumlah')
-            ->groupBy('domisili')
-            ->pluck('jumlah', 'domisili')
+            ->groupBy('lokasi_kerja')
+            ->pluck('jumlah', 'lokasi_kerja')
             ->toArray();
 
-        return view('karyawan.index', compact('items', 'maleCount', 'femaleCount', 'domisiliCounts'));
+        // Hitung status pegawai (group by)
+        $statusCounts = Karyawan::select('status_pegawai', \DB::raw('COUNT(*) as total'))
+            ->groupBy('status_pegawai')
+            ->pluck('total', 'status_pegawai')
+            ->toArray();
+
+
+        return view('karyawan.index', compact('items', 'maleCount', 'femaleCount', 'lokasiKerjaCounts','statusCounts'));
     }
 
     /**
@@ -181,12 +188,12 @@ class KaryawanController extends Controller
             'awal3' => 'nullable',
             'akhir3' => 'nullable',
             'pb_3' => 'nullable',
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
 
         ], [
             'nip.required' => 'NIP harus diisi',
@@ -198,8 +205,8 @@ class KaryawanController extends Controller
         ]);
 
         $data = $request->all();
-        
-        
+
+
 
         if (empty($id)) {
             $add = Karyawan::create($data);
@@ -300,14 +307,14 @@ class KaryawanController extends Controller
             $data['pb_3'] = $data['pb_3'] ? $data['pb_3'] : $update->pb_3;
 
 
-            
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
             $update->update($data);
             return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil diupdate');
         }

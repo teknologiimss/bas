@@ -11,128 +11,193 @@
         </div>
     </div>
 
+
     {{-- Chart jumlah Karyawan --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 40px;">
-        {{-- Grafik Jenis Kelamin --}}
-        <div style="flex: 1 1 200px; max-width: 300px; text-align: center;">
-            <h5>Jenis Kelamin Pegawai</h5>
-            <canvas id="genderChart"></canvas>
 
+    <div class="row mt-3">
+        <!-- Card Grafik Jenis Kelamin -->
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 rounded-3 h-100 text-center">
+                <div class="card-header fw-bold">
+                    <b>Jenis Kelamin Pegawai</b>
+                </div>
+                <div class="card-body">
+                    <canvas id="genderChart"></canvas>
 
-            {{-- Tampilkan rincian jumlah --}}
-            <div style="margin-top: 10px;">
-                <p style="margin: 0;"><strong>Laki-laki:</strong> {{ $maleCount }} orang</p>
-                <p style="margin: 0;"><strong>Perempuan:</strong> {{ $femaleCount }} orang</p>
-                <p style="margin: 0;"><strong>Grand Total:</strong> {{ $maleCount + $femaleCount }} orang</p>
+                    <!-- Rincian Jumlah -->
+                    {{-- <div style="margin-top: 15px; text-align:center;">
+                                <p style="margin: 0;"><strong>Laki-laki:</strong> {{ $maleCount }} orang</p>
+                                <p style="margin: 0;"><strong>Perempuan:</strong> {{ $femaleCount }} orang</p>
+                                <p style="margin: 0;"><strong>Total:</strong> {{ $maleCount + $femaleCount }} orang</p>
+                            </div> --}}
+                </div>
             </div>
         </div>
 
-        <script>
-            var ctx = document.getElementById('genderChart').getContext('2d');
-            var genderChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Laki-laki', 'Perempuan'],
-                    datasets: [{
-                        data: [{{ $maleCount }}, {{ $femaleCount }}],
-                        backgroundColor: ['#36A2EB', '#FF6384'],
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
+        <!-- Card Grafik Status Pegawai -->
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 rounded-3 h-100 text-center">
+                <div class="card-header fw-bold">
+                    <b>Status Pegawai</b>
+                </div>
+                <div class="card-body">
+                    <canvas id="statusChart"></canvas>
+
+                    <!-- Rincian Jumlah -->
+                    {{-- <div style="margin-top: 15px; text-align:left;">
+                                @foreach ($statusCounts as $status => $jumlah)
+                                    <p style="margin: 0;">
+                                        <strong>{{ $status }}:</strong> {{ $jumlah }} orang
+                                    </p>
+                                @endforeach
+                                <p style="margin: 0;"><strong>Total:</strong> {{ array_sum($statusCounts) }} orang</p>
+                            </div> --}}
+                </div>
+            </div>
+        </div>
+
+
+
+
+        {{-- Card Grafik Lokasi Kerja --}}
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-3 h-100 text-center">
+                <div class="card-header fw-bold">
+                    <b>Lokasi Kerja Pegawai</b>
+                </div>
+                <div class="card-body">
+                    <canvas id="lokasiKerjaChart"></canvas>
+
+                    <!-- Wrapper tabel dengan scroll -->
+                    <div style="margin-top: 20px; max-height: 250px; overflow-y: auto;">
+                        <table class="table table-sm table-bordered table-striped mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 60%;">Lokasi Kerja</th>
+                                    <th style="width: 40%;">Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($lokasiKerjaCounts as $lokasi => $jumlah)
+                                    <tr>
+                                        <td class="text-start">{{ $lokasi }}</td>
+                                        <td class="text-end">{{ $jumlah }} orang</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot class="table-light fw-bold">
+                                <tr>
+                                    <td><b>Total Pegawai</b></td>
+                                    <td class="text-end"><b>{{ array_sum($lokasiKerjaCounts) }}</b> orang</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </div>
+
+    <script>
+        var ctxGender = document.getElementById('genderChart').getContext('2d');
+        var genderChart = new Chart(ctxGender, {
+            type: 'pie',
+            data: {
+                labels: ['Laki-laki', 'Perempuan'],
+                datasets: [{
+                    data: [{{ $maleCount }}, {{ $femaleCount }}],
+                    backgroundColor: ['#36A2EB', '#FF6384'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        enabled: true
                     }
                 }
-            });
-        </script>
-        {{-- End Grafik Jenis Kelamin --}}
+            }
+        });
 
 
-        {{-- Grafik Domisili --}}
-        <div style="flex: 1 1 400px; max-width: 500px; text-align: center;">
-            <h5>Distribusi Domisili Pegawai</h5>
-            <canvas id="domisiliChart"></canvas>
+        // Grafik Status Pegawai
+        var ctxStatus = document.getElementById('statusChart').getContext('2d');
+        var statusChart = new Chart(ctxStatus, {
+            type: 'doughnut',
+            data: {
+                labels: {!! json_encode(array_keys($statusCounts)) !!},
+                datasets: [{
+                    data: {!! json_encode(array_values($statusCounts)) !!},
+                    backgroundColor: ['#4CAF50', '#FF9800', '#9C27B0', '#03A9F4', '#FFC107'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                }
+            }
+        });
 
-            {{-- Rincian jumlah per domisili dalam tabel --}}
-            <div style="margin-top: 20px;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="background-color: #f2f2f2;">
-                            <th style="padding: 8px; border: 1px solid #ddd;">Domisili</th>
-                            <th style="padding: 8px; border: 1px solid #ddd;">Jumlah Pegawai</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($domisiliCounts as $domisili => $jumlah)
-                            <tr>
-                                <td style="padding: 8px; border: 1px solid #ddd;">{{ $domisili }}</td>
-                                <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">{{ $jumlah }}
-                                    orang</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr style="background-color: #f2f2f2;">
-                            <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Total Pegawai</td>
-                            <td style="padding: 8px; border: 1px solid #ddd; text-align: right; font-weight: bold;">
-                                {{ array_sum($domisiliCounts) }} orang</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
 
-        <script>
-            var ctx = document.getElementById('domisiliChart').getContext('2d');
-            var domisiliChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: @json(array_keys($domisiliCounts)),
-                    datasets: [{
-                        label: 'Jumlah Pegawai',
-                        data: @json(array_values($domisiliCounts)),
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
+        // Grafik Domisili
+        var ctxLokasi = document.getElementById('lokasiKerjaChart').getContext('2d');
+        var lokasiKerjaChart = new Chart(ctxLokasi, {
+            type: 'bar',
+            data: {
+                labels: @json(array_keys($lokasiKerjaCounts)),
+                datasets: [{
+                    label: 'Jumlah Pegawai',
+                    data: @json(array_values($lokasiKerjaCounts)),
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: true
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Jumlah Pegawai'
                         }
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Jumlah Pegawai'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Domisili'
-                            }
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Lokasi Kerja'
                         }
                     }
                 }
-            });
-        </script>
-        {{-- End Grafik Domisili --}}
-    </div>
+            }
+        });
+    </script>
 
     {{-- End Chart Karyawan --}}
 

@@ -69,12 +69,13 @@ class HomeController extends Controller
         // Mengambil seluruh data Keproyekan
         $keproyekans = Keproyekan::all();
 
-        // ✅ Tambahan perhitungan domisili
-        $domisiliCounts = Karyawan::select('domisili')
+        // ✅ Tambahan perhitungan Lokasi Kerja
+        $lokasiKerjaCounts = Karyawan::select('lokasi_kerja')
             ->selectRaw('count(*) as jumlah')
-            ->groupBy('domisili')
-            ->pluck('jumlah', 'domisili')
+            ->groupBy('lokasi_kerja')
+            ->pluck('jumlah', 'lokasi_kerja')
             ->toArray();
+
 
         // === HITUNG JUMLAH PO & PR DI SINI ===
         // pakai model (jika ada)
@@ -101,8 +102,14 @@ class HomeController extends Controller
             ->toArray();
 
 
+        $nilaiPekerjaanCounts = Kontrak::select('nama_pekerjaan')
+            ->selectRaw('SUM(nilai_pekerjaan) as total_nilai')
+            ->groupBy('nama_pekerjaan')
+            ->pluck('total_nilai', 'nama_pekerjaan')
+            ->toArray();
 
-        return View::make("home")->with(compact('warehouse', 'purchaseRequests', 'detailPrs', 'keproyekans', 'totalPurchaseRequests', 'domisiliCounts', 'poCount', 'prCount', 'kontraks', 'totalNilaiPekerjaan', 'maleCount', 'femaleCount', 'statusCounts'));
+
+        return View::make("home")->with(compact('warehouse', 'purchaseRequests', 'detailPrs', 'keproyekans', 'totalPurchaseRequests', 'lokasiKerjaCounts', 'poCount', 'prCount', 'kontraks', 'totalNilaiPekerjaan', 'maleCount', 'femaleCount', 'statusCounts','nilaiPekerjaanCounts'));
     }
 
     public function unauthorized()
