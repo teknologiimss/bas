@@ -13,6 +13,54 @@
             max-height: calc(100vh - 200px);
             overflow-y: auto;
         }
+        /* 🌈 Gaya header File Explorer */
+        #table th {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            background-color: #f8f9fa;
+            transition: background-color 0.2s ease;
+            padding-right: 30px;
+            text-align: center;
+        }
+
+        #table th:hover {
+            background-color: #e9ecef;
+        }
+
+        #table th.active-sort {
+            background-color: #dbeafe;
+            color: #0d6efd;
+            font-weight: 600;
+        }
+
+        /* 🔼🔽 Tombol panah permanen */
+        .sort-buttons {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            line-height: 10px;
+            font-size: 10px;
+        }
+
+        .sort-buttons span {
+            cursor: pointer;
+            color: #9ca3af;
+            transition: color 0.2s ease, transform 0.1s ease;
+        }
+
+        .sort-buttons span:hover {
+            color: #0d6efd;
+            transform: scale(1.2);
+        }
+
+        .sort-buttons span.active {
+            color: #0d6efd;
+            font-weight: bold;
+        }
     </style>
 @endsection
 @section('content')
@@ -591,6 +639,104 @@
 @section('custom-js')
     <script src="/plugins/toastr/toastr.min.js"></script>
     <script src="/plugins/select2/js/select2.full.min.js"></script>
+
+
+    {{-- Untuk Filter ASC-DSC Seperti Windows Explorer --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const table = document.getElementById("table");
+            const headers = table.querySelectorAll("th");
+            let sortState = {};
+
+            headers.forEach((header, index) => {
+                // Lewati kolom checkbox, kolom No., dan kolom terakhir (aksi kosong)
+                const headerText = header.textContent.trim().toLowerCase();
+                if (index === 0 || headerText === "no." || headerText === "") return;
+
+                // Tambahkan tombol panah permanen
+                const sortBtns = document.createElement("div");
+                sortBtns.className = "sort-buttons";
+                sortBtns.innerHTML = `
+            <span class="sort-up" title="Urutkan naik (A-Z)">▲</span>
+            <span class="sort-down" title="Urutkan turun (Z-A)">▼</span>
+        `;
+                header.appendChild(sortBtns);
+
+                // === Fungsi Sorting Aman ===
+                function sortTable(ascending) {
+                    const tbody = table.querySelector("tbody");
+                    const rows = Array.from(tbody.querySelectorAll("tr"))
+                        .filter(r => !r.classList.contains("text-center-no-data"));
+
+                    rows.sort((a, b) => {
+                        const cellA = a.children[index] ? a.children[index].innerText.trim()
+                            .toLowerCase() : "";
+                        const cellB = b.children[index] ? b.children[index].innerText.trim()
+                            .toLowerCase() : "";
+
+                        // Parsing tanggal dd/mm/yyyy
+                        const dateA = cellA.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+                        const dateB = cellB.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+                        let valA = cellA,
+                            valB = cellB;
+
+                        if (dateA && dateB) {
+                            valA = new Date(`${dateA[3]}-${dateA[2]}-${dateA[1]}`);
+                            valB = new Date(`${dateB[3]}-${dateB[2]}-${dateB[1]}`);
+                        } else if (!isNaN(cellA) && !isNaN(cellB) && cellA !== "" && cellB !== "") {
+                            valA = parseFloat(cellA);
+                            valB = parseFloat(cellB);
+                        }
+
+                        if (valA < valB) return ascending ? -1 : 1;
+                        if (valA > valB) return ascending ? 1 : -1;
+                        return 0;
+                    });
+
+                    // Reset tampilan aktif
+                    headers.forEach(h => {
+                        h.classList.remove("active-sort");
+                        h.querySelectorAll(".sort-up, .sort-down").forEach(btn => btn.classList
+                            .remove("active"));
+                    });
+
+                    // Kolom aktif
+                    header.classList.add("active-sort");
+                    if (ascending) {
+                        sortBtns.querySelector(".sort-up").classList.add("active");
+                    } else {
+                        sortBtns.querySelector(".sort-down").classList.add("active");
+                    }
+
+                    sortState[index] = ascending;
+
+                    // Render ulang tabel
+                    rows.forEach(r => tbody.appendChild(r));
+                }
+
+                // Klik teks header = toggle urutan naik/turun
+                header.addEventListener("click", (e) => {
+                    if (e.target.classList.contains("sort-up") || e.target.classList.contains(
+                            "sort-down")) return;
+                    const ascending = !sortState[index];
+                    sortTable(ascending);
+                });
+
+                // Klik panah atas/bawah = langsung urut
+                sortBtns.querySelector(".sort-up").addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    sortTable(true);
+                });
+                sortBtns.querySelector(".sort-down").addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    sortTable(false);
+                });
+            });
+        });
+    </script>
+
+
+
     <script>
         // Konfigurasi toastr agar selalu di pojok kanan atas dan animasi konsisten
         toastr.options = {
