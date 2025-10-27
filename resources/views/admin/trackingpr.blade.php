@@ -39,7 +39,7 @@
                             <div class="form-group">
                                 <label for="filter-po-no">Filter Nomor PR</label>
                                 <input type="text" class="form-control" id="filter-po-no"
-                                    placeholder="Masukkan Nomor PO">
+                                    placeholder="Masukkan Nomor PR">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -871,16 +871,20 @@
                                 .id_purchase_orderluar && !value.id_loiluar) {
                                 status = 'PR DONE, Menunggu SPPH atau LOI atau PO';
                             } else if (value.id_spph && !value.id_nego) {
-                                status = 'Sedang Proses NEGOSIASI (Melalui SPPH)';
+                                // status = 'Sedang Proses NEGOSIASI (Melalui SPPH)';
+                                status = 'Sedang Proses NEGOSIASI';
                             } else if (value.id_spphrfq && !value.id_negoluar) {
                                 status =
-                                    'Sedang Proses NEGOSIASI Luar Negeri (Melalui SPPH Luar Negeri)';
+                                    // 'Sedang Proses NEGOSIASI Luar Negeri (Melalui SPPH Luar Negeri)';
+                                    'Sedang Proses NEGOTIATION LETTER';
                             } else if (value.id_spph && value.id_nego && !value.id_po) {
-                                status = 'Sedang Proses PO dari NEGOSIASI (Melalui SPPH)';
+                                // status = 'Sedang Proses PO dari NEGOSIASI (Melalui SPPH)';
+                                status = 'Sedang Proses PO dari NEGOSIASI';
                             } else if (value.id_spphrfq && value.id_negoluar && !value
                                 .id_poluar) {
                                 status =
-                                    'Sedang Proses PO Luar Negeri (Melalui SPPH Luar Negeri)';
+                                    // 'Sedang Proses PO Luar Negeri (Melalui SPPH Luar Negeri)';
+                                    'Sedang Proses PO Luar Negeri';
                             } else if (value.id_loi && !value.id_nego) {
                                 status = 'Sedang Proses NEGOSIASI (Melalui LOI)';
                             } else if (value.id_loiluar && !value.id_negoluar) {
