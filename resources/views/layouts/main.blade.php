@@ -343,7 +343,8 @@
                                                 Auth::user()->role == 2 ||
                                                 Auth::user()->role == 3 ||
                                                 Auth::user()->role == 8 ||
-                                                Auth::user()->role == 9)
+                                                Auth::user()->role == 9 ||
+                                                Auth::user()->role == 14)
                                             <li class="nav-item">
                                                 <a href="{{ route('purchase_request.index') }}"
                                                     class="nav-link {{ Route::current()->getName() == 'purchase_request.index' ? 'active' : '' }}">

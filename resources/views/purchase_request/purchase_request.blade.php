@@ -255,6 +255,46 @@
 
                                                 {{-- membuat lampiran lebih dari 1 --}}
 
+
+                                                <td class="text-center">
+                                                @elseif (Auth::user()->role == 14 && strpos(strtolower($data['no_pr']), 'mro') !== false)
+                                                <td class="text-center"><input type="checkbox" name="hapus[]"
+                                                        value="{{ $d->id }}"></td>
+                                                {{-- <td class="text-center">{{ $data['no'] }}</td> --}}
+                                                <td class="text-center">{{ $data['no_pr'] }}</td>
+                                                <td class="text-center">{{ $data['proyek'] }}</td>
+                                                <td class="text-center">{{ $data['tanggal'] }}</td>
+                                                <td class="text-center">{{ $data['dasar_pr'] }}</td>
+
+                                                {{-- membuat lampiran lebih dari 1 --}}
+                                                <td class="text-center">
+                                                    @php
+                                                        // Memisahkan lampiran berdasarkan koma
+                                                        $lampiran = explode(',', $d->lampiran);
+                                                    @endphp
+
+                                                    @if (!empty($lampiran) && is_array($lampiran) && count($lampiran) > 0)
+                                                        @foreach ($lampiran as $index => $file)
+                                                            @if (!empty($file))
+                                                                <a href="{{ asset('/lampiran/' . trim($file)) }}"
+                                                                    target="_blank">
+                                                                    <i class="fa fa-eye"></i> Lihat
+                                                                </a>
+                                                                @if ($index < count($lampiran) - 1)
+                                                                    <br>
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+
+
+
+
+
+
                                                 <td class="text-center">
                                                 @elseif (Auth::user()->role == 0)
                                                 <td class="text-center"><input type="checkbox" name="hapus[]"
@@ -297,9 +337,9 @@
 
                                             @if (Auth::user()->role == 2 && strpos(strtolower($data['no_pr']), 'wil1') !== false)
                                                 <!-- Tombol hanya ditampilkan untuk role 2 dan no_pr mengandung 'wil1' -->
-                                                <button title="Edit Request" type="button" class="btn btn-success btn-xs"
-                                                    data-toggle="modal" data-target="#add-pr"
-                                                    onclick="editPR({{ json_encode($data) }})">
+                                                <button title="Edit Request" type="button"
+                                                    class="btn btn-success btn-xs" data-toggle="modal"
+                                                    data-target="#add-pr" onclick="editPR({{ json_encode($data) }})">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <button title="Lihat Detail" type="button" data-toggle="modal"
@@ -315,6 +355,24 @@
                                                 </button>
                                             @elseif (Auth::user()->role == 3 && strpos(strtolower($data['no_pr']), 'wil2') !== false)
                                                 <!-- Tombol hanya ditampilkan untuk role 3 dan no_pr mengandung 'wil2' -->
+                                                <button title="Edit Request" type="button"
+                                                    class="btn btn-success btn-xs" data-toggle="modal"
+                                                    data-target="#add-pr" onclick="editPR({{ json_encode($data) }})">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button title="Lihat Detail" type="button" data-toggle="modal"
+                                                    data-target="#detail-pr" class="btn-lihat btn btn-info btn-xs"
+                                                    data-detail="{{ json_encode($data) }}">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
+                                                <button title="Hapus Request" type="button"
+                                                    class="btn btn-danger btn-xs" data-toggle="modal"
+                                                    data-target="#delete-pr"
+                                                    onclick="deletePR({{ json_encode($data) }})">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            @elseif (Auth::user()->role == 14 && strpos(strtolower($data['no_pr']), 'mro') !== false)
+                                                <!-- Tombol hanya ditampilkan untuk role 14 dan no_pr mengandung 'mro' -->
                                                 <button title="Edit Request" type="button"
                                                     class="btn btn-success btn-xs" data-toggle="modal"
                                                     data-target="#add-pr" onclick="editPR({{ json_encode($data) }})">

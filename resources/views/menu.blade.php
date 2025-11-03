@@ -215,7 +215,8 @@
                                         Auth::user()->role == 2 ||
                                         Auth::user()->role == 3 ||
                                         Auth::user()->role == 8 ||
-                                        Auth::user()->role == 9)
+                                        Auth::user()->role == 9 ||
+                                        Auth::user()->role == 14)
                                     <div class="col-lg-4 col-6">
                                         <a href="{{ route('purchase_request.index') }}">
                                             <div class="small-box"
