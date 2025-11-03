@@ -17,10 +17,16 @@ class PurchaseRequest extends Model
         'id_user',
         'nomor_lppb',
         'tanggal_lppb',
+        'lampiran',
         'is_read'
     ];
     public function detailPr()
     {
         return $this->hasMany(DetailPR::class, 'id_pr', 'id');
+    }
+
+    public function lampiran()
+    {
+        return $this->hasMany(PrLampiran::class, 'pr_id');
     }
 }

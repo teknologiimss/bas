@@ -129,6 +129,7 @@
                                     <th>{{ __('Proyek') }}</th>
                                     <th>{{ __('Tanggal') }}</th>
                                     <th>{{ __('Nomor Kontrak') }}</th>
+                                    <th>{{ __('Arsip') }}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -142,6 +143,7 @@
                                                 'proyek' => $d->proyek_name,
                                                 'tanggal' => date('d/m/Y', strtotime($d->tgl_pr)),
                                                 'dasar_pr' => $d->dasar_pr,
+                                                'lampiran' => $d->lampiran,
                                                 'proyek_id' => $d->proyek_id,
                                                 'id' => $d->id,
                                                 'status' => $d->status,
@@ -191,6 +193,32 @@
                                                 <td class="text-center">{{ $data['proyek'] }}</td>
                                                 <td class="text-center">{{ $data['tanggal'] }}</td>
                                                 <td class="text-center">{{ $data['dasar_pr'] }}</td>
+                                                {{-- membuat lampiran lebih dari 1 --}}
+                                                <td class="text-center">
+                                                    @php
+                                                        // Memisahkan lampiran berdasarkan koma
+                                                        $lampiran = explode(',', $d->lampiran);
+                                                    @endphp
+
+                                                    @if (!empty($lampiran) && is_array($lampiran) && count($lampiran) > 0)
+                                                        @foreach ($lampiran as $index => $file)
+                                                            @if (!empty($file))
+                                                                <a href="{{ asset('/lampiran/' . trim($file)) }}"
+                                                                    target="_blank">
+                                                                    <i class="fa fa-eye"></i> Lihat
+                                                                </a>
+                                                                @if ($index < count($lampiran) - 1)
+                                                                    <br>
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+
+                                                {{-- membuat lampiran lebih dari 1 --}}
+
                                                 <td class="text-center">
                                                 @elseif (Auth::user()->role == 3 && strpos(strtolower($data['no_pr']), 'wil2') !== false)
                                                 <td class="text-center"><input type="checkbox" name="hapus[]"
@@ -200,6 +228,33 @@
                                                 <td class="text-center">{{ $data['proyek'] }}</td>
                                                 <td class="text-center">{{ $data['tanggal'] }}</td>
                                                 <td class="text-center">{{ $data['dasar_pr'] }}</td>
+
+                                                {{-- membuat lampiran lebih dari 1 --}}
+                                                <td class="text-center">
+                                                    @php
+                                                        // Memisahkan lampiran berdasarkan koma
+                                                        $lampiran = explode(',', $d->lampiran);
+                                                    @endphp
+
+                                                    @if (!empty($lampiran) && is_array($lampiran) && count($lampiran) > 0)
+                                                        @foreach ($lampiran as $index => $file)
+                                                            @if (!empty($file))
+                                                                <a href="{{ asset('/lampiran/' . trim($file)) }}"
+                                                                    target="_blank">
+                                                                    <i class="fa fa-eye"></i> Lihat
+                                                                </a>
+                                                                @if ($index < count($lampiran) - 1)
+                                                                    <br>
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+
+                                                {{-- membuat lampiran lebih dari 1 --}}
+
                                                 <td class="text-center">
                                                 @elseif (Auth::user()->role == 0)
                                                 <td class="text-center"><input type="checkbox" name="hapus[]"
@@ -209,6 +264,33 @@
                                                 <td class="text-center">{{ $data['proyek'] }}</td>
                                                 <td class="text-center">{{ $data['tanggal'] }}</td>
                                                 <td class="text-center">{{ $data['dasar_pr'] }}</td>
+
+                                                {{-- membuat lampiran lebih dari 1 --}}
+                                                <td class="text-center">
+                                                    @php
+                                                        // Memisahkan lampiran berdasarkan koma
+                                                        $lampiran = explode(',', $d->lampiran);
+                                                    @endphp
+
+                                                    @if (!empty($lampiran) && is_array($lampiran) && count($lampiran) > 0)
+                                                        @foreach ($lampiran as $index => $file)
+                                                            @if (!empty($file))
+                                                                <a href="{{ asset('/lampiran/' . trim($file)) }}"
+                                                                    target="_blank">
+                                                                    <i class="fa fa-eye"></i> Lihat
+                                                                </a>
+                                                                @if ($index < count($lampiran) - 1)
+                                                                    <br>
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+
+                                                {{-- membuat lampiran lebih dari 1 --}}
+
                                                 <td class="text-center">
                                             @endif
 
@@ -306,6 +388,15 @@
             </div>
         </div>
 
+
+
+
+
+
+
+
+
+
         {{-- modal --}}
         <div class="modal fade" id="add-pr">
             <div class="modal-dialog">
@@ -317,9 +408,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="save" action="{{ route('products.pr.store') }}" method="post">
+                        <form role="form" id="save" action="{{ route('products.pr.store') }}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" id="save_id" name="id">
+                            <input type="hidden" id="lampiran_awal" name="lampiran_awal">
+                            <input type="hidden" id="nama_lampiran" name="nama_lampiran">
                             <div class="form-group row">
                                 <label for="no_pr" class="col-sm-4 col-form-label">{{ __('Nomor PR/SPPJP') }} </label>
                                 <div class="col-sm-8">
@@ -364,6 +458,19 @@
                                     <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea>
                                 </div>
                             </div>
+
+                            <input type="text" id="data_lampiran" value="--" style="display: none">
+                            <h6 id="lampiran_text">Lampiran</h6>
+
+                            <div id="lampiran-row">
+
+                            </div>
+
+                            <a id="tambah-lampiran" style="cursor: pointer">Tambah Lampiran</a>
+                            <hr>
+
+
+
                             {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 1)
                                 <div class="form-group row">
                                     <label for="proyek" class="col-sm-4 col-form-label">{{ __('Status') }}
@@ -380,12 +487,18 @@
                                     </div>
                                 </div>
                             @endif --}}
+
+
                         </form>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
-                        <button id="button-save" type="button" class="btn btn-primary"
-                            onclick="document.getElementById('save').submit();">{{ __('Tambahkan') }}</button>
+                        {{-- <button id="button-save" type="button" class="btn btn-primary"
+                            onclick="document.getElementById('save').submit();">{{ __('Tambahkan') }}</button> --}}
+                        <button id="button-save" type="button" class="btn btn-primary" onclick="setSaveIdAndSubmit();">
+                            {{ __('Simpan') }}
+                        </button>
+
                     </div>
                 </div>
             </div>
@@ -642,6 +755,171 @@
     <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+    <script>
+        //Fungsi tambah lampiran & Vendor
+        function generateLampiranList(data) {
+            if (data) {
+                $('#lampiran-row').empty();
+                var length = data.length;
+                data.map((item, index) => {
+                    const counter = index + 1
+                    var formGroup =
+                        '<div class="group">' +
+                        '<div class="form-group custom-file row">' +
+                        '<label for="lampiran' + counter + '" class="col-sm-4 col-form-label">Lampiran ' + counter +
+                        '</label>' +
+                        '<div class="col-sm-8 d-flex align-items-center ">' +
+                        '<input type="file" class="form-control custom-file-input" id="lampiran' + counter +
+                        '" name="lampiran[]" value="' + item + '">' +
+                        '<button type="button" class="ml-2 btn btn-danger btn-sm" onclick="removeLampiran(' +
+                        counter + ')"><i class="fas fa-trash"></i></button>' +
+                        '</div>' +
+                        '</div>' +
+                        // '<hr/>' +
+                        '</div>';
+                    $("#lampiran-row").append(formGroup);
+                })
+            } else {
+                var length = $("#lampiran-row").children().length;
+                var counter = length + 1;
+
+                var formGroup =
+                    '<div class="group">' +
+                    '<div class="form-group row">' +
+                    '<label for="lampiran' + counter + '" class="col-sm-4 col-form-label">Lampiran ' + counter +
+                    '</label>' +
+                    '<div class="col-sm-8 d-flex align-items-center">' +
+                    '<input type="file" class="form-control" id="lampiran' + counter + '" name="lampiran[]">' +
+                    //remove button
+                    '<button type="button" class="ml-2 btn btn-danger btn-sm" onclick="removeLampiran(' + counter +
+                    ')"><i class="fas fa-trash"></i></button>' +
+                    '</div>' +
+                    '</div>' +
+                    // '<hr/>' +
+                    '</div>';
+                $("#lampiran-row").append(formGroup);
+            }
+        }
+
+        function generateLampiranList(data) {
+            if (data) {
+                $('#lampiran-row').empty();
+                data.forEach((item, index) => {
+                    const counter = index + 1;
+                    var formGroup =
+                        '<div class="form-group row">' +
+                        '<label for="lampiran' + counter + '" class="col-sm-4 col-form-label">Lampiran ' + counter +
+                        '</label>' +
+                        '<div class="col-sm-8">' +
+                        '<div class="custom-file">' +
+                        '<input type="file" class="custom-file-input" id="lampiran' + counter +
+                        '" name="lampiran[]" onchange="showFileName(this, ' + counter + ')">' +
+                        '<label class="custom-file-label" for="lampiran' + counter + '">Pilih file</label>' +
+                        '</div>' +
+                        '<small id="file-name' + counter + '" class="form-text text-muted">' + item + '</small>' +
+                        '<button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeLampiran(' +
+                        counter + ')"><i class="fas fa-trash"></i> Hapus</button>' +
+                        '</div>' +
+                        '</div>';
+                    $("#lampiran-row").append(formGroup);
+                });
+            } else {
+                var length = $("#lampiran-row").children().length;
+                var counter = length + 1;
+
+                var formGroup =
+                    '<div class="form-group row">' +
+                    '<label for="lampiran' + counter + '" class="col-sm-4 col-form-label">Lampiran ' + counter +
+                    '</label>' +
+                    '<div class="col-sm-8">' +
+                    '<div class="custom-file">' +
+                    '<input type="file" class="custom-file-input" id="lampiran' + counter +
+                    '" name="lampiran[]" onchange="showFileName(this, ' + counter + ')">' +
+                    '<label class="custom-file-label" for="lampiran' + counter + '">Pilih file</label>' +
+                    '</div>' +
+                    '<small id="file-name' + counter + '" class="form-text text-muted"></small>' +
+                    '<button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeLampiran(' + counter +
+                    ')"><i class="fas fa-trash"></i> Hapus</button>' +
+                    '</div>' +
+                    '</div>';
+                $("#lampiran-row").append(formGroup);
+            }
+        }
+
+        function removeLampiran(index) {
+            $('#lampiran' + index).closest('.form-group').remove();
+        }
+
+        $(document).ready(function() {
+            $('#add-lampiran').click(function() {
+                generateLampiranList();
+            });
+
+            // Example of initializing with data
+            // var initialData = ["file1.pdf", "file2.jpg"];
+            // generateLampiranList(initialData);
+        });
+
+        $(document).ready(function() {
+            $("#tambah-lampiran").click(function() {
+                generateLampiranList(null);
+            });
+        });
+
+
+        //Agar ketika klik simpan, dapat submit
+        // function setSaveIdAndSubmit() {
+        //     // Submit the form
+        //     var allFileNames = getAllFileNames();
+        //     $('#nama_lampiran').val(allFileNames);
+        //     // alert($('#nama_lampiran').val());
+        //     // alert($('#lampiran_awal').val());
+        //     document.getElementById('save').submit();
+        // }
+
+        function setSaveIdAndSubmit() {
+            const id = $('#save_id').val();
+            console.log('Submitting form with ID:', id);
+
+            // Pastikan input lampiran terkumpul (kalau kamu pakai getAllFileNames)
+            var allFileNames = typeof getAllFileNames === 'function' ? getAllFileNames() : '';
+            $('#nama_lampiran').val(allFileNames);
+
+            // Submit form
+            $('#save').submit();
+        }
+
+
+        //Mengambil semua nama file (lampiran)
+        function getAllFileNames() {
+            var fileNames = [];
+            var counter = 1;
+            var maxTries = 100; // Batas atas untuk menghentikan loop jika terlalu banyak percobaan
+
+            while (counter <= maxTries) {
+                var element = $("#file-name" + counter);
+                if (element.length) {
+                    var fileName = element.text().trim();
+                    fileNames.push(fileName);
+                }
+                counter++;
+            }
+
+            return fileNames.join(", ");
+        }
+
+        function showFileName(input, counter) {
+            var fileName = input.files[0].name;
+            $('#file-name' + counter).text(fileName);
+            // Update the label with the selected file's name
+            $(input).next('.custom-file-label').html(fileName);
+        }
+    </script>
+
+
+
+
+
 
     <script>
         function submitCetak() {
@@ -813,10 +1091,17 @@
             $("#sorting").submit();
         });
 
+        // function resetForm() {
+        //     $('#save').trigger("reset");
+        //     $('#barcode_preview_container').hide();
+        // }
+
         function resetForm() {
-            $('#save').trigger("reset");
+            // Reset semua input kecuali ID dan CSRF token
+            $('#save').find('input').not('#save_id, [name="_token"]').val('');
             $('#barcode_preview_container').hide();
         }
+
 
 
         //Filter by Nomor dan tgl PO
@@ -962,6 +1247,24 @@
             $('#modal-title').text("Edit Request");
             $('#button-save').text("Simpan");
             resetForm();
+
+            // Periksa apakah data.lampiran tidak kosong sebelum memprosesnya
+            if (data.lampiran && data.lampiran.trim() !== "") {
+                var lampiranArray = data.lampiran.split(", ");
+                var nilaiLampiran = lampiranArray.length;
+
+                $('#lampiran_awal').val(data.lampiran);
+                $('#nama_lampiran').val(data.lampiran);
+
+                document.getElementById('lampiran_text').innerHTML = 'Total Lampiran <b>' + nilaiLampiran + '</b>';
+                generateLampiranList(lampiranArray);
+            } else {
+                $('#lampiran_awal').val("");
+                $('#nama_lampiran').val("");
+                document.getElementById('lampiran_text').innerHTML = 'Total Lampiran <b>0</b>';
+            }
+
+
             $('#save_id').val(data.id);
             $('#no_pr').val(data.no_pr);
             // $('#tgl_pr').val(data.tgl_pr);

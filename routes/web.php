@@ -100,6 +100,15 @@ Route::prefix('products')->group(function () {
     Route::get('spph_print', [App\Http\Controllers\SpphController::class, 'spphPrint'])->name('spph.print');
     Route::post('upload-file', [App\Http\Controllers\PurchaseRequestController::class, 'uploadFile'])->name('upload_file');
 
+    // Arsip
+    // Route::get('/arsip/{pr_id}', [App\Http\Controllers\ArsipController::class, 'getArsip']);
+    // Route::post('/arsip/store', [App\Http\Controllers\ArsipController::class, 'store'])->name('arsip.store');
+    // Route::delete('/arsip/delete/{id}', [App\Http\Controllers\ArsipController::class, 'destroy']);
+
+    Route::get('/arsip/{pr_id}', [App\Http\Controllers\ArsipController::class, 'index'])->name('arsip.index');
+    Route::post('/arsip/upload', [App\Http\Controllers\ArsipController::class, 'upload'])->name('arsip.upload');
+    Route::get('/arsip/download/{id}', [App\Http\Controllers\ArsipController::class, 'download'])->name('arsip.download');
+
 
     //keproyekan
     Route::resource('keproyekan', App\Http\Controllers\KeproyekanController::class)->except(['destroy']);
