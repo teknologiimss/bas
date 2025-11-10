@@ -255,7 +255,7 @@
                         <strong>{{ $sppjp->kadiv }}</strong><br>
                     </td>
                     <td align="center" style="width: 25%;">
-                        Diperiksa Oleh<br>
+                        Diperiksa Oleh,<br>
                         Kadep. {{ $sppjp->role }} <br>
                         <br><br><br><br>
                         <strong>{{ $sppjp->kadep }}</strong><br>
