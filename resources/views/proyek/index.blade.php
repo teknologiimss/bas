@@ -33,12 +33,12 @@
                 </div>
 
                 <div>
-                    <a href="{{ route('monitoring.index', $p->id) }}" class="btn btn-light">
+                    <a href="{{ route('monitoring.index', $p->id) }}" class="btn btn-light">📊
                         Monitor
                     </a>
 
                     <!-- Edit -->
-                    <button class="btn btn-success" data-toggle="modal" data-target="#modalEdit{{ $p->id }}">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#modalEdit{{ $p->id }}">✏️
                         Edit
                     </button>
 
@@ -47,7 +47,7 @@
                     <form action="{{ route('proyek.delete', $p->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-danger" onclick="return confirm('Hapus proyek ini?')">Delete</button>
+                        <button class="btn btn-danger" onclick="return confirm('Hapus proyek ini?')">🗑️Delete</button>
                     </form>
                 </div>
             </div>

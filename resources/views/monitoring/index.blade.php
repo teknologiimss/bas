@@ -363,15 +363,16 @@
 
                 <div class="modal-footer">
                     <button class="btn btn-success">Simpan</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 </div>
             </form>
         </div>
     </div>
 
     {{-- JS --}}
-    <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    
 
     {{-- 🔹 AJAX DELETE & UPDATE DOKUMEN --}}
     {{-- <script>
