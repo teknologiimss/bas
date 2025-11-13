@@ -510,17 +510,7 @@
                                         {{-- Contoh menu role SDM --}}
 
 
-                                        {{-- Contoh menu role MRO --}}
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-                                            <li class="nav-item">
-                                                <a href="{{ route('mro.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'mro.index' ? 'active' : '' }}">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>{{ __('Data Proyek MRO') }}</p>
-                                                </a>
-                                            </li>
-                                        @endif
-                                        {{-- Contoh menu role MRO --}}
+                                        
 
 
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 14)
