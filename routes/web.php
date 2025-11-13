@@ -5,7 +5,10 @@ use App\Http\Controllers\SuratJalanController;
 use App\Http\Controllers\DetailsjnController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KontrakController;
+use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\MroController;
 use App\Http\Controllers\PurchaseRequestController;
+use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\PurchaseRequestSppjpController;
 use App\Http\Controllers\NotificationController;
 use App\Models\Kontrak;
@@ -188,9 +191,9 @@ Route::prefix('products')->group(function () {
     Route::delete('justifikasi', [App\Http\Controllers\JustifikasiController::class, 'destroy'])->name('product.justifikasi.delete');
 
     //drawing schematic
-    Route::get('drawing-schematic', [App\Http\Controllers\DrawingSchematicController::class, 'index'])->name('product.drawing.schematic');
-    Route::post('drawing-schematic', [App\Http\Controllers\DrawingSchematicController::class, 'store'])->name('product.drawing.schematic.save');
-    Route::delete('drawing-schematic', [App\Http\Controllers\DrawingSchematicController::class, 'destroy'])->name('product.drawing.schematic.delete');
+    // Route::get('drawing-schematic', [App\Http\Controllers\DrawingSchematicController::class, 'index'])->name('product.drawing.schematic');
+    // Route::post('drawing-schematic', [App\Http\Controllers\DrawingSchematicController::class, 'store'])->name('product.drawing.schematic.save');
+    // Route::delete('drawing-schematic', [App\Http\Controllers\DrawingSchematicController::class, 'destroy'])->name('product.drawing.schematic.delete');
 
     //purchase request
     Route::resource('purchase_request', App\Http\Controllers\PurchaseRequestController::class)->except(['destroy']);
@@ -416,6 +419,24 @@ Route::prefix('products')->group(function () {
     Route::post('detail_kontrak/{id}/delete', [KontrakController::class, 'hapusDetail'])->name('detail_kontrak.delete');
 
 
+    //MRO
+    //resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
+    Route::resource('mro', App\Http\Controllers\MroController::class)->except(['destroy']);
+    Route::delete('mro', [App\Http\Controllers\MroController::class, 'destroy'])->name('mro.destroy');
+    // Route::get('cetak_bpm', [App\Http\Controllers\BpmController::class, 'cetakBpm'])->name('cetak_bpm');
+    Route::get('mro', [App\Http\Controllers\MroController::class, 'index'])->name('mro.index');
+    Route::post('mro', [App\Http\Controllers\MroController::class, 'store'])->name('products.mro.store');
+    Route::post('update_mro_detail', [App\Http\Controllers\MroController::class, 'updateDetailMro'])->name('mro_detail.update');
+    Route::get('mro_detail/{id}', [App\Http\Controllers\MroController::class, 'getDetailMro'])->name('mro_detail');
+    Route::post('detail_mro_save', [App\Http\Controllers\MroController::class, 'detailMroSave'])->name('detail_mro_save');
+    Route::post('mro/update_detail', [App\Http\Controllers\MroController::class, 'editDetail'])->name('detail.update'); //nambah baru
+    Route::post('mro-imss/hapus-multiple', [App\Http\Controllers\MroController::class, 'hapusMultipleMro'])->name('hapus-multiple');
+    Route::post('upload-file', [App\Http\Controllers\MroController::class, 'uploadFile'])->name('upload_file');
+    Route::post('detail_mro/{id}/delete', [MroController::class, 'hapusDetail'])->name('detail_mro.delete');
+
+
+
+
     //BA JUSTIFIKASI
     //resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     // Route::resource('justi', App\Http\Controllers\JustiController::class)->except(['destroy']);
@@ -511,20 +532,53 @@ Route::post('karyawan', [App\Http\Controllers\KaryawanController::class, 'store'
 Route::delete('karyawan', [App\Http\Controllers\KaryawanController::class, 'destroy'])->name('karyawan.destroy');
 Route::post('karyawan-warehouse-imss/hapus-multiple', [App\Http\Controllers\KaryawanController::class, 'hapusMultipleKaryawan'])->name('hapus-multiple');
 
-Route::get('proyek', [App\Http\Controllers\ProyekController::class, 'index'])->name('proyek.index');
-Route::post('proyek', [App\Http\Controllers\ProyekController::class, 'store'])->name('proyek.store');
-Route::delete('proyek', [App\Http\Controllers\ProyekController::class, 'destroy'])->name('proyek.destroy');
-Route::put('proyek', [App\Http\Controllers\ProyekController::class, 'update'])->name('proyek.update');
 
-Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
-Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');
-Route::delete('service', [App\Http\Controllers\ServiceController::class, 'destroy'])->name('service.destroy');
-Route::delete('detail_sr_delete', [App\Http\Controllers\ServiceController::class, 'deleteService'])->name('service.delete');
-Route::put('service', [App\Http\Controllers\ServiceController::class, 'update'])->name('service.update');
-Route::get('service/service_detail/{id}', [App\Http\Controllers\ServiceController::class, 'getDetailSr'])->name('service_detail');
-Route::post('service/update_service_detail', [App\Http\Controllers\ServiceController::class, 'updateDetailSr'])->name('service_detail.update');
-Route::post('service/update_detail', [App\Http\Controllers\ServiceController::class, 'editDetail'])->name('detail.update');
-Route::get('cetak_sr', [App\Http\Controllers\ServiceController::class, 'cetakSr'])->name('cetak_sr');
+// Proyek MRO
+
+
+Route::get('proyek', [ProyekController::class, 'index'])->name('proyek.index');
+Route::post('/proyek/store', [ProyekController::class, 'store'])->name('proyek.store');
+Route::post('/proyek/update/{id}', [ProyekController::class, 'update'])->name('proyek.update');
+Route::delete('/proyek/delete/{id}', [ProyekController::class, 'destroy'])->name('proyek.delete');
+
+
+// Monitoring MRO
+Route::get('/proyek/{id}/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
+Route::post('/proyek/{id}/monitoring', [MonitoringController::class, 'store'])->name('monitoring.store');
+Route::post('/monitoring/{id}/update', [MonitoringController::class, 'update'])->name('monitoring.update');
+Route::delete('/monitoring/{id}', [MonitoringController::class, 'destroy'])->name('monitoring.destroy');
+Route::delete('/monitoring/document/{id}', [MonitoringController::class, 'destroyDocument'])->name('monitoring.document.destroy');
+Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'updateDocument'])
+    ->name('monitoring.document.update');
+// Route::post('/monitoring/update-status/{id}', [MonitoringController::class, 'updateStatus'])
+//     ->name('monitoring.updateStatus');
+
+Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'updateDocument'])->name('monitoring.document.update');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
+// Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');
+// Route::delete('service', [App\Http\Controllers\ServiceController::class, 'destroy'])->name('service.destroy');
+// Route::delete('detail_sr_delete', [App\Http\Controllers\ServiceController::class, 'deleteService'])->name('service.delete');
+// Route::put('service', [App\Http\Controllers\ServiceController::class, 'update'])->name('service.update');
+// Route::get('service/service_detail/{id}', [App\Http\Controllers\ServiceController::class, 'getDetailSr'])->name('service_detail');
+// Route::post('service/update_service_detail', [App\Http\Controllers\ServiceController::class, 'updateDetailSr'])->name('service_detail.update');
+// Route::post('service/update_detail', [App\Http\Controllers\ServiceController::class, 'editDetail'])->name('detail.update');
+// Route::get('cetak_sr', [App\Http\Controllers\ServiceController::class, 'cetakSr'])->name('cetak_sr');
 
 Route::get('jadwal', [App\Http\Controllers\JadwalController::class, 'index'])->name('jadwal.index');
 Route::post('jadwal', [App\Http\Controllers\JadwalController::class, 'store'])->name('jadwal.store');
@@ -538,20 +592,20 @@ Route::put('gangguan', [App\Http\Controllers\GangguanController::class, 'update'
 Route::get('gangguan_detail/{id}', [App\Http\Controllers\GangguanController::class, 'getDetailGangguan'])->name('gangguan_detail');
 
 
-Route::get('trainset', [App\Http\Controllers\TrainsetController::class, 'index'])->name('trainset.index');
-Route::post('trainset', [App\Http\Controllers\TrainsetController::class, 'store'])->name('trainset.store');
-Route::delete('trainset', [App\Http\Controllers\TrainsetController::class, 'destroy'])->name('trainset.destroy');
-Route::put('trainset', [App\Http\Controllers\TrainsetController::class, 'update'])->name('trainset.update');
+// Route::get('trainset', [App\Http\Controllers\TrainsetController::class, 'index'])->name('trainset.index');
+// Route::post('trainset', [App\Http\Controllers\TrainsetController::class, 'store'])->name('trainset.store');
+// Route::delete('trainset', [App\Http\Controllers\TrainsetController::class, 'destroy'])->name('trainset.destroy');
+// Route::put('trainset', [App\Http\Controllers\TrainsetController::class, 'update'])->name('trainset.update');
 
-Route::get('bom', [App\Http\Controllers\BomController::class, 'index'])->name('bom.index');
-Route::post('bom', [App\Http\Controllers\BomController::class, 'store'])->name('bom.store');
-Route::get('bom_detail/{id}', [App\Http\Controllers\BomController::class, 'getDetailBom'])->name('bom_detail');
-Route::post('update_bom_detail', [App\Http\Controllers\BomController::class, 'updateDetailBom'])->name('bom_detail.update');
+// Route::get('bom', [App\Http\Controllers\BomController::class, 'index'])->name('bom.index');
+// Route::post('bom', [App\Http\Controllers\BomController::class, 'store'])->name('bom.store');
+// Route::get('bom_detail/{id}', [App\Http\Controllers\BomController::class, 'getDetailBom'])->name('bom_detail');
+// Route::post('update_bom_detail', [App\Http\Controllers\BomController::class, 'updateDetailBom'])->name('bom_detail.update');
 
 
 Route::post('aset_import', [App\Http\Controllers\AsetController::class, 'import'])->name('aset.import');
 
-Route::get('master_gaji', [App\Http\Controllers\MasterGajiPokokController::class, 'index'])->name('master.gaji.index');
+// Route::get('master_gaji', [App\Http\Controllers\MasterGajiPokokController::class, 'index'])->name('master.gaji.index');
 
 
 
