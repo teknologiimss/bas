@@ -32,7 +32,7 @@ class MonitoringController extends Controller
             'status' => 'required|in:Open,Closed,On Hold',
             'keterangan' => 'nullable|string',
             'nama_dokumen.*' => 'nullable|string',
-            'file_dokumen.*' => 'nullable|file|max:8000',
+            'file_dokumen.*' => 'nullable|file|max:60000',
         ]);
 
         $monitoring = Monitoring::create([
@@ -99,7 +99,7 @@ class MonitoringController extends Controller
             'status' => 'required|in:Open,Closed,On Hold',
             'keterangan' => 'nullable|string',
             'nama_dokumen.*' => 'nullable|string',
-            'file_dokumen.*' => 'nullable|file|max:8000',
+            'file_dokumen.*' => 'nullable|file|max:60000',
         ]);
 
         $monitoring->update($request->only([
