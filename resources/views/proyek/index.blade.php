@@ -21,6 +21,15 @@
         </button>
     </div>
 
+    <!-- FILTER SEARCH -->
+    <form method="GET" action="" class="mb-3">
+        <div class="input-group" style="max-width: 300px;">
+            <input type="text" name="search" class="form-control"
+                placeholder="Cari nama proyek..." value="{{ request('search') }}">
+            <button class="btn btn-primary">Cari</button>
+        </div>
+    </form>
+
     <!-- LIST PROYEK -->
     <div class="card p-3">
         <h5 class="mb-3">Daftar Proyek MRO</h5>
@@ -74,8 +83,11 @@
             </div>
         @endforeach
 
-        <div class="mt-3">
+        {{-- <div class="mt-3">
             {{ $proyeks->links() }}
+        </div> --}}
+        <div class="mt-3">
+            {{ $proyeks->appends(['search' => request('search')])->links() }}
         </div>
     </div>
 

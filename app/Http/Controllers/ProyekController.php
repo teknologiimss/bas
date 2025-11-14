@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 
 class ProyekController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $proyeks = Proyek::orderBy('id','DESC')->paginate(10);
+        $query = Proyek::query();
+
+        if ($request->search) {
+            $query->where('nama_proyek', 'like', '%' . $request->search . '%');
+        }
+
+        $proyeks = $query->paginate(10);
+
         return view('proyek.index', compact('proyeks'));
     }
 
@@ -46,5 +53,3 @@ class ProyekController extends Controller
         return redirect()->route('proyek.index')->with('success', 'Proyek berhasil dihapus');
     }
 }
-
-
