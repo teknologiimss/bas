@@ -7,8 +7,10 @@ use App\Models\MonitoringDocument;
 use App\Models\Proyek;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 class MonitoringController extends Controller
 {
@@ -187,27 +189,64 @@ class MonitoringController extends Controller
     }
 
     public function updateDocument(Request $request, $id)
-{
-    $document = MonitoringDocument::findOrFail($id);
+    {
+        $document = MonitoringDocument::findOrFail($id);
 
-    $document->nama_dokumen = $request->nama_dokumen;
-    $document->status = $request->status ?? 'Open';
-    $document->tanggal_closed = $request->status === 'Closed' ? ($request->tanggal_closed ?? now()) : null;
-    $document->keterangan_closed = $request->status === 'Closed' ? $request->keterangan_closed : null;
+        $document->nama_dokumen = $request->nama_dokumen;
+        $document->status = $request->status ?? 'Open';
+        $document->tanggal_closed = $request->status === 'Closed' ? ($request->tanggal_closed ?? now()) : null;
+        $document->keterangan_closed = $request->status === 'Closed' ? $request->keterangan_closed : null;
 
-    if ($request->hasFile('file_dokumen')) {
-        $file = $request->file('file_dokumen');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $path = 'lampiran/' . $filename;
-        $file->move(public_path('lampiran'), $filename);
-        $document->file_path = $path;
+        if ($request->hasFile('file_dokumen')) {
+            $file = $request->file('file_dokumen');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = 'lampiran/' . $filename;
+            $file->move(public_path('lampiran'), $filename);
+            $document->file_path = $path;
+        }
+
+        $document->save();
+
+        return response()->json(['success' => true, 'message' => 'Dokumen berhasil diperbarui.']);
     }
 
-    $document->save();
+    public function exportZip($proyek_id)
+    {
+        $proyek = Proyek::findOrFail($proyek_id);
+        $monitorings = Monitoring::with('documents')->where('proyek_id', $proyek_id)->get();
 
-    return response()->json(['success' => true, 'message' => 'Dokumen berhasil diperbarui.']);
-}
+        // Nama file ZIP
+        $zipFileName = 'export_monitoring_' . $proyek->nama_proyek . '_' . date('Ymd_His') . '.zip';
+        $zipPath = storage_path('app/public/' . $zipFileName);
 
+        // Hapus ZIP jika sudah ada
+        if (file_exists($zipPath)) {
+            unlink($zipPath);
+        }
 
-    
+        $zip = new ZipArchive;
+
+        if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {
+            foreach ($monitorings as $m) {
+                // Nama Folder berdasarkan Nomor PO / Nota Dinas
+                $folderName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $m->po_nota_dinas);
+
+                foreach ($m->documents as $doc) {
+                    if ($doc->file_path && file_exists(public_path($doc->file_path))) {
+                        $fileAbsolute = public_path($doc->file_path);
+                        $fileName = basename($doc->file_path);
+
+                        // Tambahkan file ke ZIP pada folder sesuai PO
+                        $zip->addFile($fileAbsolute, $folderName . '/' . $fileName);
+                    }
+                }
+            }
+
+            $zip->close();
+
+            return response()->download($zipPath)->deleteFileAfterSend(true);
+        }
+
+        return back()->with('error', '❌ Gagal membuat file ZIP.');
+    }
 }

@@ -554,6 +554,8 @@ Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'u
 //     ->name('monitoring.updateStatus');
 
 Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'updateDocument'])->name('monitoring.document.update');
+Route::get('/monitoring/export/{proyek_id}', [MonitoringController::class, 'exportZip'])
+     ->name('monitoring.export');
 
 
 

@@ -55,6 +55,7 @@
             style="margin-right: 23px;margin-top: 10;">
             + Buat Monitoring Baru
         </button>
+        
     </div>
     {{-- 🔍 Tombol Filter --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -62,6 +63,10 @@
         <button id="toggleFilterBtn" class="btn btn-outline-primary btn-sm" style="margin-left: 23px;">
             🔍 Tampilkan Filter
         </button>
+        <a href="{{ route('monitoring.export', $proyek->id) }}" class="btn btn-outline-primary"
+            style="height: 38px; margin-top: 20px;">
+            📦 Export Semua Dokumen
+        </a>
     </div>
 
     {{-- 🔽 Area Filter (bisa disembunyikan) --}}
