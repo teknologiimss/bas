@@ -107,7 +107,7 @@ class PurchaseRequestController extends Controller
         $warehouse_id = Session::get('selected_warehouse_id')
             ?? DB::table('warehouse')->first()->warehouse_id;
 
-        $requests = PurchaseRequest::select('purchase_request.*', 'kontrak.nama_pekerjaan as proyek_name', 'kontrak.nomor_kontrak as dasar_pr')
+        $requests = PurchaseRequest::select('purchase_request.*', 'kontrak.nama_pekerjaan as proyek_name')
             ->join('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
             ->orderBy('purchase_request.id', 'asc')
             ->paginate(10);
