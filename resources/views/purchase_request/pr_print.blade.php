@@ -135,37 +135,77 @@
                     </td>
 
                     <td align="center" style="width: 85%; border-style: none;">
-                        <br><strong style="font-size: 15">PURCHASE REQUEST</strong><br>
+                        <strong style="font-size: 15">PURCHASE REQUEST</strong><br>
                         <strong style="font-size: 15">(PR)</strong><br>
                     </td>
-                    <td style= "border-style:none"></td>
+                    <td style="border-style:none"></td>
                 </tr>
+            </table>
+
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
                 <tr>
-                    <td align="left" style="width: 25%;">
-                        <br><br>
+
+                    <!-- Kolom 1 -->
+                    <td align="left" style="width: 25%; padding-left: 10px; border-right: 1px solid black;">
                         <strong>Kepada Yth.</strong><br>
                         <strong>Dept. Logistik</strong><br>
                     </td>
 
-                    <td align="center">
-                        <br><br>
-                        <strong>&nbsp;&nbsp;&nbsp;Nomor* : <span>{{ $pr->no_pr }}</span></strong><br>
-                        <strong>Tanggal* :
-                            {{-- <strong>Tanggal* : <span>{{ $pr->tgl_pr }}</span></strong><br> --}}
-                            <span>
-                                @if ($pr['tgl_pr'])
-                                    {{ \Carbon\Carbon::parse($pr['tgl_pr'])->translatedFormat('d F Y') }}
-                                @else
-                                    -
-                                @endif
-                            </span>
+                    <!-- kolom 2 + 3 -->
+                    <td style="width: 85%; padding-left: 0; padding-right: 2px;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <!-- Kolom kiri -->
+                                <td style="width: 50%; vertical-align: top; padding-left: 0;">
+
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 30%; padding: 0;"><strong>Nomor</strong></td>
+                                            <td style="width: 5%; padding: 0;">:</td>
+                                            <td style="padding: 0;">{{ $pr->no_pr }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="padding: 0;"><strong>Tanggal</strong></td>
+                                            <td style="padding: 0;">:</td>
+                                            <td style="padding: 0;">
+                                                @if ($pr['tgl_pr'])
+                                                {{ \Carbon\Carbon::parse($pr['tgl_pr'])->translatedFormat('d F Y') }}
+                                                @else
+                                                -
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+
+                                <!-- Kolom kanan -->
+                                <td style="width: 50%; vertical-align: top;">
+
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 30%; padding: 0;"><strong>Proyek</strong></td>
+                                            <td style="width: 5%; padding: 0;">:</td>
+                                            <td style="padding: 0;">{{ $pr->nama_pekerjaan }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="padding: 0;"><strong>Revisi</strong></td>
+                                            <td style="padding: 0;">:</td>
+                                            <td style="padding: 0;">{{ $pr->revisi ?? '-' }}</td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                        </table>
                     </td>
 
-                    <td align="right" style="width: 35%;">
-                        <br><br>
-                        <strong>Proyek : <span>{{ $pr->nama_pekerjaan }}</span></strong><br>
-                    </td>
                 </tr>
+            </table>
+
+            </tr>
             </table>
         </div>
     </header>
@@ -189,7 +229,7 @@
         </thead>
         <tbody>
             @forelse ($pr->purchases as $item)
-                @if ($loop->index % 8 == 0 && $loop->index != 0)
+            @if ($loop->index % 8 == 0 && $loop->index != 0)
         </tbody>
     </table>
     <div class="page_break"></div>
@@ -212,7 +252,8 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->kode_material }}</td>
                 <td style="word-wrap: break-word; overflow: hidden; text-overflow: ellipsis; text-align: left;">
-                    {{ $item->uraian }}</td>
+                    {{ $item->uraian }}
+                </td>
                 {{-- <td style="word-wrap: break-word;text-align: left">{{ $item->spek }}</td> --}}
                 <td
                     style="word-wrap: break-word; max-width: 200px; overflow: hidden; text-overflow: ellipsis; text-align: left;">
@@ -223,16 +264,17 @@
                 {{-- <td>{{ $item->waktu }}</td> --}}
                 <td>
                     @if ($item['waktu'])
-                        {{ \Carbon\Carbon::parse($item['waktu'])->locale('id')->translatedFormat('d F Y') }}
+                    {{ \Carbon\Carbon::parse($item['waktu'])->locale('id')->translatedFormat('d F Y') }}
                     @else
-                        -
+                    -
                     @endif
                 </td>
                 <td
                     style="word-wrap: break-word; max-width: 200px; overflow: hidden; text-overflow: ellipsis; text-align: left;">
-                    {{ $item->keterangan }}</td>
+                    {{ $item->keterangan }}
+                </td>
             </tr>
-        @empty
+            @empty
             <tr>
                 <td colspan="8" class="text-center" style="text-align: center">Tidak ada data</td>
             </tr>
