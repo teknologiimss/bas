@@ -75,6 +75,7 @@
                             <th>{{ __('Nama Pekerjaan') }}</th>
                             <th>{{ __('Nilai Pekerjaan (Rp.)') }}</th>
                             <th>{{ __('Nama Pelanggan') }}</th>
+                            <th>{{ __('Tipe') }}</th>
                             {{-- <th>{{ __('Nilai (Rp.)') }}</th> --}}
                             <th>{{ __('Status') }}</th>
                             <th></th>
@@ -92,6 +93,7 @@
                         'nama_pekerjaan' => $d->nama_pekerjaan,
                         'nilai_pekerjaan' => $d->nilai_pekerjaan,
                         'nama_pelanggan' => $d->nama_pelanggan,
+                        'tipe' => $d->tipe,
                         // 'nilai' => $d->nilai,
                         'status' => $d->status,
 
@@ -144,6 +146,7 @@
                                 {{ isset($data['nilai_pekerjaan']) ? number_format((float) $data['nilai_pekerjaan'], 0, ',', '.') : '-' }}
                             </td>
                             <td class="text-center">{{ $data['nama_pelanggan'] }}</td>
+                            <td class="text-center">{{ $data['tipe'] }}</td>
                             <td class="text-center">{{ $data['status'] }}</td>
                             {{-- <td class="text-center">{{ isset($data['nilai']) ? number_format((float) $data['nilai'], 0, ',', '.') : '-' }}</td> --}}
                             {{-- <td class="text-center">{{ $data['status'] }}</td> --}}
@@ -270,6 +273,18 @@
                                 <input type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan"
                                     autocomplete="off">
                                 {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
+                            </div>
+                        </div>
+
+                        {{-- Tipe --}}
+                        <div class="form-group row">
+                            <label for="tipe" class="col-sm-4 col-form-label">{{ __('Tipe') }}</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="tipe" name="tipe">
+                                    <option value="">-- Pilih Tipe --</option>
+                                    <option value="NON INKA">NON INKA</option>
+                                    <option value="INKA GROUP">INKA GROUP</option>
+                                </select>
                             </div>
                         </div>
 
@@ -552,9 +567,7 @@
                 $.ajax({
                     url: '{{ route('get-dasar-proyek') }}',
                     type: 'GET',
-                    data: {
-                        proyek_id: proyek_id
-                    },
+                    data: {proyek_id: proyek_id},
                     success: function(response) {
                         $('#dasar_pr').val(response.dasar_proyek);
                     },
@@ -773,6 +786,7 @@
         $('#nama_pekerjaan').val(data.nama_pekerjaan);
         $('#nilai_pekerjaan').val(data.nilai_pekerjaan);
         $('#nama_pelanggan').val(data.nama_pelanggan);
+        $('#tipe').val(data.tipe);
         $('#status').val(data.status);
         // $('#nilai').val(data.nilai);
         var date = data.tanggal.split('/');
