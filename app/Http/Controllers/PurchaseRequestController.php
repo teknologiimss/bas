@@ -191,6 +191,9 @@ class PurchaseRequestController extends Controller
         } elseif ($user->role == 3) {
             // Pengguna dari Wilayah 2
             $requests->where('no_pr', 'like', '%wil2%');
+        } elseif ($user->role == 14) {
+            // Pengguna dari MRO
+            $requests->where('no_pr', 'like', '%wil2%');
         } elseif ($user->role == 0) {
             // Admin, tampilkan semua data
             // Tidak ada filter tambahan
@@ -806,7 +809,21 @@ class PurchaseRequestController extends Controller
 
         $pr->pic = User::where('id', $pr->id_user)->first()->name ?? '-';
 
-        if (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
+        // if (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
+        //     $pr->role = 'Wilayah 1';
+        //     $pr->kadiv = 'EKO PRASETYO';
+        //     $pr->kadep = 'RIKA KUSUMANING INDRATMOKO';
+        // } else {
+        //     $pr->role = 'Wilayah 2';
+        //     $pr->kadiv = 'HARI SUBEKTI';
+        //     $pr->kadep = 'HARLISTA DWI OKTYASWORO';
+        // }
+
+        if (preg_match('/mro/i', $pr->no_pr)) {
+            $pr->role = 'MRO';
+            $pr->kadiv = '-';  // Jika tidak ada kadiv MRO, isi dengan '-'
+            $pr->kadep = 'Dwi Anna A.P';
+        } elseif (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
             $pr->role = 'Wilayah 1';
             $pr->kadiv = 'EKO PRASETIYO';
             $pr->kadep = 'RIKA KUSUMANING INDRATMOKO';
@@ -839,7 +856,21 @@ class PurchaseRequestController extends Controller
 
         $sppjp->pic = User::where('id', $sppjp->id_user)->first()->name ?? '-';
 
-        if (preg_match('/wil1|wilayah1/i', $sppjp->no_pr)) {
+        // if (preg_match('/wil1|wilayah1/i', $sppjp->no_pr)) {
+        //     $sppjp->role = 'Wilayah 1';
+        //     $sppjp->kadiv = 'EKO PRASETYO';
+        //     $sppjp->kadep = 'RIKA KUSUMANING INDRATMOKO';
+        // } else {
+        //     $sppjp->role = 'Wilayah 2';
+        //     $sppjp->kadiv = 'HARI SUBEKTI';
+        //     $sppjp->kadep = 'HARLISTA DWI OKTYASWORO';
+        // }
+
+        if (preg_match('/mro/i', $sppjp->no_pr)) {
+            $sppjp->role = 'MRO';
+            $sppjp->kadiv = '-';  // bisa diisi jika ada kadiv khusus MRO
+            $sppjp->kadep = 'Dwi Anna A.P';
+        } elseif (preg_match('/wil1|wilayah1/i', $sppjp->no_pr)) {
             $sppjp->role = 'Wilayah 1';
             $sppjp->kadiv = 'EKO PRASETIYO';
             $sppjp->kadep = 'RIKA KUSUMANING INDRATMOKO';

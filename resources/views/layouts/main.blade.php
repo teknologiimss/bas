@@ -343,7 +343,8 @@
                                                 Auth::user()->role == 2 ||
                                                 Auth::user()->role == 3 ||
                                                 Auth::user()->role == 8 ||
-                                                Auth::user()->role == 9)
+                                                Auth::user()->role == 9 ||
+                                                Auth::user()->role == 14)
                                             <li class="nav-item">
                                                 <a href="{{ route('purchase_request.index') }}"
                                                     class="nav-link {{ Route::current()->getName() == 'purchase_request.index' ? 'active' : '' }}">
@@ -507,6 +508,23 @@
                                             </li>
                                         @endif
                                         {{-- Contoh menu role SDM --}}
+
+
+                                        
+
+
+                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                            <li class="nav-item">
+                                                <a href="{{ route('proyek.index') }}"
+                                                    class="nav-link {{ Route::current()->getName() == 'proyek.index' ? 'active' : '' }}">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>{{ __(' Proyek MRO') }}</p>
+                                                </a>
+                                            </li>
+                                        @endif
+
+
+
 
                                         {{-- Contoh menu role Warehouse --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 4)

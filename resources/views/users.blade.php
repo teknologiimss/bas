@@ -68,6 +68,8 @@
                                             $role = 'Pemasaran';
                                         } elseif ($d->role == 13) {
                                             $role = 'Keuangan';
+                                        } elseif ($d->role == 14) {
+                                            $role = 'MRO';
                                         }
                                     @endphp
                                     <tr>
@@ -156,6 +158,7 @@
                                         <option value="11">Qc</option>
                                         <option value="12">Pemasaran</option>
                                         <option value="13">Keuangan</option>
+                                        <option value="14">MRO</option>
                                         {{-- <option value="6">Keuangan</option>
                                         <option value="7">SDM</option>
                                         <option value="8">Ekspedisi</option>

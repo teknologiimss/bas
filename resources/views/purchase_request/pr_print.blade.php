@@ -293,7 +293,7 @@
                         <strong>{{ $pr->kadiv }}</strong><br>
                     </td>
                     <td align="center" style="width: 25%;">
-                        Diperiksa Oleh<br>
+                        Diperiksa Oleh,<br>
                         Kadep. {{ $pr->role }} <br>
                         <br><br><br><br>
                         <strong>{{ $pr->kadep }}</strong><br>
