@@ -126,52 +126,92 @@
 
 <body>
     <header>
-        <div class="information">
-            <table width="100%">
-                <tr style="border: 1px solid black;">
-                    <td align="left" style="width: 25%; border: 1px solid black;">
-                        <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
-                            alt="Logo" width="150" class="logo" /><br>
-                    </td>
+    <div class="information">
 
-                    <td align="center" style="width: 85%; border-style: none;">
-                        <br><strong style="font-size: 13">SURAT PERMINTAAN PEMBELIAN JASA / PEMBORONGAN</strong><br>
-                        <strong style="font-size: 13">(SPPJ/P)</strong><br>
-                    </td>
-                    <td style= "border-style:none"></td>
+        <!-- ===================== BARIS LOGO & JUDUL ===================== -->
+        <table width="100%" style="border-collapse: collapse;">
+            <tr style="border: 1px solid black;">
+                <td align="left" style="width: 25%; border: 1px solid black;">
+                    <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
+                        alt="Logo" width="150" class="logo" /><br>
+                </td>
 
-                </tr>
+                <td align="center" style="width: 85%; border-style:none;">
+                    <strong style="font-size: 17px;">SURAT PERMINTAAN PEMBELIAN JASA / PEMBORONGAN</strong><br>
+                    <strong style="font-size: 17px;">(SPPJ/P)</strong><br>
+                </td>
 
-                <tr>
-                    <td align="left" style="width: 25%;">
-                        <br><br>
-                        <strong>Kepada Yth.</strong><br>
-                        <strong>Dept. Logistik</strong><br>
-                    </td>
+                <!-- Extra kolom kosong seperti kode 2 -->
+                <td style="border-style:none;"></td>
+            </tr>
+        </table>
 
-                    <td align="center">
-                        <br><br>
-                        <strong>&nbsp;&nbsp;&nbsp;Nomor* : <span>{{ $sppjp->no_pr }}</span></strong><br>
-                        <strong>Tanggal* :
-                            {{-- <strong>Tanggal* : <span>{{ $pr->tgl_pr }}</span></strong><br> --}}
-                            <span>
-                                @if ($sppjp['tgl_pr'])
-                                    {{ \Carbon\Carbon::parse($sppjp['tgl_pr'])->translatedFormat('d F Y') }}
-                                @else
-                                    -
-                                @endif
-                            </span>
 
-                    </td>
+        <!-- ===================== BARIS INFORMASI ===================== -->
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+            <tr>
 
-                    <td align="right" style="width: 35%;">
-                        <br><br>
-                        <strong>Proyek : <span>{{ $sppjp->nama_pekerjaan }}</span></strong><br>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </header>
+                <!-- Kolom kiri -->
+                <td align="left" style="width: 25%; padding-left: 10px; border-right: 1px solid black;">
+                    <strong>Kepada Yth.</strong><br>
+                    <strong>Dept. Logistik</strong><br>
+                </td>
+
+                <!-- kolom kanan -->
+                <td style="width: 85%; padding-left: 0; padding-right: 2px;">
+                    <table style="width: 100%;">
+                        <tr>
+
+                            <!-- Kolom kiri -->
+                            <td style="width: 50%; vertical-align: top; padding-left: 0;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 30%; padding: 0;"><strong>Nomor</strong></td>
+                                        <td style="width: 5%; padding: 0;">:</td>
+                                        <td style="padding: 0;">{{ $sppjp->no_pr }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 0;"><strong>Tanggal</strong></td>
+                                        <td style="padding: 0;">:</td>
+                                        <td style="padding: 0;">
+                                            @if ($sppjp['tgl_pr'])
+                                            {{ \Carbon\Carbon::parse($sppjp['tgl_pr'])->translatedFormat('d F Y') }}
+                                            @else
+                                            -
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                            <!-- Kolom kanan -->
+                            <td style="width: 50%; vertical-align: top;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 30%; padding: 0;"><strong>Proyek</strong></td>
+                                        <td style="width: 5%; padding: 0;">:</td>
+                                        <td style="padding: 0;">{{ $sppjp->nama_pekerjaan }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 0;"><strong>Revisi</strong></td>
+                                        <td style="padding: 0;">:</td>
+                                        <td style="padding: 0;">{{ $sppjp->revisi ?? '-' }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                        </tr>
+                    </table>
+                </td>
+
+            </tr>
+        </table>
+
+    </div>
+</header>
+
 
     {{--
     <div class="w-100 text-center">
@@ -192,7 +232,7 @@
         </thead>
         <tbody>
             @forelse ($sppjp->purchases as $item)
-                @if ($loop->index % 8 == 0 && $loop->index != 0)
+            @if ($loop->index % 8 == 0 && $loop->index != 0)
         </tbody>
     </table>
     <div class="page_break"></div>
@@ -215,7 +255,8 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->kode_material }}</td>
                 <td style="word-wrap: break-word; overflow: hidden; text-overflow: ellipsis; text-align: left;">
-                    {{ $item->uraian }}</td>
+                    {{ $item->uraian }}
+                </td>
                 {{-- <td style="word-wrap: break-word;text-align: left">{{ $item->spek }}</td> --}}
                 <td
                     style="word-wrap: break-word; max-width: 200px; overflow: hidden; text-overflow: ellipsis; text-align: left;">
@@ -226,17 +267,18 @@
                 {{-- <td>{{ $item->waktu }}</td> --}}
                 <td>
                     @if ($item['waktu'])
-                        {{ \Carbon\Carbon::parse($item['waktu'])->locale('id')->translatedFormat('d F Y') }}
+                    {{ \Carbon\Carbon::parse($item['waktu'])->locale('id')->translatedFormat('d F Y') }}
                     @else
-                        -
+                    -
                     @endif
 
                 </td>
                 <td
                     style="word-wrap: break-word; max-width: 200px; overflow: hidden; text-overflow: ellipsis; text-align: left;">
-                    {{ $item->keterangan }}</td>
+                    {{ $item->keterangan }}
+                </td>
             </tr>
-        @empty
+            @empty
             <tr>
                 <td colspan="8" class="text-center" style="text-align: center">Tidak ada data</td>
             </tr>
