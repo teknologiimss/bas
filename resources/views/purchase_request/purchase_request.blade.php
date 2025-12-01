@@ -449,6 +449,13 @@
                                 <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3"></textarea>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="no_pr" class="col-sm-4 col-form-label">{{ __('Revisi') }} </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="revisi" name="revisi"
+                                    autocomplete="off">
+                            </div>
+                        </div>
 
                         <input type="text" id="data_lampiran" value="--" style="display: none">
                         <h6 id="lampiran_text">Lampiran</h6>
@@ -538,6 +545,11 @@
                                         <td><b>Proyek</b></td>
                                         <td>:</td>
                                         <td><span id="proyek"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Revisi</b></td>
+                                        <td>:</td>
+                                        <td><span id="revisi_detail"></span></td>
                                     </tr>
                                     <tr>
                                         <td><b>Produk</b></td>
@@ -1875,6 +1887,7 @@
         $('#id').val(data.id);
         $('#no_surat').text(data.no_pr);
         $('#tgl_surat').text(data.tanggal);
+        $('#revisi').text(data.revisi);
         $('#proyek').text(data.proyek);
         $('#proyek_id_val').val(data.proyek_id);
         $('#pr_id').val(data.id);
@@ -1902,6 +1915,7 @@
                 $('#no_surat').text(data.pr.no_pr);
                 $('#tgl_surat').text(data.pr.tanggal);
                 $('#proyek').text(data.pr.proyek);
+                $('#revisi_detail').text(data.pr.revisi ?? "-");
                 $('#button-cetak-pr').html('<i class="fas fa-print"></i> Cetak');
                 $('#button-cetak-pr').attr('disabled', false);
 
@@ -2074,6 +2088,7 @@
         $('#tgl_pr').val(data.tgl_pr);
         $('#proyek_id').val(data.proyek_id);
         $('#dasar_pr').val(data.dasar_pr);
+        $('#revisi').val(data.revisi);
         // alert(proyek_id)
     }
 

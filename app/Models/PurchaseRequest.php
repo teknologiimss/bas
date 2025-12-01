@@ -14,6 +14,7 @@ class PurchaseRequest extends Model
         'no_pr',
         'tgl_pr',
         'dasar_pr',
+        'revisi',
         'id_user',
         'nomor_lppb',
         'tanggal_lppb',
