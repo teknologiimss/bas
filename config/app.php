@@ -60,7 +60,7 @@ return [
 
     'dev_url' => "https://www.dhp.pw",
 
-    'version' => env('APP_VERSION', "INKA MULTI SOLUTION SERVICE"),
+    'version' => env('APP_VERSION', "INKA MULTI SOLUSI SERVICE"),
 
     /*
     |--------------------------------------------------------------------------
