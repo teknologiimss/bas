@@ -155,6 +155,7 @@ class KontrakController extends Controller
                 'nama_pekerjaan' => 'required',
                 'nilai_pekerjaan' => 'required',
                 'nama_pelanggan' => 'required',
+                'tipe' => 'required',
                 'status' => 'nullable',
                 // 'nilai' => 'nullable',
             ],
@@ -165,6 +166,7 @@ class KontrakController extends Controller
                 'nama_pekerjaan.required' => 'Nama Pekerjaan harus diisi',
                 'nilai_pekerjaan.required' => 'Nilai Pekerjaan harus diisi',
                 'nama_pelanggan.required' => 'Nama Pelanggan harus diisi',
+                'tipe.required' => 'Tipe harus diisi',
                 'status.required' => 'Status harus diisi',
                 // 'nilai.required' => 'Nilai harus diisi',
             ]
@@ -178,6 +180,7 @@ class KontrakController extends Controller
                 'nama_pekerjaan' => $request->nama_pekerjaan,
                 'nilai_pekerjaan' => $request->nilai_pekerjaan,
                 'nama_pelanggan' => $request->nama_pelanggan,
+                'tipe' => $request->tipe,
                 'status' => $request->status,
                 // 'nilai' => $request->nilai,
                 // 'id_user' => auth()->user()->id,
@@ -192,6 +195,7 @@ class KontrakController extends Controller
                 'nama_pekerjaan' => $request->nama_pekerjaan,
                 'nilai_pekerjaan' => $request->nilai_pekerjaan,
                 'nama_pelanggan' => $request->nama_pelanggan,
+                'tipe' => $request->tipe,
                 'status' => $request->status,
                 // 'nilai' => $request->nilai,
             ]);

@@ -16,6 +16,7 @@ class Kontrak extends Model
         'nama_pekerjaan',
         'nilai_pekerjaan',
         'nama_pelanggan',
+        'tipe',
         'status',
         // 'nilai',
         
