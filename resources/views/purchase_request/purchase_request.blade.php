@@ -148,6 +148,7 @@
                         'id' => $d->id,
                         'status' => $d->status,
                         'editable' => $d->editable,
+                        'revisi' => $d->revisi,
                         ];
                         @endphp
 
@@ -254,8 +255,6 @@
                             </td>
 
                             {{-- membuat lampiran lebih dari 1 --}}
-
-
                             <td class="text-center">
                                 @elseif (Auth::user()->role == 14 && strpos(strtolower($data['no_pr']), 'mro') !== false)
                             <td class="text-center"><input type="checkbox" name="hapus[]"
@@ -290,11 +289,6 @@
                                     @endif
                             </td>
 
-
-
-
-
-
                             <td class="text-center">
                                 @elseif (Auth::user()->role == 0)
                             <td class="text-center"><input type="checkbox" name="hapus[]"
@@ -304,7 +298,7 @@
                             <td class="text-center">{{ $data['proyek'] }}</td>
                             <td class="text-center">{{ $data['tanggal'] }}</td>
                             <td class="text-center">{!! nl2br(e($data['dasar_pr'])) !!}</td>
-
+                            
                             {{-- membuat lampiran lebih dari 1 --}}
                             <td class="text-center">
                                 @php
@@ -420,218 +414,237 @@
                                     <i class="fas fa-trash"></i>
                                 </button>
                                 @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                        @else
+                        <tr class="text-center">
+                            <td colspan="8">{{ __('No data.') }}</td>
+                        </tr>
+                        @endif
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-danger" id="delete-selected"
+                    data-token="{{ csrf_token() }}">Hapus yang dipilih</button>
+            </div>
+        </div>
+    </div>
+    <div>
+        {{ $requests->appends(request()->except('page'))->links('pagination::bootstrap-4') }}
+    </div>
+    </div>
 
-                                {{-- modal --}}
-                                <div class="modal fade" id="add-pr">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 id="modal-title" class="modal-title">{{ __('Add Purchase Request') }}</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form role="form" id="save" action="{{ route('products.pr.store') }}" method="post"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    <input type="hidden" id="save_id" name="id">
-                                                    <input type="hidden" id="lampiran_awal" name="lampiran_awal">
-                                                    <input type="hidden" id="nama_lampiran" name="nama_lampiran">
-                                                    <div class="form-group row">
-                                                        <label for="no_pr" class="col-sm-4 col-form-label">{{ __('Nomor PR/SPPJP') }} </label>
-                                                        <div class="col-sm-8">
-                                                            <input type="text" class="form-control" id="no_pr" name="no_pr"
-                                                                autocomplete="off">
-                                                        </div>
-                                                    </div>
-                                                    <!--<div class="form-group row">-->
-                                                    <!--    <div class="col-sm-8">-->
-                                                    <!--     <input type="text" class="form-control" id="no_pr" name="no_pr" autocomplete="off" hidden>-->
-                                                    <!--    </div>-->
-                                                    <!--</div>-->
-                                                    <div class="form-group row">
-                                                        <label for="tgl_pr" class="col-sm-4 col-form-label">{{ __('Tanggal') }}
-                                                        </label>
-                                                        <div class="col-sm-8">
-                                                            {{-- <input type="date" class="form-control" id="tgl_pr" name="tgl_pr"
+    {{-- modal --}}
+    <div class="modal fade" id="add-pr">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="modal-title" class="modal-title">{{ __('Add Purchase Request') }}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="save" action="{{ route('products.pr.store') }}" method="post"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" id="save_id" name="id">
+                        <input type="hidden" id="lampiran_awal" name="lampiran_awal">
+                        <input type="hidden" id="nama_lampiran" name="nama_lampiran">
+                        <div class="form-group row">
+                            <label for="no_pr" class="col-sm-4 col-form-label">{{ __('Nomor PR/SPPJP') }} </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="no_pr" name="no_pr"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <!--<div class="form-group row">-->
+                        <!--    <div class="col-sm-8">-->
+                        <!--     <input type="text" class="form-control" id="no_pr" name="no_pr" autocomplete="off" hidden>-->
+                        <!--    </div>-->
+                        <!--</div>-->
+                        <div class="form-group row">
+                            <label for="tgl_pr" class="col-sm-4 col-form-label">{{ __('Tanggal') }}
+                            </label>
+                            <div class="col-sm-8">
+                                {{-- <input type="date" class="form-control" id="tgl_pr" name="tgl_pr"
                                         min="{{ date('Y-m-d', strtotime('-7 days')) }}"> --}}
 
-                                                            <input type="date" class="form-control w-50" id="tgl_pr" name="tgl_pr">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group
+                                <input type="date" class="form-control w-50" id="tgl_pr" name="tgl_pr">
+                            </div>
+                        </div>
+                        <div class="form-group
                                         row">
-                                                        <label for="proyek" class="col-sm-4 col-form-label">{{ __('Proyek') }}
-                                                        </label>
-                                                        <div class="col-sm-8">
-                                                            {{-- <input type="text" class="form-control" id="proyek" name="proyek"> --}}
-                                                            <select class="form-control" name="proyek_id" id="proyek_id">
-                                                                <option value="">Pilih Proyek</option>
-                                                                @foreach ($proyeks as $proyek)
-                                                                <option value="{{ $proyek->id }}">{{ $proyek->nama_pekerjaan }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="dasar_pr" class="col-sm-4 col-form-label">{{ __('Dasar PR/SPPJP') }}
-                                                        </label>
-                                                        <div class="col-sm-8">
-                                                            {{-- <input type="text" class="form-control" id="dasar" name="dasar"> --}}
-                                                            <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="no_pr" class="col-sm-4 col-form-label">{{ __('Revisi') }} </label>
-                                                        <div class="col-sm-8">
-                                                            <input type="text" class="form-control" id="revisi" name="revisi"
-                                                                autocomplete="off">
-                                                        </div>
-                                                    </div>
+                            <label for="proyek" class="col-sm-4 col-form-label">{{ __('Proyek') }}
+                            </label>
+                            <div class="col-sm-8">
+                                {{-- <input type="text" class="form-control" id="proyek" name="proyek"> --}}
+                                <select class="form-control" name="proyek_id" id="proyek_id">
+                                    <option value="">Pilih Proyek</option>
+                                    @foreach ($proyeks as $proyek)
+                                    <option value="{{ $proyek->id }}">{{ $proyek->nama_pekerjaan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="dasar_pr" class="col-sm-4 col-form-label">{{ __('Dasar PR/SPPJP') }}
+                            </label>
+                            <div class="col-sm-8">
+                                {{-- <input type="text" class="form-control" id="dasar" name="dasar"> --}}
+                                <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="no_pr" class="col-sm-4 col-form-label">{{ __('Revisi') }} </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="revisi" name="revisi"
+                                    autocomplete="off">
+                            </div>
+                        </div>
 
-                                                    <input type="text" id="data_lampiran" value="--" style="display: none">
-                                                    <h6 id="lampiran_text">Lampiran</h6>
+                        <input type="text" id="data_lampiran" value="--" style="display: none">
+                        <h6 id="lampiran_text">Lampiran</h6>
 
-                                                    <div id="lampiran-row">
+                        <div id="lampiran-row">
 
-                                                    </div>
+                        </div>
 
-                                                    <a id="tambah-lampiran" style="cursor: pointer">Tambah Lampiran</a>
-                                                    <hr>
+                        <a id="tambah-lampiran" style="cursor: pointer">Tambah Lampiran</a>
+                        <hr>
 
 
 
-                                                    {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 1)
+                        {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 1)
                                 <div class="form-group row">
                                     <label for="proyek" class="col-sm-4 col-form-label">{{ __('Status') }}
-                                                    </label>
-                                                    <div class="col-sm-8">
-                                                        <select class="form-control" name="proyek_id" id="proyek_id">
-                                                            <option value="0">Pilih Status</option>
-                                                            <option value="1">SPPH</option>
-                                                            <option value="2">SPH</option>
-                                                            <option value="3">JUSTIFIKASI</option>
-                                                            <option value="4">NEGO 1</option>
-                                                            <option value="5">NEGO 2</option>
-                                                        </select>
-                                                    </div>
-                                            </div>
-                                            @endif --}}
-
-
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer justify-content-between">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
-                                            {{-- <button id="button-save" type="button" class="btn btn-primary"
-                            onclick="document.getElementById('save').submit();">{{ __('Tambahkan') }}</button> --}}
-                                            <button id="button-save" type="button" class="btn btn-primary" onclick="setSaveIdAndSubmit();">
-                                                {{ __('Simpan') }}
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </div>
-            </div>
-
-            {{-- modal lihat detail --}}
-            <div class="modal fade" id="detail-pr">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 id="modal-title" class="modal-title">{{ __('Detail Purchase Request') }}</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        </label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="proyek_id" id="proyek_id">
+                                <option value="0">Pilih Status</option>
+                                <option value="1">SPPH</option>
+                                <option value="2">SPH</option>
+                                <option value="3">JUSTIFIKASI</option>
+                                <option value="4">NEGO 1</option>
+                                <option value="5">NEGO 2</option>
+                            </select>
                         </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <div class="row">
+                </div>
+                @endif --}}
 
 
-                                    <div class="col-12" id="container-form">
-                                        <b>Pilih PR / SPPJP</b>
-                                        <form id="cetak-form" method="GET" action="" target="_blank">
-                                            <input type="hidden" name="id" id="id">
-                                            <select name="jenis_cetak" id="jenis_cetak" class="form-control">
-                                                <option value="pr">Cetak PR</option>
-                                                <option value="sppjp">Cetak SPPJP</option>
-                                            </select>
-                                        </form>
-                                        <button id="button-cetak" type="button" class="btn btn-primary"
-                                            onclick="submitCetak();">
-                                            {{ __('Cetak') }}
-                                        </button>
-                                        <table class="align-top w-100">
-                                            <tr>
-                                                <td style="width: 3%;"><b>No PR/SPPJP</b></td>
-                                                <td style="width:2%">:</td>
-                                                <td style="width: 55%"><span id="no_surat"></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Tanggal</b></td>
-                                                <td>:</td>
-                                                <td><span id="tgl_surat"></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Proyek</b></td>
-                                                <td>:</td>
-                                                <td><span id="proyek"></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Revisi</b></td>
-                                                <td>:</td>
-                                                <td><span id="revisi_detail"></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Produk</b></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="3">
-                                                    <button id="button-tambah-produk" type="button"
-                                                        class="btn btn-info mb-3"
-                                                        onclick="showAddProduct()">{{ __('Tambah Item Detail') }}</button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered">
-                                                <thead style="text-align: center">
-                                                    <th>{{ __('NO') }}</th>
-                                                    <th>{{ __('Kode Material') }}</th>
-                                                    <th>{{ __('Uraian Barang/Jasa') }}</th>
-                                                    <th>{{ __('Spesifikasi') }}</th>
-                                                    <th>{{ __('QTY') }}</th>
-                                                    <th>{{ __('SAT') }}</th>
-                                                    <th>{{ __('Waktu Penyelesaian') }}</th>
-                                                    <th>{{ __('Lampiran') }}</th>
-                                                    <th>{{ __('Keterangan') }}</th>
-                                                    {{-- <th>{{ __('SPPH') }}</th>
-                                                    <th>{{ __('PO') }}</th> --}}
-                                                    <th>{{ __('STATUS SPPH') }}</th>
-                                                    <th>{{ __('STATUS SPPH LUAR NEGERI') }}</th>
-                                                    <th>{{ __('STATUS LOI') }}</th>
-                                                    <th>{{ __('STATUS LOI LUAR NEGERI') }}</th>
-                                                    <th>{{ __('STATUS NEGO') }}</th>
-                                                    <th>{{ __('STATUS NEGOTIATION LETTER') }}</th>
-                                                    <th>{{ __('STATUS PO') }}</th>
-                                                    <th>{{ __('STATUS PO LUAR NEGERI') }}</th>
-                                                    <th>{{ __('AKSI') }}</th>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
+                {{-- <button id="button-save" type="button" class="btn btn-primary"
+                            onclick="document.getElementById('save').submit();">{{ __('Tambahkan') }}</button> --}}
+                <button id="button-save" type="button" class="btn btn-primary" onclick="setSaveIdAndSubmit();">
+                    {{ __('Simpan') }}
+                </button>
 
-                                                </thead>
-                                                <tbody id="table-pr">
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    {{-- modal lihat detail --}}
+    <div class="modal fade" id="detail-pr">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="modal-title" class="modal-title">{{ __('Detail Purchase Request') }}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="row">
 
 
+                            <div class="col-12" id="container-form">
+                                <b>Pilih PR / SPPJP</b>
+                                <form id="cetak-form" method="GET" action="" target="_blank">
+                                    <input type="hidden" name="id" id="id">
+                                    <select name="jenis_cetak" id="jenis_cetak" class="form-control">
+                                        <option value="pr">Cetak PR</option>
+                                        <option value="sppjp">Cetak SPPJP</option>
+                                    </select>
+                                </form>
+                                <button id="button-cetak" type="button" class="btn btn-primary"
+                                    onclick="submitCetak();">
+                                    {{ __('Cetak') }}
+                                </button>
+                                <table class="align-top w-100">
+                                    <tr>
+                                        <td style="width: 3%;"><b>No PR/SPPJP</b></td>
+                                        <td style="width:2%">:</td>
+                                        <td style="width: 55%"><span id="no_surat"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Tanggal</b></td>
+                                        <td>:</td>
+                                        <td><span id="tgl_surat"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Proyek</b></td>
+                                        <td>:</td>
+                                        <td><span id="proyek"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Revisi</b></td>
+                                        <td>:</td>
+                                        <td><span id="revisi_detail"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Produk</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <button id="button-tambah-produk" type="button"
+                                                class="btn btn-info mb-3"
+                                                onclick="showAddProduct()">{{ __('Tambah Item Detail') }}</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead style="text-align: center">
+                                            <th>{{ __('NO') }}</th>
+                                            <th>{{ __('Kode Material') }}</th>
+                                            <th>{{ __('Uraian Barang/Jasa') }}</th>
+                                            <th>{{ __('Spesifikasi') }}</th>
+                                            <th>{{ __('QTY') }}</th>
+                                            <th>{{ __('SAT') }}</th>
+                                            <th>{{ __('Waktu Penyelesaian') }}</th>
+                                            <th>{{ __('Lampiran') }}</th>
+                                            <th>{{ __('Keterangan') }}</th>
+                                            {{-- <th>{{ __('SPPH') }}</th>
+                                            <th>{{ __('PO') }}</th> --}}
+                                            <th>{{ __('STATUS SPPH') }}</th>
+                                            <th>{{ __('STATUS SPPH LUAR NEGERI') }}</th>
+                                            <th>{{ __('STATUS LOI') }}</th>
+                                            <th>{{ __('STATUS LOI LUAR NEGERI') }}</th>
+                                            <th>{{ __('STATUS NEGO') }}</th>
+                                            <th>{{ __('STATUS NEGOTIATION LETTER') }}</th>
+                                            <th>{{ __('STATUS PO') }}</th>
+                                            <th>{{ __('STATUS PO LUAR NEGERI') }}</th>
+                                            <th>{{ __('AKSI') }}</th>
+
+                                        </thead>
+                                        <tbody id="table-pr">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
 
-                                    <div class="col-0 d-none" id="container-product">
-                                        <div class="card">
-                                            {{-- <div class="card-body">
+
+
+                            <div class="col-0 d-none" id="container-product">
+                                <div class="card">
+                                    {{-- <div class="card-body">
                                             
                                             <div class="custom-control custom-radio">
                                                 <input type="radio" id="customRadio1" name="ptype"
@@ -656,93 +669,91 @@
                                                 </div>
                                             </div>
                                         </div> --}}
+                                </div>
+                                <div id="loader" class="card">
+                                    <div class="card-body text-center">
+                                        <div class="spinner-border text-danger" style="width: 3rem; height: 3rem;"
+                                            role="status">
+                                            <span class="sr-only">Loading...</span>
                                         </div>
-                                        <div id="loader" class="card">
-                                            <div class="card-body text-center">
-                                                <div class="spinner-border text-danger" style="width: 3rem; height: 3rem;"
-                                                    role="status">
-                                                    <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                                <div id="form" class="card">
+                                    <div class="card-body">
+                                        <form role="form" id="stock-update" method="post"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" id="pid" name="pid">
+                                            <input type="hidden" id="type" name="type">
+                                            <input type="hidden" id="proyek_id_val" name="proyek_id_val">
+                                            <div class="form-group row">
+                                                <label for="material_kode"
+                                                    class="col-sm-4 col-form-label">{{ __('Kode Material') }}</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="material_kode">
+                                                    <input type="hidden" class="form-control" id="pr_id"
+                                                        disabled>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div id="form" class="card">
-                                            <div class="card-body">
-                                                <form role="form" id="stock-update" method="post"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    <input type="hidden" id="pid" name="pid">
-                                                    <input type="hidden" id="type" name="type">
-                                                    <input type="hidden" id="proyek_id_val" name="proyek_id_val">
-                                                    <div class="form-group row">
-                                                        <label for="material_kode"
-                                                            class="col-sm-4 col-form-label">{{ __('Kode Material') }}</label>
-                                                        <div class="col-sm-8">
-                                                            <input type="text" class="form-control" id="material_kode">
-                                                            <input type="hidden" class="form-control" id="pr_id"
-                                                                disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="pname"
-                                                            class="col-sm-4 col-form-label">{{ __('Uraian Barang/Jasa') }}</label>
-                                                        <div class="col-sm-8">
-                                                            <input type="text" class="form-control" id="pname">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="spek"
-                                                            class="col-sm-4 col-form-label">{{ __('Spesifikasi') }}</label>
-                                                        <div class="col-sm-8">
-                                                            <input type="text" class="form-control" id="spek">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="no_nota"
-                                                            class="col-sm-4 col-form-label">{{ __('QTY') }}</label>
-                                                        <div class="col-sm-8">
-                                                            <input type="text" class="form-control" id="stock"
-                                                                name="stock">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="satuan"
-                                                            class="col-sm-4 col-form-label">{{ __('Satuan') }}</label>
-                                                        <div class="col-sm-8">
-                                                            <input type="text" class="form-control" id="satuan"
-                                                                name="satuan">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="waktu"
-                                                            class="col-sm-4 col-form-label">{{ __('Waktu Penyelesaian') }}</label>
-                                                        <div class="col-sm-8">
-                                                            <input type="date" class="form-control" id="waktu"
-                                                                name="waktu">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="keterangan"
-                                                            class="col-sm-4 col-form-label">{{ __('Keterangan') }}</label>
-                                                        <div class="col-sm-8">
-                                                            <input type="text" class="form-control" id="keterangan"
-                                                                name="keterangan">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group row">
-                                                        <label for="lampiran"
-                                                            class="col-sm-4 col-form-label">{{ __('Lampiran') }}</label>
-                                                        <div class="col-sm-8">
-                                                            <input type="file" class="form-control" id="lampiran"
-                                                                name="lampiran" />
-                                                        </div>
-                                                    </div>
-
-                                                </form>
-                                                <button id="button-update-pr" type="button"
-                                                    class="btn btn-primary w-100">{{ __('Tambahkan') }}</button>
+                                            <div class="form-group row">
+                                                <label for="pname"
+                                                    class="col-sm-4 col-form-label">{{ __('Uraian Barang/Jasa') }}</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="pname">
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="form-group row">
+                                                <label for="spek"
+                                                    class="col-sm-4 col-form-label">{{ __('Spesifikasi') }}</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="spek">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="no_nota"
+                                                    class="col-sm-4 col-form-label">{{ __('QTY') }}</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="stock"
+                                                        name="stock">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="satuan"
+                                                    class="col-sm-4 col-form-label">{{ __('Satuan') }}</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="satuan"
+                                                        name="satuan">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="waktu"
+                                                    class="col-sm-4 col-form-label">{{ __('Waktu Penyelesaian') }}</label>
+                                                <div class="col-sm-8">
+                                                    <input type="date" class="form-control" id="waktu"
+                                                        name="waktu">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="keterangan"
+                                                    class="col-sm-4 col-form-label">{{ __('Keterangan') }}</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="keterangan"
+                                                        name="keterangan">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="lampiran"
+                                                    class="col-sm-4 col-form-label">{{ __('Lampiran') }}</label>
+                                                <div class="col-sm-8">
+                                                    <input type="file" class="form-control" id="lampiran"
+                                                        name="lampiran" />
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                        <button id="button-update-pr" type="button"
+                                            class="btn btn-primary w-100">{{ __('Tambahkan') }}</button>
                                     </div>
                                 </div>
                             </div>
@@ -750,37 +761,39 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            {{-- modal delete --}}
-            <div class="modal fade" id="delete-pr">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 id="modal-title" class="modal-title">{{ __('Delete Purchase Request') }}</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form role="form" id="delete" action="{{ route('purchase_request.destroy') }}"
-                                method="post">
-                                @csrf
-                                @method('delete')
-                                <input type="hidden" id="delete_id" name="id">
-                            </form>
-                            <div>
-                                <p>Anda yakin ingin menghapus purchase request ini <span id="pcode"
-                                        class="font-weight-bold"></span>?</p>
-                            </div>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Batal') }}</button>
-                            <button id="button-save" type="button" class="btn btn-danger"
-                                onclick="document.getElementById('delete').submit();">{{ __('Ya, hapus') }}</button>
-                        </div>
+    {{-- modal delete --}}
+    <div class="modal fade" id="delete-pr">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="modal-title" class="modal-title">{{ __('Delete Purchase Request') }}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="delete" action="{{ route('purchase_request.destroy') }}"
+                        method="post">
+                        @csrf
+                        @method('delete')
+                        <input type="hidden" id="delete_id" name="id">
+                    </form>
+                    <div>
+                        <p>Anda yakin ingin menghapus purchase request ini <span id="pcode"
+                                class="font-weight-bold"></span>?</p>
                     </div>
                 </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Batal') }}</button>
+                    <button id="button-save" type="button" class="btn btn-danger"
+                        onclick="document.getElementById('delete').submit();">{{ __('Ya, hapus') }}</button>
+                </div>
             </div>
+        </div>
+    </div>
 </section>
 @endsection
 
@@ -1132,7 +1145,7 @@
 
     function resetForm() {
         // Reset semua input dan textarea kecuali CSRF & ID
-        $('#save').find('input').not('#save_id, [name="_token"]').val('');
+        $('#save').find('input').not('#save_id, #revisi, [name="_token"]').val('');
         $('#save').find('textarea').val('');
         $('#proyek_id').val('');
         $('#barcode_preview_container').hide();
@@ -1280,6 +1293,8 @@
         $('#button-save').text("Simpan");
         resetForm();
 
+        console.log("DATA EDIT:", data);
+
         // Periksa apakah data.lampiran tidak kosong sebelum memprosesnya
         if (data.lampiran && data.lampiran.trim() !== "") {
             var lampiranArray = data.lampiran.split(", ");
@@ -1301,7 +1316,7 @@
         $('#no_pr').val(data.no_pr);
         // $('#tgl_pr').val(data.tgl_pr);
         // $('#proyek_id').val(data.proyek);
-        console.log("VALUE YANG MASUK KE dasar_pr:", data.dasar_pr);
+        //console.log("VALUE YANG MASUK KE dasar_pr:", data.dasar_pr);
         $('#dasar_pr').val(data.dasar_pr);
         var date = data.tanggal.split('/');
         var newDate = date[2] + '-' + date[1] + '-' + date[0];
@@ -1312,6 +1327,7 @@
                 $(this).attr('selected', true);
             }
         });
+        $('#revisi').val(data.revisi);
     }
 
     function emptyTableProducts() {
