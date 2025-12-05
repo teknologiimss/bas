@@ -513,8 +513,6 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
 
     {{-- modal delete --}}
     <div class="modal fade" id="delete-kontrak">
@@ -558,6 +556,47 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
+<!-- script detail kontrak -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // console.log("JS READY");
+
+        // Tombol lihat detail kontrak ditekan
+        $(document).on('click', '.btn-lihat', function() {
+
+            // console.log("TOMBOL TERTEKAN");
+
+            const raw = $(this).attr('data-detail');
+            let data = null;
+
+            try {
+                data = JSON.parse(raw);
+            } catch (err) {
+                console.error("Gagal parse JSON:", err);
+                return;
+            }
+
+            // console.log("RAW DATA:", raw);
+            // console.log("PARSED:", data);
+
+            // Panggil fungsi utama untuk mengisi modal
+            lihatKONTRAK(data);
+
+            // Tampilkan modal
+            $('#detail-kontrak').modal('show');
+        });
+
+        // Modal berhasil ditampilkan
+        $('#detail-kontrak').on('shown.bs.modal', function() {
+            console.log("MODAL DIBUKA");
+        });
+
+    });
+</script>
+
+
+
 {{-- Menampilkan form otomatis Dasar Proyek --}}
 <script>
     $(document).ready(function() {
@@ -565,9 +604,11 @@
             var proyek_id = $(this).val();
             if (proyek_id) {
                 $.ajax({
-                    url: '{{ route('get-dasar-proyek') }}',
+                    url: '{{ route('get-dasar-proyek')}}',
                     type: 'GET',
-                    data: {proyek_id: proyek_id},
+                    data: {
+                        proyek_id: proyek_id
+                    },
                     success: function(response) {
                         $('#dasar_pr').val(response.dasar_proyek);
                     },
@@ -1548,13 +1589,24 @@
     }
 
 
-    $('#detail-kontrak').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var data = button.data('detail');
-        console.log(data);
-        lihatKONTRAK(data);
-    });
+    //     $(document).on('show.bs.modal', '#detail-kontrak', function(event) {
+    //     var button = $(event.relatedTarget);
 
+    //     // ambil data-detail mentah (masih &quot;)
+    //     var raw = button.attr('data-detail'); 
+    //     console.log("RAW: ", raw);
+
+    //     // decode HTML entity
+    //     var decoded = raw.replace(/&quot;/g, '"');
+    //     console.log("DECODED: ", decoded);
+
+    //     // ubah ke object
+    //     var data = JSON.parse(decoded);
+    //     console.log("DATA OBJECT:", data);
+
+    //     // jalankan fungsi
+    //     lihatKONTRAK(data);
+    // });
 
 
     function lihatKONTRAK(data) {
@@ -1711,9 +1763,6 @@
 
         });
     }
-
-
-
 
     function editRow(id, nomor_dokumen, tanggal_dokumen, perihal, keterangan, lampiran) {
         console.log(id, nomor_dokumen, tanggal_dokumen, perihal, keterangan, lampiran);

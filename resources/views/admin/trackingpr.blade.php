@@ -787,10 +787,9 @@
     }
 
     // on modal #detail-pr open
-    $('#detail-pr').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var data = button.data('detail');
-        console.log(data);
+    $(document).on('click', '.btn-lihat', function() {
+        let data = $(this).data('detail');
+        //console.log("DATA DETAIL:", data);
         lihatPR(data);
     });
 
