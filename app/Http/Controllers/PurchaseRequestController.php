@@ -107,7 +107,7 @@ class PurchaseRequestController extends Controller
         $warehouse_id = Session::get('selected_warehouse_id')
             ?? DB::table('warehouse')->first()->warehouse_id;
 
-        $requests = PurchaseRequest::select('purchase_request.*', 'kontrak.nama_pekerjaan as proyek_name', 'kontrak.nomor_kontrak as dasar_pr')
+        $requests = PurchaseRequest::select('purchase_request.*', 'kontrak.nama_pekerjaan as proyek_name')
             ->join('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
             ->orderBy('purchase_request.id', 'asc')
             ->paginate(10);
@@ -534,6 +534,7 @@ class PurchaseRequestController extends Controller
             'tgl_pr' => 'required',
             'proyek_id' => 'required',
             'dasar_pr' => 'required',
+            'revisi' => 'nullable|string',
         ]);
 
         if (empty($pr_id)) {
@@ -543,6 +544,7 @@ class PurchaseRequestController extends Controller
                 'no_pr' => $request->no_pr,
                 'dasar_pr' => $request->dasar_pr,
                 'tgl_pr' => $request->tgl_pr,
+                'revisi' => $request->revisi,
                 'id_user' => auth()->user()->id,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -577,6 +579,7 @@ class PurchaseRequestController extends Controller
                 'no_pr' => $request->no_pr,
                 'dasar_pr' => $request->dasar_pr,
                 'tgl_pr' => $request->tgl_pr,
+                'revisi' => $request->revisi,
                 'updated_at' => now(),
             ]);
 
@@ -822,12 +825,12 @@ class PurchaseRequestController extends Controller
             $pr->kadep = 'Dwi Anna A.P';
         } elseif (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
             $pr->role = 'Wilayah 1';
-            $pr->kadiv = 'EKO PRASETYO';
+            $pr->kadiv = 'EKO PRASETIYO';
             $pr->kadep = 'RIKA KUSUMANING INDRATMOKO';
         } else {
             $pr->role = 'Wilayah 2';
-            $pr->kadiv = 'HARI SUBEKTI';
-            $pr->kadep = 'HARLISTA DWI OKTYASWORO';
+            $pr->kadiv = 'EKO PRASETIYO';
+            $pr->kadep = 'DENI WULANDANI';
         }
 
         $pr->purchases = DetailPR::select('detail_pr.*', 'purchase_request.*')
@@ -869,12 +872,12 @@ class PurchaseRequestController extends Controller
             $sppjp->kadep = 'Dwi Anna A.P';
         } elseif (preg_match('/wil1|wilayah1/i', $sppjp->no_pr)) {
             $sppjp->role = 'Wilayah 1';
-            $sppjp->kadiv = 'EKO PRASETYO';
+            $sppjp->kadiv = 'EKO PRASETIYO';
             $sppjp->kadep = 'RIKA KUSUMANING INDRATMOKO';
         } else {
             $sppjp->role = 'Wilayah 2';
-            $sppjp->kadiv = 'HARI SUBEKTI';
-            $sppjp->kadep = 'HARLISTA DWI OKTYASWORO';
+            $sppjp->kadiv = 'EKO PRASETIYO';
+            $sppjp->kadep = 'DENI WULANDANI';
         }
 
         $sppjp->purchases = DetailPR::select('detail_pr.*', 'purchase_request.*')

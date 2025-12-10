@@ -264,25 +264,26 @@
 
     <div style="margin-top: 1rem">
         <div>
-            <table style="width: 100%">
+            <table style="width: 100%; table-layout: fixed;">
                 <tr>
                     <td align="center" style="width: 25%;">
                         Menyetujui,<br>
                         Kabag. {{ $bpm->role }}
                         <br><br><br><br><br>
-                        <strong>{{ $bpm->kabag }}</strong><br>
+                        <strong style="text-transform: uppercase;">{{ $bpm->kabag }}</strong><br>
                     </td>
                     <td align="center" style="width: 25%;">
-                        Diperiksa Oleh<br>
-                        Kadep. {{ $bpm->role }} <br>
+                        Yang Meminta,<br>
+                        Staff {{ $bpm->role }}
                         <br><br><br><br><br>
-                        <strong>{{ $bpm->kadep }}</strong><br>
+                        <strong style="text-transform: uppercase;">{{ $bpm->pic }}</strong><br>
                     </td>
                     <td align="center" style="width: 25%;">
-                        Dibuat Oleh,<br>
-                        Rendal {{ $bpm->role }}
+                        Penerima Dokumen,<br>
+                        Gudang
                         <br><br><br><br><br>
-                        <strong>{{ $bpm->pic }}</strong><br>
+                        <strong>PUPUT WAHYUDHIANTO</strong><br>
+                        <!-- <strong>{{ $bpm->pic }}</strong><br> -->
                     </td>
                 </tr>
             </table>
@@ -293,7 +294,7 @@
     <table class="table2" style="width:100%; margin-top:2rem">
         <tr>
             <td>
-                <strong><u>DASAR BPM :</u></strong><br>
+                <strong><u>CATATAN :</u></strong><br>
                 <span>{!! nl2br($bpm->dasar_bpm) !!}</span>
 
             </td>

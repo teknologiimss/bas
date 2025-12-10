@@ -70,7 +70,7 @@
                                     <th>{{ __('Nomor BPM') }}</th>
                                     <th>{{ __('Proyek') }}</th>
                                     <th>{{ __('Tanggal') }}</th>
-                                    <th>{{ __('Dasar BPM') }}</th>
+                                    <th>{{ __('Catatan BPM') }}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -297,14 +297,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="dasar_bpm" class="col-sm-4 col-form-label">{{ __('Dasar BPM') }}
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="dasar_bpm" name="dasar_bpm"
-                                        autocomplete="off">
-                                    {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
-                                </div>
-                            </div>
+    <label for="dasar_bpm" class="col-sm-4 col-form-label">{{ __('Catatan BPM') }}</label>
+    <div class="col-sm-8">
+        <textarea class="form-control" id="dasar_bpm" name="dasar_bpm" rows="3" autocomplete="off"></textarea>
+    </div>
+</div>
+
                             {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 1)
                                 <div class="form-group row">
                                     <label for="proyek" class="col-sm-4 col-form-label">{{ __('Status') }}
