@@ -1,0 +1,401 @@
+@extends('layouts.main')
+@section('title', __('Stok Barang MRO'))
+@section('custom-css')
+    <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+@endsection
+@section('content')
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2"></div>
+        </div>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="card">
+                <div class="card-header">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-mro"
+                        onclick="addMro()"><i class="fas fa-plus"></i> Tambah Barang</button>
+
+                    <button type="button" class="btn btn-primary"
+                        onclick="window.location.href='{{ route('mro.export') }}'">
+                        <i class="fas fa-file-excel"></i> Export MRO (XLS)
+                    </button>
+
+
+                    <div class="card-tools">
+                        <form>
+                            <div class="input-group input-group">
+                                <input type="text" class="form-control" name="q" placeholder="Search"
+                                    value="{{ Request::get('q') }}">
+                                <input type="hidden" name="category" value="{{ Request::get('category') }}">
+                                <input type="hidden" name="sort" value="{{ Request::get('sort') }}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group row col-sm-3">
+                        <label for="sort" class="col-sm-3 col-form-label">Sort</label>
+                        <div class="col-sm-9">
+                            <form id="sorting" action="" method="get">
+                                <input type="hidden" name="q" value="{{ Request::get('q') }}">
+                                <input type="hidden" name="category" value="{{ Request::get('category') }}">
+                                <select class="form-control select2" id="sort" name="sort">
+                                    <option value="" {{ Request::get('sort') == null ? 'selected' : '' }}>-</option>
+                                    <option value="name_az" {{ Request::get('sort') == 'name_az' ? 'selected' : '' }}>Nama
+                                        (A-Z)</option>
+                                    <option value="name_za" {{ Request::get('sort') == 'name_za' ? 'selected' : '' }}>Nama
+                                        (Z-A)</option>
+                                    <option value="proyek_az" {{ Request::get('sort') == 'proyek_az' ? 'selected' : '' }}>
+                                        Proyek (A-Z)
+                                    </option>
+                                    <option value="proyek_za" {{ Request::get('sort') == 'proyek_za' ? 'selected' : '' }}>
+                                        Proyek (Z-A)
+                                    </option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>No.</th>
+                                    <th>Kode Material</th>
+                                    <th>Nama Barang</th>
+                                    <th>Spesifikasi</th>
+                                    <th>Stok</th>
+                                    <th>Satuan</th>
+                                    <th>Proyek</th>
+                                    {{-- <th>Kategori</th> --}}
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (count($mro) > 0)
+                                    @foreach ($mro as $key => $row)
+                                        @php
+                                            $data = [
+                                                'no' => $mro->firstItem() + $key,
+                                                'mro_id' => $row->mro_id,
+                                                'code' => $row->mro_code,
+                                                'name' => $row->mro_name,
+                                                'spesifikasi' => $row->spesifikasi,
+                                                'stock' => $row->stock,
+                                                'satuan' => $row->satuan,
+                                                'proyek' => $row->proyek,
+                                                'cat_id' => $row->category_id,
+                                                'cat_name' => $row->category_name,
+                                            ];
+                                        @endphp
+                                        <tr>
+                                            <td class="text-center">{{ $data['no'] }}</td>
+                                            <td class="text-center">{{ $data['code'] }}</td>
+                                            <td>{{ $data['name'] }}</td>
+                                            <td>{{ $data['spesifikasi'] }}</td>
+                                            <td class="text-center">
+                                                <span
+                                                    class="{{ $data['stock'] <= 10 ? 'badge bg-warning' : '' }}">{{ $data['stock'] }}</span>
+                                            </td>
+                                            <td class="text-center">{{ $data['satuan'] }}</td>
+                                            <td class="text-center">{{ $data['proyek'] }}</td>
+                                            {{-- <td>{{ $data['cat_name'] }}</td> --}}
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-success btn-xs" data-toggle="modal"
+                                                    data-target="#add-mro"
+                                                    onclick='editMro(@json($data))'><i
+                                                        class="fas fa-edit"></i></button>
+
+                                                <button class="btn btn-dark btn-xs barcode-btn"
+                                                    data-id="{{ $row->mro_id }}" data-code="{{ $row->barcode }}"
+                                                    data-name="{{ $row->mro_name }}"
+                                                    data-spesifikasi="{{ $row->spesifikasi }}">
+                                                    <i class="fas fa-barcode"></i>
+                                                </button>
+
+
+                                                @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal"
+                                                        data-target="#delete-mro"
+                                                        onclick='deleteMro(@json($data))'><i
+                                                            class="fas fa-trash"></i></button>
+                                                @endif
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr class="text-center">
+                                        <td colspan="8">No data.</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                {{ $mro->appends(request()->except('page'))->links('pagination::bootstrap-4') }}
+            </div>
+        </div>
+
+        {{-- Modal Barcode --}}
+        <div class="modal fade" id="modalBarcode" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Barcode</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <svg id="barcode-view"></svg>
+                        <div id="barcode-title" class="fw-bold mt-2"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button class="btn btn-primary" id="btnPrintBarcode">Print Barcode</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {{-- Modal Add / Edit --}}
+        <div class="modal fade" id="add-mro">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 id="modal-title" class="modal-title">Tambah Stok Barang MRO</h4>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="save" action="{{ route('mro.save') }}" method="post">
+                            @csrf
+                            <input type="hidden" id="save_id" name="mro_id">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Kode Material</label>
+                                <div class="col-sm-8"><input type="text" class="form-control" id="mro_code"
+                                        name="mro_code" autocomplete="off"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Nama Barang</label>
+                                <div class="col-sm-8"><input type="text" class="form-control" id="mro_name"
+                                        name="mro_name" autocomplete="off"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Spesifikasi</label>
+                                <div class="col-sm-8"><input type="text" class="form-control" id="spesifikasi"
+                                        name="spesifikasi" autocomplete="off"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Satuan</label>
+                                <div class="col-sm-8"><input type="text" class="form-control" id="satuan"
+                                        name="satuan" autocomplete="off"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Stock</label>
+                                <div class="col-sm-8"><input type="number" class="form-control" id="stock"
+                                        name="stock" autocomplete="off"></div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Proyek</label>
+                                <div class="col-sm-8"><input type="text" class="form-control" id="proyek"
+                                        name="proyek" autocomplete="off"></div>
+                            </div>
+
+
+                            {{-- <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Kategori</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control select2" id="category" name="category"></select>
+                                </div>
+                            </div> --}}
+
+                            <div class="form-group mt-2">
+                                <label>Barcode</label><br>
+                                <svg id="barcode-preview"></svg>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" onclick="$('#save').submit();">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {{-- Modal Delete --}}
+        <div class="modal fade" id="delete-mro">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Hapus MRO</h4>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="delete" action="{{ route('mro.delete') }}" method="post">
+                            @csrf @method('delete')
+                            <input type="hidden" id="delete_id" name="id">
+                        </form>
+                        <p>Anda yakin ingin menghapus kode MRO <span id="mrocode" class="font-weight-bold"></span>?</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <button class="btn btn-danger" onclick="$('#delete').submit();">Ya, hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
+
+@section('custom-js')
+    <script src="/plugins/toastr/toastr.min.js"></script>
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+    <script>
+        function generateBarcode() {
+            let code = document.getElementById('mro_code').value;
+            if (code !== "") {
+                JsBarcode("#barcode-preview", code, {
+                    format: "CODE128",
+                    displayValue: true,
+                    height: 50
+                });
+            } else {
+                document.getElementById('barcode-preview').innerHTML = "";
+            }
+        }
+
+        document.getElementById('mro_code').addEventListener('keyup', generateBarcode);
+        document.getElementById('mro_code').addEventListener('change', generateBarcode);
+    </script>
+
+
+
+    <script>
+        $(document).on("click", ".barcode-btn", function() {
+            let code = $(this).data("code");
+            let name = $(this).data("name");
+            let spesifikasi = $(this).data("spesifikasi");
+
+            // buat barcode
+            JsBarcode("#barcode-view", code, {
+                format: "CODE128",
+                displayValue: true,
+                height: 60
+            });
+
+            $("#barcode-title").text(name + " — " + spesifikasi);
+            $("#modalBarcode").modal("show");
+        });
+    </script>
+
+
+    <script>
+        $("#btnPrintBarcode").on("click", function() {
+            let printContents = document.querySelector("#modalBarcode .modal-body").innerHTML;
+            let windowPrint = window.open('', '', 'height=500,width=900');
+            windowPrint.document.write('<html><head><title>Print Barcode</title>');
+            windowPrint.document.write('</head><body class="text-center">');
+            windowPrint.document.write(printContents);
+            windowPrint.document.write('</body></html>');
+            windowPrint.document.close();
+            windowPrint.print();
+        });
+    </script>
+
+
+
+
+
+    <script>
+        $(function() {
+            $('.select2').select2({
+                theme: 'bootstrap4'
+            });
+        });
+
+        $('#sort').on('change', () => $("#sorting").submit());
+
+        function resetForm() {
+            $('#save').trigger("reset");
+            $('#save_id').val(''); // ← Tambahkan supaya ID terhapus
+        }
+
+        function getCategory(val = null) {
+            $.ajax({
+                url: '/mro/categories',
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    $('#category').empty().append('<option value="">.:: Pilih Kategori ::.</option>');
+                    $.each(data, function(_, v) {
+                        $('#category').append('<option value="' + v.category_id + '"' + (val == v
+                                .category_id ? ' selected' : '') + '>' + v.category_name +
+                            '</option>');
+                    });
+                }
+            });
+        }
+
+        function addMro() {
+            $('#modal-title').text("Tambah Stok Barang MRO");
+            $('#button-save').text("Tambahkan");
+            resetForm();
+             $('#save_id').val('');  // ← PENTING !!! Reset ID supaya create, bukan update
+            getCategory();
+        }
+
+        function editMro(data) {
+            $('#modal-title').text("Edit Stok Barang MRO");
+            $('#button-save').text("Simpan");
+            resetForm();
+            $('#save_id').val(data.mro_id);
+            $('#mro_code').val(data.code);
+            $('#mro_name').val(data.name);
+            $('#spesifikasi').val(data.spesifikasi);
+            $('#satuan').val(data.satuan);
+            $('#stock').val(data.stock);
+            $('#proyek').val(data.proyek);
+            getCategory(data.cat_id);
+        }
+
+        function deleteMro(data) {
+            $('#delete_id').val(data.id);
+            $('#mrocode').text(data.code);
+        }
+
+        function download(type) {
+            window.location.href = "{{ route('mro') }}?q={{ Request::get('q') }}&dl=" + type;
+        }
+    </script>
+
+    @if (Session::has('success'))
+        <script>
+            toastr.success('{!! Session::get('success') !!}')
+        </script>
+    @endif
+    @if (Session::has('error'))
+        <script>
+            toastr.error('{!! Session::get('error') !!}')
+        </script>
+    @endif
+    @if (!empty($errors->all()))
+        <script>
+            toastr.error('{!! implode('', $errors->all('<li>:message</li>')) !!}')
+        </script>
+    @endif
+@endsection

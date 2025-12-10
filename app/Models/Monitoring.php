@@ -29,4 +29,16 @@ class Monitoring extends Model
     {
         return $this->hasMany(MonitoringDocument::class);
     }
+
+    // public function documents_group()
+    // {
+    //     return $this->hasMany(DocumentsGroup::class, 'monitor_id');
+    // }
+
+    
+
+public function folders()
+{
+    return $this->hasMany(Folder::class, 'monitor_id');
+}
 }

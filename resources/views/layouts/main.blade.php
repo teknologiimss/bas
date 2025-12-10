@@ -524,6 +524,17 @@
                                         @endif
 
 
+                                         @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                            <li class="nav-item">
+                                                <a href="{{ route('mro') }}"
+                                                    class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>{{ __(' Stok Barang MRO') }}</p>
+                                                </a>
+                                            </li>
+                                        @endif
+
+
 
 
                                         {{-- Contoh menu role Warehouse --}}

@@ -17,7 +17,8 @@ class MonitoringController extends Controller
     public function index($proyek_id)
     {
         $proyek = Proyek::findOrFail($proyek_id);
-        $monitorings = Monitoring::with('documents')->where('proyek_id', $proyek_id)->latest()->get();
+        $monitorings = Monitoring::with('documents',
+            'folders.documents')->where('proyek_id', $proyek_id)->latest()->get();
         return view('monitoring.index', compact('proyek', 'monitorings'));
     }
 
@@ -249,4 +250,6 @@ class MonitoringController extends Controller
 
         return back()->with('error', '❌ Gagal membuat file ZIP.');
     }
+
+    
 }

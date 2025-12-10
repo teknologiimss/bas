@@ -421,18 +421,17 @@ Route::prefix('products')->group(function () {
 
     //MRO
     //resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
-    Route::resource('mro', App\Http\Controllers\MroController::class)->except(['destroy']);
-    Route::delete('mro', [App\Http\Controllers\MroController::class, 'destroy'])->name('mro.destroy');
-    // Route::get('cetak_bpm', [App\Http\Controllers\BpmController::class, 'cetakBpm'])->name('cetak_bpm');
-    Route::get('mro', [App\Http\Controllers\MroController::class, 'index'])->name('mro.index');
-    Route::post('mro', [App\Http\Controllers\MroController::class, 'store'])->name('products.mro.store');
-    Route::post('update_mro_detail', [App\Http\Controllers\MroController::class, 'updateDetailMro'])->name('mro_detail.update');
-    Route::get('mro_detail/{id}', [App\Http\Controllers\MroController::class, 'getDetailMro'])->name('mro_detail');
-    Route::post('detail_mro_save', [App\Http\Controllers\MroController::class, 'detailMroSave'])->name('detail_mro_save');
-    Route::post('mro/update_detail', [App\Http\Controllers\MroController::class, 'editDetail'])->name('detail.update'); //nambah baru
-    Route::post('mro-imss/hapus-multiple', [App\Http\Controllers\MroController::class, 'hapusMultipleMro'])->name('hapus-multiple');
-    Route::post('upload-file', [App\Http\Controllers\MroController::class, 'uploadFile'])->name('upload_file');
-    Route::post('detail_mro/{id}/delete', [MroController::class, 'hapusDetail'])->name('detail_mro.delete');
+    Route::prefix('mro')->group(function () {
+    Route::get('/', [App\Http\Controllers\MroController::class, 'index'])->name('mro');
+    Route::post('/save', [App\Http\Controllers\MroController::class, 'save'])->name('mro.save');
+    Route::delete('/delete', [App\Http\Controllers\MroController::class, 'delete'])->name('mro.delete');
+    Route::get('/categories', [App\Http\Controllers\MroController::class, 'categories'])->name('mro.categories');
+    Route::get('/export', [App\Http\Controllers\MroController::class, 'export'])->name('mro.export');
+    Route::get('/barcode/{code}', [App\Http\Controllers\MroController::class, 'barcode'])->name('mro.barcode');
+    Route::get('/mro/print-barcode', [MroController::class, 'printBarcodePage'])->name('mro.print.barcode');
+
+});
+
 
 
 
@@ -556,6 +555,16 @@ Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'u
 Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'updateDocument'])->name('monitoring.document.update');
 Route::get('/monitoring/export/{proyek_id}', [MonitoringController::class, 'exportZip'])
      ->name('monitoring.export');
+
+
+Route::post('/monitoring/{id}/docgroup/store', [MonitoringController::class, 'storeDocGroup'])
+    ->name('monitoring.docgroup.store');
+
+Route::delete('/monitoring/docgroup/{id}/destroy', [MonitoringController::class, 'destroyDocGroup'])
+    ->name('monitoring.docgroup.destroy');
+
+
+     
 
 
 

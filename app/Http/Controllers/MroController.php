@@ -2,145 +2,100 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetailMro;
-use App\Models\DetailSpph;
+use App\Exports\BarangMroExport;
+use App\Models\Category;
 use App\Models\Mro;
-use App\Models\Purchase_Order;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
-        $search = $request->q;
+        $query = Mro::leftJoin('categories', 'categories.category_id', 'mro.category_id')
+            ->select('mro.*', 'categories.category_name');
 
-        if (Session::has('selected_warehouse_id')) {
-            $warehouse_id = Session::get('selected_warehouse_id');
-        } else {
-            $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
+        if ($request->q) {
+            $query->where(function ($q) use ($request) {
+                $q
+                    ->where('mro_name', 'like', "%{$request->q}%")
+                    ->orWhere('mro_code', 'like', "%{$request->q}%");
+            });
         }
 
-        $requests = Mro::select('mro.*')
-            // ->join('keproyekan', 'keproyekan.id', '=', 'bpm.proyek_id')
-            ->orderBy('mro.id', 'asc')
-            ->paginate(50);
-
-        // $proyeks = DB::table('keproyekan')->get();
-        //  dd($requests);
-
-
-        // if ($search) {
-        //     $requests = Bpm::where('nama_proyek', 'LIKE', "%$search%")->paginate(50);
-        // }
-
-        if ($request->format == "json") {
-            $requests = Mro::where("warehouse_id", $warehouse_id)->get();
-
-            return response()->json($requests);
-        } else {
-
-            //looping the paginate
-            foreach ($requests as $request) {
-                $detail_mro = DetailMro::where('mro_id', $request->id)->get();
-                //if detail_pr empty then editable true
-                if ($detail_mro->isEmpty()) {
-                    $request->editable = TRUE;
-                } else {
-                    //looping detail_pr then check in detailspph with id_detail_pr exist
-                    foreach ($detail_mro as $detail) {
-                        $detail_spph = DetailSpph::where('id_detail_pr', $detail->id)->first();
-                        $po = Purchase_Order::where('id', $detail->id_po)->first();
-                        if ($po && $po->tipe == '1') {
-                            $request->editable = FALSE;
-                            break;
-                        } else {
-                            if ($detail_spph) {
-                                $request->editable = FALSE;
-                                break;
-                            } else {
-                                $request->editable = TRUE;
-                            }
-                        }
-                    }
-                }
+        if ($request->sort) {
+            switch ($request->sort) {
+                case 'name_az':
+                    $query->orderBy('mro_name', 'asc');
+                    break;
+                case 'name_za':
+                    $query->orderBy('mro_name', 'desc');
+                    break;
+                case 'proyek_az':
+                    $query->orderBy('proyek', 'asc');
+                    break;
+                case 'proyek_za':
+                    $query->orderBy('proyek', 'desc');
+                    break;
             }
-            return view('mro.mro', compact('requests'));
         }
+
+        $mro = $query->paginate(20);
+
+        return view('mro.index', compact('mro'));
     }
 
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function save(Request $request)
     {
-        //
+        $request->validate([
+            'mro_code' => 'required',
+            'mro_name' => 'required',
+            'stock' => 'required|numeric',
+        ]);
+
+        Mro::updateOrCreate(
+            ['mro_id' => $request->mro_id],
+            [
+                'mro_code' => $request->mro_code,
+                'mro_name' => $request->mro_name,
+                'spesifikasi' => $request->spesifikasi,
+                'stock' => $request->stock,
+                'satuan' => $request->satuan,
+                'proyek' => $request->proyek,
+                // 'category_id' => $request->category,
+                'barcode' => $request->mro_code  // barcode mengikuti modul Products
+            ]
+        );
+
+        return back()->with('success', 'Data MRO berhasil disimpan.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function delete(Request $request)
     {
-        //
+        Mro::where('mro_id', $request->id)->delete();
+        return back()->with('success', 'Data MRO berhasil dihapus.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function categories()
     {
-        //
+        return Category::select('category_id', 'category_name')->get();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function export()
     {
-        //
+        return Excel::download(new BarangMroExport, 'stok barang mro.xlsx');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    // Print Barcode seperti di modul Products
+    public function printBarcode($id)
     {
-        //
+        $mro = Mro::findOrFail($id);
+        return view('mro.barcode', compact('mro'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function printBarcodePage(Request $request)
     {
-        //
+        $mro = Mro::orderBy('mro_name', 'asc')->get();
+        return view('mro.print_barcode', compact('mro'));
     }
 }

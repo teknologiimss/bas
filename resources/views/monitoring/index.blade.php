@@ -55,7 +55,7 @@
             style="margin-right: 23px;margin-top: 10;">
             + Buat Monitoring Baru
         </button>
-        
+
     </div>
     {{-- 🔍 Tombol Filter --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -139,6 +139,8 @@
                     </div>
                 </div>
 
+                
+
 
                 {{-- 📄 Dokumen --}}
                 @if ($m->documents->count())
@@ -180,10 +182,10 @@
                                                 data-id="{{ $doc->id }}">
                                                 <option value="-" {{ $doc->status == '-' ? 'selected' : '' }}>-
                                                 </option>
-                                                <option value="Open" {{ $doc->status == 'Open' ? 'selected' : '' }}>🟢
-                                                    Open</option>
-                                                <option value="Closed" {{ $doc->status == 'Closed' ? 'selected' : '' }}>🔴
-                                                    Closed</option>
+                                                <option value="Nok" {{ $doc->status == 'Nok' ? 'selected' : '' }}>🔴
+                                                    NOK</option>
+                                                <option value="Closed" {{ $doc->status == 'Closed' ? 'selected' : '' }}>🟢
+                                                    OK</option>
                                             </select>
 
                                             <div
@@ -223,6 +225,13 @@
 
 
             </div>
+
+
+
+
+
+
+
 
             {{-- MODAL EDIT MONITORING --}}
             <div class="modal fade" id="modalEdit{{ $m->id }}">
@@ -377,7 +386,7 @@
     {{-- JS --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    
+
 
     {{-- 🔹 AJAX DELETE & UPDATE DOKUMEN --}}
     {{-- <script>
