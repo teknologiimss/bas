@@ -1,31 +1,31 @@
 <?php
 
 use App\Http\Controllers\BpmController;
-use App\Http\Controllers\SuratJalanController;
 use App\Http\Controllers\DetailsjnController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KontrakController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\MroController;
-use App\Http\Controllers\PurchaseRequestController;
-use App\Http\Controllers\ProyekController;
-use App\Http\Controllers\PurchaseRequestSppjpController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProyekController;
+use App\Http\Controllers\PurchaseRequestController;
+use App\Http\Controllers\PurchaseRequestSppjpController;
+use App\Http\Controllers\SuratJalanController;
 use App\Models\Kontrak;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+ * |--------------------------------------------------------------------------
+ * | Web Routes
+ * |--------------------------------------------------------------------------
+ * |
+ * | Here is where you can register web routes for your application. These
+ * | routes are loaded by the RouteServiceProvider within a group which
+ * | contains the "web" middleware group. Now create something great!
+ * |
+ */
 
 Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
 
@@ -37,10 +37,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/search', [App\Http\Controllers\ProductController::class, 'search'])->name('search');
 });
 
-
 Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
 
-//rute baru
+// rute baru
 Route::prefix('apps')->group(function () {
     Route::get('purchase_orders', [App\Http\Controllers\PurchaseOrderController::class, 'indexApps'])->name('apps.purchase_orders')->middleware('logistikAuth');
     Route::get('spph', [App\Http\Controllers\SpphController::class, 'indexApps'])->name('apps.spph')->middleware('logistikAuth');
@@ -57,12 +56,10 @@ Route::post('surat-keluar', [App\Http\Controllers\SuratKeluarController::class, 
 Route::delete('surat-keluar', [App\Http\Controllers\SuratKeluarController::class, 'delete'])->name('surat_keluar.delete');
 Route::post('suratkeluar-imss/hapus-multiple', [App\Http\Controllers\SuratKeluarController::class, 'hapusMultipleSuratKeluar'])->name('hapus-multiple');
 
-
 Route::get('kode-aset', [App\Http\Controllers\KodeAsetController::class, 'index'])->name('kode_aset.index');
 Route::post('kode-aset', [App\Http\Controllers\KodeAsetController::class, 'create'])->name('kode_aset.save');
 Route::delete('kode-aset', [App\Http\Controllers\KodeAsetController::class, 'destroy'])->name('kode_aset.delete');
 Route::post('kodeaset-warehouse-imss/hapus-multiple', [App\Http\Controllers\KodeAsetController::class, 'hapusMultipleAset'])->name('hapus-multiple');
-
 
 Route::get('aset', [App\Http\Controllers\AsetController::class, 'index'])->name('aset.index');
 Route::post('aset', [App\Http\Controllers\AsetController::class, 'store'])->name('aset.save');
@@ -112,30 +109,28 @@ Route::prefix('products')->group(function () {
     Route::post('/arsip/upload', [App\Http\Controllers\ArsipController::class, 'upload'])->name('arsip.upload');
     Route::get('/arsip/download/{id}', [App\Http\Controllers\ArsipController::class, 'download'])->name('arsip.download');
 
-
-    //keproyekan
+    // keproyekan
     Route::resource('keproyekan', App\Http\Controllers\KeproyekanController::class)->except(['destroy']);
     Route::delete('keproyekan', [App\Http\Controllers\KeproyekanController::class, 'destroy'])->name('keproyekan.destroy');
     Route::delete('/stockHistory', [App\Http\Controllers\ProductController::class, 'product_stock_history_delete'])->name('products.stock.history.delete');
     Route::get('/get-dasar-proyek', [App\Http\Controllers\KontrakController::class, 'getDasarProyek'])->name('get-dasar-proyek');
 
-
-    //detail sjn
+    // detail sjn
     Route::get('detail_sjn/{id}', [App\Http\Controllers\SjnController::class, 'getDetailSjn'])->name('detail_sjn');
     Route::get('cetak_sjn', [App\Http\Controllers\SjnController::class, 'cetakSjn'])->name('cetak_sjn');
     Route::post('update_detail_sjn', [App\Http\Controllers\SjnController::class, 'updateDetailSjn'])->name('detail_sjn.update');
     Route::post('sjn-imss/hapus-multiple', [App\Http\Controllers\SjnController::class, 'hapusMultipleSjn'])->name('hapus-multiple');
 
-    //vendor
+    // vendor
     Route::resource('vendor', App\Http\Controllers\VendorController::class)->except(['destroy']);
     Route::delete('vendor', [App\Http\Controllers\VendorController::class, 'destroy'])->name('vendor.destroy');
     Route::post('vendor-imss/hapus-multiple', [App\Http\Controllers\VendorController::class, 'hapusMultipleVendor'])->name('hapus-multiple');
 
-    //purchase order
+    // purchase order
     Route::resource('purchase_order', App\Http\Controllers\PurchaseOrderController::class)->except(['destroy']);
     Route::get('cetak_po', [App\Http\Controllers\PurchaseOrderController::class, 'cetakPo'])->name('cetak_po');
     Route::post('detail_po_save', [App\Http\Controllers\PurchaseOrderController::class, 'detailPrSave'])->name('detail_po_save');
-    Route::delete('detail_po_delete', [App\Http\Controllers\PurchaseOrderController::class, 'destroyDetailPo'])->name('detail_po_delete'); //baru delete detail po
+    Route::delete('detail_po_delete', [App\Http\Controllers\PurchaseOrderController::class, 'destroyDetailPo'])->name('detail_po_delete');  // baru delete detail po
     Route::post('detail_pr_save', [App\Http\Controllers\PurchaseRequestController::class, 'detailPrSave'])->name('detail_pr_save');
     Route::post('tambah_detail_po', [App\Http\Controllers\PurchaseOrderController::class, 'tambahDetailPo'])->name('tambah_detail_po');
     Route::get('tracking', [App\Http\Controllers\PurchaseOrderController::class, 'tracking'])->name('product.tracking');
@@ -152,21 +147,18 @@ Route::prefix('products')->group(function () {
     Route::get('test_pr', [App\Http\Controllers\PurchaseOrderController::class, 'test_pr'])->name('test_pr');
     Route::get('products_pr_po/{id_pr}', [App\Http\Controllers\PurchaseOrderController::class, 'getProductPR'])->name('products_pr_po');
 
-
-
-    //purchase order Internasional
+    // purchase order Internasional
     Route::resource('purchase_orderluar', App\Http\Controllers\PurchaseOrderluarController::class)->except(['destroy']);
     Route::delete('purchase_orderluar', [App\Http\Controllers\PurchaseOrderluarController::class, 'destroy'])->name('purchase_orderluar.destroy');
     Route::get('cetak_poluar', [App\Http\Controllers\PurchaseOrderluarController::class, 'cetakPoluar'])->name('cetak_poluar');
     // Route::get('negoluar_print', [App\Http\Controllers\NegoluarController::class, 'negoluarPrint'])->name('negoluar.print');
 
     Route::post('detail_poluar_save', [App\Http\Controllers\PurchaseOrderluarController::class, 'detailPrSave'])->name('detail_poluar_save');
-    Route::delete('detail_poluar_delete', [App\Http\Controllers\PurchaseOrderluarController::class, 'destroyDetailPoluar'])->name('detail_poluar_delete'); //baru delete detail po
+    Route::delete('detail_poluar_delete', [App\Http\Controllers\PurchaseOrderluarController::class, 'destroyDetailPoluar'])->name('detail_poluar_delete');  // baru delete detail po
     // Route::post('detail_pr_save', [App\Http\Controllers\PurchaseRequestController::class, 'detailPrSave'])->name('detail_pr_save');
     Route::post('tambah_detail_poluar', [App\Http\Controllers\PurchaseOrderluarController::class, 'tambahDetailPoluar'])->name('tambah_detail_poluar');
     Route::get('tracking', [App\Http\Controllers\PurchaseOrderController::class, 'tracking'])->name('product.tracking');
     Route::get('trackingwil', [App\Http\Controllers\PurchaseOrderController::class, 'trackingwil'])->name('product.trackingwil');
-
 
     Route::post('poluar-imss/hapus-multiple', [App\Http\Controllers\PurchaseOrderluarController::class, 'hapusMultiplePoluar'])->name('hapus-multiple');
     Route::post('tracking-imss/hapus-multiple', [App\Http\Controllers\PurchaseOrderController::class, 'hapusMultipleTracking'])->name('hapus-multiple');
@@ -180,22 +172,17 @@ Route::prefix('products')->group(function () {
     Route::post('update_purchase_orderluar_detail', [App\Http\Controllers\PurchaseOrderluarController::class, 'updateDetailPoluar'])->name('purchase_orderluar_detail.update');
     // Route::get('selectnopr', [App\Http\Controllers\PurchaseOrderluarController::class, 'nopr'])->name('nopr.index');
 
-
-
-
-
-
-    //justifikasi
+    // justifikasi
     Route::get('justifikasi', [App\Http\Controllers\JustifikasiController::class, 'index'])->name('product.justifikasi');
     Route::post('justifikasi', [App\Http\Controllers\JustifikasiController::class, 'store'])->name('product.justifikasi.save');
     Route::delete('justifikasi', [App\Http\Controllers\JustifikasiController::class, 'destroy'])->name('product.justifikasi.delete');
 
-    //drawing schematic
+    // drawing schematic
     // Route::get('drawing-schematic', [App\Http\Controllers\DrawingSchematicController::class, 'index'])->name('product.drawing.schematic');
     // Route::post('drawing-schematic', [App\Http\Controllers\DrawingSchematicController::class, 'store'])->name('product.drawing.schematic.save');
     // Route::delete('drawing-schematic', [App\Http\Controllers\DrawingSchematicController::class, 'destroy'])->name('product.drawing.schematic.delete');
 
-    //purchase request
+    // purchase request
     Route::resource('purchase_request', App\Http\Controllers\PurchaseRequestController::class)->except(['destroy']);
     Route::get('cetak_pr', [App\Http\Controllers\PurchaseRequestController::class, 'cetakPr'])->name('cetak_pr');
     Route::get('cetak_sppjp', [App\Http\Controllers\PurchaseRequestController::class, 'cetakSppjp'])->name('cetak_sppjp');
@@ -205,21 +192,16 @@ Route::prefix('products')->group(function () {
     Route::get('purchase_request_detail/{id}', [App\Http\Controllers\PurchaseRequestController::class, 'getDetailPr'])->name('purchase_request_detail');
     Route::get('penerimaan_barang_detail/{id}', [App\Http\Controllers\PurchaseRequestController::class, 'getDetailBarang'])->name('penerimaan_barang_detail');
     Route::post('update_purchase_request_detail', [App\Http\Controllers\PurchaseRequestController::class, 'updateDetailPr'])->name('purchase_request_detail.update');
-    Route::post('purchase_request/update_detail', [App\Http\Controllers\PurchaseRequestController::class, 'editDetail'])->name('detail.update'); //nambah baru
+    Route::post('purchase_request/update_detail', [App\Http\Controllers\PurchaseRequestController::class, 'editDetail'])->name('detail.update');  // nambah baru
     Route::delete('pr-imss/delete_detail', [App\Http\Controllers\PurchaseRequestController::class, 'deleteDetail'])->name('purchase_request.delete_detail');
-    Route::post('lppb/editlppb', [App\Http\Controllers\PurchaseRequestController::class, 'editlppb'])->name('lppb.update'); //nambah baru
-    Route::post('lppb/editpenerimaan', [App\Http\Controllers\PurchaseRequestController::class, 'editpenerimaan'])->name('lppb.update'); //nambah baru
+    Route::post('lppb/editlppb', [App\Http\Controllers\PurchaseRequestController::class, 'editlppb'])->name('lppb.update');  // nambah baru
+    Route::post('lppb/editpenerimaan', [App\Http\Controllers\PurchaseRequestController::class, 'editpenerimaan'])->name('lppb.update');  // nambah baru
     Route::get('/purchase-requests', [App\Http\Controllers\PurchaseRequestController::class, 'indexPr'])->middleware('auth');
     Route::get('products/purchase_request_detail/completed/{id}', [App\Http\Controllers\PurchaseRequestController::class, 'getCompletedDetailPr'])->name('get.completed.pr');
     Route::get('lppb_detail/{id}', [App\Http\Controllers\PurchaseRequestController::class, 'getDetailLppb'])->name('lppb_detail');
     Route::get('/cetak-dokumen', [App\Http\Controllers\PurchaseRequestController::class, 'cetakDokumen'])->name('cetak_dokumen');
 
-
-
-
-
-
-    //bpm
+    // bpm
     Route::resource('bpm', App\Http\Controllers\BpmController::class)->except(['destroy']);
     Route::delete('bpm', [App\Http\Controllers\BpmController::class, 'destroy'])->name('bpm.destroy');
     Route::get('cetak_bpm', [App\Http\Controllers\BpmController::class, 'cetakBpm'])->name('cetak_bpm');
@@ -228,13 +210,12 @@ Route::prefix('products')->group(function () {
     Route::post('update_bpm_detail', [App\Http\Controllers\BpmController::class, 'updateDetailBpm'])->name('bpm_detail.update');
     Route::get('bpm_detail/{id}', [App\Http\Controllers\BpmController::class, 'getDetailBpm'])->name('bpm_detail');
     Route::post('detail_bpm_save', [App\Http\Controllers\BpmController::class, 'detailBpmSave'])->name('detail_bpm_save');
-    Route::post('bpm/update_detail', [App\Http\Controllers\BpmController::class, 'editDetail'])->name('detail.update'); //nambah baru
+    Route::post('bpm/update_detail', [App\Http\Controllers\BpmController::class, 'editDetail'])->name('detail.update');  // nambah baru
     Route::post('bpm-imss/hapus-multiple', [App\Http\Controllers\BpmController::class, 'hapusMultipleBpm'])->name('hapus-multiple');
 
     Route::post('detail_bpm/{id}/delete', [BpmController::class, 'hapusDetail'])->name('detail_purchase_request.delete');
 
-
-    //Surat Jalan
+    // Surat Jalan
 
     Route::resource('surat_jalan', App\Http\Controllers\SuratJalanController::class)->except(['destroy']);
     Route::delete('surat_jalan', [App\Http\Controllers\SuratJalanController::class, 'destroy'])->name('surat_jalan.destroy');
@@ -244,30 +225,29 @@ Route::prefix('products')->group(function () {
     Route::post('update_surat_jalan_detail', [App\Http\Controllers\SuratJalanController::class, 'updateDetailSjn'])->name('surat_jalan_detail.update');
     Route::get('surat_jalan_detail/{id}', [App\Http\Controllers\SuratJalanController::class, 'getDetailSjn'])->name('surat_jalan_detail');
     Route::post('detail_surat_jalan_save', [App\Http\Controllers\SuratJalanController::class, 'detailSjnSave'])->name('detail_surat_jalan_save');
-    Route::post('surat_jalan/update_detail', [App\Http\Controllers\SuratJalanController::class, 'editDetail'])->name('detail.update'); //nambah baru
+    Route::post('surat_jalan/update_detail', [App\Http\Controllers\SuratJalanController::class, 'editDetail'])->name('detail.update');  // nambah baru
     Route::post('surat_jalan-imss/hapus-multiple', [App\Http\Controllers\SuratJalanController::class, 'hapusMultipleSjn'])->name('hapus-multiple');
 
     Route::post('detail_surat_jalan/{id}/delete', [SuratJalanController::class, 'hapusDetail'])->name('detail_surat_jalan.delete');
 
-
-    //history
+    // history
     Route::get('/history', [HistoryController::class, 'index']);
     Route::delete('/history', [HistoryController::class, 'deleteAll'])->name('history.delete');
     Route::delete('purchase_order', [App\Http\Controllers\PurchaseOrderController::class, 'destroy'])->name('purchase_order.destroy');
     Route::get('purchase_order_detail/{id}', [App\Http\Controllers\PurchaseOrderController::class, 'getDetailPo'])->name('purchase_order_detail');
     Route::post('update_purchase_order_detail', [App\Http\Controllers\PurchaseOrderController::class, 'updateDetailPo'])->name('purchase_order_detail.update');
 
-    //PO_PL
-    Route::get("purchase_order_pl", [App\Http\Controllers\PurchaseOrderController::class, 'getDetailPoPL'])->name('purchase_order_pl');
+    // PO_PL
+    Route::get('purchase_order_pl', [App\Http\Controllers\PurchaseOrderController::class, 'getDetailPoPL'])->name('purchase_order_pl');
     // Route::post("purchase_order_pl", [App\Http\Controllers\PurchaseOrderController::class, 'storeDetailPoPL'])->name('purchase_order_pl.store');
     Route::delete('delete_po_pl', [App\Http\Controllers\PurchaseOrderController::class, 'destroyPoPL'])->name('purchase_order_pl.destroy');
     Route::post('po-pl-imss/hapus-multiple', [App\Http\Controllers\PurchaseOrderController::class, 'hapusMultiplePo_Pl'])->name('hapus-multiple');
 
-    //kode material
+    // kode material
     Route::resource('kode_material', App\Http\Controllers\KodeMaterialController::class)->except(['destroy']);
     Route::delete('kode_material', [App\Http\Controllers\KodeMaterialController::class, 'destroy'])->name('kode_material.destroy');
 
-    //SPPH
+    // SPPH
     Route::resource('spph', App\Http\Controllers\SpphController::class)->except(['destroy']);
     Route::delete('spph', [App\Http\Controllers\SpphController::class, 'destroy'])->name('spph.destroy');
     Route::get('spph_detail/{id}', [App\Http\Controllers\SpphController::class, 'getDetailSpph'])->name('spph_detail');
@@ -281,9 +261,7 @@ Route::prefix('products')->group(function () {
     Route::post('detail_spph_save', [App\Http\Controllers\SpphController::class, 'detailSpphSave'])->name('detail_spph_save');
     Route::get('/get-spph-keterangan/{spph_id}', [App\Http\Controllers\SpphController::class, 'getSpphKeterangan']);
 
-
-
-    //SPPH INTERNASIONAL
+    // SPPH INTERNASIONAL
 
     Route::resource('spph_rfq', App\Http\Controllers\SpphrfqController::class)->except(['destroy']);
     Route::delete('spph_rfq', [App\Http\Controllers\SpphrfqController::class, 'destroy'])->name('spph_rfq.destroy');
@@ -299,9 +277,7 @@ Route::prefix('products')->group(function () {
     Route::get('/get-spph-keterangan/{spph_id}', [App\Http\Controllers\SpphrfqController::class, 'getSpphKeterangan']);
     Route::get('spph_rfq_print', [App\Http\Controllers\SpphrfqController::class, 'spphPrintrfq'])->name('spph_rfq.print');
 
-
-
-    //kang
+    // kang
     // //SPPH
     // Route::resource('spph', App\Http\Controllers\SpphController::class)->except(['destroy']);
     // Route::delete('spph', [App\Http\Controllers\SpphController::class, 'destroy'])->name('spph.destroy');
@@ -315,22 +291,17 @@ Route::prefix('products')->group(function () {
     // Route::delete('/detail-spph-delete', [App\Http\Controllers\SpphController::class, 'destroyDetailSpph'])->name('detail_spph_delete');
     // Route::post('detail_spph_save', [App\Http\Controllers\SpphController::class, 'detailSpphSave'])->name('detail_spph_save');
 
-
-
-
-
-
-    //Notif
+    // Notif
     Route::get('notifications', [App\Http\Controllers\NotificationController::class, 'getNotifications'])->name('notifications.get');
     Route::post('notifications/read/{id}', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::get('/notification/open/{id}', [App\Http\Controllers\NotificationController::class, 'openNotification'])->name('notification.open');
     Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'getNotifications'])->name('notifications.index');
     // Route::get('/notifications', 'NotificationController@getNotifications')->name('notifications.index');
 
-    //NEGOSIASI
-    //resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
+    // NEGOSIASI
+    // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     Route::resource('nego', App\Http\Controllers\NegoController::class)->except(['destroy']);
-    //End Resource
+    // End Resource
     Route::delete('nego', [App\Http\Controllers\NegoController::class, 'destroy'])->name('nego.destroy');
     Route::get('nego', [App\Http\Controllers\NegoController::class, 'index'])->name('nego.index');
     Route::get('nego_detail/{id}', [App\Http\Controllers\NegoController::class, 'getDetailNego'])->name('nego_detail');
@@ -344,10 +315,9 @@ Route::prefix('products')->group(function () {
     Route::post('detail_nego_save', [App\Http\Controllers\NegoController::class, 'detailNegoSave'])->name('detail_nego_save');
     Route::post('qty_nego_save', [App\Http\Controllers\NegoController::class, 'QtyNegoSave'])->name('qty_nego_save');
 
-
-    //Nego Luar Negeri
+    // Nego Luar Negeri
     Route::resource('negoluar', App\Http\Controllers\NegoluarController::class)->except(['destroy']);
-    //End Resource
+    // End Resource
     Route::delete('negoluar', [App\Http\Controllers\NegoluarController::class, 'destroy'])->name('negoluar.destroy');
     Route::get('negoluar', [App\Http\Controllers\NegoluarController::class, 'index'])->name('negoluar.index');
     Route::get('negoluar_detail/{id}', [App\Http\Controllers\NegoluarController::class, 'getDetailNegoluar'])->name('negoluar_detail');
@@ -361,12 +331,10 @@ Route::prefix('products')->group(function () {
     Route::post('detail_negoluar_save', [App\Http\Controllers\NegoluarController::class, 'detailNegoluarSave'])->name('detail_negoluar_save');
     Route::post('qty_negoluar_save', [App\Http\Controllers\NegoluarController::class, 'QtyNegoluarSave'])->name('qty_negoluar_save');
 
-
-
-    //LOI
-    //resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
+    // LOI
+    // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     Route::resource('loi', App\Http\Controllers\LoiController::class)->except(['destroy']);
-    //End Resource
+    // End Resource
     Route::delete('loi', [App\Http\Controllers\LoiController::class, 'destroy'])->name('loi.destroy');
     Route::get('loi', [App\Http\Controllers\LoiController::class, 'index'])->name('loi.index');
     Route::get('loi_detail/{id}', [App\Http\Controllers\LoiController::class, 'getDetailLoi'])->name('loi_detail');
@@ -380,13 +348,10 @@ Route::prefix('products')->group(function () {
     Route::post('detail_loi_save', [App\Http\Controllers\LoiController::class, 'detailLoiSave'])->name('detail_loi_save');
     Route::post('qty_loi_save', [App\Http\Controllers\LoiController::class, 'QtyLoiSave'])->name('qty_loi_save');
 
-
-
-
-    //LOI INTERNASIONAL
-    //resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
+    // LOI INTERNASIONAL
+    // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     Route::resource('loiluar', App\Http\Controllers\LoiluarController::class)->except(['destroy']);
-    //End Resource
+    // End Resource
     Route::delete('loiluar', [App\Http\Controllers\LoiluarController::class, 'destroy'])->name('loiluar.destroy');
     Route::get('loiluar', [App\Http\Controllers\LoiluarController::class, 'index'])->name('loiluar.index');
     Route::get('loiluar_detail/{id}', [App\Http\Controllers\LoiluarController::class, 'getDetailLoiluar'])->name('loiluar_detail');
@@ -400,11 +365,8 @@ Route::prefix('products')->group(function () {
     Route::post('detail_loiluar_save', [App\Http\Controllers\LoiluarController::class, 'detailLoiluarSave'])->name('detail_loiluar_save');
     Route::post('qty_loiluar_save', [App\Http\Controllers\LoiluarController::class, 'QtyLoiluarSave'])->name('qty_loiluar_save');
 
-
-
-
-    //KONTRAK
-    //resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
+    // KONTRAK
+    // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     Route::resource('kontrak', App\Http\Controllers\KontrakController::class)->except(['destroy']);
     Route::delete('kontrak', [App\Http\Controllers\KontrakController::class, 'destroy'])->name('kontrak.destroy');
     // Route::get('cetak_bpm', [App\Http\Controllers\BpmController::class, 'cetakBpm'])->name('cetak_bpm');
@@ -413,31 +375,38 @@ Route::prefix('products')->group(function () {
     Route::post('update_kontrak_detail', [App\Http\Controllers\KontrakController::class, 'updateDetailKontrak'])->name('kontrak_detail.update');
     Route::get('kontrak_detail/{id}', [App\Http\Controllers\KontrakController::class, 'getDetailKontrak'])->name('kontrak_detail');
     Route::post('detail_kontrak_save', [App\Http\Controllers\KontrakController::class, 'detailKontrakSave'])->name('detail_kontrak_save');
-    Route::post('kontrak/update_detail', [App\Http\Controllers\KontrakController::class, 'editDetail'])->name('detail.update'); //nambah baru
+    Route::post('kontrak/update_detail', [App\Http\Controllers\KontrakController::class, 'editDetail'])->name('detail.update');  // nambah baru
     Route::post('kontrak-imss/hapus-multiple', [App\Http\Controllers\KontrakController::class, 'hapusMultipleKontrak'])->name('hapus-multiple');
     Route::post('upload-file', [App\Http\Controllers\KontrakController::class, 'uploadFile'])->name('upload_file');
     Route::post('detail_kontrak/{id}/delete', [KontrakController::class, 'hapusDetail'])->name('detail_kontrak.delete');
 
-
-    //MRO
-    //resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
+    // MRO
+    // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     Route::prefix('mro')->group(function () {
-    Route::get('/', [App\Http\Controllers\MroController::class, 'index'])->name('mro');
-    Route::post('/save', [App\Http\Controllers\MroController::class, 'save'])->name('mro.save');
-    Route::delete('/delete', [App\Http\Controllers\MroController::class, 'delete'])->name('mro.delete');
-    Route::get('/categories', [App\Http\Controllers\MroController::class, 'categories'])->name('mro.categories');
-    Route::get('/export', [App\Http\Controllers\MroController::class, 'export'])->name('mro.export');
-    Route::get('/barcode/{code}', [App\Http\Controllers\MroController::class, 'barcode'])->name('mro.barcode');
-    Route::get('/mro/print-barcode', [MroController::class, 'printBarcodePage'])->name('mro.print.barcode');
+        Route::get('/', [App\Http\Controllers\MroController::class, 'index'])->name('mro');
+        Route::post('/save', [App\Http\Controllers\MroController::class, 'save'])->name('mro.save');
+        Route::delete('/delete', [App\Http\Controllers\MroController::class, 'delete'])->name('mro.delete');
+        Route::get('/categories', [App\Http\Controllers\MroController::class, 'categories'])->name('mro.categories');
+        Route::get('/export', [App\Http\Controllers\MroController::class, 'export'])->name('mro.export');
+        Route::get('/barcode/{code}', [App\Http\Controllers\MroController::class, 'barcode'])->name('mro.barcode');
+        Route::get('/mro/print-barcode', [MroController::class, 'printBarcodePage'])->name('mro.print.barcode');
+        // routes/web.php
+        Route::post('/mro/stock-in', [MroController::class, 'stockIn'])->name('mro.stockin');
+        Route::post('/mro/stock-out', [MroController::class, 'stockOut'])->name('mro.stockout');
 
-});
+        Route::get('/mro/stock-log', [MroController::class, 'stockLog'])
+            ->name('mro.stock.log');
 
+        Route::delete('/mro/stock-log/delete-multiple', [MroController::class, 'deleteMultipleLog'])
+            ->name('mro.stocklog.deleteMultiple');
 
+        Route::delete('/mro/multidelete', [MroController::class, 'multiDelete'])->name('mro.multidelete');
 
+        
+    });
 
-
-    //BA JUSTIFIKASI
-    //resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
+    // BA JUSTIFIKASI
+    // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     // Route::resource('justi', App\Http\Controllers\JustiController::class)->except(['destroy']);
     // //End Resource
     // Route::delete('nego', [App\Http\Controllers\NegoController::class, 'destroy'])->name('nego.destroy');
@@ -452,11 +421,7 @@ Route::prefix('products')->group(function () {
     // Route::delete('/detail-nego-delete', [App\Http\Controllers\NegoController::class, 'destroyDetailNego'])->name('detail_nego_delete');
     // Route::post('detail_nego_save', [App\Http\Controllers\NegoController::class, 'detailNegoSave'])->name('detail_nego_save');
 
-
-
-
-
-    //logistik
+    // logistik
     Route::get('logistik', [App\Http\Controllers\LogistikController::class, 'index'])->name('products.logistik');
 
     // engineering edit pr
@@ -483,7 +448,6 @@ Route::prefix('account')->group(function () {
     Route::post('password', [App\Http\Controllers\UserController::class, 'myaccount_update_password'])->name('myaccount.updatePassword');
 });
 Auth::routes(['reset' => true]);
-
 
 Route::get('test_sheet', [App\Http\Controllers\SheetController::class, 'getDataSheet'])->name('test_sheet');
 Route::get('get_sheets', [App\Http\Controllers\SheetController::class, 'getDataSheet'])->name('get_sheets');
@@ -517,12 +481,9 @@ Route::get('lppb_print', function () {
     return view('lppb.print');
 })->name('lppb.print');
 
-
-//Riwayat Pembelian
+// Riwayat Pembelian
 Route::get('riwayat-pembelian', [App\Http\Controllers\RiwayatpembelianController::class, 'riwayat_pembelian'])->name('riwayat_pembelian');
 Route::get('riwayat_barang/{kode_material}', [App\Http\Controllers\RiwayatpembelianController::class, 'getDetailRiwayatPembelian'])->name('getDetailRiwayatPembelian');
-
-
 
 Route::post('karyawan_import', [App\Http\Controllers\KaryawanController::class, 'import'])->name('karyawan.import');
 Route::get('karyawan_export', [App\Http\Controllers\KaryawanController::class, 'export'])->name('karyawan.export');
@@ -531,15 +492,12 @@ Route::post('karyawan', [App\Http\Controllers\KaryawanController::class, 'store'
 Route::delete('karyawan', [App\Http\Controllers\KaryawanController::class, 'destroy'])->name('karyawan.destroy');
 Route::post('karyawan-warehouse-imss/hapus-multiple', [App\Http\Controllers\KaryawanController::class, 'hapusMultipleKaryawan'])->name('hapus-multiple');
 
-
 // Proyek MRO
-
 
 Route::get('proyek', [ProyekController::class, 'index'])->name('proyek.index');
 Route::post('/proyek/store', [ProyekController::class, 'store'])->name('proyek.store');
 Route::post('/proyek/update/{id}', [ProyekController::class, 'update'])->name('proyek.update');
 Route::delete('/proyek/delete/{id}', [ProyekController::class, 'destroy'])->name('proyek.delete');
-
 
 // Monitoring MRO
 Route::get('/proyek/{id}/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
@@ -554,32 +512,13 @@ Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'u
 
 Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'updateDocument'])->name('monitoring.document.update');
 Route::get('/monitoring/export/{proyek_id}', [MonitoringController::class, 'exportZip'])
-     ->name('monitoring.export');
-
+    ->name('monitoring.export');
 
 Route::post('/monitoring/{id}/docgroup/store', [MonitoringController::class, 'storeDocGroup'])
     ->name('monitoring.docgroup.store');
 
 Route::delete('/monitoring/docgroup/{id}/destroy', [MonitoringController::class, 'destroyDocGroup'])
     ->name('monitoring.docgroup.destroy');
-
-
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');
@@ -602,7 +541,6 @@ Route::delete('gangguan', [App\Http\Controllers\GangguanController::class, 'dest
 Route::put('gangguan', [App\Http\Controllers\GangguanController::class, 'update'])->name('gangguan.update');
 Route::get('gangguan_detail/{id}', [App\Http\Controllers\GangguanController::class, 'getDetailGangguan'])->name('gangguan_detail');
 
-
 // Route::get('trainset', [App\Http\Controllers\TrainsetController::class, 'index'])->name('trainset.index');
 // Route::post('trainset', [App\Http\Controllers\TrainsetController::class, 'store'])->name('trainset.store');
 // Route::delete('trainset', [App\Http\Controllers\TrainsetController::class, 'destroy'])->name('trainset.destroy');
@@ -613,16 +551,11 @@ Route::get('gangguan_detail/{id}', [App\Http\Controllers\GangguanController::cla
 // Route::get('bom_detail/{id}', [App\Http\Controllers\BomController::class, 'getDetailBom'])->name('bom_detail');
 // Route::post('update_bom_detail', [App\Http\Controllers\BomController::class, 'updateDetailBom'])->name('bom_detail.update');
 
-
 Route::post('aset_import', [App\Http\Controllers\AsetController::class, 'import'])->name('aset.import');
 
 // Route::get('master_gaji', [App\Http\Controllers\MasterGajiPokokController::class, 'index'])->name('master.gaji.index');
 
-
-
-
-
-//Route Keuangan Kasbon
+// Route Keuangan Kasbon
 Route::get('kasbon', [App\Http\Controllers\KasbonController::class, 'index'])->name('kasbon.kasbon');
 Route::post('/keuangan_kasbon/store', [App\Http\Controllers\KasbonController::class, 'store'])->name('keuangan_kasbon.store');
 Route::delete('/keuangan-kasbon/{id}', [App\Http\Controllers\KasbonController::class, 'destroy'])->name('keuangan_kasbon.destroy');
@@ -635,6 +568,6 @@ Route::post('kasbon/hapus-multiple', [App\Http\Controllers\KasbonController::cla
 Route::get('kasbon/total', [App\Http\Controllers\KasbonController::class, 'totalKasbon'])->name('kasbon.total');
 Route::get('kasbon_print', [App\Http\Controllers\KasbonController::class, 'kasbonPrint'])->name('kasbon.print');
 
-//Route Print_Kasbon
+// Route Print_Kasbon
 Route::post('memo_kasbon', [App\Http\Controllers\KasbonController::class, 'memoKasbon'])->name('cetak.memo');
 Route::get('memo_show', [App\Http\Controllers\KasbonController::class, 'showMemo'])->name('memo.show');

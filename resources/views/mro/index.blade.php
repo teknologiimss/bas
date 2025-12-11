@@ -65,9 +65,14 @@
                     </div>
 
                     <div class="table-responsive">
+                        <button type="button" class="btn-sm btn-danger" id="btnDeleteMultiple">
+                            <i class="fas fa-trash"></i> Hapus Terpilih
+                        </button>
+
                         <table class="table table-sm table-hover table-striped">
                             <thead>
                                 <tr class="text-center">
+                                    <th><input type="checkbox" id="checkAll"></th>
                                     <th>No.</th>
                                     <th>Kode Material</th>
                                     <th>Nama Barang</th>
@@ -76,7 +81,7 @@
                                     <th>Satuan</th>
                                     <th>Proyek</th>
                                     {{-- <th>Kategori</th> --}}
-                                    <th></th>
+                                    <th>Tombol</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,6 +102,9 @@
                                             ];
                                         @endphp
                                         <tr>
+                                            <td class="text-center">
+                                                <input type="checkbox" class="checkItem" value="{{ $row->mro_id }}">
+                                            </td>
                                             <td class="text-center">{{ $data['no'] }}</td>
                                             <td class="text-center">{{ $data['code'] }}</td>
                                             <td>{{ $data['name'] }}</td>
@@ -128,6 +136,17 @@
                                                         onclick='deleteMro(@json($data))'><i
                                                             class="fas fa-trash"></i></button>
                                                 @endif
+
+                                                <button class="btn-xs btn-success" data-toggle="modal"
+                                                    data-target="#modalStockIn">
+                                                    <i class="fas fa-plus"></i> Stock In
+                                                </button>
+
+                                                <button class="btn-xs btn-danger" data-toggle="modal"
+                                                    data-target="#modalStockOut">
+                                                    <i class="fas fa-minus"></i> Stock Out
+                                                </button>
+
                                             </td>
 
                                         </tr>
@@ -167,6 +186,67 @@
                 </div>
             </div>
         </div>
+
+
+        {{-- Modal Stock In --}}
+        <div class="modal fade" id="modalStockIn">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('mro.stockin') }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title">Stock In</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <label>Scan Barcode</label>
+                            <input type="text" name="barcode" id="barcode-in" class="form-control" autofocus>
+
+                            <label class="mt-2">Jumlah</label>
+                            <input type="number" name="jumlah" class="form-control" value="1">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button class="btn btn-primary">Tambah Stok</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal Stock Out --}}
+        <div class="modal fade" id="modalStockOut">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('mro.stockout') }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title">Stock Out</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <label>Scan Barcode</label>
+                            <input type="text" name="barcode" id="barcode-out" class="form-control" autofocus>
+
+                            <label class="mt-2">Jumlah</label>
+                            <input type="number" name="jumlah" class="form-control" value="1">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button class="btn btn-danger">Kurangi Stok</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
 
 
         {{-- Modal Add / Edit --}}
@@ -257,6 +337,39 @@
                 </div>
             </div>
         </div>
+
+
+        {{-- Modal Hapus Multiple --}}
+        <div class="modal fade" id="modalDeleteMultiple">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="formDeleteMultiple" method="POST" action="{{ route('mro.multidelete') }}">
+                        @csrf @method('DELETE')
+                        <input type="hidden" name="ids" id="delete_ids">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Hapus Data Terpilih</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            Yakin ingin menghapus <span id="totalSelected"></span> data MRO?
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button class="btn btn-danger">Hapus</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
     </section>
 @endsection
 
@@ -320,6 +433,45 @@
 
 
 
+    <script>
+        $('#modalStockIn').on('shown.bs.modal', function() {
+            $('#barcode-in').focus();
+        });
+
+        $('#modalStockOut').on('shown.bs.modal', function() {
+            $('#barcode-out').focus();
+        });
+    </script>
+
+
+
+    {{-- Hapus Multiple --}}
+    <Script>
+        // Check all
+        $("#checkAll").on("change", function() {
+            $(".checkItem").prop("checked", $(this).prop("checked"));
+        });
+
+        // Button delete multiple
+        $("#btnDeleteMultiple").on("click", function() {
+            let selected = [];
+
+            $(".checkItem:checked").each(function() {
+                selected.push($(this).val());
+            });
+
+            if (selected.length === 0) {
+                toastr.error("Tidak ada data yang dipilih!");
+                return;
+            }
+
+            $("#delete_ids").val(JSON.stringify(selected));
+            $("#totalSelected").text(selected.length + " item");
+            $("#modalDeleteMultiple").modal("show");
+        });
+    </Script>
+
+
 
     <script>
         $(function() {
@@ -355,7 +507,7 @@
             $('#modal-title').text("Tambah Stok Barang MRO");
             $('#button-save').text("Tambahkan");
             resetForm();
-             $('#save_id').val('');  // ← PENTING !!! Reset ID supaya create, bukan update
+            $('#save_id').val(''); // ← PENTING !!! Reset ID supaya create, bukan update
             getCategory();
         }
 
@@ -374,7 +526,7 @@
         }
 
         function deleteMro(data) {
-            $('#delete_id').val(data.id);
+            $('#delete_id').val(data.mro_id);
             $('#mrocode').text(data.code);
         }
 

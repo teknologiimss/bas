@@ -510,7 +510,7 @@
                                         {{-- Contoh menu role SDM --}}
 
 
-                                        
+
 
 
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 14)
@@ -524,12 +524,21 @@
                                         @endif
 
 
-                                         @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14)
                                             <li class="nav-item">
                                                 <a href="{{ route('mro') }}"
                                                     class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>{{ __(' Stok Barang MRO') }}</p>
+                                                </a>
+                                            </li>
+                                        @endif
+
+                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                            <li class="nav-item">
+                                                <a href="{{ route('mro.stock.log') }}" class="nav-link">
+                                                    <i class="nav-icon fas fa-history"></i>
+                                                    <p>Mutasi Stok MRO</p>
                                                 </a>
                                             </li>
                                         @endif
@@ -1388,7 +1397,7 @@
         // });
         loader(0);
 
-        
+
         $('#pcode').on('input', function() {
             $("#form").hide();
             $("#button-update").hide();
@@ -1612,10 +1621,6 @@
                 }
             });
         }
-
-        
-
-        
     </script>
 
     <script>
