@@ -391,8 +391,8 @@ Route::prefix('products')->group(function () {
         Route::get('/barcode/{code}', [App\Http\Controllers\MroController::class, 'barcode'])->name('mro.barcode');
         Route::get('/mro/print-barcode', [MroController::class, 'printBarcodePage'])->name('mro.print.barcode');
         // routes/web.php
-        Route::post('/mro/stock-in', [MroController::class, 'stockIn'])->name('mro.stockin');
-        Route::post('/mro/stock-out', [MroController::class, 'stockOut'])->name('mro.stockout');
+        Route::post('/stock-in', [MroController::class, 'stockIn'])->name('mro.stockin');
+        Route::post('/stock-out', [MroController::class, 'stockOut'])->name('mro.stockout');
 
         Route::get('/mro/stock-log', [MroController::class, 'stockLog'])
             ->name('mro.stock.log');
