@@ -454,6 +454,11 @@
         });
     </script> --}}
 
+    <script>
+        const stockInRoute = "{{ route('mro.scan.stockin', ':barcode') }}";
+        const stockOutRoute = "{{ route('mro.scan.stockout', ':barcode') }}";
+    </script>
+
 
     <Script>
         $(document).on("click", ".qrcode-btn", function() {
@@ -463,11 +468,11 @@
 
             $("#qrcode-view").html("");
 
-            let urlIn = window.location.origin + "/mro/stockin/" + code;
-            let urlOut = window.location.origin + "/mro/stockout/" + code;
+            let urlIn = stockInRoute.replace(':barcode', code);
+            let urlOut = stockOutRoute.replace(':barcode', code);
 
             new QRCode(document.getElementById("qrcode-view"), {
-                text: urlIn, // Default: Stock In
+                text: urlIn,
                 width: 150,
                 height: 150
             });
