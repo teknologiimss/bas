@@ -13,8 +13,7 @@ class MroController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Mro::leftJoin('categories', 'categories.category_id', 'mro.category_id')
-            ->select('mro.*', 'categories.category_name');
+        $query = Mro::select('*');
 
         if ($request->q) {
             $query->where(function ($q) use ($request) {
@@ -25,6 +24,7 @@ class MroController extends Controller
             });
         }
 
+        // Sorting jika ada request
         if ($request->sort) {
             switch ($request->sort) {
                 case 'name_az':
@@ -40,6 +40,9 @@ class MroController extends Controller
                     $query->orderBy('proyek', 'desc');
                     break;
             }
+        } else {
+            // ✔ Tambahkan default sorting
+            $query->orderBy('mro_id', 'desc');
         }
 
         $mro = $query->paginate(20);
@@ -64,8 +67,8 @@ class MroController extends Controller
                 'stock' => $request->stock,
                 'satuan' => $request->satuan,
                 'proyek' => $request->proyek,
-                // 'category_id' => $request->category,
-                'barcode' => $request->mro_code  // barcode mengikuti modul Products
+                // QR CODE menggunakan isi ini
+                'barcode' => $request->mro_code
             ]
         );
 
@@ -78,56 +81,39 @@ class MroController extends Controller
         return back()->with('success', 'Data MRO berhasil dihapus.');
     }
 
-    // public function categories()
-    // {
-    //     return Category::select('category_id', 'category_name')->get();
-    // }
-
     public function export()
     {
         return Excel::download(new BarangMroExport, 'stok barang mro.xlsx');
     }
 
-    // Print Barcode seperti di modul Products
+    // Print QR Code
     public function printBarcode($id)
     {
         $mro = Mro::findOrFail($id);
-        return view('mro.barcode', compact('mro'));
+        return view('mro.qrcode', compact('mro'));  // GANTI view barcode → qrcode
     }
 
     public function printBarcodePage(Request $request)
     {
         $mro = Mro::orderBy('mro_name', 'asc')->get();
-        return view('mro.print_barcode', compact('mro'));
+        return view('mro.print_qrcode', compact('mro'));  // GANTI
     }
-
-    // public function stockIn(Request $r)
-    // {
-    //     $item = Mro::where('barcode', $r->barcode)->first();
-
-    //     if (!$item) {
-    //         return back()->with('error', 'Barcode tidak ditemukan!');
-    //     }
-
-    //     $item->stock += $r->jumlah;
-    //     $item->save();
-
-    //     return back()->with('success', 'Stok berhasil ditambah!');
-    // }
 
     public function stockIn(Request $r)
     {
         $item = Mro::where('barcode', $r->barcode)->first();
+
         if (!$item)
-            return back()->with('error', 'Barcode tidak ditemukan!');
+            return back()->with('error', 'QR Code tidak ditemukan!');
 
         $before = $item->stock;
+
         $item->stock += $r->jumlah;
         $item->save();
 
         MroStockLog::create([
             'mro_id' => $item->mro_id,
-            'barcode' => $item->barcode,
+            'barcode' => $item->barcode,  // isi QR code
             'type' => 'IN',
             'qty' => $r->jumlah,
             'stock_before' => $before,
@@ -139,34 +125,18 @@ class MroController extends Controller
         return back()->with('success', 'Stok berhasil ditambah!');
     }
 
-    // public function stockOut(Request $r)
-    // {
-    //     $item = Mro::where('barcode', $r->barcode)->first();
-
-    //     if (!$item) {
-    //         return back()->with('error', 'Barcode tidak ditemukan!');
-    //     }
-
-    //     if ($item->stock < $r->jumlah) {
-    //         return back()->with('error', 'Stok tidak mencukupi!');
-    //     }
-
-    //     $item->stock -= $r->jumlah;
-    //     $item->save();
-
-    //     return back()->with('success', 'Stok berhasil dikurangi!');
-    // }
-
     public function stockOut(Request $r)
     {
         $item = Mro::where('barcode', $r->barcode)->first();
+
         if (!$item)
-            return back()->with('error', 'Barcode tidak ditemukan!');
+            return back()->with('error', 'QR Code tidak ditemukan!');
 
         if ($item->stock < $r->jumlah)
             return back()->with('error', 'Stok tidak mencukupi!');
 
         $before = $item->stock;
+
         $item->stock -= $r->jumlah;
         $item->save();
 
@@ -184,24 +154,19 @@ class MroController extends Controller
         return back()->with('success', 'Stok berhasil dikurangi!');
     }
 
-    // Filter MRO STOCK LOG
     public function stockLog(Request $request)
     {
         $query = MroStockLog::with('mro');
 
-        // Filter kode material (barcode)
-        if ($request->kode) {
+        if ($request->kode)
             $query->where('barcode', 'LIKE', "%{$request->kode}%");
-        }
 
-        // Filter nama barang
         if ($request->nama) {
             $query->whereHas('mro', function ($q) use ($request) {
                 $q->where('mro_name', 'LIKE', "%{$request->nama}%");
             });
         }
 
-        // Filter proyek
         if ($request->proyek) {
             $query->whereHas('mro', function ($q) use ($request) {
                 $q->where('proyek', 'LIKE', "%{$request->proyek}%");
@@ -209,12 +174,9 @@ class MroController extends Controller
         }
 
         $logs = $query->orderBy('created_at', 'DESC')->paginate(20);
-
         return view('mro.stock_log', compact('logs'));
     }
 
-    
-    // Hapus Multiple
     public function deleteMultipleLog(Request $request)
     {
         $ids = $request->ids;
@@ -239,5 +201,17 @@ class MroController extends Controller
         Mro::whereIn('mro_id', $ids)->delete();
 
         return back()->with('success', 'Berhasil menghapus ' . count($ids) . ' data Stok Barang MRO.');
+    }
+
+    public function scanStockIn($barcode)
+    {
+        $item = Mro::where('barcode', $barcode)->firstOrFail();
+        return view('mro.scan_stockin', compact('item'));
+    }
+
+    public function scanStockOut($barcode)
+    {
+        $item = Mro::where('barcode', $barcode)->firstOrFail();
+        return view('mro.scan_stockout', compact('item'));
     }
 }

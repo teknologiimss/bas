@@ -402,7 +402,8 @@ Route::prefix('products')->group(function () {
 
         Route::delete('/mro/multidelete', [MroController::class, 'multiDelete'])->name('mro.multidelete');
 
-        
+        Route::get('/stockin/{barcode}', [MroController::class, 'scanStockIn'])->name('mro.scan.stockin');
+        Route::get('/stockout/{barcode}', [MroController::class, 'scanStockOut'])->name('mro.scan.stockout');
     });
 
     // BA JUSTIFIKASI

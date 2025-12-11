@@ -81,7 +81,7 @@
                                         </td>
                                         <td>{{ $log->created_at }}</td>
                                         <td>{{ $log->barcode }}</td>
-                                        <td>{{ $log->mro->mro_name }}</td>
+                                        <td>{{ $log->mro->mro_name ?? '-' }}</td>
                                         <td class="text-center">
                                             @if ($log->type == 'IN')
                                                 <span class="badge bg-success">IN</span>
@@ -92,7 +92,7 @@
                                         <td class="text-center">{{ $log->qty }}</td>
                                         <td class="text-center">{{ $log->stock_before }}</td>
                                         <td class="text-center">{{ $log->stock_after }}</td>
-                                        <td class="text-center">{{ $log->mro->proyek }}</td>
+                                        <td class="text-center">{{ $log->mro->proyek ?? '-' }}</td>
                                         <td>{{ $log->user }}</td>
                                     </tr>
                                 @endforeach

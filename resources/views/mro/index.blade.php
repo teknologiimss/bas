@@ -92,6 +92,7 @@
                                                 'no' => $mro->firstItem() + $key,
                                                 'mro_id' => $row->mro_id,
                                                 'code' => $row->mro_code,
+                                                'barcode' => $row->barcode,
                                                 'name' => $row->mro_name,
                                                 'spesifikasi' => $row->spesifikasi,
                                                 'stock' => $row->stock,
@@ -122,12 +123,13 @@
                                                     onclick='editMro(@json($data))'><i
                                                         class="fas fa-edit"></i></button>
 
-                                                <button class="btn btn-dark btn-xs barcode-btn"
+                                                <button class="btn btn-dark btn-xs qrcode-btn"
                                                     data-id="{{ $row->mro_id }}" data-code="{{ $row->barcode }}"
                                                     data-name="{{ $row->mro_name }}"
                                                     data-spesifikasi="{{ $row->spesifikasi }}">
-                                                    <i class="fas fa-barcode"></i>
+                                                    <i class="fas fa-qrcode"></i>
                                                 </button>
+
 
 
                                                 @if (Auth::user()->role == 0 || Auth::user()->role == 14)
@@ -172,20 +174,21 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Barcode</h5>
+                        <h5 class="modal-title">QR Code</h5>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body text-center">
-                        <svg id="barcode-view"></svg>
+                        <div id="qrcode-view"></div>
                         <div id="barcode-title" class="fw-bold mt-2"></div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button class="btn btn-primary" id="btnPrintBarcode">Print Barcode</button>
+                        <button class="btn btn-primary" id="btnPrintBarcode">Print</button>
                     </div>
                 </div>
             </div>
         </div>
+
 
 
         {{-- Modal Stock In --}}
@@ -300,10 +303,17 @@
                                 </div>
                             </div> --}}
 
-                            <div class="form-group mt-2">
+                            {{-- <div class="form-group mt-2">
                                 <label>Barcode</label><br>
                                 <svg id="barcode-preview"></svg>
+                            </div> --}}
+
+                            <div class="form-group mt-2">
+                                <label>Barcode</label><br>
+                                {{-- <svg id="barcode-preview"></svg> --}}
+                                <div id="qrcode-preview" class="mt-3"></div>
                             </div>
+
                         </form>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -376,9 +386,11 @@
 @section('custom-js')
     <script src="/plugins/toastr/toastr.min.js"></script>
     <script src="/plugins/select2/js/select2.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    <script>
+
+    {{-- <script>
         function generateBarcode() {
             let code = document.getElementById('mro_code').value;
             if (code !== "") {
@@ -394,11 +406,37 @@
 
         document.getElementById('mro_code').addEventListener('keyup', generateBarcode);
         document.getElementById('mro_code').addEventListener('change', generateBarcode);
+    </script> --}}
+
+    <script>
+        let qrCodeGenerator = null;
+
+        function generateQRCode() {
+            let code = document.getElementById('mro_code').value;
+
+            // hapus QR lama
+            document.getElementById('qrcode-preview').innerHTML = "";
+
+            if (code !== "") {
+
+                // buat QR baru
+                qrCodeGenerator = new QRCode(document.getElementById("qrcode-preview"), {
+                    text: code,
+                    width: 150,
+                    height: 150,
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+        }
+
+        document.getElementById('mro_code').addEventListener('keyup', generateQRCode);
+        document.getElementById('mro_code').addEventListener('change', generateQRCode);
     </script>
 
 
 
-    <script>
+
+    {{-- <script>
         $(document).on("click", ".barcode-btn", function() {
             let code = $(this).data("code");
             let name = $(this).data("name");
@@ -414,14 +452,55 @@
             $("#barcode-title").text(name + " — " + spesifikasi);
             $("#modalBarcode").modal("show");
         });
-    </script>
+    </script> --}}
 
+
+    <Script>
+        $(document).on("click", ".qrcode-btn", function() {
+            let code = $(this).data("code");
+            let name = $(this).data("name");
+            let spesifikasi = $(this).data("spesifikasi");
+
+            $("#qrcode-view").html("");
+
+            let urlIn = window.location.origin + "/mro/stockin/" + code;
+            let urlOut = window.location.origin + "/mro/stockout/" + code;
+
+            new QRCode(document.getElementById("qrcode-view"), {
+                text: urlIn, // Default: Stock In
+                width: 150,
+                height: 150
+            });
+
+            $("#barcode-title").html(`
+        ${name} — ${spesifikasi}<br>
+        <small>Scan QR untuk Stock In.</small><br><br>
+        <a href="${urlIn}" target="_blank" class="btn btn-success btn-sm">Stock In</a>
+        <a href="${urlOut}" target="_blank" class="btn btn-danger btn-sm ml-2">Stock Out</a>
+    `);
+
+            $("#modalBarcode").modal("show");
+        });
+    </Script>
+
+    {{-- <script>
+        $("#btnPrintBarcode").on("click", function() {
+            let printContents = document.querySelector("#modalBarcode .modal-body").innerHTML;
+            let windowPrint = window.open('', '', 'height=500,width=900');
+            windowPrint.document.write('<html><head><title>Print Barcode</title>');
+            windowPrint.document.write('</head><body class="text-center">');
+            windowPrint.document.write(printContents);
+            windowPrint.document.write('</body></html>');
+            windowPrint.document.close();
+            windowPrint.print();
+        });
+    </script> --}}
 
     <script>
         $("#btnPrintBarcode").on("click", function() {
             let printContents = document.querySelector("#modalBarcode .modal-body").innerHTML;
             let windowPrint = window.open('', '', 'height=500,width=900');
-            windowPrint.document.write('<html><head><title>Print Barcode</title>');
+            windowPrint.document.write('<html><head><title>Print QR Code</title>');
             windowPrint.document.write('</head><body class="text-center">');
             windowPrint.document.write(printContents);
             windowPrint.document.write('</body></html>');
