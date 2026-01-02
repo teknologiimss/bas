@@ -491,6 +491,15 @@
 
 
     <script>
+        window.scanRoute = "{{ route('mro.scan', ':barcode') }}";
+        window.stockInRoute = "{{ route('mro.scan.stockin', ':barcode') }}";
+        window.stockOutRoute = "{{ route('mro.scan.stockout', ':barcode') }}";
+    </script>
+
+
+
+
+    <script>
         $(document).on("click", ".qrcode-btn", function() {
             let code = $(this).data("code");
             let name = $(this).data("name");
@@ -498,11 +507,10 @@
 
             $("#qrcode-view").html("");
 
-            let urlScan = scanRoute.replace(':barcode', code);
-            let urlIn = stockInRoute.replace(':barcode', code);
-            let urlOut = stockOutRoute.replace(':barcode', code);
+            let urlScan = window.scanRoute.replace(':barcode', code);
+            let urlIn = window.stockInRoute.replace(':barcode', code);
+            let urlOut = window.stockOutRoute.replace(':barcode', code);
 
-            // QR hanya mengarah ke halaman selector
             new QRCode(document.getElementById("qrcode-view"), {
                 text: urlScan,
                 width: 150,
@@ -526,6 +534,8 @@
             $("#modalBarcode").modal("show");
         });
     </script>
+
+
 
 
 
