@@ -10,7 +10,7 @@
         <input type="hidden" name="barcode" value="{{ $item->barcode }}">
 
         <label>Jumlah</label>
-        <input type="number" name="jumlah" class="form-control" value="1">
+        <input type="number" name="jumlah" class="form-control" value="0">
 
         <button class="btn btn-primary mt-3">Tambah Stok</button>
     </form>
