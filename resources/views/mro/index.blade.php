@@ -460,7 +460,7 @@
     </script>
 
 
-    <Script>
+    {{-- <Script>
         $(document).on("click", ".qrcode-btn", function() {
             let code = $(this).data("code");
             let name = $(this).data("name");
@@ -486,7 +486,59 @@
 
             $("#modalBarcode").modal("show");
         });
-    </Script>
+    </Script> --}}
+
+
+
+    <script>
+        $(document).on("click", ".qrcode-btn", function() {
+            let code = $(this).data("code");
+            let name = $(this).data("name");
+            let spesifikasi = $(this).data("spesifikasi");
+
+            $("#qrcode-view").html("");
+
+            let urlScan = scanRoute.replace(':barcode', code);
+            let urlIn = stockInRoute.replace(':barcode', code);
+            let urlOut = stockOutRoute.replace(':barcode', code);
+
+            // QR hanya mengarah ke halaman selector
+            new QRCode(document.getElementById("qrcode-view"), {
+                text: urlScan,
+                width: 150,
+                height: 150
+            });
+
+            $("#barcode-title").html(`
+        <strong>${name}</strong><br>
+        <small>${spesifikasi}</small><br><br>
+        <small>Scan QR untuk memilih aksi</small><br><br>
+
+        <a href="${urlIn}" target="_blank" class="btn btn-success btn-sm">
+            ➕ Stock In
+        </a>
+
+        <a href="${urlOut}" target="_blank" class="btn btn-danger btn-sm ml-2">
+            ➖ Stock Out
+        </a>
+    `);
+
+            $("#modalBarcode").modal("show");
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     {{-- <script>
         $("#btnPrintBarcode").on("click", function() {

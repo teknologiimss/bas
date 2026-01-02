@@ -404,6 +404,9 @@ Route::prefix('products')->group(function () {
 
         Route::get('/stockin/{barcode}', [MroController::class, 'scanStockIn'])->name('mro.scan.stockin');
         Route::get('/stockout/{barcode}', [MroController::class, 'scanStockOut'])->name('mro.scan.stockout');
+
+        Route::get('/scan/{barcode}', [MroController::class, 'scan'])
+            ->name('mro.scan');
     });
 
     // BA JUSTIFIKASI

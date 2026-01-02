@@ -214,4 +214,10 @@ class MroController extends Controller
         $item = Mro::where('barcode', $barcode)->firstOrFail();
         return view('mro.scan_stockout', compact('item'));
     }
+
+    public function scan($barcode)
+    {
+        $item = Mro::where('barcode', $barcode)->firstOrFail();
+        return view('mro.scan', compact('item'));
+    }
 }
