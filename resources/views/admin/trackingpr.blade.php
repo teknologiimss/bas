@@ -14,6 +14,9 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
+                <div class="col-12">
+                    <h3 class="font-weight-bold">Tracking Purchase Request</h3>
+                </div>
                 {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-pr"
                         onclick="addPR()"><i class="fas fa-plus"></i> Add Purchase Request</button> --}}
                 <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#import-product" onclick="importProduct()"><i class="fas fa-file-excel"></i> Import Product (Excel)</button> -->
@@ -86,63 +89,25 @@
                         @endphp
 
                         <tr>
-                            @if (Auth::user()->role == 2 && strpos(strtolower($data['no_pr']), 'wil1') !== false)
-                            {{-- <td class="text-center">{{ $data['no'] }}</td> --}}
+                            @if (in_array(Auth::user()->role, [0, 1, 7]))
                             <td class="text-center">{{ $data['no_pr'] }}</td>
                             <td class="text-center">{{ $data['proyek'] }}</td>
                             <td class="text-center">{{ $data['tanggal'] }}</td>
                             <td class="text-center">{{ $data['dasar_pr'] }}</td>
                             <td class="text-center">
-                                @elseif (Auth::user()->role == 3 && strpos(strtolower($data['no_pr']), 'wil2') !== false)
-                                {{-- <td class="text-center">{{ $data['no'] }}
-                            </td> --}}
-                            <td class="text-center">{{ $data['no_pr'] }}</td>
-                            <td class="text-center">{{ $data['proyek'] }}</td>
-                            <td class="text-center">{{ $data['tanggal'] }}</td>
-                            <td class="text-center">{{ $data['dasar_pr'] }}</td>
-                            <td class="text-center">
-                                @elseif (Auth::user()->role == 0)
-                                {{-- <td class="text-center">{{ $data['no'] }}
-                            </td> --}}
-                            <td class="text-center">{{ $data['no_pr'] }}</td>
-                            <td class="text-center">{{ $data['proyek'] }}</td>
-                            <td class="text-center">{{ $data['tanggal'] }}</td>
-                            <td class="text-center">{{ $data['dasar_pr'] }}</td>
-                            <td class="text-center">
-                                @endif
-                                {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 2 || Auth::user()->role == 3)
-                                                <button title="Edit Request" type="button" class="btn btn-success btn-xs"
-                                                    data-toggle="modal" data-target="#add-pr"
-                                                    onclick="editPR({{ json_encode($data) }})"><i
-                                    class="fas fa-edit"></i></button>
-                                @endif --}}
 
-                                @if (Auth::user()->role == 2 && strpos(strtolower($data['no_pr']), 'wil1') !== false)
-                                <button title="Lihat Detail" type="button" data-toggle="modal"
-                                    data-target="#detail-pr" class="btn-lihat btn btn-info btn-xs"
-                                    data-detail="{{ json_encode($data) }}"><i
-                                        class="fas fa-list"></i></button>
-                                @elseif (Auth::user()->role == 3 && strpos(strtolower($data['no_pr']), 'wil2') !== false)
-                                <button title="Lihat Detail" type="button" data-toggle="modal"
-                                    data-target="#detail-pr" class="btn-lihat btn btn-info btn-xs"
-                                    data-detail="{{ json_encode($data) }}"><i
-                                        class="fas fa-list"></i></button>
-                                @elseif (Auth::user()->role == 0)
-                                <button title="Lihat Detail" type="button" data-toggle="modal"
-                                    data-target="#detail-pr" class="btn-lihat btn btn-info btn-xs"
-                                    data-detail="{{ json_encode($data) }}"><i
-                                        class="fas fa-list"></i></button>
-                                @endif
+                                <button title="Lihat Detail" type="button"
+                                    data-toggle="modal"
+                                    data-target="#detail-pr"
+                                    class="btn-lihat btn btn-info btn-xs"
+                                    data-detail="{{ json_encode($data) }}">
+                                    <i class="fas fa-list"></i>
+                                </button>
 
-                                {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 2 || Auth::user()->role == 3)
-                                                    <button title="Hapus Request" type="button"
-                                                        class="btn btn-danger btn-xs" data-toggle="modal"
-                                                        data-target="#delete-pr"
-                                                        onclick="deletePR({{ json_encode($data) }})"><i
-                                    class="fas fa-trash"></i></button>
-                                @endif --}}
                             </td>
+                            @endif
                         </tr>
+
                         @endforeach
                         @else
                         <tr class="text-center">
@@ -292,14 +257,9 @@
                                             <th>{{ __('SAT') }}</th>
                                             <th>{{ __('Waktu Penyelesaian') }}</th>
                                             <th>{{ __('Countdown') }}</th>
-                                            <th>{{ __('Keterangan') }}</th>
-                                            <th>{{ __('SPPH') }}</th>
-
-                                            <th>{{ __('PO') }}</th>
                                             <th>{{ __('STATUS') }}</th>
                                             <th>{{ __('EKSPEDISI') }}</th>
                                             <th>{{ __('QC') }}</th>
-                                            <th>{{ __('AKSI') }}</th>
                                         </thead>
                                         <tbody id="table-pr">
                                         </tbody>

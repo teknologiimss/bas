@@ -569,10 +569,10 @@ class PurchaseOrderController extends Controller
                 'tanggal_po' => 'required',
                 'batas_po' => 'required',
                 'incoterm' => 'required',
-
                 'term_pay' => 'required',
                 'proyek_id' => 'required',
-
+                'jenis_proyek' => 'required',
+                'alamat_proyek' => 'required',
             ],
             [
                 'no_po.required' => 'No. PO harus diisi',
@@ -580,9 +580,10 @@ class PurchaseOrderController extends Controller
                 'tanggal_po.required' => 'Tanggal PO harus diisi',
                 'batas_po.required' => 'Batas Akhir PO harus diisi',
                 'incoterm.required' => 'Incoterm harus diisi',
-
                 'term_pay.required' => 'Termin Pembayaran harus diisi',
                 'proyek_id.required' => 'Proyek harus diisi',
+                'jenis_proyek.required' => 'Jenis proyek harus diisi',
+                'alamat_proyek.required' => 'Alamat proyek harus diisi',
             ]
         );
 
@@ -604,8 +605,12 @@ class PurchaseOrderController extends Controller
                 'proyek_id' => implode(',', $request->proyek_id),
                 'pr_id' => implode(',', $request->nomor_pr),
                 'catatan_vendor' => $request->catatan_vendor,
-                'ongkos' => $request->ongkos,
-                'asuransi' => $request->asuransi,
+                'ppn' => $request->ppn,
+                'pph' => $request->pph,
+                'jenis_proyek' => $request->jenis_proyek,
+                'alamat_proyek' => $request->alamat_proyek,
+                'ttd_vendor'     => $request->ttd_vendor,
+                'jabatan_vendor' => $request->jabatan_vendor,
             ]);
 
             // $prs = DetailPR::where('id_pr', $request->pr_id)->get();
@@ -639,9 +644,12 @@ class PurchaseOrderController extends Controller
                 'garansi' => $request->garansi,
                 'proyek_id' => implode(',', $request->proyek_id),
                 'catatan_vendor' => $request->catatan_vendor,
-                'ongkos' => $request->ongkos,
-                'asuransi' => $request->asuransi,
-
+                'ppn' => $request->ppn,
+                'pph' => $request->pph,
+                'jenis_proyek' => $request->jenis_proyek,
+                'alamat_proyek' => $request->alamat_proyek,
+                'ttd_vendor'     => $request->ttd_vendor,
+                'jabatan_vendor' => $request->jabatan_vendor,
             ]);
 
             return redirect()->route('purchase_order.index')->with('success', 'Data PO berhasil diubah');
@@ -704,9 +712,9 @@ class PurchaseOrderController extends Controller
     //     $po->subtotal = $po->details->sum(function ($detail) {
     //         return $detail->harga_per_unit * $detail->po_qty;
     //     });
-    //     $po->ongkos = 0;
-    //     $po->asuransi = 0;
-    //     $po->total = $po->subtotal + $po->ongkos + $po->asuransi;
+    //     $po->ppn = 0;
+    //     $po->pph = 0;
+    //     $po->total = $po->subtotal + $po->ppn + $po->pph;
     //     $split_proyek = explode(',', $po->proyek_id);
     //     $proyek_names = Kontrak::whereIn('id', $split_proyek)->pluck('nama_pekerjaan')->toArray();
     //     $po->proyek = implode(',', $proyek_names);
@@ -729,6 +737,7 @@ class PurchaseOrderController extends Controller
             'purchase_order.*',
             'vendor.nama as nama_vendor',
             'vendor.alamat as alamat_vendor',
+            'vendor.cp as cp',
             'vendor.telp as telp_vendor',
             'vendor.email as email_vendor',
             'vendor.fax as fax_vendor',
@@ -784,9 +793,9 @@ class PurchaseOrderController extends Controller
             return (float) ($detail->harga_per_unit * $detail->po_qty);
         });
 
-        $po->ongkos = (float) ($po->ongkos ?? 0);
-        $po->asuransi = (float) ($po->asuransi ?? 0);
-        $po->total = $po->subtotal + $po->ongkos + $po->asuransi;
+        $po->ppn = (float) ($po->ppn ?? 0);
+        $po->pph = (float) ($po->pph ?? 0);
+        $po->total = $po->subtotal + $po->ppn + $po->pph;
 
         $split_proyek = explode(',', $po->proyek_id);
         $proyek_names = Kontrak::whereIn('id', $split_proyek)->pluck('nama_pekerjaan')->toArray();
@@ -797,6 +806,22 @@ class PurchaseOrderController extends Controller
 
         $nama = $po->nama_proyek ?? 'Unknown';
         $no = $po->no_po ?? 'Unknown';
+
+        $pdf->render();
+
+        $dompdf = $pdf->getDomPDF();
+        $canvas = $dompdf->getCanvas();
+
+        $canvas->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
+            $font = $fontMetrics->getFont('Helvetica', 'normal');
+            $text = "Page $pageNumber of $pageCount";
+
+            // posisi pojok kanan bawah (LANDSCAPE A4)
+            $x = $canvas->get_width() - 60;
+            $y = $canvas->get_height() - 22;
+
+            $canvas->text($x, $y, $text, $font, 9);
+        });
 
         return $pdf->stream('PO-' . $nama . '(' . $no . ')' . '.pdf');
     }
@@ -1129,7 +1154,7 @@ class PurchaseOrderController extends Controller
     }
 
 
-    
+
 
 
     //End Detail Product

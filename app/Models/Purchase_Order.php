@@ -26,8 +26,10 @@ class Purchase_Order extends Model
         'proyek_id',
         'nomor_lppb',
         'tanggal_lppb',
-        'ongkos',
-        'asuransi'
+        'ppn',
+        'pph',
+        'ttd_vendor',
+        'jabatan_vendor'
     ];
     public function vendor()
 {
