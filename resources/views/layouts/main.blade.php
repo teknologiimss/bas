@@ -526,6 +526,19 @@
 
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 14)
                                             <li class="nav-item">
+                                                <a href="{{ route('mro.progress') }}" class="nav-link">
+                                                    <i class="nav-icon fas fa-history"></i>
+                                                    <p>Resume Progress MRO</p>
+                                                </a>
+                                            </li>
+                                        @endif
+
+
+
+
+
+                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                            <li class="nav-item">
                                                 <a href="{{ route('mro') }}"
                                                     class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
                                                     <i class="far fa-circle nav-icon"></i>
@@ -542,6 +555,9 @@
                                                 </a>
                                             </li>
                                         @endif
+
+
+
 
 
 

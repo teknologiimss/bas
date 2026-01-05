@@ -32,6 +32,8 @@ class MonitoringController extends Controller
             'tanggal_selesai_kontrak' => 'required|date',
             'status' => 'required|in:Open,Closed,On Hold',
             'keterangan' => 'nullable|string',
+            'progress' => 'nullable|string',
+            'keterangan2' => 'nullable|string',
             'nama_dokumen.*' => 'nullable|string',
             'file_dokumen.*' => 'nullable|file|max:60000',
         ]);
@@ -45,6 +47,8 @@ class MonitoringController extends Controller
             'tanggal_selesai_kontrak' => $request->tanggal_selesai_kontrak,
             'status' => $request->status,
             'keterangan' => $request->keterangan,
+            'progress' => $request->progress,
+            'keterangan2' => $request->keterangan2,
         ]);
 
         // if ($request->hasFile('file_dokumen')) {
@@ -99,6 +103,8 @@ class MonitoringController extends Controller
             'tanggal_selesai_kontrak' => 'required|date',
             'status' => 'required|in:Open,Closed,On Hold',
             'keterangan' => 'nullable|string',
+            'progress' => 'nullable|string',
+            'keterangan2' => 'nullable|string',
             'nama_dokumen.*' => 'nullable|string',
             'file_dokumen.*' => 'nullable|file|max:60000',
         ]);
@@ -111,6 +117,8 @@ class MonitoringController extends Controller
             'tanggal_selesai_kontrak',
             'status',
             'keterangan',
+            'progress',
+            'keterangan2',
         ]));
 
         // Upload dokumen tambahan jika ada
@@ -251,5 +259,32 @@ class MonitoringController extends Controller
         return back()->with('error', '❌ Gagal membuat file ZIP.');
     }
 
-    
+    // public function updateProgress(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'progress' => 'required|integer|min:0|max:100',
+    //         'keterangan_progress' => 'nullable|string'
+    //     ]);
+
+    //     $monitoring = Monitoring::findOrFail($id);
+    //     $monitoring->update([
+    //         'progress' => $request->progress,
+    //         'keterangan2' => $request->keterangan2
+    //     ]);
+
+    //     return redirect()->back()->with('success', 'Progress berhasil diperbarui');
+    // }
+
+    // public function destroyprogress($id)
+    // {
+    //     Monitoring::findOrFail($id)->delete();
+    //     return redirect()->back()->with('success', 'Data monitoring dihapus');
+    // }
+
+    public function print()
+    {
+        $monitorings = Monitoring::all();  // TANPA paginate
+
+        return view('mro.progress.print', compact('monitorings'));
+    }
 }

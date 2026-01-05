@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\BarangMroExport;
 use App\Models\Category;
+use App\Models\Monitoring;
 use App\Models\Mro;
 use App\Models\MroStockLog;
 use Illuminate\Http\Request;
@@ -219,5 +220,20 @@ class MroController extends Controller
     {
         $item = Mro::where('barcode', $barcode)->firstOrFail();
         return view('mro.scan', compact('item'));
+    }
+
+    // public function progress()
+    // {
+    //     $monitorings = Monitoring::orderBy('tanggal_kontrak', 'desc')->get();
+
+    //     return view('mro.resume_progress', compact('monitorings'));
+    // }
+
+    public function progress()
+    {
+        $monitorings = Monitoring::orderBy('tanggal_kontrak', 'desc')
+            ->paginate(10);
+
+        return view('mro.resume_progress', compact('monitorings'));
     }
 }

@@ -125,6 +125,37 @@
                             {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                         </small><br>
                         <small>Keterangan: {{ $m->keterangan ?? '-' }}</small>
+
+                        {{-- PROGRESS --}}
+                        <div class="mt-3">
+                            <small class="text-muted">Progress Pekerjaan</small>
+                            <div class="progress" style="height: 18px;">
+                                <div class="progress-bar 
+                                    {{ $m->progress < 50 ? 'bg-danger' : ($m->progress < 100 ? 'bg-warning' : 'bg-success') }}"
+                                    role="progressbar" style="width: {{ $m->progress ?? 0 }}%">
+                                    {{ $m->progress ?? 0 }}%
+                                </div>
+                            </div>
+
+                            <small class="d-block mt-1 text-muted">
+                                @php
+                                    $text = trim($m->keterangan2);
+
+                                    if (str_starts_with($text, '-')) {
+                                        // Jika pakai "-"
+                                        $lines = preg_split('/\r\n|\r|\n/', $text);
+                                        echo implode('<br>', $lines);
+                                    } else {
+                                        // Jika tanpa "-"
+                                        $lines = preg_split('/\r\n|\r|\n/', $text);
+                                        echo implode(', ', $lines);
+                                    }
+                                @endphp
+                            </small>
+                        </div>
+
+
+
                     </div>
 
                     <div>
@@ -139,7 +170,7 @@
                     </div>
                 </div>
 
-                
+
 
 
                 {{-- 📄 Dokumen --}}
@@ -300,6 +331,20 @@
                                         onclick="addDokumenEdit({{ $m->id }})">+ Tambah Dokumen</button>
                                 </div>
                             </div>
+
+                            <div class="col-md-4">
+                                <label>Progress (%)</label>
+                                <input type="number" name="progress" class="form-control" min="0"
+                                    max="100" value="{{ $m->progress ?? 0 }}" required>
+                            </div>
+
+                            <div class="col-md-8">
+                                <label>Keterangan Progress</label>
+                                <textarea name="keterangan2" class="form-control" placeholder="Catatan perkembangan pekerjaan...">{{ $m->keterangan2 }}</textarea>
+                            </div>
+
+
+
                         </div>
 
                         <div class="modal-footer">
@@ -364,14 +409,29 @@
                             <div id="dokumenContainer">
                                 <div class="d-flex gap-2 mb-2">
                                     <input type="text" name="nama_dokumen[]" class="form-control"
-                                        placeholder="Nama Dokumen" required>
-                                    <input type="file" name="file_dokumen[]" class="form-control" required>
+                                        placeholder="Nama Dokumen">
+                                    <input type="file" name="file_dokumen[]" class="form-control">
                                 </div>
                             </div>
                             <button type="button" class="btn btn-outline-secondary btn-sm" id="addDokumen">
                                 + Tambah Dokumen
                             </button>
                         </div>
+
+
+                        <div class="col-md-4">
+                            <label>Progress (%)</label>
+                            <input type="number" name="progress" class="form-control" min="0" max="100"
+                                value="0" required>
+                        </div>
+
+                        <div class="col-md-8">
+                            <label>Keterangan Progress</label>
+                            <textarea name="keterangan2" class="form-control" placeholder="Catatan awal progress"></textarea>
+                        </div>
+
+
+
                     </div>
                 </div>
 

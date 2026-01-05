@@ -407,6 +407,9 @@ Route::prefix('products')->group(function () {
 
         Route::get('/scan/{barcode}', [MroController::class, 'scan'])
             ->name('mro.scan');
+
+        Route::get('/progress', [MroController::class, 'progress'])
+            ->name('mro.progress');
     });
 
     // BA JUSTIFIKASI
@@ -523,6 +526,15 @@ Route::post('/monitoring/{id}/docgroup/store', [MonitoringController::class, 'st
 
 Route::delete('/monitoring/docgroup/{id}/destroy', [MonitoringController::class, 'destroyDocGroup'])
     ->name('monitoring.docgroup.destroy');
+
+Route::post('/progress/{id}', [MonitoringController::class, 'updateProgress'])
+    ->name('mro.progress.update');
+
+Route::delete('/progress/{id}', [MonitoringController::class, 'destroy'])
+    ->name('mro.progress.delete');
+
+Route::get('/mro-progress/print', [MonitoringController::class, 'print'])
+    ->name('mro.progress.print');
 
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');

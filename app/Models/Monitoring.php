@@ -17,7 +17,9 @@ class Monitoring extends Model
         'tanggal_kontrak',
         'tanggal_selesai_kontrak',
         'status',
-        'keterangan'
+        'keterangan',
+        'progress',
+        'keterangan2',
     ];
 
     public function proyek()
