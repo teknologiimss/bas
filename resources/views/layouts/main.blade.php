@@ -320,7 +320,7 @@
 
                                     <ul class="nav nav-treeview">
                                         {{-- Contoh menu role Pemasaran --}}
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 12 || Auth::user()->role == 15 || Auth::user()->role == 16)
+                                        @if (Auth::user()->role == 0 || Auth::user()->role == 12)
                                             <li class="nav-item">
                                                 <a href="{{ route('kontrak.index') }}"
                                                     class="nav-link {{ Route::current()->getName() == 'kontrak.index' ? 'active' : '' }}">
@@ -749,7 +749,8 @@
             </div>
         </aside>
 
-        <div class="container mt-3">
+        <div class="content-wrapper">
+            <div class="container mt-3">
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -767,7 +768,6 @@
 
 </div>
 
-        <div class="content-wrapper">
             @yield('content')
         </div>
 
