@@ -75,7 +75,7 @@
                 {{-- ** Menu Pemasaran --}}
 
                 {{-- Pemasaran --}}
-                @if (Auth::user()->role == 0 || Auth::user()->role == 12)
+                @if (Auth::user()->role == 0 || Auth::user()->role == 12 || Auth::user()->role == 15 || Auth::user()->role == 16)
 
                     <div class="container">
                         {{-- <div class="menu-item">
@@ -109,7 +109,7 @@
                             <div class="row">
 
                                 {{-- Keproyekan --}}
-                                @if (Auth::user()->role == 0 || Auth::user()->role == 12)
+                                @if (Auth::user()->role == 0 || Auth::user()->role == 12 || Auth::user()->role == 15 || Auth::user()->role == 16)
                                     <div class="col-lg-4 col-6">
                                         <a href="{{ route('keproyekan.index') }}">
                                             <div class="small-box"
@@ -127,7 +127,7 @@
                                 @endif
 
                                 {{-- Menu Kontrak SAR --}}
-                                @if (Auth::user()->role == 0 || Auth::user()->role == 12)
+                                @if (Auth::user()->role == 0 || Auth::user()->role == 12 || Auth::user()->role == 15 || Auth::user()->role == 16)
                                     <div class="col-lg-4 col-6">
                                         <a href="{{ route('kontrak.index') }}">
                                             <div class="small-box"
@@ -145,7 +145,7 @@
 
 
                                 {{-- Riwayat Pembelian --}}
-                                @if (Auth::user()->role == 0 || Auth::user()->role == 12)
+                                @if (Auth::user()->role == 0 || Auth::user()->role == 12 || Auth::user()->role == 15 || Auth::user()->role == 16)
                                     <div class="col-lg-4 col-6">
                                         <a href="{{ route('riwayat_pembelian') }}">
                                             <div class="small-box"

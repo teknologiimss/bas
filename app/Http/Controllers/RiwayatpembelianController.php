@@ -15,10 +15,50 @@ class RiwayatpembelianController extends Controller
 {
     public function riwayat_pembelian()
     {
-        $items = DetailPR::join('detail_po', 'detail_po.id_detail_pr', '=', 'detail_pr.id')->groupBy('detail_pr.kode_material')->paginate(10);
+        $items = DetailPR::select(
+            'detail_pr.*',
+            'detail_po.id_po as id_po_detail'
+        )
+            ->join('detail_po', 'detail_po.id_detail_pr', '=', 'detail_pr.id')
+            ->groupBy('detail_pr.kode_material')
+            ->paginate(10);
+
+        $items->getCollection()->transform(function ($d) {
+
+            // Ambil PO pakai alias
+            $po = Purchase_Order::find($d->id_po_detail);
+
+            $d->no_po = $po->no_po ?? '-';
+            $d->tanggal_po = $po->tanggal_po ?? null;
+
+            if ($po && $po->proyek_id) {
+                $ids = explode(',', $po->proyek_id);
+                $d->nama_proyek = Kontrak::whereIn('id', $ids)
+                    ->pluck('nama_pekerjaan')
+                    ->implode(', ');
+            } else {
+                $d->nama_proyek = '-';
+            }
+
+            $detailPo = DetailPo::where('id_detail_pr', $d->id)->first();
+            $d->harga = $detailPo->harga ?? 0;
+
+            $d->nama_vendor = $po && $po->vendor_id
+                ? Vendor::find($po->vendor_id)->nama ?? '-'
+                : '-';
+
+            return $d;
+        });
 
         return view('riwayat_pembelian.index', compact('items'));
     }
+
+    // public function riwayat_pembelian()
+    // {
+    //     $items = DetailPR::join('detail_po', 'detail_po.id_detail_pr', '=', 'detail_pr.id')->groupBy('detail_pr.kode_material')->paginate(10);
+
+    //     return view('riwayat_pembelian.index', compact('items'));
+    // }
 
     // public function getDetailRiwayatPembelian(Request $request)
     // {
@@ -77,5 +117,4 @@ class RiwayatpembelianController extends Controller
             'items' => $items,
         ]);
     }
-    
 }

@@ -85,7 +85,7 @@
                                             </td>
                                             {{-- membuat lampiran lebih dari 1 --}}
 
-                                            @if (Auth::user()->role == 0 || Auth::user()->role == 12|| Auth::user()->role == 3)
+                                            @if (Auth::user()->role == 0 || Auth::user()->role == 12|| Auth::user()->role == 3 || Auth::user()->role == 15 || Auth::user()->role == 16)
                                                 <td class="text-center">
                                                     <button title="Edit Produk" type="button"
                                                         class="btn btn-success btn-xs" data-toggle="modal"
