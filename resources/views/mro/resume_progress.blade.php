@@ -106,7 +106,16 @@
                                     {{ $monitorings->firstItem() + $index }}
                                 </td>
 
-                                <td>{{ $m->po_nota_dinas }}</td>
+                                {{-- Klik PO/Nodin Spesifik ke Halaman Monitoring --}}
+                                <td>
+                                    <a href="{{ route('monitoring.index', $m->proyek_id) }}?po={{ urlencode(trim($m->po_nota_dinas)) }}"
+                                        class="text-primary font-weight-bold">
+                                        {{ $m->po_nota_dinas }}
+                                    </a>
+                                </td>
+
+
+
                                 <td>{{ $m->nama_pekerjaan }}</td>
                                 <td class="text-center">
                                     {{ \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') }}

@@ -14,13 +14,43 @@ use ZipArchive;
 
 class MonitoringController extends Controller
 {
-    public function index($proyek_id)
+    // public function index($proyek_id)
+    // {
+    //     $proyek = Proyek::findOrFail($proyek_id);
+    //     $monitorings = Monitoring::with('documents',
+    //         'folders.documents')->where('proyek_id', $proyek_id)->latest()->get();
+    //     return view('monitoring.index', compact('proyek', 'monitorings'));
+    // }
+
+
+    
+
+    // Klik PO/Nodin Spesifik ke Halaman Monitoring
+    public function index(Request $request, $proyek_id)
     {
         $proyek = Proyek::findOrFail($proyek_id);
-        $monitorings = Monitoring::with('documents',
-            'folders.documents')->where('proyek_id', $proyek_id)->latest()->get();
+
+        if ($request->filled('po')) {
+            // 🔥 AMBIL 1 DATA PO TERBARU
+            $monitorings = Monitoring::with('documents', 'folders.documents')
+                ->where('proyek_id', $proyek_id)
+                ->where('po_nota_dinas', trim($request->po))
+                ->latest()
+                ->take(1)
+                ->get();
+        } else {
+            // TAMPILKAN SEMUA JIKA TIDAK ADA PO
+            $monitorings = Monitoring::with('documents', 'folders.documents')
+                ->where('proyek_id', $proyek_id)
+                ->latest()
+                ->get();
+        }
+
         return view('monitoring.index', compact('proyek', 'monitorings'));
     }
+
+
+
 
     public function store(Request $request, $proyek_id)
     {
