@@ -204,16 +204,40 @@ class MroController extends Controller
         return back()->with('success', 'Berhasil menghapus ' . count($ids) . ' data Stok Barang MRO.');
     }
 
-    public function scanStockIn($barcode)
+    // public function scanStockIn($barcode)
+    // {
+    //     $item = Mro::where('barcode', $barcode)->firstOrFail();
+    //     return view('mro.scan_stockin', compact('item'));
+    // }
+
+    public function scanStockIn(Request $request)
     {
-        $item = Mro::where('barcode', $barcode)->firstOrFail();
-        return view('mro.scan_stockin', compact('item'));
+        $item = Mro::where('barcode', $request->barcode)->firstOrFail();
+
+        $item->stock += $request->jumlah;
+        $item->save();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Stok barang berhasil ditambahkan');
     }
 
-    public function scanStockOut($barcode)
+    // public function scanStockOut($barcode)
+    // {
+    //     $item = Mro::where('barcode', $barcode)->firstOrFail();
+    //     return view('mro.scan_stockout', compact('item'));
+    // }
+
+    public function scanStockOut(Request $request)
     {
-        $item = Mro::where('barcode', $barcode)->firstOrFail();
-        return view('mro.scan_stockout', compact('item'));
+        $item = Mro::where('barcode', $request->barcode)->firstOrFail();
+
+        $item->stock -= $request->jumlah;
+        $item->save();
+
+        return redirect()
+            ->back()
+            ->with('warning', 'Stok barang berhasil dikurangi');
     }
 
     public function scan($barcode)
