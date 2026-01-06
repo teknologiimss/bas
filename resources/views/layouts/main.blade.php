@@ -320,7 +320,7 @@
 
                                     <ul class="nav nav-treeview">
                                         {{-- Contoh menu role Pemasaran --}}
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 12)
+                                        @if (Auth::user()->role == 0 || Auth::user()->role == 12 || Auth::user()->role == 15 || Auth::user()->role == 16)
                                             <li class="nav-item">
                                                 <a href="{{ route('kontrak.index') }}"
                                                     class="nav-link {{ Route::current()->getName() == 'kontrak.index' ? 'active' : '' }}">

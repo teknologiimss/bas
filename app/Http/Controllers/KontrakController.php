@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Auth;
 use stdClass;
 
 
@@ -37,6 +38,7 @@ class KontrakController extends Controller
     public function index(Request $request)
     {
         $search = $request->q;
+        $userRole = Auth::user()->role;
 
         if (Session::has('selected_warehouse_id')) {
             $warehouse_id = Session::get('selected_warehouse_id');
@@ -44,10 +46,22 @@ class KontrakController extends Controller
             $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
         }
 
-        $requests = Kontrak::select('kontrak.*')
-            // ->join('keproyekan', 'keproyekan.id', '=', 'bpm.proyek_id')
-            ->orderBy('kontrak.id', 'asc')
-            ->paginate(50);
+        $query = Kontrak::select('kontrak.*')
+            ->orderBy('kontrak.id', 'asc');
+
+        // FILTER DATA BERDASARKAN ROLE
+        if ($userRole == 15) {
+            $query->where('tipe', 'NON INKA');
+        } elseif ($userRole == 16) {
+            $query->where('tipe', 'INKA GROUP');
+        } elseif ($userRole == 12) {
+            // role 12 → akses penuh (tanpa filter)
+        } else {
+            // role lain → tidak boleh lihat data
+            $query->whereRaw('1 = 0');
+        }
+
+        $requests = $query->paginate(50);
 
         // $proyeks = DB::table('keproyekan')->get();
         //  dd($requests);
@@ -849,7 +863,7 @@ class KontrakController extends Controller
 
 
 
-    
+
 
 
 
