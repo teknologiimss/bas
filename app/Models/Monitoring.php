@@ -37,10 +37,42 @@ class Monitoring extends Model
     //     return $this->hasMany(DocumentsGroup::class, 'monitor_id');
     // }
 
-    
 
-public function folders()
-{
-    return $this->hasMany(Folder::class, 'monitor_id');
-}
+
+    
+    /**
+     * Hitung progress persen otomatis berdasarkan dokumen
+     */
+    public function calculateProgress(): int
+    {
+        $progress = 0;
+
+        $docs = $this->documents->pluck('nama_dokumen')->map(fn($d) => strtolower($d));
+
+        if ($docs->contains(fn($d) => str_contains($d, 'nota'))) {
+            $progress += 15;
+        }
+
+        if ($docs->contains(fn($d) => str_contains($d, 'purchase') || str_contains($d, 'po'))) {
+            $progress += 15;
+        }
+
+        if ($docs->contains(fn($d) =>
+                str_contains($d, 'foto') ||
+                str_contains($d, 'dokumentasi') ||
+                str_contains($d, 'laporan'))) {
+            $progress += 60;
+        }
+
+        if ($docs->contains(fn($d) => str_contains($d, 'bakp'))) {
+            $progress += 10;
+        }
+
+        return min($progress, 100);
+    }
+
+    public function folders()
+    {
+        return $this->hasMany(Folder::class, 'monitor_id');
+    }
 }

@@ -135,6 +135,7 @@
                                     role="progressbar" style="width: {{ $m->progress ?? 0 }}%">
                                     {{ $m->progress ?? 0 }}%
                                 </div>
+
                             </div>
 
                             <small class="d-block mt-1 text-muted">
@@ -332,11 +333,11 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                            {{-- <div class="col-md-4">
                                 <label>Progress (%)</label>
-                                <input type="number" name="progress" class="form-control" min="0"
-                                    max="100" value="{{ $m->progress ?? 0 }}" required>
-                            </div>
+                                <input type="number" name="progress" class="form-control"
+                                    min="0" max="100" value="{{ $m->progress ?? 0 }}" required>
+                            </div> --}}
 
                             <div class="col-md-8">
                                 <label>Keterangan Progress</label>
@@ -419,7 +420,7 @@
                         </div>
 
 
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <label>Progress (%)</label>
                             <input type="number" name="progress" class="form-control" min="0" max="100"
                                 value="0" required>
@@ -428,7 +429,7 @@
                         <div class="col-md-8">
                             <label>Keterangan Progress</label>
                             <textarea name="keterangan2" class="form-control" placeholder="Catatan awal progress"></textarea>
-                        </div>
+                        </div> --}}
 
 
 
@@ -446,6 +447,15 @@
     {{-- JS --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+
+
+
+
+
+
+
+
 
 
     {{-- 🔹 AJAX DELETE & UPDATE DOKUMEN --}}

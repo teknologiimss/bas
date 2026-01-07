@@ -72,6 +72,9 @@
             </div>
         @endif
 
+
+        
+
         {{-- TABLE --}}
         <div class="card shadow-sm">
             <div class="card-body table-responsive">

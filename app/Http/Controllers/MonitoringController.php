@@ -22,9 +22,6 @@ class MonitoringController extends Controller
     //     return view('monitoring.index', compact('proyek', 'monitorings'));
     // }
 
-
-    
-
     // Klik PO/Nodin Spesifik ke Halaman Monitoring
     public function index(Request $request, $proyek_id)
     {
@@ -48,9 +45,6 @@ class MonitoringController extends Controller
 
         return view('monitoring.index', compact('proyek', 'monitorings'));
     }
-
-
-
 
     public function store(Request $request, $proyek_id)
     {
@@ -116,6 +110,10 @@ class MonitoringController extends Controller
                     'file_path' => 'lampiran/' . $uniqueName,  // tanpa 'storage/'
                 ]);
             }
+
+            // Hitung Ulang Progress Persen
+            $monitoring->progress = $monitoring->calculateProgress();
+            $monitoring->save();
         }
 
         return redirect()->back()->with('success', 'Monitoring berhasil dibuat');
@@ -187,6 +185,10 @@ class MonitoringController extends Controller
                     'file_path' => 'lampiran/' . $uniqueName,  // tanpa 'storage/'
                 ]);
             }
+
+            // Hitung Ulang Progress Persen
+            $monitoring->progress = $monitoring->calculateProgress();
+            $monitoring->save();
         }
 
         return redirect()->back()->with('success', 'Monitoring berhasil diperbarui');
@@ -211,6 +213,9 @@ class MonitoringController extends Controller
     {
         $document = MonitoringDocument::findOrFail($id);
 
+        // Hitung Ulang Progress persen
+        $monitoring = $document->monitoring;
+
         // Hapus file fisik
         $filePath = public_path($document->file_path);
         if (file_exists($filePath)) {
@@ -219,6 +224,10 @@ class MonitoringController extends Controller
 
         // Hapus record database
         $document->delete();
+
+        // 🔥 HITUNG ULANG PROGRESS persen
+        $monitoring->progress = $monitoring->calculateProgress();
+        $monitoring->save();
 
         // Kembalikan response JSON
         return response()->json([
@@ -245,6 +254,11 @@ class MonitoringController extends Controller
         }
 
         $document->save();
+
+        // 🔥 HITUNG ULANG PROGRESS persen
+        $monitoring = $document->monitoring;
+        $monitoring->progress = $monitoring->calculateProgress();
+        $monitoring->save();
 
         return response()->json(['success' => true, 'message' => 'Dokumen berhasil diperbarui.']);
     }
