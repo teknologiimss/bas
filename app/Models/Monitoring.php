@@ -39,7 +39,7 @@ class Monitoring extends Model
 
 
 
-    
+
     /**
      * Hitung progress persen otomatis berdasarkan dokumen
      */
@@ -59,7 +59,7 @@ class Monitoring extends Model
 
         if ($docs->contains(fn($d) =>
                 str_contains($d, 'foto') ||
-                str_contains($d, 'dokumentasi') ||
+                str_contains($d, 'dokumen') ||
                 str_contains($d, 'laporan'))) {
             $progress += 60;
         }
