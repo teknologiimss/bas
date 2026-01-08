@@ -1,19 +1,25 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container mt-4">
-    
-    <h4>Stock Out — {{ $item->mro_name }}</h4>
+    <div class="container mt-4">
 
-    <form action="{{ route('mro.stockout') }}" method="POST">
-        @csrf
+        <h4>Stock Out — {{ $item->mro_name }}</h4>
 
-        <input type="hidden" name="barcode" value="{{ $item->barcode }}">
+        <form action="{{ route('mro.stockout') }}" method="POST">
+            @csrf
 
-        <label>Jumlah</label>
-        <input type="number" name="jumlah" class="form-control" value="0">
+            <input type="hidden" name="barcode" value="{{ $item->barcode }}">
 
-        <button class="btn btn-danger mt-3">Kurangi Stok</button>
-    </form>
-</div>
+            <label>Jumlah</label>
+            <input type="number" name="jumlah" class="form-control" value="0">
+
+            <div class="mb-3">
+                <label class="form-label">Proyek</label>
+                <input type="text" name="proyek" class="form-control"
+                    placeholder="Tulis yang lengkap!! : Cuci Kereta KRL KCI" required>
+            </div>
+
+            <button class="btn btn-danger mt-3">Kurangi Stok</button>
+        </form>
+    </div>
 @endsection

@@ -148,7 +148,7 @@ class MroController extends Controller
             'qty' => $r->jumlah,
             'stock_before' => $before,
             'stock_after' => $item->stock,
-            'proyek' => $item->proyek,
+            'proyek' => $r->proyek,
             'user' => auth()->user()->name,
         ]);
 
