@@ -9,7 +9,7 @@ class MroStockLog extends Model
 {
     protected $fillable = [
         'mro_id', 'barcode', 'type', 'qty',
-        'stock_before', 'stock_after', 'proyek', 'user'
+        'stock_before', 'stock_after', 'proyek', 'user','spp'
     ];
 
     public function mro()
