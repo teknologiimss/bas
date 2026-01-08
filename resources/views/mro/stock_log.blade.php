@@ -100,7 +100,7 @@
                                             <td class="text-center">{{ $log->qty }}</td>
                                             <td class="text-center">{{ $log->stock_before }}</td>
                                             <td class="text-center">{{ $log->stock_after }}</td>
-                                            <td class="text-center">{{ $log->mro->proyek ?? '-' }}</td>
+                                            <td class="text-center">{{ $log->proyek ?? '-' }}</td>
                                             <td>{{ $log->user }}</td>
                                         </tr>
                                     @endforeach
