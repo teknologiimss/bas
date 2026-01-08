@@ -263,32 +263,30 @@ class MonitoringController extends Controller
     //     return response()->json(['success' => true, 'message' => 'Dokumen berhasil diperbarui.']);
     // }
 
-
     public function updateDocument(Request $request, $id)
-{
-    $document = MonitoringDocument::findOrFail($id);
+    {
+        $document = MonitoringDocument::findOrFail($id);
 
-    if ($request->hasFile('file_dokumen')) {
+        if ($request->hasFile('file_dokumen')) {
+            // Hapus file lama
+            if ($document->file_path && File::exists(public_path($document->file_path))) {
+                File::delete(public_path($document->file_path));
+            }
 
-        // Hapus file lama
-        if ($document->file_path && File::exists(public_path($document->file_path))) {
-            File::delete(public_path($document->file_path));
+            // Upload file baru (PASTI UNIK)
+            $file = $request->file('file_dokumen');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('lampiran'), $filename);
+
+            $document->file_path = 'lampiran/' . $filename;
+            $document->save();
         }
 
-        // Upload file baru (PASTI UNIK)
-        $file = $request->file('file_dokumen');
-        $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('lampiran'), $filename);
-
-        $document->file_path = 'lampiran/' . $filename;
-        $document->save();
+        return response()->json([
+            'success' => true,
+            'file_url' => asset($document->file_path) . '?v=' . time()
+        ]);
     }
-
-    return response()->json([
-        'success' => true,
-        'file_url' => asset($document->file_path) . '?v=' . time()
-    ]);
-}
 
     public function exportZip($proyek_id)
     {
