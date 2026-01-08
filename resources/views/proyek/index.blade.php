@@ -24,8 +24,8 @@
     <!-- FILTER SEARCH -->
     <form method="GET" action="" class="mb-3">
         <div class="input-group" style="max-width: 300px;">
-            <input type="text" name="search" class="form-control"
-                placeholder="Cari nama proyek..." value="{{ request('search') }}">
+            <input type="text" name="search" class="form-control" placeholder="Cari nama proyek..."
+                value="{{ request('search') }}">
             <button class="btn btn-primary">Cari</button>
         </div>
     </form>
@@ -105,7 +105,9 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success">Submit</button>
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cancel
+                    </button>
                 </div>
             </form>
         </div>

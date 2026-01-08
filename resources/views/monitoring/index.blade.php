@@ -272,9 +272,9 @@
                     <form class="modal-content" action="{{ route('monitoring.update', $m->id) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
-                        <div class="modal-header bg-primary text-white">
+                        <div class="modal-header bg-danger text-white">
                             <h5>Edit Monitoring</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            <button type="button" class="btn-close btn-close-white" data-dismiss="modal"></button>
                         </div>
 
                         <div class="modal-body">
