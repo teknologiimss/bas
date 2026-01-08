@@ -57,47 +57,56 @@
                             <i class="fas fa-trash"></i> Hapus Terpilih
                         </button>
 
-                        <table class="table table-bordered table-hover table-sm">
-                            <thead>
-                                <tr class="text-center">
-                                    <th><input type="checkbox" id="checkAll"></th>
-                                    <th>Tanggal</th>
-                                    <th>Kode Material</th>
-                                    <th>Nama Barang</th>
-                                    <th>Tipe</th>
-                                    <th>Qty</th>
-                                    <th>Stok Sebelum</th>
-                                    <th>Stok Sesudah</th>
-                                    <th>Proyek</th>
-                                    <th>Akun</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($logs as $log)
-                                    <tr>
-                                        <td class="text-center">
-                                            <input type="checkbox" name="ids[]" value="{{ $log->id }}"
-                                                class="checkItem">
-                                        </td>
-                                        <td>{{ $log->created_at }}</td>
-                                        <td>{{ $log->barcode }}</td>
-                                        <td>{{ $log->mro->mro_name ?? '-' }}</td>
-                                        <td class="text-center">
-                                            @if ($log->type == 'IN')
-                                                <span class="badge bg-success">IN</span>
-                                            @else
-                                                <span class="badge bg-danger">OUT</span>
-                                            @endif
-                                        </td>
-                                        <td class="text-center">{{ $log->qty }}</td>
-                                        <td class="text-center">{{ $log->stock_before }}</td>
-                                        <td class="text-center">{{ $log->stock_after }}</td>
-                                        <td class="text-center">{{ $log->mro->proyek ?? '-' }}</td>
-                                        <td>{{ $log->user }}</td>
+                        {{-- RESPONSIVE TABLE --}}
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-xl text-nowrap small">
+                                <thead class="table-light">
+                                    <tr class="text-center align-middle">
+                                        <th style="width:40px">
+                                            <input type="checkbox" id="checkAll">
+                                        </th>
+                                        <th>Tanggal</th>
+                                        <th>Kode Material</th>
+                                        <th>Nama Barang</th>
+                                        <th>Tipe</th>
+                                        <th>Qty</th>
+                                        <th>Stok Sebelum</th>
+                                        <th>Stok Sesudah</th>
+                                        <th>Proyek</th>
+                                        <th>Akun</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($logs as $log)
+                                        <tr class="align-middle">
+                                            <td class="text-center">
+                                                <input type="checkbox" name="ids[]" value="{{ $log->id }}"
+                                                    class="checkItem">
+                                            </td>
+
+                                            <td>{{ $log->created_at }}</td>
+                                            <td>{{ $log->barcode }}</td>
+                                            <td>{{ $log->mro->mro_name ?? '-' }}</td>
+
+                                            <td class="text-center">
+                                                @if ($log->type == 'IN')
+                                                    <span class="badge bg-success">IN</span>
+                                                @else
+                                                    <span class="badge bg-danger">OUT</span>
+                                                @endif
+                                            </td>
+
+                                            <td class="text-center">{{ $log->qty }}</td>
+                                            <td class="text-center">{{ $log->stock_before }}</td>
+                                            <td class="text-center">{{ $log->stock_after }}</td>
+                                            <td class="text-center">{{ $log->mro->proyek ?? '-' }}</td>
+                                            <td>{{ $log->user }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
 
                         {{ $logs->links('pagination::bootstrap-4') }}
                     </form>
