@@ -107,7 +107,7 @@ class MonitoringController extends Controller
                 MonitoringDocument::create([
                     'monitoring_id' => $monitoring->id,
                     'nama_dokumen' => $request->nama_dokumen[$index] ?? pathinfo($originalName, PATHINFO_FILENAME),
-                    'file_path' => 'lampiran/' . $uniqueName,  // tanpa 'storage/'
+                    'file_path' => 'public/lampiran/' . $uniqueName,  // tanpa 'storage/'
                 ]);
             }
 
@@ -236,32 +236,59 @@ class MonitoringController extends Controller
         ]);
     }
 
+    // public function updateDocument(Request $request, $id)
+    // {
+    //     $document = MonitoringDocument::findOrFail($id);
+
+    //     $document->nama_dokumen = $request->nama_dokumen;
+    //     $document->status = $request->status ?? 'Open';
+    //     $document->tanggal_closed = $request->status === 'Closed' ? ($request->tanggal_closed ?? now()) : null;
+    //     $document->keterangan_closed = $request->status === 'Closed' ? $request->keterangan_closed : null;
+
+    //     if ($request->hasFile('file_dokumen')) {
+    //         $file = $request->file('file_dokumen');
+    //         $filename = time() . '_' . $file->getClientOriginalName();
+    //         $path = 'lampiran/' . $filename;
+    //         $file->move(public_path('lampiran'), $filename);
+    //         $document->file_path = $path;
+    //     }
+
+    //     $document->save();
+
+    //     // 🔥 HITUNG ULANG PROGRESS persen
+    //     $monitoring = $document->monitoring;
+    //     $monitoring->progress = $monitoring->calculateProgress();
+    //     $monitoring->save();
+
+    //     return response()->json(['success' => true, 'message' => 'Dokumen berhasil diperbarui.']);
+    // }
+
+
     public function updateDocument(Request $request, $id)
-    {
-        $document = MonitoringDocument::findOrFail($id);
+{
+    $document = MonitoringDocument::findOrFail($id);
 
-        $document->nama_dokumen = $request->nama_dokumen;
-        $document->status = $request->status ?? 'Open';
-        $document->tanggal_closed = $request->status === 'Closed' ? ($request->tanggal_closed ?? now()) : null;
-        $document->keterangan_closed = $request->status === 'Closed' ? $request->keterangan_closed : null;
+    if ($request->hasFile('file_dokumen')) {
 
-        if ($request->hasFile('file_dokumen')) {
-            $file = $request->file('file_dokumen');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $path = 'lampiran/' . $filename;
-            $file->move(public_path('lampiran'), $filename);
-            $document->file_path = $path;
+        // Hapus file lama
+        if ($document->file_path && File::exists(public_path($document->file_path))) {
+            File::delete(public_path($document->file_path));
         }
 
+        // Upload file baru (PASTI UNIK)
+        $file = $request->file('file_dokumen');
+        $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('lampiran'), $filename);
+
+        $document->file_path = 'lampiran/' . $filename;
         $document->save();
-
-        // 🔥 HITUNG ULANG PROGRESS persen
-        $monitoring = $document->monitoring;
-        $monitoring->progress = $monitoring->calculateProgress();
-        $monitoring->save();
-
-        return response()->json(['success' => true, 'message' => 'Dokumen berhasil diperbarui.']);
     }
+
+    return response()->json([
+        'success' => true,
+        'file_url' => asset($document->file_path) . '?v=' . time()
+    ]);
+}
 
     public function exportZip($proyek_id)
     {

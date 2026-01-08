@@ -199,8 +199,9 @@
                                                 placeholder="Nama dokumen...">
 
                                             <a href="{{ asset($doc->file_path) }}" target="_blank"
-                                                class="small text-decoration-none d-inline-block mt-2 text-primary">
-                                                📄 Lihat File Lama
+                                                id="file-link-{{ $doc->id }}"
+                                                class="small text-primary d-inline-block mt-2">
+                                                📄 Lihat File
                                             </a>
 
                                             <input type="file" class="form-control form-control-sm mt-2 doc-file"
@@ -451,6 +452,35 @@
 
 
 
+    <script>
+        $('.doc-file').on('change', function() {
+            let id = $(this).data('id');
+            let file = this.files[0];
+
+            let formData = new FormData();
+            formData.append('file_dokumen', file);
+            formData.append('_token', '{{ csrf_token() }}');
+
+            $.ajax({
+                url: "{{ route('monitoring.document.update', ':id') }}".replace(':id', id),
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    if (res.success) {
+
+                        // 🔥 PAKSA LINK UPDATE
+                        let link = $('#file-link-' + id);
+                        link.attr('href', res.file_url + '&t=' + new Date().getTime());
+                        link.text('📄 Lihat File Terbaru');
+
+                        alert('File berhasil diupdate');
+                    }
+                }
+            });
+        });
+    </script>
 
 
 
