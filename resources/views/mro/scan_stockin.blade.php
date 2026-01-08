@@ -19,6 +19,12 @@
                     placeholder="Tulis yang lengkap!! : Cuci Kereta KRL KCI" required>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">Nomor SPP</label>
+                <input type="text" name="spp" class="form-control"
+                    placeholder="Wajib Mengisi nomor SPP/PR" required>
+            </div>
+
             <button class="btn btn-primary mt-3">Tambah Stok</button>
         </form>
     </div>

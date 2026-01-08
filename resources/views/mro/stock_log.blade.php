@@ -73,6 +73,7 @@
                                         <th>Stok Sebelum</th>
                                         <th>Stok Sesudah</th>
                                         <th>Proyek</th>
+                                        <th>No.SPP/PR</th>
                                         <th>Akun</th>
                                     </tr>
                                 </thead>
@@ -101,6 +102,7 @@
                                             <td class="text-center">{{ $log->stock_before }}</td>
                                             <td class="text-center">{{ $log->stock_after }}</td>
                                             <td class="text-center">{{ $log->proyek ?? '-' }}</td>
+                                            <td class="text-center">{{ $log->spp ?? '-' }}</td>
                                             <td>{{ $log->user }}</td>
                                         </tr>
                                     @endforeach

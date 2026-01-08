@@ -120,6 +120,7 @@ class MroController extends Controller
             'stock_before' => $before,
             'stock_after' => $item->stock,
             'proyek' => $r->proyek,
+            'spp' => $r->spp,
             'user' => auth()->user()->name,
         ]);
 
@@ -149,6 +150,7 @@ class MroController extends Controller
             'stock_before' => $before,
             'stock_after' => $item->stock,
             'proyek' => $r->proyek,
+            'spp' => $r->spp,
             'user' => auth()->user()->name,
         ]);
 
