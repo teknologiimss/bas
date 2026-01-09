@@ -326,7 +326,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button class="btn btn-primary" id="btnPrintBarcode">Print</button>
+                        <button class="btn btn-danger" id="btnPrintBarcode">Print</button>
                     </div>
                 </div>
             </div>
@@ -356,7 +356,7 @@
 
                         <div class="modal-footer">
                             <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                            <button class="btn btn-primary">Tambah Stok</button>
+                            <button class="btn btn-danger">Tambah Stok</button>
                         </div>
                     </form>
                 </div>
@@ -478,7 +478,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-primary" onclick="$('#save').submit();">Simpan</button>
+                        <button class="btn btn-danger" onclick="$('#save').submit();">Simpan</button>
                     </div>
                 </div>
             </div>
