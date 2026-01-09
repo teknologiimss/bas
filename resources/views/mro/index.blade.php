@@ -71,6 +71,20 @@
         white-space: pre-line;
         font-weight: 500;
     }
+
+
+    /* tombol responsive ukuran HP */
+    .header-actions > * {
+        margin-right: 8px;
+        margin-bottom: 8px;
+    }
+
+    /* tombol responsive ukuran HP */
+    @media (max-width: 767px) {
+        .header-actions > * {
+            width: 100%;
+        }
+    }
 </style>
 
 @section('content')
@@ -84,29 +98,44 @@
 
             <div class="card">
                 <div class="card-header">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#add-mro"
-                        onclick="addMro()"><i class="fas fa-plus"></i> Tambah Barang</button>
+                    <div class="row align-items-center">
 
-                    <button type="button" class="btn btn-danger"
-                        onclick="window.location.href='{{ route('mro.export') }}'">
-                        <i class="fas fa-file-excel"></i> Export MRO (XLS)
-                    </button>
+                        <!-- BUTTONS -->
+                        <div class="col-12 col-md-auto header-actions d-flex flex-wrap">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#add-mro"
+                                onclick="addMro()">
+                                <i class="fas fa-plus"></i> Tambah Barang
+                            </button>
 
+                            <button type="button" class="btn btn-danger"
+                                onclick="window.location.href='{{ route('mro.export') }}'">
+                                <i class="fas fa-file-excel"></i> Export MRO (XLS)
+                            </button>
+                        </div>
 
-                    <div class="card-tools">
-                        <form>
-                            <div class="input-group input-group">
-                                <input type="text" class="form-control" name="q" placeholder="Search"
-                                    value="{{ Request::get('q') }}">
-                                <input type="hidden" name="category" value="{{ Request::get('category') }}">
-                                <input type="hidden" name="sort" value="{{ Request::get('sort') }}">
-                                <div class="input-group-append">
-                                    <button class="btn btn-danger" type="submit"><i class="fas fa-search"></i></button>
+                        <!-- SEARCH -->
+                        <div class="col-12 col-md-4 mt-2 mt-md-0 ml-md-auto">
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="q" placeholder="Search"
+                                        value="{{ Request::get('q') }}">
+
+                                    <input type="hidden" name="category" value="{{ Request::get('category') }}">
+                                    <input type="hidden" name="sort" value="{{ Request::get('sort') }}">
+
+                                    <div class="input-group-append">
+                                        <button class="btn btn-danger" type="submit">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
+
+
 
                 <div class="card-body">
                     <div class="form-group row col-sm-3">
@@ -211,8 +240,8 @@
 
 
                                                 @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-                                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal"
-                                                        data-target="#delete-mro"
+                                                    <button type="button" class="btn btn-danger btn-xs"
+                                                        data-toggle="modal" data-target="#delete-mro"
                                                         onclick='deleteMro(@json($data))'><i
                                                             class="fas fa-trash"></i></button>
                                                 @endif
