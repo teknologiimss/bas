@@ -410,6 +410,9 @@ Route::prefix('products')->group(function () {
 
         Route::get('/progress', [MroController::class, 'progress'])
             ->name('mro.progress');
+
+        Route::get('/mro/stock-log/print', [MroController::class, 'print'])
+            ->name('mro.stocklog.print');
     });
 
     // BA JUSTIFIKASI

@@ -238,4 +238,20 @@ class MroController extends Controller
 
         return view('mro.resume_progress', compact('monitorings'));
     }
+
+    public function print(Request $request)
+    {
+        $logs = MroStockLog::with('mro')
+            ->when($request->kode, fn($q) =>
+                $q->where('barcode', 'like', '%' . $request->kode . '%'))
+            ->when($request->nama, fn($q) =>
+                $q->whereHas('mro', fn($qq) =>
+                    $qq->where('mro_name', 'like', '%' . $request->nama . '%')))
+            ->when($request->proyek, fn($q) =>
+                $q->where('proyek', 'like', '%' . $request->proyek . '%'))
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('mro.stocklog-print', compact('logs'));
+    }
 }

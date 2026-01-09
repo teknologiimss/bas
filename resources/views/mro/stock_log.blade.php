@@ -1,6 +1,74 @@
 @extends('layouts.main')
 @section('title', 'Mutasi Stok MRO')
 
+<style>
+    /* Table wrapper */
+    .table-modern {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.15);
+        background: #fff;
+    }
+
+    /* Header */
+    .table-modern thead {
+        background: linear-gradient(135deg, #dc3545, #b02a37);
+        color: #fff;
+    }
+
+    .table-modern thead th {
+        border: none;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Body */
+    .table-modern tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .table-modern tbody tr:hover {
+        background-color: #fff5f5;
+    }
+
+    .table-modern tbody td {
+        vertical-align: middle;
+        border-color: #f1f1f1;
+        font-size: 13px;
+    }
+
+    /* Checkbox */
+    .table-modern input[type="checkbox"] {
+        transform: scale(1.1);
+        accent-color: #dc3545;
+        cursor: pointer;
+    }
+
+    /* Badge */
+    .badge-modern-in {
+        background: #198754;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    .badge-modern-out {
+        background: #dc3545;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    /* Proyek multi-line */
+    .proyek-cell {
+        white-space: pre-line;
+        font-weight: 500;
+    }
+</style>
+
+
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
@@ -38,7 +106,7 @@
                             </div>
 
                             <div class="col-md-3 d-flex align-items-end">
-                                <button class="btn btn-primary w-100">
+                                <button class="btn btn-danger w-100">
                                     <i class="fas fa-search"></i> Filter
                                 </button>
                             </div>
@@ -57,8 +125,14 @@
                             <i class="fas fa-trash"></i> Hapus Terpilih
                         </button>
 
+                        <a href="{{ route('mro.stocklog.print', request()->query()) }}" target="_blank"
+                            class="btn btn-outline-danger mb-3 ml-2">
+                            <i class="fas fa-print"></i> Print
+                        </a>
+
+
                         {{-- RESPONSIVE TABLE --}}
-                        <div class="table-responsive">
+                        <div class="table-responsive table-modern">
                             <table class="table table-bordered table-hover table-xl text-nowrap small">
                                 <thead class="table-light">
                                     <tr class="text-center align-middle">
@@ -86,7 +160,9 @@
                                                     class="checkItem">
                                             </td>
 
-                                            <td>{{ $log->created_at }}</td>
+                                            {{-- <td>{{ $log->created_at }}</td> --}}
+                                            <td>{{ $log->created_at->format('d/m/Y H:i') }}</td>
+
                                             <td>{{ $log->barcode }}</td>
                                             <td>{{ $log->mro->mro_name ?? '-' }}</td>
 

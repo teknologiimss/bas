@@ -5,6 +5,74 @@
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endsection
+
+<style>
+    /* Table wrapper */
+    .table-modern {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.15);
+        background: #fff;
+    }
+
+    /* Header */
+    .table-modern thead {
+        background: linear-gradient(135deg, #dc3545, #b02a37);
+        color: #fff;
+    }
+
+    .table-modern thead th {
+        border: none;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Body */
+    .table-modern tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .table-modern tbody tr:hover {
+        background-color: #fff5f5;
+    }
+
+    .table-modern tbody td {
+        vertical-align: middle;
+        border-color: #f1f1f1;
+        font-size: 13px;
+    }
+
+    /* Checkbox */
+    .table-modern input[type="checkbox"] {
+        transform: scale(1.1);
+        accent-color: #dc3545;
+        cursor: pointer;
+    }
+
+    /* Badge */
+    .badge-modern-in {
+        background: #198754;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    .badge-modern-out {
+        background: #dc3545;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    /* Proyek multi-line */
+    .proyek-cell {
+        white-space: pre-line;
+        font-weight: 500;
+    }
+</style>
+
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
@@ -16,10 +84,10 @@
 
             <div class="card">
                 <div class="card-header">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-mro"
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#add-mro"
                         onclick="addMro()"><i class="fas fa-plus"></i> Tambah Barang</button>
 
-                    <button type="button" class="btn btn-primary"
+                    <button type="button" class="btn btn-danger"
                         onclick="window.location.href='{{ route('mro.export') }}'">
                         <i class="fas fa-file-excel"></i> Export MRO (XLS)
                     </button>
@@ -33,7 +101,7 @@
                                 <input type="hidden" name="category" value="{{ Request::get('category') }}">
                                 <input type="hidden" name="sort" value="{{ Request::get('sort') }}">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                                    <button class="btn btn-danger" type="submit"><i class="fas fa-search"></i></button>
                                 </div>
                             </div>
                         </form>
@@ -64,8 +132,8 @@
                         </div>
                     </div>
 
-                    <div class="table-responsive">
-                        <button type="button" class="btn-sm btn-danger" id="btnDeleteMultiple">
+                    <div class="table-responsive table-modern">
+                        <button type="button" class="btn-sm btn-danger mb-3" id="btnDeleteMultiple">
                             <i class="fas fa-trash"></i> Hapus Terpilih
                         </button>
 
