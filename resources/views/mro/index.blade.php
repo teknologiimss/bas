@@ -115,7 +115,17 @@
                                                     class="{{ $data['stock'] <= 10 ? 'badge bg-warning' : '' }}">{{ $data['stock'] }}</span>
                                             </td>
                                             <td class="text-center">{{ $data['satuan'] }}</td>
-                                            <td class="text-center">{{ $data['proyek'] }}</td>
+                                            {{-- <td class="text-center">{{ $data['proyek'] }}</td> --}}
+                                            <td class="text-left">
+                                                <ul class="mb-0 pl-3">
+                                                    @foreach (explode("\n", $data['proyek']) as $item)
+                                                        @if (trim($item) !== '')
+                                                            <li>{{ ltrim(trim($item), '-') }}</li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            </td>
+
                                             {{-- <td>{{ $data['cat_name'] }}</td> --}}
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-success btn-xs" data-toggle="modal"
@@ -289,11 +299,28 @@
                                 <div class="col-sm-8"><input type="number" class="form-control" id="stock"
                                         name="stock" autocomplete="off"></div>
                             </div>
-                            <div class="form-group row">
+                            {{-- <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Proyek</label>
                                 <div class="col-sm-8"><input type="text" class="form-control" id="proyek"
                                         name="proyek" autocomplete="off"></div>
+                            </div> --}}
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Proyek</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="proyek" name="proyek" rows="3"
+                                        placeholder="-majun&#10;-Oli&#10;-Tang"></textarea>
+
+                                    <!-- Preview -->
+                                    <ul id="proyek-preview" class="mt-2"></ul>
+                                </div>
                             </div>
+
+
+
+
+
+
 
 
                             {{-- <div class="form-group row">
@@ -388,6 +415,36 @@
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+
+    {{-- membuat baris proyek dengan tanda - agar bisa kebawah --}}
+    <script>
+        function renderProyekPreview() {
+            let value = $('#proyek').val();
+            let lines = value.split('\n');
+
+            $('#proyek-preview').html('');
+
+            lines.forEach(line => {
+                if (line.trim().startsWith('-')) {
+                    let text = line.replace('-', '').trim();
+                    if (text !== '') {
+                        $('#proyek-preview').append(`<li>${text}</li>`);
+                    }
+                }
+            });
+        }
+
+        $('#proyek').on('keyup change', function() {
+            renderProyekPreview();
+        });
+
+        // supaya saat edit juga langsung muncul
+        $('#add-mro').on('shown.bs.modal', function() {
+            renderProyekPreview();
+        });
+    </script>
+
 
 
     {{-- <script>
