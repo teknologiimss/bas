@@ -74,15 +74,42 @@
 
 
     /* tombol responsive ukuran HP */
-    .header-actions > * {
+    .header-actions>* {
         margin-right: 8px;
         margin-bottom: 8px;
     }
 
     /* tombol responsive ukuran HP */
     @media (max-width: 767px) {
-        .header-actions > * {
+        .header-actions>* {
             width: 100%;
+        }
+    }
+
+
+    /* tombol responsive ukuran HP */
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+    }
+
+    /* tombol responsive ukuran HP */
+    .action-buttons .btn {
+        white-space: nowrap;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+        .action-buttons {
+            gap: 8px;
+        }
+
+        /* tombol responsive ukuran HP */
+        .action-buttons .btn-stock {
+            flex: 1 1 48%;
+            font-size: 11px;
         }
     }
 </style>
@@ -225,38 +252,47 @@
 
                                             {{-- <td>{{ $data['cat_name'] }}</td> --}}
                                             <td class="text-center">
-                                                <button type="button" class="btn btn-success btn-xs" data-toggle="modal"
-                                                    data-target="#add-mro"
-                                                    onclick='editMro(@json($data))'><i
-                                                        class="fas fa-edit"></i></button>
+                                                <div class="action-buttons">
 
-                                                <button class="btn btn-dark btn-xs qrcode-btn"
-                                                    data-id="{{ $row->mro_id }}" data-code="{{ $row->barcode }}"
-                                                    data-name="{{ $row->mro_name }}"
-                                                    data-spesifikasi="{{ $row->spesifikasi }}">
-                                                    <i class="fas fa-qrcode"></i>
-                                                </button>
+                                                    <!-- EDIT -->
+                                                    <button type="button" class="btn btn-success btn-xs"
+                                                        data-toggle="modal" data-target="#add-mro"
+                                                        onclick='editMro(@json($data))'>
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
 
+                                                    <!-- QR -->
+                                                    <button class="btn btn-dark btn-xs qrcode-btn"
+                                                        data-id="{{ $row->mro_id }}" data-code="{{ $row->barcode }}"
+                                                        data-name="{{ $row->mro_name }}"
+                                                        data-spesifikasi="{{ $row->spesifikasi }}">
+                                                        <i class="fas fa-qrcode"></i>
+                                                    </button>
 
+                                                    <!-- DELETE -->
+                                                    @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                                        <button type="button" class="btn btn-danger btn-xs"
+                                                            data-toggle="modal" data-target="#delete-mro"
+                                                            onclick='deleteMro(@json($data))'>
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    @endif
 
-                                                @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-                                                    <button type="button" class="btn btn-danger btn-xs"
-                                                        data-toggle="modal" data-target="#delete-mro"
-                                                        onclick='deleteMro(@json($data))'><i
-                                                            class="fas fa-trash"></i></button>
-                                                @endif
+                                                    <!-- STOCK IN -->
+                                                    <button class="btn btn-success btn-xs btn-stock" data-toggle="modal"
+                                                        data-target="#modalStockIn">
+                                                        <i class="fas fa-plus"></i> Stock In
+                                                    </button>
 
-                                                <button class="btn-xs btn-success" data-toggle="modal"
-                                                    data-target="#modalStockIn">
-                                                    <i class="fas fa-plus"></i> Stock In
-                                                </button>
+                                                    <!-- STOCK OUT -->
+                                                    <button class="btn btn-danger btn-xs btn-stock" data-toggle="modal"
+                                                        data-target="#modalStockOut">
+                                                        <i class="fas fa-minus"></i> Stock Out
+                                                    </button>
 
-                                                <button class="btn-xs btn-danger" data-toggle="modal"
-                                                    data-target="#modalStockOut">
-                                                    <i class="fas fa-minus"></i> Stock Out
-                                                </button>
-
+                                                </div>
                                             </td>
+
 
                                         </tr>
                                     @endforeach
