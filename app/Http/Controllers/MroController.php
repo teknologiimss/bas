@@ -102,6 +102,13 @@ class MroController extends Controller
 
     public function stockIn(Request $r)
     {
+        $r->validate([
+            
+            'spp' => 'required|string|max:100',
+        ], [
+            'spp.required' => 'No. SPP wajib diisi!',
+        ]);
+
         $item = Mro::where('barcode', $r->barcode)->first();
 
         if (!$item)
@@ -129,6 +136,13 @@ class MroController extends Controller
 
     public function stockOut(Request $r)
     {
+        $r->validate([
+            
+            'spp' => 'required|string|max:100',
+        ], [
+            'spp.required' => 'No. SPP wajib diisi!',
+        ]);
+        
         $item = Mro::where('barcode', $r->barcode)->first();
 
         if (!$item)
@@ -239,6 +253,7 @@ class MroController extends Controller
         return view('mro.resume_progress', compact('monitorings'));
     }
 
+    // print mutasi
     public function print(Request $request)
     {
         $logs = MroStockLog::with('mro')

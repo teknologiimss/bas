@@ -279,7 +279,7 @@
                                                     @endif
 
                                                     <!-- STOCK IN -->
-                                                    <button class="btn btn-success btn-xs btn-stock" data-toggle="modal"
+                                                    {{-- <button class="btn btn-success btn-xs btn-stock" data-toggle="modal"
                                                         data-target="#modalStockIn">
                                                         <i class="fas fa-plus"></i> Stock In
                                                     </button>
@@ -288,7 +288,7 @@
                                                     <button class="btn btn-danger btn-xs btn-stock" data-toggle="modal"
                                                         data-target="#modalStockOut">
                                                         <i class="fas fa-minus"></i> Stock Out
-                                                    </button>
+                                                    </button> --}}
 
                                                 </div>
                                             </td>
