@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Purchase Request/SPPJP-{{ $pr->no_pr }}</title>
+    <title>Purchase Request-{{ $pr->no_pr }}</title>
     <style>
         @page {
             margin: 0cm;
@@ -129,7 +129,7 @@
         <div class="information">
             <table width="100%">
                 <tr style="border: 1px solid black;">
-                    <td align="left" style="width: 25%; border: 1px solid black;">
+                    <td align="left" style="width: 21.2%; border: 1px solid black;">
                         <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
                             alt="Logo" width="150" class="logo" /><br>
                     </td>
@@ -146,61 +146,54 @@
                 <tr>
 
                     <!-- Kolom 1 -->
-                    <td align="left" style="width: 25%; padding-left: 10px; border-right: 1px solid black;">
+                    <td align="left" style="width: 21.2%; padding-left: 10px; border-right: 1px solid black;">
                         <strong>Kepada Yth.</strong><br>
                         <strong>Dept. Logistik</strong><br>
                     </td>
 
                     <!-- kolom 2 + 3 -->
                     <td style="width: 85%; padding-left: 0; padding-right: 2px;">
-                        <table style="width: 100%;">
+                        <table style="width: 100%; table-layout: fixed;">
                             <tr>
-                                <!-- Kolom kiri -->
-                                <td style="width: 50%; vertical-align: top; padding-left: 0;">
-
-                                    <table style="width: 100%;">
-                                        <tr>
-                                            <td style="width: 30%; padding: 0;"><strong>Nomor</strong></td>
-                                            <td style="width: 5%; padding: 0;">:</td>
-                                            <td style="padding: 0;">{{ $pr->no_pr }}</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td style="padding: 0;"><strong>Tanggal</strong></td>
-                                            <td style="padding: 0;">:</td>
-                                            <td style="padding: 0;">
-                                                @if ($pr['tgl_pr'])
-                                                {{ \Carbon\Carbon::parse($pr['tgl_pr'])->translatedFormat('d F Y') }}
-                                                @else
-                                                -
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    </table>
-
+                                <!-- Nomor -->
+                                <td style="width: 15%; padding: 0; vertical-align: top;"><strong>Nomor</strong></td>
+                                <td style="width: 3%; padding: 0; vertical-align: top;">:</td>
+                                <td style="width: 32%; padding: 0; vertical-align: top;">
+                                    {{ $pr->no_pr }}
                                 </td>
 
-                                <!-- Kolom kanan -->
-                                <td style="width: 50%; vertical-align: top;">
+                                <!-- Proyek -->
+                                <td style="width: 15%; padding: 0; vertical-align: top;"><strong>Proyek</strong></td>
+                                <td style="width: 3%; padding: 0; vertical-align: top;">:</td>
+                                <td style="padding: 0; vertical-align: top;">
+                                    <div style="white-space: normal; word-break: break-word; line-height: 1.4;">
+                                        {{ $pr->nama_pekerjaan }}
+                                    </div>
+                                </td>
+                            </tr>
 
-                                    <table style="width: 100%;">
-                                        <tr>
-                                            <td style="width: 30%; padding: 0;"><strong>Proyek</strong></td>
-                                            <td style="width: 5%; padding: 0;">:</td>
-                                            <td style="padding: 0;">{{ $pr->nama_pekerjaan }}</td>
-                                        </tr>
+                            <tr>
+                                <!-- Tanggal -->
+                                <td style="padding: 0; vertical-align: top;"><strong>Tanggal</strong></td>
+                                <td style="padding: 0; vertical-align: top;">:</td>
+                                <td style="padding: 0; vertical-align: top;">
+                                    @if ($pr['tgl_pr'])
+                                        {{ \Carbon\Carbon::parse($pr['tgl_pr'])->translatedFormat('d F Y') }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
 
-                                        <tr>
-                                            <td style="padding: 0;"><strong>Revisi</strong></td>
-                                            <td style="padding: 0;">:</td>
-                                            <td style="padding: 0;">{{ $pr->revisi ?? '-' }}</td>
-                                        </tr>
-                                    </table>
-
+                                <!-- Revisi -->
+                                <td style="padding: 0; vertical-align: top;"><strong>Revisi</strong></td>
+                                <td style="padding: 0; vertical-align: top;">:</td>
+                                <td style="padding: 0; vertical-align: top;">
+                                    {{ $pr->revisi ?? '-' }}
                                 </td>
                             </tr>
                         </table>
                     </td>
+
 
                 </tr>
             </table>
@@ -229,7 +222,7 @@
         </thead>
         <tbody>
             @forelse ($pr->purchases as $item)
-            @if ($loop->index % 8 == 0 && $loop->index != 0)
+                @if ($loop->index % 8 == 0 && $loop->index != 0)
         </tbody>
     </table>
     <div class="page_break"></div>
@@ -264,9 +257,9 @@
                 {{-- <td>{{ $item->waktu }}</td> --}}
                 <td>
                     @if ($item['waktu'])
-                    {{ \Carbon\Carbon::parse($item['waktu'])->locale('id')->translatedFormat('d F Y') }}
+                        {{ \Carbon\Carbon::parse($item['waktu'])->locale('id')->translatedFormat('d F Y') }}
                     @else
-                    -
+                        -
                     @endif
                 </td>
                 <td
@@ -274,7 +267,7 @@
                     {{ $item->keterangan }}
                 </td>
             </tr>
-            @empty
+        @empty
             <tr>
                 <td colspan="8" class="text-center" style="text-align: center">Tidak ada data</td>
             </tr>
@@ -282,7 +275,8 @@
         </tbody>
     </table>
 
-    <div style="margin-top: 1rem">
+    {{-- Asli tampil semua TTDNYA --}}
+    {{-- <div style="margin-top: 1rem">
         <div>
             <table style="width: 100%">
                 <tr>
@@ -307,7 +301,45 @@
                 </tr>
             </table>
         </div>
+    </div> --}}
+
+
+    {{-- PR Print --}}
+    <div style="margin-top: 1rem">
+        <table style="width: 100%">
+            <tr>
+
+                @if ($pr->role !== 'MRO')
+                    <!-- Kadiv -->
+                    <td align="center" style="width: 25%;">
+                        Menyetujui,<br>
+                        Kadiv. {{ $pr->role }}
+                        <br><br><br><br><br>
+                        <strong>{{ $pr->kadiv }}</strong><br>
+                    </td>
+                @endif
+
+                <!-- Kadep -->
+                <td align="center" style="width: 25%;">
+                    Diperiksa Oleh,<br>
+                    Kadep. {{ $pr->role }} <br>
+                    <br><br><br><br>
+                    <strong>{{ $pr->kadep }}</strong><br>
+                </td>
+
+                <!-- Staff -->
+                <td align="center" style="width: 25%;">
+                    Dibuat Oleh,<br>
+                    Staff {{ $pr->role }}
+                    <br><br><br><br><br>
+                    <strong>{{ $pr->pic }}</strong><br>
+                </td>
+
+            </tr>
+        </table>
     </div>
+    
+
 
 
     <table class="table2" style="width:100%; margin-top:2rem">

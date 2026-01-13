@@ -822,7 +822,7 @@ class PurchaseRequestController extends Controller
         if (preg_match('/mro/i', $pr->no_pr)) {
             $pr->role = 'MRO';
             $pr->kadiv = '-';  // Jika tidak ada kadiv MRO, isi dengan '-'
-            $pr->kadep = 'Dwi Anna A.P';
+            $pr->kadep = 'DWI ANNA A';
         } elseif (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
             $pr->role = 'Wilayah 1';
             $pr->kadiv = 'EKO PRASETIYO';
@@ -869,7 +869,7 @@ class PurchaseRequestController extends Controller
         if (preg_match('/mro/i', $sppjp->no_pr)) {
             $sppjp->role = 'MRO';
             $sppjp->kadiv = '-';  // bisa diisi jika ada kadiv khusus MRO
-            $sppjp->kadep = 'Dwi Anna A.P';
+            $sppjp->kadep = 'DWI ANNA A';
         } elseif (preg_match('/wil1|wilayah1/i', $sppjp->no_pr)) {
             $sppjp->role = 'Wilayah 1';
             $sppjp->kadiv = 'EKO PRASETIYO';
