@@ -76,7 +76,6 @@
                             <th>{{ __('Nilai Pekerjaan (Rp.)') }}</th>
                             <th>{{ __('Nama Pelanggan') }}</th>
                             <th>{{ __('Tipe') }}</th>
-                            {{-- <th>{{ __('Nilai (Rp.)') }}</th> --}}
                             <th>{{ __('Status') }}</th>
                             <th></th>
                         </tr>
@@ -154,6 +153,7 @@
                             {{-- <td class="text-center">
                                                 {{ $data['nomor_kontrak'] ? 'kontrak' : '-' }}
                             </td> --}}
+
                             <td class="text-center">
 
 
@@ -182,7 +182,7 @@
                         @endforeach
                         @else
                         <tr class="text-center">
-                            <td colspan="10">{{ __('No data.') }}</td>
+                            <td colspan="11">{{ __('No data.') }}</td>
                         </tr>
                         @endif
                     </tbody>
@@ -706,18 +706,18 @@
     }); //End Filter by Nomor dan tgl PO
 
     // shorting kolom
-    $(document).ready(function() {
-        $('#table').DataTable({
-            "columnDefs": [{
-                    "orderable": false,
-                    "targets": [0, 9]
-                } // Kolom checkbox dan kolom terakhir (aksi)
-            ],
-            "order": [
-                [2, "desc"]
-            ] // Default sort kolom tanggal
-        });
-    });
+    // $(document).ready(function() {
+    //     $('#table').DataTable({
+    //         "columnDefs": [{
+    //                 "orderable": false,
+    //                 "targets": [0, 9]
+    //             } // Kolom checkbox dan kolom terakhir (aksi)
+    //         ],
+    //         "order": [
+    //             [2, "desc"]
+    //         ] // Default sort kolom tanggal
+    //     });
+    // });
 
 
     function addKONTRAK() {
@@ -1636,7 +1636,7 @@
             type: "GET",
             dataType: "json",
             beforeSend: function() {
-                $('#table-kontrak').append('<tr><td colspan="15" class="text-center">Loading...</td></tr>');
+                $('#table-kontrak').append('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
                 $('#button-cetak-bpm').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
                 $('#button-cetak-bpm').attr('disabled', true);
             },
@@ -1712,7 +1712,7 @@
                 if (data.kontrak.details.length == 0) {
                     $('#table-kontrak').empty();
                     $('#table-kontrak').append(
-                        '<tr><td colspan="15" class="text-center">Tidak ada produk</td></tr>'
+                        '<tr><td colspan="7" class="text-center">Tidak ada produk</td></tr>'
                     ); // Tambahkan pesan bahwa tidak ada produk
                 } else {
                     // Urutkan data berdasarkan tanggal_dokumen

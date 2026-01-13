@@ -53,10 +53,10 @@ class Monitoring extends Model
             $progress += 15;
         }
 
-        if ($docs->contains(fn($d) => str_contains($d, 'purchase') || str_contains($d, 'po'))) {
+        if ($docs->contains(fn($d) => str_contains($d, 'purchase order') || str_contains($d, 'po'))) {
             $progress += 15;
         }
-        if ($docs->contains(fn($d) => str_contains($d, 'purchase') || str_contains($d, 'pr'))) {
+        if ($docs->contains(fn($d) => str_contains($d, 'purchase request') || str_contains($d, 'pr'))) {
             $progress += 10;
         }
 

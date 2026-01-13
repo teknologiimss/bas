@@ -49,17 +49,17 @@ class KontrakController extends Controller
         $query = Kontrak::select('kontrak.*')
             ->orderBy('kontrak.id', 'asc');
 
-        // FILTER DATA BERDASARKAN ROLE
-        if ($userRole == 15) {
-            $query->where('tipe', 'NON INKA');
-        } elseif ($userRole == 16) {
-            $query->where('tipe', 'INKA GROUP');
-        } elseif ($userRole == 12) {
-            // role 12 → akses penuh (tanpa filter)
-        } else {
-            // role lain → tidak boleh lihat data
-            $query->whereRaw('1 = 0');
-        }
+        // // FILTER DATA BERDASARKAN ROLE
+        // if ($userRole == 15) {
+        //     $query->where('tipe', 'NON INKA');
+        // } elseif ($userRole == 16) {
+        //     $query->where('tipe', 'INKA GROUP');
+        // } elseif ($userRole == 12) {
+        //     // role 12 → akses penuh (tanpa filter)
+        // } else {
+        //     // role lain → tidak boleh lihat data
+        //     $query->whereRaw('1 = 0');
+        // }
 
         $requests = $query->paginate(50);
 
