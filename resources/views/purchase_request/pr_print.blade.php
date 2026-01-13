@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Purchase Request-{{ $pr->no_pr }}</title>
+    <title>Purchase Request/SPPJP-{{ $pr->no_pr }}</title>
     <style>
         @page {
             margin: 0cm;
