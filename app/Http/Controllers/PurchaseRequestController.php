@@ -45,62 +45,49 @@ class PurchaseRequestController extends Controller
     // public function index(Request $request)
     // {
     //     $search = $request->q;
-    //     if (Session::has('selected_warehouse_id')) {
-    //         $warehouse_id = Session::get('selected_warehouse_id');
-    //     } else {
-    //         $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
-    //     }
-    //     $requests = PurchaseRequest::select('purchase_request.*', 'kontrak.nama_pekerjaan as proyek_name', 'kontrak.nomor_kontrak as dasar_pr')
+    //     $warehouse_id = Session::get('selected_warehouse_id')
+    //         ?? DB::table('warehouse')->first()->warehouse_id;
+    //     $requests = PurchaseRequest::select('purchase_request.*', 'kontrak.nama_pekerjaan as proyek_name')
     //         ->join('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
     //         ->orderBy('purchase_request.id', 'asc')
     //         ->paginate(10);
     //     $proyeks = DB::table('kontrak')->get();
-    //     //  dd($requests);
-    //     //Lampiran
-    //     $pres = PurchaseRequest::paginate(50);
-    //     foreach ($pres as $key => $item) {
-    //         $id = json_decode($item->vendor_id);
-    //         //lampiran bisa lebih dari 1
+    //     // 🔹 Tambahkan lampiran untuk setiap request
+    //     foreach ($requests as $item) {
     //         $lampiran = PrLampiran::where('pr_id', $item->id)->pluck('file')->toArray();
     //         $item->lampiran = implode(', ', $lampiran);
-    //         // $item->lampiran = json_decode($item->lampiran);
     //     }
-    //     //Lampiran
     //     if ($search) {
     //         $requests = PurchaseRequest::where('nama_pekerjaan', 'LIKE', "%$search%")->paginate(10);
     //     }
-    //     if ($request->format == "json") {
-    //         $requests = PurchaseRequest::where("warehouse_id", $warehouse_id)->get();
+    //     if ($request->format == 'json') {
+    //         $requests = PurchaseRequest::where('warehouse_id', $warehouse_id)->get();
     //         return response()->json($requests);
     //     } else {
-    //         //looping the paginate
     //         foreach ($requests as $request) {
     //             $detail_pr = DetailPR::where('id_pr', $request->id)->get();
-    //             //if detail_pr empty then editable true
     //             if ($detail_pr->isEmpty()) {
-    //                 $request->editable = TRUE;
+    //                 $request->editable = true;
     //             } else {
-    //                 //looping detail_pr then check in detailspph with id_detail_pr exist
     //                 foreach ($detail_pr as $detail) {
     //                     $detail_spph = DetailSpph::where('id_detail_pr', $detail->id)->first();
     //                     $po = Purchase_Order::where('id', $detail->id_po)->first();
     //                     if ($po && $po->tipe == '1') {
-    //                         $request->editable = FALSE;
+    //                         $request->editable = false;
     //                         break;
     //                     } else {
-    //                         if ($detail_spph) {
-    //                             $request->editable = FALSE;
-    //                             break;
-    //                         } else {
-    //                             $request->editable = TRUE;
-    //                         }
+    //                         $request->editable = !$detail_spph;
     //                     }
     //                 }
     //             }
     //         }
-    //         return view('purchase_request.purchase_request', compact('requests', 'proyeks', 'pres'));
+    //         return view('purchase_request.purchase_request', compact('requests', 'proyeks'));
     //     }
     // }
+
+
+
+
     public function index(Request $request)
     {
         $search = $request->q;
@@ -207,7 +194,32 @@ class PurchaseRequestController extends Controller
         }
     }
 
-    
+    // public function indexPr()
+    // {
+    //     $user = Auth::user();
+    //     $requests = PurchaseRequest::query();
+
+    //     if ($user->role == 2) {
+    //         // Pengguna dari Wilayah 1
+    //         $requests->where('no_pr', 'like', '%WIL1%');
+    //     } elseif ($user->role == 3) {
+    //         // Pengguna dari Wilayah 2
+    //         $requests->where('no_pr', 'like', '%WIL2%');
+    //     } elseif ($user->role == 14) {
+    //         // Pengguna dari MRO
+    //         $requests->where('no_pr', 'like', '%MRO%');
+    //     } elseif ($user->role == 0) {
+    //         // Admin, tampilkan semua data
+    //         // Tidak ada filter tambahan
+    //     } else {
+    //         // Role tidak dikenali, jangan tampilkan apapun
+    //         $requests->whereRaw('0 = 1');
+    //     }
+
+    //     $requests = $requests->paginate(10);  // Ambil hasil query
+
+    //     return view('purchase_requests.index', compact('requests'));
+    // }
 
     // Status Proses di Purchase Request contoh 0/100
     public function getQtyStatus($id, $item)
@@ -526,6 +538,7 @@ class PurchaseRequestController extends Controller
     //             ->with('success', 'Purchase Request berhasil diperbarui');
     //     }
     // }
+    
     public function store(Request $request)
     {
         $pr_id = $request->id;
@@ -570,6 +583,7 @@ class PurchaseRequestController extends Controller
 
             return redirect()->route('purchase_request.index')->with('success', 'Purchase Request berhasil ditambahkan');
         } else {
+            
             // === UPDATE DATA ===
             $pr = PurchaseRequest::find($pr_id);
             if (!$pr) {

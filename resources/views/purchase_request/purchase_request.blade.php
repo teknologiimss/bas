@@ -143,6 +143,7 @@
                                             'tanggal' => date('d/m/Y', strtotime($d->tgl_pr)),
                                             'dasar_pr' => $d->dasar_pr,
                                             'lampiran' => $d->lampiran,
+                                            'proyek_id' => $d->proyek_id,
                                             'id' => $d->id,
                                             'editable' => $d->editable,
                                             'revisi' => $d->revisi,
