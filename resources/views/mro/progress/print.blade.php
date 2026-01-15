@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <style>
+        /* =====================================================
+           FORCE COLOR PRINT (WAJIB AGAR WARNA MUNCUL)
+        ===================================================== */
         @media print {
 
             * {
@@ -17,8 +20,11 @@
 
             body {
                 font-size: 12px;
+                background: #fff !important;
+                color: #000;
             }
 
+            /* ================= TABLE ================= */
             table {
                 width: 100%;
                 border-collapse: collapse;
@@ -26,11 +32,81 @@
 
             th,
             td {
-                border: 1px solid #000;
-                padding: 6px;
+                border: 1px solid #000 !important;
+                padding: 6px !important;
                 vertical-align: top;
             }
 
+            /* ================= HEADER ================= */
+            thead th {
+                background-color: #dc3545 !important;
+                color: #ffffff !important;
+                text-align: center;
+                font-weight: bold;
+                font-size: 11px;
+                text-transform: uppercase;
+            }
+
+            /* ================= STRIPED ================= */
+            tbody tr:nth-child(even) td {
+                background-color: #f8d7da !important;
+            }
+
+            /* ================= BADGE ================= */
+            .badge {
+                padding: 4px 10px;
+                border-radius: 12px;
+                font-size: 10px;
+                font-weight: bold;
+                color: #fff !important;
+                display: inline-block;
+            }
+
+            .badge-warning {
+                background-color: #ffc107 !important;
+                color: #000 !important;
+            }
+
+            .badge-success {
+                background-color: #28a745 !important;
+            }
+
+            .badge-danger {
+                background-color: #dc3545 !important;
+            }
+
+            .badge-secondary {
+                background-color: #6c757d !important;
+            }
+
+            /* ================= PROGRESS ================= */
+            .progress {
+                background-color: #e9ecef !important;
+                border: 1px solid #999 !important;
+                height: 16px;
+            }
+
+            .progress-bar {
+                font-size: 10px;
+                font-weight: bold;
+                color: #fff !important;
+                line-height: 16px;
+            }
+
+            .bg-danger {
+                background-color: #dc3545 !important;
+            }
+
+            .bg-warning {
+                background-color: #ffc107 !important;
+                color: #000 !important;
+            }
+
+            .bg-success {
+                background-color: #28a745 !important;
+            }
+
+            /* ================= PAGE ================= */
             thead {
                 display: table-header-group;
             }
@@ -49,12 +125,12 @@
 
 <body onload="window.print()">
 
-    <h3 style="text-align:center; margin-bottom:15px;">
+    <h3 style="text-align:center; margin-bottom:15px; color:#dc3545;">
         <b>LAPORAN PROGRESS MRO</b>
     </h3>
 
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark text-center">
+    <table>
+        <thead>
             <tr>
                 <th width="40">No</th>
                 <th>PO / Nota Dinas</th>
@@ -71,30 +147,30 @@
             @forelse ($monitorings as $index => $m)
                 @php
                     $statusClass = match ($m->status) {
-                        'Open' => 'badge badge-warning',
-                        'Closed' => 'badge badge-success',
-                        'On Hold' => 'badge badge-danger',
-                        default => 'badge badge-secondary',
+                        'Open' => 'badge-warning',
+                        'Closed' => 'badge-success',
+                        'On Hold' => 'badge-danger',
+                        default => 'badge-secondary',
                     };
                 @endphp
 
                 <tr>
-                    <td class="text-center">{{ $index + 1 }}</td>
+                    <td style="text-align:center">{{ $index + 1 }}</td>
                     <td>{{ $m->po_nota_dinas }}</td>
                     <td>{{ $m->nama_pekerjaan }}</td>
-                    <td class="text-center">
+                    <td style="text-align:center">
                         {{ \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') }}
                     </td>
-                    <td class="text-center">
+                    <td style="text-align:center">
                         {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                     </td>
-                    <td class="text-center">
-                        <span class="{{ $statusClass }}">
+                    <td style="text-align:center">
+                        <span class="badge {{ $statusClass }}">
                             {{ $m->status }}
                         </span>
                     </td>
                     <td>
-                        <div class="progress" style="height:16px;">
+                        <div class="progress">
                             <div class="progress-bar
                                 {{ $m->progress < 50 ? 'bg-danger' : ($m->progress < 100 ? 'bg-warning' : 'bg-success') }}"
                                 style="width: {{ $m->progress }}%">
@@ -105,18 +181,16 @@
                     <td>
                         @php
                             $text = trim($m->keterangan2 ?? '-');
-
-                            if (str_starts_with($text, '-')) {
-                                echo implode('<br>', preg_split('/\r\n|\r|\n/', $text));
-                            } else {
-                                echo implode(', ', preg_split('/\r\n|\r|\n/', $text));
-                            }
+                            $lines = preg_split('/\r\n|\r|\n/', $text);
+                            echo str_starts_with($text, '-')
+                                ? implode('<br>', $lines)
+                                : implode(', ', $lines);
                         @endphp
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="8" class="text-center">
+                    <td colspan="8" style="text-align:center">
                         Tidak ada data
                     </td>
                 </tr>
