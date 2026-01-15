@@ -75,173 +75,65 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (count($requests) > 0)
-                                    @foreach ($requests as $key => $d)
-                                        @php
-                                            $data = [
-                                                'no' => $requests->firstItem() + $key,
-                                                'no_bpm' => $d->no_bpm,
-                                                'proyek' => $d->proyek_name,
-                                                'tanggal' => date('d/m/Y', strtotime($d->tgl_bpm)),
-                                                'dasar_bpm' => $d->dasar_bpm,
-                                                'proyek_id' => $d->proyek_id,
-                                                'id' => $d->id,
-                                                'status' => $d->status,
-                                                'editable' => $d->editable,
-                                            ];
-                                        @endphp
+                                @forelse ($requests as $key => $d)
+                                    @php
+                                        $data = [
+                                            'no' => $requests->firstItem() + $key,
+                                            'no_bpm' => $d->no_bpm,
+                                            'proyek' => $d->proyek_name,
+                                            'tanggal' => date('d/m/Y', strtotime($d->tgl_bpm)),
+                                            'dasar_bpm' => $d->dasar_bpm,
+                                            'proyek_id' => $d->proyek_id,
+                                            'id' => $d->id,
+                                            'status' => $d->status,
+                                            'editable' => $d->editable,
+                                        ];
+                                    @endphp
 
-                                        {{-- backup button tampil semua --}}
-                                        {{-- <tr>
-                                            <td class="text-center"><input type="checkbox" name="hapus[]"
-                                                    value="{{ $d->id }}"></td>
-                                            <td class="text-center">{{ $data['no'] }}</td>
-                                            <td class="text-center">{{ $data['no_pr'] }}</td>
-                                            <td class="text-center">{{ $data['proyek'] }}</td>
-                                            <td class="text-center">{{ $data['tanggal'] }}</td>
-                                            <td class="text-center">{{ $data['dasar_pr'] }}</td>
-                                            <td class="text-center">
-                                                <button title="Edit Request" type="button" class="btn btn-success btn-xs"
-                                                    data-toggle="modal" data-target="#add-pr"
-                                                    onclick="editPR({{ json_encode($data) }})"
-                                                    @if ($data['editable'] == 0) disabled @endif><i
-                                                        class="fas fa-edit"></i></button>
-                                                <button title="Lihat Detail" type="button" data-toggle="modal"
-                                                    data-target="#detail-pr" class="btn-lihat btn btn-info btn-xs"
-                                                    data-detail="{{ json_encode($data) }}"><i
-                                                        class="fas fa-list"></i></button>
-                                                @if (Auth::user()->role == 0 || Auth::user()->role == 2 || Auth::user()->role == 3)
-                                                    <button title="Hapus Request" type="button"
-                                                        class="btn btn-danger btn-xs" data-toggle="modal"
-                                                        data-target="#delete-pr"
-                                                        onclick="deletePR({{ json_encode($data) }})"
-                                                        @if ($data['editable'] == 0) disabled @endif><i
-                                                            class="fas fa-trash"></i></button>
-                                                @endif
-                                            </td>
-                                        </tr> --}}
-                                        {{-- backup button tampil semua --}}
+                                    <tr>
+                                        {{-- Checkbox --}}
+                                        <td class="text-center">
+                                            <input type="checkbox" name="hapus[]" value="{{ $d->id }}">
+                                        </td>
 
-                                        <tr>
-                                            @if (Auth::user()->role == 2 && strpos(strtolower($data['no_bpm']), 'wil1') !== false)
-                                                <td class="text-center"><input type="checkbox" name="hapus[]"
-                                                        value="{{ $d->id }}"></td>
-                                                {{-- <td class="text-center">{{ $data['no'] }}</td> --}}
-                                                <td class="text-center">{{ $data['no_bpm'] }}</td>
-                                                <td class="text-center">{{ $data['proyek'] }}</td>
-                                                <td class="text-center">{{ $data['tanggal'] }}</td>
-                                                <td class="text-center">{{ $data['dasar_bpm'] }}</td>
-                                                <td class="text-center">
-                                                @elseif (Auth::user()->role == 3 && strpos(strtolower($data['no_bpm']), 'wil2') !== false)
-                                                <td class="text-center"><input type="checkbox" name="hapus[]"
-                                                        value="{{ $d->id }}"></td>
-                                                {{-- <td class="text-center">{{ $data['no'] }}</td> --}}
-                                                <td class="text-center">{{ $data['no_bpm'] }}</td>
-                                                <td class="text-center">{{ $data['proyek'] }}</td>
-                                                <td class="text-center">{{ $data['tanggal'] }}</td>
-                                                <td class="text-center">{{ $data['dasar_bpm'] }}</td>
-                                                <td class="text-center">
-                                                @elseif (Auth::user()->role == 0)
-                                                <td class="text-center"><input type="checkbox" name="hapus[]"
-                                                        value="{{ $d->id }}"></td>
-                                                {{-- <td class="text-center">{{ $data['no'] }}</td> --}}
-                                                <td class="text-center">{{ $data['no_bpm'] }}</td>
-                                                <td class="text-center">{{ $data['proyek'] }}</td>
-                                                <td class="text-center">{{ $data['tanggal'] }}</td>
-                                                <td class="text-center">{{ $data['dasar_bpm'] }}</td>
-                                                <td class="text-center">
-                                            @endif
+                                        <td class="text-center">{{ $data['no_bpm'] }}</td>
+                                        <td class="text-center">{{ $data['proyek'] }}</td>
+                                        <td class="text-center">{{ $data['tanggal'] }}</td>
+                                        <td class="text-center">{!! nl2br(e($data['dasar_bpm'])) !!}</td>
 
-                                            @if (Auth::user()->role == 2 && strpos(strtolower($data['no_bpm']), 'wil1') !== false)
-                                                <!-- Tombol hanya ditampilkan untuk role 2 dan no_pr mengandung 'wil1' -->
-                                                <button title="Edit Request" type="button" class="btn btn-success btn-xs"
-                                                    data-toggle="modal" data-target="#add-bpm"
-                                                    onclick="editBPM({{ json_encode($data) }})"
-                                                    @if ($data['editable'] == 0) disabled @endif>
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button title="Lihat Detail" type="button" data-toggle="modal"
-                                                    data-target="#detail-bpm" class="btn-lihat btn btn-info btn-xs"
-                                                    data-detail="{{ json_encode($data) }}">
-                                                    <i class="fas fa-list"></i>
-                                                </button>
-                                                <button title="Hapus Request" type="button"
-                                                    class="btn btn-danger btn-xs" data-toggle="modal"
-                                                    data-target="#delete-bpm"
-                                                    onclick="deleteBPM({{ json_encode($data) }})"
-                                                    @if ($data['editable'] == 0) disabled @endif>
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            @elseif (Auth::user()->role == 3 && strpos(strtolower($data['no_bpm']), 'wil2') !== false)
-                                                <!-- Tombol hanya ditampilkan untuk role 3 dan no_pr mengandung 'wil2' -->
-                                                <button title="Edit Request" type="button"
-                                                    class="btn btn-success btn-xs" data-toggle="modal"
-                                                    data-target="#add-bpm" onclick="editBPM({{ json_encode($data) }})"
-                                                    @if ($data['editable'] == 0) disabled @endif>
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button title="Lihat Detail" type="button" data-toggle="modal"
-                                                    data-target="#detail-bpm" class="btn-lihat btn btn-info btn-xs"
-                                                    data-detail="{{ json_encode($data) }}">
-                                                    <i class="fas fa-list"></i>
-                                                </button>
-                                                <button title="Hapus Request" type="button"
-                                                    class="btn btn-danger btn-xs" data-toggle="modal"
-                                                    data-target="#delete-bpm"
-                                                    onclick="deleteBPM({{ json_encode($data) }})"
-                                                    @if ($data['editable'] == 0) disabled @endif>
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            @elseif (Auth::user()->role == 0)
-                                                <!-- Tombol ditampilkan untuk role 0 tanpa melihat nomor PR -->
-                                                <button title="Edit Request" type="button"
-                                                    class="btn btn-success btn-xs" data-toggle="modal"
-                                                    data-target="#add-bpm" onclick="editBPM({{ json_encode($data) }})"
-                                                    @if ($data['editable'] == 0) disabled @endif>
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button title="Lihat Detail" type="button" data-toggle="modal"
-                                                    data-target="#detail-bpm" class="btn-lihat btn btn-info btn-xs"
-                                                    data-detail="{{ json_encode($data) }}">
-                                                    <i class="fas fa-list"></i>
-                                                </button>
-                                                <button title="Hapus Request" type="button"
-                                                    class="btn btn-danger btn-xs" data-toggle="modal"
-                                                    data-target="#delete-bpm"
-                                                    onclick="deleteBPM({{ json_encode($data) }})"
-                                                    @if ($data['editable'] == 0) disabled @endif>
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            @elseif (Auth::user()->role == 1)
-                                                <!-- Tombol ditampilkan untuk role 0 tanpa melihat nomor PR -->
-                                                <button title="Edit Request" type="button"
-                                                    class="btn btn-success btn-xs" data-toggle="modal"
-                                                    data-target="#add-bpm" onclick="editBPM({{ json_encode($data) }})"
-                                                    @if ($data['editable'] == 0) disabled @endif>
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button title="Lihat Detail" type="button" data-toggle="modal"
-                                                    data-target="#detail-bpm" class="btn-lihat btn btn-info btn-xs"
-                                                    data-detail="{{ json_encode($data) }}">
-                                                    <i class="fas fa-list"></i>
-                                                </button>
-                                                <button title="Hapus Request" type="button"
-                                                    class="btn btn-danger btn-xs" data-toggle="modal"
-                                                    data-target="#delete-bpm"
-                                                    onclick="deleteBPM({{ json_encode($data) }})"
-                                                    @if ($data['editable'] == 0) disabled @endif>
+                                        {{-- AKSI --}}
+                                        <td class="text-center">
+                                            {{-- EDIT --}}
+                                            <button class="btn btn-success btn-xs" data-toggle="modal"
+                                                data-target="#add-bpm" onclick="editBPM({{ json_encode($data) }})"
+                                                @if (!$data['editable']) disabled @endif>
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+
+                                            {{-- DETAIL --}}
+                                            <button class="btn btn-info btn-xs" data-toggle="modal"
+                                                data-target="#detail-bpm" data-detail="{{ json_encode($data) }}">
+                                                <i class="fas fa-list"></i>
+                                            </button>
+
+                                            {{-- DELETE --}}
+                                            @if (in_array(Auth::user()->role, [0, 2, 3, 14, 1]))
+                                                <button class="btn btn-danger btn-xs" data-toggle="modal"
+                                                    data-target="#delete-bpm" onclick="deleteBPM({{ json_encode($data) }})"
+                                                    @if (!$data['editable']) disabled @endif>
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr class="text-center">
-                                        <td colspan="8">{{ __('No data.') }}</td>
+                                        </td>
                                     </tr>
-                                @endif
+
+                                @empty
+                                    <tr class="text-center">
+                                        <td colspan="6">No data.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
+
                         </table>
                         <button type="button" class="btn btn-danger" id="delete-selected"
                             data-token="{{ csrf_token() }}">Hapus yang dipilih</button>
@@ -291,17 +183,17 @@
                                     <select class="form-control" name="proyek_id" id="proyek_id">
                                         <option value="">Pilih Proyek</option>
                                         @foreach ($proyeks as $proyek)
-                                            <option value="{{ $proyek->id }}">{{ $proyek->nama_proyek }}</option>
+                                            <option value="{{ $proyek->id }}">{{ $proyek->nama_pekerjaan }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row">
-    <label for="dasar_bpm" class="col-sm-4 col-form-label">{{ __('Catatan BPM') }}</label>
-    <div class="col-sm-8">
-        <textarea class="form-control" id="dasar_bpm" name="dasar_bpm" rows="3" autocomplete="off"></textarea>
-    </div>
-</div>
+                                <label for="dasar_bpm" class="col-sm-4 col-form-label">{{ __('Catatan BPM') }}</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="dasar_bpm" name="dasar_bpm" rows="3" autocomplete="off"></textarea>
+                                </div>
+                            </div>
 
                             {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 1)
                                 <div class="form-group row">

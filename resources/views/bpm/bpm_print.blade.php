@@ -163,7 +163,7 @@
                                 <td><span>{{ $bpm->no_bpm }}</span></td>
                                 <!-- Proyek ditempatkan di sebelah kanan -->
                                 <td style="text-align: right;"><strong>Proyek :
-                                        <span>{{ $bpm->nama_proyek }}</span></strong></td>
+                                        <span>{{ $bpm->nama_pekerjaan }}</span></strong></td>
                             </tr>
                             <tr>
                                 <td><strong>Tanggal</strong></td>
@@ -262,7 +262,7 @@
         </tbody>
     </table>
 
-    <div style="margin-top: 1rem">
+    {{-- <div style="margin-top: 1rem">
         <div>
             <table style="width: 100%; table-layout: fixed;">
                 <tr>
@@ -288,7 +288,53 @@
                 </tr>
             </table>
         </div>
+    </div> --}}
+
+    <div style="margin-top: 1rem">
+        <table style="width: 100%; table-layout: fixed;">
+            <tr>
+                {{-- MENYETUJUI --}}
+                <td align="center" style="width: 25%;">
+                    Menyetujui,<br>
+
+                    @if (Auth::user()->role == 14)
+                        Kadep {{ $bpm->role }}
+                    @else
+                        Kabag {{ $bpm->role }}
+                    @endif
+
+                    <br><br><br><br><br>
+
+                    <strong style="text-transform: uppercase;">
+                        @if (Auth::user()->role == 14)
+                            {{ $bpm->kadep }}
+                        @else
+                            {{ $bpm->kabag }}
+                        @endif
+                    </strong><br>
+                </td>
+
+                {{-- YANG MEMINTA --}}
+                <td align="center" style="width: 25%;">
+                    Yang Meminta,<br>
+                    Staff {{ $bpm->role }}
+                    <br><br><br><br><br>
+                    <strong style="text-transform: uppercase;">
+                        {{ $bpm->pic }}
+                    </strong><br>
+                </td>
+
+                {{-- PENERIMA --}}
+                <td align="center" style="width: 25%;">
+                    Penerima Dokumen,<br>
+                    Gudang
+                    <br><br><br><br><br>
+                    <strong>PUPUT WAHYUDHIANTO</strong><br>
+                </td>
+            </tr>
+        </table>
     </div>
+
 
 
     <table class="table2" style="width:100%; margin-top:2rem">

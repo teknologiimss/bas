@@ -9,21 +9,21 @@ use App\Models\DetailPR;
 use App\Models\DetailSpph;
 use App\Models\Keproyekan;
 use App\Models\Lppb;
-use App\Models\Vendor;
+use App\Models\Notification;
 use App\Models\Purchase_Order;
 use App\Models\PurchaseRequest;
 use App\Models\RegistrasiBarang;
 use App\Models\Spph;
 use App\Models\User;
-use App\Models\Notification;
+use App\Models\Vendor;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 use stdClass;
-
 
 class BpmController extends Controller
 {
@@ -32,64 +32,141 @@ class BpmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index(Request $request)
+    // {
+    //     $search = $request->q;
+    //     if (Session::has('selected_warehouse_id')) {
+    //         $warehouse_id = Session::get('selected_warehouse_id');
+    //     } else {
+    //         $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
+    //     }
+    //     $requests = Bpm::select('bpm.*', 'keproyekan.nama_proyek as proyek_name','keproyekan.dasar_proyek as dasar_pr')
+    //         ->join('keproyekan', 'keproyekan.id', '=', 'bpm.proyek_id')
+    //         ->orderBy('bpm.id', 'asc')
+    //         ->paginate(50);
+    //     $proyeks = DB::table('keproyekan')->get();
+    //     //  dd($requests);
+    //     if ($search) {
+    //         $requests = Bpm::where('nama_proyek', 'LIKE', "%$search%")->paginate(50);
+    //     }
+    //     if ($request->format == "json") {
+    //         $requests = Bpm::where("warehouse_id", $warehouse_id)->get();
+    //         return response()->json($requests);
+    //     } else {
+    //         //looping the paginate
+    //         foreach ($requests as $request) {
+    //             $detail_pr = DetailPR::where('id_pr', $request->id)->get();
+    //             //if detail_pr empty then editable true
+    //             if ($detail_pr->isEmpty()) {
+    //                 $request->editable = TRUE;
+    //             } else {
+    //                 //looping detail_pr then check in detailspph with id_detail_pr exist
+    //                 foreach ($detail_pr as $detail) {
+    //                     $detail_spph = DetailSpph::where('id_detail_pr', $detail->id)->first();
+    //                     $po = Purchase_Order::where('id', $detail->id_po)->first();
+    //                     if ($po && $po->tipe == '1') {
+    //                         $request->editable = FALSE;
+    //                         break;
+    //                     } else {
+    //                         if ($detail_spph) {
+    //                             $request->editable = FALSE;
+    //                             break;
+    //                         } else {
+    //                             $request->editable = TRUE;
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         return view('bpm.bpm', compact('requests', 'proyeks'));
+    //     }
+    // }
     public function index(Request $request)
     {
         $search = $request->q;
+        $user = Auth::user();
 
-        if (Session::has('selected_warehouse_id')) {
-            $warehouse_id = Session::get('selected_warehouse_id');
+        $warehouse_id = Session::get('selected_warehouse_id')
+            ?? DB::table('warehouse')->first()->warehouse_id;
+
+        // ===============================
+        // QUERY UTAMA BPM
+        // ===============================
+        $requests = Bpm::select(
+            'bpm.*',
+            'kontrak.nama_pekerjaan as proyek_name'
+        )
+            ->join('kontrak', 'kontrak.id', '=', 'bpm.proyek_id');
+
+        // ===============================
+        // FILTER BERDASARKAN ROLE USER
+        // ===============================
+        if ($user->role == 2) {
+            // WILAYAH 1
+            $requests->whereRaw('LOWER(bpm.no_bpm) LIKE ?', ['%wil1%']);
+        } elseif ($user->role == 3) {
+            // WILAYAH 2
+            $requests->whereRaw('LOWER(bpm.no_bpm) LIKE ?', ['%wil2%']);
+        } elseif ($user->role == 14) {
+            // MRO
+            $requests->whereRaw('LOWER(bpm.no_bpm) LIKE ?', ['%mro%']);
+        } elseif ($user->role == 0) {
+            // ADMIN → tampil semua
         } else {
-            $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
+            // Role tidak dikenal
+            $requests->whereRaw('0=1');
         }
 
-        $requests = Bpm::select('bpm.*', 'keproyekan.nama_proyek as proyek_name','keproyekan.dasar_proyek as dasar_pr')
-            ->join('keproyekan', 'keproyekan.id', '=', 'bpm.proyek_id')
+        // ===============================
+        // SEARCH
+        // ===============================
+        if ($search) {
+            $requests->where('kontrak.nama_pekerjaan', 'LIKE', "%$search%");
+        }
+
+        // ===============================
+        // PAGINATION
+        // ===============================
+        $requests = $requests
             ->orderBy('bpm.id', 'asc')
             ->paginate(50);
 
-        $proyeks = DB::table('keproyekan')->get();
-        //  dd($requests);
-        
+        $proyeks = DB::table('kontrak')->get();
 
-        if ($search) {
-            $requests = Bpm::where('nama_proyek', 'LIKE', "%$search%")->paginate(50);
-        }
+        // ===============================
+        // EDITABLE CHECK (TETAP)
+        // ===============================
+        foreach ($requests as $requestItem) {
+            $detail_pr = DetailPR::where('id_pr', $requestItem->id)->get();
 
-        if ($request->format == "json") {
-            $requests = Bpm::where("warehouse_id", $warehouse_id)->get();
+            if ($detail_pr->isEmpty()) {
+                $requestItem->editable = true;
+            } else {
+                foreach ($detail_pr as $detail) {
+                    $detail_spph = DetailSpph::where('id_detail_pr', $detail->id)->first();
+                    $po = Purchase_Order::where('id', $detail->id_po)->first();
 
-            return response()->json($requests);
-        } else {
-
-            //looping the paginate
-            foreach ($requests as $request) {
-                $detail_pr = DetailPR::where('id_pr', $request->id)->get();
-                //if detail_pr empty then editable true
-                if ($detail_pr->isEmpty()) {
-                    $request->editable = TRUE;
-                } else {
-                    //looping detail_pr then check in detailspph with id_detail_pr exist
-                    foreach ($detail_pr as $detail) {
-                        $detail_spph = DetailSpph::where('id_detail_pr', $detail->id)->first();
-                        $po = Purchase_Order::where('id', $detail->id_po)->first();
-                        if ($po && $po->tipe == '1') {
-                            $request->editable = FALSE;
-                            break;
-                        } else {
-                            if ($detail_spph) {
-                                $request->editable = FALSE;
-                                break;
-                            } else {
-                                $request->editable = TRUE;
-                            }
-                        }
+                    if ($po && $po->tipe == '1') {
+                        $requestItem->editable = false;
+                        break;
+                    } else {
+                        $requestItem->editable = !$detail_spph;
                     }
                 }
             }
-            return view('bpm.bpm', compact('requests', 'proyeks'));
         }
-    }
 
+        // ===============================
+        // RESPONSE
+        // ===============================
+        if ($request->format == 'json') {
+            return response()->json(
+                $requests->where('warehouse_id', $warehouse_id)->get()
+            );
+        }
+
+        return view('bpm.bpm', compact('requests', 'proyeks'));
+    }
 
     public function indexApps(Request $request)
     {
@@ -111,8 +188,8 @@ class BpmController extends Controller
             $requests = Bpm::where('nama_proyek', 'LIKE', "%$search%")->paginate(50);
         }
 
-        if ($request->format == "json") {
-            $requests = Bpm::where("warehouse_id", $warehouse_id)->get();
+        if ($request->format == 'json') {
+            $requests = Bpm::where('warehouse_id', $warehouse_id)->get();
 
             return response()->json($requests);
         } else {
@@ -120,12 +197,10 @@ class BpmController extends Controller
         }
     }
 
-
-
-    //untuk menyimpan
+    // untuk menyimpan
     public function store(Request $request)
     {
-        //Store untuk menambah data
+        // Store untuk menambah data
         $bpm = $request->id;
         $request->validate(
             [
@@ -160,20 +235,15 @@ class BpmController extends Controller
                 'tgl_bpm' => $request->tgl_bpm,
             ]);
 
-            
             return redirect()->route('bpm.index')->with('success', 'BPM berhasil diupdate');
         }
 
         // return redirect()->route('purchase_request.index')->with('success', 'Purchase Request berhasil disimpan');
-
     }
-        //End untuk menyimpan
 
+    // End untuk menyimpan
 
-
-
-
-        public function detailBpmSave(Request $request)
+    public function detailBpmSave(Request $request)
     {
         $id_bpm = $request->id;
         $id = $request->id_bpm;
@@ -228,15 +298,7 @@ class BpmController extends Controller
         ]);
     }
 
-
-
-
-
-
-
-
-
-        public function getDetailBpm(Request $request)
+    public function getDetailBpm(Request $request)
     {
         $id = $request->id;
         $bpm = Bpm::select('bpm.*', 'keproyekan.nama_proyek as nama_proyek')
@@ -275,7 +337,7 @@ class BpmController extends Controller
             }
             $item->ekspedisi = $keterangan;
 
-            //qc
+            // qc
             if ($ekspedisi) {
                 $qc = Lppb::where('id_registrasi_barang', $ekspedisi->id)->first();
             } else {
@@ -303,22 +365,22 @@ class BpmController extends Controller
 
             $item->qc = $qc;
 
-            //countdown = waktu - date now
+            // countdown = waktu - date now
             $targetDate = Carbon::parse($item->waktu);
             $currentDate = Carbon::now();
             $diff = $currentDate->diff($targetDate);
             $remainingDays = $diff->days;
 
-            $referenceDate = Carbon::parse($item->waktu); // Change this to your desired reference date
+            $referenceDate = Carbon::parse($item->waktu);  // Change this to your desired reference date
 
             if ($currentDate->lessThan($referenceDate)) {
                 // If the current date is before the reference date
                 $item->countdown = "$remainingDays  Hari Sebelum Waktu Penyelesaian";
-                $item->backgroundcolor = "#FF0000"; // Red background
+                $item->backgroundcolor = '#FF0000';  // Red background
             } elseif ($currentDate->greaterThanOrEqualTo($referenceDate)) {
                 // If the current date is on or after the reference date
                 $item->countdown = "$remainingDays Hari Setelah Waktu Penyelesaian";
-                $item->backgroundcolor = "#008000"; // Green background
+                $item->backgroundcolor = '#008000';  // Green background
             }
             return $item;
         });
@@ -327,9 +389,7 @@ class BpmController extends Controller
         ]);
     }
 
-
-
-    //menambah item detail baru
+    // menambah item detail baru
     public function updateDetailBpm(Request $request)
     {
         if (!$request->qty) {
@@ -382,13 +442,10 @@ class BpmController extends Controller
             'bpm' => $bpm
         ]);
     }
-    //End Menambah item detail Baru
 
+    // End Menambah item detail Baru
 
-
-
-
-    //Hapus Detail
+    // Hapus Detail
     public function hapusDetail(Request $request, $id)
     {
         // Mendapatkan nilai id_pr sebelum menghapus data
@@ -404,11 +461,10 @@ class BpmController extends Controller
             return response()->json(['error' => 'Data Request gagal dihapus'], 500);
         }
     }
-    //End Hapus Detail
 
+    // End Hapus Detail
 
-
-    //Hapus Multiple
+    // Hapus Multiple
     public function hapusMultipleBpm(Request $request)
     {
         if ($request->has('ids')) {
@@ -432,13 +488,10 @@ class BpmController extends Controller
             return response()->json(['success' => false]);
         }
     }
-    //End Hapus Multiple
 
+    // End Hapus Multiple
 
-
-
-
-    //edit detail
+    // edit detail
     public function editDetail(Request $request)
     {
         if (!$request->qty) {
@@ -464,7 +517,7 @@ class BpmController extends Controller
 
         // Validasi data yang diterima dari request
         $request->validate([
-            'id_bpm' => 'required', // Pastikan id_sr wajib ada
+            'id_bpm' => 'required',  // Pastikan id_sr wajib ada
             // 'id' => 'required',
             'kode_material' => 'nullable',
             'uraian' => 'required',
@@ -476,9 +529,7 @@ class BpmController extends Controller
             // 'lampiran' => 'nullable',
         ]);
 
-
         $id = $request->id;
-
 
         // Cek apakah id_sr yang diberikan valid
 
@@ -508,33 +559,34 @@ class BpmController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data detail BPM berhasil diupdate.',
-            'bpm' => $bpm // Mengembalikan data detail SR yang telah diupdate
+            'bpm' => $bpm  // Mengembalikan data detail SR yang telah diupdate
         ]);
     }
-    //end edit detail
 
-
-
-
-
+    // end edit detail
 
     public function cetakBpm(Request $request)
     {
         $id = $request->id;
         $bpm = Bpm::where('bpm.id', $id)
-            ->leftjoin('keproyekan', 'keproyekan.id', '=', 'bpm.proyek_id')->first();
+            ->leftjoin('kontrak', 'kontrak.id', '=', 'bpm.proyek_id')
+            ->first();
 
         $bpm->pic = User::where('id', $bpm->id_user)->first()->name ?? '-';
 
         // Deteksi wilayah berdasarkan no_pr dengan regex dan case-insensitive
-        if (preg_match('/wil1|wilayah1/i', $bpm->no_bpm)) {
-            $bpm->role = "Wilayah 1";
-            $bpm->kabag = "R Praja";
-            $bpm->kadep = "Rika K";
+        if (preg_match('/mro/i', $bpm->no_bpm)) {
+            $bpm->role = 'MRO';
+            $bpm->kabag = '-';  // Jika tidak ada kadiv MRO, isi dengan '-'
+            $bpm->kadep = 'DWI ANNA A';
+        } elseif (preg_match('/wil1|wilayah1/i', $bpm->no_bpm)) {
+            $bpm->role = 'Wilayah 1';
+            $bpm->kabag = 'AHMAD YUDHA';
+            $bpm->kadep = 'RIKA KUSUMANING INDRATMOKO';
         } else {
-            $bpm->role = "Wilayah 2";
-            $bpm->kabag = 'Budiono';
-            $bpm->kadep = 'Harlista O';
+            $bpm->role = 'Wilayah 2';
+            $bpm->kabag = 'BUDIONO';
+            $bpm->kadep = 'DENI WULANDANI';
         }
 
         $bpm->bpmes = DetailBpm::select('detail_bpm.*', 'bpm.*')
@@ -548,10 +600,6 @@ class BpmController extends Controller
         return $pdf->stream('BPM-' . $no . '.pdf');
     }
 
-
-
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -561,8 +609,6 @@ class BpmController extends Controller
     {
         //
     }
-
-    
 
     /**
      * Display the specified resource.
@@ -622,6 +668,4 @@ class BpmController extends Controller
             return redirect()->route('bpm.index')->with('error', 'Data BPM gagal dihapus');
         }
     }
-
-
 }
