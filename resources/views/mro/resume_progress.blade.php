@@ -5,52 +5,120 @@
 @section('content')
 
     <style>
-        /* ================= PRINT STYLE ================= */
+        /* ================= GLOBAL ================= */
+        body {
+            background-color: #f5f6f8;
+        }
+
+        h3 {
+            color: #dc3545;
+            letter-spacing: 0.5px;
+        }
+
+        /* ================= CARD ================= */
+        .card {
+            border: none;
+            border-radius: 12px;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* ================= TABLE ================= */
+        table {
+            font-size: 13px;
+        }
+
+        thead.thead-dark th {
+            background-color: #dc3545 !important;
+            color: #fff !important;
+            border: none;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #fff0f0;
+        }
+
+        /* ================= BADGE ================= */
+        .badge {
+            padding: 6px 10px;
+            font-size: 11px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-warning {
+            background-color: #ffccd2;
+            color: #721c24;
+        }
+
+        .badge-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .badge-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        /* ================= PROGRESS ================= */
+        .progress {
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            font-size: 11px;
+            font-weight: 600;
+            transition: width 0.6s ease;
+        }
+
+        /* ================= LINK ================= */
+        a.text-primary {
+            color: #dc3545 !important;
+        }
+
+        a.text-primary:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= BUTTON ================= */
+        .btn-primary {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background-color: #bd2130;
+            border-color: #bd2130;
+        }
+
+        /* ================= PRINT ================= */
         @media print {
-
-            /* Paksa warna tetap muncul */
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            /* Sembunyikan elemen yang tidak perlu */
-            .no-print,
-            .modal,
-            .pagination {
-                display: none !important;
-            }
-
             body {
-                font-size: 12px;
+                background-color: #fff !important;
             }
 
-            table {
-                width: 100% !important;
-                border-collapse: collapse !important;
-            }
-
-            th,
-            td {
-                border: 1px solid #000 !important;
-                padding: 6px !important;
-                vertical-align: top;
-            }
-
-            thead {
-                display: table-header-group;
-            }
-
-            tr {
-                page-break-inside: avoid;
-            }
-
-            @page {
-                size: A4 landscape;
-                margin: 10mm;
+            thead.thead-dark th {
+                background-color: #dc3545 !important;
+                color: #fff !important;
             }
         }
     </style>
+
 
     <div class="container-fluid mt-4">
 
@@ -73,7 +141,7 @@
         @endif
 
 
-        
+
 
         {{-- TABLE --}}
         <div class="card shadow-sm">
