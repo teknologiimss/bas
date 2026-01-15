@@ -339,12 +339,7 @@
                                         {{-- Contoh menu role Pemasaran --}}
 
                                         {{-- Contoh menu role Wilayah --}}
-                                        @if (Auth::user()->role == 0 ||
-                                                Auth::user()->role == 2 ||
-                                                Auth::user()->role == 3 ||
-                                                Auth::user()->role == 8 ||
-                                                Auth::user()->role == 9 ||
-                                                Auth::user()->role == 14)
+                                        @if (in_array(Auth::user()->role, [0, 2, 3, 8, 9, 14]))
                                             <li class="nav-item">
                                                 <a href="{{ route('purchase_request.index') }}"
                                                     class="nav-link {{ Route::current()->getName() == 'purchase_request.index' ? 'active' : '' }}">
@@ -352,13 +347,18 @@
                                                     <p>{{ __('Purchase Request') }}</p>
                                                 </a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('product.trackingwil') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'product.trackingwil' ? 'active' : '' }}">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>{{ __('Tracking Wilayah') }}</p>
-                                                </a>
-                                            </li>
+
+                                            {{-- Tracking Wilayah TIDAK untuk MRO (role 14) --}}
+                                            @if (Auth::user()->role != 14)
+                                                <li class="nav-item">
+                                                    <a href="{{ route('product.trackingwil') }}"
+                                                        class="nav-link {{ Route::current()->getName() == 'product.trackingwil' ? 'active' : '' }}">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>{{ __('Tracking Wilayah') }}</p>
+                                                    </a>
+                                                </li>
+                                            @endif
+
                                             <li class="nav-item">
                                                 <a href="{{ route('bpm.index') }}"
                                                     class="nav-link {{ Route::current()->getName() == 'bpm.index' ? 'active' : '' }}">
@@ -367,6 +367,7 @@
                                                 </a>
                                             </li>
                                         @endif
+
                                         {{-- Contoh menu role Wilayah --}}
 
                                         {{-- Contoh menu role Logistik --}}
