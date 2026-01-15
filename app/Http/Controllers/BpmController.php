@@ -301,8 +301,8 @@ class BpmController extends Controller
     public function getDetailBpm(Request $request)
     {
         $id = $request->id;
-        $bpm = Bpm::select('bpm.*', 'keproyekan.nama_proyek as nama_proyek')
-            ->join('keproyekan', 'keproyekan.id', '=', 'bpm.proyek_id')
+        $bpm = Bpm::select('bpm.*', 'kontrak.nama_pekerjaan as nama_proyek')
+            ->join('kontrak', 'kontrak.id', '=', 'bpm.proyek_id')
             ->where('bpm.id', $id)
             ->first();
         $bpm->details = DetailBpm::where('id_bpm', $id)->get();
