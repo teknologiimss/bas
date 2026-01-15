@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <style>
+    {{-- <style>
         /* ================= GLOBAL ================= */
         body {
             background-color: #f5f6f8;
@@ -117,6 +117,144 @@
                 color: #fff !important;
             }
         }
+    </style> --}}
+
+    <style>
+        /* ================= ROOT COLOR ================= */
+        :root {
+            --maroon: #dc3545;
+            --maroon-dark: #b02a37;
+            --maroon-soft: #fdecee;
+        }
+
+        /* ================= CARD MODERN ================= */
+        .card {
+            border-radius: 14px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, .12);
+        }
+
+        /* ================= HEADER ================= */
+        h3 {
+            color: var(--maroon);
+            animation: fadeDown .6s ease;
+        }
+
+        /* ================= TABLE ================= */
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        thead.thead-dark th {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)) !important;
+            letter-spacing: .6px;
+        }
+
+        tbody tr {
+            transition: all .2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: var(--maroon-soft);
+            transform: scale(1.005);
+        }
+
+        /* ================= LINK ================= */
+        a.text-primary {
+            position: relative;
+            transition: color .2s ease;
+        }
+
+        a.text-primary::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: var(--maroon);
+            transition: width .3s;
+        }
+
+        a.text-primary:hover::after {
+            width: 100%;
+        }
+
+        /* ================= BADGE ================= */
+        .badge {
+            transition: transform .2s ease;
+        }
+
+        .badge:hover {
+            transform: scale(1.08);
+        }
+
+        /* ================= PROGRESS ================= */
+        .progress {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            font-weight: 600;
+            animation: progressGrow 1.2s ease;
+            box-shadow: inset 0 0 6px rgba(255, 255, 255, .3);
+        }
+
+        /* ================= BUTTON MODERN ================= */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            box-shadow: 0 6px 16px rgba(220, 53, 69, .4);
+            transition: all .25s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(220, 53, 69, .55);
+        }
+
+        .btn-primary:active {
+            transform: scale(.95);
+        }
+
+        /* ================= FILTER INPUT ================= */
+        .form-control {
+            border-radius: 10px;
+            transition: box-shadow .2s ease, transform .15s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 .15rem rgba(220, 53, 69, .25);
+            transform: scale(1.02);
+        }
+
+        /* ================= ANIMATION ================= */
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes progressGrow {
+            from {
+                width: 0;
+            }
+        }
     </style>
 
 
@@ -140,43 +278,36 @@
             </div>
         @endif
 
-            {{-- FILTER --}}
-<div class="card mb-3 no-print">
-    <div class="card-body">
-        <form method="GET" action="{{ route('mro.progress.index') }}">
-            <div class="form-row">
+        {{-- FILTER --}}
+        <div class="card mb-3 no-print">
+            <div class="card-body">
+                <form method="GET" action="{{ route('mro.progress.index') }}">
+                    <div class="form-row">
 
-                <div class="col-md-4 mb-2">
-                    <input type="text"
-                        name="po"
-                        class="form-control"
-                        placeholder="Cari PO / Nota Dinas"
-                        value="{{ request('po') }}">
-                </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" name="po" class="form-control" placeholder="Cari PO / Nota Dinas"
+                                value="{{ request('po') }}">
+                        </div>
 
-                <div class="col-md-4 mb-2">
-                    <input type="text"
-                        name="pekerjaan"
-                        class="form-control"
-                        placeholder="Cari Nama Pekerjaan"
-                        value="{{ request('pekerjaan') }}">
-                </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" name="pekerjaan" class="form-control" placeholder="Cari Nama Pekerjaan"
+                                value="{{ request('pekerjaan') }}">
+                        </div>
 
-                <div class="col-md-4 mb-2">
-                    <button class="btn btn-primary mr-2" type="submit">
-                        🔍 Filter
-                    </button>
+                        <div class="col-md-4 mb-2">
+                            <button class="btn btn-primary mr-2" type="submit">
+                                🔍 Filter
+                            </button>
 
-                    <a href="{{ route('mro.progress.index') }}"
-                       class="btn btn-secondary">
-                        ♻ Reset
-                    </a>
-                </div>
+                            <a href="{{ route('mro.progress.index') }}" class="btn btn-secondary">
+                                ♻ Reset
+                            </a>
+                        </div>
 
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-</div>
+        </div>
 
 
 

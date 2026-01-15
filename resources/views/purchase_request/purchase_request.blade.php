@@ -558,9 +558,14 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
                         {{-- <button id="button-save" type="button" class="btn btn-primary"
                             onclick="document.getElementById('save').submit();">{{ __('Tambahkan') }}</button> --}}
-                        <button id="button-save" type="button" class="btn btn-primary" onclick="setSaveIdAndSubmit();">
+                        {{-- <button id="button-save" type="button" class="btn btn-primary" onclick="setSaveIdAndSubmit();">
                             {{ __('Simpan') }}
+                        </button> --}}
+                        <button id="button-save" type="button" class="btn btn-maroon-animated"
+                            onclick="setSaveIdAndSubmit();">
+                            <i class="fas fa-save mr-1"></i> {{ __('Simpan') }}
                         </button>
+
 
                     </div>
                 </div>
@@ -591,10 +596,15 @@
                                             <option value="sppjp">Cetak SPPJP</option>
                                         </select>
                                     </form>
-                                    <button id="button-cetak" type="button" class="btn btn-primary"
+                                    {{-- <button id="button-cetak" type="button" class="btn btn-primary"
                                         onclick="submitCetak();">
                                         {{ __('Cetak') }}
+                                    </button> --}}
+                                    <button id="button-cetak" type="button" class="btn btn-maroon-animated"
+                                        onclick="submitCetak();">
+                                        <i class="fas fa-print mr-1"></i> {{ __('Cetak') }}
                                     </button>
+
                                     <table class="align-top w-100">
                                         <tr>
                                             <td style="width: 3%;"><b>No PR/SPPJP</b></td>
@@ -621,9 +631,15 @@
                                         </tr>
                                         <tr>
                                             <td colspan="3">
-                                                <button id="button-tambah-produk" type="button"
+                                                {{-- <button id="button-tambah-produk" type="button"
                                                     class="btn btn-info mb-3"
-                                                    onclick="showAddProduct()">{{ __('Tambah Item Detail') }}</button>
+                                                    onclick="showAddProduct()">{{ __('Tambah Item Detail') }}</button> --}}
+
+                                                <button id="button-tambah-produk" type="button"
+                                                    class="btn btn-maroon-animated mb-3" onclick="showAddProduct()">
+                                                    <i class="fas fa-plus-circle mr-1"></i> {{ __('Tambah Item Detail') }}
+                                                </button>
+
                                             </td>
                                         </tr>
                                     </table>
@@ -772,7 +788,10 @@
 
                                             </form>
                                             <button id="button-update-pr" type="button"
-                                                class="btn btn-primary w-100">{{ __('Tambahkan') }}</button>
+                                                class="btn btn-maroon-animated w-100">
+                                                <i class="fas fa-plus mr-1"></i> {{ __('Tambahkan') }}
+                                            </button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -2485,20 +2504,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                                                                                success ') !!}');
+                                                                                                                                                                                success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                                                                                error ') !!}');
+                                                                                                                                                                                error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                                                                                    ',
+                                                                                                                                                                                    ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>

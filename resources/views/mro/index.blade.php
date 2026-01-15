@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endsection
 
-<style>
+{{-- <style>
     /* Table wrapper */
     .table-modern {
         border-radius: 10px;
@@ -112,6 +112,147 @@
             font-size: 11px;
         }
     }
+</style> --}}
+
+<style>
+    /* ===============================
+   MODERN MAROON ANIMATED BUTTON
+================================= */
+    .btn-maroon-animated {
+        background: linear-gradient(135deg, #800020, #a00028);
+        border: none;
+        color: #fff !important;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 8px 16px;
+        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.35);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Hover naik */
+    .btn-maroon-animated:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(128, 0, 32, 0.45);
+        color: #fff !important;
+    }
+
+    /* Klik */
+    .btn-maroon-animated:active {
+        transform: scale(0.96);
+    }
+
+    /* Icon putih */
+    .btn-maroon-animated i {
+        color: #fff !important;
+    }
+
+    /* Animasi pulse lembut */
+    .btn-maroon-animated.pulse {
+        animation: pulseMaroon 1.8s infinite;
+    }
+
+    @keyframes pulseMaroon {
+        0% {
+            box-shadow: 0 0 0 0 rgba(128, 0, 32, 0.6);
+        }
+
+        70% {
+            box-shadow: 0 0 0 10px rgba(128, 0, 32, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(128, 0, 32, 0);
+        }
+    }
+
+    /* ===============================
+   MODERN MAROON TABLE ANIMATION
+================================= */
+
+    /* Wrapper */
+    .table-modern {
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 8px 25px rgba(128, 0, 32, 0.18);
+        animation: tableFadeUp 0.6s ease;
+    }
+
+    @keyframes tableFadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Header */
+    .table-modern thead {
+        background: linear-gradient(135deg, #800020, #a00028);
+    }
+
+    .table-modern thead th {
+        color: #fff;
+        border: none;
+        font-size: 12px;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        padding: 12px;
+    }
+
+    /* Row */
+    .table-modern tbody tr {
+        transition: all 0.25s ease;
+    }
+
+    /* Hover row naik */
+    .table-modern tbody tr:hover {
+        background: linear-gradient(90deg,
+                rgba(128, 0, 32, 0.08),
+                rgba(128, 0, 32, 0.02));
+        transform: translateX(4px);
+    }
+
+    /* Cell */
+    .table-modern tbody td {
+        font-size: 13px;
+        padding: 10px;
+        border-color: #f3f3f3;
+    }
+
+    /* Striping modern */
+    .table-modern tbody tr:nth-child(even) {
+        background-color: #fff7f9;
+    }
+
+    /* Checkbox */
+    .table-modern input[type="checkbox"] {
+        accent-color: #800020;
+        transform: scale(1.1);
+    }
+
+    /* Badge stok */
+    .table-modern .badge,
+    .table-modern .bg-warning {
+        border-radius: 20px;
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+
+    /* Action buttons container anim */
+    .action-buttons {
+        transition: all 0.3s ease;
+    }
+
+    .table-modern tbody tr:hover .action-buttons {
+        transform: scale(1.05);
+    }
 </style>
 
 @section('content')
@@ -129,7 +270,7 @@
 
                         <!-- BUTTONS -->
                         <div class="col-12 col-md-auto header-actions d-flex flex-wrap">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#add-mro"
+                            {{-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#add-mro"
                                 onclick="addMro()">
                                 <i class="fas fa-plus"></i> Tambah Barang
                             </button>
@@ -137,7 +278,17 @@
                             <button type="button" class="btn btn-danger"
                                 onclick="window.location.href='{{ route('mro.export') }}'">
                                 <i class="fas fa-file-excel"></i> Export MRO (XLS)
+                            </button> --}}
+                            <button type="button" class="btn btn-maroon-animated pulse" data-toggle="modal"
+                                data-target="#add-mro" onclick="addMro()">
+                                <i class="fas fa-plus"></i> Tambah Barang
                             </button>
+
+                            <button type="button" class="btn btn-maroon-animated"
+                                onclick="window.location.href='{{ route('mro.export') }}'">
+                                <i class="fas fa-file-excel"></i> Export MRO (XLS)
+                            </button>
+
                         </div>
 
                         <!-- SEARCH -->
