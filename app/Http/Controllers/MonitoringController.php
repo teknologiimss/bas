@@ -24,27 +24,45 @@ class MonitoringController extends Controller
 
     // Klik PO/Nodin Spesifik ke Halaman Monitoring
     public function index(Request $request, $proyek_id)
-    {
-        $proyek = Proyek::findOrFail($proyek_id);
+{
+    $proyek = Proyek::findOrFail($proyek_id);
 
-        if ($request->filled('po')) {
-            // 🔥 AMBIL 1 DATA PO TERBARU
-            $monitorings = Monitoring::with('documents', 'folders.documents')
-                ->where('proyek_id', $proyek_id)
-                ->where('po_nota_dinas', trim($request->po))
-                ->latest()
-                ->take(1)
-                ->get();
-        } else {
-            // TAMPILKAN SEMUA JIKA TIDAK ADA PO
-            $monitorings = Monitoring::with('documents', 'folders.documents')
-                ->where('proyek_id', $proyek_id)
-                ->latest()
-                ->get();
-        }
+    $query = Monitoring::with('documents', 'folders.documents')
+        ->where('proyek_id', $proyek_id);
 
-        return view('monitoring.index', compact('proyek', 'monitorings'));
+    // 🔍 Filter PO / Nota Dinas
+    if ($request->filled('po')) {
+        $query->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
     }
+
+    // 🔍 Filter Nama Pekerjaan
+    if ($request->filled('pekerjaan')) {
+        $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
+    }
+
+    $monitorings = $query->latest()->get();
+
+    return view('monitoring.index', compact('proyek', 'monitorings'));
+}
+
+
+public function resumeProgress(Request $request)
+{
+    $query = Monitoring::query();
+
+    if ($request->filled('po')) {
+        $query->where('po_nota_dinas', 'like', '%' . $request->po . '%');
+    }
+
+    if ($request->filled('pekerjaan')) {
+        $query->where('nama_pekerjaan', 'like', '%' . $request->pekerjaan . '%');
+    }
+
+    $monitorings = $query->paginate(10)->withQueryString();
+
+    return view('mro.resume_progress', compact('monitorings'));
+}
+
 
     public function store(Request $request, $proyek_id)
     {

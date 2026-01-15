@@ -84,10 +84,6 @@ class PurchaseRequestController extends Controller
     //         return view('purchase_request.purchase_request', compact('requests', 'proyeks'));
     //     }
     // }
-
-
-
-
     public function index(Request $request)
     {
         $search = $request->q;
@@ -538,7 +534,6 @@ class PurchaseRequestController extends Controller
     //             ->with('success', 'Purchase Request berhasil diperbarui');
     //     }
     // }
-    
     public function store(Request $request)
     {
         $pr_id = $request->id;
@@ -583,7 +578,6 @@ class PurchaseRequestController extends Controller
 
             return redirect()->route('purchase_request.index')->with('success', 'Purchase Request berhasil ditambahkan');
         } else {
-            
             // === UPDATE DATA ===
             $pr = PurchaseRequest::find($pr_id);
             if (!$pr) {
@@ -812,71 +806,33 @@ class PurchaseRequestController extends Controller
         }
     }
 
-
     // Cetak tanpa lampiran
-    public function cetakPr(Request $request)
-    {
-        $id = $request->id;
-        $pr = PurchaseRequest::where('purchase_request.id', $id)
-            ->leftjoin('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
-            ->first();
-
-        if (!$pr) {
-            return abort(404);
-        }
-
-        $pr->pic = User::where('id', $pr->id_user)->first()->name ?? '-';
-
-        // if (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
-        //     $pr->role = 'Wilayah 1';
-        //     $pr->kadiv = 'EKO PRASETYO';
-        //     $pr->kadep = 'RIKA KUSUMANING INDRATMOKO';
-        // } else {
-        //     $pr->role = 'Wilayah 2';
-        //     $pr->kadiv = 'HARI SUBEKTI';
-        //     $pr->kadep = 'HARLISTA DWI OKTYASWORO';
-        // }
-
-        if (preg_match('/mro/i', $pr->no_pr)) {
-            $pr->role = 'MRO';
-            $pr->kadiv = '-';  // Jika tidak ada kadiv MRO, isi dengan '-'
-            $pr->kadep = 'DWI ANNA A';
-        } elseif (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
-            $pr->role = 'Wilayah 1';
-            $pr->kadiv = 'EKO PRASETIYO';
-            $pr->kadep = 'RIKA KUSUMANING INDRATMOKO';
-        } else {
-            $pr->role = 'Wilayah 2';
-            $pr->kadiv = 'EKO PRASETIYO';
-            $pr->kadep = 'DENI WULANDANI';
-        }
-
-        $pr->purchases = DetailPR::select('detail_pr.*', 'purchase_request.*')
-            ->leftjoin('purchase_request', 'purchase_request.id', '=', 'detail_pr.id_pr')
-            ->where('purchase_request.id', $id)
-            ->get();
-
-        $pdf = Pdf::loadview('purchase_request.pr_print', compact('pr'));
-        $pdf->setPaper('A4', 'landscape');
-        return $pdf->stream('PR-' . $pr->no_pr . '.pdf');
-    }
-
-
-    // Cetak dengan FDPI tapi belum bisa
     // public function cetakPr(Request $request)
     // {
     //     $id = $request->id;
-
     //     $pr = PurchaseRequest::where('purchase_request.id', $id)
-    //         ->leftJoin('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
-    //         ->firstOrFail();
+    //         ->leftjoin('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
+    //         ->first();
+
+    //     if (!$pr) {
+    //         return abort(404);
+    //     }
 
     //     $pr->pic = User::where('id', $pr->id_user)->first()->name ?? '-';
 
-    //     // ROLE
-    //     if (preg_match('/mro|MRO/i', $pr->no_pr)) {
+    //     // if (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
+    //     //     $pr->role = 'Wilayah 1';
+    //     //     $pr->kadiv = 'EKO PRASETYO';
+    //     //     $pr->kadep = 'RIKA KUSUMANING INDRATMOKO';
+    //     // } else {
+    //     //     $pr->role = 'Wilayah 2';
+    //     //     $pr->kadiv = 'HARI SUBEKTI';
+    //     //     $pr->kadep = 'HARLISTA DWI OKTYASWORO';
+    //     // }
+
+    //     if (preg_match('/mro/i', $pr->no_pr)) {
     //         $pr->role = 'MRO';
-    //         $pr->kadiv = '-';
+    //         $pr->kadiv = '-';  // Jika tidak ada kadiv MRO, isi dengan '-'
     //         $pr->kadep = 'DWI ANNA A';
     //     } elseif (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
     //         $pr->role = 'Wilayah 1';
@@ -888,128 +844,203 @@ class PurchaseRequestController extends Controller
     //         $pr->kadep = 'DENI WULANDANI';
     //     }
 
-    //     $pr->purchases = DetailPR::where('id_pr', $id)->get();
+    //     $pr->purchases = DetailPR::select('detail_pr.*', 'purchase_request.*')
+    //         ->leftjoin('purchase_request', 'purchase_request.id', '=', 'detail_pr.id_pr')
+    //         ->where('purchase_request.id', $id)
+    //         ->get();
 
-    //     // 🔹 Ambil lampiran PR
-    //     $lampiran = PrLampiran::where('pr_id', $id)->get();
-
-    //     /* ===============================
-    //        1️⃣ Generate PDF PR utama
-    //     =============================== */
-    //     $pdf = Pdf::loadView('purchase_request.pr_print', compact('pr'));
+    //     $pdf = Pdf::loadview('purchase_request.pr_print', compact('pr'));
     //     $pdf->setPaper('A4', 'landscape');
-
-    //     $tempPath = storage_path("app/temp_pr_{$id}.pdf");
-    //     $pdf->save($tempPath);
-
-    //     /* ===============================
-    //        2️⃣ Merge dengan lampiran
-    //     =============================== */
-    //     $fpdi = new FPDI();
-
-    //     // ➜ PR utama
-    //     $pageCount = $fpdi->setSourceFile($tempPath);
-    //     for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-    //         $tpl = $fpdi->importPage($pageNo);
-    //         $size = $fpdi->getTemplateSize($tpl);
-
-    //         $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
-    //         $fpdi->AddPage($orientation);
-
-    //         $pageWidth = $orientation === 'L' ? 297 : 210;
-    //         $pageHeight = $orientation === 'L' ? 210 : 297;
-
-    //         $scale = min(
-    //             $pageWidth / $size['width'],
-    //             $pageHeight / $size['height']
-    //         );
-
-    //         $x = ($pageWidth - ($size['width'] * $scale)) / 2;
-    //         $y = ($pageHeight - ($size['height'] * $scale)) / 2;
-
-    //         $fpdi->useTemplate(
-    //             $tpl,
-    //             $x,
-    //             $y,
-    //             $size['width'] * $scale,
-    //             $size['height'] * $scale
-    //         );
-    //     }
-
-    //     // ➜ Lampiran PDF
-    //     foreach ($lampiran as $file) {
-    //         $filePath = public_path("/lampiran/{$file->file}");  // contoh: lampiran/checksheet.pdf
-
-    //         if (!file_exists($filePath)) {
-    //             continue;
-    //         }
-
-    //         $pageCount = $fpdi->setSourceFile($filePath);
-    //         for ($i = 1; $i <= $pageCount; $i++) {
-    //             $tpl = $fpdi->importPage($i);
-    //             $size = $fpdi->getTemplateSize($tpl);
-
-    //             $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
-    //             $fpdi->AddPage($orientation);
-
-    //             $pageWidth = $orientation === 'L' ? 297 : 210;
-    //             $pageHeight = $orientation === 'L' ? 210 : 297;
-
-    //             $scale = min(
-    //                 $pageWidth / $size['width'],
-    //                 $pageHeight / $size['height']
-    //             );
-
-    //             $x = ($pageWidth - ($size['width'] * $scale)) / 2;
-    //             $y = ($pageHeight - ($size['height'] * $scale)) / 2;
-
-    //             $fpdi->useTemplate(
-    //                 $tpl,
-    //                 $x,
-    //                 $y,
-    //                 $size['width'] * $scale,
-    //                 $size['height'] * $scale
-    //             );
-    //         }
-    //     }
-
-    //     unlink($tempPath);
-
-    //     /* ===============================
-    //        3️⃣ Output ke browser
-    //     =============================== */
-    //     return response(
-    //         $fpdi->Output('S', 'PR-' . $pr->no_pr . '.pdf')
-    //     )->header('Content-Type', 'application/pdf');
+    //     return $pdf->stream('PR-' . $pr->no_pr . '.pdf');
     // }
 
-    
+    // Cetak dengan FDPI tapi belum bisa
+    public function cetakPr(Request $request)
+    {
+        $id = $request->id;
+
+        $pr = PurchaseRequest::where('purchase_request.id', $id)
+            ->leftJoin('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
+            ->firstOrFail();
+
+        $pr->pic = User::where('id', $pr->id_user)->first()->name ?? '-';
+
+        // ROLE
+        if (preg_match('/mro|MRO/i', $pr->no_pr)) {
+            $pr->role = 'MRO';
+            $pr->kadiv = '-';
+            $pr->kadep = 'DWI ANNA A';
+        } elseif (preg_match('/wil1|wilayah1/i', $pr->no_pr)) {
+            $pr->role = 'Wilayah 1';
+            $pr->kadiv = 'EKO PRASETIYO';
+            $pr->kadep = 'RIKA KUSUMANING INDRATMOKO';
+        } else {
+            $pr->role = 'Wilayah 2';
+            $pr->kadiv = 'EKO PRASETIYO';
+            $pr->kadep = 'DENI WULANDANI';
+        }
+
+        $pr->purchases = DetailPR::where('id_pr', $id)->get();
+
+        // 🔹 Ambil lampiran PR
+        $lampiran = PrLampiran::where('pr_id', $id)->get();
+
+        /* ===============================
+           1️⃣ Generate PDF PR utama
+        =============================== */
+        $pdf = Pdf::loadView('purchase_request.pr_print', compact('pr'));
+        $pdf->setPaper('A4', 'landscape');
+
+        $tempPath = storage_path("app/temp_pr_{$id}.pdf");
+        $pdf->save($tempPath);
+
+        /* ===============================
+           2️⃣ Merge dengan lampiran
+        =============================== */
+        $fpdi = new FPDI();
+
+        // ➜ PR utama
+        $pageCount = $fpdi->setSourceFile($tempPath);
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+            $tpl = $fpdi->importPage($pageNo);
+            $size = $fpdi->getTemplateSize($tpl);
+
+            $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+            $fpdi->AddPage($orientation);
+
+            $pageWidth = $orientation === 'L' ? 297 : 210;
+            $pageHeight = $orientation === 'L' ? 210 : 297;
+
+            $scale = min(
+                $pageWidth / $size['width'],
+                $pageHeight / $size['height']
+            );
+
+            $x = ($pageWidth - ($size['width'] * $scale)) / 2;
+            $y = ($pageHeight - ($size['height'] * $scale)) / 2;
+
+            $fpdi->useTemplate(
+                $tpl,
+                $x,
+                $y,
+                $size['width'] * $scale,
+                $size['height'] * $scale
+            );
+        }
+
+        // ➜ Lampiran PDF
+        foreach ($lampiran as $file) {
+            $filePath = public_path("/lampiran/{$file->file}");  // contoh: lampiran/checksheet.pdf
+
+            if (!file_exists($filePath)) {
+                continue;
+            }
+
+            $pageCount = $fpdi->setSourceFile($filePath);
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $tpl = $fpdi->importPage($i);
+                $size = $fpdi->getTemplateSize($tpl);
+
+                $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+                $fpdi->AddPage($orientation);
+
+                $pageWidth = $orientation === 'L' ? 297 : 210;
+                $pageHeight = $orientation === 'L' ? 210 : 297;
+
+                $scale = min(
+                    $pageWidth / $size['width'],
+                    $pageHeight / $size['height']
+                );
+
+                $x = ($pageWidth - ($size['width'] * $scale)) / 2;
+                $y = ($pageHeight - ($size['height'] * $scale)) / 2;
+
+                $fpdi->useTemplate(
+                    $tpl,
+                    $x,
+                    $y,
+                    $size['width'] * $scale,
+                    $size['height'] * $scale
+                );
+            }
+        }
+
+        unlink($tempPath);
+
+        /* ===============================
+           3️⃣ Output ke browser
+        =============================== */
+        return response(
+            $fpdi->Output('S', 'PR-' . $pr->no_pr . '.pdf')
+        )->header('Content-Type', 'application/pdf');
+    }
+
+    // Asli Tanpa Lampiran FDPI
+
+    // public function cetakSppjp(Request $request)
+    // {
+    //     $id = $request->id;
+    //     $sppjp = PurchaseRequest::where('purchase_request.id', $id)
+    //         ->leftjoin('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
+    //         ->first();
+
+    //     if (!$sppjp) {
+    //         return abort(404);
+    //     }
+
+    //     $sppjp->pic = User::where('id', $sppjp->id_user)->first()->name ?? '-';
+
+    //     // if (preg_match('/wil1|wilayah1/i', $sppjp->no_pr)) {
+    //     //     $sppjp->role = 'Wilayah 1';
+    //     //     $sppjp->kadiv = 'EKO PRASETYO';
+    //     //     $sppjp->kadep = 'RIKA KUSUMANING INDRATMOKO';
+    //     // } else {
+    //     //     $sppjp->role = 'Wilayah 2';
+    //     //     $sppjp->kadiv = 'HARI SUBEKTI';
+    //     //     $sppjp->kadep = 'HARLISTA DWI OKTYASWORO';
+    //     // }
+
+    //     if (preg_match('/mro|MRO/i', $sppjp->no_pr)) {
+    //         $sppjp->role = 'MRO';
+    //         $sppjp->kadiv = '-';  // bisa diisi jika ada kadiv khusus MRO
+    //         $sppjp->kadep = 'DWI ANNA A';
+    //     } elseif (preg_match('/wil1|wilayah1/i', $sppjp->no_pr)) {
+    //         $sppjp->role = 'Wilayah 1';
+    //         $sppjp->kadiv = 'EKO PRASETIYO';
+    //         $sppjp->kadep = 'RIKA KUSUMANING INDRATMOKO';
+    //     } else {
+    //         $sppjp->role = 'Wilayah 2';
+    //         $sppjp->kadiv = 'EKO PRASETIYO';
+    //         $sppjp->kadep = 'DENI WULANDANI';
+    //     }
+
+    //     $sppjp->purchases = DetailPR::select('detail_pr.*', 'purchase_request.*')
+    //         ->leftjoin('purchase_request', 'purchase_request.id', '=', 'detail_pr.id_pr')
+    //         ->where('purchase_request.id', $id)
+    //         ->get();
+
+    //     $pdf = Pdf::loadview('purchase_request.sppjp_print', compact('sppjp'));
+    //     $pdf->setPaper('A4', 'landscape');
+    //     return $pdf->stream('PR-' . $sppjp->no_pr . '.pdf');
+    // }
+
+    // dengan lampiran Fdpi
     public function cetakSppjp(Request $request)
     {
         $id = $request->id;
+
+        // Ambil data SPPJP + proyek (kontrak)
         $sppjp = PurchaseRequest::where('purchase_request.id', $id)
-            ->leftjoin('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
-            ->first();
+            ->leftJoin('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id')
+            ->firstOrFail();
 
-        if (!$sppjp) {
-            return abort(404);
-        }
-
+        // PIC
         $sppjp->pic = User::where('id', $sppjp->id_user)->first()->name ?? '-';
 
-        // if (preg_match('/wil1|wilayah1/i', $sppjp->no_pr)) {
-        //     $sppjp->role = 'Wilayah 1';
-        //     $sppjp->kadiv = 'EKO PRASETYO';
-        //     $sppjp->kadep = 'RIKA KUSUMANING INDRATMOKO';
-        // } else {
-        //     $sppjp->role = 'Wilayah 2';
-        //     $sppjp->kadiv = 'HARI SUBEKTI';
-        //     $sppjp->kadep = 'HARLISTA DWI OKTYASWORO';
-        // }
-
+        // ROLE / KADIV / KADEP
         if (preg_match('/mro|MRO/i', $sppjp->no_pr)) {
             $sppjp->role = 'MRO';
-            $sppjp->kadiv = '-';  // bisa diisi jika ada kadiv khusus MRO
+            $sppjp->kadiv = '-';
             $sppjp->kadep = 'DWI ANNA A';
         } elseif (preg_match('/wil1|wilayah1/i', $sppjp->no_pr)) {
             $sppjp->role = 'Wilayah 1';
@@ -1021,15 +1052,104 @@ class PurchaseRequestController extends Controller
             $sppjp->kadep = 'DENI WULANDANI';
         }
 
-        $sppjp->purchases = DetailPR::select('detail_pr.*', 'purchase_request.*')
-            ->leftjoin('purchase_request', 'purchase_request.id', '=', 'detail_pr.id_pr')
-            ->where('purchase_request.id', $id)
-            ->get();
+        // Detail purchases
+        $sppjp->purchases = DetailPR::where('id_pr', $id)->get();
 
-        $pdf = Pdf::loadview('purchase_request.sppjp_print', compact('sppjp'));
+        // Ambil lampiran SPPJP
+        $lampiran = PrLampiran::where('pr_id', $id)->get();
+
+        /* ===============================
+           1️⃣ Generate PDF SPPJP utama
+        =============================== */
+        $pdf = Pdf::loadView('purchase_request.sppjp_print', compact('sppjp'));
         $pdf->setPaper('A4', 'landscape');
-        return $pdf->stream('PR-' . $sppjp->no_pr . '.pdf');
+
+        $tempPath = storage_path("app/temp_sppjp_{$id}.pdf");
+        $pdf->save($tempPath);
+
+        /* ===============================
+           2️⃣ Merge dengan lampiran menggunakan FPDI
+        =============================== */
+        $fpdi = new \setasign\Fpdi\Fpdi();
+
+        // ➜ SPPJP utama
+        $pageCount = $fpdi->setSourceFile($tempPath);
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+            $tpl = $fpdi->importPage($pageNo);
+            $size = $fpdi->getTemplateSize($tpl);
+
+            $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+            $fpdi->AddPage($orientation);
+
+            $pageWidth = $orientation === 'L' ? 297 : 210;
+            $pageHeight = $orientation === 'L' ? 210 : 297;
+
+            $scale = min(
+                $pageWidth / $size['width'],
+                $pageHeight / $size['height']
+            );
+
+            $x = ($pageWidth - ($size['width'] * $scale)) / 2;
+            $y = ($pageHeight - ($size['height'] * $scale)) / 2;
+
+            $fpdi->useTemplate(
+                $tpl,
+                $x,
+                $y,
+                $size['width'] * $scale,
+                $size['height'] * $scale
+            );
+        }
+
+        // ➜ Lampiran PDF
+        foreach ($lampiran as $file) {
+            $filePath = public_path("/lampiran/{$file->file}");
+            if (!file_exists($filePath))
+                continue;
+
+            $pageCount = $fpdi->setSourceFile($filePath);
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $tpl = $fpdi->importPage($i);
+                $size = $fpdi->getTemplateSize($tpl);
+
+                $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+                $fpdi->AddPage($orientation);
+
+                $pageWidth = $orientation === 'L' ? 297 : 210;
+                $pageHeight = $orientation === 'L' ? 210 : 297;
+
+                $scale = min(
+                    $pageWidth / $size['width'],
+                    $pageHeight / $size['height']
+                );
+
+                $x = ($pageWidth - ($size['width'] * $scale)) / 2;
+                $y = ($pageHeight - ($size['height'] * $scale)) / 2;
+
+                $fpdi->useTemplate(
+                    $tpl,
+                    $x,
+                    $y,
+                    $size['width'] * $scale,
+                    $size['height'] * $scale
+                );
+            }
+        }
+
+        // Hapus temporary file
+        unlink($tempPath);
+
+        /* ===============================
+           3️⃣ Output ke browser
+        =============================== */
+        return response(
+            $fpdi->Output('S', 'SPPJP-' . $sppjp->no_pr . '.pdf')
+        )->header('Content-Type', 'application/pdf');
     }
+
+
+
+    
 
     /**
      * Show the form for editing the specified resource.

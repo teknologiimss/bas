@@ -140,6 +140,43 @@
             </div>
         @endif
 
+            {{-- FILTER --}}
+<div class="card mb-3 no-print">
+    <div class="card-body">
+        <form method="GET" action="{{ route('mro.progress.index') }}">
+            <div class="form-row">
+
+                <div class="col-md-4 mb-2">
+                    <input type="text"
+                        name="po"
+                        class="form-control"
+                        placeholder="Cari PO / Nota Dinas"
+                        value="{{ request('po') }}">
+                </div>
+
+                <div class="col-md-4 mb-2">
+                    <input type="text"
+                        name="pekerjaan"
+                        class="form-control"
+                        placeholder="Cari Nama Pekerjaan"
+                        value="{{ request('pekerjaan') }}">
+                </div>
+
+                <div class="col-md-4 mb-2">
+                    <button class="btn btn-primary mr-2" type="submit">
+                        🔍 Filter
+                    </button>
+
+                    <a href="{{ route('mro.progress.index') }}"
+                       class="btn btn-secondary">
+                        ♻ Reset
+                    </a>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
 
 
 

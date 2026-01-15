@@ -399,7 +399,7 @@
                                                 <th>{{ __('QTY') }}</th>
                                                 <th>{{ __('SAT') }}</th>
                                                 <th>{{ __('Waktu Penyelesaian') }}</th>
-                                                <th>{{ __('Lampiran') }}</th>
+                                                {{-- <th>{{ __('Lampiran') }}</th> --}}
                                                 <th>{{ __('Keterangan') }}</th>
                                                 {{-- <th>{{ __('SPPH') }}</th>
                                             <th>{{ __('PO') }}</th> --}}
@@ -523,14 +523,14 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group row">
+                                                {{-- <div class="form-group row">
                                                     <label for="lampiran"
                                                         class="col-sm-4 col-form-label">{{ __('Lampiran') }}</label>
                                                     <div class="col-sm-8">
                                                         <input type="file" class="form-control" id="lampiran"
                                                             name="lampiran" />
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
                                             </form>
                                             <button id="button-update-pr" type="button"
@@ -1294,10 +1294,89 @@
                     if (data.pr.details.length == 0) {
                         $('#table-pr').empty();
                         $('#table-pr').append(
-                            '<tr><td colspan="15" class="text-center">Tidak ada produk</td></tr>'
+                            '<tr><td colspan="17" class="text-center">Tidak ada produk</td></tr>'
                         ); // Tambahkan pesan bahwa tidak ada produk
                     } else {
                         $('#table-pr').empty();
+                        // $.each(data.pr.details, function(key, value) {
+                        //     console.log(value);
+                        //     var selisih = Math.abs(value.selisih_qty || 0);
+                        //     var qty = value.qty || 0;
+                        //     var selisihQtySpphrfq = Math.abs(value.selisih_qty_spphrfq || 0);
+                        //     var selisihQtyLoi = Math.abs(value.selisih_qty_loi || 0);
+                        //     var selisihQtyLoiluar = Math.abs(value.selisih_qty_loiluar || 0);
+                        //     var selisihQtyNego = Math.abs(value.selisih_qty_nego || 0);
+                        //     var selisihQtyNegoluar = Math.abs(value.selisih_qty_negoluar || 0);
+                        //     var selisihQtyPo = Math.abs(value.selisih_qty_po || 0);
+                        //     var selisihQtyPoluar = Math.abs(value.selisih_qty_poluar || 0);
+
+                        //     // Status langsung diambil
+                        //     var spphStatus = 'Proses SPPH (' + selisih + '/' + qty + ') ';
+                        //     var spphRfqStatus = 'Proses SPPH RFQ (' + selisihQtySpphrfq + '/' + qty +
+                        //         ') ';
+                        //     var loiStatus = 'Proses LOI (' + selisihQtyLoi + '/' + qty + ') ';
+                        //     var loiluarStatus = 'Proses LOI LUAR NEGERI (' + selisihQtyLoiluar + '/' +
+                        //         qty + ') ';
+                        //     var negoStatus = 'Proses NEGO (' + selisihQtyNego + '/' + qty + ') ';
+                        //     var negoluarStatus = 'Proses NEGO LUAR NEGERI (' + selisihQtyNegoluar +
+                        //         '/' + qty + ') ';
+                        //     var poStatus = 'Proses PO (' + selisihQtyPo + '/' + qty + ') ';
+                        //     var poluarStatus = 'Proses PO LUAR NEGERI (' + selisihQtyPoluar + '/' +
+                        //         qty + ') ';
+
+                        //     if (!status) {
+                        //         status = 'PR DONE';
+                        //     }
+
+                        //     // Menampilkan data tanpa pengecekan if
+                        //     var spph = value.nomor_spph || '-';
+                        //     var spphrfq = value.nomor_spphrfq || '-';
+                        //     var loi = value.no_loi || '-';
+                        //     var loiluar = value.no_loiluar || '-';
+                        //     var nego = value.nomor_nego || '-';
+                        //     var negoluar = value.nomor_negoluar || '-';
+                        //     var po = value.no_po || '-';
+                        //     var poluar = value.no_poluar || '-';
+                        //     var keterangan = value.keterangan || '';
+                        //     var kode_material = value.kode_material || '';
+                        //     var lampiran = value.lampiran ?
+                        //         '<a href="' + urlLampiran + '/' + value.lampiran +
+                        //         '"><i class="fa fa-eye"></i> Lihat</a>' :
+                        //         '-';
+
+                        //     var editButton =
+                        //         '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
+                        //         value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
+                        //         value.kode_material + '\', \'' + value.uraian + '\', \'' + value.spek +
+                        //         '\', \'' + value.qty + '\', \'' + value.satuan + '\', \'' + value
+                        //         .waktu +
+                        //         '\', \'' + value.lampiran + '\', \'' + value.keterangan +
+                        //         '\')"><i class="fas fa-edit"></i></button>';
+
+                        //     var deleteButton =
+                        //         '<button type="button" class="btn btn-danger btn-xs mr-1"' +
+                        //         ' onclick="deleteDetail(' + value.id + ', \'' + value.uraian
+                        //         .toString() + '\')"' +
+                        //         ' title="Delete">' +
+                        //         '<i class="fas fa-trash"></i>' +
+                        //         '</button>';
+
+                        //     $('#table-pr').append('<tr><td>' + (key + 1) + '</td><td>' + kode_material +
+                        //         '</td><td>' + value.uraian + '</td><td>' + value.spek +
+                        //         '</td><td>' + value.qty + '</td><td>' + value.satuan +
+                        //         '</td><td>' + value.waktu + '</td><td>' + lampiran +
+                        //         '</td><td>' + keterangan + '</td><td><b>' + spphStatus +
+                        //         '</b></td><td><b>' + spphRfqStatus +
+                        //         '</b></td><td><b>' + loiStatus +
+                        //         '</b></td><td><b>' + loiluarStatus +
+                        //         '</b></td><td><b>' + negoStatus +
+                        //         '</b></td><td><b>' + negoluarStatus + // ⬅️ Tambahkan di sini
+                        //         '</b></td><td><b>' + poStatus +
+                        //         '</b></td><td><b>' + poluarStatus + // ⬅️ Tambahkan di sini
+                        //         '</b></td><td>' + editButton + deleteButton + '</td></tr>');
+
+                        // });
+
                         $.each(data.pr.details, function(key, value) {
                             console.log(value);
                             var selisih = Math.abs(value.selisih_qty || 0);
@@ -1328,29 +1407,16 @@
                                 status = 'PR DONE';
                             }
 
-                            // Menampilkan data tanpa pengecekan if
-                            var spph = value.nomor_spph || '-';
-                            var spphrfq = value.nomor_spphrfq || '-';
-                            var loi = value.no_loi || '-';
-                            var loiluar = value.no_loiluar || '-';
-                            var nego = value.nomor_nego || '-';
-                            var negoluar = value.nomor_negoluar || '-';
-                            var po = value.no_po || '-';
-                            var poluar = value.no_poluar || '-';
-                            var keterangan = value.keterangan || '';
+                            // Menampilkan data tanpa lampiran
                             var kode_material = value.kode_material || '';
-                            var lampiran = value.lampiran ?
-                                '<a href="' + urlLampiran + '/' + value.lampiran +
-                                '"><i class="fa fa-eye"></i> Lihat</a>' :
-                                '-';
+                            var keterangan = value.keterangan || '';
 
                             var editButton =
                                 '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
                                 value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
                                 value.kode_material + '\', \'' + value.uraian + '\', \'' + value.spek +
                                 '\', \'' + value.qty + '\', \'' + value.satuan + '\', \'' + value
-                                .waktu +
-                                '\', \'' + value.lampiran + '\', \'' + value.keterangan +
+                                .waktu + '\', \'' + value.keterangan +
                                 '\')"><i class="fas fa-edit"></i></button>';
 
                             var deleteButton =
@@ -1364,18 +1430,18 @@
                             $('#table-pr').append('<tr><td>' + (key + 1) + '</td><td>' + kode_material +
                                 '</td><td>' + value.uraian + '</td><td>' + value.spek +
                                 '</td><td>' + value.qty + '</td><td>' + value.satuan +
-                                '</td><td>' + value.waktu + '</td><td>' + lampiran +
-                                '</td><td>' + keterangan + '</td><td><b>' + spphStatus +
+                                '</td><td>' + value.waktu + '</td><td>' + keterangan +
+                                '</td><td><b>' + spphStatus +
                                 '</b></td><td><b>' + spphRfqStatus +
                                 '</b></td><td><b>' + loiStatus +
                                 '</b></td><td><b>' + loiluarStatus +
                                 '</b></td><td><b>' + negoStatus +
-                                '</b></td><td><b>' + negoluarStatus + // ⬅️ Tambahkan di sini
+                                '</b></td><td><b>' + negoluarStatus +
                                 '</b></td><td><b>' + poStatus +
-                                '</b></td><td><b>' + poluarStatus + // ⬅️ Tambahkan di sini
+                                '</b></td><td><b>' + poluarStatus +
                                 '</b></td><td>' + editButton + deleteButton + '</td></tr>');
-
                         });
+
 
 
                     }
@@ -1429,10 +1495,89 @@
                     if (data.pr.details.length == 0) {
                         $('#table-pr').empty();
                         $('#table-pr').append(
-                            '<tr><td colspan="15" class="text-center">Tidak ada produk</td></tr>'
+                            '<tr><td colspan="17" class="text-center">Tidak ada produk</td></tr>'
                         ); // Tambahkan pesan bahwa tidak ada produk
                     } else {
                         $('#table-pr').empty();
+                        // $.each(data.pr.details, function(key, value) {
+                        //     console.log(value);
+                        //     var selisih = Math.abs(value.selisih_qty || 0);
+                        //     var qty = value.qty || 0;
+                        //     var selisihQtySpphrfq = Math.abs(value.selisih_qty_spphrfq || 0);
+                        //     var selisihQtyLoi = Math.abs(value.selisih_qty_loi || 0);
+                        //     var selisihQtyLoiluar = Math.abs(value.selisih_qty_loiluar || 0);
+                        //     var selisihQtyNego = Math.abs(value.selisih_qty_nego || 0);
+                        //     var selisihQtyNegoluar = Math.abs(value.selisih_qty_negoluar || 0);
+                        //     var selisihQtyPo = Math.abs(value.selisih_qty_po || 0);
+                        //     var selisihQtyPoluar = Math.abs(value.selisih_qty_poluar || 0);
+
+                        //     // Status langsung diambil
+                        //     var spphStatus = 'Proses SPPH (' + selisih + '/' + qty + ') ';
+                        //     var spphRfqStatus = 'Proses SPPH RFQ (' + selisihQtySpphrfq + '/' + qty +
+                        //         ') ';
+                        //     var loiStatus = 'Proses LOI (' + selisihQtyLoi + '/' + qty + ') ';
+                        //     var loiluarStatus = 'Proses LOI LUAR NEGERI (' + selisihQtyLoiluar + '/' +
+                        //         qty + ') ';
+                        //     var negoStatus = 'Proses NEGO (' + selisihQtyNego + '/' + qty + ') ';
+                        //     var negoluarStatus = 'Proses NEGO LUAR NEGERI (' + selisihQtyNegoluar +
+                        //         '/' + qty + ') ';
+                        //     var poStatus = 'Proses PO (' + selisihQtyPo + '/' + qty + ') ';
+                        //     var poluarStatus = 'Proses PO LUAR NEGERI (' + selisihQtyPoluar + '/' +
+                        //         qty + ') ';
+
+                        //     if (!status) {
+                        //         status = 'PR DONE';
+                        //     }
+
+                        //     // Menampilkan data tanpa pengecekan if
+                        //     var spph = value.nomor_spph || '-';
+                        //     var spphrfq = value.nomor_spphrfq || '-';
+                        //     var loi = value.no_loi || '-';
+                        //     var loiluar = value.no_loiluar || '-';
+                        //     var nego = value.nomor_nego || '-';
+                        //     var negoluar = value.nomor_negoluar || '-';
+                        //     var po = value.no_po || '-';
+                        //     var poluar = value.no_poluar || '-';
+                        //     var keterangan = value.keterangan || '';
+                        //     var kode_material = value.kode_material || '';
+                        //     var lampiran = value.lampiran ?
+                        //         '<a href="' + urlLampiran + '/' + value.lampiran +
+                        //         '"><i class="fa fa-eye"></i> Lihat</a>' :
+                        //         '-';
+
+                        //     var editButton =
+                        //         '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
+                        //         value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
+                        //         value.kode_material + '\', \'' + value.uraian + '\', \'' + value.spek +
+                        //         '\', \'' + value.qty + '\', \'' + value.satuan + '\', \'' + value
+                        //         .waktu +
+                        //         '\', \'' + value.lampiran + '\', \'' + value.keterangan +
+                        //         '\')"><i class="fas fa-edit"></i></button>';
+
+                        //     var deleteButton =
+                        //         '<button type="button" class="btn btn-danger btn-xs mr-1"' +
+                        //         ' onclick="deleteDetail(' + value.id + ', \'' + value.uraian
+                        //         .toString() + '\')"' +
+                        //         ' title="Delete">' +
+                        //         '<i class="fas fa-trash"></i>' +
+                        //         '</button>';
+
+                        //     $('#table-pr').append('<tr><td>' + (key + 1) + '</td><td>' + kode_material +
+                        //         '</td><td>' + value.uraian + '</td><td>' + value.spek +
+                        //         '</td><td>' + value.qty + '</td><td>' + value.satuan +
+                        //         '</td><td>' + value.waktu + '</td><td>' + lampiran +
+                        //         '</td><td>' + keterangan + '</td><td><b>' + spphStatus +
+                        //         '</b></td><td><b>' + spphRfqStatus +
+                        //         '</b></td><td><b>' + loiStatus +
+                        //         '</b></td><td><b>' + loiluarStatus +
+                        //         '</b></td><td><b>' + negoStatus +
+                        //         '</b></td><td><b>' + negoluarStatus + // ⬅️ Tambahkan di sini
+                        //         '</b></td><td><b>' + poStatus +
+                        //         '</b></td><td><b>' + poluarStatus + // ⬅️ Tambahkan di sini
+                        //         '</b></td><td>' + editButton + deleteButton + '</td></tr>');
+
+                        // });
+
                         $.each(data.pr.details, function(key, value) {
                             console.log(value);
                             var selisih = Math.abs(value.selisih_qty || 0);
@@ -1463,29 +1608,16 @@
                                 status = 'PR DONE';
                             }
 
-                            // Menampilkan data tanpa pengecekan if
-                            var spph = value.nomor_spph || '-';
-                            var spphrfq = value.nomor_spphrfq || '-';
-                            var loi = value.no_loi || '-';
-                            var loiluar = value.no_loiluar || '-';
-                            var nego = value.nomor_nego || '-';
-                            var negoluar = value.nomor_negoluar || '-';
-                            var po = value.no_po || '-';
-                            var poluar = value.no_poluar || '-';
-                            var keterangan = value.keterangan || '';
+                            // Menampilkan data tanpa lampiran
                             var kode_material = value.kode_material || '';
-                            var lampiran = value.lampiran ?
-                                '<a href="' + urlLampiran + '/' + value.lampiran +
-                                '"><i class="fa fa-eye"></i> Lihat</a>' :
-                                '-';
+                            var keterangan = value.keterangan || '';
 
                             var editButton =
                                 '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
                                 value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
                                 value.kode_material + '\', \'' + value.uraian + '\', \'' + value.spek +
                                 '\', \'' + value.qty + '\', \'' + value.satuan + '\', \'' + value
-                                .waktu +
-                                '\', \'' + value.lampiran + '\', \'' + value.keterangan +
+                                .waktu + '\', \'' + value.keterangan +
                                 '\')"><i class="fas fa-edit"></i></button>';
 
                             var deleteButton =
@@ -1499,18 +1631,18 @@
                             $('#table-pr').append('<tr><td>' + (key + 1) + '</td><td>' + kode_material +
                                 '</td><td>' + value.uraian + '</td><td>' + value.spek +
                                 '</td><td>' + value.qty + '</td><td>' + value.satuan +
-                                '</td><td>' + value.waktu + '</td><td>' + lampiran +
-                                '</td><td>' + keterangan + '</td><td><b>' + spphStatus +
+                                '</td><td>' + value.waktu + '</td><td>' + keterangan +
+                                '</td><td><b>' + spphStatus +
                                 '</b></td><td><b>' + spphRfqStatus +
                                 '</b></td><td><b>' + loiStatus +
                                 '</b></td><td><b>' + loiluarStatus +
                                 '</b></td><td><b>' + negoStatus +
-                                '</b></td><td><b>' + negoluarStatus + // ⬅️ Tambahkan di sini
+                                '</b></td><td><b>' + negoluarStatus +
                                 '</b></td><td><b>' + poStatus +
-                                '</b></td><td><b>' + poluarStatus + // ⬅️ Tambahkan di sini
+                                '</b></td><td><b>' + poluarStatus +
                                 '</b></td><td>' + editButton + deleteButton + '</td></tr>');
-
                         });
+
 
 
                     }
@@ -1557,10 +1689,119 @@
                                 if (data.pr.details.length == 0) {
                                     $('#table-pr').empty();
                                     $('#table-pr').append(
-                                        '<tr><td colspan="15" class="text-center">Tidak ada produk</td></tr>'
+                                        '<tr><td colspan="17" class="text-center">Tidak ada produk</td></tr>'
                                     ); // Tambahkan pesan bahwa tidak ada produk
                                 } else {
                                     $('#table-pr').empty();
+                                    // $.each(data.pr.details, function(key, value) {
+                                    //     console.log(value);
+                                    //     var selisih = Math.abs(value.selisih_qty || 0);
+                                    //     var qty = value.qty || 0;
+                                    //     var selisihQtySpphrfq = Math.abs(value
+                                    //         .selisih_qty_spphrfq || 0);
+                                    //     var selisihQtyLoi = Math.abs(value
+                                    //         .selisih_qty_loi || 0);
+                                    //     var selisihQtyLoiluar = Math.abs(value
+                                    //         .selisih_qty_loiluar || 0);
+                                    //     var selisihQtyNego = Math.abs(value
+                                    //         .selisih_qty_nego || 0);
+                                    //     var selisihQtyNegoluar = Math.abs(value
+                                    //         .selisih_qty_negoluar || 0);
+                                    //     var selisihQtyPo = Math.abs(value.selisih_qty_po ||
+                                    //         0);
+                                    //     var selisihQtyPoluar = Math.abs(value
+                                    //         .selisih_qty_poluar || 0);
+
+                                    //     // Status langsung diambil
+                                    //     var spphStatus = 'Proses SPPH (' + selisih + '/' +
+                                    //         qty + ') ';
+                                    //     var spphRfqStatus = 'Proses SPPH RFQ (' +
+                                    //         selisihQtySpphrfq + '/' + qty +
+                                    //         ') ';
+                                    //     var loiStatus = 'Proses LOI (' + selisihQtyLoi +
+                                    //         '/' + qty + ') ';
+                                    //     var loiluarStatus = 'Proses LOI LUAR NEGERI (' +
+                                    //         selisihQtyLoiluar + '/' +
+                                    //         qty + ') ';
+                                    //     var negoStatus = 'Proses NEGO (' + selisihQtyNego +
+                                    //         '/' + qty + ') ';
+                                    //     var negoluarStatus = 'Proses NEGO LUAR NEGERI (' +
+                                    //         selisihQtyNegoluar +
+                                    //         '/' + qty + ') ';
+                                    //     var poStatus = 'Proses PO (' + selisihQtyPo + '/' +
+                                    //         qty + ') ';
+                                    //     var poluarStatus = 'Proses PO LUAR NEGERI (' +
+                                    //         selisihQtyPoluar + '/' +
+                                    //         qty + ') ';
+
+                                    //     if (!status) {
+                                    //         status = 'PR DONE';
+                                    //     }
+
+                                    //     // Menampilkan data tanpa pengecekan if
+                                    //     var spph = value.nomor_spph || '-';
+                                    //     var spphrfq = value.nomor_spphrfq || '-';
+                                    //     var loi = value.no_loi || '-';
+                                    //     var loiluar = value.no_loiluar || '-';
+                                    //     var nego = value.nomor_nego || '-';
+                                    //     var negoluar = value.nomor_negoluar || '-';
+                                    //     var po = value.no_po || '-';
+                                    //     var poluar = value.no_poluar || '-';
+                                    //     var keterangan = value.keterangan || '';
+                                    //     var kode_material = value.kode_material || '';
+                                    //     var lampiran = value.lampiran ?
+                                    //         '<a href="' + urlLampiran + '/' + value
+                                    //         .lampiran +
+                                    //         '"><i class="fa fa-eye"></i> Lihat</a>' :
+                                    //         '-';
+
+                                    //     var editButton =
+                                    //         '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
+                                    //         value.id +
+                                    //         '" title="Edit" onclick="editRow(\'' + value
+                                    //         .id + '\', \'' +
+                                    //         value.kode_material + '\', \'' + value.uraian +
+                                    //         '\', \'' + value.spek +
+                                    //         '\', \'' + value.qty + '\', \'' + value.satuan +
+                                    //         '\', \'' + value
+                                    //         .waktu +
+                                    //         '\', \'' + value.lampiran + '\', \'' + value
+                                    //         .keterangan +
+                                    //         '\')"><i class="fas fa-edit"></i></button>';
+
+                                    //     var deleteButton =
+                                    //         '<button type="button" class="btn btn-danger btn-xs mr-1"' +
+                                    //         ' onclick="deleteDetail(' + value.id + ', \'' +
+                                    //         value.uraian
+                                    //         .toString() + '\')"' +
+                                    //         ' title="Delete">' +
+                                    //         '<i class="fas fa-trash"></i>' +
+                                    //         '</button>';
+
+                                    //     $('#table-pr').append('<tr><td>' + (key + 1) +
+                                    //         '</td><td>' + kode_material +
+                                    //         '</td><td>' + value.uraian + '</td><td>' +
+                                    //         value.spek +
+                                    //         '</td><td>' + value.qty + '</td><td>' +
+                                    //         value.satuan +
+                                    //         '</td><td>' + value.waktu + '</td><td>' +
+                                    //         lampiran +
+                                    //         '</td><td>' + keterangan + '</td><td><b>' +
+                                    //         spphStatus +
+                                    //         '</b></td><td><b>' + spphRfqStatus +
+                                    //         '</b></td><td><b>' + loiStatus +
+                                    //         '</b></td><td><b>' + loiluarStatus +
+                                    //         '</b></td><td><b>' + negoStatus +
+                                    //         '</b></td><td><b>' + negoluarStatus +
+                                    //         // ⬅️ Tambahkan di sini
+                                    //         '</b></td><td><b>' + poStatus +
+                                    //         '</b></td><td><b>' + poluarStatus +
+                                    //         // ⬅️ Tambahkan di sini
+                                    //         '</b></td><td>' + editButton +
+                                    //         deleteButton + '</td></tr>');
+
+                                    // });
+
                                     $.each(data.pr.details, function(key, value) {
                                         console.log(value);
                                         var selisih = Math.abs(value.selisih_qty || 0);
@@ -1584,44 +1825,27 @@
                                         var spphStatus = 'Proses SPPH (' + selisih + '/' +
                                             qty + ') ';
                                         var spphRfqStatus = 'Proses SPPH RFQ (' +
-                                            selisihQtySpphrfq + '/' + qty +
-                                            ') ';
+                                            selisihQtySpphrfq + '/' + qty + ') ';
                                         var loiStatus = 'Proses LOI (' + selisihQtyLoi +
                                             '/' + qty + ') ';
                                         var loiluarStatus = 'Proses LOI LUAR NEGERI (' +
-                                            selisihQtyLoiluar + '/' +
-                                            qty + ') ';
+                                            selisihQtyLoiluar + '/' + qty + ') ';
                                         var negoStatus = 'Proses NEGO (' + selisihQtyNego +
                                             '/' + qty + ') ';
                                         var negoluarStatus = 'Proses NEGO LUAR NEGERI (' +
-                                            selisihQtyNegoluar +
-                                            '/' + qty + ') ';
+                                            selisihQtyNegoluar + '/' + qty + ') ';
                                         var poStatus = 'Proses PO (' + selisihQtyPo + '/' +
                                             qty + ') ';
                                         var poluarStatus = 'Proses PO LUAR NEGERI (' +
-                                            selisihQtyPoluar + '/' +
-                                            qty + ') ';
+                                            selisihQtyPoluar + '/' + qty + ') ';
 
                                         if (!status) {
                                             status = 'PR DONE';
                                         }
 
-                                        // Menampilkan data tanpa pengecekan if
-                                        var spph = value.nomor_spph || '-';
-                                        var spphrfq = value.nomor_spphrfq || '-';
-                                        var loi = value.no_loi || '-';
-                                        var loiluar = value.no_loiluar || '-';
-                                        var nego = value.nomor_nego || '-';
-                                        var negoluar = value.nomor_negoluar || '-';
-                                        var po = value.no_po || '-';
-                                        var poluar = value.no_poluar || '-';
-                                        var keterangan = value.keterangan || '';
+                                        // Menampilkan data tanpa lampiran
                                         var kode_material = value.kode_material || '';
-                                        var lampiran = value.lampiran ?
-                                            '<a href="' + urlLampiran + '/' + value
-                                            .lampiran +
-                                            '"><i class="fa fa-eye"></i> Lihat</a>' :
-                                            '-';
+                                        var keterangan = value.keterangan || '';
 
                                         var editButton =
                                             '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
@@ -1632,16 +1856,13 @@
                                             '\', \'' + value.spek +
                                             '\', \'' + value.qty + '\', \'' + value.satuan +
                                             '\', \'' + value
-                                            .waktu +
-                                            '\', \'' + value.lampiran + '\', \'' + value
-                                            .keterangan +
+                                            .waktu + '\', \'' + value.keterangan +
                                             '\')"><i class="fas fa-edit"></i></button>';
 
                                         var deleteButton =
                                             '<button type="button" class="btn btn-danger btn-xs mr-1"' +
                                             ' onclick="deleteDetail(' + value.id + ', \'' +
-                                            value.uraian
-                                            .toString() + '\')"' +
+                                            value.uraian.toString() + '\')"' +
                                             ' title="Delete">' +
                                             '<i class="fas fa-trash"></i>' +
                                             '</button>';
@@ -1653,22 +1874,18 @@
                                             '</td><td>' + value.qty + '</td><td>' +
                                             value.satuan +
                                             '</td><td>' + value.waktu + '</td><td>' +
-                                            lampiran +
-                                            '</td><td>' + keterangan + '</td><td><b>' +
-                                            spphStatus +
+                                            keterangan + '</td><td><b>' + spphStatus +
                                             '</b></td><td><b>' + spphRfqStatus +
                                             '</b></td><td><b>' + loiStatus +
                                             '</b></td><td><b>' + loiluarStatus +
                                             '</b></td><td><b>' + negoStatus +
                                             '</b></td><td><b>' + negoluarStatus +
-                                            // ⬅️ Tambahkan di sini
                                             '</b></td><td><b>' + poStatus +
                                             '</b></td><td><b>' + poluarStatus +
-                                            // ⬅️ Tambahkan di sini
                                             '</b></td><td>' + editButton +
                                             deleteButton + '</td></tr>');
-
                                     });
+
 
 
 
@@ -1752,11 +1969,90 @@
                     if (data.pr.details.length == 0) {
                         $('#table-pr').empty();
                         $('#table-pr').append(
-                            '<tr><td colspan="15" class="text-center">Tidak ada produk</td></tr>'
+                            '<tr><td colspan="17" class="text-center">Tidak ada produk</td></tr>'
                         );
                     } else {
                         $('#table-pr').empty();
 
+
+                        // $.each(data.pr.details, function(key, value) {
+                        //     console.log(value);
+                        //     var selisih = Math.abs(value.selisih_qty || 0);
+                        //     var qty = value.qty || 0;
+                        //     var selisihQtySpphrfq = Math.abs(value.selisih_qty_spphrfq || 0);
+                        //     var selisihQtyLoi = Math.abs(value.selisih_qty_loi || 0);
+                        //     var selisihQtyLoiluar = Math.abs(value.selisih_qty_loiluar || 0);
+                        //     var selisihQtyNego = Math.abs(value.selisih_qty_nego || 0);
+                        //     var selisihQtyNegoluar = Math.abs(value.selisih_qty_negoluar || 0);
+                        //     var selisihQtyPo = Math.abs(value.selisih_qty_po || 0);
+                        //     var selisihQtyPoluar = Math.abs(value.selisih_qty_poluar || 0);
+
+                        //     // Status langsung diambil
+                        //     var spphStatus = 'Proses SPPH (' + selisih + '/' + qty + ') ';
+                        //     var spphRfqStatus = 'Proses SPPH RFQ (' + selisihQtySpphrfq + '/' + qty +
+                        //         ') ';
+                        //     var loiStatus = 'Proses LOI (' + selisihQtyLoi + '/' + qty + ') ';
+                        //     var loiluarStatus = 'Proses LOI LUAR NEGERI (' + selisihQtyLoiluar + '/' +
+                        //         qty + ') ';
+                        //     var negoStatus = 'Proses NEGO (' + selisihQtyNego + '/' + qty + ') ';
+                        //     var negoluarStatus = 'Proses NEGO LUAR NEGERI (' + selisihQtyNegoluar +
+                        //         '/' + qty + ') ';
+                        //     var poStatus = 'Proses PO (' + selisihQtyPo + '/' + qty + ') ';
+                        //     var poluarStatus = 'Proses PO LUAR NEGERI (' + selisihQtyPoluar + '/' +
+                        //         qty + ') ';
+
+                        //     if (!status) {
+                        //         status = 'PR DONE';
+                        //     }
+
+                        //     // Menampilkan data tanpa pengecekan if
+                        //     var spph = value.nomor_spph || '-';
+                        //     var spphrfq = value.nomor_spphrfq || '-';
+                        //     var loi = value.no_loi || '-';
+                        //     var loiluar = value.no_loiluar || '-';
+                        //     var nego = value.nomor_nego || '-';
+                        //     var negoluar = value.nomor_negoluar || '-';
+                        //     var po = value.no_po || '-';
+                        //     var poluar = value.no_poluar || '-';
+                        //     var keterangan = value.keterangan || '';
+                        //     var kode_material = value.kode_material || '';
+                        //     var lampiran = value.lampiran ?
+                        //         '<a href="' + urlLampiran + '/' + value.lampiran +
+                        //         '"><i class="fa fa-eye"></i> Lihat</a>' :
+                        //         '-';
+
+                        //     var editButton =
+                        //         '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
+                        //         value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
+                        //         value.kode_material + '\', \'' + value.uraian + '\', \'' + value.spek +
+                        //         '\', \'' + value.qty + '\', \'' + value.satuan + '\', \'' + value
+                        //         .waktu +
+                        //         '\', \'' + value.lampiran + '\', \'' + value.keterangan +
+                        //         '\')"><i class="fas fa-edit"></i></button>';
+
+                        //     var deleteButton =
+                        //         '<button type="button" class="btn btn-danger btn-xs mr-1"' +
+                        //         ' onclick="deleteDetail(' + value.id + ', \'' + value.uraian
+                        //         .toString() + '\')"' +
+                        //         ' title="Delete">' +
+                        //         '<i class="fas fa-trash"></i>' +
+                        //         '</button>';
+
+                        //     $('#table-pr').append('<tr><td>' + (key + 1) + '</td><td>' + kode_material +
+                        //         '</td><td>' + value.uraian + '</td><td>' + value.spek +
+                        //         '</td><td>' + value.qty + '</td><td>' + value.satuan +
+                        //         '</td><td>' + value.waktu + '</td><td>' + lampiran +
+                        //         '</td><td>' + keterangan + '</td><td><b>' + spphStatus +
+                        //         '</b></td><td><b>' + spphRfqStatus +
+                        //         '</b></td><td><b>' + loiStatus +
+                        //         '</b></td><td><b>' + loiluarStatus +
+                        //         '</b></td><td><b>' + negoStatus +
+                        //         '</b></td><td><b>' + negoluarStatus + // ⬅️ Tambahkan di sini
+                        //         '</b></td><td><b>' + poStatus +
+                        //         '</b></td><td><b>' + poluarStatus + // ⬅️ Tambahkan di sini
+                        //         '</b></td><td>' + editButton + deleteButton + '</td></tr>');
+
+                        // });
 
                         $.each(data.pr.details, function(key, value) {
                             console.log(value);
@@ -1788,29 +2084,16 @@
                                 status = 'PR DONE';
                             }
 
-                            // Menampilkan data tanpa pengecekan if
-                            var spph = value.nomor_spph || '-';
-                            var spphrfq = value.nomor_spphrfq || '-';
-                            var loi = value.no_loi || '-';
-                            var loiluar = value.no_loiluar || '-';
-                            var nego = value.nomor_nego || '-';
-                            var negoluar = value.nomor_negoluar || '-';
-                            var po = value.no_po || '-';
-                            var poluar = value.no_poluar || '-';
-                            var keterangan = value.keterangan || '';
+                            // Menampilkan data tanpa lampiran
                             var kode_material = value.kode_material || '';
-                            var lampiran = value.lampiran ?
-                                '<a href="' + urlLampiran + '/' + value.lampiran +
-                                '"><i class="fa fa-eye"></i> Lihat</a>' :
-                                '-';
+                            var keterangan = value.keterangan || '';
 
                             var editButton =
                                 '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
                                 value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
                                 value.kode_material + '\', \'' + value.uraian + '\', \'' + value.spek +
                                 '\', \'' + value.qty + '\', \'' + value.satuan + '\', \'' + value
-                                .waktu +
-                                '\', \'' + value.lampiran + '\', \'' + value.keterangan +
+                                .waktu + '\', \'' + value.keterangan +
                                 '\')"><i class="fas fa-edit"></i></button>';
 
                             var deleteButton =
@@ -1824,18 +2107,18 @@
                             $('#table-pr').append('<tr><td>' + (key + 1) + '</td><td>' + kode_material +
                                 '</td><td>' + value.uraian + '</td><td>' + value.spek +
                                 '</td><td>' + value.qty + '</td><td>' + value.satuan +
-                                '</td><td>' + value.waktu + '</td><td>' + lampiran +
-                                '</td><td>' + keterangan + '</td><td><b>' + spphStatus +
+                                '</td><td>' + value.waktu + '</td><td>' + keterangan +
+                                '</td><td><b>' + spphStatus +
                                 '</b></td><td><b>' + spphRfqStatus +
                                 '</b></td><td><b>' + loiStatus +
                                 '</b></td><td><b>' + loiluarStatus +
                                 '</b></td><td><b>' + negoStatus +
-                                '</b></td><td><b>' + negoluarStatus + // ⬅️ Tambahkan di sini
+                                '</b></td><td><b>' + negoluarStatus +
                                 '</b></td><td><b>' + poStatus +
-                                '</b></td><td><b>' + poluarStatus + // ⬅️ Tambahkan di sini
+                                '</b></td><td><b>' + poluarStatus +
                                 '</b></td><td>' + editButton + deleteButton + '</td></tr>');
-
                         });
+
 
 
                     }
@@ -1964,20 +2247,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                    success ') !!}');
+                                                                    success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                    error ') !!}');
+                                                                    error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                        ',
+                                                                        ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>
