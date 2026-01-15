@@ -6,6 +6,118 @@
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 @endsection
+
+<style>
+    /* ===============================
+   MODERN MAROON BUTTON
+================================ */
+    .btn-maroon-animated {
+        background: linear-gradient(135deg, #800020, #a00028);
+        border: none;
+        color: #fff !important;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 8px 16px;
+        box-shadow: 0 6px 16px rgba(128, 0, 32, 0.35);
+        transition: all 0.3s ease;
+    }
+
+    .btn-maroon-animated:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(128, 0, 32, 0.45);
+        color: #fff !important;
+    }
+
+    .btn-maroon-animated:active {
+        transform: scale(0.95);
+    }
+
+    .btn-maroon-animated i {
+        color: #fff !important;
+    }
+
+    /* Pulse */
+    .btn-maroon-animated.pulse {
+        animation: pulseMaroon 1.8s infinite;
+    }
+
+    @keyframes pulseMaroon {
+        0% {
+            box-shadow: 0 0 0 0 rgba(128, 0, 32, .6);
+        }
+
+        70% {
+            box-shadow: 0 0 0 12px rgba(128, 0, 32, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(128, 0, 32, 0);
+        }
+    }
+
+    /* ===============================
+   MODERN BPM TABLE
+================================ */
+    .table-modern {
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 8px 25px rgba(128, 0, 32, 0.18);
+        animation: fadeUp 0.5s ease;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .table-modern thead {
+        background: linear-gradient(135deg, #800020, #a00028);
+    }
+
+    .table-modern thead th {
+        color: #fff;
+        border: none;
+        font-size: 12px;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        padding: 12px;
+    }
+
+    .table-modern tbody tr {
+        transition: all 0.25s ease;
+    }
+
+    .table-modern tbody tr:hover {
+        background: linear-gradient(90deg,
+                rgba(128, 0, 32, .10),
+                rgba(128, 0, 32, .02));
+        transform: translateX(4px);
+    }
+
+    .table-modern tbody td {
+        font-size: 13px;
+        padding: 10px;
+        border-color: #f3f3f3;
+    }
+
+    .table-modern tbody tr:nth-child(even) {
+        background-color: #fff6f8;
+    }
+
+    .table-modern input[type="checkbox"] {
+        accent-color: #800020;
+        transform: scale(1.1);
+    }
+</style>
+
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
@@ -19,8 +131,11 @@
             <div class="card">
                 <div class="card-header">
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-bpm"
-                        onclick="addBPM()"><i class="fas fa-plus"></i> Add BPM</button>
+                    <button type="button" class="btn btn-maroon-animated pulse" data-toggle="modal" data-target="#add-bpm"
+                        onclick="addBPM()">
+                        <i class="fas fa-plus"></i> Add BPM
+                    </button>
+
                     <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#import-product" onclick="importProduct()"><i class="fas fa-file-excel"></i> Import Product (Excel)</button> -->
                     <!-- <button type="button" class="btn btn-primary" onclick="download('xls')"><i class="fas fa-file-excel"></i> Export Product (XLS)</button> -->
                     <div class="card-tools">
@@ -62,7 +177,7 @@
                         </div>
                         {{-- End Filter by Nomor Pr dan Tanggal --}}
 
-                        <table id="table" class="table table-sm table-bordered table-hover table-striped">
+                        <table id="table" class="table table-sm table-bordered table-hover table-striped table-modern">
                             <thead>
                                 <tr class="text-center">
                                     <th><input type="checkbox" id="select-all"></th>
@@ -135,8 +250,10 @@
                             </tbody>
 
                         </table>
-                        <button type="button" class="btn btn-danger" id="delete-selected"
-                            data-token="{{ csrf_token() }}">Hapus yang dipilih</button>
+                        <button type="button" class="btn btn-maroon-animated" id="delete-selected">
+                            Hapus yang dipilih
+                        </button>
+
                     </div>
                 </div>
             </div>
@@ -215,8 +332,11 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
-                        <button id="button-save" type="button" class="btn btn-primary"
-                            onclick="document.getElementById('save').submit();">{{ __('Tambahkan') }}</button>
+                        <button id="button-save" type="button" class="btn btn-maroon-animated pulse"
+                            onclick="document.getElementById('save').submit();">
+                            Tambahkan
+                        </button>
+
                     </div>
                 </div>
             </div>
@@ -240,8 +360,11 @@
                                     <input type="hidden" name="id" id="id">
                                 </form>
                                 <div class="col-12" id="container-form">
-                                    <button id="button-cetak-bpm" type="button" class="btn btn-primary"
-                                        onclick="document.getElementById('cetak-bpm').submit();">{{ __('Cetak') }}</button>
+                                    <button id="button-cetak-bpm" type="button" class="btn btn-maroon-animated"
+                                        onclick="document.getElementById('cetak-bpm').submit();">
+                                        Cetak
+                                    </button>
+
                                     <table class="align-top w-100">
                                         <tr>
                                             <td style="width: 3%;"><b>No PR</b></td>
@@ -264,8 +387,10 @@
                                         <tr>
                                             <td colspan="3">
                                                 <button id="button-tambah-produk" type="button"
-                                                    class="btn btn-info mb-3"
-                                                    onclick="showAddProduct()">{{ __('Tambah Item Detail') }}</button>
+                                                    class="btn btn-maroon-animated mb-3" onclick="showAddProduct()">
+                                                    Tambah Item Detail
+                                                </button>
+
                                             </td>
                                         </tr>
                                     </table>
@@ -404,7 +529,10 @@
 
                                             </form>
                                             <button id="button-update-bpm" type="button"
-                                                class="btn btn-primary w-100">{{ __('Tambahkan') }}</button>
+                                                class="btn btn-maroon-animated w-100 pulse">
+                                                Tambahkan
+                                            </button>
+
                                         </div>
                                     </div>
                                 </div>
