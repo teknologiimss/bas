@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 @endsection
-<style>
+{{-- <style>
     .table-success {
         background-color: #d4edda !important;
         /* Hijau muda */
@@ -63,6 +63,236 @@
         color: #0d6efd;
         font-weight: bold;
     }
+</style> --}}
+
+<style>
+    /* ===============================
+   THEME COLOR
+================================= */
+    :root {
+        --maroon: #800020;
+        --maroon-dark: #5e0018;
+        --maroon-soft: #f7e9ed;
+        --gray-bg: #f8f9fa;
+    }
+
+    /* ===============================
+   CARD
+================================= */
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        border: none;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        color: #fff;
+        border-radius: 12px 12px 0 0;
+    }
+
+    /* ===============================
+   BUTTON
+================================= */
+    .btn {
+        border-radius: 8px;
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        background-color: var(--maroon);
+        border-color: var(--maroon);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--maroon-dark);
+        border-color: var(--maroon-dark);
+    }
+
+    .btn-danger {
+        border-radius: 8px;
+    }
+
+    .btn-xs {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    /* ===============================
+   TABLE
+================================= */
+    #table {
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #fff;
+    }
+
+    /* HEADER */
+    #table thead th {
+        background-color: var(--maroon);
+        color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        font-weight: 600;
+        border: none;
+        position: relative;
+    }
+
+    /* SORT ACTIVE */
+    #table th.active-sort {
+        background-color: var(--maroon-dark);
+    }
+
+    /* BODY */
+    #table tbody tr {
+        transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    #table tbody tr:hover {
+        background-color: var(--maroon-soft);
+        transform: scale(1.003);
+    }
+
+    #table td {
+        vertical-align: middle;
+        border-color: #eee;
+    }
+
+    /* STRIPED */
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #fcfcfc;
+    }
+
+    /* ===============================
+   CHECKBOX
+================================= */
+    input[type="checkbox"] {
+        transform: scale(1.1);
+        accent-color: var(--maroon);
+    }
+
+    /* ===============================
+   SORT ICON
+================================= */
+    .sort-buttons span {
+        color: #f3c6d0;
+    }
+
+    .sort-buttons span.active,
+    .sort-buttons span:hover {
+        color: #fff;
+    }
+
+    /* ===============================
+   FILTER FORM
+================================= */
+    .form-control {
+        border-radius: 8px;
+    }
+
+    label {
+        font-weight: 600;
+        color: #555;
+    }
+
+    /* ===============================
+   MODAL
+================================= */
+    .modal-content {
+        border-radius: 12px;
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        color: #fff;
+        border-radius: 12px 12px 0 0;
+    }
+
+
+
+    /* ===============================
+   BUTTON MAROON ANIMATED
+================================= */
+    .btn-maroon-animated {
+        background: linear-gradient(135deg, #800020, #5e0018);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        box-shadow: 0 6px 14px rgba(128, 0, 32, 0.35);
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* ICON ANIMATION */
+    .btn-maroon-animated i {
+        animation: pulseIcon 1.6s infinite;
+    }
+
+    /* HOVER */
+    .btn-maroon-animated:hover {
+        background: linear-gradient(135deg, #8f0024, #6b001c);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 22px rgba(128, 0, 32, 0.45);
+        color: #fff;
+    }
+
+    /* ACTIVE / CLICK */
+    .btn-maroon-animated:active {
+        transform: scale(0.96);
+        box-shadow: 0 4px 10px rgba(128, 0, 32, 0.4);
+    }
+
+    /* SOFT SHINE EFFECT */
+    .btn-maroon-animated::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 120%;
+        height: 100%;
+        background: linear-gradient(120deg,
+                transparent,
+                rgba(255, 255, 255, 0.25),
+                transparent);
+        transition: 0.6s;
+    }
+
+    .btn-maroon-animated:hover::after {
+        left: 120%;
+    }
+
+    /* ===============================
+   KEYFRAMES
+================================= */
+    @keyframes pulseIcon {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.18);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .btn-maroon-animated,
+    .btn-maroon-animated:hover,
+    .btn-maroon-animated:focus,
+    .btn-maroon-animated:active {
+        color: #ffffff !important;
+    }
+
+    /* Pastikan icon juga putih */
+    .btn-maroon-animated i {
+        color: #ffffff !important;
+    }
 </style>
 @section('content')
     <div class="content-header">
@@ -77,8 +307,16 @@
             <div class="card">
                 <div class="card-header">
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-pr"
-                        onclick="addPR()"><i class="fas fa-plus"></i> Add PR / SPPJP</button>
+                    {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-pr"
+                        onclick="addPR()"><i class="fas fa-plus"></i> Add PR / SPPJP</button> --}}
+
+                    <button type="button" class="btn btn-maroon-animated" data-toggle="modal" data-target="#add-pr"
+                        onclick="addPR()">
+                        <i class="fas fa-plus mr-1"></i> Add PR / SPPJP
+                    </button>
+
+
+
                     <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#import-product" onclick="importProduct()"><i class="fas fa-file-excel"></i> Import Product (Excel)</button> -->
                     <!-- <button type="button" class="btn btn-primary" onclick="download('xls')"><i class="fas fa-file-excel"></i> Export Product (XLS)</button> -->
                     <div class="card-tools">
@@ -2247,20 +2485,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                    success ') !!}');
+                                                                                                                                success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                    error ') !!}');
+                                                                                                                                error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                        ',
+                                                                                                                                    ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>
