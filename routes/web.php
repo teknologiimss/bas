@@ -10,6 +10,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\PurchaseRequestSppjpController;
+use App\Http\Controllers\SppdController;
 use App\Http\Controllers\SuratJalanController;
 use App\Models\Kontrak;
 use Illuminate\Support\Facades\Auth;
@@ -200,6 +201,17 @@ Route::prefix('products')->group(function () {
     Route::get('products/purchase_request_detail/completed/{id}', [App\Http\Controllers\PurchaseRequestController::class, 'getCompletedDetailPr'])->name('get.completed.pr');
     Route::get('lppb_detail/{id}', [App\Http\Controllers\PurchaseRequestController::class, 'getDetailLppb'])->name('lppb_detail');
     Route::get('/cetak-dokumen', [App\Http\Controllers\PurchaseRequestController::class, 'cetakDokumen'])->name('cetak_dokumen');
+
+    // SPPD
+    Route::resource('sppd', App\Http\Controllers\SppdController::class)->except(['destroy']);
+    Route::post('sppd', [App\Http\Controllers\SppdController::class, 'store'])->name('sppd.store');
+    Route::delete('sppd', [App\Http\Controllers\SppdController::class, 'destroy'])->name('sppd.destroy');
+    Route::post('update_sppd_detail', [App\Http\Controllers\SppdController::class, 'updateDetailSppd'])->name('sppd_detail.update');
+    Route::get('products/sppd_detail/completed/{id}', [App\Http\Controllers\SppdController::class, 'getCompletedDetailSppd'])->name('get.completed.sppd');
+    Route::get('sppd_detail/{id}', [App\Http\Controllers\SppdController::class, 'getDetailSppd'])->name('sppd_detail');
+    Route::post('sppd/update_detail', [App\Http\Controllers\SppdController::class, 'editDetailSppd'])->name('detail.update');  // nambah baru
+    Route::post('detail_sppd/{id}/delete', [SppdController::class, 'hapusDetailSppd'])->name('detail_sppd.delete');
+
 
     // bpm
     Route::resource('bpm', App\Http\Controllers\BpmController::class)->except(['destroy']);

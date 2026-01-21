@@ -35,76 +35,146 @@ class KontrakController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index(Request $request)
+    // {
+    //     $search = $request->q;
+    //     $userRole = Auth::user()->role;
+
+    //     if (Session::has('selected_warehouse_id')) {
+    //         $warehouse_id = Session::get('selected_warehouse_id');
+    //     } else {
+    //         $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
+    //     }
+
+    //     $query = Kontrak::select('kontrak.*')
+    //         ->orderBy('kontrak.id', 'asc');
+
+    //     // // FILTER DATA BERDASARKAN ROLE
+    //     // if ($userRole == 15) {
+    //     //     $query->where('tipe', 'NON INKA');
+    //     // } elseif ($userRole == 16) {
+    //     //     $query->where('tipe', 'INKA GROUP');
+    //     // } elseif ($userRole == 12) {
+    //     //     // role 12 → akses penuh (tanpa filter)
+    //     // } else {
+    //     //     // role lain → tidak boleh lihat data
+    //     //     $query->whereRaw('1 = 0');
+    //     // }
+
+    //     $requests = $query->paginate(50);
+
+    //     // $proyeks = DB::table('keproyekan')->get();
+    //     //  dd($requests);
+
+
+    //     // if ($search) {
+    //     //     $requests = Bpm::where('nama_proyek', 'LIKE', "%$search%")->paginate(50);
+    //     // }
+
+    //     if ($request->format == "json") {
+    //         $requests = Kontrak::where("warehouse_id", $warehouse_id)->get();
+
+    //         return response()->json($requests);
+    //     } else {
+
+    //         //looping the paginate
+    //         foreach ($requests as $request) {
+    //             $detail_kontrak = DetailKontrak::where('kontrak_id', $request->id)->get();
+    //             //if detail_pr empty then editable true
+    //             if ($detail_kontrak->isEmpty()) {
+    //                 $request->editable = TRUE;
+    //             } else {
+    //                 //looping detail_pr then check in detailspph with id_detail_pr exist
+    //                 foreach ($detail_kontrak as $detail) {
+    //                     $detail_spph = DetailSpph::where('id_detail_pr', $detail->id)->first();
+    //                     $po = Purchase_Order::where('id', $detail->id_po)->first();
+    //                     if ($po && $po->tipe == '1') {
+    //                         $request->editable = FALSE;
+    //                         break;
+    //                     } else {
+    //                         if ($detail_spph) {
+    //                             $request->editable = FALSE;
+    //                             break;
+    //                         } else {
+    //                             $request->editable = TRUE;
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         return view('kontrak.kontrak', compact('requests'));
+    //     }
+    // }
+
     public function index(Request $request)
-    {
-        $search = $request->q;
-        $userRole = Auth::user()->role;
+{
+    $search = $request->q;
+    $user = Auth::user();
 
-        if (Session::has('selected_warehouse_id')) {
-            $warehouse_id = Session::get('selected_warehouse_id');
+    $warehouse_id = Session::get('selected_warehouse_id')
+        ?? DB::table('warehouse')->first()->warehouse_id;
+
+    // 🔹 QUERY UTAMA
+    $requests = Kontrak::select('kontrak.*');
+
+    // 🔐 FILTER BERDASARKAN ROLE
+    if ($user->role == 15) {
+        // PEMASARAN NON INKA
+        $requests->where('kontrak.tipe', 'NON INKA');
+
+    } elseif ($user->role == 16) {
+        // PEMASARAN INKA GROUP
+        $requests->where('kontrak.tipe', 'INKA GROUP');
+
+    } elseif (in_array($user->role, [0, 12])) {
+        // ADMIN / ROLE KHUSUS → tampil semua
+    } else {
+        // ROLE LAIN → tidak boleh lihat data
+        $requests->whereRaw('0 = 1');
+    }
+
+    // 🔍 SEARCH OPSIONAL
+    if ($search) {
+        $requests->where(function ($q) use ($search) {
+            $q->where('kontrak.nama_pekerjaan', 'LIKE', "%$search%")
+              ->orWhere('kontrak.nomor_kontrak', 'LIKE', "%$search%");
+        });
+    }
+
+    // 🔃 PAGINATION
+    $requests = $requests
+        ->orderBy('kontrak.id', 'desc')
+        ->paginate(50);
+
+    // ✏️ EDITABLE (LOGIC SAMA SEPERTI PURCHASE REQUEST)
+    foreach ($requests as $request) {
+        $detail_kontrak = DetailKontrak::where('kontrak_id', $request->id)->get();
+
+        if ($detail_kontrak->isEmpty()) {
+            $request->editable = true;
         } else {
-            $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
-        }
+            foreach ($detail_kontrak as $detail) {
+                $detail_spph = DetailSpph::where('id_detail_pr', $detail->id)->first();
+                $po = Purchase_Order::where('id', $detail->id_po)->first();
 
-        $query = Kontrak::select('kontrak.*')
-            ->orderBy('kontrak.id', 'asc');
-
-        // // FILTER DATA BERDASARKAN ROLE
-        // if ($userRole == 15) {
-        //     $query->where('tipe', 'NON INKA');
-        // } elseif ($userRole == 16) {
-        //     $query->where('tipe', 'INKA GROUP');
-        // } elseif ($userRole == 12) {
-        //     // role 12 → akses penuh (tanpa filter)
-        // } else {
-        //     // role lain → tidak boleh lihat data
-        //     $query->whereRaw('1 = 0');
-        // }
-
-        $requests = $query->paginate(50);
-
-        // $proyeks = DB::table('keproyekan')->get();
-        //  dd($requests);
-
-
-        // if ($search) {
-        //     $requests = Bpm::where('nama_proyek', 'LIKE', "%$search%")->paginate(50);
-        // }
-
-        if ($request->format == "json") {
-            $requests = Kontrak::where("warehouse_id", $warehouse_id)->get();
-
-            return response()->json($requests);
-        } else {
-
-            //looping the paginate
-            foreach ($requests as $request) {
-                $detail_kontrak = DetailKontrak::where('kontrak_id', $request->id)->get();
-                //if detail_pr empty then editable true
-                if ($detail_kontrak->isEmpty()) {
-                    $request->editable = TRUE;
+                if ($po && $po->tipe == '1') {
+                    $request->editable = false;
+                    break;
                 } else {
-                    //looping detail_pr then check in detailspph with id_detail_pr exist
-                    foreach ($detail_kontrak as $detail) {
-                        $detail_spph = DetailSpph::where('id_detail_pr', $detail->id)->first();
-                        $po = Purchase_Order::where('id', $detail->id_po)->first();
-                        if ($po && $po->tipe == '1') {
-                            $request->editable = FALSE;
-                            break;
-                        } else {
-                            if ($detail_spph) {
-                                $request->editable = FALSE;
-                                break;
-                            } else {
-                                $request->editable = TRUE;
-                            }
-                        }
-                    }
+                    $request->editable = !$detail_spph;
                 }
             }
-            return view('kontrak.kontrak', compact('requests'));
         }
     }
+
+    return view('kontrak.kontrak', compact('requests'));
+}
+
+
+
+
+
+
 
 
     // public function indexApps(Request $request)
