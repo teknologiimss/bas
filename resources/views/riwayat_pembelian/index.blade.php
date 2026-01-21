@@ -4,6 +4,116 @@
 <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 <link rel="icon" href="{{ asset('public/img/logoimss.png') }}" type="image/png">
 @endsection
+<style>
+/* ================= ROOT MAROON ================= */
+:root {
+        --maroon: #dc3545;
+        --maroon-dark: #b02a37;
+        --maroon-soft: #fdecee;
+    }
+
+/* ================= GLOBAL ================= */
+body {
+    background-color: #f5f6f8;
+}
+
+/* ================= CARD ================= */
+.card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    animation: fadeUp .5s ease both;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 2px solid var(--maroon);
+}
+
+/* ================= TABLE ================= */
+.table {
+    font-size: 13px;
+}
+
+.table thead th {
+    background-color: var(--maroon);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    border: none;
+}
+
+.table tbody tr {
+    transition: all .2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: var(--maroon-soft);
+    transform: scale(1.01);
+}
+
+/* ================= BUTTON ================= */
+.btn-primary {
+    background-color: var(--maroon);
+    border-color: var(--maroon);
+    border-radius: 20px;
+    transition: all .25s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--maroon-dark);
+    border-color: var(--maroon-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(139,29,44,.4);
+}
+
+/* ================= INPUT ================= */
+.form-control {
+    border-radius: 10px;
+    transition: box-shadow .2s ease, transform .15s ease;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 .2rem rgba(139,29,44,.25);
+    transform: scale(1.02);
+}
+
+/* ================= MODAL ================= */
+.modal-content {
+    border-radius: 14px;
+    animation: zoomIn .3s ease;
+}
+
+/* ================= PAGINATION ================= */
+.page-item.active .page-link {
+    background-color: var(--maroon);
+    border-color: var(--maroon);
+}
+
+/* ================= ANIMATION ================= */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(.92);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+</style>
+
 @section('content')
 <div class="content-header">
     <div class="container-fluid">
@@ -394,8 +504,8 @@
             // var filterDatePR = $('#filter-pr-date').val();
 
             $('table tbody tr').each(function() {
-                var noKOMAT = $(this).find('td:nth-child(2)').text().toUpperCase();
-                var noBARANG = $(this).find('td:nth-child(3)').text().toUpperCase();
+                var noKOMAT = $(this).find('td:nth-child(4)').text().toUpperCase();
+                var noBARANG = $(this).find('td:nth-child(5)').text().toUpperCase();
                 var id = $(this).find('td:nth-child(1)')
                     .text(); // Ubah indeks kolom ke indeks ID PO jika perlu
 
