@@ -8,6 +8,152 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 @endsection
+<style>
+    /* ================= ROOT ================= */
+    :root {
+        --maroon: #dc3545;
+        --maroon-dark: #b02a37;
+        --maroon-soft: #fdecee;
+    }
+
+    /* ================= CARD ================= */
+    .card {
+        border-radius: 14px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
+        transition: all .25s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, .12);
+    }
+
+    /* ================= HEADER ================= */
+    .card-header {
+        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        color: #fff;
+        border-radius: 14px 14px 0 0;
+    }
+
+    .card-header .btn {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, .25);
+    }
+
+    /* ================= TABLE ================= */
+    .table {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        color: #fff;
+        text-align: center;
+    }
+
+    .table tbody tr {
+        transition: all .2s ease;
+    }
+
+    .table tbody tr:hover {
+        background-color: var(--maroon-soft);
+        transform: scale(1.005);
+    }
+
+    /* ================= BUTTON ================= */
+    .btn {
+        border-radius: 20px;
+        font-weight: 600;
+        transition: all .25s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        border: none;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 22px rgba(220, 53, 69, .45);
+    }
+
+    .btn-success:hover,
+    .btn-info:hover,
+    .btn-danger:hover {
+        transform: translateY(-2px);
+    }
+
+    /* ================= FORM ================= */
+    .form-control {
+        border-radius: 10px;
+        transition: all .2s ease;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 .15rem rgba(220, 53, 69, .25);
+        transform: scale(1.02);
+    }
+
+    /* ================= STATUS BADGE FIX ================= */
+    .badge-status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 4px 14px;
+        min-width: 110px;
+
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1;
+
+        border-radius: 999px;
+        white-space: nowrap;
+
+        text-align: center;
+    }
+
+    .status-kontrak {
+        background: #198754;
+        color: #fff;
+    }
+
+    .status-konfirmasi {
+        background: #ffc107;
+        color: #000;
+    }
+
+    .status-default {
+        background: #6c757d;
+        color: #fff;
+    }
+
+
+    /* ================= MODAL ================= */
+    .modal-content {
+        border-radius: 16px;
+        animation: modalZoom .35s ease;
+    }
+
+    @keyframes modalZoom {
+        from {
+            transform: scale(.9);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    /* ================= CHECKBOX ================= */
+    input[type="checkbox"] {
+        transform: scale(1.2);
+        cursor: pointer;
+    }
+</style>
+
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
@@ -146,7 +292,24 @@
                                             </td>
                                             <td class="text-center">{{ $data['nama_pelanggan'] }}</td>
                                             <td class="text-center">{{ $data['tipe'] }}</td>
-                                            <td class="text-center">{{ $data['status'] }}</td>
+                                            {{-- <td class="text-center">{{ $data['status'] }}</td> --}}
+                                            <td class="text-center">
+                                                @php
+                                                    $statusClass = match ($data['status']) {
+                                                        'Kontrak' => 'badge-status status-kontrak',
+                                                        'Konfirmasi Order' => 'badge-status status-konfirmasi',
+                                                        default => 'badge-status status-default',
+                                                    };
+                                                @endphp
+                                                <span class="{{ $statusClass }}">
+                                                    {{ $data['status'] ?: '-' }}
+                                                </span>
+                                            </td>
+
+
+
+
+
                                             {{-- <td class="text-center">{{ isset($data['nilai']) ? number_format((float) $data['nilai'], 0, ',', '.') : '-' }}</td> --}}
                                             {{-- <td class="text-center">{{ $data['status'] }}</td> --}}
                                             <!-- Kolom status, tampilkan "kontrak" jika nomor_kontrak ada, "-" jika kosong -->
@@ -1926,25 +2089,27 @@
             window.location.href = "{{ route('products') }}?search={{ Request::get('search') }}&dl=" + type;
         }
     </script>
-    @if (Session::has('success'))
+    {{-- ================= TOASTR MESSAGE ================= --}}
+
+    {{-- SUCCESS --}}
+    @if (session('success'))
         <script>
-            toastr.success('{!! Session::get('
-                    success ') !!}');
+            toastr.success("{{ session('success') }}");
         </script>
     @endif
-    @if (Session::has('error'))
+
+    {{-- ERROR (SESSION) --}}
+    @if (session('error'))
         <script>
-            toastr.error('{!! Session::get('
-                    error ') !!}');
+            toastr.error("{{ session('error') }}");
         </script>
     @endif
-    @if (!empty($errors->all()))
+
+    {{-- VALIDATION ERRORS --}}
+    @if ($errors->any())
         <script>
-            toastr.error('{!! implode(
-                '
-                        ',
-                $errors->all(' < li >: message < /li>'),
-            ) !!}');
+            toastr.error("{!! implode('<br>', $errors->all()) !!}");
         </script>
     @endif
+
 @endsection
