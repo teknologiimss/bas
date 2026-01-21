@@ -382,7 +382,7 @@
                                     </tr>
                                 @empty
                                     <tr class="text-center">
-                                        <td colspan="7">No data.</td>
+                                        <td colspan="10">No data.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
