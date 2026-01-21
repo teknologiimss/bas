@@ -60,6 +60,116 @@
             color: #0d6efd;
             font-weight: bold;
         }
+
+        /* ================= ROOT COLOR ================= */
+        :root {
+            --maroon: #dc3545;
+            --maroon-dark: #b02a37;
+            --maroon-soft: #fdecee;
+        }
+
+        /* ================= CARD ================= */
+        .card {
+            border-radius: 14px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, .12);
+        }
+
+        /* ================= HEADER ================= */
+        .card-header {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            color: white;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .card-header .btn {
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        /* ================= TABLE ================= */
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        thead th {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            color: white;
+            text-align: center;
+            letter-spacing: .6px;
+        }
+
+        tbody tr {
+            transition: all .2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: var(--maroon-soft);
+            transform: scale(1.005);
+        }
+
+        /* ================= BUTTON ================= */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 6px 16px rgba(220, 53, 69, .4);
+            transition: all .25s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(220, 53, 69, .55);
+        }
+
+        .btn-success,
+        .btn-info,
+        .btn-danger {
+            border-radius: 16px;
+            transition: transform .15s ease;
+        }
+
+        .btn-success:hover,
+        .btn-info:hover,
+        .btn-danger:hover {
+            transform: scale(1.08);
+        }
+
+        /* ================= FILTER ================= */
+        .form-control {
+            border-radius: 10px;
+            transition: box-shadow .2s ease, transform .15s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 .15rem rgba(220, 53, 69, .25);
+            transform: scale(1.02);
+        }
+
+        /* ================= MODAL ================= */
+        .modal-content {
+            border-radius: 16px;
+            animation: fadeUp .35s ease;
+        }
+
+        /* ================= ANIMATION ================= */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 @endsection
 @section('content')
@@ -489,7 +599,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -568,6 +678,24 @@
 
 {{-- custom Js --}}
 @section('custom-js')
+
+    <script>
+        // Animasi hover checkbox select all
+        document.getElementById('select-all')?.addEventListener('change', function() {
+            document.querySelectorAll('tbody input[type="checkbox"]').forEach(cb => {
+                cb.checked = this.checked;
+                cb.closest('tr').classList.toggle('table-active', this.checked);
+            });
+        });
+
+        // Highlight row saat checkbox dipilih
+        document.querySelectorAll('tbody input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', function() {
+                this.closest('tr').classList.toggle('table-active', this.checked);
+            });
+        });
+    </script>
+
 
 
     {{-- Untuk Filter ASC-DSC Seperti Windows Explorer --}}
@@ -2248,20 +2376,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                                                                                                                                success ') !!}');
+                                                                                                                                                                                            success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                                                                                                                                error ') !!}');
+                                                                                                                                                                                            error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                                                                                                                                    ',
+                                                                                                                                                                                                ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>
