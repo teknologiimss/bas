@@ -299,6 +299,9 @@
                         </div>
                         {{-- End Filter by Nomor Pr dan Tanggal --}}
 
+                       
+
+
                         <table id="table" class="table table-sm table-bordered table-hover table-striped">
                             <thead>
                                 <tr class="text-center">
@@ -311,6 +314,8 @@
                                     <th>{{ __('Terhitung mulai') }}</th>
                                     <th>{{ __('Terhitung selesai') }}</th>
                                     <th>{{ __('Lampiran Form SPPD') }}</th>
+                                    <th>{{ __('Status') }}</th>
+                                    <th>{{ __('Keterangan') }}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -326,11 +331,14 @@
                                             'terhitung_mulai' => date('d/m/Y', strtotime($d->terhitung_mulai)),
                                             'terhitung_selesai' => date('d/m/Y', strtotime($d->terhitung_selesai)),
                                             'lampiran' => $d->lampiran,
+                                            'status' => $d->status,
+                                            'keterangan_status' => $d->keterangan_status,
                                             'id' => $d->id,
                                             'editable' => $d->editable,
                                         ];
                                     @endphp
 
+                                
                                     <tr>
                                         <td class="text-center">
                                             <input type="checkbox" name="hapus[]" value="{{ $d->id }}">
@@ -357,6 +365,21 @@
                                                 -
                                             @endforelse
                                         </td>
+
+                                        <td class="text-center">
+                                            @if ($d->status === 'open')
+                                                <span class="badge badge-warning">
+                                                    <i class="fas fa-folder-open"></i> OPEN
+                                                </span>
+                                            @else
+                                                <span class="badge badge-success">
+                                                    <i class="fas fa-check-circle"></i> CLOSED
+                                                </span>
+                                            @endif
+                                        </td>
+
+                                        <td class="text-center">{{ $data['keterangan_status'] }}</td>
+
 
                                         {{-- Aksi --}}
                                         <td class="text-center">
@@ -484,6 +507,24 @@
                             <a id="tambah-lampiran" style="cursor: pointer">Tambah Lampiran</a>
                             <hr>
 
+
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Status</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="status" id="status">
+                                        <option value="open">OPEN</option>
+                                        <option value="closed">CLOSED</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" id="keterangan-wrapper">
+                                <label class="col-sm-4 col-form-label">Keterangan Open</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="keterangan_status" id="keterangan_status" placeholder="Kenapa masih open?"></textarea>
+                                </div>
+                            </div>
 
 
                             {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 1)
@@ -787,6 +828,24 @@
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+    <script>
+        $('#status').on('change', function() {
+            if (this.value === 'open') {
+                $('#keterangan-wrapper').show();
+            } else {
+                $('#keterangan-wrapper').hide();
+                $('#keterangan_status').val('');
+            }
+        });
+
+        // default saat modal dibuka
+        $(document).ready(function() {
+            $('#keterangan-wrapper').show();
+        });
+    </script>
+
 
     <script>
         //Fungsi tambah lampiran & Vendor
@@ -1264,6 +1323,8 @@
             $('#tujuan').val(data.tujuan);
             $('#keperluan').val(data.keperluan);
             $('#lama_perjalanan').val(data.lama_perjalanan);
+            $('#status').val(data.status);
+            $('#keterangan_status').val(data.keterangan_status);
 
             $('#terhitung_mulai').val(data.terhitung_mulai);
 
@@ -1983,25 +2044,26 @@
             window.location.href = "{{ route('products') }}?search={{ Request::get('search') }}&dl=" + type;
         }
     </script>
-    @if (Session::has('success'))
+    {{-- ================= TOASTR MESSAGE ================= --}}
+
+    {{-- SUCCESS --}}
+    @if (session('success'))
         <script>
-            toastr.success('{!! Session::get('
-                                                                                                                                                                                                                                            success ') !!}');
+            toastr.success("{{ session('success') }}");
         </script>
     @endif
-    @if (Session::has('error'))
+
+    {{-- ERROR (SESSION) --}}
+    @if (session('error'))
         <script>
-            toastr.error('{!! Session::get('
-                                                                                                                                                                                                                                            error ') !!}');
+            toastr.error("{{ session('error') }}");
         </script>
     @endif
-    @if (!empty($errors->all()))
+
+    {{-- VALIDATION ERRORS --}}
+    @if ($errors->any())
         <script>
-            toastr.error('{!! implode(
-                '
-                                                                                                                                                                                                                                                ',
-                $errors->all(' < li >: message < /li>'),
-            ) !!}');
+            toastr.error("{!! implode('<br>', $errors->all()) !!}");
         </script>
     @endif
 @endsection

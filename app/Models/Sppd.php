@@ -20,6 +20,8 @@ class Sppd extends Model
         'terhitung_selesai',
         // 'id_user',
         'lampiran',
+        'status',
+    'keterangan_status',
         'is_read'
     ];
 

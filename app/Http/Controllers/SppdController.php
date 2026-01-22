@@ -127,6 +127,8 @@ class SppdController extends Controller
             'tujuan' => 'required',
             'keperluan' => 'required',
             'lama_perjalanan' => 'required',
+            'status' => 'required|in:open,closed',
+            'keterangan_status' => 'nullable'
         ]);
 
         if (empty($sppd_id)) {
@@ -138,6 +140,8 @@ class SppdController extends Controller
                 'lama_perjalanan' => $request->lama_perjalanan,
                 'terhitung_mulai' => $request->terhitung_mulai,
                 'terhitung_selesai' => $request->terhitung_selesai,
+                'status' => $request->status,
+                'keterangan_status' => $request->keterangan_status,
                 // 'id_user' => auth()->user()->id,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -174,6 +178,8 @@ class SppdController extends Controller
                 'lama_perjalanan' => $request->lama_perjalanan,
                 'terhitung_mulai' => $request->terhitung_mulai,
                 'terhitung_selesai' => $request->terhitung_selesai,
+                'status' => $request->status,
+                'keterangan_status' => $request->keterangan_status,
                 // 'id_user' => auth()->user()->id,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -232,8 +238,6 @@ class SppdController extends Controller
         return redirect()->route('sppd.index');
     }
 
-
-
     public function updateDetailSppd(Request $request)
     {
         // if (!$request->stock) {
@@ -260,7 +264,6 @@ class SppdController extends Controller
         $idDel = $maxIdDel + 1;  // Menambahkan 1 pada nilai maksimum untuk mendapatkan id_del yang baru
         $insert = DetailSppd::create([
             'id_sppd' => $request->id_sppd,
-            
             'nama' => $request->nama ?: '-',
             'nip' => $request->nip ?: '-',
             'golongan' => $request->golongan ?: '-',
@@ -292,8 +295,6 @@ class SppdController extends Controller
         ]);
     }
 
-
-
     public function getDetailSppd(Request $request)
     {
         $id = $request->id;
@@ -313,13 +314,8 @@ class SppdController extends Controller
             $item->jenis_kendaraan = $item->jenis_kendaraan ? $item->jenis_kendaraan : '';
             $item->tanggal = $item->tanggal ? $item->tanggal : '';
             $item->tujuan = $item->tujuan ? $item->tujuan : '';
-            
+
             $item->userRole = User::where('id', $item->user_id)->first()->role ?? '';
-            
-
-            
-
-            
 
             return $item;
         });
@@ -328,8 +324,6 @@ class SppdController extends Controller
             'sppd' => $sppd
         ]);
     }
-
-
 
     public function editDetailSppd(Request $request)
     {
@@ -409,8 +403,6 @@ class SppdController extends Controller
             'sppd' => $sppd  // Mengembalikan data detail SR yang telah diupdate
         ]);
     }
-
-
 
     public function hapusDetailSppd(Request $request, $id)
     {
