@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', __('LOI LUAR NEGERI'))
 @section('custom-css')
-    <style>
+    {{-- <style>
         /* Important part */
         .modal-dialog {
             overflow-y: initial !important
@@ -59,7 +59,227 @@
             color: #0d6efd;
             font-weight: bold;
         }
+    </style> --}}
+
+    <style>
+        /* =====================================================
+       🔴 GLOBAL MAROON THEME – FULL VERSION
+       ===================================================== */
+
+        /* ===== ROOT COLOR SYSTEM ===== */
+        :root {
+            --maroon-main: #dc3545;
+            --maroon-dark: #5a1620;
+            
+            --maroon-soft: #f4e6e8;
+            --maroon-hover: #8f2735;
+            --maroon-border: #e3c2c7;
+            --maroon-muted: #b88a92;
+            --maroon-text: #3a0f15;
+        }
+
+        /* ===== RESET SMALL ===== */
+        * {
+            transition: background-color .25s ease, color .25s ease,
+                transform .25s ease, box-shadow .25s ease;
+        }
+
+        /* =====================================================
+       🪟 MODAL
+       ===================================================== */
+        .modal-dialog {
+            overflow-y: initial !important;
+        }
+
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* =====================================================
+       📊 TABLE
+       ===================================================== */
+        #table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* ===== TABLE HEADER ===== */
+        #table thead th {
+            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            color: #fff;
+            padding: 12px 36px 12px 12px;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* Hover header */
+        #table thead th:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(122, 31, 43, .35);
+        }
+
+        /* Active sort */
+        #table thead th.active-sort {
+            box-shadow: inset 0 -4px 0 var(--maroon-dark);
+        }
+
+        /* ===== SORT BUTTON ===== */
+        .sort-buttons {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            font-size: 11px;
+            gap: 2px;
+        }
+
+        .sort-buttons span {
+            color: #f1c6cc;
+            cursor: pointer;
+        }
+
+        .sort-buttons span:hover {
+            color: #fff;
+            transform: scale(1.3);
+        }
+
+        .sort-buttons span.active {
+            color: #fff;
+            animation: pulseMaroon 1.2s infinite;
+        }
+
+        /* ===== TABLE BODY ===== */
+        #table tbody td {
+            padding: 12px;
+            color: var(--maroon-text);
+            border-bottom: 1px solid var(--maroon-border);
+        }
+
+        /* Hover row */
+        #table tbody tr:hover td {
+            background: var(--maroon-soft);
+            transform: scale(1.01);
+        }
+
+        /* =====================================================
+       🔘 BUTTON
+       ===================================================== */
+        button,
+        .btn {
+            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Hover button */
+        button:hover,
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(122, 31, 43, .4);
+        }
+
+        /* Active button */
+        button:active,
+        .btn:active {
+            transform: scale(.96);
+        }
+
+        /* =====================================================
+       📄 PAGINATION
+       ===================================================== */
+        .page-item .page-link {
+            background: #fff;
+            color: var(--maroon-main);
+            border: 1px solid var(--maroon-border);
+        }
+
+        .page-item .page-link:hover {
+            background: var(--maroon-soft);
+            transform: translateY(-2px);
+        }
+
+        .page-item.active .page-link {
+            background: var(--maroon-main);
+            color: #fff;
+            border-color: var(--maroon-main);
+        }
+
+        /* =====================================================
+       🧾 INPUT, SELECT, CHECKBOX
+       ===================================================== */
+        input,
+        select,
+        textarea {
+            border: 1px solid var(--maroon-border);
+            border-radius: 6px;
+            padding: 6px 10px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--maroon-main);
+            box-shadow: 0 0 0 3px rgba(122, 31, 43, .2);
+            outline: none;
+        }
+
+        input[type="checkbox"]:checked {
+            accent-color: var(--maroon-main);
+        }
+
+        /* =====================================================
+       📜 SCROLLBAR
+       ===================================================== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--maroon-soft);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--maroon-main);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--maroon-hover);
+        }
+
+        /* =====================================================
+       🌊 ANIMATION
+       ===================================================== */
+        @keyframes pulseMaroon {
+            0% {
+                box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
+            }
+
+            70% {
+                box-shadow: 0 0 0 8px rgba(122, 31, 43, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
+            }
+        }
     </style>
+
+
+
 @endsection
 @section('content')
     <div class="content-header">

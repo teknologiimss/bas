@@ -2,6 +2,182 @@
 @section('title', 'data karyawan')
 @section('custom-css')
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
+
+    <style>
+        /* =====================================================
+       🎨 ROOT COLOR
+    ===================================================== */
+        :root {
+            --maroon: #dc3545;
+            --maroon-dark: #5a0b14;
+            --maroon-light: #a83240;
+            --maroon-soft: #f6d6db;
+            --maroon-border: #e6b2bb;
+        }
+
+        /* =====================================================
+       📦 CARD
+    ===================================================== */
+        .card {
+            border-radius: 14px;
+            border: none;
+            box-shadow: 0 12px 30px rgba(122, 15, 27, 0.25);
+            animation: fadeUp .5s ease;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-light));
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .card-body {
+            background: #fff;
+        }
+
+        /* =====================================================
+       🔘 BUTTON – SEMUA MAROON
+    ===================================================== */
+        .btn,
+        button {
+            position: relative;
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)) !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all .25s ease;
+            box-shadow: 0 6px 16px rgba(122, 15, 27, 0.35);
+        }
+
+        /* override semua tipe bootstrap */
+        .btn-primary,
+        .btn-success,
+        .btn-danger,
+        .btn-info,
+        .btn-warning,
+        .btn-secondary,
+        .btn-default {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)) !important;
+        }
+
+        /* hover */
+        .btn:hover,
+        button:hover {
+            background: linear-gradient(135deg, var(--maroon-light), var(--maroon)) !important;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 14px 30px rgba(122, 15, 27, 0.55);
+        }
+
+        /* klik */
+        .btn:active,
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* icon ikut gerak */
+        .btn i {
+            transition: transform .25s ease;
+        }
+
+        .btn:hover i {
+            transform: scale(1.2) rotate(-5deg);
+        }
+
+        /* =====================================================
+       📊 TABLE – MAROON TOTAL
+    ===================================================== */
+        #table,
+        .table {
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(122, 15, 27, 0.25);
+        }
+
+        /* header */
+        .table thead th {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-light));
+            color: #fff;
+            text-align: center;
+            border: none;
+        }
+
+        /* body row */
+        .table tbody tr {
+            background: var(--maroon-soft);
+            transition: all .3s ease;
+        }
+
+        /* zebra */
+        .table tbody tr:nth-child(even) {
+            background: #f2c7cf;
+        }
+
+        /* hover row */
+        .table tbody tr:hover {
+            background: linear-gradient(135deg, #fbe2e6, var(--maroon-soft));
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 10px 24px rgba(122, 15, 27, 0.35);
+        }
+
+        /* cell */
+        .table td {
+            border-color: var(--maroon-border);
+        }
+
+        /* =====================================================
+       🪟 MODAL
+    ===================================================== */
+        .modal-content {
+            border-radius: 16px;
+            animation: zoomIn .4s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-light));
+            color: #fff;
+        }
+
+        /* =====================================================
+       🧾 INPUT / FORM
+    ===================================================== */
+        .form-control {
+            border-radius: 10px;
+            transition: all .25s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--maroon);
+            box-shadow: 0 0 0 3px rgba(122, 15, 27, 0.25);
+        }
+
+        /* =====================================================
+       ✨ ANIMATIONS
+    ===================================================== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
 @endsection
 @section('content')
     <div class="content-header">

@@ -3,6 +3,161 @@
 @section('custom-css')
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="icon" href="{{ asset('public/img/logoimss.png') }}" type="image/png">
+
+    <style>
+/* =====================================================
+   🔴 GLOBAL MAROON TOKEN
+   ===================================================== */
+:root {
+    --maroon-main: #dc3545;
+    --maroon-hover: #8f2735;
+    --maroon-dark: #5a1620;
+    --maroon-soft: #f6dfe3;
+    --maroon-border: #e3b7bf;
+}
+
+/* =====================================================
+   🔘 ALL BUTTON FORCE MAROON
+   ===================================================== */
+.btn,
+button,
+input[type="button"],
+input[type="submit"],
+a.btn {
+    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover)) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 600;
+    letter-spacing: .3px;
+    position: relative;
+    overflow: hidden;
+    transition: all .25s ease;
+}
+
+/* Semua varian bootstrap */
+.btn-primary,
+.btn-info,
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-warning,
+.btn-default {
+    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover)) !important;
+    color: #fff !important;
+}
+
+/* Hover */
+.btn:hover,
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(122,31,43,.45);
+}
+
+/* Active */
+.btn:active,
+button:active {
+    transform: scale(.95);
+}
+
+/* Ripple */
+.btn::after,
+button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,.35) 10%, transparent 11%);
+    opacity: 0;
+}
+
+.btn:active::after,
+button:active::after {
+    opacity: 1;
+}
+
+/* =====================================================
+   📊 ALL TABLE (GLOBAL)
+   ===================================================== */
+table {
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(122,31,43,.18);
+}
+
+/* Header */
+table thead th {
+    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover)) !important;
+    color: #fff !important;
+    text-align: center;
+    font-weight: 700;
+    transition: all .25s ease;
+}
+
+/* Body row base */
+table tbody tr {
+    background-color: #fbf1f3;
+    transition: background-color .35s ease, transform .3s ease, box-shadow .3s ease;
+}
+
+/* Zebra */
+table tbody tr:nth-child(even) {
+    background-color: #f7e6e9;
+}
+
+/* Hover row */
+table tbody tr:hover {
+    background: linear-gradient(135deg, var(--maroon-soft), #fdecef);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 10px 24px rgba(122,31,43,.28);
+}
+
+/* Cell */
+table td {
+    border-bottom: 1px solid var(--maroon-border) !important;
+    vertical-align: middle;
+}
+
+/* Text hover */
+table tbody tr:hover td {
+    color: var(--maroon-dark);
+    font-weight: 600;
+}
+
+/* =====================================================
+   📦 CARD & MODAL HEADER (BIAR SERASI)
+   ===================================================== */
+.card-header,
+.modal-header {
+    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover)) !important;
+    color: #fff;
+}
+
+/* Close icon */
+.modal-header .close span {
+    color: #fff;
+}
+
+/* =====================================================
+   🎞 TABLE ROW LOAD ANIMATION
+   ===================================================== */
+@keyframes rowFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+table tbody tr {
+    animation: rowFadeUp .45s ease both;
+}
+</style>
+
 @endsection
 @section('content')
     <div class="content-header">

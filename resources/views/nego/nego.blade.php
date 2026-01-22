@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', __('NEGO'))
 @section('custom-css')
-    <style>
+    {{-- <style>
         /* Important part */
         .modal-dialog {
             overflow-y: initial !important
@@ -59,7 +59,169 @@
             color: #0d6efd;
             font-weight: bold;
         }
+    </style> --}}
+
+    <style>
+        /* =====================================================
+       🔴 MAROON MODERN UI – TABLE + BUTTON (GERAK)
+       ===================================================== */
+
+        /* ===== ROOT WARNA ===== */
+        :root {
+            --maroon-main: #dc3545;
+            --maroon-dark: #5a1620;
+            --maroon-hover: #8f2735;
+            --maroon-soft: #f4e6e8;
+            --maroon-border: #e3c2c7;
+            --maroon-muted: #b88a92;
+            --maroon-text: #3a0f15;
+        }
+
+        /* =====================================================
+       🪟 MODAL
+       ===================================================== */
+        .modal-dialog {
+            overflow-y: initial !important;
+        }
+
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* =====================================================
+       📊 TABLE HEADER
+       ===================================================== */
+        #table th {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            color: #fff;
+            padding: 12px 36px 12px 12px;
+            text-align: center;
+            font-weight: 600;
+            transition: all .3s ease;
+        }
+
+        #table th:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(122, 31, 43, .35);
+        }
+
+        #table th.active-sort {
+            box-shadow: inset 0 -4px 0 var(--maroon-dark);
+            animation: glowHeader 1.5s infinite alternate;
+        }
+
+        /* =====================================================
+       🔼🔽 SORT BUTTON
+       ===================================================== */
+        .sort-buttons {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            font-size: 10px;
+            gap: 2px;
+        }
+
+        .sort-buttons span {
+            cursor: pointer;
+            color: var(--maroon-muted);
+            transition: all .2s ease;
+        }
+
+        .sort-buttons span:hover {
+            color: #fff;
+            transform: scale(1.3);
+        }
+
+        .sort-buttons span.active {
+            color: #fff;
+            background: var(--maroon-dark);
+            border-radius: 50%;
+            padding: 2px;
+            animation: pulseArrow 1.2s infinite;
+        }
+
+        /* =====================================================
+       🔘 BUTTON – MAROON + GERAK
+       ===================================================== */
+        button,
+        .btn {
+            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hover – naik + glow */
+        button:hover,
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(122, 31, 43, .45);
+        }
+
+        /* Active – klik berasa */
+        button:active,
+        .btn:active {
+            transform: scale(.95);
+        }
+
+        /* Ripple effect */
+        button::after,
+        .btn::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, .35) 10%, transparent 11%);
+            opacity: 0;
+            transition: opacity .3s ease;
+        }
+
+        button:active::after,
+        .btn:active::after {
+            opacity: 1;
+        }
+
+        /* =====================================================
+       🌊 ANIMATIONS
+       ===================================================== */
+        @keyframes pulseArrow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
+            }
+
+            70% {
+                box-shadow: 0 0 0 8px rgba(122, 31, 43, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
+            }
+        }
+
+        @keyframes glowHeader {
+            from {
+                box-shadow: inset 0 -4px 0 var(--maroon-dark);
+            }
+
+            to {
+                box-shadow: inset 0 -4px 0 var(--maroon-dark),
+                    0 0 12px rgba(122, 31, 43, .4);
+            }
+        }
     </style>
+
+
 @endsection
 @section('content')
     <div class="content-header">
@@ -491,7 +653,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -1339,7 +1501,8 @@
 
                             // Menyiapkan checkbox yang aktif atau tidak berdasarkan id_nego
                             var checkbox;
-                            if (value.qty_nego === null || value.qty_nego === "" || value.qty_nego >= 0) {
+                            if (value.qty_nego === null || value.qty_nego === "" || value.qty_nego >=
+                                0) {
                                 checkbox = '<input type="checkbox" id="addToDetails-' + value.id +
                                     '" class="row-checkbox" value="' + value.id +
                                     '" onclick="addToDetailsJs(' + value.id + ')">';
@@ -1462,7 +1625,7 @@
                     $('#table-nego').empty();
                     $.each(data.nego.details, function(key, value) {
                         var nego_qty = value.nego_qty ||
-                        0; // Pastikan nego_qty didefinisikan, jika tidak gunakan 0
+                            0; // Pastikan nego_qty didefinisikan, jika tidak gunakan 0
                         var id = value.id;
                         var id_nego = value.id_nego;
                         var id_detail_nego = value.id_detail_nego;
@@ -1516,7 +1679,7 @@
                     $('.harga-per-unit, .harga-per-unit-imss').on('input', function() {
                         var id = $(this).data('id');
                         var nego_qty = $(this).data(
-                        'qty'); // Mengambil data-qty yang valid dari elemen input
+                            'qty'); // Mengambil data-qty yang valid dari elemen input
                         var hargaPerUnit = parseFloat($('#harga_per_unit' + id).val()) || 0;
                         var hargaPerUnitImss = parseFloat($('#harga_per_unit_imss' + id).val()) || 0;
 
@@ -1745,7 +1908,7 @@
                     } else {
                         $.each(response.nego.details, function(key, value) {
                             var nego_qty = value.nego_qty ||
-                            0; // Pastikan nego_qty didefinisikan, jika tidak gunakan 0
+                                0; // Pastikan nego_qty didefinisikan, jika tidak gunakan 0
                             var id = value.id;
                             var id_nego = value.id_nego;
                             var id_detail_nego = value.id_detail_nego;
@@ -1799,10 +1962,10 @@
                         $('.harga-per-unit, .harga-per-unit-imss').on('input', function() {
                             var id = $(this).data('id');
                             var nego_qty = $(this).data(
-                            'qty'); // Mengambil data-qty yang valid dari elemen input
+                                'qty'); // Mengambil data-qty yang valid dari elemen input
                             var hargaPerUnit = parseFloat($('#harga_per_unit' + id).val()) || 0;
                             var hargaPerUnitImss = parseFloat($('#harga_per_unit_imss' + id).val()) ||
-                            0;
+                                0;
 
                             // Hitung total berdasarkan harga dan qty
                             var total = nego_qty * hargaPerUnit;
@@ -2040,7 +2203,7 @@
                             var $row = $(this);
                             if ($row.find('.row-checkbox').prop('checked')) {
                                 $row.find('.row-checkbox').prop('disabled',
-                                true); // Tidak bisa dicentang ulang
+                                    true); // Tidak bisa dicentang ulang
                             }
                         });
 
@@ -2136,7 +2299,8 @@
 
                                 '<td><input type="text" value="' + harga_per_unit_imss +
                                 '" class="form-control harga-per-unit-imss" id="harga_per_unit_imss' +
-                                id + '" name="harga_per_unit_imss' + id + '" data-id="' + id +
+                                id + '" name="harga_per_unit_imss' + id + '" data-id="' +
+                                id +
                                 '" data-qty="' + nego_qty + '"></td>' +
                                 '<td class="total-imss">' + total_imss + '</td>' +
 

@@ -2,6 +2,229 @@
 @section('title', __('Kode Aset'))
 @section('custom-css')
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
+
+    <style>
+        /* ===============================
+       🎨 ROOT COLOR
+    ================================ */
+        :root {
+            --maroon: #dc3545;
+            --maroon-dark: #5c0017;
+            --maroon-light: #a8324a;
+            --maroon-soft: #f5e6ea;
+            --shadow-maroon: rgba(128, 0, 32, 0.35);
+        }
+
+        /* ===============================
+       🪟 MODAL SCROLL
+    ================================ */
+        .modal-dialog {
+            overflow-y: initial !important;
+        }
+
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* ===============================
+       🔘 BUTTON (ALL WAJIB MAROON)
+    ================================ */
+        .btn,
+        .btn-primary,
+        .btn-success,
+        .btn-danger,
+        .btn-default {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)) !important;
+            border: none !important;
+            color: #fff !important;
+            box-shadow: 0 5px 15px var(--shadow-maroon);
+            transition: all 0.3s ease;
+        }
+
+        /* Hover */
+        .btn:hover {
+            background: linear-gradient(135deg, var(--maroon-light), var(--maroon)) !important;
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 25px var(--shadow-maroon);
+        }
+
+        /* Active / Click */
+        .btn:active {
+            transform: scale(0.95);
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Button kecil */
+        .btn-xs {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* ===============================
+       🔍 INPUT & SEARCH
+    ================================ */
+        .form-control {
+            border-radius: 6px;
+            border: 1px solid var(--maroon);
+            transition: all 0.25s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--maroon-light);
+            box-shadow: 0 0 0 0.2rem var(--maroon-soft);
+        }
+
+        /* ===============================
+       📊 TABLE GLOBAL
+    ================================ */
+        #table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        /* HEADER */
+        #table th {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            color: #fff;
+            padding-right: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        /* HEADER HOVER */
+        #table th:hover {
+            background: var(--maroon-light);
+        }
+
+        /* SORT ACTIVE */
+        #table th.active-sort {
+            background: var(--maroon-dark);
+            font-weight: bold;
+        }
+
+        /* BODY ROW */
+        #table tbody tr {
+            transition: all 0.25s ease;
+        }
+
+        /* ROW HOVER GERAK */
+        #table tbody tr:hover {
+            background-color: var(--maroon-soft);
+            transform: scale(1.01);
+            box-shadow: 0 6px 15px rgba(128, 0, 32, 0.2);
+        }
+
+        /* CELL */
+        #table td {
+            vertical-align: middle;
+        }
+
+        /* ===============================
+       🔼 SORT BUTTONS
+    ================================ */
+        .sort-buttons {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            font-size: 10px;
+        }
+
+        .sort-buttons span {
+            cursor: pointer;
+            color: #f3c0cb;
+            transition: all 0.2s ease;
+        }
+
+        .sort-buttons span:hover {
+            color: #fff;
+            transform: scale(1.3);
+        }
+
+        .sort-buttons span.active {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* ===============================
+       ☑️ CHECKBOX
+    ================================ */
+        input[type="checkbox"] {
+            accent-color: var(--maroon);
+            transform: scale(1.1);
+        }
+
+        /* ===============================
+       📄 PAGINATION
+    ================================ */
+        .page-item.active .page-link {
+            background-color: var(--maroon);
+            border-color: var(--maroon);
+        }
+
+        .page-link {
+            color: var(--maroon);
+            transition: all 0.2s ease;
+        }
+
+        .page-link:hover {
+            background-color: var(--maroon-soft);
+            color: var(--maroon-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ===============================
+       🪟 MODAL
+    ================================ */
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 10px 30px var(--shadow-maroon);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            color: #fff;
+        }
+
+        .modal-footer .btn {
+            min-width: 120px;
+        }
+
+        /* ===============================
+       🧠 CARD
+    ================================ */
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===============================
+       💥 ANIMATION ENTRY (BONUS)
+    ================================ */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card,
+        .table,
+        .btn {
+            animation: fadeSlideUp 0.5s ease;
+        }
+    </style>
 @endsection
 @section('content')
     <div class="content-header">

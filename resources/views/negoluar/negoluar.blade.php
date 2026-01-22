@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', __('NEGOTIATION LETTER'))
 @section('custom-css')
-    <style>
+    {{-- <style>
         /* Important part */
         .modal-dialog {
             overflow-y: initial !important
@@ -58,6 +58,166 @@
         .sort-buttons span.active {
             color: #0d6efd;
             font-weight: bold;
+        }
+    </style> --}}
+
+    <style>
+        /* =====================================================
+       🔴 MAROON MODERN UI – TABLE + BUTTON (GERAK)
+       ===================================================== */
+
+        /* ===== ROOT WARNA ===== */
+        :root {
+            --maroon-main: #dc3545;
+            --maroon-dark: #5a1620;
+            --maroon-hover: #8f2735;
+            --maroon-soft: #f4e6e8;
+            --maroon-border: #e3c2c7;
+            --maroon-muted: #b88a92;
+            --maroon-text: #3a0f15;
+        }
+
+        /* =====================================================
+       🪟 MODAL
+       ===================================================== */
+        .modal-dialog {
+            overflow-y: initial !important;
+        }
+
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* =====================================================
+       📊 TABLE HEADER
+       ===================================================== */
+        #table th {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            color: #fff;
+            padding: 12px 36px 12px 12px;
+            text-align: center;
+            font-weight: 600;
+            transition: all .3s ease;
+        }
+
+        #table th:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(122, 31, 43, .35);
+        }
+
+        #table th.active-sort {
+            box-shadow: inset 0 -4px 0 var(--maroon-dark);
+            animation: glowHeader 1.5s infinite alternate;
+        }
+
+        /* =====================================================
+       🔼🔽 SORT BUTTON
+       ===================================================== */
+        .sort-buttons {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            font-size: 10px;
+            gap: 2px;
+        }
+
+        .sort-buttons span {
+            cursor: pointer;
+            color: var(--maroon-muted);
+            transition: all .2s ease;
+        }
+
+        .sort-buttons span:hover {
+            color: #fff;
+            transform: scale(1.3);
+        }
+
+        .sort-buttons span.active {
+            color: #fff;
+            background: var(--maroon-dark);
+            border-radius: 50%;
+            padding: 2px;
+            animation: pulseArrow 1.2s infinite;
+        }
+
+        /* =====================================================
+       🔘 BUTTON – MAROON + GERAK
+       ===================================================== */
+        button,
+        .btn {
+            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hover – naik + glow */
+        button:hover,
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(122, 31, 43, .45);
+        }
+
+        /* Active – klik berasa */
+        button:active,
+        .btn:active {
+            transform: scale(.95);
+        }
+
+        /* Ripple effect */
+        button::after,
+        .btn::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, .35) 10%, transparent 11%);
+            opacity: 0;
+            transition: opacity .3s ease;
+        }
+
+        button:active::after,
+        .btn:active::after {
+            opacity: 1;
+        }
+
+        /* =====================================================
+       🌊 ANIMATIONS
+       ===================================================== */
+        @keyframes pulseArrow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
+            }
+
+            70% {
+                box-shadow: 0 0 0 8px rgba(122, 31, 43, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
+            }
+        }
+
+        @keyframes glowHeader {
+            from {
+                box-shadow: inset 0 -4px 0 var(--maroon-dark);
+            }
+
+            to {
+                box-shadow: inset 0 -4px 0 var(--maroon-dark),
+                    0 0 12px rgba(122, 31, 43, .4);
+            }
         }
     </style>
 @endsection
