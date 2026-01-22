@@ -3,6 +3,149 @@
 @section('custom-css')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
+<style>
+/* ================= ROOT MAROON ================= */
+:root {
+    --maroon: #dc3545;
+    --maroon-dark: #b02a37;
+    --maroon-soft: #fdecee;
+}
+
+/* ================= CARD ================= */
+.card {
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(0,0,0,.08);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(0,0,0,.12);
+}
+
+/* ================= HEADER ================= */
+h3 {
+    color: var(--maroon);
+    animation: fadeDown .6s ease;
+}
+
+/* ================= TABLE ================= */
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+    color: #fff;
+    letter-spacing: .6px;
+    border: none;
+}
+
+.table tbody tr {
+    transition: all .2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: var(--maroon-soft);
+    transform: scale(1.005);
+}
+
+/* ================= BUTTON ================= */
+.btn-primary,
+.btn-info,
+.btn-secondary {
+    background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)) !important;
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    box-shadow: 0 6px 16px rgba(220,53,69,.4);
+    transition: all .25s ease;
+}
+
+.btn-primary:hover,
+.btn-info:hover,
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(220,53,69,.55);
+}
+
+.btn-primary:active {
+    transform: scale(.95);
+}
+
+/* ================= BADGE ================= */
+.badge {
+    background-color: var(--maroon);
+    transition: transform .2s ease;
+}
+.badge:hover {
+    transform: scale(1.08);
+}
+
+/* ================= FORM INPUT ================= */
+.form-control {
+    border-radius: 10px;
+    transition: box-shadow .2s ease, transform .15s ease;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 .15rem rgba(220,53,69,.25);
+    transform: scale(1.02);
+    border-color: var(--maroon);
+}
+
+/* ================= PROGRESS ================= */
+.progress {
+    border-radius: 20px;
+    overflow: hidden;
+    height: 18px;
+}
+
+.progress-bar {
+    background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+    font-weight: 600;
+    animation: progressGrow 1.2s ease;
+    box-shadow: inset 0 0 6px rgba(255,255,255,.3);
+}
+
+/* ================= LINK ================= */
+a {
+    color: var(--maroon);
+    position: relative;
+    transition: color .2s ease;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background: var(--maroon);
+    transition: width .3s;
+}
+
+a:hover::after {
+    width: 100%;
+}
+
+/* ================= ANIMATION ================= */
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes progressGrow {
+    from { width: 0; }
+}
+</style>
 @section('content')
 <div class="content-header">
     <div class="container-fluid">
