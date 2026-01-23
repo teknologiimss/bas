@@ -678,7 +678,7 @@
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="{{ route('mro.progress') }}" class="nav-link">
+                                                        <a href="{{ route('mro.progress') }}" class="nav-link {{ Route::current()->getName() == 'mro.progress' ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-chart-line"></i>
                                                             <p>Progress MRO</p>
                                                         </a>
@@ -691,13 +691,13 @@
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="{{ route('mro.stock.log') }}" class="nav-link">
+                                                        <a href="{{ route('mro.stock.log') }}" class="nav-link {{ Route::current()->getName() == 'mro.stock.log' ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-people-carry"></i>
                                                             <p>Mutasi Stok MRO</p>
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="{{ route('sppd.index') }}" class="nav-link">
+                                                        <a href="{{ route('sppd.index') }}" class="nav-link {{ Route::current()->getName() == 'sppd.index' ? 'active' : '' }}">
                                                             <i class="nav-icon far fa-file-archive"></i>
                                                             <p>Arsip SPPD MRO</p>
                                                         </a>
