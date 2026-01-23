@@ -2501,25 +2501,26 @@
             window.location.href = "{{ route('products') }}?search={{ Request::get('search') }}&dl=" + type;
         }
     </script>
-    @if (Session::has('success'))
+    {{-- ================= TOASTR MESSAGE ================= --}}
+
+    {{-- SUCCESS --}}
+    @if (session('success'))
         <script>
-            toastr.success('{!! Session::get('
-                                                                                                                                                                                success ') !!}');
+            toastr.success("{{ session('success') }}");
         </script>
     @endif
-    @if (Session::has('error'))
+
+    {{-- ERROR (SESSION) --}}
+    @if (session('error'))
         <script>
-            toastr.error('{!! Session::get('
-                                                                                                                                                                                error ') !!}');
+            toastr.error("{{ session('error') }}");
         </script>
     @endif
-    @if (!empty($errors->all()))
+
+    {{-- VALIDATION ERRORS --}}
+    @if ($errors->any())
         <script>
-            toastr.error('{!! implode(
-                '
-                                                                                                                                                                                    ',
-                $errors->all(' < li >: message < /li>'),
-            ) !!}');
+            toastr.error("{!! implode('<br>', $errors->all()) !!}");
         </script>
     @endif
 @endsection

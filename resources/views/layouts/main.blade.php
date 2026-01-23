@@ -309,8 +309,82 @@
                                     </a>
                                 </li> --}}
 
-                                <li class="nav-item has-treeview">
-                                    <a href="#" class="nav-link">
+                                @php
+                                    $menuActive = in_array(Route::currentRouteName(), [
+                                        'kontrak.index',
+                                        'riwayat_pembelian',
+                                        'purchase_request.index',
+                                        'product.trackingwil',
+                                        'bpm.index',
+                                        'spph.index',
+                                        'spph_rfq.index',
+                                        'loi.index',
+                                        'loiluar.index',
+                                        'nego.index',
+                                        'negoluar.index',
+                                        'purchase_order.index',
+                                        'purchase_orderluar.index',
+                                        'product.tracking',
+                                        'surat_jalan.index',
+                                        'penerimaan_barang',
+                                        'lppb',
+                                        'kode_aset.index',
+                                        'aset.index',
+                                        'karyawan.index',
+                                        'proyek.index',
+                                        'mro.progress',
+                                        'mro',
+                                        'mro.stock.log',
+                                        'sppd.index',
+                                        'products.stock.history',
+                                    ]);
+                                    $menuPemasaranActive = in_array(Route::currentRouteName(), [
+                                        'kontrak.index',
+                                        'riwayat_pembelian',
+                                    ]);
+                                    $menuWilayahActive = in_array(Route::currentRouteName(), [
+                                        'purchase_request.index',
+                                        'product.trackingwil',
+                                        'bpm.index',
+                                    ]);
+                                    $menuLogistikActive = in_array(Route::currentRouteName(), [
+                                        'spph.index',
+                                        'spph_rfq.index',
+                                        'loi.index',
+                                        'loiluar.index',
+                                        'nego.index',
+                                        'negoluar.index',
+                                        'purchase_order.index',
+                                        'purchase_orderluar.index',
+                                        'product.tracking',
+                                    ]);
+                                    $menuEksActive = in_array(Route::currentRouteName(), [
+                                        'surat_jalan.index',
+                                        'penerimaan_barang',
+                                        
+                                    ]);
+                                    $menuQcActive = in_array(Route::currentRouteName(), [
+                                        'lppb',
+                                        
+                                    ]);
+                                    $menuSdmActive = in_array(Route::currentRouteName(), [
+                                        'kode_aset.index',
+                                        'aset.index',
+                                        'karyawan.index',
+                                        
+                                    ]);
+                                    $menuMroActive = in_array(Route::currentRouteName(), [
+                                        'proyek.index',
+                                        'mro.progress',
+                                        'mro',
+                                        'mro.stock.log',
+                                        'sppd.index',
+                                        
+                                    ]);
+                                @endphp
+
+                                <li class="nav-item has-treeview {{ $menuActive ? 'menu-open' : '' }}">
+                                    <a href="#" class="nav-link {{ $menuActive ? 'active' : '' }}">
                                         <i class="nav-icon fas fa-bars"></i>
                                         <p>
                                             {{ __('Menu') }}
@@ -321,191 +395,263 @@
                                     <ul class="nav nav-treeview">
                                         {{-- Contoh menu role Pemasaran --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 12 || Auth::user()->role == 15 || Auth::user()->role == 16)
-                                            <li class="nav-item">
-                                                <a href="{{ route('kontrak.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'kontrak.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-file-signature nav-icon"></i>
-                                                    <p>{{ __('Kontrak') }}</p>
+                                            <li
+                                                class="nav-item has-treeview {{ $menuPemasaranActive ? 'menu-open' : '' }}">
+                                                <a href="#" class="nav-link">
+                                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                                    <p class="">
+                                                        {{ __('Pemasaran') }}
+                                                        <i class="right fas fa-angle-left"></i>
+                                                    </p>
                                                 </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('riwayat_pembelian') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'riwayat_pembelian' ? 'active' : '' }}">
-                                                    <i class="fas fa-shopping-cart  nav-icon"></i>
-                                                    <p>{{ __('Riwayat Pembelian') }}</p>
-                                                </a>
+                                                <ul class="nav nav-treeview pl-3">
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('kontrak.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'kontrak.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-file-signature nav-icon"></i>
+                                                            <p>{{ __('Kontrak') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('riwayat_pembelian') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'riwayat_pembelian' ? 'active' : '' }}">
+                                                            <i class="fas fa-shopping-cart  nav-icon"></i>
+                                                            <p>{{ __('Riwayat Pembelian') }}</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </li>
                                         @endif
                                         {{-- Contoh menu role Pemasaran --}}
 
+
                                         {{-- Contoh menu role Wilayah --}}
                                         @if (in_array(Auth::user()->role, [0, 2, 3, 8, 9, 14]))
-                                            <li class="nav-item">
-                                                <a href="{{ route('purchase_request.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'purchase_request.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-newspaper nav-icon"></i>
-                                                    <p>{{ __('Purchase Request') }}</p>
+                                            <li class="nav-item has-treeview {{ $menuWilayahActive ? 'menu-open' : '' }}">
+                                                <a href="#" class="nav-link">
+                                                    <i class="nav-icon fas fa-map-marked-alt"></i>
+                                                    <p class="">
+                                                        {{ __('Wilayah,MRO') }}
+                                                        <i class="right fas fa-angle-left"></i>
+                                                    </p>
                                                 </a>
-                                            </li>
+                                                <ul class="nav nav-treeview pl-3">
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('purchase_request.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'purchase_request.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-newspaper nav-icon"></i>
+                                                            <p>{{ __('Purchase Request') }}</p>
+                                                        </a>
+                                                    </li>
 
-                                            {{-- Tracking Wilayah TIDAK untuk MRO (role 14) --}}
-                                            @if (Auth::user()->role != 14)
-                                                <li class="nav-item">
-                                                    <a href="{{ route('product.trackingwil') }}"
-                                                        class="nav-link {{ Route::current()->getName() == 'product.trackingwil' ? 'active' : '' }}">
-                                                        <i class="fas fa-route nav-icon"></i>
-                                                        <p>{{ __('Tracking Wilayah') }}</p>
-                                                    </a>
-                                                </li>
-                                            @endif
+                                                    {{-- Tracking Wilayah TIDAK untuk MRO (role 14) --}}
+                                                    @if (Auth::user()->role != 14)
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('product.trackingwil') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'product.trackingwil' ? 'active' : '' }}">
+                                                                <i class="fas fa-route nav-icon"></i>
+                                                                <p>{{ __('Tracking Wilayah') }}</p>
+                                                            </a>
+                                                        </li>
+                                                    @endif
 
-                                            <li class="nav-item">
-                                                <a href="{{ route('bpm.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'bpm.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-hand-holding nav-icon"></i>
-                                                    <p>{{ __('BPM') }}</p>
-                                                </a>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('bpm.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'bpm.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-hand-holding nav-icon"></i>
+                                                            <p>{{ __('BPM') }}</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </li>
                                         @endif
 
                                         {{-- Contoh menu role Wilayah --}}
 
+
+
                                         {{-- Contoh menu role Logistik --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 1 || Auth::user()->role == 7)
-                                            <li class="nav-item">
-                                                <a href="{{ route('spph.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'spph.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-hand-holding-usd nav-icon"></i>
-                                                    <p>{{ __('SPPH') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('spph_rfq.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'spph_rfq.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-newspaper nav-icon"></i>
-                                                    <p>{{ __('REQUEST FOR QUOTATION (RFQ)') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('loi.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'loi.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-scroll nav-icon"></i>
-                                                    <p>{{ __('LETTER OF INTENT (LOI)') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('loiluar.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'loiluar.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-scroll nav-icon"></i>
-                                                    <p>{{ __('LETTER OF INTENT (LOI) LUAR NEGERI') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('nego.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'nego.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-handshake nav-icon"></i>
-                                                    <p>{{ __('NEGOTIATION (NEGO)') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('negoluar.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'negoluar.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-handshake nav-icon"></i>
-                                                    <p>{{ __('NEGOTIATION LETTER') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('purchase_order.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'purchase_order.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-money-check-alt nav-icon"></i>
-                                                    <p>{{ __('PURCHASE ORDER (PO)') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('purchase_orderluar.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'purchase_orderluar.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-money-check-alt nav-icon"></i>
-                                                    <p>{{ __('PURCHASE ORDER (PO) LUAR NEGERI') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('product.tracking') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'product.tracking' ? 'active' : '' }}">
-                                                    <i class="fas fa-map nav-icon"></i>
-                                                    <p>{{ __('TRACKING') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('riwayat_pembelian') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'riwayat_pembelian' ? 'active' : '' }}">
-                                                    <i class="fas fa-shopping-cart nav-icon"></i>
-                                                    <p>{{ __('RIWAYAT PEMBELIAN') }}</p>
-                                                </a>
-                                            </li>
+
+                                        <li class="nav-item has-treeview {{ $menuLogistikActive ? 'menu-open' : '' }}">
+                                            <a href="#" class="nav-link">
+                                                    <i class="nav-icon fas fas fa-truck"></i>
+                                                    <p class="">
+                                                        {{ __('Logistik') }}
+                                                        <i class="right fas fa-angle-left"></i>
+                                                    </p>
+                                             </a>
+                                                <ul class="nav nav-treeview pl-3">
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('spph.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'spph.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-hand-holding-usd nav-icon"></i>
+                                                            <p>{{ __('SPPH') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('spph_rfq.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'spph_rfq.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-newspaper nav-icon"></i>
+                                                            <p>{{ __('REQUEST FOR QUOTATION (RFQ)') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('loi.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'loi.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-scroll nav-icon"></i>
+                                                            <p>{{ __('LETTER OF INTENT (LOI)') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('loiluar.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'loiluar.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-scroll nav-icon"></i>
+                                                            <p>{{ __('LETTER OF INTENT (LOI) LUAR NEGERI') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('nego.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'nego.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-handshake nav-icon"></i>
+                                                            <p>{{ __('NEGOTIATION (NEGO)') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('negoluar.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'negoluar.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-handshake nav-icon"></i>
+                                                            <p>{{ __('NEGOTIATION LETTER') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('purchase_order.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'purchase_order.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-money-check-alt nav-icon"></i>
+                                                            <p>{{ __('PURCHASE ORDER (PO)') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('purchase_orderluar.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'purchase_orderluar.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-money-check-alt nav-icon"></i>
+                                                            <p>{{ __('PURCHASE ORDER (PO) LUAR NEGERI') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('product.tracking') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'product.tracking' ? 'active' : '' }}">
+                                                            <i class="fas fa-map nav-icon"></i>
+                                                            <p>{{ __('TRACKING') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('riwayat_pembelian') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'riwayat_pembelian' ? 'active' : '' }}">
+                                                            <i class="fas fa-shopping-cart nav-icon"></i>
+                                                            <p>{{ __('RIWAYAT PEMBELIAN') }}</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                        </li>
                                         @endif
                                         {{-- Contoh menu role Logistik --}}
 
 
                                         {{-- Contoh menu role Ekspedisi --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 1 || Auth::user()->role == 7 || Auth::user()->role == 10)
-                                            <li class="nav-item">
-                                                <a href="{{ route('surat_jalan.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'surat_jalan.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-envelope-open-text nav-icon"></i>
-                                                    <p>{{ __('Surat Jalan') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('penerimaan_barang') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'penerimaan_barang' ? 'active' : '' }}">
-                                                    <i class="fas fa-clipboard-check nav-icon"></i>
-                                                    <p>{{ __('Penerimaan Barang') }}</p>
-                                                </a>
-                                            </li>
+                                                <li class="nav-item has-treeview {{ $menuEksActive ? 'menu-open' : '' }}">
+                                                        <a href="#" class="nav-link">
+                                                                <i class="nav-icon fas fas fa-truck"></i>
+                                                                 <p class="">
+                                                                {{ __('Ekspedisi') }}
+                                                                <i class="right fas fa-angle-left"></i>
+                                                                </p>
+                                                        </a>
+                                                    <ul class="nav nav-treeview pl-3">
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('surat_jalan.index') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'surat_jalan.index' ? 'active' : '' }}">
+                                                                <i class="fas fa-envelope-open-text nav-icon"></i>
+                                                                <p>{{ __('Surat Jalan') }}</p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('penerimaan_barang') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'penerimaan_barang' ? 'active' : '' }}">
+                                                                <i class="fas fa-clipboard-check nav-icon"></i>
+                                                                <p>{{ __('Penerimaan Barang') }}</p>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
                                         @endif
                                         {{-- Contoh menu role Ekspedisi --}}
 
                                         {{-- Contoh menu role QC --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 11 || Auth::user()->role == 7)
-                                            <li class="nav-item">
-                                                <a href="{{ route('lppb') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'lppb' ? 'active' : '' }}">
-                                                    <i class="fas fa-check-square nav-icon"></i>
-                                                    <p>{{ __('LPPB') }}</p>
+                                            <li class="nav-item has-treeview {{ $menuQcActive ? 'menu-open' : '' }}">
+                                                <a href="#" class="nav-link">
+                                                        <i class="nav-icon fas fa-check-circle"></i>
+                                                        <p class="">
+                                                        {{ __('QC') }}
+                                                        <i class="right fas fa-angle-left"></i>
+                                                        </p>
                                                 </a>
+                                                <ul class="nav nav-treeview pl-3">
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('lppb') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'lppb' ? 'active' : '' }}">
+                                                            <i class="fas fa-check-square nav-icon"></i>
+                                                            <p>{{ __('LPPB') }}</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </li>
                                         @endif
                                         {{-- Contoh menu role QC --}}
 
                                         {{-- Contoh menu role SDM --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 6)
-                                            <li class="nav-item">
-                                                <a href="{{ route('kode_aset.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'kode_aset.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-laptop-code nav-icon"></i>
-                                                    <p>{{ __('Kode Aset SDM') }}</p>
+                                            <li class="nav-item has-treeview {{ $menuSdmActive ? 'menu-open' : '' }}">
+                                                <a href="#" class="nav-link">
+                                                        <i class="nav-icon fas fa-users-cog"></i>
+                                                        <p class="">
+                                                        {{ __('SDM') }}
+                                                        <i class="right fas fa-angle-left"></i>
+                                                        </p>
                                                 </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('aset.index', ['type' => 1]) }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'aset.index' && request()->get('type') == 1 ? 'active' : '' }}">
-                                                    <i class="fas fa-laptop nav-icon"></i>
-                                                    <p>{{ __('Manajemen Aset SDM') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('aset.index', ['type' => 2]) }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'aset.index' && request()->get('type') == 2 ? 'active' : '' }}">
-                                                    <i class="fas fa-truck-moving nav-icon"></i>
-                                                    <p>{{ __('Manajemen Inventaris SDM') }}</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ route('karyawan.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'karyawan.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-restroom nav-icon"></i>
-                                                    <p>{{ __('Data Karyawan') }}</p>
-                                                </a>
+                                                <ul class="nav nav-treeview pl-3">
+
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('kode_aset.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'kode_aset.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-laptop-code nav-icon"></i>
+                                                            <p>{{ __('Kode Aset SDM') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('aset.index', ['type' => 1]) }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'aset.index' && request()->get('type') == 1 ? 'active' : '' }}">
+                                                            <i class="fas fa-laptop nav-icon"></i>
+                                                            <p>{{ __('Manajemen Aset SDM') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('aset.index', ['type' => 2]) }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'aset.index' && request()->get('type') == 2 ? 'active' : '' }}">
+                                                            <i class="fas fa-truck-moving nav-icon"></i>
+                                                            <p>{{ __('Manajemen Inventaris SDM') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('karyawan.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'karyawan.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-restroom nav-icon"></i>
+                                                            <p>{{ __('Data Karyawan') }}</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </li>
                                         @endif
                                         {{-- Contoh menu role SDM --}}
@@ -513,56 +659,50 @@
 
 
 
-
+                                        {{-- Contoh Menu role MRO --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-                                            <li class="nav-item">
-                                                <a href="{{ route('proyek.index') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'proyek.index' ? 'active' : '' }}">
-                                                    <i class="fas fa-chart-bar nav-icon"></i>
-                                                    <p>{{ __(' Proyek MRO') }}</p>
+                                            <li class="nav-item has-treeview {{ $menuMroActive ? 'menu-open' : '' }}">
+                                                <a href="#" class="nav-link">
+                                                        <i class="nav-icon fas fa-tools"></i>
+                                                        <p class="">
+                                                        {{ __('MRO') }}
+                                                        <i class="right fas fa-angle-left"></i>
+                                                        </p>
                                                 </a>
-                                            </li>
-                                        @endif
-
-
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-                                            <li class="nav-item">
-                                                <a href="{{ route('mro.progress') }}" class="nav-link">
-                                                    <i class="nav-icon fas fa-chart-line"></i>
-                                                    <p>Progress MRO</p>
-                                                </a>
-                                            </li>
-                                        @endif
-
-
-
-
-
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-                                            <li class="nav-item">
-                                                <a href="{{ route('mro') }}"
-                                                    class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
-                                                    <i class="fas fa-box-open nav-icon"></i>
-                                                    <p>{{ __(' Stok Barang MRO') }}</p>
-                                                </a>
-                                            </li>
-                                        @endif
-
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-                                            <li class="nav-item">
-                                                <a href="{{ route('mro.stock.log') }}" class="nav-link">
-                                                    <i class="nav-icon fas fa-people-carry"></i>
-                                                    <p>Mutasi Stok MRO</p>
-                                                </a>
-                                            </li>
-                                        @endif
-
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-                                            <li class="nav-item">
-                                                <a href="{{ route('sppd.index') }}" class="nav-link">
-                                                    <i class="nav-icon far fa-file-archive"></i>
-                                                    <p>Arsip SPPD MRO</p>
-                                                </a>
+                                                <ul class="nav nav-treeview pl-3">
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('proyek.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'proyek.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-chart-bar nav-icon"></i>
+                                                            <p>{{ __(' Proyek MRO') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('mro.progress') }}" class="nav-link">
+                                                            <i class="nav-icon fas fa-chart-line"></i>
+                                                            <p>Progress MRO</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('mro') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
+                                                            <i class="fas fa-box-open nav-icon"></i>
+                                                            <p>{{ __(' Stok Barang MRO') }}</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('mro.stock.log') }}" class="nav-link">
+                                                            <i class="nav-icon fas fa-people-carry"></i>
+                                                            <p>Mutasi Stok MRO</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('sppd.index') }}" class="nav-link">
+                                                            <i class="nav-icon far fa-file-archive"></i>
+                                                            <p>Arsip SPPD MRO</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </li>
                                         @endif
 
