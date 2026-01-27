@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', __('LOI LUAR NEGERI'))
+@section('title', __('LOI Luar Negeri'))
 @section('custom-css')
     {{-- <style>
         /* Important part */
@@ -290,6 +290,25 @@
     </div>
     <section class="content">
         <div class="container-fluid">
+
+            {{-- Tab menu LOI dalam dan Luar --}}
+            <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'loi.index' ? 'active' : '' }}"
+                        href="{{ route('loi.index') }}">
+                        <i class="fas fa-scroll"></i> LOI Dalam Negeri
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'loiluar.index' ? 'active' : '' }}"
+                        href="{{ route('loiluar.index') }}">
+                        <i class="fas fa-scroll"></i> LOI Luar Negeri
+                    </a>
+                </li>
+            </ul>
+            {{-- Tab menu LOI dalam dan Luar --}}
+
             <div class="card">
                 <div class="card-header">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-LOI"
@@ -459,8 +478,8 @@
                     </div>
                 </div>
             </div>
-            <div>
-                {{-- {{ $sjn->appends(request()->except('page'))->links('pagination::bootstrap-4') }} --}}
+            <div class="mt-3 d-flex justify-content-end">
+                {{ $loiluares->links('pagination::bootstrap-4') }}
             </div>
         </div>
 

@@ -181,6 +181,25 @@
     </div>
     <section class="content">
         <div class="container-fluid">
+
+            {{-- Tab menu SPPH dalam dan Luar --}}
+            <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'spph.index' ? 'active' : '' }}"
+                        href="{{ route('spph.index') }}">
+                        <i class="fas fa-hand-holding-usd"></i> SPPH
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'spph_rfq.index' ? 'active' : '' }}"
+                        href="{{ route('spph_rfq.index') }}">
+                        <i class="fas fa-newspaper"></i> RFQ
+                    </a>
+                </li>
+            </ul>
+            {{-- Tab menu SPPH dalam dan Luar --}}
+
             <div class="card">
                 <div class="card-header">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-SPPH"
@@ -341,9 +360,10 @@
                     </div>
                 </div>
             </div>
-            <div>
-                {{-- {{ $sjn->appends(request()->except('page'))->links('pagination::bootstrap-4') }} --}}
+            <div class="mt-3 d-flex justify-content-end">
+                {{ $spphes->links('pagination::bootstrap-4') }}
             </div>
+
         </div>
 
         {{-- modal --}}
@@ -599,7 +619,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                                                onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -2376,20 +2396,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                                                                                                                                            success ') !!}');
+                                                                                                                                                                                                                    success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                                                                                                                                            error ') !!}');
+                                                                                                                                                                                                                    error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                                                                                                                                                ',
+                                                                                                                                                                                                                        ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>

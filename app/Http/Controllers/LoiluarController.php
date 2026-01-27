@@ -37,7 +37,7 @@ class LoiluarController extends Controller
         } else {
             $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
         }
-        $loiluares = Loiluar::paginate(50);
+        $loiluares = Loiluar::paginate(20);
         foreach ($loiluares as $key => $item) {
             $id = json_decode($item->vendor_id);
             $item->vendor = Vendor::whereIn('id', $id)->get();
@@ -81,7 +81,7 @@ class LoiluarController extends Controller
             $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
         }
 
-        $loiluares = Loiluar::paginate(50);
+        $loiluares = Loiluar::paginate(20);
         $vendors = Vendor::all();
 
         if ($search) {

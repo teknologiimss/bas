@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', __('NEGO'))
+@section('title', __('NEGO Dalam Negeri'))
 @section('custom-css')
     {{-- <style>
         /* Important part */
@@ -232,6 +232,25 @@
     </div>
     <section class="content">
         <div class="container-fluid">
+
+            {{-- Tab menu Nego dalam dan Luar --}}
+            <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'nego.index' ? 'active' : '' }}"
+                        href="{{ route('nego.index') }}">
+                        <i class="fas fa-handshake"></i> Nego Dalam Negeri
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'negoluar.index' ? 'active' : '' }}"
+                        href="{{ route('negoluar.index') }}">
+                        <i class="fas fa-handshake"></i> Nego Luar Negeri
+                    </a>
+                </li>
+            </ul>
+            {{-- Tab menu Nego dalam dan Luar --}}
+
             <div class="card">
                 <div class="card-header">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-NEGO"
@@ -398,8 +417,8 @@
                     </div>
                 </div>
             </div>
-            <div>
-                {{-- {{ $sjn->appends(request()->except('page'))->links('pagination::bootstrap-4') }} --}}
+            <div class="mt-3 d-flex justify-content-end">
+                {{ $negoes->links('pagination::bootstrap-4') }}
             </div>
         </div>
 

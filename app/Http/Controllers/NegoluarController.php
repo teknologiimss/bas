@@ -39,7 +39,7 @@ class NegoluarController extends Controller
         } else {
             $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
         }
-        $negoluares = Negoluar::paginate(50);
+        $negoluares = Negoluar::paginate(20);
         foreach ($negoluares as $key => $item) {
             $id = json_decode($item->vendor_id);
             $item->vendor = Vendor::whereIn('id', $id)->get();

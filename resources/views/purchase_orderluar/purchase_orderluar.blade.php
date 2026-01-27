@@ -180,6 +180,25 @@
     </div>
     <section class="content">
         <div class="container-fluid">
+
+            {{-- Tab menu PO dalam dan Luar --}}
+            <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'purchase_order.index' ? 'active' : '' }}"
+                        href="{{ route('purchase_order.index') }}">
+                        <i class="fas fa-money-check-alt"></i> PO Dalam Negeri
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'purchase_orderluar.index' ? 'active' : '' }}"
+                        href="{{ route('purchase_orderluar.index') }}">
+                        <i class="fas fa-money-check-alt"></i> PO Luar Negeri
+                    </a>
+                </li>
+            </ul>
+            {{-- Tab menu PO dalam dan Luar --}}
+
             <div class="card">
                 <div class="card-header">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-po"

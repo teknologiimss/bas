@@ -181,6 +181,25 @@
     </div>
     <section class="content">
         <div class="container-fluid">
+
+            {{-- Tab menu SPPH dalam dan Luar --}}
+            <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'spph.index' ? 'active' : '' }}"
+                        href="{{ route('spph.index') }}">
+                        <i class="fas fa-hand-holding-usd"></i> SPPH
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'spph_rfq.index' ? 'active' : '' }}"
+                        href="{{ route('spph_rfq.index') }}">
+                        <i class="fas fa-newspaper"></i> RFQ
+                    </a>
+                </li>
+            </ul>
+            {{-- Tab menu SPPH dalam dan Luar --}}
+
             <div class="card">
                 <div class="card-header">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-SPPH"
@@ -341,9 +360,10 @@
                     </div>
                 </div>
             </div>
-            <div>
-                {{-- {{ $sjn->appends(request()->except('page'))->links('pagination::bootstrap-4') }} --}}
+            <div class="mt-3 d-flex justify-content-end">
+                {{ $spphrfqes->links('pagination::bootstrap-4') }}
             </div>
+
         </div>
 
         {{-- modal --}}
@@ -365,7 +385,8 @@
                             <input type="hidden" id="lampiran_awal" name="lampiran_awal">
                             <input type="hidden" id="nama_lampiran" name="nama_lampiran">
                             <div class="form-group row">
-                                <label for="nomor_spphrfq" class="col-sm-4 col-form-label">{{ __('Nomor SPPH') }} </label>
+                                <label for="nomor_spphrfq" class="col-sm-4 col-form-label">{{ __('Nomor SPPH') }}
+                                </label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="nomor_spphrfq" name="nomor_spphrfq">
                                 </div>
@@ -408,7 +429,8 @@
                                 <label for="tanggal_spphrfq" class="col-sm-4 col-form-label">{{ __('Date SPPH') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="tanggal_spphrfq" name="tanggal_spphrfq">
+                                    <input type="date" class="form-control" id="tanggal_spphrfq"
+                                        name="tanggal_spphrfq">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -599,7 +621,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                            onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -1455,7 +1477,8 @@
 
 
                         var checkbox;
-                        if (value.qty_spphrfq === null || value.qty_spphrfq === "" || value.qty_spphrfq >= 0) {
+                        if (value.qty_spphrfq === null || value.qty_spphrfq === "" || value
+                            .qty_spphrfq >= 0) {
                             checkbox = '<input type="checkbox" id="addToDetails-' + value.id +
                                 '" class="row-checkbox" value="' + value.id +
                                 '" onclick="addToDetailsJs(' + value.id + ')">';
@@ -1472,7 +1495,8 @@
                             '<td>' + checkbox + '</td>' +
                             '<td>' + value.uraian + '</td>' +
                             '<td>' + value.spek + '</td>' +
-                            '<td data-original-qty="' + value.qty_spphrfq + '">' + value.qty_spphrfq +
+                            '<td data-original-qty="' + value.qty_spphrfq + '">' + value
+                            .qty_spphrfq +
                             '</td>' +
                             '<td>' +
                             '<div style="display: block;">' +
@@ -2359,20 +2383,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                                                                                                        success ') !!}');
+                                                                                                                                                                                success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                                                                                                        error ') !!}');
+                                                                                                                                                                                error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                                                                                                            ',
+                                                                                                                                                                                    ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>

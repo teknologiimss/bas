@@ -1,16 +1,16 @@
 @extends('layouts.main')
-@section('title', __('LOI'))
+@section('title', __('LOI Dalam Negeri'))
 @section('custom-css')
     <style>
         /* =====================================================
-       🔴 GLOBAL MAROON THEME – FULL VERSION
-       ===================================================== */
+           🔴 GLOBAL MAROON THEME – FULL VERSION
+           ===================================================== */
 
         /* ===== ROOT COLOR SYSTEM ===== */
         :root {
             --maroon-main: #dc3545;
             --maroon-dark: #5a1620;
-            
+
             --maroon-soft: #f4e6e8;
             --maroon-hover: #8f2735;
             --maroon-border: #e3c2c7;
@@ -25,8 +25,8 @@
         }
 
         /* =====================================================
-       🪟 MODAL
-       ===================================================== */
+           🪟 MODAL
+           ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -37,8 +37,8 @@
         }
 
         /* =====================================================
-       📊 TABLE
-       ===================================================== */
+           📊 TABLE
+           ===================================================== */
         #table {
             width: 100%;
             border-collapse: separate;
@@ -111,8 +111,8 @@
         }
 
         /* =====================================================
-       🔘 BUTTON
-       ===================================================== */
+           🔘 BUTTON
+           ===================================================== */
         button,
         .btn {
             background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
@@ -138,8 +138,8 @@
         }
 
         /* =====================================================
-       📄 PAGINATION
-       ===================================================== */
+           📄 PAGINATION
+           ===================================================== */
         .page-item .page-link {
             background: #fff;
             color: var(--maroon-main);
@@ -158,8 +158,8 @@
         }
 
         /* =====================================================
-       🧾 INPUT, SELECT, CHECKBOX
-       ===================================================== */
+           🧾 INPUT, SELECT, CHECKBOX
+           ===================================================== */
         input,
         select,
         textarea {
@@ -181,8 +181,8 @@
         }
 
         /* =====================================================
-       📜 SCROLLBAR
-       ===================================================== */
+           📜 SCROLLBAR
+           ===================================================== */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -201,8 +201,8 @@
         }
 
         /* =====================================================
-       🌊 ANIMATION
-       ===================================================== */
+           🌊 ANIMATION
+           ===================================================== */
         @keyframes pulseMaroon {
             0% {
                 box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
@@ -227,6 +227,26 @@
     </div>
     <section class="content">
         <div class="container-fluid">
+
+            {{-- Tab menu LOI dalam dan Luar --}}
+            <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'loi.index' ? 'active' : '' }}"
+                        href="{{ route('loi.index') }}">
+                        <i class="fas fa-scroll"></i> LOI Dalam Negeri
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'loiluar.index' ? 'active' : '' }}"
+                        href="{{ route('loiluar.index') }}">
+                        <i class="fas fa-scroll"></i> LOI Luar Negeri
+                    </a>
+                </li>
+            </ul>
+            {{-- Tab menu LOI dalam dan Luar --}}
+
+
             <div class="card">
                 <div class="card-header">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-LOI"
@@ -394,8 +414,8 @@
                     </div>
                 </div>
             </div>
-            <div>
-                {{-- {{ $sjn->appends(request()->except('page'))->links('pagination::bootstrap-4') }} --}}
+            <div class="mt-3 d-flex justify-content-end">
+                {{ $loies->links('pagination::bootstrap-4') }}
             </div>
         </div>
 
@@ -2119,7 +2139,7 @@
                     if (data.loi.details.length > 0) {
                         $('#table-loi').empty();
                         $('#loi_id').val(data.loi
-                        .id); // Pastikan #loi_id selalu diisi ulang setelah update
+                            .id); // Pastikan #loi_id selalu diisi ulang setelah update
                         $.each(data.loi.details, function(key, value) {
                             var id = value.id;
                             var id_loi = value.id_loi;

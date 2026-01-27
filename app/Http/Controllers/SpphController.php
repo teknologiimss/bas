@@ -36,7 +36,7 @@ class SpphController extends Controller
         } else {
             $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
         }
-        $spphes = Spph::paginate(50);
+        $spphes = Spph::paginate(10);
         foreach ($spphes as $key => $item) {
             $id = json_decode($item->vendor_id);
             $item->vendor = Vendor::whereIn('id', $id)->get();
@@ -125,7 +125,7 @@ class SpphController extends Controller
             $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
         }
 
-        $spphes = Spph::paginate(50);
+        $spphes = Spph::paginate(10);
         $vendors = Vendor::all();
 
         if ($search) {

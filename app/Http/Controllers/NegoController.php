@@ -37,7 +37,7 @@ class NegoController extends Controller
         } else {
             $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
         }
-        $negoes = Nego::paginate(50);
+        $negoes = Nego::paginate(20);
         foreach ($negoes as $key => $item) {
             $id = json_decode($item->vendor_id);
             $item->vendor = Vendor::whereIn('id', $id)->get();
@@ -80,7 +80,7 @@ class NegoController extends Controller
             $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
         }
 
-        $negoes = Nego::paginate(50);
+        $negoes = Nego::paginate(20);
         $vendors = Vendor::all();
 
         if ($search) {

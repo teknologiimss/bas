@@ -361,17 +361,12 @@
                                     $menuEksActive = in_array(Route::currentRouteName(), [
                                         'surat_jalan.index',
                                         'penerimaan_barang',
-                                        
                                     ]);
-                                    $menuQcActive = in_array(Route::currentRouteName(), [
-                                        'lppb',
-                                        
-                                    ]);
+                                    $menuQcActive = in_array(Route::currentRouteName(), ['lppb']);
                                     $menuSdmActive = in_array(Route::currentRouteName(), [
                                         'kode_aset.index',
                                         'aset.index',
                                         'karyawan.index',
-                                        
                                     ]);
                                     $menuMroActive = in_array(Route::currentRouteName(), [
                                         'proyek.index',
@@ -379,7 +374,6 @@
                                         'mro',
                                         'mro.stock.log',
                                         'sppd.index',
-                                        
                                     ]);
                                 @endphp
 
@@ -427,7 +421,8 @@
 
                                         {{-- Contoh menu role Wilayah --}}
                                         @if (in_array(Auth::user()->role, [0, 2, 3, 8, 9, 14]))
-                                            <li class="nav-item has-treeview {{ $menuWilayahActive ? 'menu-open' : '' }}">
+                                            <li
+                                                class="nav-item has-treeview {{ $menuWilayahActive ? 'menu-open' : '' }}">
                                                 <a href="#" class="nav-link">
                                                     <i class="nav-icon fas fa-map-marked-alt"></i>
                                                     <p class="">
@@ -472,17 +467,18 @@
 
                                         {{-- Contoh menu role Logistik --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 1 || Auth::user()->role == 7)
-
-                                        <li class="nav-item has-treeview {{ $menuLogistikActive ? 'menu-open' : '' }}">
-                                            <a href="#" class="nav-link">
+                                            <li
+                                                class="nav-item has-treeview {{ $menuLogistikActive ? 'menu-open' : '' }}">
+                                                <a href="#" class="nav-link">
                                                     <i class="nav-icon fas fas fa-truck"></i>
                                                     <p class="">
                                                         {{ __('Logistik') }}
                                                         <i class="right fas fa-angle-left"></i>
                                                     </p>
-                                             </a>
+                                                </a>
                                                 <ul class="nav nav-treeview pl-3">
-                                                    <li class="nav-item">
+                                                    {{-- Backup SPPH dipisah --}}
+                                                    {{-- <li class="nav-item">
                                                         <a href="{{ route('spph.index') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'spph.index' ? 'active' : '' }}">
                                                             <i class="fas fa-hand-holding-usd nav-icon"></i>
@@ -495,8 +491,29 @@
                                                             <i class="fas fa-newspaper nav-icon"></i>
                                                             <p>{{ __('REQUEST FOR QUOTATION (RFQ)') }}</p>
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
+
+
+                                                    {{-- SPPH Luar dan Dalam --}}
                                                     <li class="nav-item">
+                                                        <a href="{{ route('spph.index') }}"
+                                                            class="nav-link {{ in_array(Route::currentRouteName(), ['spph.index', 'spph_rfq.index']) ? 'active' : '' }}">
+                                                            <i class="fas fa-hand-holding-usd nav-icon"></i>
+                                                            <p>{{ __('SPPH') }}</p>
+                                                        </a>
+                                                    </li>
+
+                                                    {{-- LOI Luar dan Dalam --}}
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('loi.index') }}"
+                                                            class="nav-link {{ in_array(Route::currentRouteName(), ['loi.index', 'loiluar.index']) ? 'active' : '' }}">
+                                                            <i class="fas fa-scroll nav-icon"></i>
+                                                            <p>{{ __('LETTER OF INTENT (LOI)') }}</p>
+                                                        </a>
+                                                    </li>
+                                                   
+                                                    {{-- Backup LOI dipisah --}}
+                                                    {{-- <li class="nav-item">
                                                         <a href="{{ route('loi.index') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'loi.index' ? 'active' : '' }}">
                                                             <i class="fas fa-scroll nav-icon"></i>
@@ -509,8 +526,19 @@
                                                             <i class="fas fa-scroll nav-icon"></i>
                                                             <p>{{ __('LETTER OF INTENT (LOI) LUAR NEGERI') }}</p>
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
+
+                                                    {{-- Nego Luar dan Dalam --}}
                                                     <li class="nav-item">
+                                                        <a href="{{ route('nego.index') }}"
+                                                            class="nav-link {{ in_array(Route::currentRouteName(), ['nego.index', 'negoluar.index']) ? 'active' : '' }}">
+                                                            <i class="fas fa-handshake nav-icon"></i>
+                                                            <p>{{ __('NEGOSIASI') }}</p>
+                                                        </a>
+                                                    </li>
+
+                                                    {{-- Backup Nego dipisah --}}
+                                                    {{-- <li class="nav-item">
                                                         <a href="{{ route('nego.index') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'nego.index' ? 'active' : '' }}">
                                                             <i class="fas fa-handshake nav-icon"></i>
@@ -523,8 +551,21 @@
                                                             <i class="fas fa-handshake nav-icon"></i>
                                                             <p>{{ __('NEGOTIATION LETTER') }}</p>
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
+
+
+                                                    {{-- PO Luar dan Dalam --}}
                                                     <li class="nav-item">
+                                                        <a href="{{ route('purchase_order.index') }}"
+                                                            class="nav-link {{ in_array(Route::currentRouteName(), ['purchase_order.index', 'purchase_orderluar.index']) ? 'active' : '' }}">
+                                                            <i class="fas fa-money-check-alt nav-icon"></i>
+                                                            <p>{{ __('PURCHASE ORDER (PO)') }}</p>
+                                                        </a>
+                                                    </li>
+
+
+                                                    {{-- Backup PO dipisah --}}
+                                                    {{-- <li class="nav-item">
                                                         <a href="{{ route('purchase_order.index') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'purchase_order.index' ? 'active' : '' }}">
                                                             <i class="fas fa-money-check-alt nav-icon"></i>
@@ -537,7 +578,7 @@
                                                             <i class="fas fa-money-check-alt nav-icon"></i>
                                                             <p>{{ __('PURCHASE ORDER (PO) LUAR NEGERI') }}</p>
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
                                                     <li class="nav-item">
                                                         <a href="{{ route('product.tracking') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'product.tracking' ? 'active' : '' }}">
@@ -553,38 +594,38 @@
                                                         </a>
                                                     </li>
                                                 </ul>
-                                        </li>
+                                            </li>
                                         @endif
                                         {{-- Contoh menu role Logistik --}}
 
 
                                         {{-- Contoh menu role Ekspedisi --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 1 || Auth::user()->role == 7 || Auth::user()->role == 10)
-                                                <li class="nav-item has-treeview {{ $menuEksActive ? 'menu-open' : '' }}">
-                                                        <a href="#" class="nav-link">
-                                                                <i class="nav-icon fas fas fa-truck"></i>
-                                                                 <p class="">
-                                                                {{ __('Ekspedisi') }}
-                                                                <i class="right fas fa-angle-left"></i>
-                                                                </p>
+                                            <li class="nav-item has-treeview {{ $menuEksActive ? 'menu-open' : '' }}">
+                                                <a href="#" class="nav-link">
+                                                    <i class="nav-icon fas fas fa-truck"></i>
+                                                    <p class="">
+                                                        {{ __('Ekspedisi') }}
+                                                        <i class="right fas fa-angle-left"></i>
+                                                    </p>
+                                                </a>
+                                                <ul class="nav nav-treeview pl-3">
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('surat_jalan.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'surat_jalan.index' ? 'active' : '' }}">
+                                                            <i class="fas fa-envelope-open-text nav-icon"></i>
+                                                            <p>{{ __('Surat Jalan') }}</p>
                                                         </a>
-                                                    <ul class="nav nav-treeview pl-3">
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('surat_jalan.index') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'surat_jalan.index' ? 'active' : '' }}">
-                                                                <i class="fas fa-envelope-open-text nav-icon"></i>
-                                                                <p>{{ __('Surat Jalan') }}</p>
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('penerimaan_barang') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'penerimaan_barang' ? 'active' : '' }}">
-                                                                <i class="fas fa-clipboard-check nav-icon"></i>
-                                                                <p>{{ __('Penerimaan Barang') }}</p>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('penerimaan_barang') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'penerimaan_barang' ? 'active' : '' }}">
+                                                            <i class="fas fa-clipboard-check nav-icon"></i>
+                                                            <p>{{ __('Penerimaan Barang') }}</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
                                         @endif
                                         {{-- Contoh menu role Ekspedisi --}}
 
@@ -592,11 +633,11 @@
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 11 || Auth::user()->role == 7)
                                             <li class="nav-item has-treeview {{ $menuQcActive ? 'menu-open' : '' }}">
                                                 <a href="#" class="nav-link">
-                                                        <i class="nav-icon fas fa-check-circle"></i>
-                                                        <p class="">
+                                                    <i class="nav-icon fas fa-check-circle"></i>
+                                                    <p class="">
                                                         {{ __('QC') }}
                                                         <i class="right fas fa-angle-left"></i>
-                                                        </p>
+                                                    </p>
                                                 </a>
                                                 <ul class="nav nav-treeview pl-3">
                                                     <li class="nav-item">
@@ -613,13 +654,14 @@
 
                                         {{-- Contoh menu role SDM --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 6)
-                                            <li class="nav-item has-treeview {{ $menuSdmActive ? 'menu-open' : '' }}">
+                                            <li
+                                                class="nav-item has-treeview {{ $menuSdmActive ? 'menu-open' : '' }}">
                                                 <a href="#" class="nav-link">
-                                                        <i class="nav-icon fas fa-users-cog"></i>
-                                                        <p class="">
+                                                    <i class="nav-icon fas fa-users-cog"></i>
+                                                    <p class="">
                                                         {{ __('SDM') }}
                                                         <i class="right fas fa-angle-left"></i>
-                                                        </p>
+                                                    </p>
                                                 </a>
                                                 <ul class="nav nav-treeview pl-3">
 
@@ -661,13 +703,14 @@
 
                                         {{-- Contoh Menu role MRO --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-                                            <li class="nav-item has-treeview {{ $menuMroActive ? 'menu-open' : '' }}">
+                                            <li
+                                                class="nav-item has-treeview {{ $menuMroActive ? 'menu-open' : '' }}">
                                                 <a href="#" class="nav-link">
-                                                        <i class="nav-icon fas fa-tools"></i>
-                                                        <p class="">
+                                                    <i class="nav-icon fas fa-tools"></i>
+                                                    <p class="">
                                                         {{ __('MRO') }}
                                                         <i class="right fas fa-angle-left"></i>
-                                                        </p>
+                                                    </p>
                                                 </a>
                                                 <ul class="nav nav-treeview pl-3">
                                                     <li class="nav-item">
@@ -678,7 +721,8 @@
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="{{ route('mro.progress') }}" class="nav-link {{ Route::current()->getName() == 'mro.progress' ? 'active' : '' }}">
+                                                        <a href="{{ route('mro.progress') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'mro.progress' ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-chart-line"></i>
                                                             <p>Progress MRO</p>
                                                         </a>
@@ -691,13 +735,15 @@
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="{{ route('mro.stock.log') }}" class="nav-link {{ Route::current()->getName() == 'mro.stock.log' ? 'active' : '' }}">
+                                                        <a href="{{ route('mro.stock.log') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'mro.stock.log' ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-people-carry"></i>
                                                             <p>Mutasi Stok MRO</p>
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="{{ route('sppd.index') }}" class="nav-link {{ Route::current()->getName() == 'sppd.index' ? 'active' : '' }}">
+                                                        <a href="{{ route('sppd.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'sppd.index' ? 'active' : '' }}">
                                                             <i class="nav-icon far fa-file-archive"></i>
                                                             <p>Arsip SPPD MRO</p>
                                                         </a>

@@ -39,7 +39,7 @@ class LoiController extends Controller
         } else {
             $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
         }
-        $loies = Loi::paginate(50);
+        $loies = Loi::paginate(20);
         foreach ($loies as $key => $item) {
             $id = json_decode($item->vendor_id);
             $item->vendor = Vendor::whereIn('id', $id)->get();
@@ -82,7 +82,7 @@ class LoiController extends Controller
             $warehouse_id = DB::table('warehouse')->first()->warehouse_id;
         }
 
-        $loies = Loi::paginate(50);
+        $loies = Loi::paginate(20);
         $vendors = Vendor::all();
 
         if ($search) {
