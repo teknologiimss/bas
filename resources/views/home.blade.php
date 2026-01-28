@@ -28,6 +28,70 @@
     </div>
     <section class="content">
         <div class="container-fluid pb-5">
+
+            {{-- ================= TAB NAV ================= --}}
+            <ul class="nav nav-tabs mb-3" id="dashboardTabs">
+                <li class="nav-item">
+                    <a class="nav-link" data-tab="pemasaran" href="javascript:void(0)">Pemasaran</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-tab="wilayah" href="javascript:void(0)">Wilayah & Log</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" data-tab="sdm" href="javascript:void(0)">SDM</a>
+                </li>
+            </ul>
+
+            {{-- ================= TAB WILAYAH ================= --}}
+            <div class="dashboard-tab" id="tab-wilayah">
+
+
+                <div class="slide slide-wilayah">
+                    <h5 class="fw-bold mb-3">Jumlah PO & PR per Proyek</h5>
+                    <div style="height:380px">
+                        <canvas id="poPrPerProyekChart"></canvas>
+                    </div>
+                </div>
+
+
+                {{-- kalau mau nambah slide --}}
+                {{-- 
+        <div class="slide slide-wilayah d-none">
+            <canvas id="grafikLain"></canvas>
+        </div>
+        --}}
+            </div>
+
+            {{-- ================= TAB PEMASARAN ================= --}}
+            <div class="dashboard-tab d-none" id="tab-pemasaran">
+                <div class="slide slide-pemasaran">
+                    <h5 id="judulTahun" class="fw-bold mb-2"></h5>
+
+                    <div style="height:380px;">
+                        <canvas id="nilaiPekerjaanPerTahunChart"></canvas>
+                    </div>
+
+
+                </div>
+            </div>
+
+            {{-- ================= TAB SDM ================= --}}
+            <div class="dashboard-tab d-none" id="tab-sdm">
+                <div class="slide slide-sdm">
+                    <div class="row">
+                        <div style="height:280px;" class="col-md-4">
+                            <canvas id="genderChart"></canvas>
+                        </div>
+                        <div class="col-md-4">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+
             {{-- <div class="row">
                 <div class="col-lg-3 col-6">
                     <a href="{{ route('surat_keluar.index') }}">
@@ -107,91 +171,211 @@
             </script> --}}
 
 
-            <div class="container mt-4">
-                <div class="card shadow-sm border-0 rounded-3">
-                    <div class="row g-0 align-items-center">
 
-                        <!-- Kolom kiri (ucapan + grafik) -->
-                        <div class="col-md-7 p-4">
-                            <h5 class="fw-bold text-primary mb-2">
-                                Selamat Datang {{ Auth::user()->name ?? 'John' }}! 🎉
-                            </h5>
-                            <p class="mb-3">
-                                Halo Insan IMSS yang luar biasa 🎯.<br>
-                                Saat Ini Total Purchase Request:
-                                <strong>{{ $prCount }}</strong> dokumen dan
-                                Purchase Order:
-                                <strong>{{ $poCount }}</strong> dokumen.
-                                {{-- <strong>{{ $poCount + $prCount }}</strong> dokumen. --}}
-                            </p>
-
-                            <!-- Grafik PO & PR -->
-                            <div style="height:250px;">
-                                <canvas id="poChart"></canvas>
-                            </div>
-
-
-                        </div>
-
-                        <!-- Kolom kanan (ilustrasi) -->
-                        <div class="col-md-5 text-center">
-                            <img src="{{ asset('img/orangimss.png') }}" alt="Illustration" class="img-fluid p-3"
-                                style="max-height: 420px;">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            {{-- Menampilkan Grafik PR dan PO --}}
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                    let ctxPo = document.getElementById('poChart').getContext('2d');
 
-                    new Chart(ctxPo, {
+                    const proyekData = @json($poPrPerProyek);
+
+                    /* ===== FUNGSI PECAH LABEL JADI MULTI BARIS ===== */
+                    function splitLabel(text, maxLength = 16) {
+                        if (!text) return '';
+                        const words = text.split(' ');
+                        let lines = [''];
+
+                        words.forEach(word => {
+                            const last = lines[lines.length - 1];
+                            if ((last + ' ' + word).trim().length <= maxLength) {
+                                lines[lines.length - 1] = (last + ' ' + word).trim();
+                            } else {
+                                lines.push(word);
+                            }
+                        });
+
+                        return lines;
+                    }
+
+                    const labels = proyekData.map(item => splitLabel(item.nama_pekerjaan));
+                    const dataPO = proyekData.map(item => item.total_po);
+                    const dataPR = proyekData.map(item => item.total_pr);
+
+                    const ctx = document
+                        .getElementById('poPrPerProyekChart')
+                        .getContext('2d');
+
+                    /* ===== SHADOW PLUGIN (EFEK 3D) ===== */
+                    const shadowPlugin = {
+                        id: 'shadow',
+                        beforeDatasetsDraw(chart) {
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            ctx.shadowColor = 'rgba(0,0,0,0.25)';
+                            ctx.shadowBlur = 12;
+                            ctx.shadowOffsetX = 4;
+                            ctx.shadowOffsetY = 5;
+                        },
+                        afterDatasetsDraw(chart) {
+                            chart.ctx.restore();
+                        }
+                    };
+
+                    /* ===== ANGKA DI ATAS BAR ===== */
+                    const valueLabelPlugin = {
+                        id: 'valueLabel',
+                        afterDatasetsDraw(chart) {
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            ctx.font = 'bold 12px Arial';
+                            ctx.fillStyle = '#111';
+                            ctx.textAlign = 'center';
+
+                            chart.data.datasets.forEach((dataset, i) => {
+                                if (!chart.isDatasetVisible(i)) return;
+
+                                const meta = chart.getDatasetMeta(i);
+                                meta.data.forEach((bar, index) => {
+                                    const value = dataset.data[index];
+                                    if (value > 0) {
+                                        ctx.fillText(
+                                            value,
+                                            bar.x,
+                                            bar.y - 6
+                                        );
+                                    }
+                                });
+                            });
+
+                            ctx.restore();
+                        }
+                    };
+
+                    /* ===== WARNA (SOLID + KESAN DEPTH) ===== */
+                    const colorPO = '#2E86DE';
+                    const colorPR = '#E74C3C';
+
+                    new Chart(ctx, {
                         type: 'bar',
+                        plugins: [shadowPlugin, valueLabelPlugin],
                         data: {
-                            labels: ['Purchase Order', 'Purchase Request'],
+                            labels,
                             datasets: [{
-                                label: 'Jumlah Dokumen',
-                                data: [{{ $poCount ?? 0 }}, {{ $prCount ?? 0 }}],
-                                backgroundColor: [
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 99, 132, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 99, 132, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
+                                    label: 'PO',
+                                    data: dataPO,
+                                    backgroundColor: colorPO,
+                                    borderRadius: 10,
+                                    barThickness: 24
+                                },
+                                {
+                                    label: 'PR',
+                                    data: dataPR,
+                                    backgroundColor: colorPR,
+                                    borderRadius: 10,
+                                    barThickness: 24
+                                }
+                            ]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
+
+                            animation: {
+                                duration: 1400,
+                                easing: 'easeOutQuart'
+                            },
+
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    labels: {
+                                        font: {
+                                            size: 14,
+                                            weight: 'bold'
+                                        },
+                                        boxWidth: 14,
+                                        padding: 16
+                                    }
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(0,0,0,0.85)',
+                                    callbacks: {
+                                        title(context) {
+                                            return proyekData[context[0].dataIndex].nama_pekerjaan;
+                                        }
+                                    },
+                                    titleFont: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    },
+                                    bodyFont: {
+                                        size: 12
+                                    },
+                                    padding: 10
+                                }
+                            },
+
                             scales: {
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        autoSkip: false,
+                                        font: {
+                                            size: 12
+                                        },
+                                        padding: 10
+                                    }
+                                },
                                 y: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1,
+                                        font: {
+                                            size: 12
+                                        },
+                                        callback(value) {
+                                            return value % 5 === 0 ? value : '';
+                                        }
+                                    },
+                                    grid: {
+                                        color(context) {
+                                            return context.tick.value % 5 === 0 ?
+                                                'rgba(150,150,150,0.6)' :
+                                                'rgba(200,200,200,0.2)';
+                                        },
+                                        lineWidth(context) {
+                                            return context.tick.value % 5 === 0 ? 1.4 : 0.6;
+                                        }
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Jumlah Dokumen',
+                                        font: {
+                                            size: 14,
+                                            weight: 'bold'
+                                        }
+                                    }
                                 }
                             }
                         }
                     });
+
                 });
             </script>
-
-
-
 
             {{-- End Grafik PO & PR --}}
 
 
 
-            <hr class="mb-4" />
+            {{-- <hr class="mb-4" /> --}}
 
 
             {{-- Grafik Nama pekerjaan, status dan nilai pekerjaan --}}
-
-            <div class="row mt-3">
+            {{-- <div class="row mt-3">
                 <!-- Card Daftar Kontrak -->
                 <div class="col-md-8">
                     <div class="card shadow-sm border-0 rounded-3 h-100">
@@ -264,15 +448,7 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
-                                    {{-- <tfoot class="table-light fw-bold">
-                                        <tr>
-                                            <td><b>Total Nilai Semua Pekerjaan</b></td>
-                                            <td class="text-end">
-                                                <b>Rp
-                                                    {{ number_format(array_sum($nilaiPekerjaanCounts), 0, ',', '.') }}</b>
-                                            </td>
-                                        </tr>
-                                    </tfoot> --}}
+
                                 </table>
                             </div>
                         </div>
@@ -285,113 +461,206 @@
 
 
 
-            </div>
+            </div> --}}
 
 
 
 
 
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            {{-- Nilai Pekerjaan grafik Pemasaran --}}
             <script>
-                const kontraks = @json($kontraks);
+                document.addEventListener('DOMContentLoaded', function() {
 
-                const labels = kontraks.map(item => item.nama_pekerjaan);
-                const statuses = kontraks.map(item => item.status);
+                    const rawData = @json($nilaiPekerjaanPerTahun);
+                    if (!rawData.length) return;
 
-                // const ctx = document.getElementById('kontrakChart').getContext('2d');
-                // new Chart(ctx, {
-                //     type: 'bar',
-                //     data: {
-                //         labels: labels,
-                //         datasets: [{
-                //             label: 'Status Kontrak',
-                //             data: statuses.map(() => 1),
-                //             backgroundColor: statuses.map(s => {
-                //                 if (s === 'Kontrak') return 'green';
-                //                 if (s === 'Konfirmasi Order') return 'blue';
-                //                 if (s === '-') return 'gray';
-                //                 return 'red';
-                //             }),
-                //         }]
-                //     },
-                //     options: {
-                //         plugins: {
-                //             tooltip: {
-                //                 callbacks: {
-                //                     label: function(context) {
-                //                         return 'Status: ' + statuses[context.dataIndex];
-                //                     }
-                //                 }
-                //             },
-                //             legend: {
-                //                 display: false
-                //             }
-                //         },
-                //         scales: {
-                //             y: {
-                //                 display: false
-                //             } // Y-axis tidak penting, hanya tampil bar
-                //         }
-                //     }
-                // });
+                    /* ================= SPLIT LABEL MULTI BARIS ================= */
+                    function splitLabel(text, maxLength = 18) {
+                        if (!text) return '';
+                        const words = text.split(' ');
+                        let lines = [''];
 
-                var ctxNilai = document.getElementById('nilaiPekerjaanChart').getContext('2d');
-                var nilaiPekerjaanChart = new Chart(ctxNilai, {
-                    type: 'bar',
-                    data: {
-                        labels: @json(array_keys($nilaiPekerjaanCounts)),
-                        datasets: [{
-                            label: 'Total Nilai Pekerjaan',
-                            data: @json(array_values($nilaiPekerjaanCounts)),
-                            backgroundColor: 'rgba(255, 159, 64, 0.6)',
-                            borderColor: 'rgba(255, 159, 64, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    title: function(context) {
-                                        return context[0].label; // tampilkan nama lengkap
+                        words.forEach(word => {
+                            const last = lines[lines.length - 1];
+                            if ((last + ' ' + word).trim().length <= maxLength) {
+                                lines[lines.length - 1] = (last + ' ' + word).trim();
+                            } else {
+                                lines.push(word);
+                            }
+                        });
+
+                        return lines;
+                    }
+
+                    const proyekList = [...new Set(rawData.map(d => d.nama_pekerjaan))]
+                        .map(nama => splitLabel(nama));
+
+                    const tahunList = [...new Set(rawData.map(d => d.tahun))].sort();
+
+                    /* ================= WARNA SOLID MODERN ================= */
+                    const solidColors = [
+                        '#4F8DF7', // biru
+                        '#F76C6C', // merah
+                        '#43C59E', // hijau
+                        '#8E7CFF', // ungu
+                        '#F4B942' // kuning
+                    ];
+
+                    const ctx = document
+                        .getElementById('nilaiPekerjaanPerTahunChart')
+                        .getContext('2d');
+
+                    /* ================= SHADOW 3D ================= */
+                    const shadowPlugin = {
+                        id: 'shadow',
+                        beforeDatasetsDraw(chart) {
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            ctx.shadowColor = 'rgba(0,0,0,0.30)';
+                            ctx.shadowBlur = 12;
+                            ctx.shadowOffsetX = 4;
+                            ctx.shadowOffsetY = 6;
+                        },
+                        afterDatasetsDraw(chart) {
+                            chart.ctx.restore();
+                        }
+                    };
+
+                    /* ================= ANGKA DI ATAS BAR ================= */
+                    const valueLabelPlugin = {
+                        id: 'valueLabel',
+                        afterDatasetsDraw(chart) {
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            ctx.font = 'bold 12px Arial';
+                            ctx.fillStyle = '#111';
+                            ctx.textAlign = 'center';
+
+                            chart.data.datasets.forEach((dataset, i) => {
+                                if (!chart.isDatasetVisible(i)) return;
+
+                                const meta = chart.getDatasetMeta(i);
+                                meta.data.forEach((bar, index) => {
+                                    const value = dataset.data[index];
+                                    if (value > 0) {
+                                        ctx.fillText(
+                                            (value / 1_000_000).toLocaleString('id-ID') + ' jt',
+                                            bar.x,
+                                            bar.y - 8
+                                        );
+                                    }
+                                });
+                            });
+
+                            ctx.restore();
+                        }
+                    };
+
+                    /* ================= DATASET ================= */
+                    const datasets = tahunList.map((tahun, index) => {
+
+                        const data = proyekList.map(labelArr => {
+                            const namaAsli = labelArr.join(' ');
+                            const row = rawData.find(
+                                d => d.tahun === tahun && d.nama_pekerjaan === namaAsli
+                            );
+                            return row ? row.total_nilai : 0;
+                        });
+
+                        return {
+                            label: tahun,
+                            data,
+                            backgroundColor: solidColors[index % solidColors.length],
+                            borderRadius: 10,
+                            barThickness: 28,
+                            maxBarThickness: 32
+                        };
+                    });
+
+                    /* ================= RENDER CHART ================= */
+                    new Chart(ctx, {
+                        type: 'bar',
+                        plugins: [shadowPlugin, valueLabelPlugin],
+                        data: {
+                            labels: proyekList,
+                            datasets
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    labels: {
+                                        padding: 18,
+                                        font: {
+                                            size: 14,
+                                            weight: 'bold'
+                                        },
+                                        generateLabels(chart) {
+                                            return chart.data.datasets.map((ds, i) => ({
+                                                text: ds.label,
+                                                fillStyle: ds.backgroundColor,
+                                                strokeStyle: ds.backgroundColor,
+                                                hidden: !chart.isDatasetVisible(i),
+                                                datasetIndex: i
+                                            }));
+                                        }
+                                    }
+                                    // legend default → clickable ✔
+                                },
+
+                                tooltip: {
+                                    callbacks: {
+                                        label: ctx =>
+                                            ctx.dataset.label +
+                                            ' : Rp ' +
+                                            ctx.parsed.y.toLocaleString('id-ID')
                                     },
-                                    label: function(context) {
-                                        return 'Rp ' + context.parsed.y.toLocaleString('id-ID');
+                                    titleFont: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    },
+                                    bodyFont: {
+                                        size: 13
                                     }
                                 }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Nilai Pekerjaan (Rp)'
-                                }
                             },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Nama Pekerjaan'
-                                },
-                                ticks: {
-                                    callback: function(value, index, values) {
-                                        const label = this.getLabelForValue(value);
-                                        return label.length > 20 ? label.substring(0, 20) + '…' : label;
+
+                            scales: {
+                                x: {
+                                    grid: {
+                                        display: false
                                     },
-                                    maxRotation: 45,
-                                    minRotation: 45,
-                                    font: {
-                                        size: 10
+                                    ticks: {
+                                        autoSkip: false,
+                                        font: {
+                                            size: 12
+                                        },
+                                        padding: 10
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: 'rgba(0,0,0,0.08)',
+                                        borderDash: [5, 5]
+                                    },
+                                    ticks: {
+                                        font: {
+                                            size: 12
+                                        },
+                                        callback: v =>
+                                            'Rp ' + (v / 1_000_000).toLocaleString('id-ID') + ' jt'
                                     }
                                 }
                             }
                         }
-                    }
+                    });
+
                 });
             </script>
 
@@ -494,12 +763,13 @@
 
 
 
-            <hr class="mb-4" />
+            {{-- <hr class="mb-4" /> --}}
 
-            {{-- Chart jumlah Karyawan --}}
+
+            {{-- Chart SDM --}}
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-            <div class="row mt-3">
+            {{-- <div class="row mt-3">
                 <!-- Card Grafik Jenis Kelamin -->
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0 rounded-3 h-100 text-center">
@@ -509,17 +779,12 @@
                         <div class="card-body">
                             <canvas id="genderChart"></canvas>
 
-                            <!-- Rincian Jumlah -->
-                            {{-- <div style="margin-top: 15px; text-align:center;">
-                                <p style="margin: 0;"><strong>Laki-laki:</strong> {{ $maleCount }} orang</p>
-                                <p style="margin: 0;"><strong>Perempuan:</strong> {{ $femaleCount }} orang</p>
-                                <p style="margin: 0;"><strong>Total:</strong> {{ $maleCount + $femaleCount }} orang</p>
-                            </div> --}}
+                           
                         </div>
                     </div>
                 </div>
 
-                <!-- Card Grafik Status Pegawai -->
+                
                 <div class="col-md-3">
                     <div class="card shadow-sm border-0 rounded-3 h-100 text-center">
                         <div class="card-header fw-bold">
@@ -528,15 +793,7 @@
                         <div class="card-body">
                             <canvas id="statusChart"></canvas>
 
-                            <!-- Rincian Jumlah -->
-                            {{-- <div style="margin-top: 15px; text-align:left;">
-                                @foreach ($statusCounts as $status => $jumlah)
-                                    <p style="margin: 0;">
-                                        <strong>{{ $status }}:</strong> {{ $jumlah }} orang
-                                    </p>
-                                @endforeach
-                                <p style="margin: 0;"><strong>Total:</strong> {{ array_sum($statusCounts) }} orang</p>
-                            </div> --}}
+                        
                         </div>
                     </div>
                 </div>
@@ -544,7 +801,7 @@
 
 
 
-                {{-- Card Grafik Lokasi Kerja --}}
+                
                 <div class="col-md-6">
                     <div class="card shadow-sm border-0 rounded-3 h-100 text-center">
                         <div class="card-header fw-bold">
@@ -553,7 +810,7 @@
                         <div class="card-body">
                             <canvas id="lokasiKerjaChart"></canvas>
 
-                            <!-- Wrapper tabel dengan scroll -->
+                            
                             <div style="margin-top: 20px; max-height: 250px; overflow-y: auto;">
                                 <table class="table table-sm table-bordered table-striped mb-0">
                                     <thead class="table-light">
@@ -588,100 +845,197 @@
 
 
 
-            </div>
+            </div> --}}
 
             <script>
-                var ctxGender = document.getElementById('genderChart').getContext('2d');
-                var genderChart = new Chart(ctxGender, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Laki-laki', 'Perempuan'],
-                        datasets: [{
-                            data: [{{ $maleCount }}, {{ $femaleCount }}],
-                            backgroundColor: ['#36A2EB', '#FF6384'],
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            },
-                            tooltip: {
-                                enabled: true
-                            }
-                        }
-                    }
-                });
+                document.addEventListener('DOMContentLoaded', function() {
 
+                    /* =====================================================
+                       GLOBAL STYLE
+                    ===================================================== */
+                    Chart.defaults.font.family = 'Arial, sans-serif';
+                    Chart.defaults.font.size = 12;
+                    Chart.defaults.color = '#333';
 
-                // Grafik Status Pegawai
-                var ctxStatus = document.getElementById('statusChart').getContext('2d');
-                var statusChart = new Chart(ctxStatus, {
-                    type: 'doughnut',
-                    data: {
-                        labels: {!! json_encode(array_keys($statusCounts)) !!},
-                        datasets: [{
-                            data: {!! json_encode(array_values($statusCounts)) !!},
-                            backgroundColor: ['#4CAF50', '#FF9800', '#9C27B0', '#03A9F4', '#FFC107'],
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            },
-                            tooltip: {
-                                enabled: true
-                            }
-                        }
-                    }
-                });
-
-
-                // Grafik Domisili
-                var ctxLokasi = document.getElementById('lokasiKerjaChart').getContext('2d');
-                var lokasiKerjaChart = new Chart(ctxLokasi, {
-                    type: 'bar',
-                    data: {
-                        labels: @json(array_keys($lokasiKerjaCounts)),
-                        datasets: [{
-                            label: 'Jumlah Pegawai',
-                            data: @json(array_values($lokasiKerjaCounts)),
-                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                enabled: true
-                            }
+                    /* =====================================================
+                       SHADOW PLUGIN (EFEK MODERN)
+                    ===================================================== */
+                    const shadowPlugin = {
+                        id: 'shadow',
+                        beforeDatasetsDraw(chart) {
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            ctx.shadowColor = 'rgba(0,0,0,0.25)';
+                            ctx.shadowBlur = 10;
+                            ctx.shadowOffsetX = 3;
+                            ctx.shadowOffsetY = 4;
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Jumlah Pegawai'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Lokasi Kerja'
+                        afterDatasetsDraw(chart) {
+                            chart.ctx.restore();
+                        }
+                    };
+
+                    /* =====================================================
+                       PIE VALUE (ANGKA DI SLICE PIE)
+                    ===================================================== */
+                    const pieValuePlugin = {
+                        id: 'pieValue',
+                        afterDatasetsDraw(chart) {
+                            if (chart.config.type !== 'pie') return;
+
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            ctx.font = 'bold 13px Arial';
+                            ctx.fillStyle = '#fff';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+
+                            chart.getDatasetMeta(0).data.forEach((slice, i) => {
+                                const value = chart.data.datasets[0].data[i];
+                                const pos = slice.tooltipPosition();
+                                ctx.fillText(value, pos.x, pos.y);
+                            });
+
+                            ctx.restore();
+                        }
+                    };
+
+                    /* =====================================================
+                       CENTER TEXT DOUGHNUT
+                    ===================================================== */
+                    const centerTextPlugin = {
+                        id: 'centerText',
+                        afterDraw(chart) {
+                            if (chart.config.type !== 'doughnut') return;
+
+                            const {
+                                ctx,
+                                chartArea
+                            } = chart;
+                            if (!chartArea) return;
+
+                            const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                            const x = (chartArea.left + chartArea.right) / 2;
+                            const y = (chartArea.top + chartArea.bottom) / 2;
+
+                            ctx.save();
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+
+                            ctx.font = 'bold 22px Arial';
+                            ctx.fillStyle = '#111';
+                            ctx.fillText(total, x, y - 8);
+
+                            ctx.font = '12px Arial';
+                            ctx.fillStyle = '#666';
+                            ctx.fillText('Total Pegawai', x, y + 16);
+
+                            ctx.restore();
+                        }
+                    };
+
+                    /* =====================================================
+                       BAR VALUE (ANGKA DI ATAS BAR)
+                    ===================================================== */
+                    const barValuePlugin = {
+                        id: 'barValue',
+                        afterDatasetsDraw(chart) {
+                            if (chart.config.type !== 'bar') return;
+
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            ctx.font = 'bold 12px Arial';
+                            ctx.fillStyle = '#111';
+                            ctx.textAlign = 'center';
+
+                            chart.data.datasets.forEach((dataset, i) => {
+                                const meta = chart.getDatasetMeta(i);
+                                meta.data.forEach((bar, index) => {
+                                    const value = dataset.data[index];
+                                    ctx.fillText(value, bar.x, bar.y - 8);
+                                });
+                            });
+
+                            ctx.restore();
+                        }
+                    };
+
+                    /* =====================================================
+                       PIE GENDER
+                    ===================================================== */
+                    new Chart(document.getElementById('genderChart'), {
+                        type: 'pie',
+                        plugins: [shadowPlugin, pieValuePlugin],
+                        data: {
+                            labels: ['Laki-laki', 'Perempuan'],
+                            datasets: [{
+                                data: [{{ $maleCount }}, {{ $femaleCount }}],
+                                backgroundColor: ['#4FACFE', '#FA709A'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        boxWidth: 14,
+                                        font: {
+                                            weight: 'bold'
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
+                    });
+
+                    /* =====================================================
+                       DOUGHNUT STATUS PEGAWAI
+                    ===================================================== */
+                    new Chart(document.getElementById('statusChart'), {
+                        type: 'doughnut',
+                        plugins: [shadowPlugin, centerTextPlugin],
+                        data: {
+                            labels: {!! json_encode(array_keys($statusCounts)) !!},
+                            datasets: [{
+                                data: {!! json_encode(array_values($statusCounts)) !!},
+                                backgroundColor: [
+                                    '#43E97B',
+                                    '#F9D423',
+                                    '#667EEA',
+                                    '#38F9D7',
+                                    '#FA709A'
+                                ],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '68%',
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        boxWidth: 14,
+                                        font: {
+                                            weight: 'bold'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+
+
                 });
             </script>
+
+
+
 
             {{-- End Grafik Jenis Kelamin --}}
 
@@ -733,8 +1087,7 @@
                                             <input type="text" class="form-control" id="pcode" name="pcode"
                                                 min="0" placeholder="Product Code">
                                             <div class="input-group-append">
-                                                <button class="btn btn-primary" id="button-check"
-                                                    onclick="productCheck()">
+                                                <button class="btn btn-primary" id="button-check" onclick="productCheck()">
                                                     <i class="fas fa-search"></i>
                                                 </button>
                                             </div>
@@ -943,6 +1296,101 @@
     </section>
 @endsection
 @section('custom-js')
+
+
+    {{-- TAB Slide Show --}}
+    <script>
+        let activeTab = 'pemasaran';
+        let slideInterval = null;
+        let tabInterval = null;
+
+        const tabs = ['pemasaran','wilayah', 'sdm'];
+        let tabIndex = 0;
+
+        /* ================= SHOW TAB ================= */
+        function showTab(tab) {
+
+            // sembunyikan semua tab
+            document.querySelectorAll('.dashboard-tab').forEach(el => {
+                el.classList.add('d-none');
+            });
+
+            // reset active nav
+            document.querySelectorAll('#dashboardTabs .nav-link').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // tampilkan tab aktif
+            document.getElementById('tab-' + tab).classList.remove('d-none');
+            document
+                .querySelector(`#dashboardTabs .nav-link[data-tab="${tab}"]`)
+                .classList.add('active');
+
+            activeTab = tab;
+
+            // mulai slideshow per tab
+            startSlideShow(tab);
+        }
+
+        /* ================= CLICK TAB ================= */
+        document.querySelectorAll('#dashboardTabs .nav-link').forEach(tab => {
+            tab.addEventListener('click', function() {
+
+                // hentikan auto tab sementara
+                stopAutoTab();
+
+                // tampilkan tab yg diklik
+                showTab(this.dataset.tab);
+
+                // 🔥 nyalakan lagi auto tab
+                startAutoTab();
+            });
+        });
+
+        /* ================= SLIDESHOW PER TAB ================= */
+        function startSlideShow(tab) {
+            clearInterval(slideInterval);
+
+            const slides = document.querySelectorAll('.slide-' + tab);
+            if (slides.length <= 1) return;
+
+            let index = 0;
+
+            // tampilkan slide pertama
+            slides.forEach((s, i) => {
+                s.classList.toggle('d-none', i !== 0);
+            });
+
+            slideInterval = setInterval(() => {
+                slides[index].classList.add('d-none');
+                index = (index + 1) % slides.length;
+                slides[index].classList.remove('d-none');
+            }, 15000); // 15 detik per slide
+        }
+
+        /* ================= AUTO TAB ================= */
+        function startAutoTab() {
+            clearInterval(tabInterval); // ⛔ hindari interval numpuk
+            tabInterval = setInterval(() => {
+                tabIndex = (tabIndex + 1) % tabs.length;
+                showTab(tabs[tabIndex]);
+            }, 15000); // 15 detik per tab
+        }
+
+        function stopAutoTab() {
+            clearInterval(tabInterval);
+        }
+
+        /* ================= INIT ================= */
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('pemasaran');
+            startAutoTab();
+        });
+    </script>
+
+
+
+
     {{-- <script src="/plugins/toastr/toastr.min.js"></script>
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     <script src="/plugins/moment/moment.min.js"></script>

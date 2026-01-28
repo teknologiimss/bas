@@ -241,6 +241,7 @@ class KontrakController extends Controller
                 'nama_pelanggan' => 'required',
                 'tipe' => 'required',
                 'status' => 'nullable',
+                'tahun' => 'nullable',
                 // 'nilai' => 'nullable',
             ],
             [
@@ -252,6 +253,7 @@ class KontrakController extends Controller
                 'nama_pelanggan.required' => 'Nama Pelanggan harus diisi',
                 'tipe.required' => 'Tipe harus diisi',
                 'status.required' => 'Status harus diisi',
+                'tahun.required' => 'Tahun harus diisi',
                 // 'nilai.required' => 'Nilai harus diisi',
             ]
         );
@@ -266,6 +268,7 @@ class KontrakController extends Controller
                 'nama_pelanggan' => $request->nama_pelanggan,
                 'tipe' => $request->tipe,
                 'status' => $request->status,
+                'tahun' => $request->tahun,
                 // 'nilai' => $request->nilai,
                 // 'id_user' => auth()->user()->id,
             ]);
@@ -281,6 +284,7 @@ class KontrakController extends Controller
                 'nama_pelanggan' => $request->nama_pelanggan,
                 'tipe' => $request->tipe,
                 'status' => $request->status,
+                'tahun' => $request->tahun,
                 // 'nilai' => $request->nilai,
             ]);
 

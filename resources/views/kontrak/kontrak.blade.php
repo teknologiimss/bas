@@ -221,6 +221,7 @@
                                     <th>{{ __('Nama Pekerjaan') }}</th>
                                     <th>{{ __('Nilai Pekerjaan (Rp.)') }}</th>
                                     <th>{{ __('Nama Pelanggan') }}</th>
+                                    <th>{{ __('Tahun') }}</th>
                                     <th>{{ __('Tipe') }}</th>
                                     <th>{{ __('Status') }}</th>
                                     <th></th>
@@ -241,6 +242,7 @@
                                                 'tipe' => $d->tipe,
                                                 // 'nilai' => $d->nilai,
                                                 'status' => $d->status,
+                                                'tahun' => $d->tahun,
 
                                                 'id' => $d->id,
                                                 'editable' => $d->editable,
@@ -291,6 +293,7 @@
                                                 {{ isset($data['nilai_pekerjaan']) ? number_format((float) $data['nilai_pekerjaan'], 0, ',', '.') : '-' }}
                                             </td>
                                             <td class="text-center">{{ $data['nama_pelanggan'] }}</td>
+                                            <td class="text-center">{{ $data['tahun'] }}</td>
                                             <td class="text-center">{{ $data['tipe'] }}</td>
                                             {{-- <td class="text-center">{{ $data['status'] }}</td> --}}
                                             <td class="text-center">
@@ -434,6 +437,15 @@
                                 </label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan"
+                                        autocomplete="off">
+                                    {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="tahun" class="col-sm-4 col-form-label">{{ __('Tahun') }}
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="tahun" name="tahun"
                                         autocomplete="off">
                                     {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
                                 </div>
@@ -992,6 +1004,7 @@
             $('#nama_pekerjaan').val(data.nama_pekerjaan);
             $('#nilai_pekerjaan').val(data.nilai_pekerjaan);
             $('#nama_pelanggan').val(data.nama_pelanggan);
+            $('#tahun').val(data.tahun);
             $('#tipe').val(data.tipe);
             $('#status').val(data.status);
             // $('#nilai').val(data.nilai);

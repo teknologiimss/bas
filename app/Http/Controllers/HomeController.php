@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PurchaseRequest;
 use App\Models\DetailPR;
 use App\Models\Karyawan;
 use App\Models\Keproyekan;
 use App\Models\Kontrak;
 use App\Models\Purchase_Order;
+use App\Models\PurchaseRequest;
 // use App\Models\SuratMasuk;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
 {
@@ -31,6 +31,7 @@ class HomeController extends Controller
         $controller = new ProductController;
         return $controller->getWarehouse();
     }
+
     /**
      * Show the application dashboard.
      *
@@ -57,6 +58,17 @@ class HomeController extends Controller
             ->orderBy('purchase_request.id', 'desc')
             ->get();
 
+        $poPrPerProyek = Kontrak::leftJoin('purchase_request', 'kontrak.id', '=', 'purchase_request.proyek_id')
+            ->leftJoin('purchase_order', 'kontrak.id', '=', 'purchase_order.proyek_id')
+            ->select(
+                'kontrak.nama_pekerjaan',
+                \DB::raw('COUNT(DISTINCT purchase_order.id) as total_po'),
+                \DB::raw('COUNT(DISTINCT purchase_request.id) as total_pr')
+            )
+            ->groupBy('kontrak.nama_pekerjaan')
+            ->orderBy('kontrak.nama_pekerjaan')
+            ->get();
+
         // Hitung jumlah purchase_request yang sesuai
         $totalPurchaseRequests = $purchaseRequests->count();
 
@@ -76,7 +88,6 @@ class HomeController extends Controller
             ->pluck('jumlah', 'lokasi_kerja')
             ->toArray();
 
-
         // === HITUNG JUMLAH PO & PR DI SINI ===
         // pakai model (jika ada)
         $poCount = Purchase_Order::count();
@@ -94,13 +105,11 @@ class HomeController extends Controller
         $maleCount = Karyawan::where('jenis_kelamin', 'Laki-laki')->count();
         $femaleCount = Karyawan::where('jenis_kelamin', 'Perempuan')->count();
 
-
         // Hitung status pegawai (group by)
         $statusCounts = Karyawan::select('status_pegawai', \DB::raw('COUNT(*) as total'))
             ->groupBy('status_pegawai')
             ->pluck('total', 'status_pegawai')
             ->toArray();
-
 
         $nilaiPekerjaanCounts = Kontrak::select('nama_pekerjaan')
             ->selectRaw('SUM(nilai_pekerjaan) as total_nilai')
@@ -108,8 +117,34 @@ class HomeController extends Controller
             ->pluck('total_nilai', 'nama_pekerjaan')
             ->toArray();
 
+        $nilaiPekerjaanPerTahun = Kontrak::select(
+            'tahun',
+            'nama_pekerjaan',
+            \DB::raw('SUM(nilai_pekerjaan) as total_nilai')
+        )
+            ->groupBy('tahun', 'nama_pekerjaan')
+            ->orderBy('tahun')
+            ->orderBy('nama_pekerjaan')
+            ->get();
 
-        return View::make("home")->with(compact('warehouse', 'purchaseRequests', 'detailPrs', 'keproyekans', 'totalPurchaseRequests', 'lokasiKerjaCounts', 'poCount', 'prCount', 'kontraks', 'totalNilaiPekerjaan', 'maleCount', 'femaleCount', 'statusCounts','nilaiPekerjaanCounts'));
+        return View::make('home')->with(compact(
+            'warehouse',
+            'purchaseRequests',
+            'detailPrs',
+            'keproyekans',
+            'totalPurchaseRequests',
+            'lokasiKerjaCounts',
+            'poCount',
+            'prCount',
+            'kontraks',
+            'totalNilaiPekerjaan',
+            'maleCount',
+            'femaleCount',
+            'statusCounts',
+            'nilaiPekerjaanCounts',
+            'poPrPerProyek',
+            'nilaiPekerjaanPerTahun',
+        ));
     }
 
     public function unauthorized()
@@ -127,7 +162,6 @@ class HomeController extends Controller
                 'bgcolor' => 'sagegreen',
                 'icon' => 'box',
                 'img' => asset('img/logistik.png')
-
             ],
             [
                 'name' => 'Wilayah 1',
@@ -137,7 +171,6 @@ class HomeController extends Controller
                 'icon' => 'map-marker-alt',
                 'img' => asset('img/wilayah1.png')
             ],
-
             [
                 'name' => 'Wilayah 2',
                 // 'route' => 'apps/purchase_request',
@@ -146,8 +179,6 @@ class HomeController extends Controller
                 'icon' => 'map',
                 'img' => asset('img/wilayah2.png')
             ],
-
-
             [
                 'name' => 'Gudang',
                 'route' => 'div/gudang',
@@ -155,8 +186,6 @@ class HomeController extends Controller
                 'icon' => 'warehouse',
                 'img' => asset('img/warehouse.png')
             ],
-
-
             // [
             //     'name' => 'Engineer',
             //     // 'route' => 'apps/purchase_request',
@@ -165,7 +194,6 @@ class HomeController extends Controller
             //     'icon' => 'wrench',
             //     'img' => asset('img/eng.png')
             // ],
-
             // [
             //     'name' => 'Surat Keluar',
             //     'route' => 'apps/surat-keluar',
@@ -196,7 +224,7 @@ class HomeController extends Controller
 
     public function appType($type)
     {
-        if ($type == "logistik") {
+        if ($type == 'logistik') {
             $menus = [
                 [
                     'name' => 'Purchase Request',
@@ -224,8 +252,8 @@ class HomeController extends Controller
                     'icon' => 'hand-holding-usd'
                 ],
             ];
-            $title = "Logistik";
-        } else if ($type == "gudang") {
+            $title = 'Logistik';
+        } else if ($type == 'gudang') {
             $menus = [
                 // [
                 //     'name' => 'Purchase Order',
@@ -239,7 +267,6 @@ class HomeController extends Controller
                     'bgcolor' => 'orange',
                     'icon' => 'mail-bulk'
                 ],
-
                 [
                     'name' => 'Stok Barang',
                     'route' => 'apps/products',
@@ -265,8 +292,8 @@ class HomeController extends Controller
                 //     'icon' => 'retweet'
                 // ]
             ];
-            $title = "Gudang";
-        } else if ($type == "wilayah1") {
+            $title = 'Gudang';
+        } else if ($type == 'wilayah1') {
             $menus = [
                 [
                     'name' => 'Purchase Request',
@@ -281,8 +308,8 @@ class HomeController extends Controller
                     'icon' => 'route'
                 ]
             ];
-            $title = "Wilayah 1";
-        } else if ($type == "wilayah2") {
+            $title = 'Wilayah 1';
+        } else if ($type == 'wilayah2') {
             $menus = [
                 [
                     'name' => 'Purchase Request',
@@ -297,7 +324,7 @@ class HomeController extends Controller
                     'icon' => 'route'
                 ]
             ];
-            $title = "Wilayah 2";
+            $title = 'Wilayah 2';
         } else if ($type == 'eng') {
             $menus = [
                 [
@@ -313,7 +340,7 @@ class HomeController extends Controller
                     'icon' => 'route'
                 ]
             ];
-            $title = "Engineer";
+            $title = 'Engineer';
         }
 
         return view('home.tipe', compact('menus', 'title'));
