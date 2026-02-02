@@ -127,6 +127,19 @@ class HomeController extends Controller
             ->orderBy('nama_pekerjaan')
             ->get();
 
+        $pelangganCounts = Kontrak::select('nama_pelanggan')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('nama_pelanggan')
+            ->pluck('total', 'nama_pelanggan')
+            ->toArray();
+
+        $kontrakPerTahun = Kontrak::select('tahun')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('tahun')
+            ->orderBy('tahun')
+            ->pluck('total', 'tahun')
+            ->toArray();
+
         return View::make('home')->with(compact(
             'warehouse',
             'purchaseRequests',
@@ -144,6 +157,8 @@ class HomeController extends Controller
             'nilaiPekerjaanCounts',
             'poPrPerProyek',
             'nilaiPekerjaanPerTahun',
+            'pelangganCounts',
+            'kontrakPerTahun'
         ));
     }
 

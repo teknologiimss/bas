@@ -9,6 +9,142 @@
 @endsection --}}
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+    /* Background dashboard */
+    #tab-pemasaran {
+        /* background: linear-gradient(180deg, #0f172a, #020617); */
+        /* min-height: 100vh; */
+        /* padding: 30px; */
+    }
+
+    /* Card */
+    .card-tv {
+        border-radius: 18px;
+        border: none;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, .4);
+    }
+
+    /* Header */
+    .card-header-tv {
+        background: transparent;
+        padding: 12px 16px;
+        font-weight: 700;
+        font-size: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    /* Chart kecil di header */
+    .chart-mini {
+        height: 100px;
+        margin-top: 6px;
+    }
+
+    /* List kontrak */
+    .list-kontrak-tv {
+        overflow: hidden;
+        width: 100%;
+        min-height: 360px;
+    }
+
+    /* Item kontrak */
+    .item-kontrak-tv {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        font-size: 1.0rem;
+        height: 60px;
+
+    }
+
+    /* Badge status kecil */
+    .status-kontrak {
+        min-width: 110px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* Nama pekerjaan */
+    .nama-kontrak {
+        line-height: 1.3;
+        font-weight: 500;
+    }
+
+    /* Chart kanan */
+    .chart-body {
+        height: 250px;
+        padding: 10px;
+    }
+
+    /* Scrollbar */
+
+    /* daftar kontrak */
+
+
+    .kontrak-slide {
+        display: grid !important;
+        grid-auto-flow: column;
+        grid-template-rows: repeat(10, 1fr);
+        grid-auto-columns: 100%;
+        gap: 10px;
+        transition: transform 1.5s ease-in-out;
+    }
+
+    .kontrak-col {
+        display: contents;
+        /* biar grid ngatur itemnya */
+    }
+
+
+    #dashboardFullscreen:fullscreen {
+        background: #fff;
+        padding: 15px;
+        overflow: auto;
+    }
+
+    /* Firefox */
+    #dashboardFullscreen:-moz-full-screen {
+        background: #fff;
+        padding: 15px;
+    }
+
+    /* Safari */
+    #dashboardFullscreen:-webkit-full-screen {
+        background: #fff;
+        padding: 15px;
+    }
+
+    /* Optional: grafik biar maksimal */
+    #dashboardFullscreen canvas {
+        max-height: 90vh;
+    }
+
+
+
+    #tab-pemasaran {
+        /* background: linear-gradient(135deg, #dc3545, #8c1d18); */
+        padding: 1px;
+        /* min-height: 100vh; */
+    }
+
+    .slide-pemasaran {
+        background: transparent;
+    }
+
+    .card-tv {
+        background: linear-gradient(180deg, #ffffff, #e9e9e9);
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+    }
+
+    .card-tv.mt-3 {
+        margin-top: 2px !important;
+    }
+</style>
 @section('content')
     {{-- <div class="content-header">
         <div class="container-fluid">
@@ -29,67 +165,291 @@
     <section class="content">
         <div class="container-fluid pb-5">
 
-            {{-- ================= TAB NAV ================= --}}
-            <ul class="nav nav-tabs mb-3" id="dashboardTabs">
-                <li class="nav-item">
-                    <a class="nav-link" data-tab="pemasaran" href="javascript:void(0)">Pemasaran</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" data-tab="wilayah" href="javascript:void(0)">Wilayah & Log</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link" data-tab="sdm" href="javascript:void(0)">SDM</a>
-                </li>
-            </ul>
+            <button id="btnFullscreen" class="btn btn-sm btn-danger mb-2">
+                ⛶ Fullscreen
+            </button>
 
-            {{-- ================= TAB WILAYAH ================= --}}
-            <div class="dashboard-tab" id="tab-wilayah">
+            <div id="dashboardFullscreen">
+                {{-- ================= TAB NAV ================= --}}
+                <ul class="nav nav-tabs mb-3" id="dashboardTabs">
+                    <li class="nav-item">
+                        <a class="nav-link" data-tab="pemasaran" href="javascript:void(0)">Pemasaran</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" data-tab="wilayah" href="javascript:void(0)">Wilayah & Log</a>
+                    </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" data-tab="sdm" href="javascript:void(0)">SDM</a>
+                    </li>
+                </ul>
 
-                <div class="slide slide-wilayah">
-                    <h5 class="fw-bold mb-3">Jumlah PO & PR per Proyek</h5>
-                    <div style="height:380px">
-                        <canvas id="poPrPerProyekChart"></canvas>
-                    </div>
-                </div>
+                {{-- ================= TAB WILAYAH ================= --}}
+                <div class="dashboard-tab" id="tab-wilayah">
 
-
-                {{-- kalau mau nambah slide --}}
-                {{-- 
-        <div class="slide slide-wilayah d-none">
-            <canvas id="grafikLain"></canvas>
-        </div>
-        --}}
-            </div>
-
-            {{-- ================= TAB PEMASARAN ================= --}}
-            <div class="dashboard-tab d-none" id="tab-pemasaran">
-                <div class="slide slide-pemasaran">
-                    <h5 id="judulTahun" class="fw-bold mb-2"></h5>
-
-                    <div style="height:380px;">
-                        <canvas id="nilaiPekerjaanPerTahunChart"></canvas>
-                    </div>
-
-
-                </div>
-            </div>
-
-            {{-- ================= TAB SDM ================= --}}
-            <div class="dashboard-tab d-none" id="tab-sdm">
-                <div class="slide slide-sdm">
-                    <div class="row">
-                        <div style="height:280px;" class="col-md-4">
-                            <canvas id="genderChart"></canvas>
+                    <div class="card card-tv">
+                        <div class="card-header card-header-tv text-center">
+                            Jumlah PO & PR/SPPJP per Proyek
                         </div>
-                        <div class="col-md-4">
-                            <canvas id="statusChart"></canvas>
+
+                        <div class="card-body slide slide-wilayah">
+
+                            <!-- ISI TETAP -->
+                            <h5 class="fw-bold mb-3 d-none">
+                                Jumlah PO & PR/SPPJP per Proyek
+                            </h5>
+
+                            <div style="height:580px">
+                                <canvas id="poPrPerProyekChart"></canvas>
+                            </div>
+
                         </div>
-                        
+                    </div>
+
+                </div>
+
+
+                {{-- ================= TAB PEMASARAN ================= --}}
+                <div class="dashboard-tab d-none" id="tab-pemasaran">
+                    <div class="slide slide-pemasaran container-fluid">
+
+                        <h5 id="judulTahun" class="fw-bold mb-3 text-center"></h5>
+
+                        <div class="row g-3 justify-content-center">
+
+                            <!-- KIRI : DAFTAR KONTRAK -->
+                            <div class="col-md-4">
+                                <div class="card card-tv">
+
+                                    <div class="card-header card-header-tv">
+                                        <div>Daftar Kontrak</div>
+                                        {{-- <div class="chart-mini">
+                                        <canvas id="kontrakChart"></canvas>
+                                    </div> --}}
+                                    </div>
+
+                                    <div class="list-group list-group-flush list-kontrak-tv" id="kontrakSlideshow">
+                                        <div class="kontrak-slide">
+
+                                            @foreach ($kontraks->chunk(10) as $chunk)
+                                                <div class="kontrak-col">
+                                                    @foreach ($chunk as $kontrak)
+                                                        <div
+                                                            class="list-group-item item-kontrak-tv d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                <div class="fw-bold"><b>{{ $kontrak->nama_pekerjaan }}</b>
+                                                                </div>
+                                                                <small class="text-muted">Tahun
+                                                                    {{ $kontrak->tahun }}</small>
+                                                            </div>
+                                                            {{-- <span class="badge pelanggan-badge">
+                                                            {{ $kontrak->nama_pelanggan }}
+                                                        </span> --}}
+                                                            <span class="badge pelanggan-badge"
+                                                                data-pelanggan="{{ $kontrak->nama_pelanggan }}">
+                                                                {{ $kontrak->nama_pelanggan }}
+                                                            </span>
+
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endforeach
+
+
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                            <!-- KANAN : DISTRIBUSI PELANGGAN -->
+                            <div class="col-md-8">
+                                <div class="card card-tv ">
+
+                                    <div class="card-header card-header-tv text-center">
+                                        Distribusi Pelanggan
+                                    </div>
+
+                                    <div class="card-body chart-body">
+                                        <canvas id="pelangganPieChart"></canvas>
+                                    </div>
+
+                                </div>
+                                <div class="card card-tv mt-3">
+                                    <div class="card-header card-header-tv text-center">
+                                        Jumlah Kontrak per Tahun
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="kontrakBarChart"></canvas>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                {{-- ================= TAB SDM ================= --}}
+                <div class="dashboard-tab d-none" id="tab-sdm">
+                    <div class="slide slide-sdm">
+                        <div class="row">
+
+                            <!-- BAR CHART - LOKASI KERJA -->
+                            <div class="col-md-7">
+                                <div class="card card-tv">
+                                    <div class="card-header py-2 bg-white">
+                                        <h6 class="m-0 font-weight-bold" style="text-align: center">
+                                            Lokasi Kerja Karyawan
+                                        </h6>
+                                    </div>
+                                    <div class="card-body p-2">
+                                        <canvas id="lokasiKerjaChart" style="height:250px;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PIE CHARTS -->
+                            <div class="col-md-5">
+                                <div class="row">
+
+                                    <!-- PIE GENDER -->
+                                    <div class="col-12 mb-2">
+                                        <div class="card card-tv">
+                                            <div class="card-header py-2 bg-white">
+                                                <h6 class="m-0 font-weight-bold" style="text-align: center">
+                                                    Jenis Kelamin
+                                                </h6>
+                                            </div>
+                                            <div class="card-body p-2">
+                                                <canvas id="genderChart" style="height:30px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- PIE STATUS -->
+                                    <div class="col-12">
+                                        <div class="card card-tv">
+                                            <div class="card-header py-2 bg-white">
+                                                <h6 class="m-0 font-weight-bold" style="text-align: center">
+                                                    Status Pegawai
+                                                </h6>
+                                            </div>
+                                            <div class="card-body p-2">
+                                                <canvas id="statusChart" style="height:30px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
+
+
+
+            {{-- Button untuk Fullscreen --}}
+            <script>
+                document.getElementById('btnFullscreen').addEventListener('click', function() {
+                    const el = document.getElementById('dashboardFullscreen');
+
+                    if (!document.fullscreenElement) {
+                        el.requestFullscreen().catch(err => {
+                            alert(`Fullscreen error: ${err.message}`);
+                        });
+                    } else {
+                        document.exitFullscreen();
+                    }
+                });
+            </script>
+            <script>
+                document.addEventListener('fullscreenchange', () => {
+                    if (window.Chart) {
+                        Chart.helpers.each(Chart.instances, chart => {
+                            chart.resize();
+                        });
+                    }
+                });
+            </script>
+
+            {{-- End Button untuk Fullscreen --}}
+
+
+
+            {{-- Grafik Lokasi Kerja SDM --}}
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+
+            <script>
+                Chart.register(ChartDataLabels);
+
+                const lokasiKerjaData = @json($lokasiKerjaCounts);
+
+                const lokasiLabels = Object.keys(lokasiKerjaData);
+                const lokasiValues = Object.values(lokasiKerjaData);
+
+                const ctxLokasi = document.getElementById('lokasiKerjaChart');
+
+                new Chart(ctxLokasi, {
+                    type: 'bar',
+                    data: {
+                        labels: lokasiLabels,
+                        datasets: [{
+                            label: 'Jumlah Lokasi Kerja',
+                            data: lokasiValues,
+                            backgroundColor: [
+                                '#4e73df',
+                                '#1cc88a',
+                                '#36b9cc',
+                                '#f6c23e',
+                                '#e74a3b'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Lokasi Kerja Karyawan'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'top',
+                                color: '#000',
+                                font: {
+                                    weight: 'bold'
+                                },
+                                formatter: (value) => value
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            }
+                        }
+                    }
+                });
+            </script>
+
+
+
+
+
 
 
             {{-- <div class="row">
@@ -325,9 +685,10 @@
                                     ticks: {
                                         autoSkip: false,
                                         font: {
-                                            size: 12
+                                            size: 13,
+                                            weight: 'bold'
                                         },
-                                        padding: 10
+                                        padding: 12
                                     }
                                 },
                                 y: {
@@ -470,7 +831,7 @@
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
             {{-- Nilai Pekerjaan grafik Pemasaran --}}
-            <script>
+            {{-- <script>
                 document.addEventListener('DOMContentLoaded', function() {
 
                     const rawData = @json($nilaiPekerjaanPerTahun);
@@ -662,7 +1023,284 @@
                     });
 
                 });
+            </script> --}}
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+
+                    /* =========================================================
+                       🎨 WARNA GLOBAL (SATU SUMBER)
+                    ========================================================= */
+                    const colors = [
+                        '#fd7e14', // orange (PT KAI)
+                        '#198754', // hijau (PT KCI)
+                        '#0d6efd', // biru
+                        '#dc3545', // merah
+                        '#6f42c1', // ungu
+                        '#20c997', // tosca
+                        '#0dcaf0', // cyan
+                        '#6c757d' // abu
+                    ];
+
+                    function hashString(str) {
+                        let hash = 0;
+                        for (let i = 0; i < str.length; i++) {
+                            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                        }
+                        return Math.abs(hash);
+                    }
+
+                    function getColorByName(name) {
+                        return colors[hashString(name) % colors.length];
+                    }
+
+                    /* =========================================================
+                       🏷️ BADGE PELANGGAN (KONTRAK)
+                    ========================================================= */
+                    document.querySelectorAll('.pelanggan-badge').forEach(badge => {
+                        const nama = badge.dataset.pelanggan;
+                        if (!nama) return;
+
+                        badge.style.backgroundColor = getColorByName(nama);
+                        badge.style.color = '#fff';
+                    });
+
+                    /* =========================================================
+                       📊 DOUGHNUT CHART PELANGGAN
+                    ========================================================= */
+                    const pelangganData = @json($pelangganCounts);
+
+                    const labels = Object.keys(pelangganData);
+                    const values = Object.values(pelangganData);
+                    const backgroundColors = labels.map(nama => getColorByName(nama));
+
+                    const ctx = document
+                        .getElementById('pelangganPieChart')
+                        .getContext('2d');
+
+                    /* 🔹 Plugin angka di setiap slice */
+                    const valueLabelPlugin = {
+                        id: 'valueLabel',
+                        afterDatasetDraw(chart) {
+                            const {
+                                ctx
+                            } = chart;
+                            const dataset = chart.data.datasets[0];
+                            const meta = chart.getDatasetMeta(0);
+
+                            ctx.save();
+                            ctx.font = '600 13px Inter, sans-serif';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+
+                            meta.data.forEach((arc, index) => {
+                                const value = dataset.data[index];
+                                if (!value) return;
+
+                                const pos = arc.tooltipPosition();
+                                ctx.fillText(value, pos.x, pos.y);
+                            });
+
+                            ctx.restore();
+                        }
+                    };
+
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: values,
+                                backgroundColor: backgroundColors,
+                                borderWidth: 3,
+                                borderColor: '#ffffff',
+                                hoverOffset: 10,
+                                spacing: 3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '65%',
+                            animation: {
+                                duration: 1000,
+                                easing: 'easeOutQuart'
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                    labels: {
+                                        color: '#334155',
+                                        boxWidth: 14,
+                                        boxHeight: 14,
+                                        padding: 14,
+                                        font: {
+                                            size: 14,
+                                            weight: '600'
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    backgroundColor: '#020617',
+                                    titleColor: '#f8fafc',
+                                    bodyColor: '#e5e7eb',
+                                    padding: 12,
+                                    cornerRadius: 10,
+                                    callbacks: {
+                                        label: (ctx) => `${ctx.label}: ${ctx.raw}`
+                                    }
+                                }
+                            }
+                        },
+                        plugins: [valueLabelPlugin]
+                    });
+
+                    /* =========================================================
+                       🎞️ SLIDE KONTRAK
+                    ========================================================= */
+                    const container = document.getElementById("kontrakSlideshow");
+                    if (!container) return;
+
+                    const slide = container.querySelector(".kontrak-slide");
+                    const cols = slide.querySelectorAll(".kontrak-col");
+                    if (cols.length <= 1) return;
+
+                    const transitionDuration = 1200;
+                    const viewDuration = 3500;
+                    const resetDelay = 800;
+                    let index = 0;
+
+                    slide.style.transition = `transform ${transitionDuration}ms ease-in-out`;
+
+                    function goTo(target) {
+                        const width = container.offsetWidth;
+                        slide.style.transform = `translateX(-${target * width}px)`;
+                    }
+
+                    function runSlide() {
+                        index++;
+                        goTo(index);
+
+                        if (index === cols.length - 1) {
+                            setTimeout(() => {
+                                setTimeout(() => {
+                                    slide.style.transition = "none";
+                                    slide.style.transform = "translateX(0)";
+                                    index = 0;
+                                    slide.offsetHeight;
+                                    slide.style.transition =
+                                        `transform ${transitionDuration}ms ease-in-out`;
+                                    setTimeout(runSlide, viewDuration);
+                                }, resetDelay);
+                            }, viewDuration);
+                        } else {
+                            setTimeout(runSlide, viewDuration);
+                        }
+                    }
+
+                    setTimeout(runSlide, viewDuration);
+
+                });
             </script>
+
+
+            {{-- Jumlah Kontrak Pemasaran Grafik Bar --}}
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+            <script>
+                const kontrakPerTahunLabels = {!! json_encode(array_keys($kontrakPerTahun)) !!};
+                const kontrakPerTahunData = {!! json_encode(array_values($kontrakPerTahun)) !!};
+
+                const warnaTahun = [
+                    '#4e73df',
+                    '#1cc88a',
+                    '#36b9cc',
+                    '#f6c23e',
+                    '#e74a3b',
+                    '#858796',
+                    '#6f42c1',
+                ];
+
+                const ctxKontrak = document.getElementById('kontrakBarChart').getContext('2d');
+
+                new Chart(ctxKontrak, {
+                    type: 'bar',
+                    data: {
+                        labels: kontrakPerTahunLabels,
+                        datasets: [{
+                            data: kontrakPerTahunData,
+                            backgroundColor: kontrakPerTahunLabels.map(
+                                (_, index) => warnaTahun[index % warnaTahun.length]
+                            ),
+                            borderRadius: 8,
+                            barThickness: 32
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: {
+                            padding: {
+                                top: 30 // ⬅️ RUANG KHUSUS ANGKA
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                display: true, // ⬅️ PAKSA TAMPIL
+                                anchor: 'end',
+                                align: 'end',
+                                offset: 4,
+                                clamp: true, // ⬅️ ANTI KEPOTONG
+                                clip: false, // ⬅️ ANTI KEHILANGAN
+                                color: '#111',
+                                font: {
+                                    weight: 'bold',
+                                    size: 12
+                                },
+                                formatter: (value) => value
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 14, // opsional: biar lebih kebaca
+                                        weight: 'bold' // ⬅️ INI KUNCINYA
+                                    }
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                grace: '10%',
+                                ticks: {
+                                    precision: 0
+                                },
+                                grid: {
+                                    color: '#f1f1f1'
+                                }
+                            }
+                        }
+
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            </script>
+
+
+
+
+
+
+
+
+
 
 
             {{-- End Grafik Nama pekerjaan, status dan nilai pekerjaan  --}}
@@ -881,7 +1519,7 @@
                     const pieValuePlugin = {
                         id: 'pieValue',
                         afterDatasetsDraw(chart) {
-                            if (chart.config.type !== 'pie') return;
+                            if (!['pie', 'doughnut'].includes(chart.config.type)) return;
 
                             const ctx = chart.ctx;
                             ctx.save();
@@ -890,9 +1528,11 @@
                             ctx.textAlign = 'center';
                             ctx.textBaseline = 'middle';
 
-                            chart.getDatasetMeta(0).data.forEach((slice, i) => {
+                            chart.getDatasetMeta(0).data.forEach((arc, i) => {
                                 const value = chart.data.datasets[0].data[i];
-                                const pos = slice.tooltipPosition();
+                                if (!value) return;
+
+                                const pos = arc.tooltipPosition();
                                 ctx.fillText(value, pos.x, pos.y);
                             });
 
@@ -996,7 +1636,7 @@
                     ===================================================== */
                     new Chart(document.getElementById('statusChart'), {
                         type: 'doughnut',
-                        plugins: [shadowPlugin, centerTextPlugin],
+                        plugins: [shadowPlugin, centerTextPlugin, pieValuePlugin],
                         data: {
                             labels: {!! json_encode(array_keys($statusCounts)) !!},
                             datasets: [{
@@ -1031,13 +1671,14 @@
 
 
 
+
                 });
             </script>
 
 
 
 
-            {{-- End Grafik Jenis Kelamin --}}
+            {{-- End Grafik SDM --}}
 
 
 
@@ -1087,7 +1728,8 @@
                                             <input type="text" class="form-control" id="pcode" name="pcode"
                                                 min="0" placeholder="Product Code">
                                             <div class="input-group-append">
-                                                <button class="btn btn-primary" id="button-check" onclick="productCheck()">
+                                                <button class="btn btn-primary" id="button-check"
+                                                    onclick="productCheck()">
                                                     <i class="fas fa-search"></i>
                                                 </button>
                                             </div>
@@ -1297,6 +1939,111 @@
 @endsection
 @section('custom-js')
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const colors = [
+                '#fd7e14', // orange (PT KAI)
+                '#198754', // hijau (PT KCI)
+                '#0d6efd', // biru
+                '#dc3545', // merah
+                '#6f42c1', // ungu
+                '#20c997', // tosca
+                '#0dcaf0', // cyan
+                '#6c757d' // abu
+            ];
+
+            function hashString(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                return Math.abs(hash);
+            }
+
+            document.querySelectorAll('.pelanggan-badge').forEach(badge => {
+                const nama = badge.dataset.pelanggan;
+                if (!nama) return;
+
+                const colorIndex = hashString(nama) % colors.length;
+                badge.style.backgroundColor = colors[colorIndex];
+                badge.style.color = '#fff';
+            });
+
+        });
+    </script>
+
+
+
+    {{-- kontrak slide --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const container = document.getElementById("kontrakSlideshow");
+            const slide = container.querySelector(".kontrak-slide");
+            const cols = slide.querySelectorAll(".kontrak-col");
+
+            if (cols.length <= 1) return;
+
+            const transitionDuration = 1200; // animasi geser
+            const viewDuration = 3500; // waktu diam terbaca
+            const resetDelay = 800; // jeda sebelum reset
+
+            let index = 0;
+
+            slide.style.transition = `transform ${transitionDuration}ms ease-in-out`;
+
+            function goTo(target) {
+                const width = container.offsetWidth;
+                slide.style.transform = `translateX(-${target * width}px)`;
+            }
+
+            function runSlide() {
+                index++;
+                goTo(index);
+
+                // SLIDE TERAKHIR
+                if (index === cols.length - 1) {
+                    setTimeout(() => {
+                        // BIARKAN TERBACA
+                        setTimeout(() => {
+                            // RESET HALUS
+                            slide.style.transition = "none";
+                            slide.style.transform = "translateX(0)";
+                            index = 0;
+
+                            // reflow
+                            slide.offsetHeight;
+
+                            // AKTIFKAN LAGI TRANSISI
+                            slide.style.transition =
+                                `transform ${transitionDuration}ms ease-in-out`;
+
+                            // 🔁 LANJUT LOOP
+                            setTimeout(runSlide, viewDuration);
+
+                        }, resetDelay);
+                    }, viewDuration);
+                } else {
+                    // SLIDE BIASA
+                    setTimeout(runSlide, viewDuration);
+                }
+            }
+
+            // mulai loop
+            setTimeout(runSlide, viewDuration);
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
 
     {{-- TAB Slide Show --}}
     <script>
@@ -1304,7 +2051,7 @@
         let slideInterval = null;
         let tabInterval = null;
 
-        const tabs = ['pemasaran','wilayah', 'sdm'];
+        const tabs = ['pemasaran', 'wilayah', 'sdm'];
         let tabIndex = 0;
 
         /* ================= SHOW TAB ================= */
@@ -1365,7 +2112,7 @@
                 slides[index].classList.add('d-none');
                 index = (index + 1) % slides.length;
                 slides[index].classList.remove('d-none');
-            }, 15000); // 15 detik per slide
+            }, 30000); // 30 detik per slide
         }
 
         /* ================= AUTO TAB ================= */
@@ -1374,7 +2121,7 @@
             tabInterval = setInterval(() => {
                 tabIndex = (tabIndex + 1) % tabs.length;
                 showTab(tabs[tabIndex]);
-            }, 15000); // 15 detik per tab
+            }, 30000); // 30 detik per tab
         }
 
         function stopAutoTab() {
