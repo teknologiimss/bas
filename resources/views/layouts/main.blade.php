@@ -102,13 +102,19 @@
 
         /* Warna aktif */
         .sidebar-dark-primary .nav-treeview>.nav-item>.nav-link.active {
-            background-color: #007bff !important;
+            background-color: #c40202 !important;
             color: #fff !important;
         }
 
         /* Hover lembut */
         .sidebar .nav-treeview .nav-link:hover {
             background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Menu utama aktif */
+        .nav-sidebar .nav-link.active {
+            background-color: #c40202 !important;
+            color: #ffffff !important;
         }
     </style>
 
@@ -511,7 +517,7 @@
                                                             <p>{{ __('LETTER OF INTENT (LOI)') }}</p>
                                                         </a>
                                                     </li>
-                                                   
+
                                                     {{-- Backup LOI dipisah --}}
                                                     {{-- <li class="nav-item">
                                                         <a href="{{ route('loi.index') }}"
@@ -654,8 +660,7 @@
 
                                         {{-- Contoh menu role SDM --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 6)
-                                            <li
-                                                class="nav-item has-treeview {{ $menuSdmActive ? 'menu-open' : '' }}">
+                                            <li class="nav-item has-treeview {{ $menuSdmActive ? 'menu-open' : '' }}">
                                                 <a href="#" class="nav-link">
                                                     <i class="nav-icon fas fa-users-cog"></i>
                                                     <p class="">
