@@ -196,7 +196,7 @@
 
                             <!-- ISI TETAP -->
                             <h5 class="fw-bold mb-3 d-none">
-                                Jumlah PO & PR/SPPJP per Proyek
+                                Jumlah PO & PR per Proyek
                             </h5>
 
                             <div style="height:580px">
@@ -1029,11 +1029,17 @@
                 document.addEventListener("DOMContentLoaded", function() {
 
                     /* =========================================================
-                       🏷️ WARNA BADGE / DAFTAR KONTRAK (TETAP SENDIRI)
+                       🎨 WARNA GLOBAL (SATU SUMBER)
                     ========================================================= */
-                    const badgeColors = [
-                        '#fd7e14', '#198754', '#0d6efd', '#dc3545',
-                        '#6f42c1', '#20c997', '#0dcaf0', '#6c757d'
+                    const colors = [
+                        '#fd7e14', // orange (PT KAI)
+                        '#198754', // hijau (PT KCI)
+                        '#0d6efd', // biru
+                        '#dc3545', // merah
+                        '#6f42c1', // ungu
+                        '#20c997', // tosca
+                        '#0dcaf0', // cyan
+                        '#6c757d' // abu
                     ];
 
                     function hashString(str) {
@@ -1044,54 +1050,43 @@
                         return Math.abs(hash);
                     }
 
-                    function getBadgeColor(name) {
-                        return badgeColors[hashString(name) % badgeColors.length];
+                    function getColorByName(name) {
+                        return colors[hashString(name) % colors.length];
                     }
 
+                    /* =========================================================
+                       🏷️ BADGE PELANGGAN (KONTRAK)
+                    ========================================================= */
                     document.querySelectorAll('.pelanggan-badge').forEach(badge => {
                         const nama = badge.dataset.pelanggan;
                         if (!nama) return;
-                        badge.style.backgroundColor = getBadgeColor(nama);
+
+                        badge.style.backgroundColor = getColorByName(nama);
                         badge.style.color = '#fff';
                     });
 
                     /* =========================================================
-                       🎨 AUTO COLOR GENERATOR (UNTUK PIE CHART SAJA)
-                       - TIDAK DIPATOK WARNA
-                       - TIDAK TERKAIT BADGE
-                    ========================================================= */
-                    function generateAutoColors(count) {
-                        return Array.from({
-                            length: count
-                        }, (_, i) => {
-                            const hue = Math.round((360 / count) * i);
-                            return `hsl(${hue}, 65%, 55%)`;
-                        });
-                    }
-
-                    /* =========================================================
-                       📊 DOUGHNUT CHART DISTRIBUSI PELANGGAN
+                       📊 DOUGHNUT CHART PELANGGAN
                     ========================================================= */
                     const pelangganData = @json($pelangganCounts);
 
                     const labels = Object.keys(pelangganData);
                     const values = Object.values(pelangganData);
-
-                    const backgroundColors = generateAutoColors(labels.length);
+                    const backgroundColors = labels.map(nama => getColorByName(nama));
 
                     const ctx = document
                         .getElementById('pelangganPieChart')
                         .getContext('2d');
 
-                    /* 🔢 Plugin angka di setiap slice */
+                    /* 🔹 Plugin angka di setiap slice */
                     const valueLabelPlugin = {
                         id: 'valueLabel',
                         afterDatasetDraw(chart) {
                             const {
                                 ctx
                             } = chart;
+                            const dataset = chart.data.datasets[0];
                             const meta = chart.getDatasetMeta(0);
-                            const data = chart.data.datasets[0].data;
 
                             ctx.save();
                             ctx.font = '600 13px Inter, sans-serif';
@@ -1099,10 +1094,12 @@
                             ctx.textAlign = 'center';
                             ctx.textBaseline = 'middle';
 
-                            meta.data.forEach((arc, i) => {
-                                if (!data[i]) return;
+                            meta.data.forEach((arc, index) => {
+                                const value = dataset.data[index];
+                                if (!value) return;
+
                                 const pos = arc.tooltipPosition();
-                                ctx.fillText(data[i], pos.x, pos.y);
+                                ctx.fillText(value, pos.x, pos.y);
                             });
 
                             ctx.restore();
@@ -1115,7 +1112,7 @@
                             labels: labels,
                             datasets: [{
                                 data: values,
-                                backgroundColor: backgroundColors, // ⬅️ AUTO WARNA
+                                backgroundColor: backgroundColors,
                                 borderWidth: 3,
                                 borderColor: '#ffffff',
                                 hoverOffset: 10,
@@ -1134,6 +1131,7 @@
                                 legend: {
                                     position: 'right',
                                     labels: {
+                                        color: '#334155',
                                         boxWidth: 14,
                                         boxHeight: 14,
                                         padding: 14,
@@ -1158,9 +1156,53 @@
                         plugins: [valueLabelPlugin]
                     });
 
+                    /* =========================================================
+                       🎞️ SLIDE KONTRAK
+                    ========================================================= */
+                    const container = document.getElementById("kontrakSlideshow");
+                    if (!container) return;
+
+                    const slide = container.querySelector(".kontrak-slide");
+                    const cols = slide.querySelectorAll(".kontrak-col");
+                    if (cols.length <= 1) return;
+
+                    const transitionDuration = 1200;
+                    const viewDuration = 3500;
+                    const resetDelay = 800;
+                    let index = 0;
+
+                    slide.style.transition = `transform ${transitionDuration}ms ease-in-out`;
+
+                    function goTo(target) {
+                        const width = container.offsetWidth;
+                        slide.style.transform = `translateX(-${target * width}px)`;
+                    }
+
+                    function runSlide() {
+                        index++;
+                        goTo(index);
+
+                        if (index === cols.length - 1) {
+                            setTimeout(() => {
+                                setTimeout(() => {
+                                    slide.style.transition = "none";
+                                    slide.style.transform = "translateX(0)";
+                                    index = 0;
+                                    slide.offsetHeight;
+                                    slide.style.transition =
+                                        `transform ${transitionDuration}ms ease-in-out`;
+                                    setTimeout(runSlide, viewDuration);
+                                }, resetDelay);
+                            }, viewDuration);
+                        } else {
+                            setTimeout(runSlide, viewDuration);
+                        }
+                    }
+
+                    setTimeout(runSlide, viewDuration);
+
                 });
             </script>
-
 
 
             {{-- Jumlah Kontrak Pemasaran Grafik Bar --}}
