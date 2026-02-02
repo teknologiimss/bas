@@ -164,6 +164,80 @@
             height: 320px;
         }
     }
+
+
+    /* Responsive ukuran hp Pemasaran */
+    /* =================================
+   KONTRAK ITEM - RESET FLEX
+================================= */
+
+    .item-kontrak-tv {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .item-kontrak-tv>div {
+        flex: 1;
+        min-width: 0;
+        /* kunci anti overflow */
+    }
+
+    .item-kontrak-tv .fw-bold {
+        display: block;
+        font-size: 15px;
+        line-height: 1.3;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .item-kontrak-tv small {
+        display: block;
+        font-size: 12px;
+    }
+
+    /* Badge default */
+    .pelanggan-badge {
+        flex-shrink: 0;
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        white-space: nowrap;
+    }
+
+    /* =================================
+   MODE HP - PAKSA STACK KE BAWAH
+================================= */
+    @media (max-width: 576px) {
+
+        /* HANCURKAN layout bootstrap */
+        .item-kontrak-tv {
+            display: block !important;
+            padding: 10px 12px;
+        }
+
+        .item-kontrak-tv>div {
+            width: 100%;
+        }
+
+        .item-kontrak-tv .fw-bold {
+            font-size: 13px;
+            line-height: 1.25;
+            margin-bottom: 2px;
+        }
+
+        .item-kontrak-tv small {
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+
+        .pelanggan-badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 3px 8px;
+        }
+    }
 </style>
 @section('content')
     {{-- <div class="content-header">
