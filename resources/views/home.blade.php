@@ -1029,32 +1029,11 @@
                 document.addEventListener("DOMContentLoaded", function() {
 
                     /* =========================================================
-                       🎨 WARNA BADGE / DAFTAR KONTRAK
+                       🏷️ WARNA BADGE / DAFTAR KONTRAK (TETAP SENDIRI)
                     ========================================================= */
                     const badgeColors = [
-                        '#fd7e14',
-                        '#198754',
-                        '#0d6efd',
-                        '#dc3545',
-                        '#6f42c1',
-                        '#20c997',
-                        '#0dcaf0',
-                        '#6c757d'
-                    ];
-
-                    /* =========================================================
-                       🎨 WARNA KHUSUS PIE CHART DISTRIBUSI
-                       (TIDAK TERKAIT DAFTAR KONTRAK)
-                    ========================================================= */
-                    const pieColors = [
-                        '#6366f1',
-                        '#22c55e',
-                        '#06b6d4',
-                        '#f59e0b',
-                        '#ef4444',
-                        '#8b5cf6',
-                        '#14b8a6',
-                        '#64748b'
+                        '#fd7e14', '#198754', '#0d6efd', '#dc3545',
+                        '#6f42c1', '#20c997', '#0dcaf0', '#6c757d'
                     ];
 
                     function hashString(str) {
@@ -1069,20 +1048,26 @@
                         return badgeColors[hashString(name) % badgeColors.length];
                     }
 
-                    function getPieColor(name) {
-                        return pieColors[hashString(name) % pieColors.length];
-                    }
-
-                    /* =========================================================
-                       🏷️ BADGE PELANGGAN (DAFTAR KONTRAK)
-                    ========================================================= */
                     document.querySelectorAll('.pelanggan-badge').forEach(badge => {
                         const nama = badge.dataset.pelanggan;
                         if (!nama) return;
-
                         badge.style.backgroundColor = getBadgeColor(nama);
                         badge.style.color = '#fff';
                     });
+
+                    /* =========================================================
+                       🎨 AUTO COLOR GENERATOR (UNTUK PIE CHART SAJA)
+                       - TIDAK DIPATOK WARNA
+                       - TIDAK TERKAIT BADGE
+                    ========================================================= */
+                    function generateAutoColors(count) {
+                        return Array.from({
+                            length: count
+                        }, (_, i) => {
+                            const hue = Math.round((360 / count) * i);
+                            return `hsl(${hue}, 65%, 55%)`;
+                        });
+                    }
 
                     /* =========================================================
                        📊 DOUGHNUT CHART DISTRIBUSI PELANGGAN
@@ -1092,13 +1077,13 @@
                     const labels = Object.keys(pelangganData);
                     const values = Object.values(pelangganData);
 
-                    // ⬇️ WARNA PIE & LEGEND (SAMA SATU SAMA LAIN)
-                    const backgroundColors = labels.map(nama => getPieColor(nama));
+                    const backgroundColors = generateAutoColors(labels.length);
 
                     const ctx = document
                         .getElementById('pelangganPieChart')
                         .getContext('2d');
 
+                    /* 🔢 Plugin angka di setiap slice */
                     const valueLabelPlugin = {
                         id: 'valueLabel',
                         afterDatasetDraw(chart) {
@@ -1110,7 +1095,7 @@
 
                             ctx.save();
                             ctx.font = '600 13px Inter, sans-serif';
-                            ctx.fillStyle = '#fff';
+                            ctx.fillStyle = '#ffffff';
                             ctx.textAlign = 'center';
                             ctx.textBaseline = 'middle';
 
@@ -1127,12 +1112,12 @@
                     new Chart(ctx, {
                         type: 'doughnut',
                         data: {
-                            labels,
+                            labels: labels,
                             datasets: [{
                                 data: values,
-                                backgroundColor: backgroundColors, // ⬅️ PIE & LEGEND SAMA
+                                backgroundColor: backgroundColors, // ⬅️ AUTO WARNA
                                 borderWidth: 3,
-                                borderColor: '#fff',
+                                borderColor: '#ffffff',
                                 hoverOffset: 10,
                                 spacing: 3
                             }]
@@ -1141,11 +1126,29 @@
                             responsive: true,
                             maintainAspectRatio: false,
                             cutout: '65%',
+                            animation: {
+                                duration: 1000,
+                                easing: 'easeOutQuart'
+                            },
                             plugins: {
                                 legend: {
-                                    position: 'right'
+                                    position: 'right',
+                                    labels: {
+                                        boxWidth: 14,
+                                        boxHeight: 14,
+                                        padding: 14,
+                                        font: {
+                                            size: 14,
+                                            weight: '600'
+                                        }
+                                    }
                                 },
                                 tooltip: {
+                                    backgroundColor: '#020617',
+                                    titleColor: '#f8fafc',
+                                    bodyColor: '#e5e7eb',
+                                    padding: 12,
+                                    cornerRadius: 10,
                                     callbacks: {
                                         label: (ctx) => `${ctx.label}: ${ctx.raw}`
                                     }
