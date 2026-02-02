@@ -1029,17 +1029,32 @@
                 document.addEventListener("DOMContentLoaded", function() {
 
                     /* =========================================================
-                       🎨 WARNA GLOBAL (SATU SUMBER)
+                       🎨 WARNA BADGE / DAFTAR KONTRAK
                     ========================================================= */
-                    const colors = [
-                        '#fd7e14', // orange (PT KAI)
-                        '#198754', // hijau (PT KCI)
-                        '#0d6efd', // biru
-                        '#dc3545', // merah
-                        '#6f42c1', // ungu
-                        '#20c997', // tosca
-                        '#0dcaf0', // cyan
-                        '#6c757d' // abu
+                    const badgeColors = [
+                        '#fd7e14',
+                        '#198754',
+                        '#0d6efd',
+                        '#dc3545',
+                        '#6f42c1',
+                        '#20c997',
+                        '#0dcaf0',
+                        '#6c757d'
+                    ];
+
+                    /* =========================================================
+                       🎨 WARNA KHUSUS PIE CHART DISTRIBUSI
+                       (TIDAK TERKAIT DAFTAR KONTRAK)
+                    ========================================================= */
+                    const pieColors = [
+                        '#6366f1',
+                        '#22c55e',
+                        '#06b6d4',
+                        '#f59e0b',
+                        '#ef4444',
+                        '#8b5cf6',
+                        '#14b8a6',
+                        '#64748b'
                     ];
 
                     function hashString(str) {
@@ -1050,56 +1065,59 @@
                         return Math.abs(hash);
                     }
 
-                    function getColorByName(name) {
-                        return colors[hashString(name) % colors.length];
+                    function getBadgeColor(name) {
+                        return badgeColors[hashString(name) % badgeColors.length];
+                    }
+
+                    function getPieColor(name) {
+                        return pieColors[hashString(name) % pieColors.length];
                     }
 
                     /* =========================================================
-                       🏷️ BADGE PELANGGAN (KONTRAK)
+                       🏷️ BADGE PELANGGAN (DAFTAR KONTRAK)
                     ========================================================= */
                     document.querySelectorAll('.pelanggan-badge').forEach(badge => {
                         const nama = badge.dataset.pelanggan;
                         if (!nama) return;
 
-                        badge.style.backgroundColor = getColorByName(nama);
+                        badge.style.backgroundColor = getBadgeColor(nama);
                         badge.style.color = '#fff';
                     });
 
                     /* =========================================================
-                       📊 DOUGHNUT CHART PELANGGAN
+                       📊 DOUGHNUT CHART DISTRIBUSI PELANGGAN
                     ========================================================= */
                     const pelangganData = @json($pelangganCounts);
 
                     const labels = Object.keys(pelangganData);
                     const values = Object.values(pelangganData);
-                    const backgroundColors = labels.map(nama => getColorByName(nama));
+
+                    // ⬇️ WARNA PIE & LEGEND (SAMA SATU SAMA LAIN)
+                    const backgroundColors = labels.map(nama => getPieColor(nama));
 
                     const ctx = document
                         .getElementById('pelangganPieChart')
                         .getContext('2d');
 
-                    /* 🔹 Plugin angka di setiap slice */
                     const valueLabelPlugin = {
                         id: 'valueLabel',
                         afterDatasetDraw(chart) {
                             const {
                                 ctx
                             } = chart;
-                            const dataset = chart.data.datasets[0];
                             const meta = chart.getDatasetMeta(0);
+                            const data = chart.data.datasets[0].data;
 
                             ctx.save();
                             ctx.font = '600 13px Inter, sans-serif';
-                            ctx.fillStyle = '#ffffff';
+                            ctx.fillStyle = '#fff';
                             ctx.textAlign = 'center';
                             ctx.textBaseline = 'middle';
 
-                            meta.data.forEach((arc, index) => {
-                                const value = dataset.data[index];
-                                if (!value) return;
-
+                            meta.data.forEach((arc, i) => {
+                                if (!data[i]) return;
                                 const pos = arc.tooltipPosition();
-                                ctx.fillText(value, pos.x, pos.y);
+                                ctx.fillText(data[i], pos.x, pos.y);
                             });
 
                             ctx.restore();
@@ -1109,12 +1127,12 @@
                     new Chart(ctx, {
                         type: 'doughnut',
                         data: {
-                            labels: labels,
+                            labels,
                             datasets: [{
                                 data: values,
-                                backgroundColor: backgroundColors,
+                                backgroundColor: backgroundColors, // ⬅️ PIE & LEGEND SAMA
                                 borderWidth: 3,
-                                borderColor: '#ffffff',
+                                borderColor: '#fff',
                                 hoverOffset: 10,
                                 spacing: 3
                             }]
@@ -1123,30 +1141,11 @@
                             responsive: true,
                             maintainAspectRatio: false,
                             cutout: '65%',
-                            animation: {
-                                duration: 1000,
-                                easing: 'easeOutQuart'
-                            },
                             plugins: {
                                 legend: {
-                                    position: 'right',
-                                    labels: {
-                                        color: '#334155',
-                                        boxWidth: 14,
-                                        boxHeight: 14,
-                                        padding: 14,
-                                        font: {
-                                            size: 14,
-                                            weight: '600'
-                                        }
-                                    }
+                                    position: 'right'
                                 },
                                 tooltip: {
-                                    backgroundColor: '#020617',
-                                    titleColor: '#f8fafc',
-                                    bodyColor: '#e5e7eb',
-                                    padding: 12,
-                                    cornerRadius: 10,
                                     callbacks: {
                                         label: (ctx) => `${ctx.label}: ${ctx.raw}`
                                     }
@@ -1156,53 +1155,9 @@
                         plugins: [valueLabelPlugin]
                     });
 
-                    /* =========================================================
-                       🎞️ SLIDE KONTRAK
-                    ========================================================= */
-                    const container = document.getElementById("kontrakSlideshow");
-                    if (!container) return;
-
-                    const slide = container.querySelector(".kontrak-slide");
-                    const cols = slide.querySelectorAll(".kontrak-col");
-                    if (cols.length <= 1) return;
-
-                    const transitionDuration = 1200;
-                    const viewDuration = 3500;
-                    const resetDelay = 800;
-                    let index = 0;
-
-                    slide.style.transition = `transform ${transitionDuration}ms ease-in-out`;
-
-                    function goTo(target) {
-                        const width = container.offsetWidth;
-                        slide.style.transform = `translateX(-${target * width}px)`;
-                    }
-
-                    function runSlide() {
-                        index++;
-                        goTo(index);
-
-                        if (index === cols.length - 1) {
-                            setTimeout(() => {
-                                setTimeout(() => {
-                                    slide.style.transition = "none";
-                                    slide.style.transform = "translateX(0)";
-                                    index = 0;
-                                    slide.offsetHeight;
-                                    slide.style.transition =
-                                        `transform ${transitionDuration}ms ease-in-out`;
-                                    setTimeout(runSlide, viewDuration);
-                                }, resetDelay);
-                            }, viewDuration);
-                        } else {
-                            setTimeout(runSlide, viewDuration);
-                        }
-                    }
-
-                    setTimeout(runSlide, viewDuration);
-
                 });
             </script>
+
 
 
             {{-- Jumlah Kontrak Pemasaran Grafik Bar --}}
