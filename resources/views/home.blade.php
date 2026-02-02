@@ -144,6 +144,26 @@
     .card-tv.mt-3 {
         margin-top: 2px !important;
     }
+
+
+    /* Responsive HP grafik PO&PR */
+    .chart-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .chart-wrapper {
+        position: relative;
+        min-width: 720px;
+        height: 650px;
+    }
+
+    @media (max-width: 576px) {
+        .chart-wrapper {
+            min-width: 900px;
+            height: 320px;
+        }
+    }
 </style>
 @section('content')
     {{-- <div class="content-header">
@@ -199,8 +219,10 @@
                                 Jumlah PO & PR/SPPJP per Proyek
                             </h5>
 
-                            <div style="height:580px">
-                                <canvas id="poPrPerProyekChart"></canvas>
+                            <div class="chart-scroll">
+                                <div class="chart-wrapper">
+                                    <canvas id="poPrPerProyekChart"></canvas>
+                                </div>
                             </div>
 
                         </div>
@@ -541,55 +563,53 @@
 
                     const proyekData = @json($poPrPerProyek);
 
-                    /* ===== FUNGSI PECAH LABEL JADI MULTI BARIS ===== */
-                    function splitLabel(text, maxLength = 16) {
-                        if (!text) return '';
+                    const isMobile = window.innerWidth <= 576;
+
+                    const fontSizeLabel = isMobile ? 10 : 12;
+                    const fontSizeLegend = isMobile ? 11 : 14;
+                    const fontSizeValue = isMobile ? 10 : 12;
+
+                    const barThicknessSize = isMobile ? 14 : 22;
+
+                    /* =============================
+                       FUNGSI MULTI BARIS (TIDAK POTONG TEKS)
+                    ============================== */
+                    function wrapLabel(text, maxLength = isMobile ? 10 : 16) {
+                        if (!text) return [''];
+
                         const words = text.split(' ');
-                        let lines = [''];
+                        const lines = [];
+                        let currentLine = '';
 
                         words.forEach(word => {
-                            const last = lines[lines.length - 1];
-                            if ((last + ' ' + word).trim().length <= maxLength) {
-                                lines[lines.length - 1] = (last + ' ' + word).trim();
+                            if ((currentLine + ' ' + word).trim().length <= maxLength) {
+                                currentLine = (currentLine + ' ' + word).trim();
                             } else {
-                                lines.push(word);
+                                lines.push(currentLine);
+                                currentLine = word;
                             }
                         });
 
-                        return lines;
+                        if (currentLine) lines.push(currentLine);
+
+                        return lines; // ← PENTING: array
                     }
 
-                    const labels = proyekData.map(item => splitLabel(item.nama_pekerjaan));
+                    const labels = proyekData.map(item => wrapLabel(item.nama_pekerjaan));
                     const dataPO = proyekData.map(item => item.total_po);
                     const dataPR = proyekData.map(item => item.total_pr);
 
-                    const ctx = document
-                        .getElementById('poPrPerProyekChart')
-                        .getContext('2d');
+                    const ctx = document.getElementById('poPrPerProyekChart').getContext('2d');
 
-                    /* ===== SHADOW PLUGIN (EFEK 3D) ===== */
-                    const shadowPlugin = {
-                        id: 'shadow',
-                        beforeDatasetsDraw(chart) {
-                            const ctx = chart.ctx;
-                            ctx.save();
-                            ctx.shadowColor = 'rgba(0,0,0,0.25)';
-                            ctx.shadowBlur = 12;
-                            ctx.shadowOffsetX = 4;
-                            ctx.shadowOffsetY = 5;
-                        },
-                        afterDatasetsDraw(chart) {
-                            chart.ctx.restore();
-                        }
-                    };
-
-                    /* ===== ANGKA DI ATAS BAR ===== */
+                    /* =============================
+                       ANGKA DI ATAS BAR
+                    ============================== */
                     const valueLabelPlugin = {
                         id: 'valueLabel',
                         afterDatasetsDraw(chart) {
                             const ctx = chart.ctx;
                             ctx.save();
-                            ctx.font = 'bold 12px Arial';
+                            ctx.font = `bold ${fontSizeValue}px Arial`;
                             ctx.fillStyle = '#111';
                             ctx.textAlign = 'center';
 
@@ -600,11 +620,7 @@
                                 meta.data.forEach((bar, index) => {
                                     const value = dataset.data[index];
                                     if (value > 0) {
-                                        ctx.fillText(
-                                            value,
-                                            bar.x,
-                                            bar.y - 6
-                                        );
+                                        ctx.fillText(value, bar.x, bar.y - 4);
                                     }
                                 });
                             });
@@ -613,28 +629,27 @@
                         }
                     };
 
-                    /* ===== WARNA (SOLID + KESAN DEPTH) ===== */
-                    const colorPO = '#2E86DE';
-                    const colorPR = '#E74C3C';
-
+                    /* =============================
+                       CHART
+                    ============================== */
                     new Chart(ctx, {
                         type: 'bar',
-                        plugins: [shadowPlugin, valueLabelPlugin],
+                        plugins: [valueLabelPlugin],
                         data: {
                             labels,
                             datasets: [{
                                     label: 'PO',
                                     data: dataPO,
-                                    backgroundColor: colorPO,
-                                    borderRadius: 10,
-                                    barThickness: 24
+                                    backgroundColor: '#2E86DE',
+                                    borderRadius: 8,
+                                    barThickness: barThicknessSize
                                 },
                                 {
                                     label: 'PR',
                                     data: dataPR,
-                                    backgroundColor: colorPR,
-                                    borderRadius: 10,
-                                    barThickness: 24
+                                    backgroundColor: '#E74C3C',
+                                    borderRadius: 8,
+                                    barThickness: barThicknessSize
                                 }
                             ]
                         },
@@ -642,81 +657,46 @@
                             responsive: true,
                             maintainAspectRatio: false,
 
-                            animation: {
-                                duration: 1400,
-                                easing: 'easeOutQuart'
-                            },
-
                             plugins: {
                                 legend: {
                                     position: 'top',
                                     labels: {
                                         font: {
-                                            size: 14,
+                                            size: fontSizeLegend,
                                             weight: 'bold'
-                                        },
-                                        boxWidth: 14,
-                                        padding: 16
-                                    }
-                                },
-                                tooltip: {
-                                    backgroundColor: 'rgba(0,0,0,0.85)',
-                                    callbacks: {
-                                        title(context) {
-                                            return proyekData[context[0].dataIndex].nama_pekerjaan;
                                         }
-                                    },
-                                    titleFont: {
-                                        size: 14,
-                                        weight: 'bold'
-                                    },
-                                    bodyFont: {
-                                        size: 12
-                                    },
-                                    padding: 10
+                                    }
                                 }
                             },
 
                             scales: {
                                 x: {
-                                    grid: {
-                                        display: false
-                                    },
                                     ticks: {
                                         autoSkip: false,
+                                        maxRotation: 0,
+                                        minRotation: 0,
+                                        padding: 10,
                                         font: {
-                                            size: 13,
+                                            size: fontSizeLabel,
                                             weight: 'bold'
-                                        },
-                                        padding: 12
+                                        }
+                                    },
+                                    grid: {
+                                        display: false
                                     }
                                 },
                                 y: {
                                     beginAtZero: true,
                                     ticks: {
-                                        stepSize: 1,
                                         font: {
-                                            size: 12
-                                        },
-                                        callback(value) {
-                                            return value % 5 === 0 ? value : '';
-                                        }
-                                    },
-                                    grid: {
-                                        color(context) {
-                                            return context.tick.value % 5 === 0 ?
-                                                'rgba(150,150,150,0.6)' :
-                                                'rgba(200,200,200,0.2)';
-                                        },
-                                        lineWidth(context) {
-                                            return context.tick.value % 5 === 0 ? 1.4 : 0.6;
+                                            size: 11
                                         }
                                     },
                                     title: {
                                         display: true,
                                         text: 'Jumlah Dokumen',
                                         font: {
-                                            size: 14,
+                                            size: 13,
                                             weight: 'bold'
                                         }
                                     }
@@ -727,6 +707,8 @@
 
                 });
             </script>
+
+
 
             {{-- End Grafik PO & PR --}}
 
