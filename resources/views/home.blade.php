@@ -238,6 +238,40 @@
             padding: 3px 8px;
         }
     }
+
+
+    /* ===============================
+   NAV TAB MERAH - DASHBOARD
+================================ */
+
+    #dashboardTabs {
+        border-bottom: 2px solid #dc2626;
+        /* merah */
+    }
+
+    #dashboardTabs .nav-link {
+        color: #991b1b;
+        /* merah tua */
+        font-weight: 600;
+        border: none;
+        border-radius: 0;
+        padding: 10px 18px;
+        transition: all 0.25s ease;
+    }
+
+    #dashboardTabs .nav-link:hover {
+        color: #dc2626;
+        background-color: #fee2e2;
+        /* merah muda */
+    }
+
+    #dashboardTabs .nav-link.active {
+        color: #fff;
+        background-color: #dc2626;
+        /* MERAH UTAMA */
+        border-radius: 6px 6px 0 0;
+        box-shadow: 0 -2px 0 #b91c1c inset;
+    }
 </style>
 @section('content')
     {{-- <div class="content-header">
@@ -267,10 +301,10 @@
                 {{-- ================= TAB NAV ================= --}}
                 <ul class="nav nav-tabs mb-3" id="dashboardTabs">
                     <li class="nav-item">
-                        <a class="nav-link" data-tab="pemasaran" href="javascript:void(0)">Pemasaran</a>
+                        <a class="nav-link active" data-tab="pemasaran" href="javascript:void(0)">Pemasaran</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" data-tab="wilayah" href="javascript:void(0)">Wilayah & Log</a>
+                        <a class="nav-link" data-tab="wilayah" href="javascript:void(0)">Wilayah, MRO & Log</a>
                     </li>
 
                     <li class="nav-item">
