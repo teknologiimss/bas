@@ -2126,7 +2126,7 @@
                 slides[index].classList.add('d-none');
                 index = (index + 1) % slides.length;
                 slides[index].classList.remove('d-none');
-            }, 30000); // 30 detik per slide
+            }, 60000); // 60 detik per slide
         }
 
         /* ================= AUTO TAB ================= */
@@ -2135,7 +2135,7 @@
             tabInterval = setInterval(() => {
                 tabIndex = (tabIndex + 1) % tabs.length;
                 showTab(tabs[tabIndex]);
-            }, 30000); // 30 detik per tab
+            }, 60000); // 60 detik per tab
         }
 
         function stopAutoTab() {
