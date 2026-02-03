@@ -689,38 +689,41 @@
                     </div>
                 </div>
 
-                {{-- modal delete --}}
-                <div class="modal fade" id="delete-kontrak">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 id="modal-title" class="modal-title">{{ __('Delete Kontrak') }}</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form role="form" id="delete" action="{{ route('kontrak.destroy') }}"
-                                    method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <input type="hidden" id="delete_id" name="id">
-                                </form>
-                                <div>
-                                    <p>Anda yakin ingin menghapus Data Kontrak ini <span id="pcode"
-                                            class="font-weight-bold"></span>?
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                                <button type="button" class="btn btn-default"
-                                    data-dismiss="modal">{{ __('Batal') }}</button>
-                                <button id="button-save" type="button" class="btn btn-danger"
-                                    onclick="document.getElementById('delete').submit();">{{ __('Ya, hapus') }}</button>
-                            </div>
+
+            </div>
+        </div>
+
+
+        {{-- modal delete --}}
+        <div class="modal fade" id="delete-kontrak">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 id="modal-title" class="modal-title">{{ __('Delete Kontrak') }}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" id="delete" action="{{ route('kontrak.destroy') }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <input type="hidden" id="delete_id" name="id">
+                        </form>
+                        <div>
+                            <p>Anda yakin ingin menghapus Data Kontrak ini <span id="pcode"
+                                    class="font-weight-bold"></span>?
+                            </p>
                         </div>
                     </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Batal') }}</button>
+                        <button id="button-save" type="button" class="btn btn-danger"
+                            onclick="document.getElementById('delete').submit();">{{ __('Ya, hapus') }}</button>
+                    </div>
                 </div>
+            </div>
+        </div>
     </section>
 @endsection
 
