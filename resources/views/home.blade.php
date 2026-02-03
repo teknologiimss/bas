@@ -412,7 +412,7 @@
                                         Jumlah Kontrak per Tahun
                                     </div>
                                     <div class="card-body">
-                                        <canvas id="kontrakBarChart"></canvas>
+                                        <canvas id="kontrakLineChart"></canvas>
                                     </div>
                                 </div>
 
@@ -1260,29 +1260,23 @@
                 const kontrakPerTahunLabels = {!! json_encode(array_keys($kontrakPerTahun)) !!};
                 const kontrakPerTahunData = {!! json_encode(array_values($kontrakPerTahun)) !!};
 
-                const warnaTahun = [
-                    '#4e73df',
-                    '#1cc88a',
-                    '#36b9cc',
-                    '#f6c23e',
-                    '#e74a3b',
-                    '#858796',
-                    '#6f42c1',
-                ];
+                const warnaGaris = '#4e73df';
 
-                const ctxKontrak = document.getElementById('kontrakBarChart').getContext('2d');
+                const ctxKontrak = document.getElementById('kontrakLineChart').getContext('2d');
 
                 new Chart(ctxKontrak, {
-                    type: 'bar',
+                    type: 'line',
                     data: {
                         labels: kontrakPerTahunLabels,
                         datasets: [{
                             data: kontrakPerTahunData,
-                            backgroundColor: kontrakPerTahunLabels.map(
-                                (_, index) => warnaTahun[index % warnaTahun.length]
-                            ),
-                            borderRadius: 8,
-                            barThickness: 32
+                            borderColor: warnaGaris,
+                            backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                            fill: true,
+                            tension: 0.4, // ⬅️ bikin garis halus
+                            pointRadius: 5,
+                            pointBackgroundColor: warnaGaris,
+                            pointHoverRadius: 6
                         }]
                     },
                     options: {
@@ -1290,7 +1284,7 @@
                         maintainAspectRatio: false,
                         layout: {
                             padding: {
-                                top: 30 // ⬅️ RUANG KHUSUS ANGKA
+                                top: 30
                             }
                         },
                         plugins: {
@@ -1298,12 +1292,11 @@
                                 display: false
                             },
                             datalabels: {
-                                display: true, // ⬅️ PAKSA TAMPIL
-                                anchor: 'end',
-                                align: 'end',
-                                offset: 4,
-                                clamp: true, // ⬅️ ANTI KEPOTONG
-                                clip: false, // ⬅️ ANTI KEHILANGAN
+                                display: true,
+                                align: 'top',
+                                offset: 6,
+                                clamp: true,
+                                clip: false,
                                 color: '#111',
                                 font: {
                                     weight: 'bold',
@@ -1319,8 +1312,8 @@
                                 },
                                 ticks: {
                                     font: {
-                                        size: 14, // opsional: biar lebih kebaca
-                                        weight: 'bold' // ⬅️ INI KUNCINYA
+                                        size: 14,
+                                        weight: 'bold'
                                     }
                                 }
                             },
@@ -1335,11 +1328,11 @@
                                 }
                             }
                         }
-
                     },
                     plugins: [ChartDataLabels]
                 });
             </script>
+
 
 
 
