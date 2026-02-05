@@ -310,6 +310,10 @@
                     <li class="nav-item">
                         <a class="nav-link" data-tab="sdm" href="javascript:void(0)">SDM</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" data-tab="mro" href="javascript:void(0)">MRO</a>
+                    </li>
                 </ul>
 
                 {{-- ================= TAB WILAYAH ================= --}}
@@ -481,6 +485,56 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- ================= TAB MRO ================= --}}
+                <div class="dashboard-tab d-none" id="tab-mro">
+
+                    <div class="row">
+
+                        <!-- ================= MRO PROGRESS (BESAR) ================= -->
+                        <div class="col-lg-8 col-12 mb-3">
+
+                            <div class="card card-tv shadow-sm h-100">
+
+                                <div class="card-header card-header-tv text-center">
+                                    Monitoring Proyek (MRO)
+                                </div>
+
+                                <div class="card-body">
+                                    <div style="height:520px">
+                                        <canvas id="mroChart"></canvas>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- ================= STATUS PROYEK (KECIL) ================= -->
+                        <div class="col-lg-4 col-12 mb-3">
+
+                            <div class="card card-tv shadow-sm h-100">
+
+                                <div class="card-header card-header-tv text-center">
+                                    Status Proyek
+                                </div>
+
+                                <div class="card-body">
+                                    <div style="height:580px">
+                                        <canvas id="statusProyekChart"></canvas>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
             </div>
 
 
@@ -575,7 +629,245 @@
                     }
                 });
             </script>
+            {{-- Grafik Lokasi Kerja SDM --}}
 
+
+
+            {{-- Grafik Progress MRO --}}
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+            <script>
+                const mroLabels = [
+                    @foreach ($mroData as $m)
+                        "{{ $m->po_nota_dinas }} - {{ Str::limit($m->nama_pekerjaan, 35) }}",
+                    @endforeach
+                ];
+
+                const mroProgress = [
+                    @foreach ($mroData as $m)
+                        {{ $m->progress }},
+                    @endforeach
+                ];
+
+                const mroColors = mroProgress.map(p => {
+                    if (p < 50) return '#ef4444';
+                    if (p < 100) return '#facc15';
+                    return '#22c55e';
+                });
+
+                const ctx = document.getElementById('mroChart');
+
+                const chart = new Chart(ctx, {
+
+                    type: 'bar',
+
+                    data: {
+                        labels: mroLabels,
+                        datasets: [{
+                            data: mroProgress,
+                            backgroundColor: mroColors,
+                            borderRadius: 10,
+                            barThickness: 20,
+                            minBarLength: 6
+                        }]
+                    },
+
+                    plugins: [ChartDataLabels],
+
+                    options: {
+
+                        indexAxis: 'y',
+
+                        responsive: true,
+                        maintainAspectRatio: false,
+
+                        layout: {
+                            padding: 5
+                        },
+
+                        scales: {
+
+                            x: {
+                                max: 100,
+                                ticks: {
+                                    callback: v => v + '%',
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+                            },
+
+                            y: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+                            }
+                        },
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            datalabels: {
+                                anchor: 'center',
+                                align: 'center',
+                                clip: true,
+
+                                formatter: v => v >= 5 ? v + '%' : '', // hide kalau terlalu kecil
+
+                                color: '#fff',
+
+                                font: {
+                                    weight: 'bold',
+                                    size: 10
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // ===== RESPONSIVE =====
+                function resizeChart() {
+
+                    const mobile = window.innerWidth < 600;
+
+                    chart.options.plugins.datalabels.font.size = mobile ? 9 : 11;
+                    chart.options.scales.x.ticks.font.size = mobile ? 9 : 10;
+                    chart.options.scales.y.ticks.font.size = mobile ? 9 : 10;
+
+                    chart.data.datasets[0].barThickness = mobile ? 14 : 20;
+
+                    chart.update('none');
+                }
+
+                resizeChart();
+                window.addEventListener('resize', resizeChart);
+            </script>
+            {{-- Grafik Progres MRO --}}
+
+
+            {{-- Grafik Status Proyek MRO --}}
+            <script>
+                Chart.register(ChartDataLabels);
+
+                const proyekLabels = [
+                    @foreach ($statusPerProyek as $s)
+                        "{{ $s->nama_proyek }}",
+                    @endforeach
+                ];
+
+                const openData = [
+                    @foreach ($statusPerProyek as $s)
+                        {{ $s->open_count }},
+                    @endforeach
+                ];
+
+                const closedData = [
+                    @foreach ($statusPerProyek as $s)
+                        {{ $s->closed_count }},
+                    @endforeach
+                ];
+
+                new Chart(document.getElementById('statusProyekChart'), {
+
+                    type: 'bar',
+
+                    data: {
+                        labels: proyekLabels,
+
+                        datasets: [{
+                                label: 'Open',
+                                data: openData,
+                                backgroundColor: '#facc15',
+                                borderRadius: 10,
+                                barThickness: 22
+                            },
+                            {
+                                label: 'Closed',
+                                data: closedData,
+                                backgroundColor: '#22c55e',
+                                borderRadius: 10,
+                                barThickness: 22
+                            }
+                        ]
+                    },
+
+                    options: {
+
+                        responsive: true,
+                        maintainAspectRatio: false,
+
+                        layout: {
+                            padding: 12
+                        },
+
+                        plugins: {
+
+                            title: {
+                                display: true,
+                                text: 'Status Proyek',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            },
+
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    boxWidth: 14,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            },
+
+                            // ===== ANGKA JUMLAH DI DALAM BAR =====
+                            datalabels: {
+                                anchor: 'center',
+                                align: 'center',
+                                formatter: v => v > 0 ? v : '',
+                                color: '#fff',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+
+                        scales: {
+
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            },
+
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            </script>
+
+            {{-- Grafik Status Proyek MRO --}}
 
 
 
@@ -815,10 +1107,9 @@
 
                 });
             </script>
-
-
-
             {{-- End Grafik PO & PR --}}
+
+
 
 
 
@@ -2092,7 +2383,7 @@
         let slideInterval = null;
         let tabInterval = null;
 
-        const tabs = ['pemasaran', 'wilayah', 'sdm'];
+        const tabs = ['pemasaran', 'wilayah', 'sdm', 'mro'];
         let tabIndex = 0;
 
         /* ================= SHOW TAB ================= */

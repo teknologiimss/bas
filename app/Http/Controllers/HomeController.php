@@ -6,6 +6,7 @@ use App\Models\DetailPR;
 use App\Models\Karyawan;
 use App\Models\Keproyekan;
 use App\Models\Kontrak;
+use App\Models\Monitoring;
 use App\Models\Purchase_Order;
 use App\Models\PurchaseRequest;
 // use App\Models\SuratMasuk;
@@ -140,6 +141,24 @@ class HomeController extends Controller
             ->pluck('total', 'tahun')
             ->toArray();
 
+        $mroData = Monitoring::select(
+            'po_nota_dinas',
+            'nama_pekerjaan',
+            'progress'
+        )
+            ->orderBy('progress')
+            ->get();
+
+        $statusPerProyek = DB::table('monitorings')
+            ->join('proyeks', 'monitorings.proyek_id', '=', 'proyeks.id')
+            ->select(
+                'proyeks.nama_proyek',
+                DB::raw("SUM(CASE WHEN monitorings.status = 'Open' THEN 1 ELSE 0 END) as open_count"),
+                DB::raw("SUM(CASE WHEN monitorings.status = 'Closed' THEN 1 ELSE 0 END) as closed_count")
+            )
+            ->groupBy('proyeks.nama_proyek')
+            ->get();
+
         return View::make('home')->with(compact(
             'warehouse',
             'purchaseRequests',
@@ -158,7 +177,9 @@ class HomeController extends Controller
             'poPrPerProyek',
             'nilaiPekerjaanPerTahun',
             'pelangganCounts',
-            'kontrakPerTahun'
+            'kontrakPerTahun',
+            'mroData',
+            'statusPerProyek',
         ));
     }
 
