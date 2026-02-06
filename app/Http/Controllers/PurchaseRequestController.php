@@ -534,95 +534,175 @@ class PurchaseRequestController extends Controller
     //             ->with('success', 'Purchase Request berhasil diperbarui');
     //     }
     // }
+    // public function store(Request $request)
+    // {
+    //     $pr_id = $request->id;
+    //     // === VALIDASI ===
+    //     $request->validate([
+    //         'no_pr' => 'required',
+    //         'tgl_pr' => 'required',
+    //         'proyek_id' => 'required',
+    //         'dasar_pr' => 'required',
+    //         'revisi' => 'nullable|string',
+    //         'catatan' => 'nullable|string',
+    //         'dasar' => 'nullable|string',
+    //     ]);
+    //     if (empty($pr_id)) {
+    //         // === INSERT BARU ===
+    //         $pr = PurchaseRequest::create([
+    //             'proyek_id' => $request->proyek_id,
+    //             'no_pr' => $request->no_pr,
+    //             'dasar_pr' => $request->dasar_pr,
+    //             'tgl_pr' => $request->tgl_pr,
+    //             'revisi' => $request->revisi,
+    //             'catatan' => $request->catatan,
+    //             'dasar' => $request->dasar,
+    //             'id_user' => auth()->user()->id,
+    //             'created_at' => now(),
+    //             'updated_at' => now(),
+    //         ]);
+    //         // 🔹 Upload lampiran (jika ada)
+    //         if ($request->hasFile('lampiran')) {
+    //             foreach ($request->file('lampiran') as $file) {
+    //                 $file_name = rand() . '.' . $file->getClientOriginalExtension();
+    //                 $file->move(public_path('lampiran'), $file_name);
+    //                 PrLampiran::create([
+    //                     'pr_id' => $pr->id,
+    //                     'file' => $file_name,
+    //                     'tipe' => $this->FunctionCountPages(public_path('lampiran/' . $file_name)),
+    //                     'created_at' => now(),
+    //                     'updated_at' => now(),
+    //                 ]);
+    //             }
+    //         }
+    //         return redirect()->route('purchase_request.index')->with('success', 'Purchase Request berhasil ditambahkan');
+    //     } else {
+    //         // === UPDATE DATA ===
+    //         $pr = PurchaseRequest::find($pr_id);
+    //         if (!$pr) {
+    //             return redirect()->route('purchase_request.index')->with('error', 'Data tidak ditemukan.');
+    //         }
+    //         $pr->update([
+    //             'proyek_id' => $request->proyek_id,
+    //             'no_pr' => $request->no_pr,
+    //             'dasar_pr' => $request->dasar_pr,
+    //             'tgl_pr' => $request->tgl_pr,
+    //             'revisi' => $request->revisi,
+    //             'catatan' => $request->catatan,
+    //             'dasar' => $request->dasar,
+    //             'updated_at' => now(),
+    //         ]);
+    //         // 🔹 Upload lampiran baru (jika ada)
+    //         if ($request->hasFile('lampiran')) {
+    //             foreach ($request->file('lampiran') as $file) {
+    //                 $file_name = rand() . '.' . $file->getClientOriginalExtension();
+    //                 $file->move(public_path('lampiran'), $file_name);
+    //                 PrLampiran::create([
+    //                     'pr_id' => $pr->id,
+    //                     'file' => $file_name,
+    //                     'tipe' => $this->FunctionCountPages(public_path('lampiran/' . $file_name)),
+    //                     'created_at' => now(),
+    //                     'updated_at' => now(),
+    //                 ]);
+    //             }
+    //         }
+    //         // 🔹 Hapus lampiran yang dihapus user
+    //         $nama_lampiran_baru = explode(', ', $request->nama_lampiran);
+    //         $existing_files = explode(', ', $request->lampiran_awal ?? '');
+    //         foreach ($existing_files as $existing_file) {
+    //             if (!in_array($existing_file, $nama_lampiran_baru)) {
+    //                 PrLampiran::where('pr_id', $pr_id)
+    //                     ->where('file', $existing_file)
+    //                     ->delete();
+    //             }
+    //         }
+    //         return redirect()->route('purchase_request.index')->with('success', 'Purchase Request berhasil diperbarui');
+    //     }
+    // }
+
+    
     public function store(Request $request)
     {
         $pr_id = $request->id;
 
-        // === VALIDASI ===
+        // ================= VALIDASI DINAMIS =================
         $request->validate([
             'no_pr' => 'required',
             'tgl_pr' => 'required',
             'proyek_id' => 'required',
-            'dasar_pr' => 'required',
+            // NON MRO wajib dasar_pr
+            'dasar_pr' => auth()->user()->role == 14 ? 'nullable' : 'required',
+            // MRO wajib catatan & dasar
+            'catatan' => auth()->user()->role == 14 ? 'required' : 'nullable',
+            'dasar' => auth()->user()->role == 14 ? 'required' : 'nullable',
             'revisi' => 'nullable|string',
         ]);
 
+        // ================= PREPARE DATA =================
+        $data = [
+            'proyek_id' => $request->proyek_id,
+            'no_pr' => $request->no_pr,
+            'tgl_pr' => $request->tgl_pr,
+            'revisi' => $request->revisi,
+            'catatan' => $request->catatan,
+            'dasar' => $request->dasar,
+            'id_user' => auth()->user()->id,
+        ];
+
+        // kalau MRO, isi dasar_pr dari dasar
+        $data['dasar_pr'] = auth()->user()->role == 14
+            ? $request->dasar
+            : $request->dasar_pr;
+
         if (empty($pr_id)) {
-            // === INSERT BARU ===
-            $pr = PurchaseRequest::create([
-                'proyek_id' => $request->proyek_id,
-                'no_pr' => $request->no_pr,
-                'dasar_pr' => $request->dasar_pr,
-                'tgl_pr' => $request->tgl_pr,
-                'revisi' => $request->revisi,
-                'id_user' => auth()->user()->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            // 🔹 Upload lampiran (jika ada)
-            if ($request->hasFile('lampiran')) {
-                foreach ($request->file('lampiran') as $file) {
-                    $file_name = rand() . '.' . $file->getClientOriginalExtension();
-                    $file->move(public_path('lampiran'), $file_name);
-
-                    PrLampiran::create([
-                        'pr_id' => $pr->id,
-                        'file' => $file_name,
-                        'tipe' => $this->FunctionCountPages(public_path('lampiran/' . $file_name)),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-            }
-
-            return redirect()->route('purchase_request.index')->with('success', 'Purchase Request berhasil ditambahkan');
+            // ================= INSERT =================
+            $pr = PurchaseRequest::create($data);
         } else {
-            // === UPDATE DATA ===
+            // ================= UPDATE =================
             $pr = PurchaseRequest::find($pr_id);
+
             if (!$pr) {
-                return redirect()->route('purchase_request.index')->with('error', 'Data tidak ditemukan.');
+                return redirect()
+                    ->route('purchase_request.index')
+                    ->with('error', 'Data tidak ditemukan.');
             }
 
-            $pr->update([
-                'proyek_id' => $request->proyek_id,
-                'no_pr' => $request->no_pr,
-                'dasar_pr' => $request->dasar_pr,
-                'tgl_pr' => $request->tgl_pr,
-                'revisi' => $request->revisi,
-                'updated_at' => now(),
-            ]);
+            $pr->update($data);
+        }
 
-            // 🔹 Upload lampiran baru (jika ada)
-            if ($request->hasFile('lampiran')) {
-                foreach ($request->file('lampiran') as $file) {
-                    $file_name = rand() . '.' . $file->getClientOriginalExtension();
-                    $file->move(public_path('lampiran'), $file_name);
+        // ================= UPLOAD LAMPIRAN =================
+        if ($request->hasFile('lampiran')) {
+            foreach ($request->file('lampiran') as $file) {
+                $file_name = rand() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('lampiran'), $file_name);
 
-                    PrLampiran::create([
-                        'pr_id' => $pr->id,
-                        'file' => $file_name,
-                        'tipe' => $this->FunctionCountPages(public_path('lampiran/' . $file_name)),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
+                PrLampiran::create([
+                    'pr_id' => $pr->id,
+                    'file' => $file_name,
+                    'tipe' => $this->FunctionCountPages(public_path('lampiran/' . $file_name)),
+                ]);
             }
+        }
 
-            // 🔹 Hapus lampiran yang dihapus user
+        // ================= HAPUS LAMPIRAN YANG DIHAPUS =================
+        if (!empty($request->lampiran_awal)) {
             $nama_lampiran_baru = explode(', ', $request->nama_lampiran);
-            $existing_files = explode(', ', $request->lampiran_awal ?? '');
+            $existing_files = explode(', ', $request->lampiran_awal);
 
             foreach ($existing_files as $existing_file) {
                 if (!in_array($existing_file, $nama_lampiran_baru)) {
-                    PrLampiran::where('pr_id', $pr_id)
+                    PrLampiran::where('pr_id', $pr->id)
                         ->where('file', $existing_file)
                         ->delete();
                 }
             }
-
-            return redirect()->route('purchase_request.index')->with('success', 'Purchase Request berhasil diperbarui');
         }
+
+        return redirect()
+            ->route('purchase_request.index')
+            ->with('success', empty($pr_id)
+                ? 'Purchase Request berhasil ditambahkan'
+                : 'Purchase Request berhasil diperbarui');
     }
 
     function FunctionCountPages($path)
@@ -1146,10 +1226,6 @@ class PurchaseRequestController extends Controller
             $fpdi->Output('S', 'SPPJP-' . $sppjp->no_pr . '.pdf')
         )->header('Content-Type', 'application/pdf');
     }
-
-
-
-    
 
     /**
      * Show the form for editing the specified resource.

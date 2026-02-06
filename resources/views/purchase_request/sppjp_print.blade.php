@@ -126,29 +126,29 @@
 
 <body>
     <header>
-    <div class="information">
+        <div class="information">
 
-        <!-- ===================== BARIS LOGO & JUDUL ===================== -->
-        <table width="100%" style="border-collapse: collapse;">
-            <tr style="border: 1px solid black;">
-                <td align="left" style="width: 21.2%; border: 1px solid black;">
-                    <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
-                        alt="Logo" width="150" class="logo" /><br>
-                </td>
+            <!-- ===================== BARIS LOGO & JUDUL ===================== -->
+            <table width="100%" style="border-collapse: collapse;">
+                <tr style="border: 1px solid black;">
+                    <td align="left" style="width: 21.2%; border: 1px solid black;">
+                        <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
+                            alt="Logo" width="150" class="logo" /><br>
+                    </td>
 
-                <td align="center" style="width: 85%; border-style:none;">
-                    <strong style="font-size: 17px;">SURAT PERMINTAAN PEMBELIAN JASA / PEMBORONGAN</strong><br>
-                    <strong style="font-size: 17px;">(SPPJ/P)</strong><br>
-                </td>
+                    <td align="center" style="width: 85%; border-style:none;">
+                        <strong style="font-size: 17px;">SURAT PERMINTAAN PEMBELIAN JASA / PEMBORONGAN</strong><br>
+                        <strong style="font-size: 17px;">(SPPJ/P)</strong><br>
+                    </td>
 
-                <!-- Extra kolom kosong seperti kode 2 -->
-                <td style="border-style:none;"></td>
-            </tr>
-        </table>
+                    <!-- Extra kolom kosong seperti kode 2 -->
+                    <td style="border-style:none;"></td>
+                </tr>
+            </table>
 
 
-        <!-- ===================== BARIS INFORMASI ===================== -->
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+            <!-- ===================== BARIS INFORMASI ===================== -->
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
                 <tr>
 
                     <!-- Kolom 1 -->
@@ -190,12 +190,21 @@
                                     @endif
                                 </td>
 
-                                <!-- Revisi -->
+                                {{-- <!-- Revisi -->
                                 <td style="padding: 0; vertical-align: top;"><strong>Revisi</strong></td>
                                 <td style="padding: 0; vertical-align: top;">:</td>
                                 <td style="padding: 0; vertical-align: top;">
                                     {{ $sppjp->revisi ?? '-' }}
+                                </td> --}}
+                                <!-- Revisi / Dasar -->
+                                <td style="padding: 0; vertical-align: top;">
+                                    <strong>{{ auth()->user()->role == 14 ? 'Dasar' : 'Revisi' }}</strong>
                                 </td>
+                                <td style="padding: 0; vertical-align: top;">:</td>
+                                <td style="padding: 0; vertical-align: top;">
+                                    {{ auth()->user()->role == 14 ? $sppjp->dasar ?? '-' : $sppjp->revisi ?? '-' }}
+                                </td>
+
                             </tr>
                         </table>
                     </td>
@@ -204,8 +213,8 @@
                 </tr>
             </table>
 
-    </div>
-</header>
+        </div>
+    </header>
 
 
     {{--
@@ -227,7 +236,7 @@
         </thead>
         <tbody>
             @forelse ($sppjp->purchases as $item)
-            @if ($loop->index % 8 == 0 && $loop->index != 0)
+                @if ($loop->index % 8 == 0 && $loop->index != 0)
         </tbody>
     </table>
     <div class="page_break"></div>
@@ -262,9 +271,9 @@
                 {{-- <td>{{ $item->waktu }}</td> --}}
                 <td>
                     @if ($item['waktu'])
-                    {{ \Carbon\Carbon::parse($item['waktu'])->locale('id')->translatedFormat('d F Y') }}
+                        {{ \Carbon\Carbon::parse($item['waktu'])->locale('id')->translatedFormat('d F Y') }}
                     @else
-                    -
+                        -
                     @endif
 
                 </td>
@@ -273,7 +282,7 @@
                     {{ $item->keterangan }}
                 </td>
             </tr>
-            @empty
+        @empty
             <tr>
                 <td colspan="8" class="text-center" style="text-align: center">Tidak ada data</td>
             </tr>
@@ -344,7 +353,7 @@
     </div>
 
 
-    <table class="table2" style="width:100%; margin-top:2rem">
+    {{-- <table class="table2" style="width:100%; margin-top:2rem">
         <tr>
             <td>
                 <strong><u>DASAR SPPJP :</u></strong><br>
@@ -352,7 +361,22 @@
 
             </td>
         </tr>
+    </table> --}}
+
+    <table class="table2" style="width:100%; margin-top:2rem">
+        <tr>
+            <td>
+                <strong>
+                    <u>{{ auth()->user()->role == 14 ? 'Catatan :' : 'DASAR SPPJP :' }}</u>
+                </strong><br>
+
+                <span>
+                    {!! nl2br(auth()->user()->role == 14 ? $sppjp->catatan ?? '' : $sppjp->dasar_pr ?? '') !!}
+                </span>
+            </td>
+        </tr>
     </table>
+
 
 </body>
 

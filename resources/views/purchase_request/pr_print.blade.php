@@ -134,10 +134,20 @@
                             alt="Logo" width="150" class="logo" /><br>
                     </td>
 
-                    <td align="center" style="width: 85%; border-style: none;">
+                    {{-- <td align="center" style="width: 85%; border-style: none;">
                         <strong style="font-size: 15">PURCHASE REQUEST</strong><br>
                         <strong style="font-size: 15">(PR)</strong><br>
+                    </td> --}}
+                    <td align="center" style="width: 85%; border-style: none;">
+                        @if (auth()->user()->role == 14)
+                            <strong style="font-size:17px">SURAT PERMINTAAN PEMBELIAN (MATERIAL)</strong><br>
+                            <strong style="font-size:17px">(SPP)</strong><br>
+                        @else
+                            <strong style="font-size:17px">PURCHASE REQUEST</strong><br>
+                            <strong style="font-size:17px">(PR)</strong><br>
+                        @endif
                     </td>
+
                     <td style="border-style:none"></td>
                 </tr>
             </table>
@@ -184,12 +194,22 @@
                                     @endif
                                 </td>
 
-                                <!-- Revisi -->
+                                {{-- <!-- Revisi -->
                                 <td style="padding: 0; vertical-align: top;"><strong>Revisi</strong></td>
                                 <td style="padding: 0; vertical-align: top;">:</td>
                                 <td style="padding: 0; vertical-align: top;">
                                     {{ $pr->revisi ?? '-' }}
+                                </td> --}}
+
+                                <!-- Revisi / Dasar -->
+                                <td style="padding: 0; vertical-align: top;">
+                                    <strong>{{ auth()->user()->role == 14 ? 'Dasar' : 'Revisi' }}</strong>
                                 </td>
+                                <td style="padding: 0; vertical-align: top;">:</td>
+                                <td style="padding: 0; vertical-align: top;">
+                                    {{ auth()->user()->role == 14 ? $pr->dasar ?? '-' : $pr->revisi ?? '-' }}
+                                </td>
+
                             </tr>
                         </table>
                     </td>
@@ -338,21 +358,36 @@
             </tr>
         </table>
     </div>
-    
 
 
 
-    <table class="table2" style="width:100%; margin-top:2rem">
+
+    {{-- <table class="table2" style="width:100%; margin-top:2rem">
         <tr>
             <td>
-                <strong><u>DASAR PR :</u></strong><br>
+                <strong><u>Dasar PR/SPPJP :</u></strong><br>
                 <span>{!! nl2br($pr->dasar_pr) !!}</span>
 
             </td>
         </tr>
+    </table> --}}
+
+    <table class="table2" style="width:100%; margin-top:2rem">
+        <tr>
+            <td>
+                <strong>
+                    <u>{{ auth()->user()->role == 14 ? 'Catatan :' : 'Dasar PR/SPPJP :' }}</u>
+                </strong><br>
+
+                <span>
+                    {!! nl2br(auth()->user()->role == 14 ? $pr->catatan ?? '' : $pr->dasar_pr ?? '') !!}
+                </span>
+            </td>
+        </tr>
     </table>
 
-    
+
+
 
 </body>
 

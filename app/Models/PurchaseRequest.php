@@ -19,6 +19,8 @@ class PurchaseRequest extends Model
         'nomor_lppb',
         'tanggal_lppb',
         'lampiran',
+        'catatan',
+        'dasar',
         'is_read'
     ];
     public function detailPr()

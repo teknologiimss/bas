@@ -366,7 +366,9 @@
                                     <th>{{ __('Nomor PR/SPPJP') }}</th>
                                     <th>{{ __('Proyek') }}</th>
                                     <th>{{ __('Tanggal') }}</th>
-                                    <th>{{ __('Dasar PR/SPPJP') }}</th>
+                                    {{-- <th>{{ __('Dasar PR/SPPJP') }}</th> --}}
+                                    <th>{{ auth()->user()->role == 14 ? 'Dasar SPP/SPPJP' : 'Dasar PR/SPPJP' }}</th>
+
                                     <th>{{ __('Arsip') }}</th>
                                     <th></th>
                                 </tr>
@@ -385,6 +387,8 @@
                                             'id' => $d->id,
                                             'editable' => $d->editable,
                                             'revisi' => $d->revisi,
+                                            'catatan' => $d->catatan,
+                                            'dasar' => $d->dasar,
                                         ];
                                     @endphp
 
@@ -396,7 +400,11 @@
                                         <td class="text-center">{{ $data['no_pr'] }}</td>
                                         <td class="text-center">{{ $data['proyek'] }}</td>
                                         <td class="text-center">{{ $data['tanggal'] }}</td>
-                                        <td class="text-center">{!! nl2br(e($data['dasar_pr'])) !!}</td>
+                                        {{-- <td class="text-center">{!! nl2br(e($data['dasar_pr'])) !!}</td> Backup dasar pr/sppjp tanpa MRO --}}
+                                        <td class="text-center">
+                                            {!! nl2br(e(auth()->user()->role == 14 ? $data['dasar'] ?? '' : $data['dasar_pr'] ?? '')) !!}
+                                        </td>
+
 
                                         {{-- Lampiran --}}
                                         <td class="text-center">
@@ -506,11 +514,11 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            {{-- <div class="form-group row">
                                 <label for="dasar_pr" class="col-sm-4 col-form-label">{{ __('Dasar PR/SPPJP') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    {{-- <input type="text" class="form-control" id="dasar" name="dasar"> --}}
+                                    
                                     <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3"></textarea>
                                 </div>
                             </div>
@@ -520,7 +528,45 @@
                                     <input type="text" class="form-control" id="revisi" name="revisi"
                                         autocomplete="off">
                                 </div>
-                            </div>
+                            </div> --}}
+
+                            @if (auth()->user()->role == 14)
+                                {{-- ===== USER MRO ===== --}}
+
+                                <div class="form-group row">
+                                    <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="dasar" class="col-sm-4 col-form-label">Dasar</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="dasar" name="dasar"
+                                            autocomplete="off">
+                                    </div>
+                                </div>
+                            @else
+                                {{-- ===== USER NORMAL ===== --}}
+
+                                <div class="form-group row">
+                                    <label for="dasar_pr" class="col-sm-4 col-form-label">Dasar PR/SPPJP</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" id="dasar_pr" name="dasar_pr" rows="3"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="revisi" class="col-sm-4 col-form-label">Revisi</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="revisi" name="revisi"
+                                            autocomplete="off">
+                                    </div>
+                                </div>
+                            @endif
+
+
 
                             <input type="text" id="data_lampiran" value="--" style="display: none">
                             <h6 id="lampiran_text">Lampiran</h6>
@@ -1366,6 +1412,8 @@
                 }
             });
             $('#revisi').val(data.revisi);
+            $('#catatan').val(data.catatan);
+            $('#dasar').val(data.dasar);
         }
 
         function emptyTableProducts() {
