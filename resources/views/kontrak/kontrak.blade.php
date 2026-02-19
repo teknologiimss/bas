@@ -384,7 +384,11 @@
                                 <label for="tanggal" class="col-sm-4 col-form-label">{{ __('Tanggal') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="tanggal" name="tanggal">
+                                    <input type="date" class="form-control @error('tanggal') is-invalid @enderror" id="tanggal" name="tanggal" value="{{ old('tanggal') }}">
+
+                                    @error('tanggal')
+                                        <small class="text-danger">Wajib diisi</small>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -393,8 +397,12 @@
                                 <label for="kode_proyek" class="col-sm-4 col-form-label">{{ __('Kode Proyek') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="kode_proyek" name="kode_proyek"
+                                    <input type="text" class="form-control @error('kode_proyek') is-invalid @enderror" id="kode_proyek" name="kode_proyek" value="{{ old('kode_proyek') }}"
                                         autocomplete="off">
+
+                                    @error('kode_proyek')
+                                        <small class="text-danger">Wajib diisi</small>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -403,8 +411,12 @@
                                 <label for="nomor_kontrak" class="col-sm-4 col-form-label">{{ __('Nomor Dokumen') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="nomor_kontrak" name="nomor_kontrak"
+                                    <input type="text" class="form-control @error('nomor_kontrak') is-invalid @enderror" id="nomor_kontrak" name="nomor_kontrak" value="{{ old('nomor_kontrak') }}"
                                         autocomplete="off">
+
+                                    @error('nomor_kontrak')
+                                        <small class="text-danger">Wajib diisi</small>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -413,9 +425,13 @@
                                 <label for="nama_pekerjaan" class="col-sm-4 col-form-label">{{ __('Nama Pekerjaan') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="nama_pekerjaan" name="nama_pekerjaan"
+                                    <input type="text" class="form-control @error('nama_pekerjaan') is-invalid @enderror" id="nama_pekerjaan" name="nama_pekerjaan" value="{{ old('nama_pekerjaan') }}"
                                         autocomplete="off">
                                     {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
+                                    
+                                    @error('nama_pekerjaan')
+                                        <small class="text-danger">Wajib diisi</small>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -425,9 +441,13 @@
                                     class="col-sm-4 col-form-label">{{ __('Nilai Pekerjaan (Rp.)') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="nilai_pekerjaan"
-                                        name="nilai_pekerjaan" autocomplete="off">
+                                    <input type="text" class="form-control @error('nilai_pekerjaan') is-invalid @enderror" id="nilai_pekerjaan"
+                                        name="nilai_pekerjaan" class="form-control @error('nilai_pekerjaan') is-invalid @enderror" autocomplete="off">
                                     {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
+
+                                     @error('nilai_pekerjaan')
+                                        <small class="text-danger">Wajib diisi</small>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -436,18 +456,28 @@
                                 <label for="nama_pelanggan" class="col-sm-4 col-form-label">{{ __('Nama Pelanggan') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan"
+                                    <input type="text" class="form-control @error('nama_pelanggan') is-invalid @enderror" id="nama_pelanggan" name="nama_pelanggan" value="{{ old('nama_pelanggan') }}"
                                         autocomplete="off">
                                     {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
+
+                                    @error('nama_pelanggan')
+                                        <small class="text-danger">Wajib diisi</small>
+                                    @enderror
                                 </div>
                             </div>
+
+                            {{-- Tahun --}}
                             <div class="form-group row">
                                 <label for="tahun" class="col-sm-4 col-form-label">{{ __('Tahun') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="tahun" name="tahun"
+                                    <input type="text" class="form-control @error('tahun') is-invalid @enderror" id="tahun" name="tahun" value="{{ old('tahun') }}"
                                         autocomplete="off">
                                     {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
+
+                                    @error('tahun')
+                                        <small class="text-danger">Wajib diisi</small>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -455,11 +485,15 @@
                             <div class="form-group row">
                                 <label for="tipe" class="col-sm-4 col-form-label">{{ __('Tipe') }}</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control" id="tipe" name="tipe">
+                                    <select class="form-control @error('tipe') is-invalid @enderror" id="tipe" name="tipe">
                                         <option value="">-- Pilih Tipe --</option>
                                         <option value="NON INKA">NON INKA</option>
                                         <option value="INKA GROUP">INKA GROUP</option>
                                     </select>
+
+                                    @error('tipe')
+                                        <small class="text-danger">Wajib diisi</small>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -467,11 +501,16 @@
                             <div class="form-group row">
                                 <label for="status" class="col-sm-4 col-form-label">{{ __('Status') }}</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control" id="status" name="status">
-                                        <option value="-">-</option>
+                                    <select class="form-control @error('status') is-invalid @enderror" id="status" name="status">
+                                        <option value=""></option>
+                                        <!-- <option value="-">-</option> -->
                                         <option value="Konfirmasi Order">Konfirmasi Order</option>
                                         <option value="Kontrak">Kontrak</option>
                                     </select>
+
+                                    @error('status')
+                                        <small class="text-danger">Wajib diisi</small>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -492,8 +531,9 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
-                        <button id="button-save" type="button" class="btn btn-primary"
-                            onclick="document.getElementById('save').submit();">{{ __('Tambahkan') }}</button>
+                        <button id="button-save" type="button" class="btn btn-primary">
+                            Tambahkan
+                        </button>
                     </div>
                 </div>
             </div>
@@ -734,6 +774,7 @@
     <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <!-- script detail kontrak -->
@@ -804,7 +845,64 @@
     </script>
     {{-- End Menampilkan form otomatis Dasar Proyek --}}
 
+    <script>
+        $(document).ready(function () {
 
+            $('#button-save').click(function (e) {
+                e.preventDefault();
+
+                let form = $('#save');
+
+                // reset error dulu
+                $('.form-control').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+
+                $.ajax({
+                    url: form.attr('action'),
+                    method: "POST",
+                    data: form.serialize(),
+
+                    success: function (response) {
+                        toastr.success('Kontrak berhasil disimpan');
+
+                        $('#add-kontrak').modal('hide');
+
+                        // reload tabel / halaman
+                        location.reload();
+                    },
+
+                    error: function (xhr) {
+
+                        if (xhr.status == 422) {
+
+                            let errors = xhr.responseJSON.errors;
+
+                            $.each(errors, function (key, value) {
+
+                                let input = $('[name="' + key + '"]');
+
+                                input.addClass('is-invalid');
+
+                                input.after(
+                                    '<div class="invalid-feedback">' +
+                                    value[0] +
+                                    '</div>'
+                                );
+
+                            });
+
+                        } else {
+                            toastr.error('Terjadi kesalahan sistem');
+                        }
+
+                    }
+
+                });
+
+            });
+
+        });
+    </script>
 
     <script>
         $(function() {
@@ -2121,11 +2219,21 @@
         </script>
     @endif
 
-    {{-- VALIDATION ERRORS --}}
+    <!-- {{-- VALIDATION ERRORS --}}
+    @if ($errors->any())
+        <script>
+            $(document).ready(function(){
+                $('#add-kontrak').modal('show');
+            });
+        </script>
+    @endif -->
+
+
+    <!-- {{-- VALIDATION ERRORS --}}
     @if ($errors->any())
         <script>
             toastr.error("{!! implode('<br>', $errors->all()) !!}");
         </script>
-    @endif
+    @endif -->
 
 @endsection
