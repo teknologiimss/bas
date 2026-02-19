@@ -240,8 +240,8 @@ class KontrakController extends Controller
                 'nilai_pekerjaan' => 'required',
                 'nama_pelanggan' => 'required',
                 'tipe' => 'required',
-                'status' => 'nullable',
-                'tahun' => 'nullable',
+                'status' => 'required',
+                'tahun' => 'required',
                 // 'nilai' => 'nullable',
             ],
             [
