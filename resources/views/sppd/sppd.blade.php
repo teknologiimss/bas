@@ -299,7 +299,7 @@
                         </div>
                         {{-- End Filter by Nomor Pr dan Tanggal --}}
 
-                       
+
 
 
                         <table id="table" class="table table-sm table-bordered table-hover table-striped">
@@ -328,8 +328,8 @@
                                             'tujuan' => $d->tujuan,
                                             'keperluan' => $d->keperluan,
                                             'lama_perjalanan' => $d->lama_perjalanan,
-                                            'terhitung_mulai' => date('d/m/Y', strtotime($d->terhitung_mulai)),
-                                            'terhitung_selesai' => date('d/m/Y', strtotime($d->terhitung_selesai)),
+                                            'terhitung_mulai' => date('Y-m-d', strtotime($d->terhitung_mulai)),
+                                            'terhitung_selesai' => date('Y-m-d', strtotime($d->terhitung_selesai)),
                                             'lampiran' => $d->lampiran,
                                             'status' => $d->status,
                                             'keterangan_status' => $d->keterangan_status,
@@ -338,7 +338,7 @@
                                         ];
                                     @endphp
 
-                                
+
                                     <tr>
                                         <td class="text-center">
                                             <input type="checkbox" name="hapus[]" value="{{ $d->id }}">
@@ -348,8 +348,13 @@
                                         <td class="text-center">{{ $data['tujuan'] }}</td>
                                         <td class="text-center">{{ $data['keperluan'] }}</td>
                                         <td class="text-center">{{ $data['lama_perjalanan'] }}</td>
-                                        <td class="text-center">{{ $data['terhitung_mulai'] }}</td>
-                                        <td class="text-center">{{ $data['terhitung_selesai'] }}</td>
+                                        <td class="text-center">
+                                            {{ $data['terhitung_mulai'] ? \Carbon\Carbon::parse($data['terhitung_mulai'])->format('d-m-Y') : '-' }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $data['terhitung_selesai'] ? \Carbon\Carbon::parse($data['terhitung_selesai'])->format('d-m-Y') : '-' }}
+                                        </td>
+
 
                                         {{-- Lampiran --}}
                                         <td class="text-center">
@@ -1329,7 +1334,7 @@
             $('#terhitung_mulai').val(data.terhitung_mulai);
 
 
-            $('#terhitung_selesai').val(terhitung_selesai);
+            $('#terhitung_selesai').val(data.terhitung_selesai);
 
 
         }

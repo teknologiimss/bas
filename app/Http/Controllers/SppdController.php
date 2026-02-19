@@ -181,8 +181,8 @@ class SppdController extends Controller
                 'status' => $request->status,
                 'keterangan_status' => $request->keterangan_status,
                 // 'id_user' => auth()->user()->id,
-                'created_at' => now(),
-                'updated_at' => now(),
+                // 'created_at' => now(),
+                // 'updated_at' => now(),
             ]);
 
             // 🔹 Upload lampiran baru (jika ada)
