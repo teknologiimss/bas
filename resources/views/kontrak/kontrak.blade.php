@@ -846,63 +846,62 @@
     {{-- End Menampilkan form otomatis Dasar Proyek --}}
 
     <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            $('#button-save').click(function (e) {
-                e.preventDefault();
+        $('#button-save').click(function (e) {
+            e.preventDefault();
 
-                let form = $('#save');
+            let form = $('#save');
 
-                // reset error dulu
-                $('.form-control').removeClass('is-invalid');
-                $('.invalid-feedback').remove();
+            // reset error dulu (WAJIB pakai scope form)
+            form.find('.is-invalid').removeClass('is-invalid');
+            form.find('.invalid-feedback').remove();
 
-                $.ajax({
-                    url: form.attr('action'),
-                    method: "POST",
-                    data: form.serialize(),
+            $.ajax({
+                url: form.attr('action'),
+                method: "POST",
+                data: form.serialize(),
 
-                    success: function (response) {
-                        toastr.success('Kontrak berhasil disimpan');
+                success: function (response) {
 
-                        $('#add-kontrak').modal('hide');
+                    toastr.success('Kontrak berhasil disimpan');
 
-                        // reload tabel / halaman
-                        location.reload();
-                    },
+                    $('#add-kontrak').modal('hide');
 
-                    error: function (xhr) {
+                    location.reload();
+                },
 
-                        if (xhr.status == 422) {
+                error: function (xhr) {
 
-                            let errors = xhr.responseJSON.errors;
+                    if (xhr.status == 422) {
 
-                            $.each(errors, function (key, value) {
+                        let errors = xhr.responseJSON.errors;
 
-                                let input = $('[name="' + key + '"]');
+                        $.each(errors, function (key, value) {
 
-                                input.addClass('is-invalid');
+                            let input = form.find('[name="' + key + '"]');
 
-                                input.after(
-                                    '<div class="invalid-feedback">' +
-                                    value[0] +
-                                    '</div>'
-                                );
+                            input.addClass('is-invalid');
 
-                            });
+                            // tambahkan error tepat setelah input
+                            $('<div class="invalid-feedback">' + value[0] + '</div>')
+                                .insertAfter(input);
 
-                        } else {
-                            toastr.error('Terjadi kesalahan sistem');
-                        }
+                        });
 
+                    } else {
+                        toastr.error('Terjadi kesalahan sistem');
                     }
 
-                });
+                }
 
             });
 
         });
+
+    });
     </script>
+
 
     <script>
         $(function() {
@@ -934,10 +933,24 @@
         });
 
         function resetForm() {
-            $('#save').trigger("reset");
+            $('#save')[0].reset();
+            $('#save').find('.is-invalid').removeClass('is-invalid');
+            $('#save .invalid-feedback').remove();
             $('#barcode_preview_container').hide();
         }
 
+        $('#add-kontrak').on('hidden.bs.modal', function () {
+            let form = $('#save');
+            form[0].reset();
+            form.find('.is-invalid').removeClass('is-invalid');
+            form.find('.invalid-feedback').remove();
+        });
+
+
+        // function resetForm() {
+        //     $('#save').trigger("reset");
+        //     $('#barcode_preview_container').hide();
+        // }
 
         //Filter by Nomor dan tgl PO
         $(document).ready(function() {
@@ -999,10 +1012,10 @@
 
 
         function addKONTRAK() {
+            resetForm();
             $('#modal-title').text("Add Kontrak");
             $('#button-save').text("Tambahkan");
             $('#save_id').val("");
-            resetForm();
         }
 
 
