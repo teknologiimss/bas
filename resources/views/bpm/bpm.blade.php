@@ -267,7 +267,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 id="modal-title" class="modal-title">{{ __('Add Bpm') }}</h4>
+                        <h4 id="modal-title" class="modal-title">{{ __('Add BPM') }}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -287,8 +287,8 @@
                                 <label for="tgl_bpm" class="col-sm-4 col-form-label">{{ __('Tanggal') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="tgl_bpm" name="tgl_bpm"
-                                        min="{{ date('Y-m-d', strtotime('-7 days')) }}">
+                                    <input type="date" class="form-control" id="tgl_bpm" name="tgl_bpm">
+                                        <!-- min="{{ date('Y-m-d', strtotime('-7 days')) }}"> -->
                                 </div>
                             </div>
                             <div class="form-group
