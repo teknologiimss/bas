@@ -2396,8 +2396,8 @@
                             var editButton =
                                 '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
                                 value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
-                                value.kode_material + '\', \'' + value.uraian + '\', \'' + value.spek +
-                                '\', \'' + value.qty + '\', \'' + value.satuan + '\', \'' + value
+                                value.kode_material + '\', \'' + value.uraian + '\', \'' + escapeSpek(value.spek) + '\', \'' +
+                                value.qty + '\', \'' + value.satuan + '\', \'' + value
                                 .waktu + '\', \'' + value.keterangan +
                                 '\')"><i class="fas fa-edit"></i></button>';
 
@@ -2431,8 +2431,15 @@
             });
         }
 
-        function editRow(id, kode_material, uraian, spek, qty, satuan, waktu, lampiran, keterangan) {
-            console.log(id, kode_material, uraian, spek, qty, satuan, waktu, lampiran, keterangan);
+        function escapeSpek(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '&quot;');
+        }
+
+        function editRow(id, kode_material, uraian, spek, qty, satuan, waktu, keterangan) {
+            console.log(id, kode_material, uraian, spek, qty, satuan, waktu, keterangan);
             resetForm();
             $('#modal-title').text("Edit Detail");
             $('#button-update-pr').text("Simpan");
