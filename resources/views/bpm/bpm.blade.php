@@ -183,11 +183,11 @@
                                 <tr class="text-center">
                                     <th><input type="checkbox" id="select-all"></th>
                                     {{-- <th>No.</th> --}}
-                                    <th>{{ __('Nomor BPM') }}</th>
-                                    <th>{{ __('Proyek') }}</th>
-                                    <th>{{ __('Tanggal') }}</th>
-                                    <th>{{ __('Catatan BPM') }}</th>
-                                    <th>{{ __('Aksi') }}</th>
+                                    <th class="text-center">{{ __('Nomor BPM') }}</th>
+                                    <th class="text-center">{{ __('Proyek') }}</th>
+                                    <th class="text-center">{{ __('Tanggal') }}</th>
+                                    <th class="text-center">{{ __('Catatan BPM') }}</th>
+                                    <th class="text-center">{{ __('Aksi') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
