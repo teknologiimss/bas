@@ -129,22 +129,19 @@
         <div class="information">
             <table width="100%">
                 <tr style="border: 1px solid black;">
-                    <td align="left" style="width: 22%; border: 1px solid black;">
+                    <td align="left" style="width: 20%; border: 1px solid black;">
                         <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
                             alt="Logo" width="150" class="logo" /><br>
                     </td>
 
-                    {{-- <td align="center" style="width: 85%; border-style: none;">
-                        <strong style="font-size: 15">PURCHASE REQUEST</strong><br>
-                        <strong style="font-size: 15">(PR)</strong><br>
-                    </td> --}}
-                    <td align="center" style="width: 78%; border-style: none;">
+                    <td align="center" style="width: 80%; border-style: none;">
                         @if (auth()->user()->role == 14)
-                            <strong style="font-size:17px">SURAT PERMINTAAN PEMBELIAN (MATERIAL)</strong><br>
-                            <strong style="font-size:17px">(SPP)</strong><br>
+                        <strong style="font-size:17px">SURAT PERMINTAAN PEMBELIAN
+                            (MATERIAL)</strong><br>
+                        <strong style="font-size:17px">(SPP)</strong><br>
                         @else
-                            <strong style="font-size:17px">PURCHASE REQUEST</strong><br>
-                            <strong style="font-size:17px">(PR)</strong><br>
+                        <strong style="font-size:17px">PURCHASE REQUEST</strong><br>
+                        <strong style="font-size:17px">(PR)</strong><br>
                         @endif
                     </td>
 
@@ -152,41 +149,51 @@
                 </tr>
             </table>
 
-            <table style="width:100%; border-collapse:collapse; border:1px solid black; table-layout:fixed;margin-top:2px;">
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: 12px;">
                 <tr>
-
                     <!-- KIRI -->
-                    <td style="width:22%; border-right:1px solid black; padding:8px; vertical-align:top;">
+                    <td align="left"
+                        style="width: 20%; padding-left: 10px; border-right: 1px solid black;">
                         <strong>Kepada Yth.</strong><br>
-                        <strong>Dept. Logistik</strong>
+                        <strong>Dept. Logistik</strong><br>
                     </td>
 
                     <!-- KANAN -->
-                    <td style="width:78%; padding:8px; vertical-align:top;">
-                        <table style="width:100%; table-layout:fixed; border-collapse:collapse;">
-
+                    <td style="width: 80%; padding-left: 12px; padding-right: 2px; padding-bottom: 5px;">
+                        <table class="no-border" style="width: 100%; border: none;">
                             <tr>
                                 <!-- Nomor -->
-                                <td style="width:12%; vertical-align:top;"><strong>Nomor</strong></td>
-                                <td style="width:3%; vertical-align:top;">:</td>
-                                <td style="width:30%; vertical-align:top; word-break:break-word;">
+                                <td
+                                    style="width: 1%; padding: 0; vertical-align: top; white-space: nowrap;">
+                                    <strong>Nomor</strong>
+                                </td>
+                                <td style="width: 1%; padding: 0; vertical-align: top;">:</td>
+                                <td
+                                    style="width: 1%; padding: 0; vertical-align: top; white-space: nowrap; padding-right: 10rem;">
                                     {{ $pr->no_pr }}
                                 </td>
 
                                 <!-- Proyek -->
-                                <td style="width:12%; vertical-align:top;"><strong>Proyek</strong></td>
-                                <td style="width:3%; vertical-align:top;">:</td>
                                 <td
-                                    style="width:40%; vertical-align:top; word-break:break-word; overflow-wrap:break-word;">
-                                    {{ $pr->nama_pekerjaan }}
+                                    style="width: 1%; padding: 0; vertical-align: top; white-space: nowrap;">
+                                    <strong>Proyek</strong>
+                                </td>
+                                <td style="width: 1%; padding: 0; vertical-align: top;">:</td>
+                                <td style="padding: 0; vertical-align: top;">
+                                    <div style="white-space: normal; word-break: break-word;">
+                                        {{ $pr->nama_pekerjaan }}
+                                    </div>
                                 </td>
                             </tr>
 
                             <tr>
                                 <!-- Tanggal -->
-                                <td style="vertical-align:top;"><strong>Tanggal</strong></td>
-                                <td style="vertical-align:top;">:</td>
-                                <td style="vertical-align:top;">
+                                <td style="padding: 0; vertical-align: top; white-space: nowrap;">
+                                    <strong>Tanggal</strong>
+                                </td>
+                                <td style="padding: 0; vertical-align: top;">:</td>
+                                <td
+                                    style="padding: 0; vertical-align: top; white-space: nowrap; padding-right: 10rem">
                                     @if ($pr['tgl_pr'])
                                         {{ \Carbon\Carbon::parse($pr['tgl_pr'])->translatedFormat('d F Y') }}
                                     @else
@@ -194,25 +201,30 @@
                                     @endif
                                 </td>
 
-                                <!-- Revisi -->
-                                <td style="vertical-align:top;">
+                                {{-- <!-- Revisi -->
+                                <td style="padding: 0; vertical-align: top;"><strong>Revisi</strong></td>
+                                <td style="padding: 0; vertical-align: top;">:</td>
+                                <td style="padding: 0; vertical-align: top;">
+                                    {{ $pr->revisi ?? '-' }}
+                                </td> --}}
+
+                                <!-- Revisi / Dasar -->
+                                <td style="padding: 0; vertical-align: top; white-space: nowrap;">
                                     <strong>{{ auth()->user()->role == 14 ? 'Dasar' : 'Revisi' }}</strong>
                                 </td>
-                                <td style="vertical-align:top;">:</td>
-                                <td style="vertical-align:top; word-break:break-word;">
+                                <td style="padding: 0; vertical-align: top;">:</td>
+                                <td style="padding: 0; vertical-align: top;">
                                     {{ auth()->user()->role == 14 ? $pr->dasar ?? '-' : $pr->revisi ?? '-' }}
                                 </td>
-                            </tr>
 
+                            </tr>
                         </table>
                     </td>
+
 
                 </tr>
             </table>
 
-
-            </tr>
-            </table>
         </div>
     {{-- </header> --}}
 
@@ -365,7 +377,7 @@
         </tr>
     </table> --}}
 
-    <table class="table2" style="width:100%; margin-top:2rem">
+    <!-- <table class="table2" style="width:100%; margin-top:2rem">
         <tr>
             <td>
                 <strong>
@@ -377,10 +389,32 @@
                 </span>
             </td>
         </tr>
+    </table> -->
+
+    <!-- catatan berlaku semua role -->
+    <table class="table2" style="width:100%; margin-top:2rem; table-layout: fixed;">
+        <tr>
+            <td style="width: 50%; vertical-align: top;">
+                <strong>
+                    <u>Catatan :</u>
+                </strong><br>
+
+                <span>
+                    {!! nl2br($pr->catatan ?? '') !!}
+                </span>
+            </td>
+
+            <td style="width: 50%; vertical-align: top;">
+                <strong>
+                    <u>DASAR PR :</u>
+                </strong><br>
+
+                <span>
+                    {!! nl2br($pr->dasar_pr ?? '') !!}
+                </span>
+            </td>
+        </tr>
     </table>
-
-
-
 
 </body>
 

@@ -529,17 +529,16 @@
                                         autocomplete="off">
                                 </div>
                             </div> --}}
-
-                            @if (auth()->user()->role == 14)
-                                {{-- ===== USER MRO ===== --}}
-
-                                <div class="form-group row">
+                            
+                            <div class="form-group row">
                                     <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
                                     <div class="col-sm-8">
                                         <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
                                     </div>
                                 </div>
 
+                            @if (auth()->user()->role == 14)
+                                {{-- ===== USER MRO ===== --}}
                                 <div class="form-group row">
                                     <label for="dasar" class="col-sm-4 col-form-label">Dasar</label>
                                     <div class="col-sm-8">

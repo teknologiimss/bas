@@ -129,66 +129,72 @@
     <div class="information">
 
         <!-- ================= HEADER ================= -->
-        <table style="width:100%; border-collapse:collapse;">
-            <tr style="border:1px solid black;">
-
-                <!-- LOGO -->
-                <td style="width:22%; border:1px solid black;">
+        <table width="100%" style="border-collapse: collapse;">
+            <tr style="border: 1px solid black;">
+                <td align="left" style="width: 20%; border: 1px solid black;">
                     <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
-                        width="150" class="logo">
+                        alt="Logo" width="150" class="logo" /><br>
                 </td>
 
-                <!-- JUDUL -->
-                <td style="width:78%; text-align:center;">
-                    <strong style="font-size:17px;">
-                        SURAT PERMINTAAN PEMBELIAN JASA / PEMBORONGAN
-                    </strong><br>
-                    <strong style="font-size:17px;">
-                        (SPPJ/P)
-                    </strong>
+                <td align="center" style="width: 80%; border-style:none;">
+                    <strong style="font-size: 17px;">SURAT PERMINTAAN PEMBELIAN JASA /
+                        PEMBORONGAN</strong><br>
+                    <strong style="font-size: 17px;">(SPPJ/P)</strong><br>
                 </td>
 
+                <!-- Extra kolom kosong seperti kode 2 -->
+                <td style="border-style:none;"></td>
             </tr>
         </table>
 
 
         <!-- ================= INFORMASI ================= -->
-        <table
-            style="width:100%; border-collapse:collapse; border:1px solid black; table-layout:fixed; margin-top:2px;">
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: 12px;">
             <tr>
 
                 <!-- KIRI -->
-                <td style="width:22%; border-right:1px solid black; padding:8px; vertical-align:top;">
+                <td align="left"
+                    style="width: 20%; padding-left: 10px; border-right: 1px solid black;">
                     <strong>Kepada Yth.</strong><br>
-                    <strong>Dept. Logistik</strong>
+                    <strong>Dept. Logistik</strong><br>
                 </td>
 
                 <!-- KANAN -->
-                <td style="width:78%; padding:8px; vertical-align:top;">
-
-                    <table style="width:100%; table-layout:fixed; border-collapse:collapse;">
-
+                <td style="width: 80%; padding-left: 12px; padding-right: 2px; padding-bottom: 5px;">
+                    <table class="no-border" style="width: 100%;">
                         <tr>
                             <!-- Nomor -->
-                            <td style="width:12%; vertical-align:top;"><strong>Nomor</strong></td>
-                            <td style="width:3%; vertical-align:top;">:</td>
-                            <td style="width:30%; vertical-align:top; word-break:break-word;">
+                            <td
+                                style="width: 1%; padding: 0; vertical-align: top; white-space: nowrap;">
+                                <strong>Nomor</strong>
+                            </td>
+                            <td style="width: 1%; padding: 0; vertical-align: top;">:</td>
+                            <td
+                                style="width: 1%; padding: 0; vertical-align: top; white-space: nowrap; padding-right: 10rem;">
                                 {{ $sppjp->no_pr }}
                             </td>
 
                             <!-- Proyek -->
-                            <td style="width:12%; vertical-align:top;"><strong>Proyek</strong></td>
-                            <td style="width:3%; vertical-align:top;">:</td>
-                            <td style="width:40%; vertical-align:top; word-break:break-word;">
-                                {{ $sppjp->nama_pekerjaan }}
+                            <td
+                                style="width: 1%; padding: 0; vertical-align: top; white-space: nowrap;">
+                                <strong>Proyek</strong>
+                            </td>
+                            <td style="width: 1%; padding: 0; vertical-align: top;">:</td>
+                            <td style="padding: 0; vertical-align: top;">
+                                <div style="white-space: normal; word-break: break-word">
+                                    {{ $sppjp->nama_pekerjaan }}
+                                </div>
                             </td>
                         </tr>
 
                         <tr>
                             <!-- Tanggal -->
-                            <td style="vertical-align:top;"><strong>Tanggal</strong></td>
-                            <td style="vertical-align:top;">:</td>
-                            <td style="vertical-align:top;">
+                            <td style="padding: 0; vertical-align: top; white-space: nowrap;">
+                                <strong>Tanggal</strong>
+                            </td>
+                            <td style="padding: 0; vertical-align: top;">:</td>
+                            <td
+                                style="padding: 0; vertical-align: top; white-space: nowrap; padding-right: 10rem;">
                                 @if ($sppjp['tgl_pr'])
                                     {{ \Carbon\Carbon::parse($sppjp['tgl_pr'])->translatedFormat('d F Y') }}
                                 @else
@@ -196,18 +202,23 @@
                                 @endif
                             </td>
 
+                            {{-- <!-- Revisi -->
+                            <td style="padding: 0; vertical-align: top;"><strong>Revisi</strong></td>
+                            <td style="padding: 0; vertical-align: top;">:</td>
+                            <td style="padding: 0; vertical-align: top;">
+                                {{ $sppjp->revisi ?? '-' }}
+                            </td> --}}
                             <!-- Revisi / Dasar -->
-                            <td style="vertical-align:top;">
+                            <td style="padding: 0; vertical-align: top; white-space: nowrap;">
                                 <strong>{{ auth()->user()->role == 14 ? 'Dasar' : 'Revisi' }}</strong>
                             </td>
-                            <td style="vertical-align:top;">:</td>
-                            <td style="vertical-align:top; word-break:break-word;">
+                            <td style="padding: 0; vertical-align: top;">:</td>
+                            <td style="padding: 0; vertical-align: top;">
                                 {{ auth()->user()->role == 14 ? $sppjp->dasar ?? '-' : $sppjp->revisi ?? '-' }}
                             </td>
+
                         </tr>
-
                     </table>
-
                 </td>
 
             </tr>
@@ -364,7 +375,7 @@
         </tr>
     </table> --}}
 
-    <table class="table2" style="width:100%; margin-top:2rem">
+    <!-- <table class="table2" style="width:100%; margin-top:2rem">
         <tr>
             <td>
                 <strong>
@@ -376,8 +387,32 @@
                 </span>
             </td>
         </tr>
-    </table>
+    </table> -->
 
+    <!-- catatan juga berlaku untuk semua role -->
+    <table class="table2" style="width:100%; margin-top:2rem; table-layout: fixed;">
+        <tr>
+            <td style="width: 50%; vertical-align: top;">
+                <strong>
+                    <u>Catatan :</u>
+                </strong><br>
+
+                <span>
+                    {!! nl2br($sppjp->catatan ?? '') !!}
+                </span>
+            </td>
+
+            <td style="width: 50%; vertical-align: top;">
+                <strong>
+                    <u>DASAR SPPJP :</u>
+                </strong><br>
+
+                <span>
+                    {!! nl2br($sppjp->dasar_pr ?? '') !!}
+                </span>
+            </td>
+        </tr>
+    </table>
 
 </body>
 
