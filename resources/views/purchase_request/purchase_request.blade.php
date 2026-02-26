@@ -558,6 +558,13 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label for="revisi" class="col-sm-4 col-form-label">Revisi</label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" id="revisi" name="revisi"

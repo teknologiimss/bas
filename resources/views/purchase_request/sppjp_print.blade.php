@@ -364,7 +364,7 @@
         </tr>
     </table> --}}
 
-    <table class="table2" style="width:100%; margin-top:2rem">
+    {{-- <table class="table2" style="width:100%; margin-top:2rem">
         <tr>
             <td>
                 <strong>
@@ -375,6 +375,43 @@
                     {!! nl2br(auth()->user()->role == 14 ? $sppjp->catatan ?? '' : $sppjp->dasar_pr ?? '') !!}
                 </span>
             </td>
+        </tr>
+    </table> --}}
+
+    {{-- Jika MRO Dasar PR menjadi Catatan , dan Selain User MRO , maka akan muncul Dasar PR dan Catatan --}}
+    <table class="table2" style="width:100%; margin-top:2rem">
+        <tr>
+            @if (auth()->user()->role == 14)
+                <td>
+                    <strong>
+                        <u>Catatan :</u>
+                    </strong><br>
+
+                    <span>
+                        {!! nl2br($sppjp->catatan ?? '') !!}
+                    </span>
+                </td>
+            @else
+                <td style="width:50%; vertical-align:top;">
+                    <strong>
+                        <u>Dasar PR/SPPJP :</u>
+                    </strong><br>
+
+                    <span>
+                        {!! nl2br($sppjp->dasar_pr ?? '') !!}
+                    </span>
+                </td>
+
+                <td style="width:50%; vertical-align:top;">
+                    <strong>
+                        <u>Catatan :</u>
+                    </strong><br>
+
+                    <span>
+                        {!! nl2br($sppjp->catatan ?? '') !!}
+                    </span>
+                </td>
+            @endif
         </tr>
     </table>
 
