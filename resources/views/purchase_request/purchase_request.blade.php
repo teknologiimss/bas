@@ -529,17 +529,16 @@
                                         autocomplete="off">
                                 </div>
                             </div> --}}
-
-                            @if (auth()->user()->role == 14)
-                                {{-- ===== USER MRO ===== --}}
-
-                                <div class="form-group row">
+                            
+                            <div class="form-group row">
                                     <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
                                     <div class="col-sm-8">
                                         <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
                                     </div>
                                 </div>
 
+                            @if (auth()->user()->role == 14)
+                                {{-- ===== USER MRO ===== --}}
                                 <div class="form-group row">
                                     <label for="dasar" class="col-sm-4 col-form-label">Dasar</label>
                                     <div class="col-sm-8">
@@ -2403,8 +2402,8 @@
                             var editButton =
                                 '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
                                 value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
-                                value.kode_material + '\', \'' + value.uraian + '\', \'' + value.spek +
-                                '\', \'' + value.qty + '\', \'' + value.satuan + '\', \'' + value
+                                value.kode_material + '\', \'' + value.uraian + '\', \'' + escapeSpek(value.spek) + '\', \'' +
+                                value.qty + '\', \'' + value.satuan + '\', \'' + value
                                 .waktu + '\', \'' + value.keterangan +
                                 '\')"><i class="fas fa-edit"></i></button>';
 
@@ -2438,8 +2437,15 @@
             });
         }
 
-        function editRow(id, kode_material, uraian, spek, qty, satuan, waktu, lampiran, keterangan) {
-            console.log(id, kode_material, uraian, spek, qty, satuan, waktu, lampiran, keterangan);
+        function escapeSpek(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '&quot;');
+        }
+
+        function editRow(id, kode_material, uraian, spek, qty, satuan, waktu, keterangan) {
+            console.log(id, kode_material, uraian, spek, qty, satuan, waktu, keterangan);
             resetForm();
             $('#modal-title').text("Edit Detail");
             $('#button-update-pr').text("Simpan");

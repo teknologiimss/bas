@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
 @endsection
 
 <style>
@@ -182,11 +183,11 @@
                                 <tr class="text-center">
                                     <th><input type="checkbox" id="select-all"></th>
                                     {{-- <th>No.</th> --}}
-                                    <th>{{ __('Nomor BPM') }}</th>
-                                    <th>{{ __('Proyek') }}</th>
-                                    <th>{{ __('Tanggal') }}</th>
-                                    <th>{{ __('Catatan BPM') }}</th>
-                                    <th></th>
+                                    <th class="text-center">{{ __('Nomor BPM') }}</th>
+                                    <th class="text-center">{{ __('Proyek') }}</th>
+                                    <th class="text-center">{{ __('Tanggal') }}</th>
+                                    <th class="text-center">{{ __('Catatan BPM') }}</th>
+                                    <th class="text-center">{{ __('Aksi') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -243,9 +244,9 @@
                                     </tr>
 
                                 @empty
-                                    <tr class="text-center">
-                                        <td colspan="6">No data.</td>
-                                    </tr>
+                                <!-- <tr class="text-center">
+                                    <td colspan="6">No data.</td>
+                                </tr> -->
                                 @endforelse
                             </tbody>
 
@@ -267,7 +268,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 id="modal-title" class="modal-title">{{ __('Add Bpm') }}</h4>
+                        <h4 id="modal-title" class="modal-title">{{ __('Add BPM') }}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -287,8 +288,8 @@
                                 <label for="tgl_bpm" class="col-sm-4 col-form-label">{{ __('Tanggal') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="tgl_bpm" name="tgl_bpm"
-                                        min="{{ date('Y-m-d', strtotime('-7 days')) }}">
+                                    <input type="date" class="form-control" id="tgl_bpm" name="tgl_bpm">
+                                        <!-- min="{{ date('Y-m-d', strtotime('-7 days')) }}"> -->
                                 </div>
                             </div>
                             <div class="form-group
@@ -581,6 +582,9 @@
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
 
     {{-- Menampilkan form otomatis Dasar Proyek --}}
     <script>
@@ -609,6 +613,22 @@
     </script>
     {{-- End Menampilkan form otomatis Dasar Proyek --}}
 
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable({
+                paging: false,
+                info: false,
+                searching: false,
+                order: [[3, 'desc']], // sort kolom tanggal
+                columnDefs: [
+                    { orderable: false, targets: [0,5] }
+                ],
+                language: {
+                    emptyTable: "No data."
+                }
+            });
+        });
+    </script>
 
     <script>
         $(function() {
