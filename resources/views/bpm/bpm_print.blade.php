@@ -116,6 +116,18 @@
             /* padding: 5px; */
         }
 
+        .sign {
+            border-collapse: collapse;
+        }
+
+        .sign td {
+            border: 1px solid black;
+        }
+
+        .no-border {
+            border: none !important;
+        }
+
         body {
             border: 1px solid black;
             padding: 15px;
@@ -161,14 +173,15 @@
                                 <td><strong>Nomor</strong></td>
                                 <td>:</td>
                                 <td><span>{{ $bpm->no_bpm }}</span></td>
-                                <!-- Proyek ditempatkan di sebelah kanan -->
-                                <td style="text-align: right;"><strong>Proyek :
-                                        <span>{{ $bpm->nama_pekerjaan }}</span></strong></td>
+                                
+                                <td><strong>Proyek</strong></td>
+                                <td>:</td>
+                                <td><span>{{ $bpm->nama_pekerjaan }}</span></td>
                             </tr>
                             <tr>
                                 <td><strong>Tanggal</strong></td>
                                 <td>:</td>
-                                <td colspan="2">
+                                <td>
                                     <span>
                                         @if ($bpm['tgl_bpm'])
                                             <?php
@@ -180,6 +193,10 @@
                                         @endif
                                     </span>
                                 </td>
+                                
+                                <td><strong>Revisi</strong></td>
+                                <td>:</td>
+                                <td><span>{{ $bpm->revisi ?? '-' }}</span></td>
                             </tr>
                         </table>
                     </td>
@@ -291,20 +308,35 @@
     </div> --}}
 
     <div style="margin-top: 1rem">
-        <table style="width: 100%; table-layout: fixed;">
+        <table class="sign" style="width: 100%; table-layout: fixed;">
             <tr>
                 {{-- MENYETUJUI --}}
                 <td align="center" style="width: 25%;">
-                    Menyetujui,<br>
+                    Menyetujui,
+                    
+                </td>
 
+                {{-- YANG MEMINTA --}}
+                <td align="center" style="width: 25%;">
+                    Yang Meminta,
+                </td>
+
+                <td class="no-border" style="width: 10%;"></td>
+
+                {{-- PENERIMA --}}
+                <td align="center" style="width: 25%;">
+                    Penerima Dokumen,
+                </td>
+            </tr>
+
+            <tr>
+                <td align="center" style="width: 25%;">
                     @if (Auth::user()->role == 14)
                         Kadep {{ $bpm->role }}
                     @else
                         Kabag {{ $bpm->role }}
                     @endif
-
                     <br><br><br><br><br>
-
                     <strong style="text-transform: uppercase;">
                         @if (Auth::user()->role == 14)
                             {{ $bpm->kadep }}
@@ -313,10 +345,7 @@
                         @endif
                     </strong><br>
                 </td>
-
-                {{-- YANG MEMINTA --}}
                 <td align="center" style="width: 25%;">
-                    Yang Meminta,<br>
                     Staff {{ $bpm->role }}
                     <br><br><br><br><br>
                     <strong style="text-transform: uppercase;">
@@ -324,9 +353,9 @@
                     </strong><br>
                 </td>
 
-                {{-- PENERIMA --}}
+                <td style="width: 10%; border: none;"></td>
+
                 <td align="center" style="width: 25%;">
-                    Penerima Dokumen,<br>
                     Gudang
                     <br><br><br><br><br>
                     <strong>PUPUT WAHYUDHIANTO</strong><br>
