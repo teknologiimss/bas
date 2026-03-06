@@ -963,121 +963,106 @@
 
                     const proyekData = @json($poPrPerProyek);
 
-                    const labels = proyekData.map(item => item.nama_pekerjaan);
+                    const isMobile = window.innerWidth <= 576;
+
+                    const fontSizeLabel = isMobile ? 10 : 12;
+                    const fontSizeLegend = isMobile ? 11 : 14;
+                    const fontSizeValue = isMobile ? 10 : 12;
+
+                    const barThicknessSize = isMobile ? 14 : 22;
+
+                    /* =============================
+                       FUNGSI MULTI BARIS (TIDAK POTONG TEKS)
+                    ============================== */
+                    function wrapLabel(text, maxLength = isMobile ? 10 : 16) {
+                        if (!text) return [''];
+
+                        const words = text.split(' ');
+                        const lines = [];
+                        let currentLine = '';
+
+                        words.forEach(word => {
+                            if ((currentLine + ' ' + word).trim().length <= maxLength) {
+                                currentLine = (currentLine + ' ' + word).trim();
+                            } else {
+                                lines.push(currentLine);
+                                currentLine = word;
+                            }
+                        });
+
+                        if (currentLine) lines.push(currentLine);
+
+                        return lines; // ← PENTING: array
+                    }
+
+                    const labels = proyekData.map(item => wrapLabel(item.nama_pekerjaan));
                     const dataPO = proyekData.map(item => item.total_po);
                     const dataPR = proyekData.map(item => item.total_pr);
 
                     const ctx = document.getElementById('poPrPerProyekChart').getContext('2d');
 
-                    /* ===== LABEL MULTI BARIS ===== */
-                    function wrapLabel(str, maxWidth = 18) {
-
-                        if (!str) return [''];
-
-                        const words = str.split(' ');
-                        const lines = [];
-                        let line = '';
-
-                        words.forEach(word => {
-
-                            if ((line + word).length > maxWidth) {
-                                lines.push(line.trim());
-                                line = '';
-                            }
-
-                            line += word + ' ';
-                        });
-
-                        lines.push(line.trim());
-
-                        return lines;
-                    }
-
-                    const formattedLabels = labels.map(wrapLabel);
-
-                    /* ===== ANGKA DI ATAS BAR ===== */
-
+                    /* =============================
+                       ANGKA DI ATAS BAR
+                    ============================== */
                     const valueLabelPlugin = {
                         id: 'valueLabel',
                         afterDatasetsDraw(chart) {
-
                             const ctx = chart.ctx;
-
                             ctx.save();
-                            ctx.font = "bold 12px Arial";
-                            ctx.fillStyle = "#000";
-                            ctx.textAlign = "center";
+                            ctx.font = `bold ${fontSizeValue}px Arial`;
+                            ctx.fillStyle = '#111';
+                            ctx.textAlign = 'center';
 
                             chart.data.datasets.forEach((dataset, i) => {
+                                if (!chart.isDatasetVisible(i)) return;
 
                                 const meta = chart.getDatasetMeta(i);
-
                                 meta.data.forEach((bar, index) => {
-
                                     const value = dataset.data[index];
-
                                     if (value > 0) {
-                                        ctx.fillText(value, bar.x, bar.y - 5);
+                                        ctx.fillText(value, bar.x, bar.y - 4);
                                     }
-
                                 });
-
                             });
 
                             ctx.restore();
                         }
                     };
 
+                    /* =============================
+                       CHART
+                    ============================== */
                     new Chart(ctx, {
-
                         type: 'bar',
-
                         plugins: [valueLabelPlugin],
-
                         data: {
-                            labels: formattedLabels,
-
+                            labels,
                             datasets: [{
                                     label: 'PO',
                                     data: dataPO,
                                     backgroundColor: '#2E86DE',
-                                    borderRadius: 6,
-
-                                    barThickness: 18,
-                                    categoryPercentage: 0.4,
-                                    barPercentage: 0.6
+                                    borderRadius: 8,
+                                    barThickness: barThicknessSize
                                 },
                                 {
                                     label: 'PR',
                                     data: dataPR,
                                     backgroundColor: '#E74C3C',
-                                    borderRadius: 6,
-
-                                    barThickness: 18,
-                                    categoryPercentage: 0.4,
-                                    barPercentage: 0.6
+                                    borderRadius: 8,
+                                    barThickness: barThicknessSize
                                 }
                             ]
                         },
-
                         options: {
-
                             responsive: true,
                             maintainAspectRatio: false,
-
-                            layout: {
-                                padding: {
-                                    left: 60,
-                                    right: 60
-                                }
-                            },
 
                             plugins: {
                                 legend: {
                                     position: 'top',
                                     labels: {
                                         font: {
-                                            size: 14,
+                                            size: fontSizeLegend,
                                             weight: 'bold'
                                         }
                                     }
@@ -1085,31 +1070,28 @@
                             },
 
                             scales: {
-
                                 x: {
-
-                                    offset: true,
-
                                     ticks: {
                                         autoSkip: false,
                                         maxRotation: 0,
                                         minRotation: 0,
-                                        padding: 20,
+                                        padding: 10,
                                         font: {
-                                            size: 12,
+                                            size: fontSizeLabel,
                                             weight: 'bold'
                                         }
                                     },
-
                                     grid: {
                                         display: false
                                     }
-
                                 },
-
                                 y: {
                                     beginAtZero: true,
-
+                                    ticks: {
+                                        font: {
+                                            size: 11
+                                        }
+                                    },
                                     title: {
                                         display: true,
                                         text: 'Jumlah Dokumen',
@@ -1119,11 +1101,8 @@
                                         }
                                     }
                                 }
-
                             }
-
                         }
-
                     });
 
                 });
