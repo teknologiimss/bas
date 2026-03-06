@@ -223,6 +223,7 @@ class BpmController extends Controller
                 'no_bpm' => $request->no_bpm,
                 'dasar_bpm' => $request->dasar_bpm,
                 'tgl_bpm' => $request->tgl_bpm,
+                'revisi' => $request->revisi,   
                 'id_user' => auth()->user()->id,
             ]);
 
@@ -233,6 +234,7 @@ class BpmController extends Controller
                 'no_bpm' => $request->no_bpm,
                 'dasar_bpm' => $request->dasar_bpm,
                 'tgl_bpm' => $request->tgl_bpm,
+                'revisi' => $request->revisi,
             ]);
 
             return redirect()->route('bpm.index')->with('success', 'BPM berhasil diupdate');

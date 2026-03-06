@@ -8,7 +8,7 @@
         }
 
         body {
-            margin-top: 5.5cm;
+            margin-top: 0.5cm;
             margin-left: 0.5cm;
             margin-right: 0.5cm;
             margin-bottom: 0.5cm;
@@ -84,9 +84,9 @@
             margin: 5px;
         }
 
-        .information table {
+        /* .information table {
             padding: 10px;
-        }
+        } */
 
         header {
             position: fixed;
@@ -116,6 +116,18 @@
             /* padding: 5px; */
         }
 
+        .sign {
+            border-collapse: collapse;
+        }
+
+        .sign td {
+            border: 1px solid black;
+        }
+
+        .no-border {
+            border: none !important;
+        }
+
         body {
             border: 1px solid black;
             padding: 15px;
@@ -125,20 +137,20 @@
 </head>
 
 <body>
-    <header>
+    {{-- <header> --}}
         <div class="information">
 
             <!-- Tabel untuk Logo dan Teks -->
-            <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
-                <tr>
+            <table style="width: 100%;">
+                <tr style="border: 1px solid black;">
                     <!-- Kolom Pertama untuk Logo -->
-                    <td align="left" style="width: 25%; border-right: 1px solid black; padding-right: 10px;">
+                    <td align="left" style="width: 22%; border: 1px solid black;">
                         <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
                             alt="Logo" width="150" class="logo" />
                     </td>
 
                     <!-- Kolom Kedua untuk Teks -->
-                    <td align="center" style="width: 75%; padding-left: 10px;">
+                    <td align="center" style="width: 78%; border-style: none;">
                         <strong style="font-size: 25px;">BON PERMINTAAN MATERIAL</strong><br>
                         <strong style="font-size: 25px;">(BPM)</strong>
                     </td>
@@ -146,29 +158,30 @@
             </table>
 
             <!-- Tabel untuk Informasi dengan Penggabungan Kolom Kedua dan Ketiga -->
-            <table style="width: 100%; border-collapse: collapse; border: 1px solid black; padding-top:0px">
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid black; table-layout:fixed;margin-top:12px;">
                 <tr>
                     <!-- Kolom Pertama (Kepada Yth.) -->
-                    <td align="left" style="width: 25%; padding-left: 10px; border-right: 1px solid black;">
+                    <td align="left" style="width: 22%; padding: 8px; border-right: 1px solid black;">
                         <strong>Kepada Yth.</strong><br>
                         <strong>Bagian Pengendalian & Gudang</strong><br>
                     </td>
 
                     <!-- Kolom Kedua (Nomor* dan Tanggal*) digabung dengan Kolom Ketiga (Proyek) -->
-                    <td style="width: 75%; padding-left: 10px; padding-right: 10px; vertical-align: top;">
+                    <td style="width: 78%; padding: 8px; vertical-align: top;">
                         <table style="width: 100%;">
                             <tr>
-                                <td><strong>Nomor</strong></td>
-                                <td>:</td>
-                                <td><span>{{ $bpm->no_bpm }}</span></td>
-                                <!-- Proyek ditempatkan di sebelah kanan -->
-                                <td style="text-align: right;"><strong>Proyek :
-                                        <span>{{ $bpm->nama_pekerjaan }}</span></strong></td>
+                                <td style="width:12%; vertical-align:top;"><strong>Nomor</strong></td>
+                                <td style="width:3%; vertical-align:top;">:</td>
+                                <td style="width:30%; vertical-align:top; word-break:break-word;"><span>{{ $bpm->no_bpm }}</span></td>
+
+                                <td style="width:12%; vertical-align:top;"><strong>Proyek</strong></td>
+                                <td style="width:3%; vertical-align:top;">:</td>
+                                <td style="width:40%; vertical-align:top; word-break:break-word; overflow-wrap:break-word;"><span>{{ $bpm->nama_pekerjaan }}</span></td>
                             </tr>
                             <tr>
-                                <td><strong>Tanggal</strong></td>
-                                <td>:</td>
-                                <td colspan="2">
+                                <td style="vertical-align:top;"><strong>Tanggal</strong></td>
+                                <td style="vertical-align:top;">:</td>
+                                <td style="vertical-align:top;">
                                     <span>
                                         @if ($bpm['tgl_bpm'])
                                             <?php
@@ -180,6 +193,10 @@
                                         @endif
                                     </span>
                                 </td>
+                                
+                                <td style="vertical-align:top;"><strong>Revisi</strong></td>
+                                <td style="vertical-align:top;">:</td>
+                                <td style="vertical-align:top; word-break:break-word;"><span>{{ $bpm->revisi ?? '-' }}</span></td>
                             </tr>
                         </table>
                     </td>
@@ -187,13 +204,13 @@
             </table>
 
         </div>
-    </header>
+    {{-- </header> --}}
 
     {{--
     <div class="w-100 text-center">
         <b style="text-decoration: underline"></i>PURCHASE ORDER</b><br />
     </div> --}}
-    <table class="table" style="width: 100%">
+    <table class="table" style="width: 100%; margin-top:12px;">
         <thead>
             <tr>
                 <th>No</th>
@@ -291,20 +308,35 @@
     </div> --}}
 
     <div style="margin-top: 1rem">
-        <table style="width: 100%; table-layout: fixed;">
+        <table class="sign" style="width: 100%; table-layout: fixed;">
             <tr>
                 {{-- MENYETUJUI --}}
                 <td align="center" style="width: 25%;">
-                    Menyetujui,<br>
+                    Menyetujui,
+                    
+                </td>
 
+                {{-- YANG MEMINTA --}}
+                <td align="center" style="width: 25%;">
+                    Yang Meminta,
+                </td>
+
+                <td class="no-border" style="width: 10%;"></td>
+
+                {{-- PENERIMA --}}
+                <td align="center" style="width: 25%;">
+                    Penerima Dokumen,
+                </td>
+            </tr>
+
+            <tr>
+                <td align="center" style="width: 25%;">
                     @if (Auth::user()->role == 14)
                         Kadep {{ $bpm->role }}
                     @else
                         Kabag {{ $bpm->role }}
                     @endif
-
                     <br><br><br><br><br>
-
                     <strong style="text-transform: uppercase;">
                         @if (Auth::user()->role == 14)
                             {{ $bpm->kadep }}
@@ -313,10 +345,7 @@
                         @endif
                     </strong><br>
                 </td>
-
-                {{-- YANG MEMINTA --}}
                 <td align="center" style="width: 25%;">
-                    Yang Meminta,<br>
                     Staff {{ $bpm->role }}
                     <br><br><br><br><br>
                     <strong style="text-transform: uppercase;">
@@ -324,9 +353,9 @@
                     </strong><br>
                 </td>
 
-                {{-- PENERIMA --}}
+                <td style="width: 10%; border: none;"></td>
+
                 <td align="center" style="width: 25%;">
-                    Penerima Dokumen,<br>
                     Gudang
                     <br><br><br><br><br>
                     <strong>PUPUT WAHYUDHIANTO</strong><br>

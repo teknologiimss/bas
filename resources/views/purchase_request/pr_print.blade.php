@@ -152,7 +152,7 @@
             </tr>
         </table>
 
-        <table style="width:100%; border-collapse:collapse; border:1px solid black; table-layout:fixed;margin-top:2px;">
+        <table style="width:100%; border-collapse:collapse; border:1px solid black; table-layout:fixed;margin-top:12px;">
             <tr>
 
                 <!-- KIRI -->

@@ -203,6 +203,7 @@
                                             'id' => $d->id,
                                             'status' => $d->status,
                                             'editable' => $d->editable,
+                                            'revisi' => $d->revisi,
                                         ];
                                     @endphp
 
@@ -227,8 +228,7 @@
                                             </button>
 
                                             {{-- DETAIL --}}
-                                            <button class="btn btn-info btn-xs" data-toggle="modal"
-                                                data-target="#detail-bpm" data-detail="{{ json_encode($data) }}">
+                                            <button class="btn btn-info btn-xs btn-detail" data-detail="{{ json_encode($data) }}">
                                                 <i class="fas fa-list"></i>
                                             </button>
 
@@ -244,9 +244,9 @@
                                     </tr>
 
                                 @empty
-                                <!-- <tr class="text-center">
-                                    <td colspan="6">No data.</td>
-                                </tr> -->
+                                    <!-- <tr class="text-center">
+                                        <td colspan="6">No data.</td>
+                                    </tr> -->
                                 @endforelse
                             </tbody>
 
@@ -304,6 +304,12 @@
                                             <option value="{{ $proyek->id }}">{{ $proyek->nama_pekerjaan }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="revisi" class="col-sm-4 col-form-label">{{ __('Revisi') }}</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="revisi" name="revisi" autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -381,6 +387,11 @@
                                             <td><b>Proyek</b></td>
                                             <td>:</td>
                                             <td><span id="proyek"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Revisi</b></td>
+                                            <td>:</td>
+                                            <td><span id="revisi_detail"></span></td>
                                         </tr>
                                         <tr>
                                             <td><b>Produk</b></td>
@@ -585,6 +596,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
     {{-- Menampilkan form otomatis Dasar Proyek --}}
     <script>
@@ -811,6 +823,7 @@
             resetForm();
             $('#save_id').val(data.id);
             $('#no_bpm').val(data.no_bpm);
+            $('#revisi').val(data.revisi);
             // $('#tgl_pr').val(data.tgl_pr);
             // $('#proyek_id').val(data.proyek);
             $('#dasar_bpm').val(data.dasar_bpm);
@@ -829,7 +842,8 @@
             $('#table-bpm').empty();
             $('#no_surat').text("");
             $('#tgl_surat').text("");
-            $('proyek').text("");
+            $('#proyek').text("");
+            $('#revisi_detail').text("");
         }
 
         function loader(status = 1) {
@@ -1631,14 +1645,19 @@
         }
 
 
-        $('#detail-bpm').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var data = button.data('detail');
+        // $('#detail-bpm').on('show.bs.modal', function(event) {
+        //     var button = $(event.relatedTarget);
+        //     var data = button.data('detail');
+        //     console.log(data);
+        //     lihatBPM(data);
+        // });
+
+        $('#table').on('click', '.btn-detail', function () {
+            var data = $(this).data('detail');
             console.log(data);
             lihatBPM(data);
+            $('#detail-bpm').modal('show');
         });
-
-
 
         function lihatBPM(data) {
             emptyTableProducts();
@@ -1651,6 +1670,7 @@
             $('#no_surat').text(data.no_bpm);
             $('#tgl_surat').text(data.tanggal);
             $('#proyek').text(data.proyek);
+            $('#revisi_detail').text(data.revisi || '-');
             $('#proyek_id_val').val(data.proyek_id);
             $('#bpm_id').val(data.id);
             $('#table-bpm').empty();
