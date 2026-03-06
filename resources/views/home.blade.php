@@ -971,9 +971,9 @@
 
                     const barThicknessSize = isMobile ? 14 : 22;
 
-                    /* =============================
-                       FUNGSI MULTI BARIS (TIDAK POTONG TEKS)
-                    ============================== */
+                    const maxData = 10;
+                    let startIndex = 0;
+
                     function wrapLabel(text, maxLength = isMobile ? 10 : 16) {
                         if (!text) return [''];
 
@@ -992,18 +992,22 @@
 
                         if (currentLine) lines.push(currentLine);
 
-                        return lines; // ← PENTING: array
+                        return lines;
                     }
 
-                    const labels = proyekData.map(item => wrapLabel(item.nama_pekerjaan));
-                    const dataPO = proyekData.map(item => item.total_po);
-                    const dataPR = proyekData.map(item => item.total_pr);
+                    function getChartData() {
+
+                        const slice = proyekData.slice(startIndex, startIndex + maxData);
+
+                        return {
+                            labels: slice.map(item => wrapLabel(item.nama_pekerjaan)),
+                            po: slice.map(item => item.total_po),
+                            pr: slice.map(item => item.total_pr)
+                        };
+                    }
 
                     const ctx = document.getElementById('poPrPerProyekChart').getContext('2d');
 
-                    /* =============================
-                       ANGKA DI ATAS BAR
-                    ============================== */
                     const valueLabelPlugin = {
                         id: 'valueLabel',
                         afterDatasetsDraw(chart) {
@@ -1017,6 +1021,7 @@
                                 if (!chart.isDatasetVisible(i)) return;
 
                                 const meta = chart.getDatasetMeta(i);
+
                                 meta.data.forEach((bar, index) => {
                                     const value = dataset.data[index];
                                     if (value > 0) {
@@ -1029,24 +1034,23 @@
                         }
                     };
 
-                    /* =============================
-                       CHART
-                    ============================== */
-                    new Chart(ctx, {
+                    const chartData = getChartData();
+
+                    const chart = new Chart(ctx, {
                         type: 'bar',
                         plugins: [valueLabelPlugin],
                         data: {
-                            labels,
+                            labels: chartData.labels,
                             datasets: [{
                                     label: 'PO',
-                                    data: dataPO,
+                                    data: chartData.po,
                                     backgroundColor: '#2E86DE',
                                     borderRadius: 8,
                                     barThickness: barThicknessSize
                                 },
                                 {
                                     label: 'PR',
-                                    data: dataPR,
+                                    data: chartData.pr,
                                     backgroundColor: '#E74C3C',
                                     borderRadius: 8,
                                     barThickness: barThicknessSize
@@ -1104,6 +1108,31 @@
                             }
                         }
                     });
+
+                    /* =============================
+                       AUTO SCROLL DATA
+                    ============================== */
+
+                    if (proyekData.length > maxData) {
+
+                        setInterval(() => {
+
+                            startIndex += maxData;
+
+                            if (startIndex >= proyekData.length) {
+                                startIndex = 0;
+                            }
+
+                            const newData = getChartData();
+
+                            chart.data.labels = newData.labels;
+                            chart.data.datasets[0].data = newData.po;
+                            chart.data.datasets[1].data = newData.pr;
+
+                            chart.update();
+
+                        }, 6000); // 6 detik
+                    }
 
                 });
             </script>
