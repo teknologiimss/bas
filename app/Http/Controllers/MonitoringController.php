@@ -125,7 +125,7 @@ public function resumeProgress(Request $request)
                 MonitoringDocument::create([
                     'monitoring_id' => $monitoring->id,
                     'nama_dokumen' => $request->nama_dokumen[$index] ?? pathinfo($originalName, PATHINFO_FILENAME),
-                    'file_path' => 'public/lampiran/' . $uniqueName,  // tanpa 'storage/'
+                    'file_path' => 'lampiran/' . $uniqueName,  // tanpa 'storage/'
                 ]);
             }
 
