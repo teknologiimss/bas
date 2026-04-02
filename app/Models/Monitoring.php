@@ -46,7 +46,10 @@ class Monitoring extends Model
 
         $docs = $this->documents->pluck('nama_dokumen')->map(fn($d) => strtolower($d));
 
-        if ($docs->contains(fn($d) => str_contains($d, 'nota'))) {
+        if ($docs->contains(fn($d) =>
+                str_contains($d, 'nota') ||
+                str_contains($d, 'nota dinas') ||
+                str_contains($d, 'kontrak'))) {
             $progress += 15;
         }
 
