@@ -37,9 +37,6 @@ class Monitoring extends Model
     //     return $this->hasMany(DocumentsGroup::class, 'monitor_id');
     // }
 
-
-
-
     /**
      * Hitung progress persen otomatis berdasarkan dokumen
      */
@@ -56,18 +53,38 @@ class Monitoring extends Model
         if ($docs->contains(fn($d) => str_contains($d, 'purchase order') || str_contains($d, 'po'))) {
             $progress += 15;
         }
-        if ($docs->contains(fn($d) => str_contains($d, 'purchase request') || str_contains($d, 'pr'))) {
+        // if ($docs->contains(fn($d) => str_contains($d, 'purchase request') || str_contains($d, 'pr'))) {
+        //     $progress += 10;
+        // }
+        if ($docs->contains(fn($d) =>
+                str_contains($d, 'purchase request') ||
+                str_contains($d, 'pr') ||
+                str_contains($d, 'spp'))) {
             $progress += 10;
         }
+
+        if ($docs->contains(fn($d) => str_contains($d, 'surat jalan') || str_contains($d, 'sjn'))) {
+            $progress += 10;
+        }
+
+        // if ($docs->contains(fn($d) =>
+        //         str_contains($d, 'foto') ||
+        //         str_contains($d, 'dokumen') ||
+        //         str_contains($d, 'laporan'))) {
+        //     $progress += 50;
+        // }
 
         if ($docs->contains(fn($d) =>
                 str_contains($d, 'foto') ||
                 str_contains($d, 'dokumen') ||
-                str_contains($d, 'laporan'))) {
-            $progress += 50;
+                str_contains($d, 'laporan') ||
+                str_contains($d, 'dokumentasi'))) {
+            $progress += 40;
         }
 
-        if ($docs->contains(fn($d) => str_contains($d, 'ba'))) {
+        if ($docs->contains(fn($d) =>
+                str_contains($d, 'ba') ||
+                str_contains($d, 'berita acara'))) {
             $progress += 10;
         }
 
