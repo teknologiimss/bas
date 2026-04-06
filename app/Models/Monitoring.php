@@ -58,13 +58,23 @@ class Monitoring extends Model
     /**
      * Cek PO
      */
+    // public function hasPO(): bool
+    // {
+    //     $docs = $this->getDocumentNames();
+    //     return $docs->contains(fn($d) =>
+    //         str_contains($d, 'purchase order') ||
+    //         str_contains($d, 'po'));
+    // }
     public function hasPO(): bool
     {
         $docs = $this->getDocumentNames();
 
-        return $docs->contains(fn($d) =>
-            str_contains($d, 'purchase order') ||
-            str_contains($d, 'po'));
+        return $docs->contains(function ($d) {
+            return str_contains($d, 'purchase order') ||
+                preg_match('/\bpo\b/i', $d) ||  // po (kata utuh)
+                preg_match('/p\.o/i', $d) ||  // P.O
+                preg_match('/po[-\s]?\d+/i', $d);  // PO-123 / PO 123
+        });
     }
 
     /**

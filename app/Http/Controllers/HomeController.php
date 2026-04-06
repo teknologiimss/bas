@@ -141,11 +141,13 @@ class HomeController extends Controller
             ->pluck('total', 'tahun')
             ->toArray();
 
-        $mroData = Monitoring::select(
-            'po_nota_dinas',
-            'nama_pekerjaan',
-            'progress'
-        )
+        $mroData = Monitoring::with('documents')
+            ->select(
+                'id',  // WAJIB untuk relasi
+                'po_nota_dinas',
+                'nama_pekerjaan',
+                'progress'
+            )
             ->orderBy('progress')
             ->get();
 

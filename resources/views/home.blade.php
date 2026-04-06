@@ -637,7 +637,7 @@
             <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
             <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
-            <script>
+            {{-- <script>
                 const mroLabels = [
                     @foreach ($mroData as $m)
                         "{{ $m->po_nota_dinas }} - {{ Str::limit($m->nama_pekerjaan, 35) }}",
@@ -750,7 +750,108 @@
 
                 resizeChart();
                 window.addEventListener('resize', resizeChart);
-            </script>
+            </script> --}}
+
+            <script>
+    const mroLabels = [
+        @foreach ($mroData as $m)
+            "{{ $m->po_nota_dinas }} - {{ Str::limit($m->nama_pekerjaan, 35) }}",
+        @endforeach
+    ];
+
+    const mroProgress = [
+        @foreach ($mroData as $m)
+            {{ $m->progress }},
+        @endforeach
+    ];
+
+    // 🔥 AMBIL WARNA LANGSUNG DARI MODEL (INI KUNCINYA)
+    const mroColors = [
+        @foreach ($mroData as $m)
+            @if($m->progressColor() == 'bg-danger')
+                '#ef4444',
+            @elseif($m->progressColor() == 'bg-success')
+                '#22c55e',
+            @else
+                '#f97316',
+            @endif
+        @endforeach
+    ];
+
+    const ctx = document.getElementById('mroChart');
+
+    const chart = new Chart(ctx, {
+        type: 'bar',
+
+        data: {
+            labels: mroLabels,
+            datasets: [{
+                data: mroProgress,
+                backgroundColor: mroColors,
+                borderRadius: 10,
+                barThickness: 20,
+                minBarLength: 6
+            }]
+        },
+
+        plugins: [ChartDataLabels],
+
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+
+            layout: {
+                padding: 5
+            },
+
+            scales: {
+                x: {
+                    max: 100,
+                    ticks: {
+                        callback: v => v + '%',
+                        font: { size: 10 }
+                    }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { font: { size: 10 } }
+                }
+            },
+
+            plugins: {
+                legend: { display: false },
+
+                datalabels: {
+                    anchor: 'center',
+                    align: 'center',
+                    clip: true,
+                    formatter: v => v >= 5 ? v + '%' : '',
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 10
+                    }
+                }
+            }
+        }
+    });
+
+    function resizeChart() {
+        const mobile = window.innerWidth < 600;
+
+        chart.options.plugins.datalabels.font.size = mobile ? 9 : 11;
+        chart.options.scales.x.ticks.font.size = mobile ? 9 : 10;
+        chart.options.scales.y.ticks.font.size = mobile ? 9 : 10;
+
+        chart.data.datasets[0].barThickness = mobile ? 14 : 20;
+
+        chart.update('none');
+    }
+
+    resizeChart();
+    window.addEventListener('resize', resizeChart);
+</script>
             {{-- Grafik Progres MRO --}}
 
 
