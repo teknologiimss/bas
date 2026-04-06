@@ -144,14 +144,14 @@ class Monitoring extends Model
                 
                 str_contains($d, 'dokumen') ||
                 str_contains($d, 'administrasi'))) {
-            $progress += 50;
+            $progress += 60;
         }
 
-        if ($docs->contains(fn($d) =>
-                str_contains($d, 'ba') ||
-                str_contains($d, 'berita acara'))) {
-            $progress += 10;
-        }
+        // if ($docs->contains(fn($d) =>
+        //         str_contains($d, 'ba') ||
+        //         str_contains($d, 'berita acara'))) {
+        //     $progress += 10;
+        // }
 
         return min($progress, 100);
     }
