@@ -129,13 +129,22 @@
                         {{-- PROGRESS --}}
                         <div class="mt-3">
                             <small class="text-muted">Progress Pekerjaan</small>
-                            <div class="progress" style="height: 18px;">
+                            {{-- <div class="progress" style="height: 18px;">
                                 <div class="progress-bar 
                                     {{ $m->progress < 50 ? 'bg-danger' : ($m->progress < 100 ? 'bg-warning' : 'bg-success') }}"
                                     role="progressbar" style="width: {{ $m->progress ?? 0 }}%">
                                     {{ $m->progress ?? 0 }}%
                                 </div>
 
+                            </div> --}}
+
+                            <div class="progress" style="height: 18px;">
+                                <div class="progress-bar 
+        {{ !$m->hasPO() ? 'bg-danger' : ($m->progress >= 100 ? 'bg-success' : 'bg-orange') }}"
+                                    role="progressbar" style="width: {{ $m->progress ?? 0 }}%">
+
+                                    {{ $m->progress ?? 0 }}%
+                                </div>
                             </div>
 
                             <small class="d-block mt-1 text-muted">

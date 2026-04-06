@@ -32,6 +32,60 @@ class Monitoring extends Model
         return $this->hasMany(MonitoringDocument::class);
     }
 
+    /**
+     * Ambil semua nama dokumen lowercase
+     */
+    private function getDocumentNames()
+    {
+        return $this
+            ->documents
+            ->pluck('nama_dokumen')
+            ->map(fn($d) => strtolower($d));
+    }
+
+    /**
+     * Cek Nota Dinas
+     */
+    public function hasNotaDinas(): bool
+    {
+        $docs = $this->getDocumentNames();
+
+        return $docs->contains(fn($d) =>
+            str_contains($d, 'nota') ||
+            str_contains($d, 'nota dinas'));
+    }
+
+    /**
+     * Cek PO
+     */
+    public function hasPO(): bool
+    {
+        $docs = $this->getDocumentNames();
+
+        return $docs->contains(fn($d) =>
+            str_contains($d, 'purchase order') ||
+            str_contains($d, 'po'));
+    }
+
+    /**
+     * Logic warna progress bar
+     */
+    public function progressColor(): string
+    {
+        // 1. Jika BELUM ada PO → selalu merah (fase nota dinas)
+        if (!$this->hasPO()) {
+            return 'bg-danger';
+        }
+
+        // 2. Jika SUDAH 100% → hijau
+        if ($this->progress >= 100) {
+            return 'bg-success';
+        }
+
+        // 3. Jika SUDAH ada PO → orange
+        return 'bg-orange';
+    }
+
     // public function documents_group()
     // {
     //     return $this->hasMany(DocumentsGroup::class, 'monitor_id');

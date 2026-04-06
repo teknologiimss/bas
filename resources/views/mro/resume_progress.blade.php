@@ -255,6 +255,11 @@
                 width: 0;
             }
         }
+
+        .bg-orange {
+            background-color: #fd7e14;
+            color: #fff;
+        }
     </style>
 
 
@@ -369,10 +374,19 @@
                                 </td>
 
                                 {{-- PROGRESS BAR --}}
-                                <td>
+                                {{-- <td>
                                     <div class="progress" style="height: 18px;">
                                         <div class="progress-bar
                                         {{ $m->progress < 50 ? 'bg-danger' : ($m->progress < 100 ? 'bg-warning' : 'bg-success') }}"
+                                            style="width: {{ $m->progress }}%">
+                                            {{ $m->progress }}%
+                                        </div>
+                                    </div>
+                                </td> --}}
+
+                                <td>
+                                    <div class="progress" style="height: 18px;">
+                                        <div class="progress-bar {{ $m->progressColor() }}"
                                             style="width: {{ $m->progress }}%">
                                             {{ $m->progress }}%
                                         </div>
