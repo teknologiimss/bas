@@ -842,6 +842,10 @@
                                             {
                                                 text: 'PO',
                                                 fillStyle: '#f97316'
+                                            },
+                                            {
+                                                text: 'Closed',
+                                                fillStyle: '#22c55e'
                                             }
                                         ];
                                     },
