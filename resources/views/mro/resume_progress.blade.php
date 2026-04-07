@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('title', 'Progress MRO')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
 @section('content')
 

@@ -1,5 +1,8 @@
 @extends('layouts.main')
 
+@section('title', 'Proyek MRO')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+
 @section('content')
     {{-- <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

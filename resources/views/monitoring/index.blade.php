@@ -1,4 +1,7 @@
 @extends('layouts.main')
+
+@section('title', 'Monitoring')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 <style>
     .doc-item {
         border-radius: 14px;

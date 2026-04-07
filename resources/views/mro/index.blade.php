@@ -1,5 +1,7 @@
 @extends('layouts.main')
 @section('title', __('Stok Barang MRO'))
+
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('custom-css')
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
