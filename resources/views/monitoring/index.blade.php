@@ -139,9 +139,8 @@
                             </div> --}}
 
                             <div class="progress" style="height: 18px;">
-                                <div class="progress-bar 
-        {{ !$m->hasPO() ? 'bg-danger' : ($m->progress >= 100 ? 'bg-success' : 'bg-orange') }}"
-                                    role="progressbar" style="width: {{ $m->progress ?? 0 }}%">
+                                <div class="progress-bar" role="progressbar"
+                                    style="width: {{ $m->progress ?? 0 }}%; background-color: {{ $m->progressColor() }};">
 
                                     {{ $m->progress ?? 0 }}%
                                 </div>

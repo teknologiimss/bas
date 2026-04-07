@@ -766,15 +766,21 @@
                 ];
 
                 // 🔥 WARNA DARI MODEL
+                // const mroColors = [
+                //     @foreach ($mroData as $m)
+                //         @if ($m->progressColor() == 'bg-danger')
+                //             '#ef4444',
+                //         @elseif ($m->progressColor() == 'bg-success')
+                //             '#22c55e',
+                //         @else
+                //             '#fbbf24',
+                //         @endif
+                //     @endforeach
+                // ];
+
                 const mroColors = [
                     @foreach ($mroData as $m)
-                        @if ($m->progressColor() == 'bg-danger')
-                            '#ef4444',
-                        @elseif ($m->progressColor() == 'bg-success')
-                            '#22c55e',
-                        @else
-                            '#f97316',
-                        @endif
+                        "{{ $m->progressColor() }}",
                     @endforeach
                 ];
 
@@ -841,7 +847,7 @@
                                             },
                                             {
                                                 text: 'PO',
-                                                fillStyle: '#f97316'
+                                                fillStyle: '#fbbf24'
                                             },
                                             {
                                                 text: 'Closed',

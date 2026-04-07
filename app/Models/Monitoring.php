@@ -82,18 +82,18 @@ class Monitoring extends Model
      */
     public function progressColor(): string
     {
-        // 1. Jika BELUM ada PO → selalu merah (fase nota dinas)
+        // 1. Jika BELUM ada PO → merah (nota dinas)
         if (!$this->hasPO()) {
-            return 'bg-danger';
+            return '#ef4444';
         }
 
         // 2. Jika SUDAH 100% → hijau
         if ($this->progress >= 100) {
-            return 'bg-success';
+            return '#22c55e';
         }
 
-        // 3. Jika SUDAH ada PO → orange
-        return 'bg-orange';
+        // 3. Jika SUDAH ada PO → orange cerah
+        return '#feb938';
     }
 
     // public function documents_group()
@@ -121,11 +121,9 @@ class Monitoring extends Model
         //     $progress += 15;
         // }
 
-
         // if ($docs->contains(fn($d) => str_contains($d, 'purchase request') || str_contains($d, 'pr'))) {
         //     $progress += 10;
         // }
-
 
         if ($docs->contains(fn($d) =>
                 str_contains($d, 'purchase request') ||
@@ -138,10 +136,7 @@ class Monitoring extends Model
         //     $progress += 10;
         // }
 
-        
-
         if ($docs->contains(fn($d) =>
-                
                 str_contains($d, 'dokumen') ||
                 str_contains($d, 'administrasi'))) {
             $progress += 60;
