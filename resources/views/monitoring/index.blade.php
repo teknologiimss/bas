@@ -49,6 +49,37 @@
             transform: translateY(15px);
         }
     }
+
+
+    /* button edit dan delete */
+    .action-btn {
+        width: 34px;
+        height: 34px;
+        border: none;
+        background: transparent;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+    }
+
+    .action-btn:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        transform: scale(1.1);
+    }
+
+    .action-btn.text-primary:hover {
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+
+    .action-btn.text-danger:hover {
+        background-color: rgba(220, 53, 69, 0.1);
+    }
+
+    /* button edit dan delete */
+
 </style>
 
 @section('content')
@@ -170,7 +201,7 @@
 
                     </div>
 
-                    <div>
+                    {{-- <div>
                         <button class="btn btn-sm btn-primary" data-toggle="modal"
                             data-target="#modalEdit{{ $m->id }}">Edit</button>
                         <form action="{{ route('monitoring.destroy', $m->id) }}" method="POST" class="d-inline">
@@ -179,7 +210,27 @@
                             <button onclick="return confirm('Hapus monitoring ini?')"
                                 class="btn btn-sm btn-danger">Delete</button>
                         </form>
+                    </div> --}}
+
+                    {{-- button edit dan delete --}}
+                    <div class="d-flex align-items-center gap-2">
+                        <!-- Edit -->
+                        <button class="action-btn text-primary" data-toggle="modal"
+                            data-target="#modalEdit{{ $m->id }}" title="Edit">
+                            <i class="fa fa-edit"></i>
+                        </button>
+
+                        <!-- Delete -->
+                        <form action="{{ route('monitoring.destroy', $m->id) }}" method="POST" class="m-0 d-flex">
+                            @csrf
+                            @method('DELETE')
+                            <button onclick="return confirm('Hapus monitoring ini?')" class="action-btn text-danger"
+                                title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
+                    {{-- button edit dan delete --}}
                 </div>
 
 
