@@ -171,74 +171,135 @@
    KONTRAK ITEM - RESET FLEX
 ================================= */
 
+    /* mengatur ukuran kotak daftar kontrak bagian nama_pekerjaan */
     .item-kontrak-tv {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        gap: 12px;
+        align-items: flex-start;
+        gap: 10px;
     }
 
-    .item-kontrak-tv>div {
+    .item-kontrak-tv>div:first-child {
         flex: 1;
         min-width: 0;
-        /* kunci anti overflow */
+        /* 🔥 penting supaya teks bisa wrap */
     }
 
     .item-kontrak-tv .fw-bold {
-        display: block;
-        font-size: 15px;
+        font-size: 13px;
         line-height: 1.3;
+        margin-bottom: 2px;
+
         white-space: normal;
         word-break: break-word;
+        overflow-wrap: anywhere;
+        /* jaga kalau ada kata super panjang */
     }
 
-    .item-kontrak-tv small {
-        display: block;
-        font-size: 12px;
-    }
-
-    /* Badge default */
     .pelanggan-badge {
-        flex-shrink: 0;
-        font-size: 12px;
-        padding: 4px 10px;
-        border-radius: 999px;
         white-space: nowrap;
+        flex-shrink: 0;
+        /* 🔥 supaya badge tidak kegencet */
     }
+
+    /* mengatur ukuran kotak daftar kontrak bagian nama_pekerjaan */
 
     /* =================================
    MODE HP - PAKSA STACK KE BAWAH
 ================================= */
     @media (max-width: 576px) {
 
-        /* HANCURKAN layout bootstrap */
-        .item-kontrak-tv {
+        .list-group-item.item-kontrak-tv {
             display: block !important;
-            padding: 10px 12px;
+            height: auto !important;
+            /* 🔥 kunci utama */
+            min-height: unset !important;
+            overflow: visible !important;
+            /* 🔥 biar tidak kepotong */
+
+            padding: 12px;
         }
 
-        .item-kontrak-tv>div {
+        .item-kontrak-tv * {
+            max-width: 100%;
+        }
+
+        .item-kontrak-tv .fw-bold {
+            font-size: 12px;
+            line-height: 1.4;
+            /* 🔥 tambah lega biar tidak numpuk */
+            margin-bottom: 6px;
+
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        .item-kontrak-tv small {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .pelanggan-badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 4px 8px;
+
+            white-space: normal;
+            word-break: break-word;
+        }
+    }
+
+
+    /* Mode Tablet */
+    @media (min-width: 577px) and (max-width: 991px) {
+
+        .list-group-item.item-kontrak-tv {
+            display: flex !important;
+            flex-direction: column !important;
+
+            height: auto !important;
+            /* 🔥 WAJIB */
+            min-height: unset !important;
+            overflow: visible !important;
+            /* 🔥 WAJIB */
+
+            padding: 12px;
+            gap: 6px;
+        }
+
+        .item-kontrak-tv>div:first-child {
             width: 100%;
+            min-width: 0;
         }
 
         .item-kontrak-tv .fw-bold {
             font-size: 13px;
-            line-height: 1.25;
-            margin-bottom: 2px;
+            line-height: 1.4;
+            margin-bottom: 4px;
+
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .item-kontrak-tv small {
+            display: block;
             font-size: 11px;
             margin-bottom: 6px;
         }
 
         .pelanggan-badge {
             display: inline-block;
-            font-size: 11px;
-            padding: 3px 8px;
+            align-self: flex-start;
+
+            white-space: normal;
+            word-break: break-word;
+
+            flex-shrink: 0;
         }
     }
-
 
     /* ===============================
    NAV TAB MERAH - DASHBOARD
