@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('title', __('Tracking Purchase Request'))
 @section('custom-css')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 <style>

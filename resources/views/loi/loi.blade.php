@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('title', __('LOI Dalam Negeri'))
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('custom-css')
     <style>
         /* =====================================================

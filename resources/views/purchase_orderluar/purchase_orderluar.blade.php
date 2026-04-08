@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('title', __('Purchase Order Luar Negeri'))
 @section('custom-css')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
