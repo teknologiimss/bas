@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('title', __('Warehouse'))
 @section('custom-css')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 @endsection
 @section('content')
