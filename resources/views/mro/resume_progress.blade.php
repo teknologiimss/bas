@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('title', 'Progress MRO')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
 @section('content')
 
@@ -255,6 +256,8 @@
                 width: 0;
             }
         }
+
+        
     </style>
 
 
@@ -369,11 +372,20 @@
                                 </td>
 
                                 {{-- PROGRESS BAR --}}
+
+
+                                {{-- <td>
+                                    <div class="progress" style="height: 18px;">
+                                        <div class="progress-bar {{ $m->progressColor() }}"
+                                            style="width: {{ $m->progress }}%">
+                                            {{ $m->progress }}%
+                                        </div>
+                                    </div>
+                                </td> --}}
                                 <td>
                                     <div class="progress" style="height: 18px;">
-                                        <div class="progress-bar
-                                        {{ $m->progress < 50 ? 'bg-danger' : ($m->progress < 100 ? 'bg-warning' : 'bg-success') }}"
-                                            style="width: {{ $m->progress }}%">
+                                        <div class="progress-bar"
+                                            style="width: {{ $m->progress }}%; background-color: {{ $m->progressColor() }};">
                                             {{ $m->progress }}%
                                         </div>
                                     </div>

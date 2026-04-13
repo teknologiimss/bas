@@ -1,6 +1,8 @@
 @extends('layouts.main')
 @section('title', 'Mutasi Stok MRO')
 
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+
 <style>
     /* Table wrapper */
     .table-modern {

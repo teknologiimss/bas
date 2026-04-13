@@ -1,4 +1,7 @@
 @extends('layouts.main')
+
+@section('title', 'Monitoring')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 <style>
     .doc-item {
         border-radius: 14px;
@@ -46,6 +49,37 @@
             transform: translateY(15px);
         }
     }
+
+
+    /* button edit dan delete */
+    .action-btn {
+        width: 34px;
+        height: 34px;
+        border: none;
+        background: transparent;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+    }
+
+    .action-btn:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        transform: scale(1.1);
+    }
+
+    .action-btn.text-primary:hover {
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+
+    .action-btn.text-danger:hover {
+        background-color: rgba(220, 53, 69, 0.1);
+    }
+
+    /* button edit dan delete */
+
 </style>
 
 @section('content')
@@ -129,13 +163,21 @@
                         {{-- PROGRESS --}}
                         <div class="mt-3">
                             <small class="text-muted">Progress Pekerjaan</small>
-                            <div class="progress" style="height: 18px;">
+                            {{-- <div class="progress" style="height: 18px;">
                                 <div class="progress-bar 
                                     {{ $m->progress < 50 ? 'bg-danger' : ($m->progress < 100 ? 'bg-warning' : 'bg-success') }}"
                                     role="progressbar" style="width: {{ $m->progress ?? 0 }}%">
                                     {{ $m->progress ?? 0 }}%
                                 </div>
 
+                            </div> --}}
+
+                            <div class="progress" style="height: 18px;">
+                                <div class="progress-bar" role="progressbar"
+                                    style="width: {{ $m->progress ?? 0 }}%; background-color: {{ $m->progressColor() }};">
+
+                                    {{ $m->progress ?? 0 }}%
+                                </div>
                             </div>
 
                             <small class="d-block mt-1 text-muted">
@@ -159,7 +201,7 @@
 
                     </div>
 
-                    <div>
+                    {{-- <div>
                         <button class="btn btn-sm btn-primary" data-toggle="modal"
                             data-target="#modalEdit{{ $m->id }}">Edit</button>
                         <form action="{{ route('monitoring.destroy', $m->id) }}" method="POST" class="d-inline">
@@ -168,7 +210,27 @@
                             <button onclick="return confirm('Hapus monitoring ini?')"
                                 class="btn btn-sm btn-danger">Delete</button>
                         </form>
+                    </div> --}}
+
+                    {{-- button edit dan delete --}}
+                    <div class="d-flex align-items-center gap-2">
+                        <!-- Edit -->
+                        <button class="action-btn text-primary" data-toggle="modal"
+                            data-target="#modalEdit{{ $m->id }}" title="Edit">
+                            <i class="fa fa-edit"></i>
+                        </button>
+
+                        <!-- Delete -->
+                        <form action="{{ route('monitoring.destroy', $m->id) }}" method="POST" class="m-0 d-flex">
+                            @csrf
+                            @method('DELETE')
+                            <button onclick="return confirm('Hapus monitoring ini?')" class="action-btn text-danger"
+                                title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
+                    {{-- button edit dan delete --}}
                 </div>
 
 

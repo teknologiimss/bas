@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('title', __('NEGO Luar Negeri'))
 @section('custom-css')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     {{-- <style>
         /* Important part */
         .modal-dialog {

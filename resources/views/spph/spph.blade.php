@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('title', __('SPPH'))
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('custom-css')
     <style>
         /* Important part */

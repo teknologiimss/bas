@@ -2,7 +2,7 @@
 @section('title', __('Penerimaan Barang'))
 @section('custom-css')
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
-    <link rel="icon" href="{{ asset('public/img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
     <style>
 /* =====================================================

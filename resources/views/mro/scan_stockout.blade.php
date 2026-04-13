@@ -1,4 +1,6 @@
 @extends('layouts.main')
+@section('title', 'Stock Out')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
 @section('content')
     <div class="container mt-4">
