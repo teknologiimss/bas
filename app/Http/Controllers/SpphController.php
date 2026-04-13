@@ -795,7 +795,7 @@ class SpphController extends Controller
 
     public function spphPrint(Request $request)
     {
-        $id = $request->spph_id;
+        $id = $request->id ?? $request->spph_id;
         $spph = Spph::where('id', $id)->first();
         $spph->details = DetailSpph::where('spph_id', $id)->leftJoin('detail_pr', 'detail_pr.id', '=', 'detail_spph.id_detail_pr')->get();
         $spph->tanggal_spph = Carbon::parse($spph->tanggal_spph)->isoFormat('D MMMM Y');

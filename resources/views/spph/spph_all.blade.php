@@ -316,7 +316,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 id="modal-title" class="modal-title">{{ __('Detail SPPH') }}</h4>
+                        <h4 id="modal-title" class="modal-title">{{ __('Detail SPPH dan RFQ') }}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -326,7 +326,8 @@
                             <div class="row">
                                 <form id="cetak-spph" method="GET" action="{{ route('spph.print') }}"
                                     target="_blank">
-                                    <input type="hidden" name="spph_id" id="spph_id">
+                                    <input type="hidden" name="id" id="spph_id">
+                                    <input type="hidden" name="tipe" id="tipe_data">
                                 </form>
                                 <div class="col-12" id="container-form">
                                     <button id="button-cetak-spph" type="button" class="btn btn-primary"
@@ -340,7 +341,7 @@
                                         <tr>
                                             <td style="width: 3%;"><b>No SPPH</b></td>
                                             <td style="width:2%">:</td>
-                                            <td style="width: 55%"><span id="nomor"></span></td>
+                                            <td style="width: 55%"><span id="no_surat"></span></td>
                                         </tr>
                                         <tr>
                                             <td><b>Penerima</b></td>
@@ -1778,61 +1779,105 @@
         //Lihat Detail
         function lihatSjn(data) {
             emptyTableSpph();
-            $('#modal-title').text("Detail SPPH");
+
+            let tipe = (data.tipe || '').toLowerCase();
+
+            $('#tipe_data').val(tipe);
+
+            if (tipe === 'spph') {
+                $('#cetak-spph').attr('action', "{{ route('spph.print') }}");
+            } else if (tipe === 'rfq') {
+                $('#cetak-spph').attr('action', "{{ route('spph_rfq.print') }}");
+            }
+
+            // 🔥 dynamic title
+            if (tipe === 'spphrfq') {
+                $('#modal-title').text("Detail SPPH RFQ");
+            } else {
+                $('#modal-title').text("Detail SPPH");
+            }
+
             $('#button-save').text("Cetak");
             resetForm();
+
             $('#save_id').val(data.id);
             $('#button-tambah-produk').val(data.id_pr);
             $('#button-tambah-produk').attr('onclick', `showAddProduct(${data.id_pr}); getSpphDetail(${data.id_pr});`);
+
             $('#id_pr2').text(data.id_pr);
             $('#no_surat').text(data.nomor);
             $('#nama_penerima').text(data.penerima);
             $('#tgl_spph').text(data.tanggal);
+
             $('#table-spph').empty();
+
+            // 🔥 tentukan URL berdasarkan tipe
+            let url = '';
+            if (tipe === 'spph') {
+                url = "{{ url('products/spph_detail') }}/" + data.id;
+            } else if (tipe === 'rfq') {
+                url = "{{ url('products/spph_rfq_detail') }}/" + data.id;
+            }
+
             $.ajax({
-                url: "{{ url('products/spph_detail') }}" + "/" + data.id,
+                url: url,
                 type: "GET",
                 dataType: "json",
+
                 beforeSend: function() {
-                    $('#table-spph').append('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
+                    $('#table-spph').html('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
                     $('#button-cetak-spph').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
                     $('#button-cetak-spph').attr('disabled', true);
                 },
-                success: function(data) {
-                    $('#no_surat').text(data.spph.no_spph);
-                    $('#nama_penerima').text(data.spph.penerima);
-                    $('#tgl_spph').text(data.spph.tanggal_spph);
-                    $('#spph_id').val(data.spph.id);
-                    $('#button-cetak-spph').html('<i class="fas fa-print"></i> Cetak');
-                    $('#button-cetak-spph').attr('disabled', false);
-                    if (data.spph.details.length == 0) {
-                        $('#table-spph').append(
-                            '<tr><td colspan="7" class="text-center">Tidak ada produk</td></tr>'
-                        );
-                    } else {
-                        $.each(data.spph.details, function(key, value) {
-                            $('#table-spph').append(
-                                '<tr id="row-' + key + '" data-id="' + value.id + '">' +
-                                // Menambahkan data-id pada <tr>
-                                '<td>' + (key + 1) + '</td>' +
-                                '<td>' + value.uraian + '</td>' +
-                                '<td>' + value.spek + '</td>' +
-                                '<td>' + value.spph_qty + '</td>' +
-                                // '<td><input type="text" class="form-control qty2-input" style="width: 50px;" value="' + value.qty2 + '" data-qty="' + value.qty2 + '"></td>' +  <!-- qty2-input -->
-                                '<td>' + value.satuan + '</td>' +
-                                value.id + '" data-id_spph="' + value.id_spph +
-                                '" data-id_detail_pr="' + value.id_detail_pr +
-                                '" data-id_detail_spph="' + value.id_detail_spph + //ggwp
-                                '">Hapus</button></td>' +
-                                '</tr>'
-                            );
-                        });
 
+                success: function(res) {
 
+                    // 🔥 ambil data dari 2 kemungkinan controller
+                    let header = res.spph || res.spphrfq;
+
+                    if (!header) {
+                        console.error('Response tidak sesuai:', res);
+                        $('#table-spph').html('<tr><td colspan="7" class="text-danger text-center">Format data salah</td></tr>');
+                        return;
                     }
 
-                    // Remove loading
-                    $('#table-spph').find('tr:first').remove();
+                    // 🔥 isi header fleksibel
+                    $('#no_surat').text(header.no_spph || header.nomor);
+                    $('#nama_penerima').text(header.penerima);
+                    $('#tgl_spph').text(header.tanggal_spph || header.tanggal);
+                    $('#spph_id').val(header.id);
+
+                    $('#button-cetak-spph').html('<i class="fas fa-print"></i> Cetak');
+                    $('#button-cetak-spph').attr('disabled', false);
+
+                    let details = header.details || [];
+
+                    if (details.length === 0) {
+                        $('#table-spph').html(
+                            '<tr><td colspan="7" class="text-center">Tidak ada produk</td></tr>'
+                        );
+                        return;
+                    }
+
+                    let html = '';
+
+                    $.each(details, function(key, value) {
+                        html += `
+                            <tr>
+                                <td>${key + 1}</td>
+                                <td>${value.uraian}</td>
+                                <td>${value.spek}</td>
+                                <td>${value.spph_qty || value.spphrfq_qty}</td>
+                                <td>${value.satuan}</td>
+                            </tr>
+                        `;
+                    });
+
+                    $('#table-spph').html(html);
+                },
+
+                error: function() {
+                    $('#table-spph').html('<tr><td colspan="7" class="text-danger text-center">Gagal load data</td></tr>');
                 }
             });
         }

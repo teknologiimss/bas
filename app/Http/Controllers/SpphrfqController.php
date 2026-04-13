@@ -512,7 +512,7 @@ class SpphrfqController extends Controller
     //print SPPH RFQ
     public function spphPrintrfq(Request $request)
     {
-        $id = $request->spphrfq_id;
+        $id = $request->id ?? $request->spphrfq_id;
         $spphrfq = SpphRfq::where('id', $id)->first();
         $spphrfq->details = DetailSpphrfq::where('spphrfq_id', $id)->leftJoin('detail_pr', 'detail_pr.id', '=', 'detail_spphrfq.id_detail_pr')->get();
         $spphrfq->tanggal_spphrfq = Carbon::parse($spphrfq->tanggal_spphrfq)->isoFormat('D MMMM Y');
