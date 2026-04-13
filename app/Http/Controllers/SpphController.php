@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader;
+use App\Models\SpphRfq;
 
 class SpphController extends Controller
 {
@@ -139,6 +140,64 @@ class SpphController extends Controller
         } else {
             return view('home.apps.logistik.spph', compact('spphes', 'vendors'));
         }
+    }
+
+    public function allData(Request $request)
+    {
+        $spph = Spph::select(
+            'spph.id',
+            'spph.nomor_spph as nomor',
+            'spph.nomor_pr',
+            'spph.vendor_id',
+            'vendor.nama as vendor',
+            'spph.perihal',
+            'spph.tanggal_spph as tanggal',
+            'spph.batas_spph as batas',
+            'spph.keterangan_spph as keterangan',
+            DB::raw("'SPPH' as tipe")
+        )->leftJoin('vendor', DB::raw('vendor.id'), '=', DB::raw('REPLACE(REPLACE(spph.vendor_id, "[", ""), "]", "")'));
+
+        $rfq = SpphRfq::select(
+            'spphrfq.id',
+            'spphrfq.nomor_spphrfq as nomor',
+            'spphrfq.nomor_pr',
+            'spphrfq.vendor_id',
+            'vendor.nama as vendor',
+            'spphrfq.perihal',
+            'spphrfq.tanggal_spphrfq as tanggal',
+            'spphrfq.batas_spphrfq as batas',
+            'spphrfq.keterangan_spphrfq as keterangan',
+            DB::raw("'RFQ' as tipe")
+        )->leftJoin('vendor', DB::raw('vendor.id'), '=', DB::raw('REPLACE(REPLACE(spphrfq.vendor_id, "[", ""), "]", "")'));
+
+        $query = $spph->union($rfq);
+
+        $data = DB::query()
+            ->fromSub($query, 'combined')
+            ->orderBy('tanggal', 'desc')
+            ->paginate(10);
+
+        // dd($data->items());
+
+        foreach ($data as $item) {
+            if ($item->tipe == 'SPPH') {
+                $lampiran = DB::table('spph_lampiran')
+                    ->where('spph_id', $item->id)
+                    ->pluck('file')
+                    ->toArray();
+            } else {
+                $lampiran = DB::table('spphrfq_lampiran')
+                    ->where('spphrfq_id', $item->id)
+                    ->pluck('file')
+                    ->toArray();
+            }
+
+            $item->lampiran = implode(',', $lampiran);
+        }
+
+        $vendors = Vendor::all();
+
+        return view('spph.spph_all', compact('data', 'vendors'));
     }
 
     function FunctionCountPages($path)

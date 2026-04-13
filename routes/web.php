@@ -260,6 +260,7 @@ Route::prefix('products')->group(function () {
     Route::delete('kode_material', [App\Http\Controllers\KodeMaterialController::class, 'destroy'])->name('kode_material.destroy');
 
     // SPPH
+    Route::get('/spph/all', [App\Http\Controllers\SpphController::class, 'allData'])->name('spph.all');
     Route::resource('spph', App\Http\Controllers\SpphController::class)->except(['destroy']);
     Route::delete('spph', [App\Http\Controllers\SpphController::class, 'destroy'])->name('spph.destroy');
     Route::get('spph_detail/{id}', [App\Http\Controllers\SpphController::class, 'getDetailSpph'])->name('spph_detail');

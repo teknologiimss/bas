@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', __('REQUEST FOR QUOTATION (RFQ)'))
+@section('title', __('DATA SPPH DAN RFQ'))
 @section('custom-css')
     <style>
         /* Important part */
@@ -208,25 +208,10 @@
             {{-- Tab menu SPPH dalam dan Luar --}}
 
             <div class="card">
-                <div class="card-header">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-SPPH"
-                        onclick="addSPPH()"><i class="fas fa-plus"></i> Add New RFQ</button>
-                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#import-product" onclick="importProduct()"><i class="fas fa-file-excel"></i> Import Product (Excel)</button> -->
-                    <!-- <button type="button" class="btn btn-primary" onclick="download('xls')"><i class="fas fa-file-excel"></i> Export Product (XLS)</button> -->
-                    {{-- <div class="card-tools">
-                        <form>
-                            <div class="input-group input-group">
-                                <input type="text" class="form-control" name="q" placeholder="Search">
-                                <input type="hidden" name="category" value="{{ Request::get('category') }}">
-                <input type="hidden" name="sort" value="{{ Request::get('sort') }}">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-            </form>
-        </div> --}}
+                <div class="card-header d-flex align-items-center">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-database text-white"></i> Data SPPH dan RFQ
+                    </h5>
                 </div>
 
                 <div class="card-body">
@@ -236,14 +221,14 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="filter-spph-no">Filter Nomor RFQ</label>
+                                    <label for="filter-spph-no">Filter Nomor SPPH dan RFQ</label>
                                     <input type="text" class="form-control" id="filter-spph-no"
-                                        placeholder="Masukkan Nomor spph">
+                                        placeholder="Masukkan Nomor SPPH atau RFQ">
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="filter-spph-date">Filter Tanggal RFQ</label>
+                                <div class="form-group"> 
+                                    <label for="filter-spph-date">Filter Tanggal SPPH dan RFQ</label>
                                     <input type="date" class="form-control" id="filter-spph-date">
                                 </div>
                             </div>
@@ -258,106 +243,60 @@
                                 <tr class="text-center">
                                     <th><input type="checkbox" id="select-all"></th>
                                     <th>No.</th>
-                                    <th>{{ __('Nomor SPPH') }}</th>
+                                    <th>{{ __('Nomor SPPH/RFQ') }}</th>
                                     <th>{{ __('Nomor PR') }}</th>
-                                    <th>{{ __('Attachment') }}</th>
-                                    <th>{{ __('Regarding') }}</th>
-                                    <th>{{ __('Date SPPH') }}</th>
-                                    <th>{{ __('Deadline SPPH') }}</th>
+                                    <th>{{ __('Perihal') }}</th>
+                                    <th>{{ __('Tanggal') }}</th>
+                                    <th>{{ __('Batas Akhir') }}</th>
                                     <th>{{ __('Vendor') }}</th>
+                                    <th>{{ __('Lampiran') }}</th>
+                                    <th>{{ __('Tipe') }}</th>
                                     {{-- <th>{{ __('Penerima') }}</th> --}}
-                                    <th></th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (count($spphrfqes) > 0)
-                                    @foreach ($spphrfqes as $key => $d)
+                                @if ($data && $data->count() > 0)
+                                    @foreach ($data as $key => $d)
+
                                         @php
-                                            // $penerima = $d->penerima;
-                                            // $penerima = json_decode($penerima);
-                                            // $penerima = implode(', ', $penerima);
-                                            $vendor = $d->vendor;
-                                            $data = [
-                                                'no' => $spphrfqes->firstItem() + $key,
-                                                'nomor_spphrfq' => $d->nomor_spphrfq,
-                                                'id_pr' => $d->id_pr,
-                                                'nomor_pr' => $d->nomor_pr,
-                                                'lampiran' => $d->lampiran,
-                                                'vendor_id' => $d->vendor_id,
-                                                'vendor' => $vendor,
-                                                'perihal' => $d->perihal,
-                                                'keterangan_spphrfq' => $d->keterangan_spphrfq,
-                                                'tanggal' => date('d/m/Y', strtotime($d->tanggal_spphrfq)),
-                                                'batas' => date('d/m/Y', strtotime($d->batas_spphrfq)),
-                                                'penerima' => $d->penerima,
-                                                'alamat' => $d->alamat,
-                                                'id' => $d->id,
-                                                'penerima_asli' => $d->penerima,
-                                                'alamat_asli' => $d->alamat,
-                                            ];
+                                            $lampiran = !empty($d->lampiran) ? explode(',', $d->lampiran) : [];
                                         @endphp
 
                                         <tr>
-                                            <td class="text-center"><input type="checkbox" name="hapus[]"
-                                                    value="{{ $d->id }}"></td>
-                                            <td class="text-center">{{ $data['no'] }}</td>
-                                            <td class="text-center">{{ $data['nomor_spphrfq'] }}</td>
-                                            <td class="text-center">{{ $data['nomor_pr'] }}</td>
-
-                                            {{-- membuat lampiran lebih dari 1 --}}
                                             <td class="text-center">
-                                                @php
-                                                    // Memisahkan lampiran berdasarkan koma
-                                                    $lampiran = explode(',', $d->lampiran);
-                                                @endphp
-
-                                                @if (!empty($lampiran) && is_array($lampiran) && count($lampiran) > 0)
-                                                    @foreach ($lampiran as $index => $file)
-                                                        @if (!empty($file))
-                                                            <a href="{{ asset('/lampiran/' . trim($file)) }}"
-                                                                target="_blank">
-                                                                <i class="fa fa-eye"></i> Lihat
-                                                            </a>
-                                                            @if ($index < count($lampiran) - 1)
-                                                                <br>
-                                                            @endif
-                                                        @endif
+                                                <input type="checkbox" name="hapus[]" value="{{ $d->id }}">
+                                            </td>
+                                            <td class="text-center">{{ $key + 1 }}</td>
+                                            <td class="text-center">{{ $d->nomor }}</td>
+                                            <td class="text-center">{{ $d->nomor_pr }}</td>
+                                            <td class="text-center">{{ $d->perihal }}</td>
+                                            <td class="text-center">{{ date('d/m/Y', strtotime($d->tanggal)) }}</td>
+                                            <td class="text-center">{{ date('d/m/Y', strtotime($d->batas)) }}</td>
+                                            <td class="text-center">{{ $d->vendor }}</td>
+                                            <td class="text-center">
+                                                @if(count($lampiran) > 0)
+                                                    @foreach ($lampiran as $file)
+                                                        <a href="{{ asset('/lampiran/' . trim($file)) }}" target="_blank">
+                                                            <i class="fa fa-eye"></i> Lihat
+                                                        </a><br>
                                                     @endforeach
                                                 @else
                                                     -
                                                 @endif
                                             </td>
-
-                                            {{-- membuat lampiran lebih dari 1 --}}
-
-
-                                            <td class="text-center">{{ $data['perihal'] }}</td>
-                                            <td class="text-center">{{ $data['tanggal'] }}</td>
-                                            <td class="text-center">{{ $data['batas'] }}</td>
-                                            <td class="text-center">{{ $data['vendor'] }}</td>
-                                            {{-- <td class="text-center">{{ $data['penerima'] }}</td> --}}
+                                            <td class="text-center">{{ $d->tipe }}</td>
                                             <td class="text-center">
-                                                <button title="Edit SPPH" type="button" class="btn btn-success btn-xs"
-                                                    data-toggle="modal" data-target="#add-SPPH"
-                                                    onclick="editSPPH({{ json_encode($data) }})"><i
-                                                        class="fas fa-edit"></i></button>
-
                                                 <button title="Lihat Detail" type="button" data-toggle="modal"
                                                     data-target="#detail-spph" class="btn-lihat btn btn-info btn-xs"
-                                                    data-detail="{{ json_encode($data) }}"><i
-                                                        class="fas fa-list"></i></button>
-                                                @if (Auth::user()->role == 0 || Auth::user()->role == 1)
-                                                    <button title="Hapus SPPH" type="button" class="btn btn-danger btn-xs"
-                                                        data-toggle="modal" data-target="#delete-spph"
-                                                        onclick="deletespph({{ json_encode($data) }})"><i
-                                                            class="fas fa-trash"></i></button>
-                                                @endif
+                                                    data-detail='@json($d)'><i class="fas fa-list"></i></button>
                                             </td>
                                         </tr>
+
                                     @endforeach
                                 @else
                                     <tr class="text-center">
-                                        <td colspan="9">{{ __('No data.') }}</td>
+                                        <td colspan="10">No data.</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -368,167 +307,7 @@
                 </div>
             </div>
             <div class="mt-3 d-flex justify-content-end">
-                {{ $spphrfqes->links('pagination::bootstrap-4') }}
-            </div>
-
-        </div>
-
-        {{-- modal --}}
-        <div class="modal fade" id="add-SPPH">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 id="modal-title" class="modal-title">{{ __('Add New RFQ') }}</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form role="form" id="save" action="{{ route('spph_rfq.store') }}" method="post"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <input type="hidden" id="save_id" name="id">
-                            <input type="hidden" id="id_pr" name="id_pr">
-                            <input type="hidden" id="lampiran_awal" name="lampiran_awal">
-                            <input type="hidden" id="nama_lampiran" name="nama_lampiran">
-                            <div class="form-group row">
-                                <label for="nomor_spphrfq" class="col-sm-4 col-form-label">{{ __('Nomor SPPH') }}
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="nomor_spphrfq" name="nomor_spphrfq">
-                                </div>
-                            </div>
-                            {{-- <div class="form-group row">
-                                <label for="lampiran" class="col-sm-4 col-form-label">{{ __('Lampiran') }}
-                        </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="lampiran" name="lampiran">
-                        </div>
-                </div> --}}
-                            {{-- <div class="form-group row">
-                                <label for="vendor_id" class="col-sm-4 col-form-label">{{ __('Vendor') }} </label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" id="vendor_id" name="vendor_id">
-                    <select class="form-control" id="vendor_id" name="vendor_id">
-                        <option value="">Pilih Vendor</option>
-                        @foreach ($vendors as $vendor)
-                        <option value="{{ $vendor->id }}">{{ $vendor->nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div> --}}
-                            <div class="form-group row">
-                                <label for="nomor_pr" class="col-sm-4 col-form-label">{{ __('Nomor PR') }}
-                                </label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" name="nomor_pr" id="nomor_pr">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="perihal" class="col-sm-4 col-form-label">{{ __('Regarding') }}
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="perihal" name="perihal">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="tanggal_spphrfq" class="col-sm-4 col-form-label">{{ __('Date SPPH') }}
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="tanggal_spphrfq"
-                                        name="tanggal_spphrfq">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="batas_spphrfq" class="col-sm-4 col-form-label">{{ __('Deadline SPPH') }}
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="batas_spphrfq" name="batas_spphrfq">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="keterangan_spphrfq"
-                                    class="col-sm-4 col-form-label">{{ __('Information') }}</label>
-                                <div class="col-sm-8">
-                                    <textarea class="form-control" id="keterangan_spphrfq" name="keterangan_spphrfq" rows="4"
-                                        placeholder="contoh penulisan                            Delivery:2(dua) minggu setelah PO setelah itu enter untuk nomor selanjutnya"></textarea>
-                                </div>
-                            </div>
-
-                            {{-- <div class="form-group row">
-                <label for="keterangan" class="col-sm-4 col-form-label">{{ __('Keterangan') }}</label>
-                <div class="col-sm-8">
-                    <div id="keterangan-wrapper">
-                        <div class="input-group mb-2">
-                            <input type="text" class="form-control" id="keterangan" name="keterangan[]" placeholder="Masukkan keterangan">
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-success" onclick="addKeterangan()">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                function addKeterangan() {
-                    let wrapper = document.getElementById('keterangan-wrapper');
-                    let newInput = document.createElement('div');
-                    newInput.classList.add('input-group', 'mb-2');
-                    newInput.innerHTML = `
-                        <input type="text" class="form-control" name="keterangan[]" placeholder="Masukkan keterangan">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-danger" onclick="removeKeterangan(this)">-</button>
-                        </div>
-                    `;
-                    wrapper.appendChild(newInput);
-                }
-                
-                function removeKeterangan(button) {
-                    button.parentElement.parentElement.remove();
-                }
-            </script> --}}
-
-
-                            {{-- <h6>Penerima -- </h6>
-
-                            <div id="penerima-row">
-
-                            </div>
-
-                            <a id="tambah" style="cursor: pointer">Tambah Penerima</a> --}}
-
-                            <input type="text" id="data_lampiran" value="--" style="display: none">
-                            <input type="text" id="data_vendor" value="--" style="display: none">
-
-                            <h6 id="lampiran_text">Lampiran</h6>
-
-                            <div id="lampiran-row">
-
-                            </div>
-
-                            <a id="tambah-lampiran" style="cursor: pointer">Tambah Lampiran</a>
-                            <hr>
-
-                            <h6 id="vendor_text">Vendor -- </h6>
-
-                            <div id="vendor-row">
-
-                            </div>
-
-                            <a id="tambah" style="cursor: pointer">Tambah vendor</a>
-                            <hr>
-
-
-                        </form>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
-                        <button id="button-save" type="button" class="btn btn-primary"
-                            onclick="setSaveIdAndSubmit();">{{ __('Tambahkan') }}</button>
-                    </div>
-                </div>
+                {{ $data->links('pagination::bootstrap-4') }}
             </div>
         </div>
 
@@ -545,9 +324,9 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="row">
-                                <form id="cetak-spph" method="GET" action="{{ route('spph_rfq.print') }}"
+                                <form id="cetak-spph" method="GET" action="{{ route('spph.print') }}"
                                     target="_blank">
-                                    <input type="hidden" name="spphrfq_id" id="spphrfq_id">
+                                    <input type="hidden" name="spph_id" id="spph_id">
                                 </form>
                                 <div class="col-12" id="container-form">
                                     <button id="button-cetak-spph" type="button" class="btn btn-primary"
@@ -561,7 +340,7 @@
                                         <tr>
                                             <td style="width: 3%;"><b>No SPPH</b></td>
                                             <td style="width:2%">:</td>
-                                            <td style="width: 55%"><span id="no_surat"></span></td>
+                                            <td style="width: 55%"><span id="nomor"></span></td>
                                         </tr>
                                         <tr>
                                             <td><b>Penerima</b></td>
@@ -576,7 +355,7 @@
                                         <tr>
                                             <td><b>Produk</b></td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <td colspan="3">
                                                 <button id="button-tambah-produk" type="button"
                                                     class="btn btn-info mb-3">{{ __('Tambah Produk') }}</button>
@@ -584,7 +363,7 @@
                                             {{-- <button title="Edit SPPH" type="button" class="btn btn-success btn-xs"
                                             data-toggle="modal" data-target="#add-SPPH"
                                             onclick="editSPPH({{ json_encode($data) }})"> --}}
-                                        </tr>
+                                        </tr> -->
                                     </table>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
@@ -594,7 +373,7 @@
                                                 <th>Spesifikasi</th>
                                                 <th>QTY</th>
                                                 <th>Satuan</th>
-                                                <th>Aksi</th>
+                                                <!-- <th>Aksi</th> -->
                                             </thead>
 
                                             <tbody id="table-spph">
@@ -628,7 +407,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                                                onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -685,7 +464,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="delete" action="{{ route('spph_rfq.destroy') }}" method="post">
+                        <form role="form" id="delete" action="{{ route('spph.destroy') }}" method="post">
                             @csrf
                             @method('delete')
                             <input type="hidden" id="delete_id" name="id">
@@ -707,6 +486,24 @@
 
 {{-- custom Js --}}
 @section('custom-js')
+
+    <script>
+        // Animasi hover checkbox select all
+        document.getElementById('select-all')?.addEventListener('change', function() {
+            document.querySelectorAll('tbody input[type="checkbox"]').forEach(cb => {
+                cb.checked = this.checked;
+                cb.closest('tr').classList.toggle('table-active', this.checked);
+            });
+        });
+
+        // Highlight row saat checkbox dipilih
+        document.querySelectorAll('tbody input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', function() {
+                this.closest('tr').classList.toggle('table-active', this.checked);
+            });
+        });
+    </script>
+
 
 
     {{-- Untuk Filter ASC-DSC Seperti Windows Explorer --}}
@@ -802,7 +599,6 @@
             });
         });
     </script>
-
 
     <script>
         $(function() {
@@ -1388,7 +1184,7 @@
 
             $('#save_id').val(data.id);
             $('#id_pr').val(data.id_pr);
-            $('#nomor_spphrfq').val(data.nomor_spphrfq);
+            $('#nomor_spph').val(data.nomor_spph);
             // $('#nomor_pr').val(data.nomor_pr);
             var pr = data.nomor_pr; // edit nomor pr biar muncul di form
             // $('#lampiran').val(data.lampiran);
@@ -1398,7 +1194,7 @@
             // console.log("perihal", data.perihal);
             $('#perihal').val(data.perihal);
             // console.log("keterangan_spph", data.keterangan_spph);
-            $('#keterangan_spphrfq').val(data.keterangan_spphrfq);
+            $('#keterangan_spph').val(data.keterangan_spph);
             // Ensure the komponen option is present in Select2
             // data edit nomor_pr
             if ($("#nomor_pr option[value='" + pr + "']").length == 0) {
@@ -1410,11 +1206,11 @@
             // $('#tanggal_spph').val(data.tanggal);
             var date = data.tanggal.split('/');
             var newDate = date[2] + '-' + date[1] + '-' + date[0];
-            $('#tanggal_spphrfq').val(newDate)
+            $('#tanggal_spph').val(newDate)
             // $('#batas_spph').val(data.batas);
             var date = data.batas.split('/');
             var newDate = date[2] + '-' + date[1] + '-' + date[0];
-            $('#batas_spphrfq').val(newDate)
+            $('#batas_spph').val(newDate)
             const penerima = JSON.parse(data.penerima_asli);
             const alamat = JSON.parse(data.alamat_asli);
             const dataPenerima = penerima.map((item, index) => {
@@ -1444,14 +1240,6 @@
             }
         }
 
-
-
-        // $('#form').hide();
-
-
-
-        //SUMBER MASALAH HARI KAMIS BUAT HARI JUMAT 
-
         //Pilih Item SPPH
         function getSpphDetail(id_pr) {
             // alert(id_pr);
@@ -1459,7 +1247,7 @@
 
             $('#button-check').prop("disabled", true);
             $.ajax({
-                url: "{{ url('products/products_pr_spphrfq/') }}/" + id_pr,
+                url: "{{ url('products/products_pr/') }}/" + id_pr,
                 type: "GET",
                 data: {
                     "format": "json"
@@ -1470,6 +1258,7 @@
                     $('#form').hide();
                 },
                 success: function(data) {
+                    console.log(data);
                     loader(0);
                     $('#form').show();
                     //append to #detail-material
@@ -1478,14 +1267,13 @@
 
                     $.each(data.products, function(key, value) {
                         console.log(value);
-                        var no_spph = value.nomor_spphrfq;
+                        var no_spph = value.nomor_spph;
 
                         var no_pr = value.pr_no;
 
 
                         var checkbox;
-                        if (value.qty_spphrfq === null || value.qty_spphrfq === "" || value
-                            .qty_spphrfq >= 0) {
+                        if (value.qty_spph === null || value.qty_spph === "" || value.qty_spph >= 0) {
                             checkbox = '<input type="checkbox" id="addToDetails-' + value.id +
                                 '" class="row-checkbox" value="' + value.id +
                                 '" onclick="addToDetailsJs(' + value.id + ')">';
@@ -1502,8 +1290,7 @@
                             '<td>' + checkbox + '</td>' +
                             '<td>' + value.uraian + '</td>' +
                             '<td>' + value.spek + '</td>' +
-                            '<td data-original-qty="' + value.qty_spphrfq + '">' + value
-                            .qty_spphrfq +
+                            '<td data-original-qty="' + value.qty_spph + '">' + value.qty_spph +
                             '</td>' +
                             '<td>' +
                             '<div style="display: block;">' +
@@ -1568,12 +1355,12 @@
         function addToDetails() {
             //TODO 2
             $.ajax({
-                url: "{{ url('products/tambah_spph_rfq_detail') }}",
+                url: "{{ url('products/tambah_spph_detail') }}",
                 type: "POST",
                 data: {
                     "_token": "{{ csrf_token() }}",
                     "selected_id": selected,
-                    "spphrfq_id": $('#spphrfq_id').val(),
+                    "spph_id": $('#spph_id').val(),
                 },
                 dataType: "json",
                 beforeSend: function() {
@@ -1583,7 +1370,7 @@
                 success: function(data) {
                     loader(0);
                     $('#form').show();
-                    var id_pr = data.spphrfq.id_pr;
+                    var id_pr = data.spph.id_pr;
                     getSpphDetail(id_pr);
                     console.log(data);
                     // alert(id_pr);
@@ -1610,19 +1397,19 @@
 
                     // Append to #detail-material
                     $('#table-spph').empty();
-                    $.each(data.spphrfq.details, function(key, value) {
+                    $.each(data.spph.details, function(key, value) {
                         var id = value.id;
-                        var id_spphrfq = value.id_spphrfq;
-                        var spphrfq_qty = value.spphrfq_qty;
-                        var id_detail_spphrfq = value.id_detail_spphrfq; //ggwp
+                        var id_spph = value.id_spph;
+                        var spph_qty = value.spph_qty;
+                        var id_detail_spph = value.id_detail_spph; //ggwp
                         var id_detail_pr = value.id_detail_pr; // Pastikan data id_detail_pr ada di sini
 
 
                         console.log(value)
                         var harga_per_unit = value.harga_per_unit ?? 0;
                         var harga_per_unit_imss = value.harga_per_unit_imss ?? 0;
-                        var total = spphrfq_qty * harga_per_unit;
-                        var total_imss = spphrfq_qty * harga_per_unit_imss;
+                        var total = spph_qty * harga_per_unit;
+                        var total_imss = spph_qty * harga_per_unit_imss;
                         harga_per_unit_imss = harga_per_unit_imss.toString()
 
                         //alert
@@ -1632,22 +1419,18 @@
                             '<td>' + (key + 1) + '</td>' +
                             '<td>' + value.uraian + '</td>' +
                             '<td>' + value.spek + '</td>' +
-                            '<td>' + value.spphrfq_qty + '</td>' +
+                            '<td>' + value.spph_qty + '</td>' +
                             '<td>' + value.satuan + '</td>' +
                             // '<td>' + value.lampiran + '</td>' +
 
-
-
-
-                            '<td> <button type="button" id="delete_spph_save" class="btn btn-danger btn-delete" data-id="' +
-                            value.id + '" data-id_spph="' + value.id_spphrfq +
-                            '" data-id_detail_nego="' + id_detail_spphrfq + //ggwp
+                            value.id + '" data-id_spph="' + value.id_spph +
+                            '" data-id_detail_nego="' + id_detail_spph + //ggwp
                             '" data-id_detail_pr="' + value.id_detail_pr +
-                            '" data-id_detail_spph="' + id_detail_spphrfq + //ggwp
+                            '" data-id_detail_spph="' + id_detail_spph + //ggwp
                             '">Hapus</button></td>' +
                             '<button type="button" class="btn btn-success btn-save" data-id="' +
-                            value.id + '" data-id_spph="' + value.id_spphrfq +
-                            '" data-id_detail_spph="' + id_detail_spphrfq + //ggwp
+                            value.id + '" data-id_spph="' + value.id_spph +
+                            '" data-id_detail_spph="' + id_detail_spph + //ggwp
                             '" data-id_detail_pr="' + value.id_detail_pr + '">Simpan</button>' +
                             '</td>' +
                             '</tr>'
@@ -1689,7 +1472,7 @@
                         $('#detail-material').empty();
                         $.each(data.products, function(key, value) {
                             console.table('a', value)
-                            var no_spph = value.nomor_spphrfq;
+                            var no_spph = value.nomor_spph;
 
 
                             var no_pr = value.pr_no;
@@ -1712,7 +1495,7 @@
                             $('#detail-material').append(
 
                                 '<tr><td>' + (key + 1) + '</td><td>' + value.uraian +
-                                '</td><td>' + value.spek + '</td><td>' + value.spphrfq_qty +
+                                '</td><td>' + value.spek + '</td><td>' + value.spph_qty +
                                 '</td><td>' +
                                 value
                                 .satuan + '</td><td>' + value.nama_pekerjaan + '</td><td>' +
@@ -1951,7 +1734,7 @@
                                             .kode_material + '</td><td>' + value
                                             .uraian + '</td><td>' +
                                             value
-                                            .spek + '</td><td>' + value.spphrfq_qty +
+                                            .spek + '</td><td>' + value.spph_qty +
                                             '</td><td>' + value
                                             .satuan + '</td><td>' + value.waktu +
                                             '</td><td>' +
@@ -1964,27 +1747,11 @@
                                 }
                             }
                         });
-
-
-
-
-
-
-
-
-
-
-
-
-
                     },
                     error: function(err) {
                         alert('Terjadi kesalahan saat menghapus item');
                     }
                 });
-
-
-
             }
         }
         //End Delete Detail
@@ -2018,12 +1785,12 @@
             $('#button-tambah-produk').val(data.id_pr);
             $('#button-tambah-produk').attr('onclick', `showAddProduct(${data.id_pr}); getSpphDetail(${data.id_pr});`);
             $('#id_pr2').text(data.id_pr);
-            $('#no_surat').text(data.nomor_spphrfq);
+            $('#no_surat').text(data.nomor);
             $('#nama_penerima').text(data.penerima);
             $('#tgl_spph').text(data.tanggal);
             $('#table-spph').empty();
             $.ajax({
-                url: "{{ url('products/spph_rfq_detail') }}" + "/" + data.id,
+                url: "{{ url('products/spph_detail') }}" + "/" + data.id,
                 type: "GET",
                 dataType: "json",
                 beforeSend: function() {
@@ -2032,31 +1799,30 @@
                     $('#button-cetak-spph').attr('disabled', true);
                 },
                 success: function(data) {
-                    $('#no_surat').text(data.spphrfq.no_spphrfq);
-                    $('#nama_penerima').text(data.spphrfq.penerima);
-                    $('#tgl_spph').text(data.spphrfq.tanggal_spph);
-                    $('#spphrfq_id').val(data.spphrfq.id);
+                    $('#no_surat').text(data.spph.no_spph);
+                    $('#nama_penerima').text(data.spph.penerima);
+                    $('#tgl_spph').text(data.spph.tanggal_spph);
+                    $('#spph_id').val(data.spph.id);
                     $('#button-cetak-spph').html('<i class="fas fa-print"></i> Cetak');
                     $('#button-cetak-spph').attr('disabled', false);
-                    if (data.spphrfq.details.length == 0) {
+                    if (data.spph.details.length == 0) {
                         $('#table-spph').append(
                             '<tr><td colspan="7" class="text-center">Tidak ada produk</td></tr>'
                         );
                     } else {
-                        $.each(data.spphrfq.details, function(key, value) {
+                        $.each(data.spph.details, function(key, value) {
                             $('#table-spph').append(
                                 '<tr id="row-' + key + '" data-id="' + value.id + '">' +
                                 // Menambahkan data-id pada <tr>
                                 '<td>' + (key + 1) + '</td>' +
                                 '<td>' + value.uraian + '</td>' +
                                 '<td>' + value.spek + '</td>' +
-                                '<td>' + value.spphrfq_qty + '</td>' +
+                                '<td>' + value.spph_qty + '</td>' +
                                 // '<td><input type="text" class="form-control qty2-input" style="width: 50px;" value="' + value.qty2 + '" data-qty="' + value.qty2 + '"></td>' +  <!-- qty2-input -->
                                 '<td>' + value.satuan + '</td>' +
-                                '<td><button type="button" id="delete_spph_save" class="btn btn-danger btn-delete" data-id="' +
-                                value.id + '" data-id_spphrfq="' + value.id_spphrfq +
+                                value.id + '" data-id_spph="' + value.id_spph +
                                 '" data-id_detail_pr="' + value.id_detail_pr +
-                                '" data-id_detail_spphrfq="' + value.id_detail_spphrfq + //ggwp
+                                '" data-id_detail_spph="' + value.id_detail_spph + //ggwp
                                 '">Hapus</button></td>' +
                                 '</tr>'
                             );
@@ -2144,7 +1910,7 @@
                         dataToSend.push({
                             id: id,
                             qty2: qty2,
-                            spphrfq_id: $('#spphrfq_id').val()
+                            spph_id: $('#spph_id').val()
                         });
                     }
                 }
@@ -2165,7 +1931,7 @@
 
             // Kirim ke server
             $.ajax({
-                url: "{{ route('detail_spph_rfq_save') }}", // Sesuaikan dengan route
+                url: "{{ route('detail_spph_save') }}", // Sesuaikan dengan route
                 type: "POST",
                 data: {
                     data: dataToSend,
@@ -2235,23 +2001,23 @@
         $(document).on('click', '#delete_spph_save', function() {
             //TODO
             var id = $(this).data('id');
-            var id_spphrfq = $(this).data('id_spphrfq');
+            var id_spph = $(this).data('id_spph');
             var id_detail_pr = $(this).data('id_detail_pr');
-            var id_detail_spphrfq = $(this).data('id_detail_spphrfq'); //ggwp
+            var id_detail_spph = $(this).data('id_detail_spph'); //ggwp
 
             console.log("ID:", id);
-            console.log("ID SPPH:", id_spphrfq);
+            console.log("ID SPPH:", id_spph);
             console.log("ID Detail PR:", id_detail_pr);
-            console.log("ID Detail SPPH:", id_detail_spphrfq);
+            console.log("ID Detail SPPH:", id_detail_spph);
 
             $.ajax({
-                url: "{{ route('detail_spph_rfq_delete') }}",
+                url: "{{ route('detail_spph_delete') }}",
                 type: "DELETE",
                 data: {
                     id: id,
-                    id_spphrfq: id_spphrfq,
+                    id_spph: id_spph,
                     id_detail_pr: id_detail_pr,
-                    id_detail_spphrfq: id_detail_spphrfq, //ggwp
+                    id_detail_spph: id_detail_spph, //ggwp
                     _token: '{{ csrf_token() }}'
                 },
                 dataType: "json",
@@ -2261,14 +2027,14 @@
                     );
                 },
                 success: function(data) {
-                    if (data.spphrfq.details.length > 0) {
+                    if (data.spph.details.length > 0) {
                         $('#table-spph').empty();
-                        $.each(data.spphrfq.details, function(key, value) {
+                        $.each(data.spph.details, function(key, value) {
 
                             var id = value.id;
-                            var id_spphrfq = value.id_spphrfq;
-                            var qty = value.spphrfq_qty;
-                            var id_detail_spphrfq = value.id_detail_spphrfq; //ggwp
+                            var id_spph = value.id_spph;
+                            var qty = value.spph_qty;
+                            var id_detail_spph = value.id_detail_spph; //ggwp
                             var id_detail_pr = value
                                 .id_detail_pr; // Pastikan data id_detail_pr ada di sini
 
@@ -2284,7 +2050,7 @@
                                 '<td>' + (key + 1) + '</td>' +
                                 '<td>' + value.uraian + '</td>' +
                                 '<td>' + value.spek + '</td>' +
-                                '<td>' + value.spphrfq_qty + '</td>' +
+                                '<td>' + value.spph_qty + '</td>' +
                                 '<td>' + value.satuan + '</td>' +
                                 // '<td><input type="text" value="' + harga_per_unit +
                                 // '" class="form-control harga-per-unit" id="harga_per_unit' +
@@ -2302,8 +2068,8 @@
 
                                 '<td>' +
                                 '<button type="button" id="delete_spph_save" class="btn btn-danger btn-delete" data-id="' +
-                                value.id + '" data-id_spph="' + value.id_spphrfq +
-                                '" data-id_detail_spph="' + id_detail_spphrfq + //ggwp
+                                value.id + '" data-id_spph="' + value.id_spph +
+                                '" data-id_detail_spph="' + id_detail_spph + //ggwp
                                 '" data-id_detail_pr="' + value.id_detail_pr +
                                 '" style="margin-bottom: 10px;">Hapus</button>' +
 
@@ -2390,20 +2156,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                                                                                                                                success ') !!}');
+                                                                                                                                                                                                                    success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                                                                                                                                error ') !!}');
+                                                                                                                                                                                                                    error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                                                                                                                                    ',
+                                                                                                                                                                                                                        ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>
