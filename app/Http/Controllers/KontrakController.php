@@ -237,7 +237,8 @@ class KontrakController extends Controller
                 'kode_proyek' => 'required',
                 'nomor_kontrak' => 'required',
                 'nama_pekerjaan' => 'required',
-                'nilai_pekerjaan' => 'required',
+                'nilai_pekerjaan' => 'required_if:jenis_nilai,input',
+                'jenis_nilai' => 'required',
                 'nama_pelanggan' => 'required',
                 'tipe' => 'required',
                 'status' => 'required',
@@ -258,13 +259,19 @@ class KontrakController extends Controller
             ]
         );
 
+        if ($request->jenis_nilai == 'realisasi') {
+            $nilai_pekerjaan = 'Harga by Realisasi';
+        } else {
+            $nilai_pekerjaan = $request->nilai_pekerjaan;
+        }
+
         if (empty($kontrak)) {
             DB::table('kontrak')->insert([
                 'tanggal' => $request->tanggal,
                 'kode_proyek' => $request->kode_proyek,
                 'nomor_kontrak' => $request->nomor_kontrak,
                 'nama_pekerjaan' => $request->nama_pekerjaan,
-                'nilai_pekerjaan' => $request->nilai_pekerjaan,
+                'nilai_pekerjaan' => $nilai_pekerjaan,
                 'nama_pelanggan' => $request->nama_pelanggan,
                 'tipe' => $request->tipe,
                 'status' => $request->status,
@@ -280,7 +287,7 @@ class KontrakController extends Controller
                 'kode_proyek' => $request->kode_proyek,
                 'nomor_kontrak' => $request->nomor_kontrak,
                 'nama_pekerjaan' => $request->nama_pekerjaan,
-                'nilai_pekerjaan' => $request->nilai_pekerjaan,
+                'nilai_pekerjaan' => $nilai_pekerjaan,
                 'nama_pelanggan' => $request->nama_pelanggan,
                 'tipe' => $request->tipe,
                 'status' => $request->status,
@@ -296,10 +303,6 @@ class KontrakController extends Controller
 
     }
     //End untuk menyimpan
-
-
-
-
 
     public function detailKontrakSave(Request $request)
     {
