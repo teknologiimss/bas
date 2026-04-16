@@ -1,6 +1,5 @@
 @extends('layouts.main')
-@section('title', __('SPPH'))
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+@section('title', __('DATA SPPH DAN RFQ'))
 @section('custom-css')
     <style>
         /* Important part */
@@ -209,25 +208,10 @@
             {{-- Tab menu SPPH dalam dan Luar --}}
 
             <div class="card">
-                <div class="card-header">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-SPPH"
-                        onclick="addSPPH()"><i class="fas fa-plus"></i> Add New SPPH</button>
-                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#import-product" onclick="importProduct()"><i class="fas fa-file-excel"></i> Import Product (Excel)</button> -->
-                    <!-- <button type="button" class="btn btn-primary" onclick="download('xls')"><i class="fas fa-file-excel"></i> Export Product (XLS)</button> -->
-                    {{-- <div class="card-tools">
-                        <form>
-                            <div class="input-group input-group">
-                                <input type="text" class="form-control" name="q" placeholder="Search">
-                                <input type="hidden" name="category" value="{{ Request::get('category') }}">
-                <input type="hidden" name="sort" value="{{ Request::get('sort') }}">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-            </form>
-        </div> --}}
+                <div class="card-header d-flex align-items-center">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-database text-white"></i> Data SPPH dan RFQ
+                    </h5>
                 </div>
 
                 <div class="card-body">
@@ -237,14 +221,14 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="filter-spph-no">Filter Nomor SPPH</label>
+                                    <label for="filter-spph-no">Filter Nomor SPPH dan RFQ</label>
                                     <input type="text" class="form-control" id="filter-spph-no"
-                                        placeholder="Masukkan Nomor spph">
+                                        placeholder="Masukkan Nomor SPPH atau RFQ">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group"> 
-                                    <label for="filter-spph-date">Filter Tanggal SPPH</label>
+                                    <label for="filter-spph-date">Filter Tanggal SPPH dan RFQ</label>
                                     <input type="date" class="form-control" id="filter-spph-date">
                                 </div>
                             </div>
@@ -259,106 +243,60 @@
                                 <tr class="text-center">
                                     <th><input type="checkbox" id="select-all"></th>
                                     <th>No.</th>
-                                    <th>{{ __('Nomor SPPH') }}</th>
+                                    <th>{{ __('Nomor SPPH/RFQ') }}</th>
                                     <th>{{ __('Nomor PR') }}</th>
-                                    <th>{{ __('Lampiran') }}</th>
                                     <th>{{ __('Perihal') }}</th>
-                                    <th>{{ __('Tanggal SPPH') }}</th>
-                                    <th>{{ __('Batas SPPH') }}</th>
+                                    <th>{{ __('Tanggal') }}</th>
+                                    <th>{{ __('Batas Akhir') }}</th>
                                     <th>{{ __('Vendor') }}</th>
+                                    <th>{{ __('Lampiran') }}</th>
+                                    <th>{{ __('Tipe') }}</th>
                                     {{-- <th>{{ __('Penerima') }}</th> --}}
-                                    <th></th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (count($spphes) > 0)
-                                    @foreach ($spphes as $key => $d)
+                                @if ($data && $data->count() > 0)
+                                    @foreach ($data as $key => $d)
+
                                         @php
-                                            // $penerima = $d->penerima;
-                                            // $penerima = json_decode($penerima);
-                                            // $penerima = implode(', ', $penerima);
-                                            $vendor = $d->vendor;
-                                            $data = [
-                                                'no' => $spphes->firstItem() + $key,
-                                                'nomor_spph' => $d->nomor_spph,
-                                                'id_pr' => $d->id_pr,
-                                                'nomor_pr' => $d->nomor_pr,
-                                                'lampiran' => $d->lampiran,
-                                                'vendor_id' => $d->vendor_id,
-                                                'vendor' => $vendor,
-                                                'perihal' => $d->perihal,
-                                                'keterangan_spph' => $d->keterangan_spph,
-                                                'tanggal' => date('d/m/Y', strtotime($d->tanggal_spph)),
-                                                'batas' => date('d/m/Y', strtotime($d->batas_spph)),
-                                                'penerima' => $d->penerima,
-                                                'alamat' => $d->alamat,
-                                                'id' => $d->id,
-                                                'penerima_asli' => $d->penerima,
-                                                'alamat_asli' => $d->alamat,
-                                            ];
+                                            $lampiran = !empty($d->lampiran) ? explode(',', $d->lampiran) : [];
                                         @endphp
 
                                         <tr>
-                                            <td class="text-center"><input type="checkbox" name="hapus[]"
-                                                    value="{{ $d->id }}"></td>
-                                            <td class="text-center">{{ $data['no'] }}</td>
-                                            <td class="text-center">{{ $data['nomor_spph'] }}</td>
-                                            <td class="text-center">{{ $data['nomor_pr'] }}</td>
-
-                                            {{-- membuat lampiran lebih dari 1 --}}
                                             <td class="text-center">
-                                                @php
-                                                    // Memisahkan lampiran berdasarkan koma
-                                                    $lampiran = explode(',', $d->lampiran);
-                                                @endphp
-
-                                                @if (!empty($lampiran) && is_array($lampiran) && count($lampiran) > 0)
-                                                    @foreach ($lampiran as $index => $file)
-                                                        @if (!empty($file))
-                                                            <a href="{{ asset('/lampiran/' . trim($file)) }}"
-                                                                target="_blank">
-                                                                <i class="fa fa-eye"></i> Lihat
-                                                            </a>
-                                                            @if ($index < count($lampiran) - 1)
-                                                                <br>
-                                                            @endif
-                                                        @endif
+                                                <input type="checkbox" name="hapus[]" value="{{ $d->id }}">
+                                            </td>
+                                            <td class="text-center">{{ $key + 1 }}</td>
+                                            <td class="text-center">{{ $d->nomor }}</td>
+                                            <td class="text-center">{{ $d->nomor_pr }}</td>
+                                            <td class="text-center">{{ $d->perihal }}</td>
+                                            <td class="text-center">{{ date('d/m/Y', strtotime($d->tanggal)) }}</td>
+                                            <td class="text-center">{{ date('d/m/Y', strtotime($d->batas)) }}</td>
+                                            <td class="text-center">{{ $d->vendor }}</td>
+                                            <td class="text-center">
+                                                @if(count($lampiran) > 0)
+                                                    @foreach ($lampiran as $file)
+                                                        <a href="{{ asset('/lampiran/' . trim($file)) }}" target="_blank">
+                                                            <i class="fa fa-eye"></i> Lihat
+                                                        </a><br>
                                                     @endforeach
                                                 @else
                                                     -
                                                 @endif
                                             </td>
-
-                                            {{-- membuat lampiran lebih dari 1 --}}
-
-
-                                            <td class="text-center">{{ $data['perihal'] }}</td>
-                                            <td class="text-center">{{ $data['tanggal'] }}</td>
-                                            <td class="text-center">{{ $data['batas'] }}</td>
-                                            <td class="text-center">{{ $data['vendor'] }}</td>
-                                            {{-- <td class="text-center">{{ $data['penerima'] }}</td> --}}
+                                            <td class="text-center">{{ $d->tipe }}</td>
                                             <td class="text-center">
-                                                <button title="Edit SPPH" type="button" class="btn btn-success btn-xs"
-                                                    data-toggle="modal" data-target="#add-SPPH"
-                                                    onclick="editSPPH({{ json_encode($data) }})"><i
-                                                        class="fas fa-edit"></i></button>
-
                                                 <button title="Lihat Detail" type="button" data-toggle="modal"
                                                     data-target="#detail-spph" class="btn-lihat btn btn-info btn-xs"
-                                                    data-detail="{{ json_encode($data) }}"><i
-                                                        class="fas fa-list"></i></button>
-                                                @if (Auth::user()->role == 0 || Auth::user()->role == 1)
-                                                    <button title="Hapus SPPH" type="button" class="btn btn-danger btn-xs"
-                                                        data-toggle="modal" data-target="#delete-spph"
-                                                        onclick="deletespph({{ json_encode($data) }})"><i
-                                                            class="fas fa-trash"></i></button>
-                                                @endif
+                                                    data-detail='@json($d)'><i class="fas fa-list"></i></button>
                                             </td>
                                         </tr>
+
                                     @endforeach
                                 @else
                                     <tr class="text-center">
-                                        <td colspan="9">{{ __('No data.') }}</td>
+                                        <td colspan="10">No data.</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -369,165 +307,7 @@
                 </div>
             </div>
             <div class="mt-3 d-flex justify-content-end">
-                {{ $spphes->links('pagination::bootstrap-4') }}
-            </div>
-
-        </div>
-
-        {{-- modal --}}
-        <div class="modal fade" id="add-SPPH">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 id="modal-title" class="modal-title">{{ __('Add New SPPH') }}</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form role="form" id="save" action="{{ route('spph.store') }}" method="post"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <input type="hidden" id="save_id" name="id">
-                            <input type="hidden" id="id_pr" name="id_pr">
-                            <input type="hidden" id="lampiran_awal" name="lampiran_awal">
-                            <input type="hidden" id="nama_lampiran" name="nama_lampiran">
-                            <div class="form-group row">
-                                <label for="nomor_spph" class="col-sm-4 col-form-label">{{ __('Nomor SPPH') }} </label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="nomor_spph" name="nomor_spph">
-                                </div>
-                            </div>
-                            {{-- <div class="form-group row">
-                                <label for="lampiran" class="col-sm-4 col-form-label">{{ __('Lampiran') }}
-                        </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="lampiran" name="lampiran">
-                        </div>
-                </div> --}}
-                            {{-- <div class="form-group row">
-                                <label for="vendor_id" class="col-sm-4 col-form-label">{{ __('Vendor') }} </label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" id="vendor_id" name="vendor_id">
-                    <select class="form-control" id="vendor_id" name="vendor_id">
-                        <option value="">Pilih Vendor</option>
-                        @foreach ($vendors as $vendor)
-                        <option value="{{ $vendor->id }}">{{ $vendor->nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div> --}}
-                            <div class="form-group row">
-                                <label for="nomor_pr" class="col-sm-4 col-form-label">{{ __('Nomor PR') }}
-                                </label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" name="nomor_pr" id="nomor_pr">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="perihal" class="col-sm-4 col-form-label">{{ __('Perihal') }}
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="perihal" name="perihal">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="tanggal_spph" class="col-sm-4 col-form-label">{{ __('Tanggal SPPH') }}
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="tanggal_spph" name="tanggal_spph">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="batas_spph" class="col-sm-4 col-form-label">{{ __('Batas SPPH') }}
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="batas_spph" name="batas_spph">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="keterangan_spph"
-                                    class="col-sm-4 col-form-label">{{ __('Keterangan') }}</label>
-                                <div class="col-sm-8">
-                                    <textarea class="form-control" id="keterangan_spph" name="keterangan_spph" rows="4"
-                                        placeholder="contoh penulisan                            Delivery:2(dua) minggu setelah PO setelah itu enter untuk nomor selanjutnya"></textarea>
-                                </div>
-                            </div>
-
-                            {{-- <div class="form-group row">
-                <label for="keterangan" class="col-sm-4 col-form-label">{{ __('Keterangan') }}</label>
-                <div class="col-sm-8">
-                    <div id="keterangan-wrapper">
-                        <div class="input-group mb-2">
-                            <input type="text" class="form-control" id="keterangan" name="keterangan[]" placeholder="Masukkan keterangan">
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-success" onclick="addKeterangan()">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                function addKeterangan() {
-                    let wrapper = document.getElementById('keterangan-wrapper');
-                    let newInput = document.createElement('div');
-                    newInput.classList.add('input-group', 'mb-2');
-                    newInput.innerHTML = `
-                        <input type="text" class="form-control" name="keterangan[]" placeholder="Masukkan keterangan">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-danger" onclick="removeKeterangan(this)">-</button>
-                        </div>
-                    `;
-                    wrapper.appendChild(newInput);
-                }
-                
-                function removeKeterangan(button) {
-                    button.parentElement.parentElement.remove();
-                }
-            </script> --}}
-
-
-                            {{-- <h6>Penerima -- </h6>
-
-                            <div id="penerima-row">
-
-                            </div>
-
-                            <a id="tambah" style="cursor: pointer">Tambah Penerima</a> --}}
-
-                            <input type="text" id="data_lampiran" value="--" style="display: none">
-                            <input type="text" id="data_vendor" value="--" style="display: none">
-
-                            <h6 id="lampiran_text">Lampiran</h6>
-
-                            <div id="lampiran-row">
-
-                            </div>
-
-                            <a id="tambah-lampiran" style="cursor: pointer">Tambah Lampiran</a>
-                            <hr>
-
-                            <h6 id="vendor_text">Vendor -- </h6>
-
-                            <div id="vendor-row">
-
-                            </div>
-
-                            <a id="tambah" style="cursor: pointer">Tambah vendor</a>
-                            <hr>
-
-
-                        </form>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
-                        <button id="button-save" type="button" class="btn btn-primary"
-                            onclick="setSaveIdAndSubmit();">{{ __('Tambahkan') }}</button>
-                    </div>
-                </div>
+                {{ $data->links('pagination::bootstrap-4') }}
             </div>
         </div>
 
@@ -536,7 +316,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 id="modal-title" class="modal-title">{{ __('Detail SPPH') }}</h4>
+                        <h4 id="modal-title" class="modal-title">{{ __('Detail SPPH dan RFQ') }}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -546,7 +326,8 @@
                             <div class="row">
                                 <form id="cetak-spph" method="GET" action="{{ route('spph.print') }}"
                                     target="_blank">
-                                    <input type="hidden" name="spph_id" id="spph_id">
+                                    <input type="hidden" name="id" id="spph_id">
+                                    <input type="hidden" name="tipe" id="tipe_data">
                                 </form>
                                 <div class="col-12" id="container-form">
                                     <button id="button-cetak-spph" type="button" class="btn btn-primary"
@@ -575,7 +356,7 @@
                                         <tr>
                                             <td><b>Produk</b></td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <td colspan="3">
                                                 <button id="button-tambah-produk" type="button"
                                                     class="btn btn-info mb-3">{{ __('Tambah Produk') }}</button>
@@ -583,7 +364,7 @@
                                             {{-- <button title="Edit SPPH" type="button" class="btn btn-success btn-xs"
                                             data-toggle="modal" data-target="#add-SPPH"
                                             onclick="editSPPH({{ json_encode($data) }})"> --}}
-                                        </tr>
+                                        </tr> -->
                                     </table>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
@@ -593,7 +374,7 @@
                                                 <th>Spesifikasi</th>
                                                 <th>QTY</th>
                                                 <th>Satuan</th>
-                                                <th>Aksi</th>
+                                                <!-- <th>Aksi</th> -->
                                             </thead>
 
                                             <tbody id="table-spph">
@@ -1460,14 +1241,6 @@
             }
         }
 
-
-
-        // $('#form').hide();
-
-
-
-        //SUMBER MASALAH HARI KAMIS BUAT HARI JUMAT 
-
         //Pilih Item SPPH
         function getSpphDetail(id_pr) {
             // alert(id_pr);
@@ -1486,6 +1259,7 @@
                     $('#form').hide();
                 },
                 success: function(data) {
+                    console.log(data);
                     loader(0);
                     $('#form').show();
                     //append to #detail-material
@@ -1650,10 +1424,6 @@
                             '<td>' + value.satuan + '</td>' +
                             // '<td>' + value.lampiran + '</td>' +
 
-
-
-
-                            '<td> <button type="button" id="delete_spph_save" class="btn btn-danger btn-delete" data-id="' +
                             value.id + '" data-id_spph="' + value.id_spph +
                             '" data-id_detail_nego="' + id_detail_spph + //ggwp
                             '" data-id_detail_pr="' + value.id_detail_pr +
@@ -1978,27 +1748,11 @@
                                 }
                             }
                         });
-
-
-
-
-
-
-
-
-
-
-
-
-
                     },
                     error: function(err) {
                         alert('Terjadi kesalahan saat menghapus item');
                     }
                 });
-
-
-
             }
         }
         //End Delete Detail
@@ -2025,62 +1779,105 @@
         //Lihat Detail
         function lihatSjn(data) {
             emptyTableSpph();
-            $('#modal-title').text("Detail SPPH");
+
+            let tipe = (data.tipe || '').toLowerCase();
+
+            $('#tipe_data').val(tipe);
+
+            if (tipe === 'spph') {
+                $('#cetak-spph').attr('action', "{{ route('spph.print') }}");
+            } else if (tipe === 'rfq') {
+                $('#cetak-spph').attr('action', "{{ route('spph_rfq.print') }}");
+            }
+
+            // 🔥 dynamic title
+            if (tipe === 'spphrfq') {
+                $('#modal-title').text("Detail SPPH RFQ");
+            } else {
+                $('#modal-title').text("Detail SPPH");
+            }
+
             $('#button-save').text("Cetak");
             resetForm();
+
             $('#save_id').val(data.id);
             $('#button-tambah-produk').val(data.id_pr);
             $('#button-tambah-produk').attr('onclick', `showAddProduct(${data.id_pr}); getSpphDetail(${data.id_pr});`);
+
             $('#id_pr2').text(data.id_pr);
-            $('#no_surat').text(data.nomor_spph);
+            $('#no_surat').text(data.nomor);
             $('#nama_penerima').text(data.penerima);
             $('#tgl_spph').text(data.tanggal);
+
             $('#table-spph').empty();
+
+            // 🔥 tentukan URL berdasarkan tipe
+            let url = '';
+            if (tipe === 'spph') {
+                url = "{{ url('products/spph_detail') }}/" + data.id;
+            } else if (tipe === 'rfq') {
+                url = "{{ url('products/spph_rfq_detail') }}/" + data.id;
+            }
+
             $.ajax({
-                url: "{{ url('products/spph_detail') }}" + "/" + data.id,
+                url: url,
                 type: "GET",
                 dataType: "json",
+
                 beforeSend: function() {
-                    $('#table-spph').append('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
+                    $('#table-spph').html('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
                     $('#button-cetak-spph').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
                     $('#button-cetak-spph').attr('disabled', true);
                 },
-                success: function(data) {
-                    $('#no_surat').text(data.spph.no_spph);
-                    $('#nama_penerima').text(data.spph.penerima);
-                    $('#tgl_spph').text(data.spph.tanggal_spph);
-                    $('#spph_id').val(data.spph.id);
-                    $('#button-cetak-spph').html('<i class="fas fa-print"></i> Cetak');
-                    $('#button-cetak-spph').attr('disabled', false);
-                    if (data.spph.details.length == 0) {
-                        $('#table-spph').append(
-                            '<tr><td colspan="7" class="text-center">Tidak ada produk</td></tr>'
-                        );
-                    } else {
-                        $.each(data.spph.details, function(key, value) {
-                            $('#table-spph').append(
-                                '<tr id="row-' + key + '" data-id="' + value.id + '">' +
-                                // Menambahkan data-id pada <tr>
-                                '<td>' + (key + 1) + '</td>' +
-                                '<td>' + value.uraian + '</td>' +
-                                '<td>' + value.spek + '</td>' +
-                                '<td>' + value.spph_qty + '</td>' +
-                                // '<td><input type="text" class="form-control qty2-input" style="width: 50px;" value="' + value.qty2 + '" data-qty="' + value.qty2 + '"></td>' +  <!-- qty2-input -->
-                                '<td>' + value.satuan + '</td>' +
-                                '<td><button type="button" id="delete_spph_save" class="btn btn-danger btn-delete" data-id="' +
-                                value.id + '" data-id_spph="' + value.id_spph +
-                                '" data-id_detail_pr="' + value.id_detail_pr +
-                                '" data-id_detail_spph="' + value.id_detail_spph + //ggwp
-                                '">Hapus</button></td>' +
-                                '</tr>'
-                            );
-                        });
 
+                success: function(res) {
 
+                    // 🔥 ambil data dari 2 kemungkinan controller
+                    let header = res.spph || res.spphrfq;
+
+                    if (!header) {
+                        console.error('Response tidak sesuai:', res);
+                        $('#table-spph').html('<tr><td colspan="7" class="text-danger text-center">Format data salah</td></tr>');
+                        return;
                     }
 
-                    // Remove loading
-                    $('#table-spph').find('tr:first').remove();
+                    // 🔥 isi header fleksibel
+                    $('#no_surat').text(header.no_spph || header.nomor);
+                    $('#nama_penerima').text(header.penerima);
+                    $('#tgl_spph').text(header.tanggal_spph || header.tanggal);
+                    $('#spph_id').val(header.id);
+
+                    $('#button-cetak-spph').html('<i class="fas fa-print"></i> Cetak');
+                    $('#button-cetak-spph').attr('disabled', false);
+
+                    let details = header.details || [];
+
+                    if (details.length === 0) {
+                        $('#table-spph').html(
+                            '<tr><td colspan="7" class="text-center">Tidak ada produk</td></tr>'
+                        );
+                        return;
+                    }
+
+                    let html = '';
+
+                    $.each(details, function(key, value) {
+                        html += `
+                            <tr>
+                                <td>${key + 1}</td>
+                                <td>${value.uraian}</td>
+                                <td>${value.spek}</td>
+                                <td>${value.spph_qty || value.spphrfq_qty}</td>
+                                <td>${value.satuan}</td>
+                            </tr>
+                        `;
+                    });
+
+                    $('#table-spph').html(html);
+                },
+
+                error: function() {
+                    $('#table-spph').html('<tr><td colspan="7" class="text-danger text-center">Gagal load data</td></tr>');
                 }
             });
         }

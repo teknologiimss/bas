@@ -504,8 +504,8 @@
 
                                                     {{-- SPPH Luar dan Dalam --}}
                                                     <li class="nav-item">
-                                                        <a href="{{ route('spph.index') }}"
-                                                            class="nav-link {{ in_array(Route::currentRouteName(), ['spph.index', 'spph_rfq.index']) ? 'active' : '' }}">
+                                                        <a href="{{ route('spph.all') }}"
+                                                            class="nav-link {{ in_array(Route::currentRouteName(), ['spph.all', 'spph.index', 'spph_rfq.index']) ? 'active' : '' }}">
                                                             <i class="fas fa-hand-holding-usd nav-icon"></i>
                                                             <p>{{ __('SPPH') }}</p>
                                                         </a>

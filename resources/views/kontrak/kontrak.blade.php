@@ -291,7 +291,11 @@
                                             <td class="text-center">{{ $data['nomor_kontrak'] }}</td>
                                             <td class="text-center">{{ $data['nama_pekerjaan'] }}</td>
                                             <td class="text-center">
-                                                {{ isset($data['nilai_pekerjaan']) ? number_format((float) $data['nilai_pekerjaan'], 0, ',', '.') : '-' }}
+                                                @if (is_numeric($data['nilai_pekerjaan']))
+                                                    {{ number_format($data['nilai_pekerjaan'], 0, ',', '.') }}
+                                                @else
+                                                    {{ $data['nilai_pekerjaan'] ?? '-' }}
+                                                @endif
                                             </td>
                                             <td class="text-center">{{ $data['nama_pelanggan'] }}</td>
                                             <td class="text-center">{{ $data['tahun'] }}</td>
@@ -438,15 +442,28 @@
 
                             {{-- Nilai Pekerjaan --}}
                             <div class="form-group row">
-                                <label for="nilai_pekerjaan"
-                                    class="col-sm-4 col-form-label">{{ __('Nilai Pekerjaan (Rp.)') }}
+                                <label class="col-sm-4 col-form-label">Metode Nilai Pekerjaan</label>
+                                <div class="col-sm-8">
+                                    <select id="jenis_nilai" name="jenis_nilai" class="form-control">
+                                        <option value="">-- Pilih --</option>
+                                        <option value="realisasi">Harga by Realisasi</option>
+                                        <option value="input">Harga Total</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" id="field_nilai" style="display: none;">
+                                <label for="nilai_pekerjaan" class="col-sm-4 col-form-label">
+                                    Nilai Pekerjaan (Rp.)
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control @error('nilai_pekerjaan') is-invalid @enderror" id="nilai_pekerjaan"
-                                        name="nilai_pekerjaan" class="form-control @error('nilai_pekerjaan') is-invalid @enderror" autocomplete="off">
-                                    {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
+                                    <input type="text" 
+                                        class="form-control @error('nilai_pekerjaan') is-invalid @enderror" 
+                                        id="nilai_pekerjaan"
+                                        name="nilai_pekerjaan"
+                                        autocomplete="off">
 
-                                     @error('nilai_pekerjaan')
+                                    @error('nilai_pekerjaan')
                                         <small class="text-danger">Wajib diisi</small>
                                     @enderror
                                 </div>
@@ -903,6 +920,30 @@
     });
     </script>
 
+    <!-- menampilkan field nilai pekerjaan -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const jenisNilai = document.getElementById("jenis_nilai");
+            const fieldNilai = document.getElementById("field_nilai");
+            const inputNilai = document.getElementById("nilai_pekerjaan");
+
+            jenisNilai.addEventListener("change", function () {
+                if (this.value === "input") {
+                    fieldNilai.style.display = "flex"; // tampilkan
+                } else {
+                    fieldNilai.style.display = "none"; // sembunyikan
+                    inputNilai.value = ""; // reset nilai
+                }
+            });
+
+            // trigger saat pertama load (untuk edit)
+            if (jenisNilai.value === "input") {
+                fieldNilai.style.display = "flex";
+            } else {
+                fieldNilai.style.display = "none";
+            }
+        });
+    </script>
 
     <script>
         $(function() {
@@ -1117,15 +1158,30 @@
             // $('#tgl_pr').val(data.tgl_pr);
             // $('#proyek_id').val(data.proyek);
             $('#nama_pekerjaan').val(data.nama_pekerjaan);
-            $('#nilai_pekerjaan').val(data.nilai_pekerjaan);
             $('#nama_pelanggan').val(data.nama_pelanggan);
             $('#tahun').val(data.tahun);
             $('#tipe').val(data.tipe);
             $('#status').val(data.status);
             // $('#nilai').val(data.nilai);
+
+            //handle nilai pekerjaan pada fitur edit
+            if (data.nilai_pekerjaan === 'Harga by Realisasi') {
+                $('#jenis_nilai').val('realisasi').trigger('change');
+                $('#nilai_pekerjaan').val('');
+            } else {
+                $('#jenis_nilai').val('input').trigger('change');
+                $('#nilai_pekerjaan').val(data.nilai_pekerjaan);
+            }
+
+            document.getElementById("jenis_nilai")
+                .dispatchEvent(new Event('change'));
+
+            //format tanggal
             var date = data.tanggal.split('/');
             var newDate = date[2] + '-' + date[1] + '-' + date[0];
             $('#tanggal').val(newDate);
+
+            //set proyek
             $('#proyek_id').find('option').each(function() {
                 if ($(this).val() == data.proyek_id) {
                     console.log($(this).val());

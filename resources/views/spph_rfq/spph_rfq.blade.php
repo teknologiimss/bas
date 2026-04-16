@@ -186,6 +186,13 @@
             {{-- Tab menu SPPH dalam dan Luar --}}
             <ul class="nav nav-tabs mb-3">
                 <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'spph.all' ? 'active' : '' }}"
+                        href="{{ route('spph.all') }}">
+                        <i class="fas fa-database"></i> Semua Data
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link {{ Route::currentRouteName() == 'spph.index' ? 'active' : '' }}"
                         href="{{ route('spph.index') }}">
                         <i class="fas fa-hand-holding-usd"></i> SPPH
