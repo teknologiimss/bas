@@ -221,6 +221,7 @@
                                 <th>Tanggal</th>
                                 <th>Kode Material</th>
                                 <th>Barang</th>
+                                <th>Spesifikasi</th>
                                 <th>Qty</th>
                                 <th>Satuan</th>
                             </tr>
@@ -235,6 +236,7 @@
                                     <td>{{ date('d/m/Y', strtotime($r->tgl_pr)) }}</td>
                                     <td>{{ $r->kode_material }}</td>
                                     <td class="text-left">{{ $r->nama_barang }}</td>
+                                    <td class="text-left">{{ $r->spek }}</td>
                                     <td class="qty-highlight">
                                         {{ number_format((int) $r->qty, 0, ',', '.') }}
                                     </td>

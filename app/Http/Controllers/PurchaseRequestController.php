@@ -203,6 +203,7 @@ class PurchaseRequestController extends Controller
                 'pr.tgl_pr',
                 'd.kode_material',
                 'd.uraian as nama_barang',
+                'd.spek',
                 'd.qty',
                 'd.satuan',
                 'k.nomor_kontrak',
