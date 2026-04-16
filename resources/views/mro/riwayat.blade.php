@@ -224,6 +224,7 @@
                             <table class="table table-sm table-bordered">
                                 <thead class="text-center">
                                     <tr>
+                                        <th>Kode Material</th>
                                         <th>Barang</th>
                                         <th>Spesifikasi</th>
                                         <th>Total Qty</th>
@@ -232,6 +233,7 @@
                                 <tbody>
                                     @foreach ($grouped as $g)
                                         <tr>
+                                            <td>{{ $g->kode_material }}</td>
                                             <td>{{ $g->nama_barang }}</td>
                                             <td>{{ $g->spek }}</td>
                                             <td class="text-center">

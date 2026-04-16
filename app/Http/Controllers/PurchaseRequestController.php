@@ -279,11 +279,12 @@ class PurchaseRequestController extends Controller
         // 🔻 REKAP PER BARANG + SPEK
         $grouped = $groupQuery
             ->select(
+                'd.kode_material',
                 'd.uraian as nama_barang',
                 'd.spek',
                 DB::raw('SUM(d.qty) as total_qty')
             )
-            ->groupBy('d.uraian', 'd.spek')
+            ->groupBy('d.kode_material','d.uraian', 'd.spek')
             ->get();
 
         return view('mro.riwayat', compact('riwayat', 'grouped'));
