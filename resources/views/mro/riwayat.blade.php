@@ -255,7 +255,7 @@
                         @if ($isFilter)
                             <tfoot>
                                 <tr class="text-center">
-                                    <td colspan="6">TOTAL</td>
+                                    <td colspan="7">TOTAL</td>
                                     <td>{{ number_format($totalQty, 0, ',', '.') }}</td>
                                     <td></td>
                                 </tr>
