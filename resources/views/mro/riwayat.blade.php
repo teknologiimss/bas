@@ -166,6 +166,12 @@
                             </div>
 
                             <div class="col-md-3">
+                                <input type="text" name="kode_material" class="form-control"
+                                    placeholder="🔎 Kode Material" value="{{ request('kode_material') }}"
+                                    autocomplete="off">
+                            </div>
+
+                            <div class="col-md-3">
                                 <input type="text" name="barang" class="form-control" placeholder="🔎 Nama Barang"
                                     value="{{ request('barang') }}" autocomplete="off">
                             </div>
@@ -196,7 +202,7 @@
                     //             request()->filled('barang');
 
                     // ✅ HANYA AKTIF JIKA FILTER BARANG
-                    $isFilter = request()->filled('barang');
+                    $isFilter = request()->filled('barang')|| request()->filled('kode_material');
 
                     $totalQty = $riwayat->sum(function ($item) {
                         return (int) $item->qty;

@@ -259,6 +259,11 @@ class PurchaseRequestController extends Controller
             $riwayat->where('pr.no_pr', 'like', '%' . $request->no_pr . '%');
         }
 
+        // ✅ TAMBAHAN
+        if ($request->kode_material) {
+            $riwayat->where('d.kode_material', 'like', '%' . $request->kode_material . '%');
+        }
+
         if ($request->barang) {
             $riwayat->where('d.uraian', 'like', '%' . $request->barang . '%');
         }
