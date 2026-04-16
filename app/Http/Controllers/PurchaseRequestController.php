@@ -192,24 +192,63 @@ class PurchaseRequestController extends Controller
     }
 
     // Riwayat PR/SPPJP MRO
+    // public function riwayat(Request $request)
+    // {
+    //     $riwayat = DB::table('purchase_request as pr')
+    //         ->join('detail_pr as d', 'pr.id', '=', 'd.id_pr')
+    //         ->leftJoin('kontrak as k', 'pr.proyek_id', '=', 'k.id')  // ✅ sudah benar
+    //         ->select(
+    //             'pr.id', // ✅ WAJIB (untuk link)
+    //             'pr.no_pr',
+    //             'pr.tgl_pr',
+    //             'd.kode_material',
+    //             'd.uraian as nama_barang',
+    //             'd.spek',
+    //             'd.qty',
+    //             'd.satuan',
+    //             'k.nomor_kontrak',
+    //             'k.nama_pekerjaan'
+    //         )
+    //         ->whereRaw('LOWER(pr.no_pr) LIKE ?', ['%mro%']); // 🔑 hanya MRO
+
+    //     // 🔍 FILTER
+    //     if ($request->nomor_kontrak) {
+    //         $riwayat->where('k.nomor_kontrak', 'like', '%' . $request->nomor_kontrak . '%');
+    //     }
+
+    //     if ($request->no_pr) {
+    //         $riwayat->where('pr.no_pr', 'like', '%' . $request->no_pr . '%');
+    //     }
+
+    //     if ($request->barang) {
+    //         $riwayat->where('d.uraian', 'like', '%' . $request->barang . '%');
+    //     }
+
+    //     $riwayat = $riwayat
+    //         ->orderBy('pr.tgl_pr', 'desc')
+    //         ->get();
+
+    //     return view('mro.riwayat', compact('riwayat'));
+    // }
+
     public function riwayat(Request $request)
     {
         $riwayat = DB::table('purchase_request as pr')
             ->join('detail_pr as d', 'pr.id', '=', 'd.id_pr')
-            ->leftJoin('kontrak as k', 'pr.proyek_id', '=', 'k.id')  // ✅ sudah benar
+            ->leftJoin('kontrak as k', 'pr.proyek_id', '=', 'k.id')
             ->select(
-                'pr.id', // ✅ WAJIB (untuk link)
+                'pr.id',
                 'pr.no_pr',
                 'pr.tgl_pr',
                 'd.kode_material',
                 'd.uraian as nama_barang',
-                'd.spek',
+                'd.spek',  // ✅ WAJIB
                 'd.qty',
                 'd.satuan',
                 'k.nomor_kontrak',
                 'k.nama_pekerjaan'
             )
-            ->whereRaw('LOWER(pr.no_pr) LIKE ?', ['%mro%']); // 🔑 hanya MRO
+            ->whereRaw('LOWER(pr.no_pr) LIKE ?', ['%mro%']);  // hanya MRO
 
         // 🔍 FILTER
         if ($request->nomor_kontrak) {
@@ -224,11 +263,25 @@ class PurchaseRequestController extends Controller
             $riwayat->where('d.uraian', 'like', '%' . $request->barang . '%');
         }
 
+        // 🔻 CLONE QUERY UNTUK GROUPING
+        $groupQuery = clone $riwayat;
+
+        // 🔻 DATA UTAMA
         $riwayat = $riwayat
             ->orderBy('pr.tgl_pr', 'desc')
             ->get();
 
-        return view('mro.riwayat', compact('riwayat'));
+        // 🔻 REKAP PER BARANG + SPEK
+        $grouped = $groupQuery
+            ->select(
+                'd.uraian as nama_barang',
+                'd.spek',
+                DB::raw('SUM(d.qty) as total_qty')
+            )
+            ->groupBy('d.uraian', 'd.spek')
+            ->get();
+
+        return view('mro.riwayat', compact('riwayat', 'grouped'));
     }
 
     // public function indexPr()

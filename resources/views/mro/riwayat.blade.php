@@ -204,9 +204,38 @@
                 @endphp
 
                 {{-- 🔢 TOTAL --}}
-                @if ($isFilter)
+                {{-- @if ($isFilter)
                     <div class="total-box mb-3">
                         Total QTY: <strong>{{ number_format($totalQty, 0, ',', '.') }}</strong>
+                    </div>
+                @endif --}}
+
+                @if ($isFilter)
+                    <div class="total-box mb-3">
+                        <strong>Rekap Barang & Spesifikasi:</strong>
+
+                        <div class="table-responsive mt-2">
+                            <table class="table table-sm table-bordered">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>Barang</th>
+                                        <th>Spesifikasi</th>
+                                        <th>Total Qty</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($grouped as $g)
+                                        <tr>
+                                            <td>{{ $g->nama_barang }}</td>
+                                            <td>{{ $g->spek }}</td>
+                                            <td class="text-center">
+                                                {{ number_format((int) $g->total_qty, 0, ',', '.') }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 @endif
 
