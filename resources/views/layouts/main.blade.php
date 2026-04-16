@@ -342,6 +342,7 @@
                                         'mro',
                                         'mro.stock.log',
                                         'sppd.index',
+                                        'mro.riwayat',
                                         'products.stock.history',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
@@ -380,6 +381,7 @@
                                         'mro',
                                         'mro.stock.log',
                                         'sppd.index',
+                                        'mro.riwayat',
                                     ]);
                                 @endphp
 
@@ -719,6 +721,13 @@
                                                 </a>
                                                 <ul class="nav nav-treeview pl-3">
                                                     <li class="nav-item">
+                                                        <a href="{{ route('mro.riwayat') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
+                                                            <i class="nav-icon fas fa-history"></i>
+                                                            <p>Riwayat PR/SPPJP MRO</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
                                                         <a href="{{ route('proyek.index') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'proyek.index' ? 'active' : '' }}">
                                                             <i class="fas fa-chart-bar nav-icon"></i>
@@ -753,6 +762,7 @@
                                                             <p>Arsip SPPD MRO</p>
                                                         </a>
                                                     </li>
+                                                    
                                                 </ul>
                                             </li>
                                         @endif

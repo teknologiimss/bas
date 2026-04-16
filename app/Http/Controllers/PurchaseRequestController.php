@@ -95,6 +95,7 @@ class PurchaseRequestController extends Controller
         // 🔹 QUERY UTAMA
         $requests = PurchaseRequest::select(
             'purchase_request.*',
+            'kontrak.nomor_kontrak',
             'kontrak.nama_pekerjaan as proyek_name'
         )
             ->join('kontrak', 'kontrak.id', '=', 'purchase_request.proyek_id');
@@ -188,6 +189,45 @@ class PurchaseRequestController extends Controller
         } else {
             return view('home.apps.wilayah.purchase_request', compact('requests', 'proyeks', 'purchaseRequests'));
         }
+    }
+
+    // Riwayat PR/SPPJP MRO
+    public function riwayat(Request $request)
+    {
+        $riwayat = DB::table('purchase_request as pr')
+            ->join('detail_pr as d', 'pr.id', '=', 'd.id_pr')
+            ->leftJoin('kontrak as k', 'pr.proyek_id', '=', 'k.id')  // ✅ sudah benar
+            ->select(
+                'pr.id', // ✅ WAJIB (untuk link)
+                'pr.no_pr',
+                'pr.tgl_pr',
+                'd.kode_material',
+                'd.uraian as nama_barang',
+                'd.qty',
+                'd.satuan',
+                'k.nomor_kontrak',
+                'k.nama_pekerjaan'
+            )
+            ->whereRaw('LOWER(pr.no_pr) LIKE ?', ['%mro%']); // 🔑 hanya MRO
+
+        // 🔍 FILTER
+        if ($request->nomor_kontrak) {
+            $riwayat->where('k.nomor_kontrak', 'like', '%' . $request->nomor_kontrak . '%');
+        }
+
+        if ($request->no_pr) {
+            $riwayat->where('pr.no_pr', 'like', '%' . $request->no_pr . '%');
+        }
+
+        if ($request->barang) {
+            $riwayat->where('d.uraian', 'like', '%' . $request->barang . '%');
+        }
+
+        $riwayat = $riwayat
+            ->orderBy('pr.tgl_pr', 'desc')
+            ->get();
+
+        return view('mro.riwayat', compact('riwayat'));
     }
 
     // public function indexPr()
@@ -619,8 +659,6 @@ class PurchaseRequestController extends Controller
     //         return redirect()->route('purchase_request.index')->with('success', 'Purchase Request berhasil diperbarui');
     //     }
     // }
-
-    
     public function store(Request $request)
     {
         $pr_id = $request->id;

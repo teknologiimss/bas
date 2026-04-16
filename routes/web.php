@@ -201,6 +201,10 @@ Route::prefix('products')->group(function () {
     Route::get('products/purchase_request_detail/completed/{id}', [App\Http\Controllers\PurchaseRequestController::class, 'getCompletedDetailPr'])->name('get.completed.pr');
     Route::get('lppb_detail/{id}', [App\Http\Controllers\PurchaseRequestController::class, 'getDetailLppb'])->name('lppb_detail');
     Route::get('/cetak-dokumen', [App\Http\Controllers\PurchaseRequestController::class, 'cetakDokumen'])->name('cetak_dokumen');
+    
+    // Riwayat SPP MRO
+    Route::get('/mro/riwayat-pr', [App\Http\Controllers\PurchaseRequestController::class, 'riwayat'])
+    ->name('mro.riwayat');
 
     // SPPD
     Route::resource('sppd', App\Http\Controllers\SppdController::class)->except(['destroy']);

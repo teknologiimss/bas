@@ -379,7 +379,7 @@
                                         $data = [
                                             'no' => $requests->firstItem() + $key,
                                             'no_pr' => $d->no_pr,
-                                            'proyek' => $d->proyek_name,
+                                            'proyek' => $d->nomor_kontrak . '-' . $d->proyek_name,
                                             'tanggal' => date('d/m/Y', strtotime($d->tgl_pr)),
                                             'dasar_pr' => $d->dasar_pr,
                                             'lampiran' => $d->lampiran,
@@ -509,7 +509,10 @@
                                     <select class="form-control" name="proyek_id" id="proyek_id">
                                         <option value="">Pilih Proyek</option>
                                         @foreach ($proyeks as $proyek)
-                                            <option value="{{ $proyek->id }}">{{ $proyek->nama_pekerjaan }}</option>
+                                            {{-- <option value="{{ $proyek->id }}">{{ $proyek->nama_pekerjaan }}</option> --}}
+                                            <option value="{{ $proyek->id }}">
+                                                {{ $proyek->nomor_kontrak }} - {{ $proyek->nama_pekerjaan }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -529,13 +532,13 @@
                                         autocomplete="off">
                                 </div>
                             </div> --}}
-                            
+
                             <div class="form-group row">
-                                    <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
-                                    <div class="col-sm-8">
-                                        <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
-                                    </div>
+                                <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
                                 </div>
+                            </div>
 
                             @if (auth()->user()->role == 14)
                                 {{-- ===== USER MRO ===== --}}
@@ -557,11 +560,11 @@
                                 </div>
 
                                 <!-- <div class="form-group row">
-                                    <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
-                                    <div class="col-sm-8">
-                                        <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
-                                    </div>
-                                </div> -->
+                                            <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
+                                            </div>
+                                        </div> -->
 
                                 <div class="form-group row">
                                     <label for="revisi" class="col-sm-4 col-form-label">Revisi</label>
@@ -2246,7 +2249,8 @@
             $('#no_surat').text(data.no_pr);
             $('#tgl_surat').text(data.tanggal);
             $('#revisi').text(data.revisi);
-            $('#proyek').text(data.proyek);
+            let text = $('#proyek_id option[value="' + data.proyek_id + '"]').text();
+            $('#proyek').text(text);
             $('#proyek_id_val').val(data.proyek_id);
             $('#pr_id').val(data.id);
             $('#table-pr').empty();
@@ -2402,7 +2406,8 @@
                             var editButton =
                                 '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
                                 value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
-                                value.kode_material + '\', \'' + value.uraian + '\', \'' + escapeSpek(value.spek) + '\', \'' +
+                                value.kode_material + '\', \'' + value.uraian + '\', \'' + escapeSpek(
+                                    value.spek) + '\', \'' +
                                 value.qty + '\', \'' + value.satuan + '\', \'' + value
                                 .waktu + '\', \'' + value.keterangan +
                                 '\')"><i class="fas fa-edit"></i></button>';
