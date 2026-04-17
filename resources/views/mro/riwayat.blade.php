@@ -261,6 +261,7 @@
                                 <th>Nama Pekerjaan</th>
                                 <th>No PR/SPPJP</th>
                                 <th>Tanggal</th>
+                                <th>Dasar PR/SPPJP</th>
                                 <th>Kode Material</th>
                                 <th>Barang</th>
                                 <th>Spesifikasi</th>
@@ -276,6 +277,7 @@
                                     <td>{{ $r->nama_pekerjaan ?? '-' }}</td>
                                     <td>{{ $r->no_pr }}</td>
                                     <td>{{ date('d/m/Y', strtotime($r->tgl_pr)) }}</td>
+                                    <td>{{ $r->dasar_pr }}</td>
                                     <td>{{ $r->kode_material }}</td>
                                     <td class="text-left">{{ $r->nama_barang }}</td>
                                     <td class="text-left">{{ $r->spek }}</td>
@@ -286,7 +288,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center text-muted">
+                                    <td colspan="10" class="text-center text-muted">
                                         Belum ada data
                                     </td>
                                 </tr>
@@ -297,7 +299,7 @@
                         @if ($isFilter)
                             <tfoot>
                                 <tr class="text-center">
-                                    <td colspan="7">TOTAL</td>
+                                    <td colspan="8">TOTAL</td>
                                     <td>{{ number_format($totalQty, 0, ',', '.') }}</td>
                                     <td></td>
                                 </tr>

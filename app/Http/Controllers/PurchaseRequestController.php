@@ -240,6 +240,7 @@ class PurchaseRequestController extends Controller
                 'pr.id',
                 'pr.no_pr',
                 'pr.tgl_pr',
+                'pr.dasar_pr',
                 'd.kode_material',
                 'd.uraian as nama_barang',
                 'd.spek',  // ✅ WAJIB
