@@ -207,7 +207,7 @@
                     //             request()->filled('barang');
 
                     // ✅ HANYA AKTIF JIKA FILTER BARANG
-                    $isFilter = request()->filled('barang') || request()->filled('kode_material')|| request()->filled('nama_pekerjaan');
+                    $isFilter = request()->filled('barang') || request()->filled('kode_material');
 
                     $totalQty = $riwayat->sum(function ($item) {
                         return (int) $item->qty;
@@ -296,7 +296,7 @@
                         </tbody>
 
                         {{-- FOOTER --}}
-                        @if ($isFilter)
+                        {{-- @if ($isFilter)
                             <tfoot>
                                 <tr class="text-center">
                                     <td colspan="8">TOTAL</td>
@@ -304,7 +304,7 @@
                                     <td></td>
                                 </tr>
                             </tfoot>
-                        @endif
+                        @endif --}}
 
                     </table>
                 </div>
