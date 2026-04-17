@@ -255,6 +255,10 @@ class PurchaseRequestController extends Controller
             $riwayat->where('k.nomor_kontrak', 'like', '%' . $request->nomor_kontrak . '%');
         }
 
+        if ($request->nama_pekerjaan) {
+            $riwayat->where('k.nama_pekerjaan', 'like', '%' . $request->nama_pekerjaan . '%');
+        }
+
         if ($request->no_pr) {
             $riwayat->where('pr.no_pr', 'like', '%' . $request->no_pr . '%');
         }
@@ -284,7 +288,7 @@ class PurchaseRequestController extends Controller
                 'd.spek',
                 DB::raw('SUM(d.qty) as total_qty')
             )
-            ->groupBy('d.kode_material','d.uraian', 'd.spek')
+            ->groupBy('d.kode_material', 'd.uraian', 'd.spek')
             ->get();
 
         return view('mro.riwayat', compact('riwayat', 'grouped'));

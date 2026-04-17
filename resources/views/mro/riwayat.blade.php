@@ -159,6 +159,11 @@
                                     placeholder="🔎 Nomor Kontrak" value="{{ request('nomor_kontrak') }}"
                                     autocomplete="off">
                             </div>
+                            <div class="col-md-3">
+                                <input type="text" name="nama_pekerjaan" class="form-control"
+                                    placeholder="🔎 Nama Pekerjaan" value="{{ request('nama_pekerjaan') }}"
+                                    autocomplete="off">
+                            </div>
 
                             <div class="col-md-3">
                                 <input type="text" name="no_pr" class="form-control" placeholder="🔎 No PR / SPPJP"
@@ -202,7 +207,7 @@
                     //             request()->filled('barang');
 
                     // ✅ HANYA AKTIF JIKA FILTER BARANG
-                    $isFilter = request()->filled('barang')|| request()->filled('kode_material');
+                    $isFilter = request()->filled('barang') || request()->filled('kode_material')|| request()->filled('nama_pekerjaan');
 
                     $totalQty = $riwayat->sum(function ($item) {
                         return (int) $item->qty;
