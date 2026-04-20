@@ -741,6 +741,14 @@
                                                             <p>Progress MRO</p>
                                                         </a>
                                                     </li>
+                                                    <!-- MENU BARU -->
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('pengiriman.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'pengiriman.index' ? 'active' : '' }}">
+                                                            <i class="nav-icon fas fa-truck"></i>
+                                                            <p>Monitoring Pengiriman</p>
+                                                        </a>
+                                                    </li>
                                                     <li class="nav-item">
                                                         <a href="{{ route('mro') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
@@ -762,7 +770,7 @@
                                                             <p>Arsip SPPD MRO</p>
                                                         </a>
                                                     </li>
-                                                    
+
                                                 </ul>
                                             </li>
                                         @endif
