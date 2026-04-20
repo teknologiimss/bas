@@ -693,7 +693,7 @@
 @section('custom-js')
 
     {{-- efek ketika halaman dibuka --}}
-    <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.body.style.opacity = 0;
             setTimeout(() => {
@@ -701,6 +701,6 @@
                 document.body.style.opacity = 1;
             }, 100);
         });
-    </script>
+    </script> --}}
 
 @endsection

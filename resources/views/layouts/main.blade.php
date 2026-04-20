@@ -343,6 +343,7 @@
                                         'mro.stock.log',
                                         'sppd.index',
                                         'mro.riwayat',
+                                        'pengiriman.index',
                                         'products.stock.history',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
@@ -382,6 +383,7 @@
                                         'mro.stock.log',
                                         'sppd.index',
                                         'mro.riwayat',
+                                        'pengiriman.index',
                                     ]);
                                 @endphp
 
@@ -390,7 +392,7 @@
                                         <i class="nav-icon fas fa-bars"></i>
                                         <p>
                                             {{ __('Menu') }}
-                                            <i class="right fas fa-angle-left"></i>
+                                            {{-- <i class="right fas fa-angle-left"></i> --}}
                                         </p>
                                     </a>
 
@@ -744,7 +746,7 @@
                                                     <!-- MENU BARU -->
                                                     <li class="nav-item">
                                                         <a href="{{ route('pengiriman.index') }}"
-                                                            class="nav-link {{ Route::current()->getName() == 'pengiriman.index' ? 'active' : '' }}">
+                                                            class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-truck"></i>
                                                             <p>Monitoring Pengiriman</p>
                                                         </a>
