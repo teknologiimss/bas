@@ -456,21 +456,18 @@
 
                                 <td>
                                     <!-- EDIT -->
-                                    <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
                                         data-target="#edit{{ $d->id }}" style="transition:0.2s">
                                         ✏️
                                     </button>
 
                                     <!-- DELETE -->
-                                    <form action="{{ route('pengiriman.detail.delete', $d->id) }}" method="POST"
-                                        style="display:inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus data?')"
-                                            style="transition:0.2s">
-                                            🗑️
-                                        </button>
-                                    </form>
+
+                                    <button type="button" class="btn btn-danger btn-sm btn-delete"
+                                        data-id="{{ $d->id }}">
+                                        🗑️
+                                    </button>
+
                                 </td>
                             </tr>
 
@@ -640,6 +637,11 @@
                 </button>
             </form>
 
+            <form id="deleteForm" method="POST" style="display:none;">
+                @csrf
+                @method('DELETE')
+            </form>
+
         </div>
     </div>
 
@@ -791,4 +793,20 @@
         });
     </script>
 
+    <script>
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                let id = this.dataset.id;
+
+                if (confirm('Hapus data?')) {
+                    let form = document.getElementById('deleteForm');
+
+                    let url = "{{ route('pengiriman.detail.delete', ':id') }}";
+                    form.action = url.replace(':id', id);
+
+                    form.submit();
+                }
+            });
+        });
+    </script>
 @endsection
