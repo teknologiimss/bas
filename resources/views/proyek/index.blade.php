@@ -4,6 +4,210 @@
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
 @section('content')
+
+    <style>
+        body {
+            background: #f5f6fa;
+        }
+
+        /* HEADER */
+        .d-flex.justify-content-between.mb-3 {
+            animation: fadeDown 0.5s ease;
+        }
+
+        /* CARD LIST */
+        .card {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            animation: fadeUp 0.6s ease;
+        }
+
+        /* ITEM LIST */
+        .border {
+            border: none !important;
+            border-left: 5px solid #c40000 !important;
+            border-radius: 14px !important;
+            background: #fff;
+            transition: 0.25s;
+        }
+
+        .border:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(196, 0, 0, 0.15);
+        }
+
+        /* TITLE */
+        h5 {
+            color: #b30000;
+            font-weight: 700;
+        }
+
+        /* BUTTON PRIMARY (CREATE + SUBMIT) */
+        .btn-success {
+            background: linear-gradient(135deg, #c40000, #7a0000) !important;
+            border: none !important;
+            border-radius: 10px !important;
+            transition: 0.2s;
+        }
+
+        .btn-success:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(196, 0, 0, 0.3);
+        }
+
+        /* MONITOR BUTTON */
+        .btn-light {
+            border-radius: 10px;
+            border: 1px solid #c40000;
+            color: #c40000;
+            transition: 0.2s;
+        }
+
+        .btn-light:hover {
+            background: #c40000;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* DELETE */
+        .btn-danger {
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .btn-danger:hover {
+            transform: scale(1.05);
+        }
+
+        /* MODAL */
+        .modal-content {
+            border-radius: 18px;
+            overflow: hidden;
+            animation: pop 0.3s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #c40000, #7a0000);
+            color: #fff;
+        }
+
+        /* INPUT */
+        .form-control {
+            border-radius: 10px;
+        }
+
+        /* PAGINATION */
+        .pagination {
+            justify-content: center;
+        }
+
+        .page-item.active .page-link {
+            background: #c40000;
+            border-color: #c40000;
+        }
+
+        /* ANIMATION */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* BUTTON CLICK EFFECT */
+        button,
+        a {
+            transition: all 0.2s ease;
+        }
+
+        button:active,
+        a:active {
+            transform: scale(0.95);
+        }
+
+        /* SEARCH WRAPPER POSISI KANAN */
+        .search-wrapper-box {
+            display: flex;
+            justify-content: flex-end;
+            /* INI KUNCINYA */
+        }
+
+        /* SEARCH BOX MODERN */
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(196, 0, 0, 0.2);
+            max-width: 380px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .search-wrapper:focus-within {
+            box-shadow: 0 10px 25px rgba(196, 0, 0, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* INPUT */
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        /* BUTTON */
+        .search-btn {
+            background: linear-gradient(135deg, #c40000, #7a0000);
+            color: #fff;
+            border: none;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .search-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
     {{-- <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/adminlte.min.js') }}"></script>
@@ -25,13 +229,20 @@
     </div>
 
     <!-- FILTER SEARCH -->
-    <form method="GET" action="" class="mb-3">
-        <div class="input-group" style="max-width: 300px;">
-            <input type="text" name="search" class="form-control" placeholder="Cari nama proyek..."
-                value="{{ request('search') }}">
-            <button class="btn btn-primary">Cari</button>
-        </div>
-    </form>
+    <div class="search-wrapper-box mb-3">
+        <form method="GET" action="">
+            <div class="search-wrapper">
+
+                <input type="text" name="search" class="search-input" autocomplete="off" placeholder="Cari nama proyek..."
+                    value="{{ request('search') }}">
+
+                <button class="search-btn">
+                    🔍 Cari
+                </button>
+
+            </div>
+        </form>
+    </div>
 
     <!-- LIST PROYEK -->
     <div class="card p-3">
