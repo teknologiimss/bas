@@ -324,23 +324,23 @@
 
                     <div class="col-md-2">
                         <label>Trainset</label>
-                        <input type="text" name="trainset" value="{{ request('trainset') }}" class="form-control">
+                        <input type="text" name="trainset" autocomplete="off" value="{{ request('trainset') }}" class="form-control">
                     </div>
 
                     <div class="col-md-2">
                         <label>No.Lambung</label>
-                        <input type="text" name="nomor_lambung" value="{{ request('nomor_lambung') }}"
+                        <input type="text" name="nomor_lambung" autocomplete="off" value="{{ request('nomor_lambung') }}"
                             class="form-control">
                     </div>
 
                     <div class="col-md-2">
                         <label>Batch</label>
-                        <input type="text" name="batch" value="{{ request('batch') }}" class="form-control">
+                        <input type="text" name="batch" autocomplete="off" value="{{ request('batch') }}" class="form-control">
                     </div>
 
                     <div class="col-md-2">
                         <label>No.SJN</label>
-                        <input type="text" name="no_sjn" value="{{ request('no_sjn') }}" class="form-control">
+                        <input type="text" name="no_sjn" autocomplete="off" value="{{ request('no_sjn') }}" class="form-control">
                     </div>
 
                     <div class="col-md-2">
