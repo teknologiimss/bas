@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
-@section('title', 'Monitoring Pengiriman')
+@section('title', 'Monitoring Pekerjaan')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
 @section('content')
 
@@ -185,7 +186,7 @@
 
         /* TABLE */
         .table-monitoring {
-            font-size: 12px;
+            font-size: 14px;
             white-space: nowrap;
         }
 
@@ -298,266 +299,346 @@
 
     <div class="card mt-3 p-3">
 
+        {{-- Filter --}}
+        <form method="GET" class="mb-3">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <label>Trainset</label>
+                    <input type="text" name="trainset" value="{{ request('trainset') }}" class="form-control"
+                        placeholder="Trainset">
+                </div>
+
+                <div class="col-md-2">
+                    <label>No.Lambung</label>
+                    <input type="text" name="nomor_lambung" value="{{ request('nomor_lambung') }}" class="form-control"
+                        placeholder="No Lambung">
+                </div>
+
+                <div class="col-md-2">
+                    <label>Batch</label>
+                    <input type="text" name="batch" value="{{ request('batch') }}" class="form-control"
+                        placeholder="Batch">
+                </div>
+
+                <div class="col-md-2">
+                    <label>No.SJN</label>
+                    <input type="text" name="no_sjn" value="{{ request('no_sjn') }}" class="form-control"
+                        placeholder="No SJN">
+                </div>
+
+                <div class="col-md-2">
+                    <label>Actual Delivery</label>
+                    <input type="date" name="actual_delivery" value="{{ request('actual_delivery') }}"
+                        class="form-control">
+                </div>
+
+                <div class="col-md-2">
+                    <label>Status</label>
+                    <select name="status_delivery" class="form-control">
+                        <option value="">-- Status --</option>
+                        <option value="On Time" {{ request('status_delivery') == 'On Time' ? 'selected' : '' }}>On Time
+                        </option>
+                        <option value="Overdue" {{ request('status_delivery') == 'Overdue' ? 'selected' : '' }}>Overdue
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 mt-2">
+                    <label>Loading Truck</label>
+                    <input type="date" name="loading_truck" value="{{ request('loading_truck') }}" class="form-control">
+                </div>
+
+                <div class="col-md-2 mt-2">
+                    <label>Actual Unloading</label>
+                    <input type="date" name="actual_unloading" value="{{ request('actual_unloading') }}"
+                        class="form-control">
+                </div>
+
+                <div class="col-md-11 mt-2">
+                    <button class="btn btn-primary btn-sm">🔍 Filter</button>
+                    <a href="{{ url()->current() }}" class="btn btn-secondary btn-sm">Reset</a>
+                </div>
+
+            </div>
+        </form>
+
         <!-- SCROLL AREA -->
         <div style="overflow-x:auto; border-radius:10px;">
-
-            <table class="table table-bordered table-sm table-monitoring">
-                <thead>
-                    <tr>
-                        <th>Trainset</th>
-                        <th>Tipe Kereta</th>
-                        <th>No Lambung</th>
-                        <th>Batch</th>
-                        <th>Trucking</th>
-                        <th>Nopol</th>
-                        <th>No SJN</th>
-                        <th>Code Armada</th>
-                        <th>Plan Delivery</th>
-                        <th>Actual Delivery</th>
-                        <th>Lead Time Delivery</th>
-                        <th>Status</th>
-                        <th>Loading Truck</th>
-                        <th>Loading Vessel</th>
-                        <th>Plan Unloading</th>
-                        <th>Actual Unloading</th>
-                        <th>Lead Time Unloading</th>
-                        <th>Vendor</th>
-                        <th>Keterangan</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @forelse ($detail as $d)
+            <form method="POST" action="{{ route('pengiriman.detail.bulkDelete') }}">
+                @csrf
+                @method('DELETE')
+                <table class="table table-bordered table-sm table-monitoring">
+                    <thead>
                         <tr>
-                            <td>{{ $d->trainset }}</td>
-                            <td>{{ $d->tipe_kereta }}</td>
-                            <td>{{ $d->nomor_lambung }}</td>
-                            <td>{{ $d->batch }}</td>
-                            <td>{{ $d->trucking }}</td>
-                            <td>{{ $d->nopol }}</td>
-                            <td>{{ $d->no_sjn }}</td>
-                            <td>{{ $d->code_armada }}</td>
-                            <td>{{ $d->plan_delivery ? \Carbon\Carbon::parse($d->plan_delivery)->format('d/m/Y') : '-' }}
-                            </td>
-                            <td>{{ $d->actual_delivery ? \Carbon\Carbon::parse($d->actual_delivery)->format('d/m/Y') : '-' }}
-                            </td>
-                            {{-- <td>{{ $d->leadtime_delivery }}</td> --}}
-                            <td>
-                                @if ($d->plan_delivery && $d->actual_delivery)
-                                    {{ \Carbon\Carbon::parse($d->plan_delivery)->diffInDays(\Carbon\Carbon::parse($d->actual_delivery)) }}
-                                    hari
-                                @else
-                                    -
-                                @endif
-                            </td>
-                            <td>
-                                <span
-                                    class="
+                            <th>
+                                <input type="checkbox" id="checkAll">
+                            </th>
+                            <th>Trainset</th>
+                            <th>Tipe Kereta</th>
+                            <th>No Lambung</th>
+                            <th>Batch</th>
+                            <th>Trucking</th>
+                            <th>Nopol</th>
+                            <th>No SJN</th>
+                            <th>Code Armada</th>
+                            <th>Plan Delivery</th>
+                            <th>Actual Delivery</th>
+                            <th>Lead Time Delivery</th>
+                            <th>Status</th>
+                            <th>Loading Truck</th>
+                            <th>Loading Vessel</th>
+                            <th>Plan Unloading</th>
+                            <th>Actual Unloading</th>
+                            <th>Lead Time Unloading</th>
+                            <th>Vendor</th>
+                            <th>Keterangan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @forelse ($detail as $d)
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="ids[]" value="{{ $d->id }}" class="checkItem">
+                                </td>
+                                <td>{{ $d->trainset }}</td>
+                                <td>{{ $d->tipe_kereta }}</td>
+                                <td>{{ $d->nomor_lambung }}</td>
+                                <td>{{ $d->batch }}</td>
+                                <td>{{ $d->trucking }}</td>
+                                <td>{{ $d->nopol }}</td>
+                                <td>{{ $d->no_sjn }}</td>
+                                <td>{{ $d->code_armada }}</td>
+                                <td>{{ $d->plan_delivery ? \Carbon\Carbon::parse($d->plan_delivery)->format('d/m/Y') : '-' }}
+                                </td>
+                                <td>{{ $d->actual_delivery ? \Carbon\Carbon::parse($d->actual_delivery)->format('d/m/Y') : '-' }}
+                                </td>
+                                {{-- <td>{{ $d->leadtime_delivery }}</td> --}}
+                                <td>
+                                    @if ($d->plan_delivery && $d->actual_delivery)
+                                        {{ \Carbon\Carbon::parse($d->plan_delivery)->diffInDays(\Carbon\Carbon::parse($d->actual_delivery)) }}
+                                        hari
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    <span
+                                        class="
                     {{ $d->status_delivery == 'Overdue' ? 'badge badge-danger' : '' }}
                     {{ $d->status_delivery == 'On Time' ? 'badge badge-success' : '' }}
                 ">
-                                    {{ $d->status_delivery }}
-                                </span>
-                            </td>
+                                        {{ $d->status_delivery }}
+                                    </span>
+                                </td>
 
-                            <td>{{ $d->loading_truck ? \Carbon\Carbon::parse($d->loading_truck)->format('d/m/Y') : '-' }}
-                            </td>
-                            <td>{{ $d->loading_vessel ? \Carbon\Carbon::parse($d->loading_vessel)->format('d/m/Y') : '-' }}
-                            </td>
-                            <td>{{ $d->plan_unloading ? \Carbon\Carbon::parse($d->plan_unloading)->format('d/m/Y') : '-' }}
-                            </td>
-                            <td>{{ $d->actual_unloading ? \Carbon\Carbon::parse($d->actual_unloading)->format('d/m/Y') : '-' }}
-                            </td>
-                            {{-- <td>{{ $d->leadtime_unloading }}</td> --}}
-                            <td>
-                                @if ($d->plan_unloading && $d->actual_unloading)
-                                    {{ \Carbon\Carbon::parse($d->plan_unloading)->diffInDays(\Carbon\Carbon::parse($d->actual_unloading)) }}
-                                    hari
-                                @else
-                                    -
-                                @endif
-                            </td>
-                            <td>{{ $d->vendor }}</td>
-                            <td>{{ $d->keterangan }}</td>
+                                <td>{{ $d->loading_truck ? \Carbon\Carbon::parse($d->loading_truck)->format('d/m/Y') : '-' }}
+                                </td>
+                                <td>{{ $d->loading_vessel ? \Carbon\Carbon::parse($d->loading_vessel)->format('d/m/Y') : '-' }}
+                                </td>
+                                <td>{{ $d->plan_unloading ? \Carbon\Carbon::parse($d->plan_unloading)->format('d/m/Y') : '-' }}
+                                </td>
+                                <td>{{ $d->actual_unloading ? \Carbon\Carbon::parse($d->actual_unloading)->format('d/m/Y') : '-' }}
+                                </td>
+                                {{-- <td>{{ $d->leadtime_unloading }}</td> --}}
+                                <td>
+                                    @if ($d->plan_unloading && $d->actual_unloading)
+                                        {{ \Carbon\Carbon::parse($d->plan_unloading)->diffInDays(\Carbon\Carbon::parse($d->actual_unloading)) }}
+                                        hari
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>{{ $d->vendor }}</td>
+                                <td>{{ $d->keterangan }}</td>
 
-                            <td>
-                                <!-- EDIT -->
-                                <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                    data-target="#edit{{ $d->id }}" style="transition:0.2s">
-                                    ✏️
-                                </button>
-
-                                <!-- DELETE -->
-                                <form action="{{ route('pengiriman.detail.delete', $d->id) }}" method="POST"
-                                    style="display:inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus data?')"
-                                        style="transition:0.2s">
-                                        🗑️
+                                <td>
+                                    <!-- EDIT -->
+                                    <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                        data-target="#edit{{ $d->id }}" style="transition:0.2s">
+                                        ✏️
                                     </button>
-                                </form>
-                            </td>
-                        </tr>
 
-                        <!-- MODAL EDIT -->
-                        <div class="modal fade" id="edit{{ $d->id }}">
-                            <div class="modal-dialog modal-lg">
-                                <form method="POST" action="{{ route('pengiriman.detail.update', $d->id) }}">
-                                    @csrf
+                                    <!-- DELETE -->
+                                    <form action="{{ route('pengiriman.detail.delete', $d->id) }}" method="POST"
+                                        style="display:inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus data?')"
+                                            style="transition:0.2s">
+                                            🗑️
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
 
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5>Edit Data Pengiriman</h5>
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        </div>
+                            <!-- MODAL EDIT -->
+                            <div class="modal fade" id="edit{{ $d->id }}">
+                                <div class="modal-dialog modal-lg">
+                                    <form method="POST" action="{{ route('pengiriman.detail.update', $d->id) }}">
+                                        @csrf
 
-                                        <div class="modal-body row">
-
-                                            <div class="col-md-4 mb-2">
-                                                <label>Trainset</label>
-                                                <input type="text" name="trainset" value="{{ $d->trainset }}"
-                                                    class="form-control" autocomplete="off">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5>Edit Data Pengiriman</h5>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Tipe Kereta</label>
-                                                <input type="text" name="tipe_kereta" value="{{ $d->tipe_kereta }}"
-                                                    class="form-control" autocomplete="off">
-                                            </div>
+                                            <div class="modal-body row">
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Nomor Lambung</label>
-                                                <input type="text" name="nomor_lambung" value="{{ $d->nomor_lambung }}"
-                                                    class="form-control" autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Trainset</label>
+                                                    <input type="text" name="trainset" value="{{ $d->trainset }}"
+                                                        class="form-control" autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Batch</label>
-                                                <input type="text" name="batch" value="{{ $d->batch }}"
-                                                    class="form-control" autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Tipe Kereta</label>
+                                                    <input type="text" name="tipe_kereta"
+                                                        value="{{ $d->tipe_kereta }}" class="form-control"
+                                                        autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Trucking</label>
-                                                <input type="text" name="trucking" value="{{ $d->trucking }}"
-                                                    class="form-control" autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Nomor Lambung</label>
+                                                    <input type="text" name="nomor_lambung"
+                                                        value="{{ $d->nomor_lambung }}" class="form-control"
+                                                        autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Nopol</label>
-                                                <input type="text" name="nopol" value="{{ $d->nopol }}"
-                                                    class="form-control" autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Batch</label>
+                                                    <input type="text" name="batch" value="{{ $d->batch }}"
+                                                        class="form-control" autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>No SJN</label>
-                                                <input type="text" name="no_sjn" value="{{ $d->no_sjn }}"
-                                                    class="form-control" autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Trucking</label>
+                                                    <input type="text" name="trucking" value="{{ $d->trucking }}"
+                                                        class="form-control" autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Code Armada</label>
-                                                <input type="text" name="code_armada" value="{{ $d->code_armada }}"
-                                                    class="form-control" autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Nopol</label>
+                                                    <input type="text" name="nopol" value="{{ $d->nopol }}"
+                                                        class="form-control" autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Plan Delivery</label>
-                                                <input type="date" name="plan_delivery" value="{{ $d->plan_delivery }}"
-                                                    class="form-control" autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>No SJN</label>
+                                                    <input type="text" name="no_sjn" value="{{ $d->no_sjn }}"
+                                                        class="form-control" autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Actual Delivery</label>
-                                                <input type="date" name="actual_delivery"
-                                                    value="{{ $d->actual_delivery }}" class="form-control"
-                                                    autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Code Armada</label>
+                                                    <input type="text" name="code_armada"
+                                                        value="{{ $d->code_armada }}" class="form-control"
+                                                        autocomplete="off">
+                                                </div>
 
-                                            {{-- <div class="col-md-4 mb-2">
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Plan Delivery</label>
+                                                    <input type="date" name="plan_delivery"
+                                                        value="{{ $d->plan_delivery }}" class="form-control"
+                                                        autocomplete="off">
+                                                </div>
+
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Actual Delivery</label>
+                                                    <input type="date" name="actual_delivery"
+                                                        value="{{ $d->actual_delivery }}" class="form-control"
+                                                        autocomplete="off">
+                                                </div>
+
+                                                {{-- <div class="col-md-4 mb-2">
                                                 <label>Leadtime Delivery</label>
                                                 <input type="text" name="leadtime_delivery"
                                                     value="{{ $d->leadtime_delivery }}" class="form-control"
                                                     autocomplete="off">
                                             </div> --}}
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Status Delivery</label>
-                                                <input type="text" name="status_delivery"
-                                                    value="{{ $d->status_delivery }}" class="form-control"
-                                                    list="statusList" autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Status Delivery</label>
+                                                    <input type="text" name="status_delivery"
+                                                        value="{{ $d->status_delivery }}" class="form-control"
+                                                        list="statusList" autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Loading Truck</label>
-                                                <input type="date" name="loading_truck"
-                                                    value="{{ $d->loading_truck }}" class="form-control"
-                                                    autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Loading Truck</label>
+                                                    <input type="date" name="loading_truck"
+                                                        value="{{ $d->loading_truck }}" class="form-control"
+                                                        autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Loading Vessel</label>
-                                                <input type="date" name="loading_vessel"
-                                                    value="{{ $d->loading_vessel }}" class="form-control"
-                                                    autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Loading Vessel</label>
+                                                    <input type="date" name="loading_vessel"
+                                                        value="{{ $d->loading_vessel }}" class="form-control"
+                                                        autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Plan Unloading</label>
-                                                <input type="date" name="plan_unloading"
-                                                    value="{{ $d->plan_unloading }}" class="form-control"
-                                                    autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Plan Unloading</label>
+                                                    <input type="date" name="plan_unloading"
+                                                        value="{{ $d->plan_unloading }}" class="form-control"
+                                                        autocomplete="off">
+                                                </div>
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Actual Unloading</label>
-                                                <input type="date" name="actual_unloading"
-                                                    value="{{ $d->actual_unloading }}" class="form-control"
-                                                    autocomplete="off">
-                                            </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Actual Unloading</label>
+                                                    <input type="date" name="actual_unloading"
+                                                        value="{{ $d->actual_unloading }}" class="form-control"
+                                                        autocomplete="off">
+                                                </div>
 
-                                            {{-- <div class="col-md-4 mb-2">
+                                                {{-- <div class="col-md-4 mb-2">
                                                 <label>Leadtime Unloading</label>
                                                 <input type="text" name="leadtime_unloading"
                                                     value="{{ $d->leadtime_unloading }}" class="form-control"
                                                     autocomplete="off">
                                             </div> --}}
 
-                                            <div class="col-md-4 mb-2">
-                                                <label>Vendor</label>
-                                                <input type="text" name="vendor" value="{{ $d->vendor }}"
-                                                    class="form-control" autocomplete="off">
+                                                <div class="col-md-4 mb-2">
+                                                    <label>Vendor</label>
+                                                    <input type="text" name="vendor" value="{{ $d->vendor }}"
+                                                        class="form-control" autocomplete="off">
+                                                </div>
+
+                                                <div class="col-md-12 mb-2">
+                                                    <label>Keterangan</label>
+                                                    <input type="text" name="keterangan" value="{{ $d->keterangan }}"
+                                                        class="form-control" autocomplete="off">
+                                                </div>
+
                                             </div>
 
-                                            <div class="col-md-12 mb-2">
-                                                <label>Keterangan</label>
-                                                <input type="text" name="keterangan" value="{{ $d->keterangan }}"
-                                                    class="form-control" autocomplete="off">
+                                            <div class="modal-footer">
+                                                <button class="btn btn-success">Update</button>
+                                                <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
                                             </div>
-
                                         </div>
 
-                                        <div class="modal-footer">
-                                            <button class="btn btn-success">Update</button>
-                                            <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                        </div>
-                                    </div>
-
-                                </form>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
 
-                    @empty
-                        <tr>
-                            <td colspan="20" class="text-center text-muted">
-                                Tidak ada data pengiriman
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                        @empty
+                            <tr>
+                                <td colspan="20" class="text-center text-muted">
+                                    Tidak ada data pengiriman
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+                <button class="btn btn-danger mt-2" onclick="return confirm('Hapus data terpilih?')">
+                    🗑️ Hapus Terpilih
+                </button>
+            </form>
 
         </div>
     </div>
@@ -702,5 +783,12 @@
             }, 100);
         });
     </script> --}}
+
+    <script>
+        document.getElementById('checkAll').addEventListener('click', function() {
+            let checkboxes = document.querySelectorAll('.checkItem');
+            checkboxes.forEach(cb => cb.checked = this.checked);
+        });
+    </script>
 
 @endsection

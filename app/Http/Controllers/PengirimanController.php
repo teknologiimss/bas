@@ -21,13 +21,47 @@ class PengirimanController extends Controller
         return view('pengiriman.index', compact('data'));
     }
 
-    public function monitor($id)
+    public function monitor(Request $request, $id)
     {
         $proyek = DB::table('pengiriman')->where('id', $id)->first();
 
-        $detail = DB::table('pengiriman_detail')
-            ->where('pengiriman_id', $id)
-            ->get();
+        $query = DB::table('pengiriman_detail')
+            ->where('pengiriman_id', $id);
+
+        // FILTER
+        if ($request->trainset) {
+            $query->where('trainset', 'like', '%' . $request->trainset . '%');
+        }
+
+        if ($request->nomor_lambung) {
+            $query->where('nomor_lambung', 'like', '%' . $request->nomor_lambung . '%');
+        }
+
+        if ($request->batch) {
+            $query->where('batch', 'like', '%' . $request->batch . '%');
+        }
+
+        if ($request->no_sjn) {
+            $query->where('no_sjn', 'like', '%' . $request->no_sjn . '%');
+        }
+
+        if ($request->actual_delivery) {
+            $query->whereDate('actual_delivery', $request->actual_delivery);
+        }
+
+        if ($request->status_delivery) {
+            $query->where('status_delivery', $request->status_delivery);
+        }
+
+        if ($request->loading_truck) {
+            $query->whereDate('loading_truck', $request->loading_truck);
+        }
+
+        if ($request->actual_unloading) {
+            $query->whereDate('actual_unloading', $request->actual_unloading);
+        }
+
+        $detail = $query->get();
 
         return view('pengiriman.monitor', compact('proyek', 'detail'));
     }
@@ -129,5 +163,16 @@ class PengirimanController extends Controller
         DB::table('pengiriman_detail')->where('id', $id)->delete();
 
         return back()->with('success', 'Data dihapus');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        if ($request->ids) {
+            DB::table('pengiriman_detail')
+                ->whereIn('id', $request->ids)
+                ->delete();
+        }
+
+        return back()->with('success', 'Data terpilih berhasil dihapus');
     }
 }

@@ -748,7 +748,7 @@
                                                         <a href="{{ route('pengiriman.index') }}"
                                                             class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-truck"></i>
-                                                            <p>Monitoring Pengiriman</p>
+                                                            <p>Monitoring Pekerjaan</p>
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">

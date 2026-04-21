@@ -444,6 +444,8 @@ Route::prefix('products')->group(function () {
 
     Route::delete('/pengiriman-detail/delete/{id}', [PengirimanController::class, 'deleteDetail'])->name('pengiriman.detail.delete');
 
+    Route::delete('/pengiriman-detail/bulk-delete', [PengirimanController::class, 'bulkDelete'])
+    ->name('pengiriman.detail.bulkDelete');
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     // Route::resource('justi', App\Http\Controllers\JustiController::class)->except(['destroy']);
