@@ -306,25 +306,25 @@
                 <div class="col-md-2">
                     <label>Trainset</label>
                     <input type="text" name="trainset" value="{{ request('trainset') }}" class="form-control"
-                        placeholder="Trainset">
+                        placeholder="Trainset" autocomplete="off">
                 </div>
 
                 <div class="col-md-2">
                     <label>No.Lambung</label>
                     <input type="text" name="nomor_lambung" value="{{ request('nomor_lambung') }}" class="form-control"
-                        placeholder="No Lambung">
+                        placeholder="No Lambung" autocomplete="off">
                 </div>
 
                 <div class="col-md-2">
                     <label>Batch</label>
                     <input type="text" name="batch" value="{{ request('batch') }}" class="form-control"
-                        placeholder="Batch">
+                        placeholder="Batch" autocomplete="off">
                 </div>
 
                 <div class="col-md-2">
                     <label>No.SJN</label>
                     <input type="text" name="no_sjn" value="{{ request('no_sjn') }}" class="form-control"
-                        placeholder="No SJN">
+                        placeholder="No SJN" autocomplete="off">
                 </div>
 
                 <div class="col-md-2">
