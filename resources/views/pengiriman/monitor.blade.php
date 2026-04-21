@@ -284,7 +284,7 @@
 
         <div class="project-header text-center">
             <div class="project-title">
-                Monitoring Pengiriman
+                Monitoring Pekerjaan
             </div>
             <div class="project-name">
                 {{ $proyek->nama_proyek }}
