@@ -279,71 +279,68 @@
             text-align: center;
         }
 
-        /* 🔥 FILTER STICKY (FREEZE DI ATAS SAAT SCROLL) */
-        .filter-wrapper {
+        /* 🔥 HEADER + FILTER + BUTTON STICKY */
+        .sticky-top-section {
             position: sticky;
             top: 0;
-            z-index: 999;
+            z-index: 1000;
             background: #f8f9fa;
-            padding-top: 10px;
             padding-bottom: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
 
-        /* biar table scroll enak */
-        .table-container {
-            overflow-x: auto;
-            max-height: 70vh;
-            overflow-y: auto;
+        /* biar tiap layer rapi */
+        .sticky-inner {
+            background: #f8f9fa;
         }
     </style>
 
-    <div class="header-wrapper">
 
-        <div class="project-header text-center">
-            <div class="project-title">
-                Monitoring Pekerjaan
+    {{-- Freeze seperti excel --}}
+    <div class="sticky-top-section">
+
+        <div class="header-wrapper sticky-inner">
+
+            <div class="project-header text-center">
+                <div class="project-title">
+                    Monitoring Pekerjaan
+                </div>
+                <div class="project-name">
+                    {{ $proyek->nama_proyek }}
+                </div>
             </div>
-            <div class="project-name">
-                {{ $proyek->nama_proyek }}
-            </div>
+
+            <button class="btn btn-success mt-3 px-4 py-2" data-toggle="modal" data-target="#modalTambah">
+                ➕ Tambah Data
+            </button>
+
         </div>
 
-        <button class="btn btn-success mt-3 px-4 py-2" data-toggle="modal" data-target="#modalTambah">
-            ➕ Tambah Data
-        </button>
+        {{-- FILTER --}}
+        <div class="card mt-3 p-3 sticky-inner">
 
-    </div>
-
-    <div class="card mt-3 p-3">
-
-        {{-- Filter --}}
-        <div class="filter-wrapper">
             <form method="GET" class="mb-3">
                 <div class="row">
 
                     <div class="col-md-2">
                         <label>Trainset</label>
-                        <input type="text" name="trainset" value="{{ request('trainset') }}" class="form-control"
-                            placeholder="Trainset" autocomplete="off">
+                        <input type="text" name="trainset" value="{{ request('trainset') }}" class="form-control">
                     </div>
 
                     <div class="col-md-2">
                         <label>No.Lambung</label>
                         <input type="text" name="nomor_lambung" value="{{ request('nomor_lambung') }}"
-                            class="form-control" placeholder="No Lambung" autocomplete="off">
+                            class="form-control">
                     </div>
 
                     <div class="col-md-2">
                         <label>Batch</label>
-                        <input type="text" name="batch" value="{{ request('batch') }}" class="form-control"
-                            placeholder="Batch" autocomplete="off">
+                        <input type="text" name="batch" value="{{ request('batch') }}" class="form-control">
                     </div>
 
                     <div class="col-md-2">
                         <label>No.SJN</label>
-                        <input type="text" name="no_sjn" value="{{ request('no_sjn') }}" class="form-control"
-                            placeholder="No SJN" autocomplete="off">
+                        <input type="text" name="no_sjn" value="{{ request('no_sjn') }}" class="form-control">
                     </div>
 
                     <div class="col-md-2">
@@ -382,7 +379,14 @@
 
                 </div>
             </form>
+
         </div>
+
+    </div>
+
+    <div class="card mt-3 p-3">
+
+        
 
         <!-- SCROLL AREA -->
         <div style="overflow-x:auto; border-radius:10px;">
@@ -514,9 +518,8 @@
 
                                                 <div class="col-md-4 mb-2">
                                                     <label>Tipe Kereta</label>
-                                                    <input type="text" name="tipe_kereta"
-                                                        value="{{ $d->tipe_kereta }}" class="form-control"
-                                                        autocomplete="off">
+                                                    <input type="text" name="tipe_kereta" value="{{ $d->tipe_kereta }}"
+                                                        class="form-control" autocomplete="off">
                                                 </div>
 
                                                 <div class="col-md-4 mb-2">
