@@ -207,7 +207,7 @@
 
     <div class="d-flex justify-content-between mb-3">
         <button class="btn btn-success" data-toggle="modal" data-target="#modalCreate" style="margin: 10px;">
-            + Buat Proyek Baru
+            + Buat Pekerjaan Baru
         </button>
     </div>
 
@@ -225,7 +225,7 @@
 
     <!-- LIST PROYEK -->
     <div class="card p-3">
-        <h5 class="mb-3">Daftar Proyek MRO</h5>
+        <h5 class="mb-3">Daftar Pekerjaan MRO</h5>
 
         @foreach ($data as $p)
             <div class="d-flex justify-content-between align-items-center border p-3 mb-2 rounded">
