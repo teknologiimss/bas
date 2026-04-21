@@ -278,6 +278,24 @@
             /* ini penting biar tidak kepanjangan */
             text-align: center;
         }
+
+        /* 🔥 FILTER STICKY (FREEZE DI ATAS SAAT SCROLL) */
+        .filter-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            background: #f8f9fa;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* biar table scroll enak */
+        .table-container {
+            overflow-x: auto;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
     </style>
 
     <div class="header-wrapper">
@@ -300,68 +318,71 @@
     <div class="card mt-3 p-3">
 
         {{-- Filter --}}
-        <form method="GET" class="mb-3">
-            <div class="row">
+        <div class="filter-wrapper">
+            <form method="GET" class="mb-3">
+                <div class="row">
 
-                <div class="col-md-2">
-                    <label>Trainset</label>
-                    <input type="text" name="trainset" value="{{ request('trainset') }}" class="form-control"
-                        placeholder="Trainset" autocomplete="off">
+                    <div class="col-md-2">
+                        <label>Trainset</label>
+                        <input type="text" name="trainset" value="{{ request('trainset') }}" class="form-control"
+                            placeholder="Trainset" autocomplete="off">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>No.Lambung</label>
+                        <input type="text" name="nomor_lambung" value="{{ request('nomor_lambung') }}"
+                            class="form-control" placeholder="No Lambung" autocomplete="off">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Batch</label>
+                        <input type="text" name="batch" value="{{ request('batch') }}" class="form-control"
+                            placeholder="Batch" autocomplete="off">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>No.SJN</label>
+                        <input type="text" name="no_sjn" value="{{ request('no_sjn') }}" class="form-control"
+                            placeholder="No SJN" autocomplete="off">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Actual Delivery</label>
+                        <input type="date" name="actual_delivery" value="{{ request('actual_delivery') }}"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Status</label>
+                        <select name="status_delivery" class="form-control">
+                            <option value="">-- Status --</option>
+                            <option value="On Time" {{ request('status_delivery') == 'On Time' ? 'selected' : '' }}>On Time
+                            </option>
+                            <option value="Overdue" {{ request('status_delivery') == 'Overdue' ? 'selected' : '' }}>Overdue
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mt-2">
+                        <label>Loading Truck</label>
+                        <input type="date" name="loading_truck" value="{{ request('loading_truck') }}"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-md-2 mt-2">
+                        <label>Actual Unloading</label>
+                        <input type="date" name="actual_unloading" value="{{ request('actual_unloading') }}"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-md-11 mt-2">
+                        <button class="btn btn-primary btn-sm">🔍 Filter</button>
+                        <a href="{{ url()->current() }}" class="btn btn-secondary btn-sm">Reset</a>
+                    </div>
+
                 </div>
-
-                <div class="col-md-2">
-                    <label>No.Lambung</label>
-                    <input type="text" name="nomor_lambung" value="{{ request('nomor_lambung') }}" class="form-control"
-                        placeholder="No Lambung" autocomplete="off">
-                </div>
-
-                <div class="col-md-2">
-                    <label>Batch</label>
-                    <input type="text" name="batch" value="{{ request('batch') }}" class="form-control"
-                        placeholder="Batch" autocomplete="off">
-                </div>
-
-                <div class="col-md-2">
-                    <label>No.SJN</label>
-                    <input type="text" name="no_sjn" value="{{ request('no_sjn') }}" class="form-control"
-                        placeholder="No SJN" autocomplete="off">
-                </div>
-
-                <div class="col-md-2">
-                    <label>Actual Delivery</label>
-                    <input type="date" name="actual_delivery" value="{{ request('actual_delivery') }}"
-                        class="form-control">
-                </div>
-
-                <div class="col-md-2">
-                    <label>Status</label>
-                    <select name="status_delivery" class="form-control">
-                        <option value="">-- Status --</option>
-                        <option value="On Time" {{ request('status_delivery') == 'On Time' ? 'selected' : '' }}>On Time
-                        </option>
-                        <option value="Overdue" {{ request('status_delivery') == 'Overdue' ? 'selected' : '' }}>Overdue
-                        </option>
-                    </select>
-                </div>
-
-                <div class="col-md-2 mt-2">
-                    <label>Loading Truck</label>
-                    <input type="date" name="loading_truck" value="{{ request('loading_truck') }}" class="form-control">
-                </div>
-
-                <div class="col-md-2 mt-2">
-                    <label>Actual Unloading</label>
-                    <input type="date" name="actual_unloading" value="{{ request('actual_unloading') }}"
-                        class="form-control">
-                </div>
-
-                <div class="col-md-11 mt-2">
-                    <button class="btn btn-primary btn-sm">🔍 Filter</button>
-                    <a href="{{ url()->current() }}" class="btn btn-secondary btn-sm">Reset</a>
-                </div>
-
-            </div>
-        </form>
+            </form>
+        </div>
 
         <!-- SCROLL AREA -->
         <div style="overflow-x:auto; border-radius:10px;">
