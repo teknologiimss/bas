@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('title', 'Perencanaan MRO')
-
+@section('title', 'Perencanaan Pekerjaan MRO')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
 
     <style>

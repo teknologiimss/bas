@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'proyek_id',
         'tipe',
@@ -17,4 +18,9 @@ class Item extends Model
         'satuan',
         'keterangan'
     ];
+
+    public function lampiran()
+    {
+        return $this->hasMany(ItemLampiran::class);
+    }
 }

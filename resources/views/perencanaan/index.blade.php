@@ -1,6 +1,6 @@
 @extends('layouts.main')
-@section('title', 'Perencanaan')
-
+@section('title', 'Perencanaan Pekerjaan')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
 
     <style>
@@ -213,7 +213,7 @@
                 <table class="table-excel mb-3">
 
                     <tr class="header">
-                        <td colspan="6">{{ strtoupper($kategori) }}</td>
+                        <td colspan="7">{{ strtoupper($kategori) }}</td>
                     </tr>
 
                     <tr class="header">
@@ -222,6 +222,7 @@
                         <td>Qty</td>
                         <td>Satuan</td>
                         <td>Keterangan</td>
+                        <td>lampiran</td>
                         <td>Aksi</td>
                     </tr>
 
@@ -232,6 +233,16 @@
                             <td>{{ $d->qty }}</td>
                             <td>{{ $d->satuan }}</td>
                             <td>{{ $d->keterangan }}</td>
+                            <td>
+                                @foreach ($d->lampiran as $l)
+                                    <div>
+                                        <a href="{{ asset('lampiran/' . $l->file) }}" target="_blank">
+                                            📎 Lihat File
+                                        </a>
+                                        <small>({{ $l->keterangan }})</small>
+                                    </div>
+                                @endforeach
+                            </td>
                             <td>
 
                                 <button class="btn btn-sm btn-warning" data-toggle="modal"
@@ -295,6 +306,7 @@
                     <input type="text" name="satuan" class="form-control mb-2" placeholder="Satuan">
                     <input type="text" name="keterangan" class="form-control mb-2" placeholder="Keterangan">
 
+
                 </div>
 
                 <div class="modal-footer">
@@ -324,7 +336,8 @@
                             <input type="text" name="uraian" value="{{ $d->uraian }}" class="form-control mb-2">
                             <input type="number" name="qty" value="{{ $d->qty }}" class="form-control mb-2">
                             <input type="text" name="satuan" value="{{ $d->satuan }}" class="form-control mb-2">
-                            <input type="text" name="keterangan" value="{{ $d->keterangan }}" class="form-control mb-2">
+                            <input type="text" name="keterangan" value="{{ $d->keterangan }}"
+                                class="form-control mb-2">
                         </div>
 
                         <div class="modal-footer">
@@ -342,7 +355,8 @@
         @foreach ($items as $d)
             <div class="modal fade" id="edit-real-{{ $d->id }}">
                 <div class="modal-dialog">
-                    <form method="POST" action="{{ route('perencanaan.update', $d->id) }}" class="modal-content">
+                    <form method="POST" action="{{ route('perencanaan.update', $d->id) }}"
+                        enctype="multipart/form-data" class="modal-content">
 
                         @csrf
                         @method('PUT')
@@ -357,6 +371,59 @@
                             <input type="text" name="satuan" value="{{ $d->satuan }}" class="form-control mb-2">
                             <input type="text" name="keterangan" value="{{ $d->keterangan }}"
                                 class="form-control mb-2">
+
+                            <hr>
+                            <h6>Lampiran Lama</h6>
+
+                            @foreach ($d->lampiran as $l)
+                                <div class="row mb-2 align-items-center">
+                                    <div class="col-md-4">
+                                        <a href="{{ asset('lampiran/' . $l->file) }}" target="_blank">
+                                            📎 Lihat File
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <input type="text" name="old_keterangan[{{ $l->id }}]"
+                                            value="{{ $l->keterangan }}" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <input type="file" name="replace_file[{{ $l->id }}]"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <input type="checkbox" name="hapus_lampiran[]" value="{{ $l->id }}">
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            <hr>
+                            <h6>Lampiran Baru</h6>
+
+                            <div id="lampiran-wrapper-{{ $d->id }}">
+                                <div class="row mb-2 lampiran-item">
+                                    <div class="col-md-5">
+                                        <input type="file" name="lampiran[]" class="form-control">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" name="lampiran_keterangan[]" class="form-control"
+                                            placeholder="Keterangan file">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="hapusLampiran(this)">
+                                            ❌
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-sm btn-primary"
+                                onclick="tambahLampiran({{ $d->id }})">
+                                + Tambah Lampiran
+                            </button>
                         </div>
 
                         <div class="modal-footer">
@@ -370,3 +437,31 @@
     @endforeach
 
 @endsection
+<script>
+    function tambahLampiran(id) {
+        let html = `
+    <div class="row mb-2 lampiran-item">
+        <div class="col-md-5">
+            <input type="file" name="lampiran[]" class="form-control">
+        </div>
+        <div class="col-md-5">
+            <input type="text" name="lampiran_keterangan[]" class="form-control" placeholder="Keterangan file">
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-danger btn-sm" onclick="hapusLampiran(this)">
+                ❌
+            </button>
+        </div>
+    </div>`;
+
+        document
+            .getElementById('lampiran-wrapper-' + id)
+            .insertAdjacentHTML('beforeend', html);
+    }
+</script>
+
+<script>
+    function hapusLampiran(btn) {
+        btn.closest('.lampiran-item').remove();
+    }
+</script>
