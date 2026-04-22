@@ -184,7 +184,7 @@
                             <td>{{ $d->keterangan }}</td>
                             <td>
 
-                                <button class="btn btn-sm btn-warning" data-toggle="modal"
+                                <button class="btn btn-xs btn-warning" data-toggle="modal"
                                     data-target="#edit-plan-{{ $d->id }}">
                                     ✏️
                                 </button>
@@ -193,7 +193,7 @@
                                     style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-danger" onclick="return confirm('hapus data?')">
+                                    <button class="btn btn-xs btn-danger" onclick="return confirm('hapus data?')">
                                         🗑️
                                     </button>
                                 </form>
@@ -245,7 +245,7 @@
                             </td>
                             <td>
 
-                                <button class="btn btn-sm btn-warning" data-toggle="modal"
+                                <button class="btn btn-xs btn-warning" data-toggle="modal"
                                     data-target="#edit-real-{{ $d->id }}">
                                     ✏️
                                 </button>
@@ -254,7 +254,7 @@
                                     style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-danger">
+                                    <button class="btn btn-xs btn-danger">
                                         🗑️
                                     </button>
                                 </form>
