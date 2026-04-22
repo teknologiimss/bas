@@ -344,6 +344,7 @@
                                         'sppd.index',
                                         'mro.riwayat',
                                         'pengiriman.index',
+                                        'perencanaan.proyek',
                                         'products.stock.history',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
@@ -384,6 +385,7 @@
                                         'sppd.index',
                                         'mro.riwayat',
                                         'pengiriman.index',
+                                        'perencanaan.proyek',
                                     ]);
                                 @endphp
 
@@ -727,6 +729,13 @@
                                                             class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-history"></i>
                                                             <p>Riwayat PR/SPPJP MRO</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('perencanaan.proyek') }}"
+                                                            class="nav-link {{ request()->routeIs('perencanaan.*') ? 'active' : '' }}">
+                                                            <i class="nav-icon fas fa-clipboard-list"></i>
+                                                            <p>Perencanaan Pekerjaan</p>
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">

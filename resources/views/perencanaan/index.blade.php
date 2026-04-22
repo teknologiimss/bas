@@ -1,0 +1,372 @@
+@extends('layouts.main')
+@section('title', 'Perencanaan')
+
+@section('content')
+
+    <style>
+        body {
+            background: #f5f6fa;
+        }
+
+        /* ====== CARD TABLE ====== */
+        .table-excel {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            animation: fadeUp 0.5s ease;
+        }
+
+        .table-excel th,
+        .table-excel td {
+            border: 1px solid #eee;
+            padding: 8px;
+            font-size: 13px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #c40000, #7a0000);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* ====== ROW STYLE ====== */
+        .plan {
+            background: #fff;
+            transition: 0.25s ease;
+        }
+
+        .plan:hover {
+            background: #fff5f5;
+            transform: scale(1.01);
+        }
+
+        .realisasi {
+            background: #fff;
+            transition: 0.25s ease;
+        }
+
+        .realisasi:hover {
+            background: #fff0f0;
+            transform: scale(1.01);
+        }
+
+        /* ====== TITLE ====== */
+        h5 {
+            color: #b30000;
+            font-weight: 700;
+        }
+
+        /* ====== BUTTON RED THEME ====== */
+        .btn-success {
+            background: linear-gradient(135deg, #c40000, #7a0000) !important;
+            border: none !important;
+            border-radius: 10px !important;
+            transition: 0.2s;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(196, 0, 0, 0.3);
+        }
+
+        .btn-primary {
+            border-radius: 10px;
+        }
+
+        .btn-warning {
+            border-radius: 10px;
+        }
+
+        .btn-danger {
+            border-radius: 10px;
+        }
+
+        /* ====== MODAL ====== */
+        .modal-content {
+            border-radius: 18px;
+            overflow: hidden;
+            animation: pop 0.25s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #c40000, #7a0000);
+            color: white;
+        }
+
+        .edit-judul {
+            color: #eee;
+        }
+
+
+        /* ====== INPUT ====== */
+        .form-control {
+            border-radius: 10px;
+        }
+
+        /* ====== ANIMATION ====== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* ====== BUTTON ANIMATION ====== */
+        button,
+        a {
+            transition: 0.2s ease;
+        }
+
+        button:active,
+        a:active {
+            transform: scale(0.95);
+        }
+
+        /* ====== SECTION ANIMATION ====== */
+        .col-md-6 {
+            animation: fadeUp 0.6s ease;
+        }
+    </style>
+
+    <!-- ================= BUTTON TAMBAH ================= -->
+    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalTambah">
+        + Tambah Data
+    </button>
+
+    <div class="row">
+
+        <!-- ================= PLAN ================= -->
+        <div class="col-md-6">
+            <h5>PERENCANAAN</h5>
+
+            @foreach ($plan as $kategori => $items)
+                <table class="table-excel mb-3">
+
+                    <tr class="header">
+                        <td colspan="6">{{ strtoupper($kategori) }}</td>
+                    </tr>
+
+                    <tr class="header">
+                        <td>No</td>
+                        <td>Uraian</td>
+                        <td>Qty</td>
+                        <td>Satuan</td>
+                        <td>Keterangan</td>
+                        <td>Aksi</td>
+                    </tr>
+
+                    @foreach ($items as $i => $d)
+                        <tr class="plan">
+                            <td>{{ $i + 1 }}</td>
+                            <td>{{ $d->uraian }}</td>
+                            <td>{{ $d->qty }}</td>
+                            <td>{{ $d->satuan }}</td>
+                            <td>{{ $d->keterangan }}</td>
+                            <td>
+
+                                <button class="btn btn-sm btn-warning" data-toggle="modal"
+                                    data-target="#edit-plan-{{ $d->id }}">
+                                    ✏️
+                                </button>
+
+                                <form action="{{ route('perencanaan.delete', $d->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-danger" onclick="return confirm('hapus data?')">
+                                        🗑️
+                                    </button>
+                                </form>
+
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            @endforeach
+        </div>
+
+        <!-- ================= REALISASI ================= -->
+        <div class="col-md-6">
+            <h5>REALISASI</h5>
+
+            @foreach ($realisasi as $kategori => $items)
+                <table class="table-excel mb-3">
+
+                    <tr class="header">
+                        <td colspan="6">{{ strtoupper($kategori) }}</td>
+                    </tr>
+
+                    <tr class="header">
+                        <td>No</td>
+                        <td>Uraian</td>
+                        <td>Qty</td>
+                        <td>Satuan</td>
+                        <td>Keterangan</td>
+                        <td>Aksi</td>
+                    </tr>
+
+                    @foreach ($items as $i => $d)
+                        <tr class="realisasi">
+                            <td>{{ $i + 1 }}</td>
+                            <td>{{ $d->uraian }}</td>
+                            <td>{{ $d->qty }}</td>
+                            <td>{{ $d->satuan }}</td>
+                            <td>{{ $d->keterangan }}</td>
+                            <td>
+
+                                <button class="btn btn-sm btn-warning" data-toggle="modal"
+                                    data-target="#edit-real-{{ $d->id }}">
+                                    ✏️
+                                </button>
+
+                                <form action="{{ route('perencanaan.delete', $d->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-danger">
+                                        🗑️
+                                    </button>
+                                </form>
+
+                            </td>
+                        </tr>
+                    @endforeach
+
+                </table>
+            @endforeach
+        </div>
+
+    </div>
+
+    <!-- ================= MODAL TAMBAH ================= -->
+    <div class="modal fade" id="modalTambah">
+        <div class="modal-dialog">
+            <form method="POST" action="{{ route('perencanaan.store') }}" class="modal-content">
+
+                @csrf
+
+                <div class="modal-header">
+                    <h5 class="edit-judul">Tambah Data</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" name="proyek_id" value="{{ $proyek_id }}">
+
+                    <select name="tipe" class="form-control mb-2">
+                        <option value="plan">PLAN</option>
+                        <option value="realisasi">REALISASI</option>
+                    </select>
+
+                    <select name="kategori" class="form-control mb-2">
+                        <option>Tools</option>
+                        <option>Consumable</option>
+                        <option>Packing</option>
+                        <option>Loading</option>
+                        <option>Tenaga Orang</option>
+                    </select>
+
+                    <input type="text" name="uraian" class="form-control mb-2" placeholder="Uraian">
+                    <input type="number" name="qty" class="form-control mb-2" placeholder="Qty">
+                    <input type="text" name="satuan" class="form-control mb-2" placeholder="Satuan">
+                    <input type="text" name="keterangan" class="form-control mb-2" placeholder="Keterangan">
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success">Simpan</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT PLAN -->
+    @foreach ($plan as $kategori => $items)
+        @foreach ($items as $d)
+            <div class="modal fade" id="edit-plan-{{ $d->id }}">
+                <div class="modal-dialog">
+                    <form method="POST" action="{{ route('perencanaan.update', $d->id) }}" class="modal-content">
+
+                        @csrf
+                        @method('PUT')
+
+                        <div class="modal-header">
+                            <h5 class="edit-judul">Edit PLAN</h5>
+                        </div>
+
+                        <div class="modal-body">
+                            <input type="text" name="uraian" value="{{ $d->uraian }}" class="form-control mb-2">
+                            <input type="number" name="qty" value="{{ $d->qty }}" class="form-control mb-2">
+                            <input type="text" name="satuan" value="{{ $d->satuan }}" class="form-control mb-2">
+                            <input type="text" name="keterangan" value="{{ $d->keterangan }}" class="form-control mb-2">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-success">Update</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        @endforeach
+    @endforeach
+
+    <!-- MODAL EDIT REALISASI -->
+    @foreach ($realisasi as $kategori => $items)
+        @foreach ($items as $d)
+            <div class="modal fade" id="edit-real-{{ $d->id }}">
+                <div class="modal-dialog">
+                    <form method="POST" action="{{ route('perencanaan.update', $d->id) }}" class="modal-content">
+
+                        @csrf
+                        @method('PUT')
+
+                        <div class="modal-header">
+                            <h5 class="edit-judul">Edit REALISASI</h5>
+                        </div>
+
+                        <div class="modal-body">
+                            <input type="text" name="uraian" value="{{ $d->uraian }}" class="form-control mb-2">
+                            <input type="number" name="qty" value="{{ $d->qty }}" class="form-control mb-2">
+                            <input type="text" name="satuan" value="{{ $d->satuan }}" class="form-control mb-2">
+                            <input type="text" name="keterangan" value="{{ $d->keterangan }}"
+                                class="form-control mb-2">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-success">Update</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        @endforeach
+    @endforeach
+
+@endsection

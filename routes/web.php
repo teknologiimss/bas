@@ -8,6 +8,7 @@ use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\MroController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PengirimanController;
+use App\Http\Controllers\PerencanaanController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\PurchaseRequestSppjpController;
@@ -445,7 +446,37 @@ Route::prefix('products')->group(function () {
     Route::delete('/pengiriman-detail/delete/{id}', [PengirimanController::class, 'deleteDetail'])->name('pengiriman.detail.delete');
 
     Route::delete('/pengiriman-detail/bulk-delete', [PengirimanController::class, 'bulkDelete'])
-    ->name('pengiriman.detail.bulkDelete');
+        ->name('pengiriman.detail.bulkDelete');
+
+    // Perencanaan MRO
+    // LIST PROYEK
+    Route::get('/perencanaan', [PerencanaanController::class, 'proyek'])
+        ->name('perencanaan.proyek');
+
+    // DETAIL PERENCANAAN
+    Route::get('/perencanaan/{id}', [PerencanaanController::class, 'index'])
+        ->name('perencanaan.index');
+
+    // ITEM PLAN / REALISASI
+    Route::post('/perencanaan/store', [PerencanaanController::class, 'store'])
+        ->name('perencanaan.store');
+
+    Route::put('/perencanaan/update/{id}', [PerencanaanController::class, 'update'])
+        ->name('perencanaan.update');
+
+    Route::delete('/perencanaan/delete/{id}', [PerencanaanController::class, 'destroy'])
+        ->name('perencanaan.delete');
+
+    // PROYEK CRUD
+    Route::post('/perencanaan/proyek/store', [PerencanaanController::class, 'storeProyek'])
+        ->name('perencanaan.proyek.store');
+
+    Route::put('/perencanaan/proyek/update/{id}', [PerencanaanController::class, 'updateProyek'])
+        ->name('perencanaan.proyek.update');
+
+    Route::delete('/perencanaan/proyek/delete/{id}', [PerencanaanController::class, 'deleteProyek'])
+        ->name('perencanaan.proyek.delete');
+
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     // Route::resource('justi', App\Http\Controllers\JustiController::class)->except(['destroy']);

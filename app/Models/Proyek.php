@@ -11,4 +11,11 @@ class Proyek extends Model
     protected $fillable = [
         'nama_proyek'
     ];
+
+    public function proyek()
+{
+    $data = Proyek::paginate(10); // atau all()
+
+    return view('perencanaan.proyek', compact('data'));
+}
 }
