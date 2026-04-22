@@ -301,10 +301,10 @@
                         <option>Tenaga Orang</option>
                     </select>
 
-                    <input type="text" name="uraian" class="form-control mb-2" placeholder="Uraian">
-                    <input type="number" name="qty" class="form-control mb-2" placeholder="Qty">
-                    <input type="text" name="satuan" class="form-control mb-2" placeholder="Satuan">
-                    <input type="text" name="keterangan" class="form-control mb-2" placeholder="Keterangan">
+                    <input type="text" name="uraian" class="form-control mb-2" autocomplete="off" placeholder="Uraian">
+                    <input type="number" name="qty" class="form-control mb-2" autocomplete="off" placeholder="Qty">
+                    <input type="text" name="satuan" class="form-control mb-2" autocomplete="off" placeholder="Satuan">
+                    <input type="text" name="keterangan" class="form-control mb-2" autocomplete="off" placeholder="Keterangan">
 
 
                 </div>
@@ -333,10 +333,10 @@
                         </div>
 
                         <div class="modal-body">
-                            <input type="text" name="uraian" value="{{ $d->uraian }}" class="form-control mb-2">
-                            <input type="number" name="qty" value="{{ $d->qty }}" class="form-control mb-2">
-                            <input type="text" name="satuan" value="{{ $d->satuan }}" class="form-control mb-2">
-                            <input type="text" name="keterangan" value="{{ $d->keterangan }}"
+                            <input type="text" name="uraian" autocomplete="off" value="{{ $d->uraian }}" class="form-control mb-2">
+                            <input type="number" name="qty" autocomplete="off" value="{{ $d->qty }}" class="form-control mb-2">
+                            <input type="text" name="satuan" autocomplete="off" value="{{ $d->satuan }}" class="form-control mb-2">
+                            <input type="text" name="keterangan" autocomplete="off" value="{{ $d->keterangan }}"
                                 class="form-control mb-2">
                         </div>
 
@@ -366,10 +366,10 @@
                         </div>
 
                         <div class="modal-body">
-                            <input type="text" name="uraian" value="{{ $d->uraian }}" class="form-control mb-2">
-                            <input type="number" name="qty" value="{{ $d->qty }}" class="form-control mb-2">
-                            <input type="text" name="satuan" value="{{ $d->satuan }}" class="form-control mb-2">
-                            <input type="text" name="keterangan" value="{{ $d->keterangan }}"
+                            <input type="text" name="uraian" autocomplete="off" value="{{ $d->uraian }}" class="form-control mb-2">
+                            <input type="number" name="qty" autocomplete="off" value="{{ $d->qty }}" class="form-control mb-2">
+                            <input type="text" name="satuan" autocomplete="off" value="{{ $d->satuan }}" class="form-control mb-2">
+                            <input type="text" name="keterangan" autocomplete="off" value="{{ $d->keterangan }}"
                                 class="form-control mb-2">
 
                             <hr>
@@ -384,7 +384,7 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <input type="text" name="old_keterangan[{{ $l->id }}]"
+                                        <input type="text" autocomplete="off" name="old_keterangan[{{ $l->id }}]"
                                             value="{{ $l->keterangan }}" class="form-control">
                                     </div>
 
@@ -408,7 +408,7 @@
                                         <input type="file" name="lampiran[]" class="form-control">
                                     </div>
                                     <div class="col-md-5">
-                                        <input type="text" name="lampiran_keterangan[]" class="form-control"
+                                        <input type="text" autocomplete="off" name="lampiran_keterangan[]" class="form-control"
                                             placeholder="Keterangan file">
                                     </div>
                                     <div class="col-md-2">
