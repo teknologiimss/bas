@@ -101,6 +101,49 @@
             border-radius: 20px;
         }
 
+        /* SCROLL CONTAINER */
+        .table-container {
+            overflow: auto;
+            max-height: 500px;
+            /* WAJIB supaya header nempel */
+            position: relative;
+        }
+
+        /* FIX TABLE */
+        .table-monitoring {
+            border-collapse: separate !important;
+            border-spacing: 0;
+        }
+
+        /* HEADER TABLE (TH) FREEZE */
+        .table-monitoring thead th {
+            position: sticky !important;
+            top: 0;
+            z-index: 200;
+            /* harus di bawah sticky atas */
+            background: #b30000 !important;
+            color: white;
+        }
+
+        /* KOLOM PERTAMA */
+        .table-monitoring th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 201;
+        }
+
+        .table-monitoring td:first-child {
+            position: sticky;
+            left: 0;
+            background: #fff;
+            z-index: 150;
+        }
+
+        /* POJOK KIRI ATAS */
+        .table-monitoring thead th:first-child {
+            z-index: 300;
+        }
+
         .badge-success {
             background: #00cc66;
             padding: 5px 8px;
@@ -285,8 +328,6 @@
             top: 0;
             z-index: 1000;
             background: #f8f9fa;
-            padding-bottom: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
 
         /* biar tiap layer rapi */
@@ -324,7 +365,8 @@
 
                     <div class="col-md-2">
                         <label>Trainset</label>
-                        <input type="text" name="trainset" autocomplete="off" value="{{ request('trainset') }}" class="form-control">
+                        <input type="text" name="trainset" autocomplete="off" value="{{ request('trainset') }}"
+                            class="form-control">
                     </div>
 
                     <div class="col-md-2">
@@ -335,12 +377,14 @@
 
                     <div class="col-md-2">
                         <label>Batch</label>
-                        <input type="text" name="batch" autocomplete="off" value="{{ request('batch') }}" class="form-control">
+                        <input type="text" name="batch" autocomplete="off" value="{{ request('batch') }}"
+                            class="form-control">
                     </div>
 
                     <div class="col-md-2">
                         <label>No.SJN</label>
-                        <input type="text" name="no_sjn" autocomplete="off" value="{{ request('no_sjn') }}" class="form-control">
+                        <input type="text" name="no_sjn" autocomplete="off" value="{{ request('no_sjn') }}"
+                            class="form-control">
                     </div>
 
                     <div class="col-md-2">
@@ -386,10 +430,10 @@
 
     <div class="card mt-3 p-3">
 
-        
+
 
         <!-- SCROLL AREA -->
-        <div style="overflow-x:auto; border-radius:10px;">
+        <div class="table-container">
             <form method="POST" action="{{ route('pengiriman.detail.bulkDelete') }}">
                 @csrf
                 @method('DELETE')
@@ -518,8 +562,9 @@
 
                                                 <div class="col-md-4 mb-2">
                                                     <label>Tipe Kereta</label>
-                                                    <input type="text" name="tipe_kereta" value="{{ $d->tipe_kereta }}"
-                                                        class="form-control" autocomplete="off">
+                                                    <input type="text" name="tipe_kereta"
+                                                        value="{{ $d->tipe_kereta }}" class="form-control"
+                                                        autocomplete="off">
                                                 </div>
 
                                                 <div class="col-md-4 mb-2">
