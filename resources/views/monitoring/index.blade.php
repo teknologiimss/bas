@@ -80,12 +80,489 @@
 
     /* button edit dan delete */
 
+
+    /* =========================
+   🌈 THEME MODERN MERAH
+========================= */
+    body {
+        background: linear-gradient(135deg, #fff5f5, #ffeaea);
+    }
+
+    /* CARD UTAMA */
+    .card {
+        border-radius: 16px !important;
+        background: rgba(255, 255, 255, 0.85);
+        /* backdrop-filter: blur(8px); */
+        box-shadow: 0 10px 30px rgba(179, 0, 0, 0.08);
+        /* transition: all 0.3s ease; */
+    }
+
+    /* .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 35px rgba(179, 0, 0, 0.15);
+    } */
+
+    /* HEADER */
+    h3 b {
+        background: linear-gradient(45deg, #b30000, #ff4d4d);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* BUTTON */
+    .btn-success {
+        background: linear-gradient(135deg, #ff1a1a, #b30000) !important;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25);
+        transition: all 0.25s ease;
+    }
+
+    .btn-success:hover {
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 6px 18px rgba(255, 0, 0, 0.4);
+    }
+
+    /* FILTER */
+    #filterSection {
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(6px);
+    }
+
+    /* MONITORING ITEM */
+    .position-relative.border.rounded {
+        border: none !important;
+        border-radius: 18px !important;
+        background: linear-gradient(145deg, #ffffff, #fff0f0);
+        box-shadow: 0 8px 20px rgba(179, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .position-relative.border.rounded::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(#b30000, #ff4d4d);
+    }
+
+    .position-relative.border.rounded:hover {
+        transform: translateY(-5px) scale(1.01);
+        box-shadow: 0 12px 30px rgba(179, 0, 0, 0.15);
+    }
+
+    /* STATUS BADGE */
+    .badge {
+        border-radius: 30px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        animation: pulseBadge 2s infinite;
+    }
+
+    @keyframes pulseBadge {
+        0% {
+            box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.3);
+        }
+
+        70% {
+            box-shadow: 0 0 0 8px rgba(255, 0, 0, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+        }
+    }
+
+    /* PROGRESS BAR */
+    .progress {
+        border-radius: 20px;
+        overflow: hidden;
+        background: #ffe5e5;
+    }
+
+    .progress-bar {
+        font-size: 11px;
+        font-weight: 600;
+        animation: progressAnim 1.2s ease;
+    }
+
+    @keyframes progressAnim {
+        from {
+            width: 0;
+        }
+    }
+
+    /* DOKUMEN */
+    .doc-item {
+        border-radius: 16px;
+        background: linear-gradient(145deg, #ffffff, #fff5f5);
+        transition: all 0.3s ease;
+        border-left: 4px solid #ff1a1a;
+    }
+
+    .doc-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 25px rgba(255, 0, 0, 0.15);
+    }
+
+    /* INPUT */
+    .form-control,
+    .form-select {
+        border-radius: 10px;
+        border: 1px solid #ffd6d6;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #ff1a1a;
+        box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.1);
+    }
+
+    /* ACTION BUTTON */
+    .action-btn {
+        backdrop-filter: blur(4px);
+        transition: all 0.25s ease;
+    }
+
+    .action-btn:hover {
+        transform: scale(1.2) rotate(5deg);
+    }
+
+    /* ANIMASI MASUK */
+    .position-relative.border.rounded {
+        animation: fadeInCard 0.5s ease;
+    }
+
+    @keyframes fadeInCard {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* TOGGLE BUTTON */
+    #toggleFilterBtn {
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+
+    #toggleFilterBtn:hover {
+        background: #ff1a1a;
+        color: white;
+    }
+
+    /* SCROLL SMOOTH */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* JUDUL NOMOR PO MODERN */
+    .position-relative.border.rounded h5 {
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: 0.3px;
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #b30000, #ff4d4d);
+        color: white;
+        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    /* efek glow halus */
+    .position-relative.border.rounded h5::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: 0.6s;
+    }
+
+    /* animasi saat hover card */
+    .position-relative.border.rounded:hover h5::after {
+        left: 100%;
+    }
+
+    /* efek hover */
+    .position-relative.border.rounded:hover h5 {
+        transform: scale(1.03);
+        box-shadow: 0 6px 18px rgba(255, 0, 0, 0.35);
+    }
+
+
+    /* HEADER MODERN */
+    .modern-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    /* BADGE PO */
+    .po-badge {
+        background: linear-gradient(135deg, #ff1a1a, #b30000);
+        color: white;
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 14px;
+        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .po-badge span {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-left: 6px;
+    }
+
+    /* BADGE JENIS */
+    .jenis-badge {
+        background: #fff0f0;
+        color: #b30000;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    /* INFO GRID */
+    .modern-info {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    /* ITEM */
+    .info-item {
+        background: #fff;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border-left: 4px solid #ff1a1a;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: 0.2s;
+    }
+
+    /* HOVER EFFECT */
+    .info-item:hover {
+        transform: translateX(4px);
+        background: #fff5f5;
+    }
+
+    /* LABEL */
+    .info-item span {
+        font-size: 13px;
+        color: #777;
+    }
+
+    /* VALUE */
+    .info-item b {
+        font-size: 14px;
+        color: #333;
+    }
+
+    /* WRAPPER KHUSUS */
+    .nama-pekerjaan-wrapper {
+        align-items: flex-start;
+    }
+
+    /* FLEX BIAR RAPI */
+    .nama-pekerjaan-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        max-width: 65%;
+    }
+
+    /* TEXT DEFAULT (dipotong) */
+    .nama-text {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.4;
+        transition: 0.3s;
+    }
+
+    /* POTONG 2 BARIS */
+    .short-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* FULL TEXT */
+    .full-text {
+        -webkit-line-clamp: unset;
+    }
+
+    /* BUTTON */
+    .btn-lihat {
+        background: transparent;
+        border: 1px solid #ff1a1a;
+        color: #ff1a1a;
+        padding: 4px 10px;
+        font-size: 12px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: 0.2s;
+        white-space: nowrap;
+    }
+
+    /* HOVER */
+    .btn-lihat:hover {
+        background: #ff1a1a;
+        color: white;
+    }
+
+    /* WRAPPER */
+    .dokumen-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #fff5f5, #ffeaea);
+        border: 1px solid #ffd6d6;
+        transition: 0.3s;
+    }
+
+    /* HOVER CARD */
+    .dokumen-header:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(255, 0, 0, 0.1);
+    }
+
+    /* TITLE */
+    .dokumen-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        color: #b30000;
+    }
+
+    /* ICON */
+    .icon-box {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #ff1a1a, #b30000);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-size: 16px;
+        box-shadow: 0 4px 10px rgba(255, 0, 0, 0.2);
+    }
+
+    /* BUTTON MODERN */
+    .btn-dokumen {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: white;
+        color: #ff1a1a;
+        border: 1px solid #ff1a1a;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    /* HOVER BUTTON */
+    .btn-dokumen:hover {
+        background: linear-gradient(135deg, #ff1a1a, #b30000);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+    }
+
+    /* ARROW ANIMATION */
+    .btn-dokumen .arrow {
+        transition: 0.3s;
+    }
+
+    .btn-dokumen:hover .arrow {
+        transform: translateX(4px);
+    }
+
+    /* WRAPPER STATUS */
+    .status-badge {
+        position: absolute;
+        top: -6px;
+        right: 10px;
+        padding: 6px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 999px;
+        color: white;
+        letter-spacing: 0.3px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: 0.3s;
+    }
+
+    /* HOVER EFFECT */
+    .status-badge:hover {
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    /* OPEN (kuning modern) */
+    .status-open {
+        background: linear-gradient(135deg, #ffc107, #ff9800);
+        color: #222;
+    }
+
+    /* CLOSED (hijau modern) */
+    .status-closed {
+        background: linear-gradient(135deg, #00c853, #00a844);
+    }
+
+    /* ON HOLD (merah modern) */
+    .status-hold {
+        background: linear-gradient(135deg, #ff1a1a, #b30000);
+    }
+
+    /* DEFAULT */
+    .status-default {
+        background: linear-gradient(135deg, #6c757d, #495057);
+    }
+    
+
+    
+    
 </style>
 
 @section('content')
     <div class="d-flex justify-content-between mb-3">
         <h3><b style="margin: 23px;">Monitoring Proyek - {{ $proyek->nama_proyek }}</b></h3>
-        <button class="btn btn-success" data-toggle="modal" data-target="#modalCreateMonitoring"
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreateMonitoring"
             style="margin-right: 23px;margin-top: 10;">
             + Buat Monitoring Baru
         </button>
@@ -134,22 +611,21 @@
                 {{-- STATUS --}}
                 @php
                     $statusClass = match ($m->status) {
-                        'Open' => 'bg-warning text-dark',
-                        'Closed' => 'bg-success text-white',
-                        'On Hold' => 'bg-danger text-white',
-                        default => 'bg-secondary text-white',
+                        'Open' => 'status-open',
+                        'Closed' => 'status-closed',
+                        'On Hold' => 'status-hold',
+                        default => 'status-default',
                     };
                     $statusText = $m->status === 'On Hold' ? '⏸️ On Hold' : $m->status;
                 @endphp
 
-                <span class="badge {{ $statusClass }} position-absolute top-0 end-0 mt-2 me-2 px-3 py-2 shadow-sm"
-                    style="font-size: 0.9rem;right: 7px;top: -4px;">
+                <span class="status-badge {{ $statusClass }}">
                     {{ $statusText }}
                 </span>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h5><b>Nomor PO / Nota Dinas : {{ $m->po_nota_dinas }}</b></h5>
+                        {{-- <h5><b>Nomor PO / Nota Dinas : {{ $m->po_nota_dinas }}</b></h5>
                         <small>{{ $m->jenis_pekerjaan }}</small><br>
                         <small>Nama Pekerjaan: {{ $m->nama_pekerjaan }}</small><br>
                         <small>
@@ -158,7 +634,52 @@
                             s/d
                             {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                         </small><br>
-                        <small>Keterangan: {{ $m->keterangan ?? '-' }}</small>
+                        <small>Keterangan: {{ $m->keterangan ?? '-' }}</small> --}}
+
+                        <div class="modern-header">
+
+                            <div class="po-badge">
+                                📄 Nomor PO / Nota Dinas
+                                <span>{{ $m->po_nota_dinas }}</span>
+                            </div>
+
+                            <div class="jenis-badge">
+                                {{ $m->jenis_pekerjaan }}
+                            </div>
+
+                        </div>
+
+                        <div class="modern-info">
+
+                            <div class="info-item nama-pekerjaan-wrapper">
+                                <span>📌 Nama Pekerjaan</span>
+
+                                <div class="nama-pekerjaan-content">
+                                    <div class="nama-text short-text" id="namaText{{ $m->id }}">
+                                        {{ $m->nama_pekerjaan }}
+                                    </div>
+
+                                    <button type="button" class="btn-lihat" onclick="toggleNama({{ $m->id }})">
+                                        Lihat Selengkapnya
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="info-item">
+                                <span>📅 Periode</span>
+                                <b>
+                                    {{ \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') }}
+                                    s/d
+                                    {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
+                                </b>
+                            </div>
+
+                            <div class="info-item">
+                                <span>📝 Keterangan</span>
+                                <b>{{ $m->keterangan ?? '-' }}</b>
+                            </div>
+
+                        </div>
 
                         {{-- PROGRESS --}}
                         <div class="mt-3">
@@ -215,8 +736,8 @@
                     {{-- button edit dan delete --}}
                     <div class="d-flex align-items-center gap-2">
                         <!-- Edit -->
-                        <button class="action-btn text-primary" data-toggle="modal"
-                            data-target="#modalEdit{{ $m->id }}" title="Edit">
+                        <button class="action-btn text-primary" data-bs-toggle="modal"
+                            data-bs-target="#modalEdit{{ $m->id }}" title="Edit">
                             <i class="fa fa-edit"></i>
                         </button>
 
@@ -239,11 +760,20 @@
                 {{-- 📄 Dokumen --}}
                 @if ($m->documents->count())
                     <div class="mt-4 document-section" data-monitor-id="{{ $m->id }}">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <h6 class="fw-bold text-primary mb-0">📁 Dokumen Terkait</h6>
-                            <button class="btn btn-outline-primary btn-sm px-3 toggle-docs-btn" type="button">
-                                👁️ Lihat Dokumen
+                        <div class="dokumen-header">
+
+                            <div class="dokumen-title">
+                                <div class="icon-box">
+                                    📁
+                                </div>
+                                <span>Dokumen Terkait</span>
+                            </div>
+
+                            <button class="btn-dokumen toggle-docs-btn" type="button">
+                                <span>👁️ Lihat Dokumen</span>
+                                <i class="arrow">→</i>
                             </button>
+
                         </div>
 
                         {{-- Daftar Dokumen --}}
@@ -336,7 +866,7 @@
                         @csrf
                         <div class="modal-header bg-danger text-white">
                             <h5>Edit Monitoring</h5>
-                            <button type="button" class="btn-close btn-close-white" data-dismiss="modal"></button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                         </div>
 
                         <div class="modal-body">
@@ -501,7 +1031,7 @@
 
                 <div class="modal-footer">
                     <button class="btn btn-success">Simpan</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                 </div>
             </form>
         </div>
@@ -509,9 +1039,26 @@
 
     {{-- JS --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    {{-- <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    {{-- Nama Pekerjaan Judul Monitoring --}}
+    <script>
+        function toggleNama(id) {
+            let el = document.getElementById('namaText' + id);
+            let btn = el.nextElementSibling;
 
+            if (el.classList.contains('short-text')) {
+                el.classList.remove('short-text');
+                el.classList.add('full-text');
+                btn.innerText = 'Tutup';
+            } else {
+                el.classList.add('short-text');
+                el.classList.remove('full-text');
+                btn.innerText = 'Lihat Selengkapnya';
+            }
+        }
+    </script>
 
 
     <script>
