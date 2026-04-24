@@ -540,157 +540,7 @@
                                 </td>
                             </tr>
 
-                            <!-- MODAL EDIT -->
-                            <div class="modal fade" id="edit{{ $d->id }}">
-                                <div class="modal-dialog modal-lg">
-                                    <form method="POST" action="{{ route('pengiriman.detail.update', $d->id) }}">
-                                        @csrf
 
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5>Edit Data Pengiriman</h5>
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            </div>
-
-                                            <div class="modal-body row">
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Trainset</label>
-                                                    <input type="text" name="trainset" value="{{ $d->trainset }}"
-                                                        class="form-control" autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Tipe Kereta</label>
-                                                    <input type="text" name="tipe_kereta"
-                                                        value="{{ $d->tipe_kereta }}" class="form-control"
-                                                        autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Nomor Lambung</label>
-                                                    <input type="text" name="nomor_lambung"
-                                                        value="{{ $d->nomor_lambung }}" class="form-control"
-                                                        autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Batch</label>
-                                                    <input type="text" name="batch" value="{{ $d->batch }}"
-                                                        class="form-control" autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Trucking</label>
-                                                    <input type="text" name="trucking" value="{{ $d->trucking }}"
-                                                        class="form-control" autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Nopol</label>
-                                                    <input type="text" name="nopol" value="{{ $d->nopol }}"
-                                                        class="form-control" autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>No SJN</label>
-                                                    <input type="text" name="no_sjn" value="{{ $d->no_sjn }}"
-                                                        class="form-control" autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Code Armada</label>
-                                                    <input type="text" name="code_armada"
-                                                        value="{{ $d->code_armada }}" class="form-control"
-                                                        autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Plan Delivery</label>
-                                                    <input type="date" name="plan_delivery"
-                                                        value="{{ $d->plan_delivery }}" class="form-control"
-                                                        autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Actual Delivery</label>
-                                                    <input type="date" name="actual_delivery"
-                                                        value="{{ $d->actual_delivery }}" class="form-control"
-                                                        autocomplete="off">
-                                                </div>
-
-                                                {{-- <div class="col-md-4 mb-2">
-                                                <label>Leadtime Delivery</label>
-                                                <input type="text" name="leadtime_delivery"
-                                                    value="{{ $d->leadtime_delivery }}" class="form-control"
-                                                    autocomplete="off">
-                                            </div> --}}
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Status Delivery</label>
-                                                    <input type="text" name="status_delivery"
-                                                        value="{{ $d->status_delivery }}" class="form-control"
-                                                        list="statusList" autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Loading Truck</label>
-                                                    <input type="date" name="loading_truck"
-                                                        value="{{ $d->loading_truck }}" class="form-control"
-                                                        autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Loading Vessel</label>
-                                                    <input type="date" name="loading_vessel"
-                                                        value="{{ $d->loading_vessel }}" class="form-control"
-                                                        autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Plan Unloading</label>
-                                                    <input type="date" name="plan_unloading"
-                                                        value="{{ $d->plan_unloading }}" class="form-control"
-                                                        autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Actual Unloading</label>
-                                                    <input type="date" name="actual_unloading"
-                                                        value="{{ $d->actual_unloading }}" class="form-control"
-                                                        autocomplete="off">
-                                                </div>
-
-                                                {{-- <div class="col-md-4 mb-2">
-                                                <label>Leadtime Unloading</label>
-                                                <input type="text" name="leadtime_unloading"
-                                                    value="{{ $d->leadtime_unloading }}" class="form-control"
-                                                    autocomplete="off">
-                                            </div> --}}
-
-                                                <div class="col-md-4 mb-2">
-                                                    <label>Vendor</label>
-                                                    <input type="text" name="vendor" value="{{ $d->vendor }}"
-                                                        class="form-control" autocomplete="off">
-                                                </div>
-
-                                                <div class="col-md-12 mb-2">
-                                                    <label>Keterangan</label>
-                                                    <input type="text" name="keterangan" value="{{ $d->keterangan }}"
-                                                        class="form-control" autocomplete="off">
-                                                </div>
-
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button class="btn btn-success">Update</button>
-                                                <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
-                            </div>
 
                         @empty
                             <tr>
@@ -705,6 +555,138 @@
                     🗑️ Hapus Terpilih
                 </button>
             </form>
+
+
+            {{-- MODAL EDIT --}}
+            @foreach ($detail as $d)
+                <div class="modal fade" id="edit{{ $d->id }}">
+                    <div class="modal-dialog modal-lg">
+                        <form method="POST" action="{{ route('pengiriman.detail.update', $d->id) }}">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5>Edit Data Pengiriman</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body row">
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Trainset</label>
+                                        <input type="text" name="trainset" value="{{ $d->trainset }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Tipe Kereta</label>
+                                        <input type="text" name="tipe_kereta" value="{{ $d->tipe_kereta }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Nomor Lambung</label>
+                                        <input type="text" name="nomor_lambung" value="{{ $d->nomor_lambung }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Batch</label>
+                                        <input type="text" name="batch" value="{{ $d->batch }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Trucking</label>
+                                        <input type="text" name="trucking" value="{{ $d->trucking }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Nopol</label>
+                                        <input type="text" name="nopol" value="{{ $d->nopol }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>No SJN</label>
+                                        <input type="text" name="no_sjn" value="{{ $d->no_sjn }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Code Armada</label>
+                                        <input type="text" name="code_armada" value="{{ $d->code_armada }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Plan Delivery</label>
+                                        <input type="date" name="plan_delivery" value="{{ $d->plan_delivery }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Actual Delivery</label>
+                                        <input type="date" name="actual_delivery" value="{{ $d->actual_delivery }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Status Delivery</label>
+                                        <input type="text" name="status_delivery" value="{{ $d->status_delivery }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Loading Truck</label>
+                                        <input type="date" name="loading_truck" value="{{ $d->loading_truck }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Loading Vessel</label>
+                                        <input type="date" name="loading_vessel" value="{{ $d->loading_vessel }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Plan Unloading</label>
+                                        <input type="date" name="plan_unloading" value="{{ $d->plan_unloading }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Actual Unloading</label>
+                                        <input type="date" name="actual_unloading" value="{{ $d->actual_unloading }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Vendor</label>
+                                        <input type="text" name="vendor" value="{{ $d->vendor }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-md-12 mb-2">
+                                        <label>Keterangan</label>
+                                        <input type="text" name="keterangan" value="{{ $d->keterangan }}"
+                                            class="form-control">
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-success">Update</button>
+                                    <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            @endforeach
 
             <form id="deleteForm" method="POST" style="display:none;">
                 @csrf

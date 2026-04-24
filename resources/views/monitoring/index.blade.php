@@ -358,9 +358,12 @@
         padding: 10px 14px;
         border-radius: 10px;
         border-left: 4px solid #ff1a1a;
+
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+        gap: 10px;
+        /* jarak label & isi */
+
         transition: 0.2s;
     }
 
@@ -374,6 +377,14 @@
     .info-item span {
         font-size: 13px;
         color: #777;
+        min-width: 140px;
+        /* biar semua sejajar */
+        flex-shrink: 0;
+    }
+
+    .info-item b,
+    .nama-pekerjaan-content {
+        flex: 1;
     }
 
     /* VALUE */
@@ -390,18 +401,20 @@
     /* FLEX BIAR RAPI */
     .nama-pekerjaan-content {
         display: flex;
-        align-items: center;
-        gap: 10px;
-        max-width: 65%;
+        flex-direction: column;
+        /* biar turun ke bawah kalau panjang */
     }
 
     /* TEXT DEFAULT (dipotong) */
+    /* TEXT UTAMA */
     .nama-text {
         font-size: 14px;
         font-weight: 600;
         color: #333;
-        line-height: 1.4;
-        transition: 0.3s;
+        line-height: 1.5;
+
+        /* BIAR RAPI KALAU PANJANG */
+        word-break: break-word;
     }
 
     /* POTONG 2 BARIS */
@@ -553,10 +566,27 @@
     .status-default {
         background: linear-gradient(135deg, #6c757d, #495057);
     }
-    
 
-    
-    
+
+    .nama-text {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.5;
+    }
+
+    /* POTONG MAX 2 BARIS */
+    .short-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* FULL */
+    .full-text {
+        -webkit-line-clamp: unset;
+    }
 </style>
 
 @section('content')
@@ -659,9 +689,9 @@
                                         {{ $m->nama_pekerjaan }}
                                     </div>
 
-                                    <button type="button" class="btn-lihat" onclick="toggleNama({{ $m->id }})">
+                                    {{-- <button type="button" class="btn-lihat" onclick="toggleNama({{ $m->id }})">
                                         Lihat Selengkapnya
-                                    </button>
+                                    </button> --}}
                                 </div>
                             </div>
 
@@ -674,9 +704,16 @@
                                 </b>
                             </div>
 
-                            <div class="info-item">
+                            <div class="info-item nama-pekerjaan-wrapper">
                                 <span>📝 Keterangan</span>
-                                <b>{{ $m->keterangan ?? '-' }}</b>
+
+                                <div class="nama-pekerjaan-content">
+                                    <div class="nama-text short-text" id="keteranganText{{ $m->id }}">
+                                        {{ $m->keterangan ?? '-' }}
+                                    </div>
+
+
+                                </div>
                             </div>
 
                         </div>
@@ -1046,6 +1083,23 @@
     <script>
         function toggleNama(id) {
             let el = document.getElementById('namaText' + id);
+            let btn = el.nextElementSibling;
+
+            if (el.classList.contains('short-text')) {
+                el.classList.remove('short-text');
+                el.classList.add('full-text');
+                btn.innerText = 'Tutup';
+            } else {
+                el.classList.add('short-text');
+                el.classList.remove('full-text');
+                btn.innerText = 'Lihat Selengkapnya';
+            }
+        }
+    </script>
+
+    <script>
+        function toggleKeterangan(id) {
+            let el = document.getElementById('keteranganText' + id);
             let btn = el.nextElementSibling;
 
             if (el.classList.contains('short-text')) {

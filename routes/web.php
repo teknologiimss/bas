@@ -433,17 +433,38 @@ Route::prefix('products')->group(function () {
             ->name('mro.stocklog.print');
     });
 
+    // Route::get('/pengiriman', [PengirimanController::class, 'index'])->name('pengiriman.index');
+    // Route::get('/pengiriman/{id}', [PengirimanController::class, 'monitor'])->name('pengiriman.monitor');
+    // Route::post('/pengiriman', [PengirimanController::class, 'store'])->name('pengiriman.store');
+    // Route::post('/pengiriman/update/{id}', [PengirimanController::class, 'update'])->name('pengiriman.update');
+    // Route::delete('/pengiriman/{id}', [PengirimanController::class, 'delete'])->name('pengiriman.delete');
+
+    // Route::post('/pengiriman-detail/store', [PengirimanController::class, 'storeDetail'])->name('pengiriman.detail.store');
+
+    // Route::post('/pengiriman-detail/update/{id}', [PengirimanController::class, 'updateDetail'])
+    // ->name('pengiriman.detail.update');
+
+    // Route::delete('/pengiriman-detail/{id}/delete', [PengirimanController::class, 'deleteDetail'])->name('pengiriman.detail.delete');
+
+    // Route::delete('/pengiriman-detail/bulk-delete', [PengirimanController::class, 'bulkDelete'])
+    //     ->name('pengiriman.detail.bulkDelete');
+
     Route::get('/pengiriman', [PengirimanController::class, 'index'])->name('pengiriman.index');
     Route::get('/pengiriman/{id}', [PengirimanController::class, 'monitor'])->name('pengiriman.monitor');
-    Route::post('/pengiriman', [PengirimanController::class, 'store'])->name('pengiriman.store');
+
+    Route::post('/pengiriman/store', [PengirimanController::class, 'store'])->name('pengiriman.store');
     Route::post('/pengiriman/update/{id}', [PengirimanController::class, 'update'])->name('pengiriman.update');
-    Route::delete('/pengiriman/{id}', [PengirimanController::class, 'delete'])->name('pengiriman.delete');
+    Route::delete('/pengiriman/delete/{id}', [PengirimanController::class, 'delete'])->name('pengiriman.delete');
+
+    // ================= DETAIL =================
 
     Route::post('/pengiriman-detail/store', [PengirimanController::class, 'storeDetail'])->name('pengiriman.detail.store');
 
-    Route::post('/pengiriman-detail/update/{id}', [PengirimanController::class, 'updateDetail'])->name('pengiriman.detail.update');
+    Route::put('/pengiriman-detail/update/{id}', [PengirimanController::class, 'updateDetail'])
+        ->name('pengiriman.detail.update');
 
-    Route::delete('/pengiriman-detail/delete/{id}', [PengirimanController::class, 'deleteDetail'])->name('pengiriman.detail.delete');
+    Route::delete('/pengiriman-detail/delete/{id}', [PengirimanController::class, 'deleteDetail'])
+        ->name('pengiriman.detail.delete');
 
     Route::delete('/pengiriman-detail/bulk-delete', [PengirimanController::class, 'bulkDelete'])
         ->name('pengiriman.detail.bulkDelete');
