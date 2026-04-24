@@ -654,7 +654,7 @@
                 </span>
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <div>
+                    <div style="flex:1; min-width:0;">
                         {{-- <h5><b>Nomor PO / Nota Dinas : {{ $m->po_nota_dinas }}</b></h5>
                         <small>{{ $m->jenis_pekerjaan }}</small><br>
                         <small>Nama Pekerjaan: {{ $m->nama_pekerjaan }}</small><br>
@@ -685,7 +685,7 @@
                                 <span>📌 Nama Pekerjaan</span>
 
                                 <div class="nama-pekerjaan-content">
-                                    <div class="nama-text short-text" id="namaText{{ $m->id }}">
+                                    <div class="nama-text short-text nama-pekerjaan-filter" id="namaText{{ $m->id }}">
                                         {{ $m->nama_pekerjaan }}
                                     </div>
 
@@ -695,8 +695,8 @@
                                 </div>
                             </div>
 
-                            <div class="info-item">
-                                <span>📅 Periode</span>
+                            <div class="info-item" data-tanggal="{{ $m->tanggal_kontrak }}">
+                                <span>📅 Periode Kontrak</span>
                                 <b>
                                     {{ \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') }}
                                     s/d
@@ -1525,19 +1525,23 @@
 
             // 🧠 Fungsi filter
             function filterMonitoring() {
-                const poValue = searchPO.value.toLowerCase();
-                const namaValue = searchNama.value.toLowerCase();
-                const tanggalValue = searchTanggal.value;
+                const poValue = searchPO.value.toLowerCase().trim();
+                const namaValue = searchNama.value.toLowerCase().trim();
+                const tanggalValue = searchTanggal.value; // format: yyyy-mm-dd
 
                 monitorItems.forEach(item => {
-                    const poText = (item.querySelector("h5")?.textContent || "").toLowerCase();
-                    const namaText = (item.querySelector("small:nth-of-type(2)")?.textContent || "")
-                        .toLowerCase();
-                    const tanggalText = (item.querySelector("small:nth-of-type(3)")?.textContent || "");
+                    const poText = (item.querySelector(".po-badge span")?.textContent || "").toLowerCase();
+                    const namaText = (item.querySelector(".nama-pekerjaan-filter")?.textContent || "").toLowerCase();
+
+                    // 🔥 ambil tanggal dari data attribute
+                    const tanggalAttr = item.querySelector("[data-tanggal]")?.getAttribute(
+                        "data-tanggal") || "";
 
                     const matchPO = poText.includes(poValue);
                     const matchNama = namaText.includes(namaValue);
-                    const matchTanggal = tanggalValue === "" || tanggalText.includes(tanggalValue);
+
+                    // 🔥 FIX utama disini
+                    const matchTanggal = !tanggalValue || tanggalAttr === tanggalValue;
 
                     item.style.display = (matchPO && matchNama && matchTanggal) ? "" : "none";
                 });
