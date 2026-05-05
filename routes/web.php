@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AlatAngkutController;
+use App\Http\Controllers\AlatAngkutDetailController;
 use App\Http\Controllers\BpmController;
 use App\Http\Controllers\DetailsjnController;
 use App\Http\Controllers\HistoryController;
@@ -498,6 +500,31 @@ Route::prefix('products')->group(function () {
     Route::delete('/perencanaan/proyek/delete/{id}', [PerencanaanController::class, 'deleteProyek'])
         ->name('perencanaan.proyek.delete');
 
+    // ALAT ANGKUT
+    Route::prefix('alat-angkut')->group(function () {
+        Route::get('/', [AlatAngkutController::class, 'index'])->name('alat.index');
+        Route::post('/store', [AlatAngkutController::class, 'store'])->name('alat.store');
+        Route::post('/update/{id}', [AlatAngkutController::class, 'update'])->name('alat.update');
+        Route::delete('/delete/{id}', [AlatAngkutController::class, 'delete'])->name('alat.delete');
+
+        Route::get('/monitor/{id}', [AlatAngkutController::class, 'monitor'])->name('alat.monitor');
+
+        Route::post('/detail/store', [AlatAngkutDetailController::class, 'store'])->name('alat.detail.store');
+
+        // 🔥 INI YANG KURANG
+        Route::put('/detail/update/{id}', [AlatAngkutDetailController::class, 'update'])->name('alat.detail.update');
+
+        Route::delete('/detail/delete/{id}', [AlatAngkutDetailController::class, 'delete'])->name('alat.detail.delete');
+
+        Route::get('/detail-monitor/{id}', [AlatAngkutDetailController::class, 'monitor'])
+            ->name('alat.detail.monitor');
+
+        Route::post('/detail-checksheet/store', [AlatAngkutDetailController::class, 'storeChecksheet'])
+            ->name('alat.detail.checksheet.store');
+
+        Route::delete('/alat-detail/bulk-delete', [AlatAngkutDetailController::class, 'bulkDelete'])
+            ->name('alat.detail.bulkDelete');
+    });
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     // Route::resource('justi', App\Http\Controllers\JustiController::class)->except(['destroy']);

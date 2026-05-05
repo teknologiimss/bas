@@ -345,6 +345,7 @@
                                         'mro.riwayat',
                                         'pengiriman.index',
                                         'perencanaan.proyek',
+                                        'alat.index',
                                         'products.stock.history',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
@@ -386,6 +387,7 @@
                                         'mro.riwayat',
                                         'pengiriman.index',
                                         'perencanaan.proyek',
+                                        'alat.index',
                                     ]);
                                 @endphp
 
@@ -724,6 +726,13 @@
                                                     </p>
                                                 </a>
                                                 <ul class="nav nav-treeview pl-3">
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('alat.index') }}"
+                                                            class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
+                                                            <i class="nav-icon fas fa-bus"></i>
+                                                            <p>Data Alat Angkut</p>
+                                                        </a>
+                                                    </li>
                                                     <li class="nav-item">
                                                         <a href="{{ route('mro.riwayat') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">

@@ -1,0 +1,300 @@
+@extends('layouts.main')
+
+@section('title', 'Monitoring Pekerjaan Pengiriman MRO')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+
+@section('content')
+
+    <style>
+        body {
+            background: #f5f6fa;
+        }
+
+        /* HEADER BUTTON AREA */
+        .d-flex.justify-content-between.mb-3 {
+            animation: fadeDown 0.5s ease;
+        }
+
+        /* CARD LIST */
+        .card {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            animation: fadeUp 0.6s ease;
+        }
+
+        /* ITEM ROW */
+        .border {
+            border: none !important;
+            border-left: 5px solid #c40000 !important;
+            border-radius: 14px !important;
+            transition: all 0.25s ease;
+            background: #fff;
+        }
+
+        .border:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(196, 0, 0, 0.15);
+        }
+
+        /* TITLE */
+        h5 {
+            color: #b30000;
+            font-weight: 700;
+        }
+
+        /* BUTTON STYLE */
+        .btn-success {
+            background: linear-gradient(135deg, #c40000, #7a0000) !important;
+            border: none !important;
+            border-radius: 10px !important;
+            transition: 0.2s;
+        }
+
+        .btn-success:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(196, 0, 0, 0.3);
+        }
+
+        /* LIGHT BUTTON */
+        .btn-light {
+            border-radius: 10px;
+            border: 1px solid #c40000;
+            color: #c40000;
+            transition: 0.2s;
+        }
+
+        .btn-light:hover {
+            background: #c40000;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* DELETE BUTTON */
+        .btn-danger {
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .btn-danger:hover {
+            transform: scale(1.05);
+        }
+
+        /* MODAL */
+        .modal-content {
+            border-radius: 18px;
+            overflow: hidden;
+            animation: pop 0.3s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #c40000, #7a0000);
+            color: white;
+        }
+
+        /* INPUT */
+        .form-control {
+            border-radius: 10px;
+        }
+
+        /* PAGINATION */
+        .pagination {
+            justify-content: center;
+        }
+
+        .page-item.active .page-link {
+            background: #c40000;
+            border-color: #c40000;
+        }
+
+        /* SEARCH MODERN */
+        .search-box {
+            display: flex;
+            justify-content: flex-end;
+            /* pindah ke kanan */
+            margin-bottom: 15px;
+        }
+
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(196, 0, 0, 0.2);
+            max-width: 450px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .search-wrapper:focus-within {
+            box-shadow: 0 10px 25px rgba(196, 0, 0, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            padding: 10px 12px;
+            color: #c40000;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 12px;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #c40000, #7a0000);
+            color: #fff;
+            border: none;
+            padding: 12px 18px;
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ANIMATION */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        button,
+        a {
+            transition: all 0.2s ease;
+        }
+
+        button:active,
+        a:active {
+            transform: scale(0.95);
+        }
+    </style>
+
+    <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-success" data-toggle="modal" data-target="#modalCreate" style="margin: 10px;">
+            + Tambah Data
+        </button>
+    </div>
+
+    <!-- MODERN SEARCH -->
+    <div class="search-box">
+        <form method="GET" action="">
+            <div class="search-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" name="search" class="search-input" autocomplete="off" placeholder="Cari Tahun..."
+                    value="{{ request('search') }}">
+                <button class="search-btn">Cari</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- LIST PROYEK -->
+    <div class="card p-3">
+        <h5 class="mb-3">Daftar Data Alat Angkut MRO</h5>
+
+        @foreach ($data as $p)
+            <div class="d-flex justify-content-between align-items-center border p-3 mb-2 rounded">
+                <div>
+                    <h5 class="mb-1">{{ $p->nama_proyek }}</h5>
+                </div>
+
+                <div>
+                    <a href="{{ route('alat.monitor', $p->id) }}" class="btn btn-light">📊 Monitor</a>
+
+                    <button class="btn btn-success" data-toggle="modal" data-target="#modalEdit{{ $p->id }}">
+                        ✏️ Edit
+                    </button>
+
+                    <form action="{{ route('alat.delete', $p->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger" onclick="return confirm('Hapus proyek ini?')">
+                            🗑️Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Edit -->
+            <div class="modal fade" id="modalEdit{{ $p->id }}">
+                <div class="modal-dialog">
+                    <form class="modal-content" action="{{ route('alat.update', $p->id) }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5>Edit Proyek</h5>
+                        </div>
+                        <div class="modal-body">
+                            <label>Nama Proyek *</label>
+                            <input type="text" name="nama_proyek" value="{{ $p->nama_proyek }}" class="form-control"
+                                required>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success">Submit</button>
+                            <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endforeach
+
+        <div class="mt-3">
+            {{ $data->appends(['search' => request('search')])->links() }}
+        </div>
+    </div>
+
+    <!-- Modal Create -->
+    <div class="modal fade" id="modalCreate">
+        <div class="modal-dialog">
+            <form class="modal-content" action="{{ route('alat.store') }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5>Buat Proyek Baru</h5>
+                </div>
+                <div class="modal-body">
+                    <label>Nama Proyek *</label>
+                    <input type="text" name="nama_proyek" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+@endsection
