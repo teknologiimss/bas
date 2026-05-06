@@ -63,9 +63,50 @@ class AlatAngkutController extends Controller
             ->when($request->aset, function ($q) use ($request) {
                 $q->where('aset', 'like', '%' . $request->aset . '%');
             })
-            ->oldest()  // 🔥 biar data baru di bawah
+            ->oldest()
             ->get();
 
-        return view('alat.monitor', compact('proyek', 'detail'));
+        // =========================
+        // 🔥 SUMMARY SUPER LENGKAP
+        // =========================
+        $summary = $detail->groupBy('unit')->map(function ($items) {
+            // fungsi helper biar gak nulis ulang
+            $buildGroup = function ($collection) {
+                $lokasi = $collection->pluck('lokasi')->filter()->unique()->values();
+                $lambung = $collection->pluck('no_lambung')->filter()->unique()->values();
+
+                return [
+                    'total' => $collection->count(),
+                    'lokasi' => $lokasi->take(3),
+                    'lokasi_more' => max($lokasi->count() - 3, 0),
+                    'no_lambung' => $lambung->take(3),
+                    'lambung_more' => max($lambung->count() - 3, 0),
+                ];
+            };
+
+            // 🔴 IMSS
+            $imss = $items->filter(function ($item) {
+                return str_contains(strtoupper($item->aset), 'IMSS');
+            });
+
+            // 🟢 NON IMSS
+            $non = $items->reject(function ($item) {
+                return str_contains(strtoupper($item->aset), 'IMSS');
+            });
+
+            // mapping lokasi → lambung
+            $lokasiMap = $items->groupBy('lokasi')->map(function ($group) {
+                return $group->pluck('no_lambung')->filter()->unique()->values()->take(3);
+            });
+
+            return [
+                'total' => $items->count(),
+                'lokasi_map' => $lokasiMap,
+                'imss' => $buildGroup($imss),
+                'non' => $buildGroup($non),
+            ];
+        });
+
+        return view('alat.monitor', compact('proyek', 'detail', 'summary'));
     }
 }
