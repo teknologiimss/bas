@@ -67,20 +67,18 @@ class AlatAngkutController extends Controller
             ->get();
 
         // =========================
-        // 🔥 SUMMARY SUPER LENGKAP
+        // 🔥 SUMMARY FINAL
         // =========================
         $summary = $detail->groupBy('unit')->map(function ($items) {
-            // fungsi helper biar gak nulis ulang
+            // helper biar rapi
             $buildGroup = function ($collection) {
                 $lokasi = $collection->pluck('lokasi')->filter()->unique()->values();
                 $lambung = $collection->pluck('no_lambung')->filter()->unique()->values();
 
                 return [
                     'total' => $collection->count(),
-                    'lokasi' => $lokasi->take(3),
-                    'lokasi_more' => max($lokasi->count() - 3, 0),
-                    'no_lambung' => $lambung->take(3),
-                    'lambung_more' => max($lambung->count() - 3, 0),
+                    'lokasi' => $lokasi,
+                    'no_lambung' => $lambung,
                 ];
             };
 
@@ -94,9 +92,13 @@ class AlatAngkutController extends Controller
                 return str_contains(strtoupper($item->aset), 'IMSS');
             });
 
-            // mapping lokasi → lambung
+            // 📍 lokasi → semua lambung
             $lokasiMap = $items->groupBy('lokasi')->map(function ($group) {
-                return $group->pluck('no_lambung')->filter()->unique()->values()->take(3);
+                return $group
+                    ->pluck('no_lambung')
+                    ->filter()
+                    ->unique()
+                    ->values();
             });
 
             return [

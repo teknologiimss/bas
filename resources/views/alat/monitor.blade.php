@@ -165,85 +165,77 @@
     </div>
 
     <div class="card mt-3 p-3">
-    <h6 class="mb-3">📊 Ringkasan Data</h6>
+        <h6 class="mb-3">📊 Ringkasan Data Alat</h6>
 
-    <div class="row">
-        @forelse($summary as $unit => $data)
-            <div class="col-md-4 mb-3">
-                <div class="border rounded p-3 h-100 shadow-sm">
+        <div class="row">
+            @forelse($summary as $unit => $data)
+                <div class="col-md-4 mb-3">
+                    <div class="border rounded p-3 h-100 shadow-sm">
 
-                    <div class="fw-bold mb-2">
-                        🚛 {{ $unit }}
-                    </div>
+                        <div class="fw-bold mb-2">
+                            🚛 {{ $unit }}
+                        </div>
 
-                    <div class="mb-2">
-                        Total:
-                        <span class="badge bg-primary">
-                            {{ $data['total'] }}
-                        </span>
-                    </div>
+                        <div class="mb-2">
+                            Total Unit:
+                            <span class="badge bg-primary">
+                                {{ $data['total'] }}
+                            </span>
+                        </div>
 
-                    {{-- 🔴 IMSS --}}
-                    <div class="mb-2">
-                        🔴 IMSS:
-                        <b>{{ $data['imss']['total'] }}</b><br>
+                        {{-- 🔴 IMSS --}}
+                        <div class="mb-2">
+                            <div><b>🔴 Aset IMSS ({{ $data['imss']['total'] }})</b></div>
 
-                        <small>
-                            📍 {{ implode(', ', $data['imss']['lokasi']->toArray()) ?: '-' }}
-                            @if($data['imss']['lokasi_more'] > 0)
-                                +{{ $data['imss']['lokasi_more'] }}
-                            @endif
-                        </small><br>
-
-                        <small>
-                            🏷️ {{ implode(', ', $data['imss']['no_lambung']->toArray()) ?: '-' }}
-                            @if($data['imss']['lambung_more'] > 0)
-                                +{{ $data['imss']['lambung_more'] }}
-                            @endif
-                        </small>
-                    </div>
-
-                    {{-- 🟢 NON IMSS --}}
-                    <div class="mb-2">
-                        🟢 Non:
-                        <b>{{ $data['non']['total'] }}</b><br>
-
-                        <small>
-                            📍 {{ implode(', ', $data['non']['lokasi']->toArray()) ?: '-' }}
-                            @if($data['non']['lokasi_more'] > 0)
-                                +{{ $data['non']['lokasi_more'] }}
-                            @endif
-                        </small><br>
-
-                        <small>
-                            🏷️ {{ implode(', ', $data['non']['no_lambung']->toArray()) ?: '-' }}
-                            @if($data['non']['lambung_more'] > 0)
-                                +{{ $data['non']['lambung_more'] }}
-                            @endif
-                        </small>
-                    </div>
-
-                    {{-- 📍 LOKASI DETAIL --}}
-                    <div class="mt-2">
-                        <small><b>📍 Lokasi:</b></small>
-
-                        @foreach($data['lokasi_map']->take(3) as $lok => $lambungs)
-                            <div style="font-size: 12px;">
-                                • {{ $lok ?: '-' }} :
-                                {{ implode(', ', $lambungs->toArray()) ?: '-' }}
+                            <div style="font-size: 13px;">
+                                📍 Lokasi:
+                                {{ count($data['imss']['lokasi']) ? implode(', ', $data['imss']['lokasi']->toArray()) : '-' }}
                             </div>
-                        @endforeach
-                    </div>
 
+                            <div style="font-size: 13px;">
+                                🏷️ No Lambung:
+                                {{ count($data['imss']['no_lambung']) ? implode(', ', $data['imss']['no_lambung']->toArray()) : '-' }}
+                            </div>
+                        </div>
+
+                        {{-- 🟢 NON IMSS --}}
+                        <div class="mb-2">
+                            <div><b>🟢 Non IMSS ({{ $data['non']['total'] }})</b></div>
+
+                            <div style="font-size: 13px;">
+                                📍 Lokasi:
+                                {{ count($data['non']['lokasi']) ? implode(', ', $data['non']['lokasi']->toArray()) : '-' }}
+                            </div>
+
+                            <div style="font-size: 13px;">
+                                🏷️ No Lambung:
+                                {{ count($data['non']['no_lambung']) ? implode(', ', $data['non']['no_lambung']->toArray()) : '-' }}
+                            </div>
+                        </div>
+
+                        {{-- 📍 DETAIL LOKASI --}}
+                        <div class="mt-2">
+                            <div><b>📍 Detail Lokasi → No Lambung</b></div>
+
+                            <div style="max-height: 150px; overflow-y:auto; font-size: 12px;">
+                                @foreach ($data['lokasi_map'] as $lok => $lambungs)
+                                    <div>
+                                        • {{ $lok ?: '-' }} :
+                                        {{ count($lambungs) ? implode(', ', $lambungs->toArray()) : '-' }}
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
-        @empty
-            <div class="col-12 text-center text-muted">
-                Tidak ada data
-            </div>
-        @endforelse
+            @empty
+                <div class="col-12 text-center text-muted">
+                    Tidak ada data
+                </div>
+            @endforelse
+        </div>
     </div>
-</div>
 
     <div class="card mt-3 p-3">
 
