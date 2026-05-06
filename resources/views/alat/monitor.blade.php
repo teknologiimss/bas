@@ -97,6 +97,88 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(255, 0, 0, 0.4);
         }
+
+
+
+        .summary-card {
+            border-radius: 14px;
+            transition: all 0.25s ease;
+            background: #ffffff;
+            border: 1px solid #fe0000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .summary-section {
+            background: #f8f1f1;
+            border-radius: 10px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+        }
+
+        .badge-soft-danger {
+            background: #ffe5e5;
+            color: #cc0000;
+            font-weight: 600;
+        }
+
+        .badge-soft-success {
+            background: #e6fff0;
+            color: #00994d;
+            font-weight: 600;
+        }
+
+        .scroll-area {
+            max-height: 140px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .scroll-area::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .scroll-area::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .unit-icon {
+            font-size: 18px;
+        }
+
+
+        .summary-card {
+            animation: fadeInUp 0.4s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 
     <div class="sticky-top-section">
@@ -165,69 +247,76 @@
     </div>
 
     <div class="card mt-3 p-3">
-        <h6 class="mb-3">📊 Ringkasan Data Alat</h6>
+        <h5 class="mb-3 fw-bold">📊 Ringkasan Data Alat Angkut</h5>
 
         <div class="row">
             @forelse($summary as $unit => $data)
-                <div class="col-md-4 mb-3">
-                    <div class="border rounded p-3 h-100 shadow-sm">
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
 
-                        <div class="fw-bold mb-2">
-                            🚛 {{ $unit }}
-                        </div>
+                    <div class="summary-card p-3 h-100">
 
-                        <div class="mb-2">
-                            Total Unit:
+                        {{-- HEADER --}}
+                        <div class="summary-header mb-2">
+                            <div class="summary-title">
+                                🚛 {{ $unit }}
+                            </div>
                             <span class="badge bg-primary">
                                 {{ $data['total'] }}
                             </span>
                         </div>
 
                         {{-- 🔴 IMSS --}}
-                        <div class="mb-2">
-                            <div><b>🔴 Aset IMSS ({{ $data['imss']['total'] }})</b></div>
+                        <div class="summary-section">
+                            <div class="fw-bold text-danger mb-1">
+                                🔴 IMSS ({{ $data['imss']['total'] }})
+                            </div>
 
                             <div style="font-size: 13px;">
-                                📍 Lokasi:
+                                📍
                                 {{ count($data['imss']['lokasi']) ? implode(', ', $data['imss']['lokasi']->toArray()) : '-' }}
                             </div>
 
                             <div style="font-size: 13px;">
-                                🏷️ No Lambung:
+                                🏷️
                                 {{ count($data['imss']['no_lambung']) ? implode(', ', $data['imss']['no_lambung']->toArray()) : '-' }}
                             </div>
                         </div>
 
-                        {{-- 🟢 NON IMSS --}}
-                        <div class="mb-2">
-                            <div><b>🟢 Non IMSS ({{ $data['non']['total'] }})</b></div>
+                        {{-- 🟢 NON --}}
+                        <div class="summary-section">
+                            <div class="fw-bold text-success mb-1">
+                                🟢 Non IMSS ({{ $data['non']['total'] }})
+                            </div>
 
                             <div style="font-size: 13px;">
-                                📍 Lokasi:
+                                📍
                                 {{ count($data['non']['lokasi']) ? implode(', ', $data['non']['lokasi']->toArray()) : '-' }}
                             </div>
 
                             <div style="font-size: 13px;">
-                                🏷️ No Lambung:
+                                🏷️
                                 {{ count($data['non']['no_lambung']) ? implode(', ', $data['non']['no_lambung']->toArray()) : '-' }}
                             </div>
                         </div>
 
                         {{-- 📍 DETAIL LOKASI --}}
-                        <div class="mt-2">
-                            <div><b>📍 Detail Lokasi → No Lambung</b></div>
+                        <div>
+                            <div class="fw-bold mb-1">📍 Detail Lokasi</div>
 
-                            <div style="max-height: 150px; overflow-y:auto; font-size: 12px;">
+                            <div class="scroll-area" style="font-size: 12px;">
                                 @foreach ($data['lokasi_map'] as $lok => $lambungs)
-                                    <div>
-                                        • {{ $lok ?: '-' }} :
-                                        {{ count($lambungs) ? implode(', ', $lambungs->toArray()) : '-' }}
+                                    <div class="d-flex justify-content-between border-bottom py-1">
+                                        <span>{{ $lok ?: '-' }}</span>
+                                        <span class="text-muted">
+                                            {{ count($lambungs) ? implode(', ', $lambungs->toArray()) : '-' }}
+                                        </span>
                                     </div>
                                 @endforeach
                             </div>
                         </div>
 
                     </div>
+
                 </div>
             @empty
                 <div class="col-12 text-center text-muted">
