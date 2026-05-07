@@ -732,14 +732,14 @@
                                                         <a href="{{ route('checksheet.index') }}"
                                                             class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-clipboard-check"></i>
-                                                            <p>Checksheet Perawatan</p>
+                                                            <p>Monitoring Preventive Maintenance</p>
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
                                                         <a href="{{ route('alat.index') }}"
                                                             class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-bus"></i>
-                                                            <p>Data Alat Angkut</p>
+                                                            <p>Monitoring Alat Angkut</p>
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
@@ -775,7 +775,7 @@
                                                         <a href="{{ route('pengiriman.index') }}"
                                                             class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-truck"></i>
-                                                            <p>Monitoring Pekerjaan</p>
+                                                            <p>Monitoring Pengiriman</p>
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
