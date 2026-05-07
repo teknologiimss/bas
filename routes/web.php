@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlatAngkutController;
 use App\Http\Controllers\AlatAngkutDetailController;
 use App\Http\Controllers\BpmController;
+use App\Http\Controllers\ChecksheetController;
 use App\Http\Controllers\DetailsjnController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KontrakController;
@@ -525,6 +526,41 @@ Route::prefix('products')->group(function () {
         Route::delete('/alat-detail/bulk-delete', [AlatAngkutDetailController::class, 'bulkDelete'])
             ->name('alat.detail.bulkDelete');
     });
+
+    Route::resource('checksheet', ChecksheetController::class);
+
+    // mobile
+    Route::get('/mobile/checksheet/{id}', [ChecksheetController::class, 'mobile'])
+        ->name('checksheet.mobile');
+
+    Route::post(
+        '/mobile/checksheet/save',
+        [ChecksheetController::class, 'saveMobile']
+    )->name('checksheet.mobile.save');
+
+    Route::get(
+        '/checksheet/{id}/duplicate',
+        [ChecksheetController::class, 'duplicate']
+    )->name('checksheet.duplicate');
+
+    Route::get(
+        '/checksheet/{id}/edit',
+        [ChecksheetController::class, 'edit']
+    )->name('checksheet.edit');
+
+    Route::put(
+        '/checksheet/{id}',
+        [ChecksheetController::class, 'update']
+    )->name('checksheet.update');
+
+    Route::get(
+        '/checksheet/{id}/print',
+        [ChecksheetController::class, 'print']
+    )->name('checksheet.print');
+
+    Route::get('/checksheet/{id}/pdf', [ChecksheetController::class, 'pdf'])
+    ->name('checksheet.pdf');
+
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     // Route::resource('justi', App\Http\Controllers\JustiController::class)->except(['destroy']);

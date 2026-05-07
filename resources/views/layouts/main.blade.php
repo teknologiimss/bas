@@ -346,6 +346,7 @@
                                         'pengiriman.index',
                                         'perencanaan.proyek',
                                         'alat.index',
+                                        'checksheet.index',
                                         'products.stock.history',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
@@ -388,6 +389,7 @@
                                         'pengiriman.index',
                                         'perencanaan.proyek',
                                         'alat.index',
+                                        'checksheet.index',
                                     ]);
                                 @endphp
 
@@ -726,6 +728,13 @@
                                                     </p>
                                                 </a>
                                                 <ul class="nav nav-treeview pl-3">
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('checksheet.index') }}"
+                                                            class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
+                                                            <i class="nav-icon fas fa-clipboard-check"></i>
+                                                            <p>Checksheet Perawatan</p>
+                                                        </a>
+                                                    </li>
                                                     <li class="nav-item">
                                                         <a href="{{ route('alat.index') }}"
                                                             class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
