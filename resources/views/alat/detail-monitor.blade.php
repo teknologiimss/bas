@@ -105,7 +105,7 @@
         }
 
         .btn-success {
-            background: linear-gradient(45deg, #ff1a1a, #cc0000);
+            background: linear-gradient(45deg, #094701, #36bc01);
             border: none;
             border-radius: 8px;
         }
