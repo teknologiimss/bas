@@ -45,6 +45,27 @@ class MonitoringController extends Controller
     return view('monitoring.index', compact('proyek', 'monitorings'));
 }
 
+public function checkNotif()
+{
+    $today = Carbon::today();
+
+    $data = Monitoring::all();
+
+    $notif = $data->filter(function ($m) use ($today) {
+
+        if (!$m->tanggal_selesai_kontrak) return false;
+
+        $selesai = Carbon::parse($m->tanggal_selesai_kontrak);
+        $sisa = $today->diffInDays($selesai, false);
+
+        return $sisa <= 7;
+
+    });
+
+    return response()->json([
+        'count' => $notif->count()
+    ]);
+}
 
 public function resumeProgress(Request $request)
 {

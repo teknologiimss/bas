@@ -256,8 +256,6 @@
                 width: 0;
             }
         }
-
-        
     </style>
 
 
@@ -329,6 +327,7 @@
                             <th>Status</th>
                             <th width="180">Progress</th>
                             <th>Keterangan Progress</th>
+                            <th>Notifikasi</th>
                         </tr>
                     </thead>
 
@@ -404,6 +403,16 @@
                                             echo implode(', ', $lines);
                                         }
                                     @endphp
+                                </td>
+
+                                <td class="text-center">
+                                    @php
+                                        $notif = $m->notifKontrak();
+                                    @endphp
+
+                                    <span class="badge badge-{{ $notif['class'] }}">
+                                        {{ $notif['text'] }}
+                                    </span>
                                 </td>
                             </tr>
 

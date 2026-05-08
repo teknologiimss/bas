@@ -161,6 +161,18 @@ class HomeController extends Controller
             ->groupBy('proyeks.nama_proyek')
             ->get();
 
+        $today = Carbon::today();
+
+        $notifications = Monitoring::whereDate(
+            'tanggal_selesai_kontrak',
+            '>=',
+            $today->copy()->subDays(30)
+        )
+            ->get()
+            ->filter(function ($item) {
+                return $item->notifMessage() !== null;
+            });
+
         return View::make('home')->with(compact(
             'warehouse',
             'purchaseRequests',
@@ -182,6 +194,7 @@ class HomeController extends Controller
             'kontrakPerTahun',
             'mroData',
             'statusPerProyek',
+            'notifications', // ← TAMBAHKAN INI
         ));
     }
 

@@ -691,6 +691,9 @@ Route::get('/mro-progress/print', [MonitoringController::class, 'print'])
 Route::get('/mro-progress', [MonitoringController::class, 'resumeProgress'])
     ->name('mro.progress.index');
 
+
+    Route::get('/mro/check-notif', [MonitoringController::class, 'checkNotif']);
+
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');
 // Route::delete('service', [App\Http\Controllers\ServiceController::class, 'destroy'])->name('service.destroy');

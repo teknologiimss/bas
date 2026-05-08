@@ -164,121 +164,277 @@
             @if (!empty($warehouse) && Request::is('dashboard'))
 
                 <ul class="navbar-nav ml-auto">
+
+                    {{-- ===================================================== --}}
+                    {{-- NOTIFIKASI KONTRAK MRO --}}
+                    {{-- HANYA ADMIN & USER MRO --}}
+                    {{-- ===================================================== --}}
+                    @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link position-relative" data-toggle="dropdown" href="#"
+                                aria-expanded="false">
+
+                                <i class="fas fa-bell text-danger"></i>
+
+                                @if (isset($notifications) && count($notifications) > 0)
+                                    <span class="badge badge-danger navbar-badge">
+                                        {{ count($notifications) }}
+                                    </span>
+                                @endif
+
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right shadow"
+                                style="left: inherit; right: 0px;">
+
+                                <span class="dropdown-item dropdown-header font-weight-bold">
+                                    🔔 Notifikasi Kontrak MRO
+                                </span>
+
+                                <div class="dropdown-divider"></div>
+
+                                {{-- 👇 INI WRAPPER SCROLL --}}
+                                <div style="max-height: 350px; overflow-y: auto;">
+
+                                    @forelse($notifications as $notif)
+                                        @php
+                                            $data = $notif->notifMessage();
+                                        @endphp
+
+                                        @if (is_array($data))
+                                            <a href="{{ route('monitoring.index', $notif->proyek_id) }}?po={{ urlencode(trim($notif->po_nota_dinas)) }}"
+                                                class="dropdown-item">
+
+                                                <div class="d-flex">
+
+                                                    <div class="mr-2 text-{{ $data['class'] }}">
+                                                        <i class="{{ $data['icon'] }}"></i>
+                                                    </div>
+
+                                                    <div>
+
+                                                        <strong>
+                                                            {{ $notif->po_nota_dinas }}
+                                                        </strong>
+
+                                                        <br>
+
+                                                        <small>
+                                                            {{ $data['message'] }}
+                                                        </small>
+
+                                                        <br>
+
+                                                        <small class="text-muted">
+                                                            {{ $notif->nama_pekerjaan }}
+                                                        </small>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </a>
+
+                                            <div class="dropdown-divider"></div>
+                                        @endif
+
+                                    @empty
+
+                                        <span class="dropdown-item text-muted">
+                                            Tidak ada notifikasi kontrak
+                                        </span>
+                                    @endforelse
+
+                                </div>
+
+                            </div>
+
+                        </li>
+
+                    @endif
+
+                    {{-- ===================================================== --}}
+                    {{-- NOTIFIKASI SURAT MASUK --}}
+                    {{-- ===================================================== --}}
                     @if (Auth::user()->role == 5 || Auth::user()->role == 7)
-                        <button type="button" class="btn btn-link" data-toggle="dropdown" href="#"
-                            aria-expanded="false">
-                            <i class="material-icons text-secondary">notifications</i> <span
-                                class="badge badge-light text-danger font-weight-bold">{{ $jumlahDataHariIni }}</span>
 
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
-                            style="left: inherit; right: 0px;">
-                            <a href="" class="dropdown-item dropdown-header">Surat Masuk <span
-                                    class="text-danger font-weight-bold">{{ $jumlahDataHariIni }}</span>
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+
+                                <i class="material-icons text-secondary">
+                                    notifications
+                                </i>
+
+                                <span class="badge badge-light text-danger font-weight-bold">
+                                    {{ $jumlahDataHariIni }}
+                                </span>
+
                             </a>
 
-                            <div class="notifi-container">
-                                @foreach ($suratMasuks as $suratMasuk)
-                                    <div class="notifi-item">
-                                        <a href="{{ asset('sk/' . $suratMasuk['file']) }}" download>
-                                            <div class="text">
-                                                <h4>Asal: {{ $suratMasuk['asal'] }}</h4>
-                                                <p>Waktu Masuk:
-                                                    {{ date('d M Y H:i', strtotime($suratMasuk['tanggalMasuk'])) }}</p>
-                                                <p>Uraian: {{ $suratMasuk['uraian'] }}</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                @endforeach
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
+                                style="left: inherit; right: 0px;">
+
+                                <a href="" class="dropdown-item dropdown-header">
+
+                                    Surat Masuk
+
+                                    <span class="text-danger font-weight-bold">
+                                        {{ $jumlahDataHariIni }}
+                                    </span>
+
+                                </a>
+
+                                <div class="notifi-container">
+
+                                    @foreach ($suratMasuks as $suratMasuk)
+                                        <div class="notifi-item">
+
+                                            <a href="{{ asset('sk/' . $suratMasuk['file']) }}" download>
+
+                                                <div class="text">
+
+                                                    <h4>
+                                                        Asal:
+                                                        {{ $suratMasuk['asal'] }}
+                                                    </h4>
+
+                                                    <p>
+                                                        Waktu Masuk:
+                                                        {{ date('d M Y H:i', strtotime($suratMasuk['tanggalMasuk'])) }}
+                                                    </p>
+
+                                                    <p>
+                                                        Uraian:
+                                                        {{ $suratMasuk['uraian'] }}
+                                                    </p>
+
+                                                </div>
+
+                                            </a>
+
+                                        </div>
+                                    @endforeach
+
+                                </div>
+
                             </div>
-                        </div>
+
+                        </li>
+
                     @endif
 
-                    {{-- @if (Auth::user()->role == 1)
-                        <button type="button" class="btn btn-link" data-toggle="dropdown" href="#"
-                            aria-expanded="false">
-                            <i class="material-icons text-secondary">notifications</i> <span
-                                class="badge badge-light text-danger font-weight-bold">{{ $totalPurchaseRequests }}</span>
-
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
-                            style="left: inherit; right: 0px;">
-                            <a href="{{ route('purchase_request.index') }}"
-                                class="dropdown-item dropdown-header">Purchase Request <span
-                                    class="text-danger font-weight-bold">{{ $totalPurchaseRequests }}</span>
-                            </a>
-
-                            <div class="notifi-container">
-                                @foreach ($purchaseRequests as $data)
-                                    <div class="notifi-item">
-                                        <a title="Lihat Detail" data-toggle="modal" data-target="#detail-pr"
-                                            data-detail="{{ json_encode($data) }}">
-                                            <div class="text">
-                                                <h4>{{ $data->nama_proyek }}</h4>
-                                                <p>Tanggal: {{ $data->tgl_pr }}</p>
-                                                <p>Nomor PR: {{ $data->no_pr }}</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif --}}
-
+                    {{-- ===================================================== --}}
+                    {{-- NOTIFIKASI PURCHASE REQUEST --}}
+                    {{-- ===================================================== --}}
                     @if (Auth::user()->role == 2 || Auth::user()->role == 3 || Auth::user()->role == 0 || Auth::user()->role == 1)
-                        <button type="button" class="btn btn-link" data-toggle="dropdown" href="#"
-                            aria-expanded="false">
-                            <i class="material-icons text-secondary">notifications</i> <span
-                                class="badge badge-light text-danger font-weight-bold">{{ $totalPurchaseRequests }}</span>
 
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
-                            style="left: inherit; right: 0px;">
-                            <a href="{{ route('product.trackingwil') }}" class="dropdown-item dropdown-header">Tracking
-                                Purchase Request <span
-                                    class="text-danger font-weight-bold">{{ $totalPurchaseRequests }}</span>
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+
+                                <i class="fas fa-shopping-cart text-primary"></i>
+
+                                <span class="badge badge-light text-danger font-weight-bold">
+                                    {{ $totalPurchaseRequests }}
+                                </span>
+
                             </a>
 
-                            <div class="notifi-container">
-                                @foreach ($purchaseRequests as $data)
-                                    <div class="notifi-item">
-                                        <a title="Lihat Detail" data-toggle="modal" data-target="#detail-track-pr"
-                                            data-detail="{{ json_encode($data) }}">
-                                            <div class="text">
-                                                <h4>{{ $data->nama_pekerjaan }}</h4>
-                                                <p>Tanggal: {{ $data->tgl_pr }}</p>
-                                                <p>Nomor PR: {{ $data->no_pr }}</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                @endforeach
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
+                                style="left: inherit; right: 0px;">
+
+                                <a href="{{ route('product.trackingwil') }}" class="dropdown-item dropdown-header">
+
+                                    Tracking Purchase Request
+
+                                    <span class="text-danger font-weight-bold">
+                                        {{ $totalPurchaseRequests }}
+                                    </span>
+
+                                </a>
+
+                                <div class="notifi-container">
+
+                                    @foreach ($purchaseRequests as $data)
+                                        <div class="notifi-item">
+
+                                            <a title="Lihat Detail" data-toggle="modal"
+                                                data-target="#detail-track-pr"
+                                                data-detail="{{ json_encode($data) }}">
+
+                                                <div class="text">
+
+                                                    <h4>
+                                                        {{ $data->nama_pekerjaan }}
+                                                    </h4>
+
+                                                    <p>
+                                                        Tanggal:
+                                                        {{ $data->tgl_pr }}
+                                                    </p>
+
+                                                    <p>
+                                                        Nomor PR:
+                                                        {{ $data->no_pr }}
+                                                    </p>
+
+                                                </div>
+
+                                            </a>
+
+                                        </div>
+                                    @endforeach
+
+                                </div>
+
                             </div>
-                        </div>
+
+                        </li>
+
                     @endif
 
-
-
-
-
+                    {{-- ===================================================== --}}
+                    {{-- WAREHOUSE --}}
+                    {{-- ===================================================== --}}
                     <li class="nav-item dropdown">
+
                         <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+
                             @if (Session::has('selected_warehouse_name'))
                                 <i class="fas fa-warehouse"></i>
-                                <span>{{ Session::get('selected_warehouse_name') }}</span>
+
+                                <span>
+                                    {{ Session::get('selected_warehouse_name') }}
+                                </span>
                             @endif
+
                         </a>
+
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
                             style="left: inherit; right: 0px;">
-                            <span class="dropdown-item dropdown-header">Warehouse</span>
+
+                            <span class="dropdown-item dropdown-header">
+                                Warehouse
+                            </span>
+
                             @foreach ($warehouse as $w)
                                 <a href="{{ route('warehouse') }}/change/{{ $w->warehouse_id }}"
                                     class="dropdown-item">
+
                                     {{ $w->warehouse_name }}
+
                                 </a>
                             @endforeach
+
                         </div>
+
                     </li>
+
                 </ul>
+
             @endif
 
 
@@ -777,8 +933,8 @@
                                                             <p>Progress MRO</p>
                                                         </a>
                                                     </li>
-                                                    
-                                                    
+
+
                                                     <li class="nav-item">
                                                         <a href="{{ route('mro') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
@@ -2126,8 +2282,60 @@
         });
     </script>
 
+
+    <script>
+        document.addEventListener("click", function() {
+            let audio = document.getElementById("notifSound");
+            if (audio) {
+                audio.play().catch(() => {});
+            }
+        }, {
+            once: true
+        });
+    </script>
+    <script>
+        function playNotifSound() {
+            let audio = document.getElementById("notifSound");
+
+            if (audio) {
+                audio.currentTime = 0; // biar bisa ulang
+                audio.play().catch(err => {
+                    console.log("Autoplay diblokir browser:", err);
+                });
+            }
+        }
+
+        // contoh trigger: kalau notif ada
+        function checkNotifMRO() {
+            fetch("/mro/check-notif")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.count > 0) {
+                        playNotifSound();
+                    }
+                });
+        }
+
+        setInterval(checkNotifMRO, 60000); // tiap 1 menit
+    </script>
+
+    <script>
+        function playNotif() {
+            let audio = document.getElementById('notifSound');
+
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch((e) => {
+                    console.log("Autoplay blocked:", e);
+                });
+            }
+        }
+    </script>
+
     {{-- @section('scripts')
     @endsection --}}
+
+    <audio id="notifSound" src="{{ asset('sound/dj-kicau-mania.mp3') }}" preload="auto"></audio>
 </body>
 
 </html>

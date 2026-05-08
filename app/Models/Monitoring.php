@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -154,5 +155,80 @@ class Monitoring extends Model
     public function folders()
     {
         return $this->hasMany(Folder::class, 'monitor_id');
+    }
+
+    public function notifKontrak()
+    {
+        $today = Carbon::today();
+        $mulai = Carbon::parse($this->tanggal_kontrak);
+        $selesai = Carbon::parse($this->tanggal_selesai_kontrak);
+
+        // Sudah lewat kontrak
+        if ($today->gt($selesai)) {
+            return [
+                'text' => 'Kontrak Telah Berakhir',
+                'class' => 'danger'
+            ];
+        }
+
+        // Hampir habis <= 7 hari
+        if ($today->diffInDays($selesai, false) <= 7) {
+            return [
+                'text' => 'Kontrak Akan Berakhir',
+                'class' => 'warning'
+            ];
+        }
+
+        // Belum mulai
+        if ($today->lt($mulai)) {
+            return [
+                'text' => 'Kontrak Belum Dimulai',
+                'class' => 'secondary'
+            ];
+        }
+
+        // Sedang berjalan
+        return [
+            'text' => 'Kontrak Berjalan',
+            'class' => 'success'
+        ];
+    }
+
+    public function notifMessage()
+    {
+        $today = \Carbon\Carbon::today();
+
+        $selesai = \Carbon\Carbon::parse($this->tanggal_selesai_kontrak);
+
+        $sisa = $today->diffInDays($selesai, false);
+
+        // EXPIRED
+        if ($sisa < 0) {
+            return [
+                'message' => 'Kontrak sudah expired',
+                'class' => 'danger',
+                'icon' => 'fas fa-times-circle'
+            ];
+        }
+
+        // HARI INI
+        if ($sisa == 0) {
+            return [
+                'message' => 'Kontrak berakhir hari ini',
+                'class' => 'warning',
+                'icon' => 'fas fa-exclamation-circle'
+            ];
+        }
+
+        // H-7
+        if ($sisa <= 7) {
+            return [
+                'message' => "Kontrak akan berakhir {$sisa} hari lagi",
+                'class' => 'warning',
+                'icon' => 'fas fa-bell'
+            ];
+        }
+
+        return null;
     }
 }
