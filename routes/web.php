@@ -525,8 +525,12 @@ Route::prefix('products')->group(function () {
 
         Route::delete('/alat-detail/bulk-delete', [AlatAngkutDetailController::class, 'bulkDelete'])
             ->name('alat.detail.bulkDelete');
+
+        Route::delete('/lampiran/{id}', [AlatAngkutDetailController::class, 'deleteLampiran'])
+            ->name('lampiran.delete');
     });
 
+    // Checksheet MRO
     Route::resource('checksheet', ChecksheetController::class);
 
     // mobile
@@ -559,7 +563,7 @@ Route::prefix('products')->group(function () {
     )->name('checksheet.print');
 
     Route::get('/checksheet/{id}/pdf', [ChecksheetController::class, 'pdf'])
-    ->name('checksheet.pdf');
+        ->name('checksheet.pdf');
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store

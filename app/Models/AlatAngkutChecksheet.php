@@ -8,11 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class AlatAngkutChecksheet extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'detail_id',
         'bulan',
         'status',
         'tanggal',
-        'keterangan'
+        'keterangan',
+        'lampiran'
     ];
+
+    public function lampirans()
+    {
+        return $this->hasMany(AlatAngkutLampiran::class, 'checksheet_id');
+    }
 }

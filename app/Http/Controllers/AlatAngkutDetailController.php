@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\AlatAngkutChecksheet;
 use App\Models\AlatAngkutDetail;
+use App\Models\AlatAngkutLampiran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class AlatAngkutDetailController extends Controller
 {
@@ -67,12 +70,43 @@ class AlatAngkutDetailController extends Controller
         return view('alat.detail-monitor', compact('data', 'checksheets'));
     }
 
+    // public function storeChecksheet(Request $request)
+    // {
+    //     $detail_id = $request->detail_id;
+
+    //     for ($i = 1; $i <= 12; $i++) {
+    //         AlatAngkutChecksheet::updateOrCreate(
+    //             [
+    //                 'detail_id' => $detail_id,
+    //                 'bulan' => $i
+    //             ],
+    //             [
+    //                 'status' => $request->status[$i] ?? null,
+    //                 'tanggal' => $request->tanggal[$i] ?? null,
+    //                 'keterangan' => $request->keterangan[$i] ?? null,
+    //             ]
+    //         );
+    //     }
+
+    //     return back()->with('success', 'Checksheet berhasil disimpan');
+    // }
+
     public function storeChecksheet(Request $request)
     {
+        $request->validate([
+            'lampiran.*.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx,xls,xlsx|max:5120'
+        ]);
+
         $detail_id = $request->detail_id;
 
         for ($i = 1; $i <= 12; $i++) {
-            AlatAngkutChecksheet::updateOrCreate(
+            /*
+             * |--------------------------------------------------------------------------
+             * | Simpan Checksheet
+             * |--------------------------------------------------------------------------
+             */
+
+            $checksheet = AlatAngkutChecksheet::updateOrCreate(
                 [
                     'detail_id' => $detail_id,
                     'bulan' => $i
@@ -83,9 +117,50 @@ class AlatAngkutDetailController extends Controller
                     'keterangan' => $request->keterangan[$i] ?? null,
                 ]
             );
+
+            /*
+             * |--------------------------------------------------------------------------
+             * | Upload Multiple Lampiran
+             * |--------------------------------------------------------------------------
+             */
+
+            if ($request->hasFile("lampiran.$i")) {
+                foreach ($request->file("lampiran.$i") as $file) {
+                    $filename = time() . '_' . rand(100, 999) . '_' . $file->getClientOriginalName();
+
+                    $destination = public_path('lampiran');
+
+                    if (!File::exists($destination)) {
+                        File::makeDirectory($destination, 0755, true);
+                    }
+
+                    $file->move($destination, $filename);
+
+                    AlatAngkutLampiran::create([
+                        'checksheet_id' => $checksheet->id,
+                        'file' => 'lampiran/' . $filename,
+                        'nama_file' => $file->getClientOriginalName(),
+                    ]);
+                }
+            }
         }
 
         return back()->with('success', 'Checksheet berhasil disimpan');
+    }
+
+    public function deleteLampiran($id)
+    {
+        $lampiran = AlatAngkutLampiran::findOrFail($id);
+
+        $filePath = public_path($lampiran->file);
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        $lampiran->delete();
+
+        return back()->with('success', 'Lampiran berhasil dihapus');
     }
 
     public function bulkDelete(Request $request)
