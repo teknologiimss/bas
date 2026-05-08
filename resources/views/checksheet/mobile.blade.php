@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
 {{-- FONT AWESOME --}}
 <link rel="stylesheet"
@@ -443,7 +444,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                                             <textarea
                                                 name="details[{{ $detail->id }}][keterangan]"
                                                 class="form-control mt-3"
-                                                rows="2"
+                                                rows="2" autocomplete="off"
                                                 placeholder="Tambahkan keterangan jika diperlukan...">{{ optional($detail->result)->keterangan }}</textarea>
 
                                         </div>

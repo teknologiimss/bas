@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title', 'Checksheet')
-
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
 
     <style>
@@ -357,17 +357,15 @@
         });
 
         // DELETE LAMPIRAN
-        function deleteLampiran(url)
-{
-    if(confirm('Hapus lampiran ini ?'))
-    {
-        let form = document.getElementById('deleteForm');
+        function deleteLampiran(url) {
+            if (confirm('Hapus lampiran ini ?')) {
+                let form = document.getElementById('deleteForm');
 
-        form.action = url;
+                form.action = url;
 
-        form.submit();
-    }
-}
+                form.submit();
+            }
+        }
     </script>
 
 @endsection

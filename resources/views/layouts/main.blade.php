@@ -729,6 +729,13 @@
                                                 </a>
                                                 <ul class="nav nav-treeview pl-3">
                                                     <li class="nav-item">
+                                                        <a href="{{ route('pengiriman.index') }}"
+                                                            class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
+                                                            <i class="nav-icon fas fa-truck"></i>
+                                                            <p>Monitoring Pengiriman</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
                                                         <a href="{{ route('checksheet.index') }}"
                                                             class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
                                                             <i class="nav-icon fas fa-clipboard-check"></i>
@@ -770,14 +777,8 @@
                                                             <p>Progress MRO</p>
                                                         </a>
                                                     </li>
-                                                    <!-- MENU BARU -->
-                                                    <li class="nav-item">
-                                                        <a href="{{ route('pengiriman.index') }}"
-                                                            class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
-                                                            <i class="nav-icon fas fa-truck"></i>
-                                                            <p>Monitoring Pengiriman</p>
-                                                        </a>
-                                                    </li>
+                                                    
+                                                    
                                                     <li class="nav-item">
                                                         <a href="{{ route('mro') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">

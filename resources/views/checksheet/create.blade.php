@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
         body {
             background: #f4f6f9;
@@ -81,18 +82,18 @@
 
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">Judul</label>
-                        <input type="text" name="judul" class="form-control" placeholder="Contoh: Forklift Harian"
+                        <input type="text" name="judul" class="form-control" autocomplete="off" placeholder="Contoh: Forklift Harian"
                             required>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">Unit</label>
-                        <input type="text" name="unit" class="form-control" placeholder="Contoh: Forklift">
+                        <input type="text" name="unit" class="form-control" autocomplete="off" placeholder="Contoh: Forklift">
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">No Lambung</label>
-                        <input type="text" name="no_lambung" class="form-control" placeholder="Contoh: FL-001">
+                        <input type="text" name="no_lambung" class="form-control" autocomplete="off" placeholder="Contoh: FL-001">
                     </div>
 
                     <div class="col-md-4 mb-3">
@@ -107,7 +108,7 @@
                         </label>
 
                         <input type="text" name="jenis_perawatan" class="form-control"
-                            placeholder="Contoh: Harian / Mingguan / Bulanan">
+                            placeholder="Contoh: Harian / Mingguan / Bulanan" autocomplete="off">
 
                     </div>
 
@@ -281,14 +282,14 @@
                 <input type="text"
                     name="sections[${sectionIndex}][kode]"
                     class="form-control"
-                    placeholder="I / II">
+                    placeholder="I / II" autocomplete="off">
             </div>
 
             <div class="col-md-9">
                 <input type="text"
                     name="sections[${sectionIndex}][nama]"
                     class="form-control"
-                    placeholder="Sub Judul"
+                    placeholder="Sub Judul" autocomplete="off"
                     required>
             </div>
 
@@ -348,13 +349,13 @@
                 <input type="text"
                     name="sections[${sIndex}][items][${iIndex}][nomor]"
                     class="form-control"
-                    placeholder="a / b">
+                    placeholder="a / b" autocomplete="off">
             </div>
 
             <div class="col-md-9">
                 <input type="text"
                     name="sections[${sIndex}][items][${iIndex}][uraian]"
-                    class="form-control"
+                    class="form-control" autocomplete="off"
                     placeholder="Uraian Pekerjaan"
                     required>
             </div>
@@ -416,7 +417,7 @@
             <input type="text"
                 name="sections[${sIndex}][items][${iIndex}][details][${dIndex}][aktivitas]"
                 class="form-control"
-                placeholder="Aktivitas Pekerjaan">
+                placeholder="Aktivitas Pekerjaan" autocomplete="off">
 
         </div>
 
@@ -425,7 +426,7 @@
             <input type="text"
                 name="sections[${sIndex}][items][${iIndex}][details][${dIndex}][standar]"
                 class="form-control"
-                placeholder="Standar">
+                placeholder="Standar" autocomplete="off">
 
         </div>
 

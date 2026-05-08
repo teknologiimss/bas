@@ -15,12 +15,51 @@ class ChecksheetController extends Controller
     // =========================
     // LIST
     // =========================
-    public function index()
-    {
-        // $data = Checksheet::latest()->get();
-        $data = Checksheet::oldest()->get();
+    // public function index()
+    // {
+    //     // $data = Checksheet::latest()->get();
+    //     $data = Checksheet::oldest()->get();
 
-        return view('checksheet.index', compact('data'));
+    //     return view('checksheet.index', compact('data'));
+    // }
+
+    public function index(Request $request)
+    {
+        $query = Checksheet::query();
+
+        // =========================
+        // FILTER UNIT
+        // =========================
+        if ($request->filled('unit')) {
+            $query->where(
+                'unit',
+                'like',
+                '%' . $request->unit . '%'
+            );
+        }
+
+        // =========================
+        // FILTER NO LAMBUNG
+        // =========================
+        if ($request->filled('no_lambung')) {
+            $query->where(
+                'no_lambung',
+                'like',
+                '%' . $request->no_lambung . '%'
+            );
+        }
+
+        // =========================
+        // GET DATA
+        // =========================
+        $data = $query
+            ->oldest()
+            ->get();
+
+        return view(
+            'checksheet.index',
+            compact('data')
+        );
     }
 
     // =========================
