@@ -2283,59 +2283,8 @@
     </script>
 
 
-    <script>
-        document.addEventListener("click", function() {
-            let audio = document.getElementById("notifSound");
-            if (audio) {
-                audio.play().catch(() => {});
-            }
-        }, {
-            once: true
-        });
-    </script>
-    <script>
-        function playNotifSound() {
-            let audio = document.getElementById("notifSound");
 
-            if (audio) {
-                audio.currentTime = 0; // biar bisa ulang
-                audio.play().catch(err => {
-                    console.log("Autoplay diblokir browser:", err);
-                });
-            }
-        }
-
-        // contoh trigger: kalau notif ada
-        function checkNotifMRO() {
-            fetch("/mro/check-notif")
-                .then(res => res.json())
-                .then(data => {
-                    if (data.count > 0) {
-                        playNotifSound();
-                    }
-                });
-        }
-
-        setInterval(checkNotifMRO, 60000); // tiap 1 menit
-    </script>
-
-    <script>
-        function playNotif() {
-            let audio = document.getElementById('notifSound');
-
-            if (audio) {
-                audio.currentTime = 0;
-                audio.play().catch((e) => {
-                    console.log("Autoplay blocked:", e);
-                });
-            }
-        }
-    </script>
-
-    {{-- @section('scripts')
-    @endsection --}}
-
-    <audio id="notifSound" src="{{ asset('sound/dj-kicau-mania.mp3') }}" preload="auto"></audio>
+    
 </body>
 
 </html>

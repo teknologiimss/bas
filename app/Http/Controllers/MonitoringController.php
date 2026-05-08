@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use ZipArchive;
 
 class MonitoringController extends Controller
@@ -45,27 +46,7 @@ class MonitoringController extends Controller
     return view('monitoring.index', compact('proyek', 'monitorings'));
 }
 
-public function checkNotif()
-{
-    $today = Carbon::today();
 
-    $data = Monitoring::all();
-
-    $notif = $data->filter(function ($m) use ($today) {
-
-        if (!$m->tanggal_selesai_kontrak) return false;
-
-        $selesai = Carbon::parse($m->tanggal_selesai_kontrak);
-        $sisa = $today->diffInDays($selesai, false);
-
-        return $sisa <= 7;
-
-    });
-
-    return response()->json([
-        'count' => $notif->count()
-    ]);
-}
 
 public function resumeProgress(Request $request)
 {
