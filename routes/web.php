@@ -354,6 +354,7 @@ Route::prefix('products')->group(function () {
 
     // LOI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
+    Route::get('/loi/all', [App\Http\Controllers\LoiController::class, 'allData'])->name('loi.all');
     Route::resource('loi', App\Http\Controllers\LoiController::class)->except(['destroy']);
     // End Resource
     Route::delete('loi', [App\Http\Controllers\LoiController::class, 'destroy'])->name('loi.destroy');

@@ -295,6 +295,13 @@
             {{-- Tab menu LOI dalam dan Luar --}}
             <ul class="nav nav-tabs mb-3">
                 <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'loi.all' ? 'active' : '' }}"
+                        href="{{ route('loi.all') }}">
+                        <i class="fas fa-scroll"></i> Semua Data
+                    </a>
+                </li>
+                
+                <li class="nav-item">
                     <a class="nav-link {{ Route::currentRouteName() == 'loi.index' ? 'active' : '' }}"
                         href="{{ route('loi.index') }}">
                         <i class="fas fa-scroll"></i> LOI Dalam Negeri
