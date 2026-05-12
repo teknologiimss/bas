@@ -277,13 +277,13 @@ class Monitoring extends Model
         $sisa = $today->diffInDays($selesai, false);
 
         // STATUS CLOSED
-        if (strtolower($this->status) == 'closed') {
-            return [
-                'message' => 'Kontrak telah selesai',
-                'class' => 'primary',
-                'icon' => 'fas fa-check-circle'
-            ];
-        }
+        // if (strtolower($this->status) == 'closed') {
+        //     return [
+        //         'message' => 'Kontrak telah selesai',
+        //         'class' => 'primary',
+        //         'icon' => 'fas fa-check-circle'
+        //     ];
+        // }
 
         // EXPIRED
         if ($sisa < 0) {
