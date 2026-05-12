@@ -692,8 +692,10 @@ Route::get('/mro-progress/print', [MonitoringController::class, 'print'])
 Route::get('/mro-progress', [MonitoringController::class, 'resumeProgress'])
     ->name('mro.progress.index');
 
-
-    
+// Profil MRO
+Route::get('/mro/profil', function () {
+    return view('mro.profil');
+})->name('mro.profil');
 
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');

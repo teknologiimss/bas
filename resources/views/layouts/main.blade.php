@@ -503,6 +503,7 @@
                                         'perencanaan.proyek',
                                         'alat.index',
                                         'checksheet.index',
+                                        'mro.profil',
                                         'products.stock.history',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
@@ -546,6 +547,8 @@
                                         'perencanaan.proyek',
                                         'alat.index',
                                         'checksheet.index',
+                                        'mro.profil',
+                                        
                                     ]);
                                 @endphp
 
@@ -884,6 +887,14 @@
                                                     </p>
                                                 </a>
                                                 <ul class="nav nav-treeview pl-3">
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('mro.profil') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'mro.profil' ? 'active' : '' }}">
+
+                                                            <i class="nav-icon fas fa-video"></i>
+                                                            <p>Personil MRO</p>
+                                                        </a>
+                                                    </li>
                                                     <li class="nav-item">
                                                         <a href="{{ route('pengiriman.index') }}"
                                                             class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
@@ -2284,7 +2295,7 @@
 
 
 
-    
+
 </body>
 
 </html>
