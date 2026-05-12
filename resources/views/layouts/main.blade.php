@@ -176,7 +176,7 @@
                             <a class="nav-link position-relative" data-toggle="dropdown" href="#"
                                 aria-expanded="false">
 
-                                <i class="fas fa-bell text-danger"></i>
+                                <i class="fas fa-bell text-primary" style="font-size: 22px;"></i>
 
                                 @if (isset($notifications) && count($notifications) > 0)
                                     <span class="badge badge-danger navbar-badge">
