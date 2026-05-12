@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', __('LOI Dalam Negeri'))
+@section('title', __('Data Letter of Intent (LOI)'))
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('custom-css')
     <style>
@@ -256,9 +256,9 @@
 
 
             <div class="card">
-                <div class="card-header">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-LOI"
-                        onclick="addLOI()"><i class="fas fa-plus"></i> Add New LOI</button>
+                <!-- <div class="card-header"> -->
+                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-LOI"
+                        onclick="addLOI()"><i class="fas fa-plus"></i> Add New LOI</button> -->
                     <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#import-product" onclick="importProduct()"><i class="fas fa-file-excel"></i> Import Product (Excel)</button> -->
                     <!-- <button type="button" class="btn btn-primary" onclick="download('xls')"><i class="fas fa-file-excel"></i> Export Product (XLS)</button> -->
                     {{-- <div class="card-tools">
@@ -275,7 +275,7 @@
                             </div>
                         </form>
                     </div> --}}
-                </div>
+                <!-- </div> -->
 
                 <div class="card-body">
                     <div class="table-responsive">
@@ -315,6 +315,7 @@
                                     <th>{{ __('Vendor') }}</th>
                                     <th>{{ __('Nomor PO') }}</th>
                                     <th>{{ __('Tanggal PO') }}</th>
+                                    <th>{{ __('Tipe') }}</th>
                                     <th>{{ __('Aksi') }}</th>
                                     {{-- <th>{{ __('Penerima') }}</th> --}}
 
@@ -343,11 +344,11 @@
                                                 'tanggal_po' => date('d/m/Y', strtotime($d->tanggal_po)),
                                                 'penerima' => $d->penerima,
                                                 'alamat' => $d->alamat,
-
                                                 'keterangan_loi' => $d->keterangan_loi,
                                                 'id' => $d->id,
                                                 'penerima_asli' => $d->penerima,
                                                 'alamat_asli' => $d->alamat,
+                                                'tipe' => $d->jenis_loi,
                                             ];
                                         @endphp
 
@@ -390,23 +391,24 @@
                                             <td class="text-center">{{ $data['vendor'] }}</td>
                                             <td class="text-center">{{ $data['nomor_po'] }}</td>
                                             <td class="text-center">{{ $data['tanggal_po'] }}</td>
+                                            <td class="text-center">{{ $data['tipe'] }}</td>
                                             {{-- <td class="text-center">{{ $data['penerima'] }}</td> --}}
                                             <td class="text-center">
-                                                <button title="Edit LOI" type="button" class="btn btn-success btn-xs"
+                                                <!-- <button title="Edit LOI" type="button" class="btn btn-success btn-xs"
                                                     data-toggle="modal" data-target="#add-LOI"
                                                     onclick="editLOI({{ json_encode($data) }})"><i
-                                                        class="fas fa-edit"></i></button>
+                                                        class="fas fa-edit"></i></button> -->
 
                                                 <button title="Lihat Detail" type="button" data-toggle="modal"
                                                     data-target="#detail-loi" class="btn-lihat btn btn-info btn-xs"
                                                     data-detail="{{ json_encode($data) }}"><i
                                                         class="fas fa-list"></i></button>
-                                                @if (Auth::user()->role == 0 || Auth::user()->role == 1)
+                                                <!-- @if (Auth::user()->role == 0 || Auth::user()->role == 1)
                                                     <button title="Hapus LOI" type="button" class="btn btn-danger btn-xs"
                                                         data-toggle="modal" data-target="#delete-loi"
                                                         onclick="deleteloi({{ json_encode($data) }})"><i
                                                             class="fas fa-trash"></i></button>
-                                                @endif
+                                                @endif -->
                                             </td>
                                         </tr>
                                     @endforeach
@@ -576,6 +578,34 @@
                             <div class="row">
                                 <form id="cetak-loi" method="GET" action="{{ route('loi.print') }}" target="_blank">
                                     <input type="hidden" name="loi_id" id="loi_id">
+                                    <input type="hidden" name="loiluar_id" id="loiluar_id">
+                                    <input type="hidden" name="tipe" id="tipe_loi">
+
+                                    <!-- Currency -->
+                                    <div id="currency-container" class="mb-3" style="display:none;">
+                                        <label for="currency"><b>Pilih Mata Uang:</b></label>
+
+                                        <select name="currency" id="currency" class="form-control">
+                                            <option value="IDR">IDR (Rupiah)</option>
+                                            <option value="USD">USD (Dollar)</option>
+                                            <option value="EUR">EUR (Euro)</option>
+                                            <option value="JPY">JPY (Yen Jepang)</option>
+                                            <option value="AUD">AUD (Dollar Australia)</option>
+                                            <option value="CNY">CNY (Yuan China)</option>
+                                            <option value="PHP">PHP (Peso Filipina)</option>
+                                            <option value="INR">INR (Rupee India)</option>
+                                            <option value="KRW">KRW (Won Korea Selatan)</option>
+                                            <option value="SAR">SAR (Riyal Arab Saudi)</option>
+                                            <option value="MYR">MYR (Ringgit Malaysia)</option>
+                                            <option value="ARS">ARS (Peso Argentina)</option>
+                                            <option value="BRL">BRL (Real Brazil)</option>
+                                            <option value="THB">THB (Baht Thailand)</option>
+                                            <option value="KHR">KHR (Riel Kamboja)</option>
+                                            <option value="IRR">IRR (Rial Iran)</option>
+                                            <option value="BND">BND (Dollar Brunei)</option>
+                                            <option value="QAR">QAR (Riyal Qatar)</option>
+                                        </select>
+                                    </div>
                                 </form>
                                 <div class="col-12" id="container-form">
                                     <button id="button-cetak-loi" type="button" class="btn btn-primary"
@@ -605,10 +635,10 @@
                                             <td><b>Produk</b></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <!-- <td colspan="3">
                                                 <button id="button-tambah-produk" type="button"
                                                     class="btn btn-info mb-3">{{ __('Tambah Produk') }}</button>
-                                            </td>
+                                            </td> -->
                                             {{-- <button title="Edit SPPH" type="button" class="btn btn-success btn-xs"
                                             data-toggle="modal" data-target="#add-SPPH"
                                             onclick="editSPPH({{ json_encode($data) }})"> --}}
@@ -622,7 +652,7 @@
                                                 <th>Spesifikasi</th>
                                                 <th>QTY</th>
                                                 <th>Satuan</th>
-                                                <th>Harga Satuan Rp.</th>
+                                                <th>Harga Satuan</th>
                                                 <th>Harga Total</th>
                                                 <th>Aksi</th>
                                             </thead>
@@ -640,7 +670,7 @@
                                                     <th>Satuan</th>
                                                     <th>Harga Satuan Rp.</th>
                                                     <th>Harga Total</th>
-                                                    <th>Aksi</th>
+                                                    <!-- <th>Aksi</th> -->
                                                 </tr>
 
                                             </thead>
@@ -1152,62 +1182,6 @@
                 $("#lampiran-row").append(formGroup);
             }
         }
-
-        function generateVendorList(data) {
-            if (data) {
-                $('#vendor-row').empty();
-                var length = data.length;
-
-                data.map((item, index) => {
-                    const counter = index + 1;
-                    var formGroup =
-                        '<div class="group">' +
-                        '<div class="form-group row">' +
-                        '<label for="vendor' + counter + '" class="col-sm-4 col-form-label">Vendor ' + counter +
-                        '</label>' +
-                        '<div class="col-sm-8 d-flex align-items-center">' +
-                        '<select class="form-control" id="vendor' + counter + '" name="vendor[]">' +
-                        '<option value="">Pilih Vendor</option>' +
-                        '@foreach ($vendors as $vendor)' +
-                        '<option value="{{ $vendor->nama }}">{{ $vendor->nama }}</option>' +
-                        // Use vendor name for both value and text
-                        '@endforeach' +
-                        '</select>' +
-                        '<button type="button" class="ml-2 btn btn-danger btn-sm" onclick="removeNamaAlamat(' +
-                        counter + ')"><i class="fas fa-trash"></i></button>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>';
-                    $("#vendor-row").append(formGroup);
-
-                    // Set the selected value after appending the form group
-                    $('#vendor' + counter).val(item);
-                });
-            } else {
-                var length = $("#vendor-row").children().length;
-                var counter = length + 1;
-
-                var formGroup =
-                    '<div class="group">' +
-                    '<div class="form-group row">' +
-                    '<label for="vendor' + counter + '" class="col-sm-4 col-form-label">Vendor ' + counter + '</label>' +
-                    '<div class="col-sm-8 d-flex align-items-center">' +
-                    '<select class="form-control" id="vendor' + counter + '" name="vendor[]">' +
-                    '<option value="">Pilih Vendor</option>' +
-                    '@foreach ($vendors as $vendor)' +
-                    '<option value="{{ $vendor->nama }}">{{ $vendor->nama }}</option>' +
-                    // Use vendor name for both value and text
-                    '@endforeach' +
-                    '</select>' +
-                    '<button type="button" class="ml-2 btn btn-danger btn-sm" onclick="removeNamaAlamat(' + counter +
-                    ')"><i class="fas fa-trash"></i></button>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
-                $("#vendor-row").append(formGroup);
-            }
-        }
-
 
         function removeNamaAlamat(counter) {
             // $('#penerima' + counter).closest('.group').remove();
@@ -1802,20 +1776,20 @@
                             '" name="harga_per_unit' + id + '" data-id="' + id +
                             '" data-qty="' + loi_qty + '"></td>' +
                             '<td class="total">' + total + '</td>' +
-                            '<td>' +
-                            '<button type="button" class="btn btn-danger btn-delete" data-id="' +
-                            value.id + '" data-id_loi="' + value.id_loi +
-                            '" data-id_detail_loi="' + id_detail_loi +
-                            '" data-id_detail_pr="' + value.id_detail_pr + '">' +
-                            '<i class="fas fa-trash"></i>' + // Ikon Hapus
-                            '</button> ' +
-                            '<button type="button" class="btn btn-success btn-save" data-id="' +
-                            value.id + '" data-id_loi="' + value.id_loi +
-                            '" data-id_detail_loi="' + id_detail_loi +
-                            '" data-id_detail_pr="' + value.id_detail_pr + '">' +
-                            '<i class="fas fa-save"></i>' + // Ikon Simpan
-                            '</button>' +
-                            '</td>' +
+                            // '<td>' +
+                            // '<button type="button" class="btn btn-danger btn-delete" data-id="' +
+                            // value.id + '" data-id_loi="' + value.id_loi +
+                            // '" data-id_detail_loi="' + id_detail_loi +
+                            // '" data-id_detail_pr="' + value.id_detail_pr + '">' +
+                            // '<i class="fas fa-trash"></i>' + // Ikon Hapus
+                            // '</button> ' +
+                            // '<button type="button" class="btn btn-success btn-save" data-id="' +
+                            // value.id + '" data-id_loi="' + value.id_loi +
+                            // '" data-id_detail_loi="' + id_detail_loi +
+                            // '" data-id_detail_pr="' + value.id_detail_pr + '">' +
+                            // '<i class="fas fa-save"></i>' + // Ikon Simpan
+                            // '</button>' +
+                            // '</td>' +
                             '</tr>'
                         );
 
@@ -2000,7 +1974,7 @@
         $('#detail-loi').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var data = button.data('detail');
-            console.log(data);
+            //console.log(data);
             lihatLoi(data);
             $('#detail-loi').find('.modal-dialog').removeClass('modal-xl');
             $('#detail-loi').find('.modal-dialog').addClass('modal-xl');
@@ -2013,12 +1987,35 @@
             $('#proyek_name').val("");
         });
 
-
-
         //Lihat Detail
         function lihatLoi(data) {
             emptyTableLoi();
             $('#modal-title').text("Detail LOI");
+            let tipe = (data.tipe || '').toLowerCase();
+
+            $('#currency').val('IDR');
+
+            // Show/hide currency
+            if (tipe === 'luar negeri') {
+                $('#currency-container').show();
+            } else {
+                $('#currency-container').hide();
+            }
+
+            $('#loi_id').val('');
+            $('#loiluar_id').val('');
+
+            if (tipe === 'lokal') {
+                $('#loi_id').val(data.id);
+                $('#cetak-loi').attr('action', "{{ route('loi.print') }}");
+
+            } else if (tipe === 'luar negeri') {
+                $('#loiluar_id').val(data.id);
+                $('#cetak-loi').attr('action', "{{ route('loiluar.print') }}");
+            }
+
+            $('#tipe_loi').val(tipe);
+
             $('#button-save').text("Cetak");
             resetForm();
             $('#save_id').val(data.id);
@@ -2030,8 +2027,16 @@
             $('#tgl_loi').text(data.tanggal);
             $('#table-loi').empty();
 
+            let url = '';
+
+            if (data.tipe === 'Luar Negeri') {
+                url = "{{ url('products/loiluar_detail') }}/" + data.id;
+            } else {
+                url = "{{ url('products/loi_detail') }}/" + data.id;
+            }
+
             $.ajax({
-                url: "{{ url('products/loi_detail') }}" + "/" + data.id,
+                url: url,
                 type: "GET",
                 dataType: "json",
                 beforeSend: function() {
@@ -2040,75 +2045,65 @@
                     $('#button-cetak-loi').attr('disabled', true);
                 },
                 success: function(response) {
-                    $('#no_surat').text(response.loi.no_loi);
-                    $('#nama_penerima').text(response.loi.penerima);
-                    $('#tgl_loi').text(response.loi.tanggal_loi);
-                    $('#loi_id').val(response.loi.id);
-                    $('#button-cetak-loi').html('<i class="fas fa-print"></i> Cetak');
-                    $('#button-cetak-loi').attr('disabled', false);
 
-                    if (response.loi.details.length === 0) {
+                    let loi = response.loi ?? response.loiluar ?? response.data ?? response;
+
+                    console.log(loi);
+
+                    $('#no_surat').text(loi.nomor_loi || loi.nomor_loiluar || '-');
+                    $('#nama_penerima').text(loi.penerima || '-');
+                    $('#tgl_loi').text(loi.tanggal_loi || loi.tanggal_loiluar || '-');
+                    $('#loi_id').val(loi.id);
+
+                    let details = loi.details || [];
+
+                    if (details.length === 0) {
                         $('#table-loi').append(
-                            '<tr><td colspan="7" class="text-center">Tidak ada produk</td></tr>');
+                            '<tr><td colspan="7" class="text-center">Tidak ada produk</td></tr>'
+                        );
                     } else {
-                        $.each(response.loi.details, function(key, value) {
-                            var loi_qty = value.loi_qty || 0;
-                            var id = value.id;
-                            var id_loi = value.id_loi;
-                            var id_detail_loi = value.id_detail_loi;
-                            var harga_per_unit = value.harga_per_unit ?? 0;
-                            var total = loi_qty * harga_per_unit;
+                        $.each(details, function(key, value) {
 
-                            var totalFormatted = total.toLocaleString('id-ID', {
-                                minimumFractionDigits: 0
-                            });
+                            var loi_qty = value.loi_qty ?? value.loiluar_qty ?? 0;
+                            var id = value.id;
+                            var id_detail_loi = value.id_detail_loi ?? value.id_detail_loiluar;
+                            var harga_per_unit = parseFloat(value.harga_per_unit) || 0;
+
+                            var total = loi_qty * harga_per_unit;
 
                             $('#table-loi').append(
                                 '<tr>' +
                                 '<td>' + (key + 1) + '</td>' +
                                 '<td>' + value.uraian + '</td>' +
                                 '<td>' + value.spek + '</td>' +
-                                '<td>' + value.loi_qty + '</td>' +
-                                '<td>' + value.satuan + '</td>' +
-                                '<td><input type="text" value="' + harga_per_unit +
-                                '" class="form-control harga-per-unit" id="harga_per_unit' + id +
-                                '" name="harga_per_unit' + id + '" data-id="' + id +
-                                '" data-qty="' + loi_qty + '"></td>' +
-                                '<td class="total">' + totalFormatted + '</td>' +
-                                '<td>' +
-                                '<button type="button" class="btn btn-danger btn-delete" data-id="' +
-                                value.id + '" data-id_loi="' + id_loi +
-                                '" data-id_detail_loi="' + id_detail_loi +
-                                '" data-id_detail_pr="' + value.id_detail_pr + '">' +
-                                '<i class="fas fa-trash"></i>' + // Ikon hapus
-                                '</button> ' +
-                                '<button type="button" class="btn btn-success btn-save" data-id="' +
-                                value.id + '" data-id_loi="' + id_loi +
-                                '" data-id_detail_loi="' + id_detail_loi +
-                                '" data-id_detail_pr="' + value.id_detail_pr + '">' +
-                                '<i class="fas fa-save"></i>' + // Ikon simpan
-                                '</button>' +
-                                '</td>' +
+                                '<td>' + loi_qty + '</td>' +
+                                '<td>' + (value.satuan || '-') + '</td>' +
+                                '<td>' + 'Rp ' + harga_per_unit.toLocaleString('id-ID') + '</td>' +
+                                '<td class="total">' + 'Rp ' + total.toLocaleString('id-ID') + '</td>' +
+                                // '<td>' +
+                                // '<button type="button" class="btn btn-danger btn-delete" data-id="' +
+                                // value.id + '" data-id_loi="' + id_loi +
+                                // '" data-id_detail_loi="' + id_detail_loi +
+                                // '" data-id_detail_pr="' + value.id_detail_pr + '">' +
+                                // '<i class="fas fa-trash"></i>' + // Ikon hapus
+                                // '</button> ' +
+                                // '<button type="button" class="btn btn-success btn-save" data-id="' +
+                                // value.id + '" data-id_loi="' + id_loi +
+                                // '" data-id_detail_loi="' + id_detail_loi +
+                                // '" data-id_detail_pr="' + value.id_detail_pr + '">' +
+                                // '<i class="fas fa-save"></i>' + // Ikon simpan
+                                // '</button>' +
+                                // '</td>' +
                                 '</tr>'
                             );
 
                         });
-
-                        $('.harga-per-unit').on('input', function() {
-                            var id = $(this).data('id');
-                            var loi_qty = $(this).data('qty');
-                            var hargaPerUnit = parseFloat($('#harga_per_unit' + id).val()) || 0;
-                            var total = loi_qty * hargaPerUnit;
-
-                            $('#harga_per_unit' + id).closest('tr').find('.total').text(
-                                total.toLocaleString('id-ID', {
-                                    minimumFractionDigits: 0
-                                })
-                            );
-                        });
                     }
 
                     $('#table-loi').find('tr:first').remove();
+
+                    $('#button-cetak-loi').html('Cetak');
+                    $('#button-cetak-loi').attr('disabled', false);
                 }
             });
         }

@@ -677,8 +677,8 @@
 
                                                     {{-- LOI Luar dan Dalam --}}
                                                     <li class="nav-item">
-                                                        <a href="{{ route('loi.index') }}"
-                                                            class="nav-link {{ in_array(Route::currentRouteName(), ['loi.index', 'loiluar.index']) ? 'active' : '' }}">
+                                                        <a href="{{ route('loi.all') }}"
+                                                            class="nav-link {{ in_array(Route::currentRouteName(), ['loi.all', 'loi.index', 'loiluar.index']) ? 'active' : '' }}">
                                                             <i class="fas fa-scroll nav-icon"></i>
                                                             <p>{{ __('LETTER OF INTENT (LOI)') }}</p>
                                                         </a>

@@ -99,7 +99,101 @@ class LoiController extends Controller
     }
     //** */
 
+    public function allData()
+    {
+        // LOI LOKAL
+        $loi = DB::table('loi')
+            ->select(
+                'id',
+                'id_pr',
+                'nomor_loi as nomor_loi',
+                'nomor_pr',
+                'nomor_po',
+                'vendor_id',
+                'perihal',
+                'tanggal_loi as tanggal_loi',
+                'batas_loi as batas_loi',
+                'tanggal_po',
+                'penerima',
+                'alamat',
+                'loi.keterangan_loi',
+                DB::raw("'Lokal' as jenis_loi")
+            );
 
+        // LOI LUAR
+        $loi_luar = DB::table('loiluar')
+            ->select(
+                'id',
+                'id_pr',
+                'nomor_loiluar as nomor_loi', // disamakan
+                'nomor_pr',
+                'nomor_po',
+                'vendor_id',
+                'perihal',
+                'tanggal_loiluar as tanggal_loi', // disamakan
+                'batas_loiluar as batas_loi',     // disamakan
+                'tanggal_po',
+                'penerima',
+                'alamat',
+                'loiluar.keterangan_loiluar as keterangan_loi',
+                DB::raw("'Luar Negeri' as jenis_loi")
+            );
+
+        // UNION
+        $query = $loi->unionAll($loi_luar);
+
+        // WRAP + ORDER
+        $loiGabungan = DB::query()
+            ->fromSub($query, 'x')
+            ->orderBy('tanggal_loi', 'desc')
+            ->paginate(10);
+
+        //dd($loiGabungan->first()->vendor_id);
+
+        // ambil semua vendor_id
+        $vendorIds = $loiGabungan->getCollection()
+            ->pluck('vendor_id')
+            ->filter()
+            ->flatMap(function ($item) {
+                return json_decode($item, true) ?? [];
+            })
+            ->unique();
+
+        // ambil nama vendor
+        $vendors = Vendor::whereIn('id', $vendorIds)
+            ->pluck('nama', 'id');
+
+        // mapping ke data
+        $loiGabungan->getCollection()->transform(function ($item) use ($vendors) {
+            $ids = json_decode($item->vendor_id, true) ?? [];
+
+            $item->vendor = collect($ids)
+                ->map(fn($id) => $vendors[$id] ?? '-')
+                ->implode(', ');
+            return $item;
+        });
+
+        foreach ($loiGabungan as $item) {
+
+            if ($item->jenis_loi == 'Lokal') {
+                $lampiran = DB::table('loi_lampiran')
+                    ->where('loi_id', $item->id)
+                    ->pluck('file')
+                    ->toArray();
+            } else {
+                $lampiran = DB::table('loiluar_lampiran')
+                    ->where('loiluar_id', $item->id)
+                    ->pluck('file')
+                    ->toArray();
+            }
+
+            $item->lampiran = implode(',', $lampiran);
+        }
+
+        return view('loi.loi_all', [
+            'loies' => $loiGabungan
+        ]);
+    }
 
     //** */
     function FunctionCountPages($path)
@@ -109,8 +203,6 @@ class LoiController extends Controller
         return $pagenumber;
     }
     //** */
-
-
 
     // Simpan dan edit
     /**
