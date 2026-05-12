@@ -10,7 +10,7 @@
             <div class="card-header bg-danger text-white">
                 <h4 class="mb-0">
                     <i class="fas fa-video"></i>
-                    Profil MRO
+                    Profil Personil MRO
                 </h4>
             </div>
 
