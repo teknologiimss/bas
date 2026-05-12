@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     {{-- FONT AWESOME --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -42,6 +42,7 @@
             padding: 11px 18px;
             font-weight: 600;
             transition: .25s;
+            margin-left: 4px;
         }
 
         .btn-modern:hover {
@@ -217,28 +218,171 @@
             }
         }
 
+
         /* MOBILE */
 
         @media(max-width:768px) {
 
-            .table-responsive {
-                overflow-x: auto;
+            body {
+                font-size: 13px;
             }
 
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            /* HEADER */
             .page-title {
-                font-size: 22px;
+                font-size: 21px;
+                line-height: 1.3;
             }
 
             .top-card {
                 padding: 18px;
+                border-radius: 18px;
             }
 
+            .top-card p {
+                font-size: 12px;
+            }
+
+            /* BUTTON TOP */
             .btn-modern {
+
                 width: 100%;
+                justify-content: center;
+                text-align: center;
+                padding: 10px 14px;
+                font-size: 13px;
+
             }
 
+            /* FILTER */
+            .table-card {
+                border-radius: 18px;
+                padding: 14px;
+            }
+
+            .form-label {
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+
+            .form-control {
+
+                font-size: 13px;
+                border-radius: 10px;
+                height: 42px;
+
+            }
+
+            /* BUTTON FILTER */
+            .col-md-4.d-flex.gap-2 {
+
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+                align-items: center;
+
+            }
+
+            .col-md-4.d-flex.gap-2 .btn {
+
+                width: auto;
+                padding: 8px 14px;
+                font-size: 12px;
+                border-radius: 10px;
+                white-space: nowrap;
+                margin-top: 7px;
+
+            }
+
+            /* TABLE */
+            .table-responsive {
+                overflow-x: auto;
+                border-radius: 14px;
+            }
+
+            .table {
+
+                min-width: 900px;
+
+            }
+
+            .table thead th {
+
+                font-size: 11px;
+                padding: 10px 8px;
+                white-space: nowrap;
+
+            }
+
+            .table tbody td {
+
+                font-size: 12px;
+                padding: 10px 8px;
+                white-space: nowrap;
+
+            }
+
+            /* BADGE */
+            .badge-modern {
+
+                font-size: 10px;
+                padding: 5px 8px;
+
+            }
+
+            /* ACTION BUTTON */
             .action-group {
-                justify-content: start;
+
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 6px;
+                justify-content: flex-start;
+                align-items: center;
+
+            }
+
+            .btn-action {
+
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+                font-size: 12px;
+                flex-shrink: 0;
+
+            }
+
+            /* BUTTON ISI CHECKSHEET */
+            .btn-mobile-modern {
+
+                font-size: 11px;
+                padding: 7px 10px;
+                border-radius: 10px;
+                white-space: nowrap;
+                flex-shrink: 0;
+
+            }
+
+            /* EMPTY */
+            .empty-box {
+
+                padding: 35px 15px;
+
+            }
+
+            .empty-box h5 {
+
+                font-size: 16px;
+
+            }
+
+            .empty-box p {
+
+                font-size: 12px;
+
             }
 
         }

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
     <style>
         body {
@@ -67,6 +67,30 @@
 
             .table-checksheet {
                 font-size: 12px;
+            }
+
+            /* BADGE MOBILE */
+            .badge-ok,
+            .badge-nok,
+            .badge-empty {
+
+                display: inline-block;
+                font-size: 10px;
+                padding: 3px 6px;
+                border-radius: 6px;
+                min-width: 42px;
+                text-align: center;
+                font-weight: 600;
+
+            }
+
+            /* TABLE MOBILE */
+            .table-checksheet td,
+            .table-checksheet th {
+
+                padding: 8px 5px;
+                vertical-align: middle !important;
+
             }
 
         }

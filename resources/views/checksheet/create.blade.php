@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
         body {
             background: #f4f6f9;
@@ -60,9 +60,127 @@
         }
 
         @media(max-width:768px) {
+
+            body {
+                font-size: 13px;
+            }
+
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            /* TITLE */
+            .page-title {
+                font-size: 22px;
+                line-height: 1.3;
+                margin-bottom: 18px !important;
+            }
+
+            /* CARD */
+            .main-card,
+            .section-card {
+
+                border-radius: 16px;
+                padding: 14px !important;
+
+            }
+
+            /* FORM */
+            .form-control {
+
+                height: 42px;
+                font-size: 13px;
+                border-radius: 10px;
+
+            }
+
+            label.fw-bold {
+
+                font-size: 13px;
+                margin-bottom: 6px;
+
+            }
+
+            /* ROW */
+            .row>div {
+
+                margin-bottom: 10px;
+
+            }
+
+            /* SECTION HEADER */
             .section-header {
                 flex-direction: column;
             }
+
+            /* ITEM */
+            .item-row {
+
+                padding: 12px;
+                border-radius: 14px;
+                background: #f8fafc;
+
+            }
+
+            /* BUTTON */
+            .btn {
+
+                border-radius: 10px;
+                font-size: 12px;
+                padding: 9px 12px;
+
+            }
+
+            .btn-add {
+
+                width: 100%;
+                margin-top: 5px;
+
+            }
+
+            .save-btn {
+
+                width: 100%;
+                font-size: 14px;
+                padding: 12px;
+
+            }
+
+            /* BUTTON HAPUS */
+            .btn-danger.w-100 {
+
+                width: 42px !important;
+                height: 42px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: auto;
+
+            }
+
+            /* DETAIL */
+            .detail-row {
+
+                background: white;
+                border-radius: 12px;
+                padding: 10px;
+                margin-bottom: 10px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+
+            }
+
+            /* TOMBOL AKTIVITAS */
+            .btn-info.btn-sm,
+            .btn-primary.btn-sm {
+
+                width: 100%;
+                margin-top: 8px;
+                padding: 10px;
+
+            }
+
         }
     </style>
 
@@ -82,18 +200,20 @@
 
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">Judul</label>
-                        <input type="text" name="judul" class="form-control" autocomplete="off" placeholder="Contoh: Forklift Harian"
-                            required>
+                        <input type="text" name="judul" class="form-control" autocomplete="off"
+                            placeholder="Contoh: Forklift Harian" required>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">Unit</label>
-                        <input type="text" name="unit" class="form-control" autocomplete="off" placeholder="Contoh: Forklift">
+                        <input type="text" name="unit" class="form-control" autocomplete="off"
+                            placeholder="Contoh: Forklift">
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">No Lambung</label>
-                        <input type="text" name="no_lambung" class="form-control" autocomplete="off" placeholder="Contoh: FL-001">
+                        <input type="text" name="no_lambung" class="form-control" autocomplete="off"
+                            placeholder="Contoh: FL-001">
                     </div>
 
                     <div class="col-md-4 mb-3">
@@ -295,7 +415,7 @@
 
             <div class="col-md-1">
                 <button type="button"
-                    class="btn btn-danger w-100"
+                    class="btn btn-danger "
                     onclick="removeSection(this)">
                     ✖
                 </button>
@@ -362,7 +482,7 @@
 
             <div class="col-md-1">
                 <button type="button"
-                    class="btn btn-danger w-100"
+                    class="btn btn-danger "
                     onclick="removeItem(this)">
                     ✖
                 </button>
@@ -433,7 +553,7 @@
         <div class="col-md-2">
 
             <button type="button"
-                class="btn btn-danger w-100"
+                class="btn btn-danger "
                 onclick="removeDetail(this)">
 
                 ✖
