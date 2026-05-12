@@ -429,6 +429,34 @@
             </div>
         </div>
 
+        {{-- CATATAN PROGRESS --}}
+        <div class="card mt-3">
+            <div class="card-body">
+
+                <h6 class="font-weight-bold text-danger mb-3">
+                    📌 Perhitungan Nilai Progress Monitoring
+                </h6>
+
+                <ul class="mb-0" style="line-height: 1.9;">
+                    <li>
+                        <b>Nota Dinas / PO / Purchase Order</b>
+                        = <span class="badge badge-primary">30%</span>
+                    </li>
+
+                    <li>
+                        <b>Purchase Request / PR / SPP</b>
+                        = <span class="badge badge-primary">10%</span>
+                    </li>
+
+                    <li>
+                        <b>Dokumen / Administrasi</b>
+                        = <span class="badge badge-primary">60%</span>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
         {{-- PAGINATION --}}
         <div class="mt-3 d-flex justify-content-center no-print">
             {{ $monitorings->links('pagination::bootstrap-4') }}
