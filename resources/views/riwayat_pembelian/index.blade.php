@@ -1,132 +1,458 @@
 @extends('layouts.main')
 @section('title', __('Riwayat Pembelian Komponen'))
 @section('custom-css')
-<link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @endsection
 <style>
-/* ================= ROOT MAROON ================= */
-:root {
+    /* ================= ROOT MAROON ================= */
+    :root {
         --maroon: #dc3545;
         --maroon-dark: #b02a37;
         --maroon-soft: #fdecee;
     }
 
-/* ================= GLOBAL ================= */
-body {
-    background-color: #f5f6f8;
-}
-
-/* ================= CARD ================= */
-.card {
-    border-radius: 14px;
-    border: none;
-    box-shadow: 0 8px 24px rgba(0,0,0,.08);
-    animation: fadeUp .5s ease both;
-}
-
-.card-header {
-    background-color: #fff;
-    border-bottom: 2px solid var(--maroon);
-}
-
-/* ================= TABLE ================= */
-.table {
-    font-size: 13px;
-}
-
-.table thead th {
-    background-color: var(--maroon);
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: .4px;
-    border: none;
-}
-
-.table tbody tr {
-    transition: all .2s ease;
-}
-
-.table tbody tr:hover {
-    background-color: var(--maroon-soft);
-    transform: scale(1.01);
-}
-
-/* ================= BUTTON ================= */
-.btn-primary {
-    background-color: var(--maroon);
-    border-color: var(--maroon);
-    border-radius: 20px;
-    transition: all .25s ease;
-}
-
-.btn-primary:hover {
-    background-color: var(--maroon-dark);
-    border-color: var(--maroon-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(139,29,44,.4);
-}
-
-/* ================= INPUT ================= */
-.form-control {
-    border-radius: 10px;
-    transition: box-shadow .2s ease, transform .15s ease;
-}
-
-.form-control:focus {
-    box-shadow: 0 0 0 .2rem rgba(139,29,44,.25);
-    transform: scale(1.02);
-}
-
-/* ================= MODAL ================= */
-.modal-content {
-    border-radius: 14px;
-    animation: zoomIn .3s ease;
-}
-
-/* ================= PAGINATION ================= */
-.page-item.active .page-link {
-    background-color: var(--maroon);
-    border-color: var(--maroon);
-}
-
-/* ================= ANIMATION ================= */
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(14px);
+    /* ================= GLOBAL ================= */
+    body {
+        background-color: #f5f6f8;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-@keyframes zoomIn {
-    from {
-        opacity: 0;
-        transform: scale(.92);
+    /* ================= CARD ================= */
+    .card {
+        border-radius: 14px;
+        border: none;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+        animation: fadeUp .5s ease both;
     }
-    to {
-        opacity: 1;
-        transform: scale(1);
+
+    .card-header {
+        background-color: #fff;
+        border-bottom: 2px solid var(--maroon);
     }
-}
+
+    /* ================= TABLE ================= */
+    .table {
+        font-size: 13px;
+    }
+
+    .table thead th {
+        background-color: var(--maroon);
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        border: none;
+    }
+
+    .table tbody tr {
+        transition: all .2s ease;
+    }
+
+    .table tbody tr:hover {
+        background-color: var(--maroon-soft);
+        transform: scale(1.01);
+    }
+
+    /* ================= BUTTON ================= */
+    .btn-primary {
+        background-color: var(--maroon);
+        border-color: var(--maroon);
+        border-radius: 20px;
+        transition: all .25s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--maroon-dark);
+        border-color: var(--maroon-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(139, 29, 44, .4);
+    }
+
+    /* ================= INPUT ================= */
+    .form-control {
+        border-radius: 10px;
+        transition: box-shadow .2s ease, transform .15s ease;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 .2rem rgba(139, 29, 44, .25);
+        transform: scale(1.02);
+    }
+
+    /* ================= MODAL ================= */
+    .modal-content {
+        border-radius: 14px;
+        animation: zoomIn .3s ease;
+    }
+
+    /* ================= PAGINATION ================= */
+    .page-item.active .page-link {
+        background-color: var(--maroon);
+        border-color: var(--maroon);
+    }
+
+    /* ================= ANIMATION ================= */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(14px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes zoomIn {
+        from {
+            opacity: 0;
+            transform: scale(.92);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+
+    /* ================= RESPONSIVE MOBILE ================= */
+    @media (max-width: 768px) {
+
+        /* CONTENT */
+        .content-wrapper,
+        .content,
+        .container-fluid {
+            padding-left: 6px !important;
+            padding-right: 6px !important;
+        }
+
+        /* CARD */
+        .card {
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+        .card-header {
+            padding: 10px;
+        }
+
+        /* TABLE */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 10px;
+        }
+
+        .table {
+            min-width: 1000px;
+            font-size: 11px;
+        }
+
+        .table thead th,
+        .table tbody td {
+            padding: 7px 6px !important;
+            vertical-align: middle !important;
+            white-space: nowrap;
+        }
+
+        /* FILTER */
+        .row.mb-3 .col-md-4 {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            font-size: 12px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        textarea.form-control {
+            height: auto;
+        }
+
+        /* BUTTON GLOBAL */
+        .btn {
+            border-radius: 8px !important;
+            font-size: 11px !important;
+            font-weight: 600;
+            padding: 6px 10px !important;
+            min-height: 34px;
+        }
+
+        /* BUTTON ICON */
+        .btn i {
+            font-size: 11px;
+        }
+
+        /* BUTTON XS */
+        .btn-xs {
+            width: 32px !important;
+            height: 32px !important;
+            padding: 0 !important;
+
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+
+            margin: 2px;
+            border-radius: 8px !important;
+        }
+
+        .btn-xs i {
+            font-size: 12px !important;
+        }
+
+        /* BUTTON MODAL */
+        .modal-footer .btn {
+            flex: 1;
+            height: 38px;
+            font-size: 12px !important;
+        }
+
+        /* MODAL */
+        .modal-dialog {
+            margin: 10px;
+            max-width: calc(100% - 20px);
+        }
+
+        .modal-content {
+            border-radius: 12px;
+        }
+
+        .modal-header {
+            padding: 10px 14px;
+        }
+
+        .modal-body {
+            padding: 12px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 10px;
+        }
+
+        .modal-title {
+            font-size: 16px;
+        }
+
+        /* FORM DI MODAL */
+        .form-group.row {
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .form-group.row label {
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .form-group.row .col-sm-4,
+        .form-group.row .col-sm-8 {
+            max-width: 100%;
+            flex: 100%;
+            padding: 0;
+        }
+
+        /* FIX INPUT DATE MOBILE */
+        input[type="date"] {
+            min-height: 38px !important;
+            font-size: 12px !important;
+            position: relative;
+            z-index: 10;
+            background: #fff;
+        }
+
+        /* FIX DATE CLICK DI MODAL */
+        .modal {
+            z-index: 1055 !important;
+        }
+
+        .modal-dialog {
+            pointer-events: auto !important;
+        }
+
+        .modal-content {
+            overflow: visible !important;
+        }
+
+        .modal-body {
+            overflow-x: hidden;
+        }
+
+        /* DETAIL TABLE */
+        #table-pr td,
+        #table-pr th {
+            white-space: nowrap;
+            font-size: 11px;
+        }
+
+        /* BUTTON FULL WIDTH MOBILE */
+        #button-update-pr,
+        #button-tambah-detail,
+        #clear-filter {
+            width: 100%;
+        }
+
+        /* PAGINATION */
+        .pagination {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .page-link {
+            padding: 6px 10px;
+            font-size: 11px;
+        }
+    }
+
+    /* ================= EXTRA SMALL DEVICE ================= */
+    @media (max-width: 576px) {
+
+        .table {
+            font-size: 10px;
+        }
+
+        .btn {
+            font-size: 10px !important;
+            padding: 5px 8px !important;
+        }
+
+        .btn-xs {
+            width: 28px !important;
+            height: 28px !important;
+        }
+
+        .btn-xs i {
+            font-size: 10px !important;
+        }
+
+        .modal-title {
+            font-size: 14px;
+        }
+
+        .form-control {
+            font-size: 11px;
+        }
+
+        .table thead th,
+        .table tbody td {
+            padding: 5px !important;
+        }
+    }
+
+    /* ================= FIX TABLE OVERFLOW MOBILE ================= */
+
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    /* CARD BODY */
+    .card-body {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    /* TABLE RESPONSIVE */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        display: block;
+    }
+
+    /* TABLE */
+    .table {
+        width: max-content !important;
+        min-width: 100% !important;
+        margin-bottom: 0;
+    }
+
+    /* BIAR KOLOM TIDAK MELEBAR */
+    .table th,
+    .table td {
+        white-space: nowrap;
+        vertical-align: middle !important;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+
+        .container-fluid {
+            padding-left: 5px !important;
+            padding-right: 5px !important;
+        }
+
+        .content-wrapper {
+            overflow-x: hidden;
+        }
+
+        .card {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .card-body {
+            padding: 8px !important;
+        }
+
+        .table-responsive {
+            border-radius: 10px;
+            overflow-x: auto !important;
+        }
+
+        .table {
+            min-width: 900px !important;
+            font-size: 11px !important;
+        }
+
+        .table th,
+        .table td {
+            padding: 6px !important;
+        }
+    }
+
+    /* EXTRA SMALL */
+    @media (max-width: 576px) {
+
+        .table {
+            min-width: 850px !important;
+            font-size: 10px !important;
+        }
+
+        .table th,
+        .table td {
+            padding: 5px !important;
+        }
+    }
 </style>
 
 @section('content')
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+            </div>
         </div>
     </div>
-</div>
-<section class="content">
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-tools">
-                    {{-- <form>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-tools">
+                        {{-- <form>
                             <div class="input-group input-group">
                                 <input type="text" class="form-control" name="q" placeholder="Search">
                                 <div class="input-group-append">
@@ -136,258 +462,258 @@ body {
                                 </div>
                             </div>
                         </form> --}}
-                </div>
-            </div>
-            <div class="card-body">
-
-
-                {{-- Filter by Nomor Po dan Tanggal --}}
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="filter-komat-no">Filter Kode Material</label>
-                            <input type="text" class="form-control" id="filter-komat-no"
-                                placeholder="Masukkan Kode Material">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="filter-barang-no">Filter Nama Barang</label>
-                            <input type="text" class="form-control" id="filter-barang-no"
-                                placeholder="Masukkan Nama Barang">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-secondary mt-4" id="clear-filter">Clear Filter</button>
                     </div>
                 </div>
-                {{-- End Filter by Nomor Po dan Tanggal --}}
+                <div class="card-body">
 
 
-                <table id="table" class="table table-sm table-bordered table-hover table-striped">
-                    <thead>
-                        <tr class="text-center">
-                            <th>No.</th>
-                            <th>No. PO</th> <!-- Kolom No. PO -->
-                            <th>Tanggal PO</th> <!-- Kolom Tanggal PO -->
-                            <th>{{ __('Kode Material') }}</th>
-                            <th>{{ __('Nama Barang') }}</th>
-                            <th>{{ __('Spesifikasi') }}</th>
-                            <th>{{ __('Nama Proyek') }}</th>
-                            <th>{{ __('Harga') }}</th>
-                            <th>{{ __('Vendor') }}</th>
+                    {{-- Filter by Nomor Po dan Tanggal --}}
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="filter-komat-no">Filter Kode Material</label>
+                                <input type="text" class="form-control" id="filter-komat-no"
+                                    placeholder="Masukkan Kode Material">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="filter-barang-no">Filter Nama Barang</label>
+                                <input type="text" class="form-control" id="filter-barang-no"
+                                    placeholder="Masukkan Nama Barang">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-secondary mt-4" id="clear-filter">Clear Filter</button>
+                        </div>
+                    </div>
+                    {{-- End Filter by Nomor Po dan Tanggal --}}
 
-                            {{-- <th>{{ __('Kode Material') }}</th>
+
+                    <table id="table" class="table table-sm table-bordered table-hover table-striped">
+                        <thead>
+                            <tr class="text-center">
+                                <th>No.</th>
+                                <th>No. PO</th> <!-- Kolom No. PO -->
+                                <th>Tanggal PO</th> <!-- Kolom Tanggal PO -->
+                                <th>{{ __('Kode Material') }}</th>
+                                <th>{{ __('Nama Barang') }}</th>
+                                <th>{{ __('Spesifikasi') }}</th>
+                                <th>{{ __('Nama Proyek') }}</th>
+                                <th>{{ __('Harga') }}</th>
+                                <th>{{ __('Vendor') }}</th>
+
+                                {{-- <th>{{ __('Kode Material') }}</th>
                             <th>{{ __('Nama Barang') }}</th>
                             <th>{{ __('Spesifikasi') }}</th>
                             <th>{{ __('QTY') }}</th>
                             <th>{{ __('Satuan') }}</th>
                             <th>{{ __('Nama Proyek') }}</th> --}}
-                            <!-- <th></th> -->
-                        </tr>
-                    <tbody>
-                        @forelse ($items as $d)
-                        <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
-                            <td class="text-center">{{ $d->no_po }}</td>
-                            <td class="text-center">
-                                {{ \Carbon\Carbon::parse($d->tanggal_po)->format('d/m/Y') }}
-                            </td>
-                            <td class="text-center">{{ $d->kode_material }}</td>
-                            <td class="text-center">{{ $d->uraian }}</td>
-                            <td class="text-center">{{ $d->spek ?? '-' }}</td>
-                            <td class="text-center">{{ $d->nama_proyek }}</td>
-                            <td class="text-center">
-                                Rp {{ number_format($d->harga, 0, ',', '.') }}
-                            </td>
-                            <td class="text-center">{{ $d->nama_vendor }}</td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="9" class="text-center">No Data</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                    <!-- <tbody>
-                            @forelse ($items as $key => $d)
-                                @php
-                                    $data = $d->toArray();
-                                    $detailPr = $data['detail_pr'][0] ?? null;
-                                @endphp
+                                <!-- <th></th> -->
+                            </tr>
+                        <tbody>
+                            @forelse ($items as $d)
                                 <tr>
-                                    <td class="text-center">{{ $items->firstItem() + $key }}</td>
+                                    <td class="text-center">{{ $loop->iteration }}</td>
+                                    <td class="text-center">{{ $d->no_po }}</td>
                                     <td class="text-center">
-                                        {{ $d->kode_material }}
+                                        {{ \Carbon\Carbon::parse($d->tanggal_po)->format('d/m/Y') }}
                                     </td>
+                                    <td class="text-center">{{ $d->kode_material }}</td>
+                                    <td class="text-center">{{ $d->uraian }}</td>
+                                    <td class="text-center">{{ $d->spek ?? '-' }}</td>
+                                    <td class="text-center">{{ $d->nama_proyek }}</td>
                                     <td class="text-center">
-                                        {{ $d->uraian }}
+                                        Rp {{ number_format($d->harga, 0, ',', '.') }}
                                     </td>
-                                    <td class="text-center">{{ $d->spek }}</td>
-                                    {{-- <td>{{ $d->kode_material }}</td>
+                                    <td class="text-center">{{ $d->nama_vendor }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="9" class="text-center">No Data</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                        <!-- <tbody>
+                                    @forelse ($items as $key => $d)
+                                        @php
+                                            $data = $d->toArray();
+                                            $detailPr = $data['detail_pr'][0] ?? null;
+                                        @endphp
+                                        <tr>
+                                            <td class="text-center">{{ $items->firstItem() + $key }}</td>
+                                            <td class="text-center">
+                                                {{ $d->kode_material }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ $d->uraian }}
+                                            </td>
+                                            <td class="text-center">{{ $d->spek }}</td>
+                                            {{-- <td>{{ $d->kode_material }}</td>
                                     <td>{{ $d->uraian }}</td>
                                     <td>{{ $d->spek }}</td>
                                     <td>{{ $d->qty }}</td>
                                     <td>{{ $d->satuan }}</td>
                                     <td>{{ $d->nama_proyek }}</td> --}}
-                                    <td class="text-center">
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 8)
-                                            @if (!$d->diterima)
-                                                {{-- <button title="Accept Barang" type="button" class="btn btn-success btn-xs"
+                                            <td class="text-center">
+                                                @if (Auth::user()->role == 0 || Auth::user()->role == 8)
+    @if (!$d->diterima)
+    {{-- <button title="Accept Barang" type="button" class="btn btn-success btn-xs"
                                                     data-toggle="modal" data-target="#accept-barang"
                                                     onclick="acceptBarang({{ json_encode($data) }})"><i
                                                         class="fas fa-check"></i></button> --}}
-                                            @else
-                                                <button title="Edit Barang" type="button" class="btn btn-primary btn-xs"
-                                                    data-toggle="modal" data-target="#edit-barang"
-                                                    onclick="editBarang({{ json_encode($data) }})"><i
-                                                        class="fas fa-edit"></i></button>
-                                            @endif
-                                        @endif
-                                        {{-- <button title="Edit Barang" type="button" class="btn btn-primary btn-xs"
+@else
+    <button title="Edit Barang" type="button" class="btn btn-primary btn-xs"
+                                                            data-toggle="modal" data-target="#edit-barang"
+                                                            onclick="editBarang({{ json_encode($data) }})"><i
+                                                                class="fas fa-edit"></i></button>
+    @endif
+    @endif
+                                                {{-- <button title="Edit Barang" type="button" class="btn btn-primary btn-xs"
                                             data-toggle="modal" data-target="#edit-barang"
                                             onclick="editBarang({{ json_encode($data) }})"><i
                                                 class="fas fa-list"></i></button> --}}
-                                        <button title="Lihat Detail" type="button" data-toggle="modal"
-                                            data-target="#detail-pr" class="btn-lihat btn btn-info btn-xs"
-                                            data-detail="{{ json_encode($data) }}"><i class="fas fa-list"></i></button>
-                                    </td>
-                                </tr>
+                                                <button title="Lihat Detail" type="button" data-toggle="modal"
+                                                    data-target="#detail-pr" class="btn-lihat btn btn-info btn-xs"
+                                                    data-detail="{{ json_encode($data) }}"><i class="fas fa-list"></i></button>
+                                            </td>
+                                        </tr>
                             @empty
-                                <tr class="text-center">
-                                    <td colspan="7">{{ __('No data.') }}</td>
-                                </tr>
-                            @endforelse
-                        </tbody> -->
-                </table>
-            </div>
-        </div>
-        <div>
-            {{ $items->links('pagination::bootstrap-4') }}
-        </div>
-    </div>
-    @if (Auth::user()->role == 0 || Auth::user()->role == 1 || Auth::user()->role == 12)
-    <div class="modal fade" id="accept-barang">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 id="modal-title" class="modal-title">{{ __('Konfirmasi Barang') }}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form role="form" id="save" action="{{ route('registrasi_barang.save') }}"
-                        method="post" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" id="id_barang" name="id_barang">
-                        <div class="form-group row">
-                            <label for="nama_barang"
-                                class="col-sm-4 col-form-label">{{ __('Nama Barang') }}</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="nama_barang" name="nama_barang"
-                                    readonly>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="keterangan" class="col-sm-4 col-form-label">{{ __('Keterangan') }}</label>
-                            <div class="col-sm-8">
-                                <textarea type="text" class="form-control" id="keterangan" name="keterangan"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default"
-                        data-dismiss="modal">{{ __('Cancel') }}</button>
-                    <button id="button-save" type="button" class="btn btn-primary"
-                        onclick="$('#save').submit();">{{ __('Simpan') }}</button>
+                                        <tr class="text-center">
+                                            <td colspan="7">{{ __('No data.') }}</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody> -->
+                    </table>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="modal fade" id="edit-barang">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 id="modal-title" class="modal-title">{{ __('Konfirmasi Barang') }}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form role="form" id="edit-registrasi-btn" action="{{ route('registrasi_barang.edit') }}"
-                        method="post" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" id="id_barang" name="id_barang">
-                        <div class="form-group row">
-                            <label for="nama_barang"
-                                class="col-sm-4 col-form-label">{{ __('Nama Barang') }}</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="nama_barang" name="nama_barang"
-                                    readonly>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="keterangan"
-                                class="col-sm-4 col-form-label">{{ __('Keterangan') }}</label>
-                            <div class="col-sm-8">
-                                <textarea type="text" class="form-control" id="keterangan" name="keterangan"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default"
-                        data-dismiss="modal">{{ __('Cancel') }}</button>
-                    <button id="button-save" type="button" class="btn btn-primary"
-                        onclick="$('#edit-registrasi-btn').submit();">{{ __('Simpan') }}</button>
-                </div>
+            <div>
+                {{ $items->links('pagination::bootstrap-4') }}
             </div>
         </div>
-    </div>
-
-    <div class="modal fade" id="detail-pr">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 id="modal-title" class="modal-title">{{ __('Detail Riwayat Pembelian Barang') }}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <div class="row">
-                            <form id="cetak-pr" method="GET" action="{{ route('cetak_pr') }}"
-                                target="_blank">
-                                <input type="hidden" name="id" id="id">
-                            </form>
-                            <div class="col-12" id="container-form">
-                                {{-- <button id="button-cetak-pr" type="button" class="btn btn-primary"
-                                            onclick="document.getElementById('cetak-pr').submit();">{{ __('Cetak') }}</button> --}}
-                                <br>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead style="text-align: center">
-                                            <th>No. PO</th> <!-- Kolom No. PO -->
-                                            <th>Tanggal PO</th> <!-- Kolom Tanggal PO -->
-                                            <th>{{ __('Kode Material') }}</th>
-                                            <th>{{ __('Nama Barang') }}</th>
-                                            <th>{{ __('Spesifikasi') }}</th>
-                                            <th>{{ __('Nama Proyek') }}</th>
-                                            <th>{{ __('Harga') }}</th>
-                                            <th>{{ __('Vendor') }}</th>
-                                        </thead>
-                                        <tbody id="table-pr">
-                                        </tbody>
-                                    </table>
+        @if (Auth::user()->role == 0 || Auth::user()->role == 1 || Auth::user()->role == 12)
+            <div class="modal fade" id="accept-barang">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 id="modal-title" class="modal-title">{{ __('Konfirmasi Barang') }}</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="save" action="{{ route('registrasi_barang.save') }}"
+                                method="post" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" id="id_barang" name="id_barang">
+                                <div class="form-group row">
+                                    <label for="nama_barang"
+                                        class="col-sm-4 col-form-label">{{ __('Nama Barang') }}</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="nama_barang" name="nama_barang"
+                                            readonly>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="form-group row">
+                                    <label for="keterangan" class="col-sm-4 col-form-label">{{ __('Keterangan') }}</label>
+                                    <div class="col-sm-8">
+                                        <textarea type="text" class="form-control" id="keterangan" name="keterangan"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{{ __('Cancel') }}</button>
+                            <button id="button-save" type="button" class="btn btn-primary"
+                                onclick="$('#save').submit();">{{ __('Simpan') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="edit-barang">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 id="modal-title" class="modal-title">{{ __('Konfirmasi Barang') }}</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="edit-registrasi-btn" action="{{ route('registrasi_barang.edit') }}"
+                                method="post" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" id="id_barang" name="id_barang">
+                                <div class="form-group row">
+                                    <label for="nama_barang"
+                                        class="col-sm-4 col-form-label">{{ __('Nama Barang') }}</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="nama_barang" name="nama_barang"
+                                            readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="keterangan"
+                                        class="col-sm-4 col-form-label">{{ __('Keterangan') }}</label>
+                                    <div class="col-sm-8">
+                                        <textarea type="text" class="form-control" id="keterangan" name="keterangan"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{{ __('Cancel') }}</button>
+                            <button id="button-save" type="button" class="btn btn-primary"
+                                onclick="$('#edit-registrasi-btn').submit();">{{ __('Simpan') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                            <div class="col-0 d-none" id="container-product">
-                                <div class="card">
-                                    {{-- <div class="card-body">
+            <div class="modal fade" id="detail-pr">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 id="modal-title" class="modal-title">{{ __('Detail Riwayat Pembelian Barang') }}</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <div class="row">
+                                    <form id="cetak-pr" method="GET" action="{{ route('cetak_pr') }}"
+                                        target="_blank">
+                                        <input type="hidden" name="id" id="id">
+                                    </form>
+                                    <div class="col-12" id="container-form">
+                                        {{-- <button id="button-cetak-pr" type="button" class="btn btn-primary"
+                                            onclick="document.getElementById('cetak-pr').submit();">{{ __('Cetak') }}</button> --}}
+                                        <br>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead style="text-align: center">
+                                                    <th>No. PO</th> <!-- Kolom No. PO -->
+                                                    <th>Tanggal PO</th> <!-- Kolom Tanggal PO -->
+                                                    <th>{{ __('Kode Material') }}</th>
+                                                    <th>{{ __('Nama Barang') }}</th>
+                                                    <th>{{ __('Spesifikasi') }}</th>
+                                                    <th>{{ __('Nama Proyek') }}</th>
+                                                    <th>{{ __('Harga') }}</th>
+                                                    <th>{{ __('Vendor') }}</th>
+                                                </thead>
+                                                <tbody id="table-pr">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-0 d-none" id="container-product">
+                                        <div class="card">
+                                            {{-- <div class="card-body">
                                                 
                                                 <div class="custom-control custom-radio">
                                                     <input type="radio" id="customRadio1" name="ptype"
@@ -412,49 +738,51 @@ body {
                                                     </div>
                                                 </div>
                                             </div> --}}
-                                </div>
-                                <div id="form" class="card">
-                                    <div class="card-body">
-                                        <form role="form" id="stock-update" method="post"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" id="id_pr" name="id_pr">
-                                            <input type="hidden" id="id_po" name="id_po">
-                                            <input type="hidden" id="type" name="type">
-                                            <input type="hidden" id="no_po" name="no_po">
-                                            <input type="hidden" id="nama_proyek" name="nama_proyek">
-                                            <input type="hidden" id="proyek_id_val" name="proyek_id_val">
-                                            <div class="form-group row" style="display: none">
-                                                <label for="no_nota"
-                                                    class="col-sm-4 col-form-label">{{ __('QTY') }}</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="qtyp"
-                                                        name="qtyp">
-                                                </div>
+                                        </div>
+                                        <div id="form" class="card">
+                                            <div class="card-body">
+                                                <form role="form" id="stock-update" method="post"
+                                                    enctype="multipart/form-data">
+                                                    @csrf
+                                                    <input type="hidden" id="id_pr" name="id_pr">
+                                                    <input type="hidden" id="id_po" name="id_po">
+                                                    <input type="hidden" id="type" name="type">
+                                                    <input type="hidden" id="no_po" name="no_po">
+                                                    <input type="hidden" id="nama_proyek" name="nama_proyek">
+                                                    <input type="hidden" id="proyek_id_val" name="proyek_id_val">
+                                                    <div class="form-group row" style="display: none">
+                                                        <label for="no_nota"
+                                                            class="col-sm-4 col-form-label">{{ __('QTY') }}</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="qtyp"
+                                                                name="qtyp">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="no_nota"
+                                                            class="col-sm-4 col-form-label">{{ __('Sudah Diterima') }}</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="sdh"
+                                                                name="sdh">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="no_nota"
+                                                            class="col-sm-4 col-form-label">{{ __('Belum Diterima') }}</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="blm_sdh"
+                                                                name="blm_sdh">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <button id="button-tambah-detail" type="button"
+                                                    class="btn btn-info w-100"
+                                                    onclick="hilang()">{{ __('kembali') }}</button>
+                                                <br><br>
+                                                <button id="button-update-pr" type="button"
+                                                    class="btn btn-primary w-100">{{ __('Tambahkan') }}</button>
                                             </div>
-                                            <div class="form-group row">
-                                                <label for="no_nota"
-                                                    class="col-sm-4 col-form-label">{{ __('Sudah Diterima') }}</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="sdh"
-                                                        name="sdh">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="no_nota"
-                                                    class="col-sm-4 col-form-label">{{ __('Belum Diterima') }}</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="blm_sdh"
-                                                        name="blm_sdh">
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <button id="button-tambah-detail" type="button"
-                                            class="btn btn-info w-100"
-                                            onclick="hilang()">{{ __('kembali') }}</button>
-                                        <br><br>
-                                        <button id="button-update-pr" type="button"
-                                            class="btn btn-primary w-100">{{ __('Tambahkan') }}</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -462,348 +790,349 @@ body {
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    @endif
-</section>
+        @endif
+    </section>
 @endsection
 @section('custom-js')
-<script>
-    function resetForm() {
-        $('#id_barang').val('');
-        $('#nama_barang').val('');
-        $('#keterangan').val('');
-    }
-
-    function acceptBarang(data) {
-        resetForm();
-        console.log(data);
-        //find accept-barang modal then find #id_barang, #nama_barang
-        // $('#id_barang').val(data.id);
-        // $('#nama_barang').val(data.uraian);
-        $('#accept-barang').find('#id_barang').val(data.id);
-        $('#accept-barang').find('#nama_barang').val(data.uraian);
-    }
-
-
-
-    //Filter by Nomor dan tgl PO
-    $(document).ready(function() {
-        $('#clear-filter').on('click', function() {
-            $('#filter-komat-no, #filter-barang-no').val('');
-            filterTable();
-        });
-
-        $('#filter-komat-no, #filter-barang-no').on('keyup change', function() {
-            filterTable();
-        });
-
-        function filterTable() {
-            var filterNoKOMAT = $('#filter-komat-no').val().toUpperCase();
-            var filterNoBARANG = $('#filter-barang-no').val().toUpperCase();
-            // var filterDatePR = $('#filter-pr-date').val();
-
-            $('table tbody tr').each(function() {
-                var noKOMAT = $(this).find('td:nth-child(4)').text().toUpperCase();
-                var noBARANG = $(this).find('td:nth-child(5)').text().toUpperCase();
-                var id = $(this).find('td:nth-child(1)')
-                    .text(); // Ubah indeks kolom ke indeks ID PO jika perlu
-
-
-                if ((noKOMAT.indexOf(filterNoKOMAT) > -1 || filterNoKOMAT === '') &&
-                    (noBARANG.indexOf(filterNoBARANG) > -1 || filterNoBARANG === '')) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
+    <script>
+        function resetForm() {
+            $('#id_barang').val('');
+            $('#nama_barang').val('');
+            $('#keterangan').val('');
         }
-    });
 
-    //End Filter by Nomor dan tgl PO
+        function acceptBarang(data) {
+            resetForm();
+            console.log(data);
+            //find accept-barang modal then find #id_barang, #nama_barang
+            // $('#id_barang').val(data.id);
+            // $('#nama_barang').val(data.uraian);
+            $('#accept-barang').find('#id_barang').val(data.id);
+            $('#accept-barang').find('#nama_barang').val(data.uraian);
+        }
 
 
 
+        //Filter by Nomor dan tgl PO
+        $(document).ready(function() {
+            $('#clear-filter').on('click', function() {
+                $('#filter-komat-no, #filter-barang-no').val('');
+                filterTable();
+            });
 
-    function editBarang(data) {
-        $('#edit-barang').find('#modal-title').text("Edit Konfirmasi Barang");
-        resetForm();
-        console.log(data);
-        //find edit-barang modal then find #id_barang, #nama_barang
-        // $('#id_barang').val(data.id);
-        // $('#nama_barang').val(data.uraian);
-        // $('#keterangan').val(data.keterangan);
-        $('#edit-barang').find('#id_barang').val(data.id);
-        $('#edit-barang').find('#nama_barang').val(data.uraian);
-        $('#edit-barang').find('#keterangan').val(data.keterangan);
-    }
-    $('#detail-pr').on('show.bs.modal', function(event) {
-        $('#detail-pr').find('#container-product').removeClass('col-5');
-        $('#detail-pr').find('#container-product').addClass('d-none');
-        $('#detail-pr').find('#container-form').addClass('col-12');
-        $('#detail-pr').find('#container-form').removeClass('col-7');
-        $('#button-tambah-detail').text('Kembali');
-        var button = $(event.relatedTarget);
-        var data = button.data('detail');
-        // console.log(data);
-        lihatPR(data);
-    });
+            $('#filter-komat-no, #filter-barang-no').on('keyup change', function() {
+                filterTable();
+            });
 
-    function hilang() {
-        $('#detail-pr').find('#container-product').removeClass('col-5');
-        $('#detail-pr').find('#container-product').addClass('d-none');
-        $('#detail-pr').find('#container-form').addClass('col-12');
-        $('#detail-pr').find('#container-form').removeClass('col-7');
-    }
+            function filterTable() {
+                var filterNoKOMAT = $('#filter-komat-no').val().toUpperCase();
+                var filterNoBARANG = $('#filter-barang-no').val().toUpperCase();
+                // var filterDatePR = $('#filter-pr-date').val();
 
-    function editRow(id, uraian, spek, id_pr, qtyp, terima_eks, belum_terima_eks, no_po, nama_proyek, id_po) {
-        console.log(id, uraian, spek, id_pr, qtyp, terima_eks, belum_terima_eks, no_po, nama_proyek, id_po);
-        resetForm();
-        $('#modal-title').text("Edit Detail");
-        $('#button-update-pr').text("Simpan");
-        $('#button-update-pr').off('click');
-        $('#button-update-pr').on('click', function() {
-            PRupdate();
+                $('table tbody tr').each(function() {
+                    var noKOMAT = $(this).find('td:nth-child(4)').text().toUpperCase();
+                    var noBARANG = $(this).find('td:nth-child(5)').text().toUpperCase();
+                    var id = $(this).find('td:nth-child(1)')
+                        .text(); // Ubah indeks kolom ke indeks ID PO jika perlu
+
+
+                    if ((noKOMAT.indexOf(filterNoKOMAT) > -1 || filterNoKOMAT === '') &&
+                        (noBARANG.indexOf(filterNoBARANG) > -1 || filterNoBARANG === '')) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
         });
 
-        $('#id').val(id);
-        $('#no_po').val(no_po);
-        $('#nama_proyek').val(nama_proyek);
-        $('#pname').val(uraian) // Mengosongkan nilai input dengan ID 'kode_material'
-        $('#id_pr').val(id_pr); // Mengosongkan nilai input dengan ID 'desc_material'
-        $('#id_po').val(id_po); // Mengosongkan nilai input dengan ID 'desc_material'
-        $('#qtyp').val(qtyp); // Mengosongkan nilai input dengan ID 'spek'
-        $('#sdh').val(terima_eks); // Mengosongkan nilai input dengan ID 'spek'
-        $('#blm_sdh').val(belum_terima_eks); // Mengosongkan nilai input dengan ID 'spek'
-        // $('#lampiran').val(lampiran); // Mengosongkan nilai input dengan ID 'p3'
-        // $('#lampiran-label').text(lampiran);
+        //End Filter by Nomor dan tgl PO
 
-        if ($('#detail-pr').find('#container-product').hasClass('d-none')) {
-            $('#detail-pr').find('#container-product').removeClass('d-none');
-            $('#detail-pr').find('#container-product').addClass('col-5');
-            $('#detail-pr').find('#container-form').removeClass('col-12');
-            $('#detail-pr').find('#container-form').addClass('col-7');
-            $('#button-tambah-produk').text('Kembali');
-        } else {
+
+
+
+        function editBarang(data) {
+            $('#edit-barang').find('#modal-title').text("Edit Konfirmasi Barang");
+            resetForm();
+            console.log(data);
+            //find edit-barang modal then find #id_barang, #nama_barang
+            // $('#id_barang').val(data.id);
+            // $('#nama_barang').val(data.uraian);
+            // $('#keterangan').val(data.keterangan);
+            $('#edit-barang').find('#id_barang').val(data.id);
+            $('#edit-barang').find('#nama_barang').val(data.uraian);
+            $('#edit-barang').find('#keterangan').val(data.keterangan);
+        }
+        $('#detail-pr').on('show.bs.modal', function(event) {
             $('#detail-pr').find('#container-product').removeClass('col-5');
             $('#detail-pr').find('#container-product').addClass('d-none');
             $('#detail-pr').find('#container-form').addClass('col-12');
             $('#detail-pr').find('#container-form').removeClass('col-7');
-            $('#button-tambah-produk').text('Tambah Item Detail');
-            clearForm();
-        }
-    }
+            $('#button-tambah-detail').text('Kembali');
+            var button = $(event.relatedTarget);
+            var data = button.data('detail');
+            // console.log(data);
+            lihatPR(data);
+        });
 
-
-    function lihatPR(data) {
-        console.table(data)
-        $('#id').val(data.id);
-        $('#no_surat').text(data.no_pr);
-        $('#pr_id').val(data.id);
-        $('#table-pr').empty();
-        // alert($('#id').val());
-
-        //#button-tambah-produk disabled when editable is false
-        if (data.editable == 0) {
-            $('#button-tambah-produk').attr('disabled', true);
-        } else {
-            $('#button-tambah-produk').attr('disabled', false);
+        function hilang() {
+            $('#detail-pr').find('#container-product').removeClass('col-5');
+            $('#detail-pr').find('#container-product').addClass('d-none');
+            $('#detail-pr').find('#container-form').addClass('col-12');
+            $('#detail-pr').find('#container-form').removeClass('col-7');
         }
 
-        $.ajax({
-            url: "{{ url('riwayat_barang') }}" + "/" + data.kode_material,
-            type: "GET",
-            dataType: "json",
-            beforeSend: function() {
-                $('#table-pr').append('<tr><td colspan="15" class="text-center">Loading...</td></tr>');
-                $('#button-cetak-lppb').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
-                $('#button-cetak-lppb').attr('disabled', true);
-            },
-            success: function(data) {
-                console.log(data);
-                $('#button-cetak-lppb').html('<i class="fas fa-print"></i> Cetak');
-                $('#button-cetak-lppb').attr('disabled', false);
-                var no = 1;
-                if (data.items.length == 0) {
-                    $('#table-pr').empty();
-                    $('#table-pr').append(
-                        '<tr><td colspan="15" class="text-center">Tidak ada produk</td></tr>'
-                    ); // Tambahkan pesan bahwa tidak ada produk
-                } else {
-                    $('#table-pr').empty();
-                    $.each(data.items, function(key, value) {
-                        var rowIndex = key + 1;
+        function editRow(id, uraian, spek, id_pr, qtyp, terima_eks, belum_terima_eks, no_po, nama_proyek, id_po) {
+            console.log(id, uraian, spek, id_pr, qtyp, terima_eks, belum_terima_eks, no_po, nama_proyek, id_po);
+            resetForm();
+            $('#modal-title').text("Edit Detail");
+            $('#button-update-pr').text("Simpan");
+            $('#button-update-pr').off('click');
+            $('#button-update-pr').on('click', function() {
+                PRupdate();
+            });
 
-                        let harga, vendor
-                        if (value.detail_po) {
-                            harga = value.detail_po.harga
-                            vendor = value.vendor.nama
-                        } else {
-                            harga = "-"
-                            vendor = "-"
-                        }
+            $('#id').val(id);
+            $('#no_po').val(no_po);
+            $('#nama_proyek').val(nama_proyek);
+            $('#pname').val(uraian) // Mengosongkan nilai input dengan ID 'kode_material'
+            $('#id_pr').val(id_pr); // Mengosongkan nilai input dengan ID 'desc_material'
+            $('#id_po').val(id_po); // Mengosongkan nilai input dengan ID 'desc_material'
+            $('#qtyp').val(qtyp); // Mengosongkan nilai input dengan ID 'spek'
+            $('#sdh').val(terima_eks); // Mengosongkan nilai input dengan ID 'spek'
+            $('#blm_sdh').val(belum_terima_eks); // Mengosongkan nilai input dengan ID 'spek'
+            // $('#lampiran').val(lampiran); // Mengosongkan nilai input dengan ID 'p3'
+            // $('#lampiran-label').text(lampiran);
 
-                        // $('#table-pr').append('<tr><td>' + value
-                        //     .kode_material + '</td><td>' + value.uraian + '</td><td>' +
-                        //     value
-                        //     .spek + '</td><td>' + value.proyek + '</td><td>' + harga + '</td><td>' + 
-                        //     vendor + '</td></tr>');
-
-                        $('#table-pr').append('<tr>' +
-                            '<td>' + value.no_po + '</td>' + // Tampilkan no_po
-                            '<td>' + value.tanggal_po + '</td>' + // Tampilkan tanggal_po
-                            '<td>' + value.kode_material + '</td>' +
-                            '<td>' + value.uraian + '</td>' +
-                            '<td>' + value.spek + '</td>' +
-                            '<td>' + value.proyek + '</td>' +
-                            '<td>' + value.detail_po.harga + '</td>' +
-                            '<td>' + vendor + '</td>' +
-                            '</tr>');
-                    });
-                }
+            if ($('#detail-pr').find('#container-product').hasClass('d-none')) {
+                $('#detail-pr').find('#container-product').removeClass('d-none');
+                $('#detail-pr').find('#container-product').addClass('col-5');
+                $('#detail-pr').find('#container-form').removeClass('col-12');
+                $('#detail-pr').find('#container-form').addClass('col-7');
+                $('#button-tambah-produk').text('Kembali');
+            } else {
+                $('#detail-pr').find('#container-product').removeClass('col-5');
+                $('#detail-pr').find('#container-product').addClass('d-none');
+                $('#detail-pr').find('#container-form').addClass('col-12');
+                $('#detail-pr').find('#container-form').removeClass('col-7');
+                $('#button-tambah-produk').text('Tambah Item Detail');
+                clearForm();
             }
-        });
-    }
+        }
 
 
+        function lihatPR(data) {
+            console.table(data)
+            $('#id').val(data.id);
+            $('#no_surat').text(data.no_pr);
+            $('#pr_id').val(data.id);
+            $('#table-pr').empty();
+            // alert($('#id').val());
 
-    function clearForm() {
-        $('#pname').val("");
-        $('#stock').val("");
-        $('#spek').val("");
-        $('#satuan').val("");
-        $('#keterangan').val("");
-        $('#waktu').val("");
-        $('#pcode').val("");
-        $('#material_kode').val("");
-        $('#lampiran').val("");
-        // $('#form').hide();
-    }
-
-    function PRupdate() {
-        const id = $('#id').val()
-        var formData = new FormData();
-        formData.append('_token', '{{ csrf_token() }}');
-        formData.append('id', id);
-        formData.append('no_po', $('#no_po').val());
-        formData.append('nama_proyek', $('#nama_proyek').val());
-        formData.append('id_pr', $('#id_pr').val());
-        formData.append('id_po', $('#id_po').val());
-        formData.append('penerimaan', $('#qtyp').val());
-        formData.append('sdh', $('#sdh').val());
-        formData.append('blm_sdh', $('#blm_sdh').val());
-        console.log(formData);
-        updateData(formData);
-    }
-
-    function updateData(formData) {
-        $.ajax({
-            url: "{{ url('products/lppb/editpenerimaan') }}", // Ganti URL sesuai dengan endpoint untuk operasi insert
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            beforeSend: function() {
-                $('#table-pr').append('<tr><td colspan="15" class="text-center">Loading...</td></tr>');
-                $('#button-cetak-lppb').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
-                $('#button-cetak-lppb').attr('disabled', true);
-            },
-            success: function(data) {
-                console.log(data);
-                $('#id').val(data.pr.id);
-                $('#button-cetak-pr').html('<i class="fas fa-print"></i> Cetak');
-                $('#button-cetak-pr').attr('disabled', false);
-                if ($('#detail-pr').find('#container-product').hasClass('d-none')) {
-                    $('#detail-pr').find('#container-product').removeClass('d-none');
-                    $('#detail-pr').find('#container-product').addClass('col-5');
-                    $('#detail-pr').find('#container-form').removeClass('col-12');
-                    $('#detail-pr').find('#container-form').addClass('col-7');
-                    $('#button-tambah-produk').text('Kembali');
-                } else {
-                    $('#detail-pr').find('#container-product').removeClass('col-5');
-                    $('#detail-pr').find('#container-product').addClass('d-none');
-                    $('#detail-pr').find('#container-form').addClass('col-12');
-                    $('#detail-pr').find('#container-form').removeClass('col-7');
-                    $('#button-tambah-produk').text('Tambah Item Detail');
-                    clearForm();
-                }
-                var no = 1;
-                if (data.pr.details.length == 0) {
-                    $('#table-pr').empty();
-                    $('#table-pr').append(
-                        '<tr><td colspan="15" class="text-center">Tidak ada produk</td></tr>'
-                    ); // Tambahkan pesan bahwa tidak ada produk
-                } else {
-                    $('#table-pr').empty();
-                    $.each(data.pr.details, function(key, value) {
-                        console.log(value)
-                        var rowIndex = key + 1;
-                        var qtyp, ok, nok;
-                        if (!value.penerimaan) {
-                            qtyp = '-';
-                        } else {
-                            qtyp = value.penerimaan
-                        }
-                        if (!value.hasil_ok) {
-                            ok = '-';
-                        } else {
-                            ok = value.hasil_ok
-                        }
-                        if (!value.hasil_nok) {
-                            nok = '-';
-                        } else {
-                            nok = value.hasil_nok
-                        }
-                        if (!value.diterima_eks) {
-                            terima_eks = '-';
-                        } else {
-                            terima_eks = value.diterima_eks
-                        }
-                        if (!value.belum_diterima_eks) {
-                            belum_terima_eks = '-';
-                        } else {
-                            belum_terima_eks = value.belum_diterima_eks
-                        }
-                        var editButton =
-                            '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
-                            value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
-                            value.uraian + '\', \'' + value
-                            .spek + '\', \'' + value.id_pr +
-                            '\', \'' + qtyp + '\', \'' + terima_eks + '\', \'' + belum_terima_eks +
-                            '\',  \'' + data.no_po + '\',  \'' + data.nama_proyek +
-                            '\',  \'' + value.id_po +
-                            '\',)"><i class="fas fa-edit"></i></button>';
-                        $('#table-pr').append('<tr><td>' + data.pr.no_pr + '</td><td>' + data
-                            .no_po + '</td><td>' + value.kode_material + '</td><td>' +
-                            value
-                            .uraian + '</td><td>' + value.spek + '</td><td>' + value
-                            .qty + '</td><td>' +
-                            data.nama_proyek + '</td><td>' + terima_eks + '</td><td>' +
-                            belum_terima_eks +
-                            '</td><td>' + editButton + '</td></tr>');
-                    });
-                }
+            //#button-tambah-produk disabled when editable is false
+            if (data.editable == 0) {
+                $('#button-tambah-produk').attr('disabled', true);
+            } else {
+                $('#button-tambah-produk').attr('disabled', false);
             }
-        });
-    }
-</script>
-<script src="/plugins/toastr/toastr.min.js"></script>
-@if (Session::has('success'))
-<script>
-    toastr.success('{!! Session::get('
-        success ') !!}');
-</script>
-@endif
-@if (Session::has('error'))
-<script>
-    toastr.error('{!! Session::get('
-        error ') !!}');
-</script>
-@endif
-@if (!empty($errors->all()))
-<script>
-    toastr.error('{!! implode('
-            ', $errors->all(' < li >: message < /li>')) !!}');
-</script>
-@endif
+
+            $.ajax({
+                url: "{{ url('riwayat_barang') }}" + "/" + data.kode_material,
+                type: "GET",
+                dataType: "json",
+                beforeSend: function() {
+                    $('#table-pr').append('<tr><td colspan="15" class="text-center">Loading...</td></tr>');
+                    $('#button-cetak-lppb').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+                    $('#button-cetak-lppb').attr('disabled', true);
+                },
+                success: function(data) {
+                    console.log(data);
+                    $('#button-cetak-lppb').html('<i class="fas fa-print"></i> Cetak');
+                    $('#button-cetak-lppb').attr('disabled', false);
+                    var no = 1;
+                    if (data.items.length == 0) {
+                        $('#table-pr').empty();
+                        $('#table-pr').append(
+                            '<tr><td colspan="15" class="text-center">Tidak ada produk</td></tr>'
+                        ); // Tambahkan pesan bahwa tidak ada produk
+                    } else {
+                        $('#table-pr').empty();
+                        $.each(data.items, function(key, value) {
+                            var rowIndex = key + 1;
+
+                            let harga, vendor
+                            if (value.detail_po) {
+                                harga = value.detail_po.harga
+                                vendor = value.vendor.nama
+                            } else {
+                                harga = "-"
+                                vendor = "-"
+                            }
+
+                            // $('#table-pr').append('<tr><td>' + value
+                            //     .kode_material + '</td><td>' + value.uraian + '</td><td>' +
+                            //     value
+                            //     .spek + '</td><td>' + value.proyek + '</td><td>' + harga + '</td><td>' + 
+                            //     vendor + '</td></tr>');
+
+                            $('#table-pr').append('<tr>' +
+                                '<td>' + value.no_po + '</td>' + // Tampilkan no_po
+                                '<td>' + value.tanggal_po + '</td>' + // Tampilkan tanggal_po
+                                '<td>' + value.kode_material + '</td>' +
+                                '<td>' + value.uraian + '</td>' +
+                                '<td>' + value.spek + '</td>' +
+                                '<td>' + value.proyek + '</td>' +
+                                '<td>' + value.detail_po.harga + '</td>' +
+                                '<td>' + vendor + '</td>' +
+                                '</tr>');
+                        });
+                    }
+                }
+            });
+        }
+
+
+
+        function clearForm() {
+            $('#pname').val("");
+            $('#stock').val("");
+            $('#spek').val("");
+            $('#satuan').val("");
+            $('#keterangan').val("");
+            $('#waktu').val("");
+            $('#pcode').val("");
+            $('#material_kode').val("");
+            $('#lampiran').val("");
+            // $('#form').hide();
+        }
+
+        function PRupdate() {
+            const id = $('#id').val()
+            var formData = new FormData();
+            formData.append('_token', '{{ csrf_token() }}');
+            formData.append('id', id);
+            formData.append('no_po', $('#no_po').val());
+            formData.append('nama_proyek', $('#nama_proyek').val());
+            formData.append('id_pr', $('#id_pr').val());
+            formData.append('id_po', $('#id_po').val());
+            formData.append('penerimaan', $('#qtyp').val());
+            formData.append('sdh', $('#sdh').val());
+            formData.append('blm_sdh', $('#blm_sdh').val());
+            console.log(formData);
+            updateData(formData);
+        }
+
+        function updateData(formData) {
+            $.ajax({
+                url: "{{ url('products/lppb/editpenerimaan') }}", // Ganti URL sesuai dengan endpoint untuk operasi insert
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $('#table-pr').append('<tr><td colspan="15" class="text-center">Loading...</td></tr>');
+                    $('#button-cetak-lppb').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+                    $('#button-cetak-lppb').attr('disabled', true);
+                },
+                success: function(data) {
+                    console.log(data);
+                    $('#id').val(data.pr.id);
+                    $('#button-cetak-pr').html('<i class="fas fa-print"></i> Cetak');
+                    $('#button-cetak-pr').attr('disabled', false);
+                    if ($('#detail-pr').find('#container-product').hasClass('d-none')) {
+                        $('#detail-pr').find('#container-product').removeClass('d-none');
+                        $('#detail-pr').find('#container-product').addClass('col-5');
+                        $('#detail-pr').find('#container-form').removeClass('col-12');
+                        $('#detail-pr').find('#container-form').addClass('col-7');
+                        $('#button-tambah-produk').text('Kembali');
+                    } else {
+                        $('#detail-pr').find('#container-product').removeClass('col-5');
+                        $('#detail-pr').find('#container-product').addClass('d-none');
+                        $('#detail-pr').find('#container-form').addClass('col-12');
+                        $('#detail-pr').find('#container-form').removeClass('col-7');
+                        $('#button-tambah-produk').text('Tambah Item Detail');
+                        clearForm();
+                    }
+                    var no = 1;
+                    if (data.pr.details.length == 0) {
+                        $('#table-pr').empty();
+                        $('#table-pr').append(
+                            '<tr><td colspan="15" class="text-center">Tidak ada produk</td></tr>'
+                        ); // Tambahkan pesan bahwa tidak ada produk
+                    } else {
+                        $('#table-pr').empty();
+                        $.each(data.pr.details, function(key, value) {
+                            console.log(value)
+                            var rowIndex = key + 1;
+                            var qtyp, ok, nok;
+                            if (!value.penerimaan) {
+                                qtyp = '-';
+                            } else {
+                                qtyp = value.penerimaan
+                            }
+                            if (!value.hasil_ok) {
+                                ok = '-';
+                            } else {
+                                ok = value.hasil_ok
+                            }
+                            if (!value.hasil_nok) {
+                                nok = '-';
+                            } else {
+                                nok = value.hasil_nok
+                            }
+                            if (!value.diterima_eks) {
+                                terima_eks = '-';
+                            } else {
+                                terima_eks = value.diterima_eks
+                            }
+                            if (!value.belum_diterima_eks) {
+                                belum_terima_eks = '-';
+                            } else {
+                                belum_terima_eks = value.belum_diterima_eks
+                            }
+                            var editButton =
+                                '<button type="button" class="btn btn-success btn-xs mr-1" data-row-id="' +
+                                value.id + '" title="Edit" onclick="editRow(\'' + value.id + '\', \'' +
+                                value.uraian + '\', \'' + value
+                                .spek + '\', \'' + value.id_pr +
+                                '\', \'' + qtyp + '\', \'' + terima_eks + '\', \'' + belum_terima_eks +
+                                '\',  \'' + data.no_po + '\',  \'' + data.nama_proyek +
+                                '\',  \'' + value.id_po +
+                                '\',)"><i class="fas fa-edit"></i></button>';
+                            $('#table-pr').append('<tr><td>' + data.pr.no_pr + '</td><td>' + data
+                                .no_po + '</td><td>' + value.kode_material + '</td><td>' +
+                                value
+                                .uraian + '</td><td>' + value.spek + '</td><td>' + value
+                                .qty + '</td><td>' +
+                                data.nama_proyek + '</td><td>' + terima_eks + '</td><td>' +
+                                belum_terima_eks +
+                                '</td><td>' + editButton + '</td></tr>');
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+    <script src="/plugins/toastr/toastr.min.js"></script>
+    @if (Session::has('success'))
+        <script>
+            toastr.success('{!! Session::get('
+                                success ') !!}');
+        </script>
+    @endif
+    @if (Session::has('error'))
+        <script>
+            toastr.error('{!! Session::get('
+                                error ') !!}');
+        </script>
+    @endif
+    @if (!empty($errors->all()))
+        <script>
+            toastr.error('{!! implode(
+                '
+                                    ',
+                $errors->all(' < li >: message < /li>'),
+            ) !!}');
+        </script>
+    @endif
 @endsection
