@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', __('LOI Luar Negeri'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     {{-- <style>
         /* Important part */
         .modal-dialog {
@@ -64,14 +64,14 @@
 
     <style>
         /* =====================================================
-       🔴 GLOBAL MAROON THEME – FULL VERSION
-       ===================================================== */
+           🔴 GLOBAL MAROON THEME – FULL VERSION
+           ===================================================== */
 
         /* ===== ROOT COLOR SYSTEM ===== */
         :root {
             --maroon-main: #dc3545;
             --maroon-dark: #5a1620;
-            
+
             --maroon-soft: #f4e6e8;
             --maroon-hover: #8f2735;
             --maroon-border: #e3c2c7;
@@ -86,8 +86,8 @@
         }
 
         /* =====================================================
-       🪟 MODAL
-       ===================================================== */
+           🪟 MODAL
+           ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -98,8 +98,8 @@
         }
 
         /* =====================================================
-       📊 TABLE
-       ===================================================== */
+           📊 TABLE
+           ===================================================== */
         #table {
             width: 100%;
             border-collapse: separate;
@@ -172,8 +172,8 @@
         }
 
         /* =====================================================
-       🔘 BUTTON
-       ===================================================== */
+           🔘 BUTTON
+           ===================================================== */
         button,
         .btn {
             background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
@@ -199,8 +199,8 @@
         }
 
         /* =====================================================
-       📄 PAGINATION
-       ===================================================== */
+           📄 PAGINATION
+           ===================================================== */
         .page-item .page-link {
             background: #fff;
             color: var(--maroon-main);
@@ -219,8 +219,8 @@
         }
 
         /* =====================================================
-       🧾 INPUT, SELECT, CHECKBOX
-       ===================================================== */
+           🧾 INPUT, SELECT, CHECKBOX
+           ===================================================== */
         input,
         select,
         textarea {
@@ -242,8 +242,8 @@
         }
 
         /* =====================================================
-       📜 SCROLLBAR
-       ===================================================== */
+           📜 SCROLLBAR
+           ===================================================== */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -262,8 +262,8 @@
         }
 
         /* =====================================================
-       🌊 ANIMATION
-       ===================================================== */
+           🌊 ANIMATION
+           ===================================================== */
         @keyframes pulseMaroon {
             0% {
                 box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
@@ -275,6 +275,179 @@
 
             100% {
                 box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
+            }
+        }
+
+        /* =====================================================
+       🔘 BUTTON RAPIIH & SEJAJAR
+    ===================================================== */
+
+        /* Header button area */
+        .card-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 20px;
+        }
+
+        /* Semua button */
+        .btn,
+        button {
+            min-height: 42px;
+            border-radius: 10px !important;
+            font-weight: 600;
+            padding: 10px 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        /* Icon dalam button */
+        .btn i,
+        button i {
+            font-size: 14px;
+        }
+
+        /* Button kecil di tabel */
+        .btn-xs {
+            min-width: 38px;
+            height: 38px;
+            padding: 0 !important;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+            border-radius: 8px !important;
+        }
+
+        /* Kolom aksi */
+        td.text-center .btn {
+            vertical-align: middle;
+        }
+
+        /* Tombol aksi agar sejajar */
+        td.text-center {
+            vertical-align: middle !important;
+        }
+
+        /* Group button aksi */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+
+        /* Filter area */
+        .row.mb-3 {
+            align-items: end;
+        }
+
+        /* Clear filter button */
+        #clear-filter {
+            width: 100%;
+            margin-top: 31px !important;
+        }
+
+        /* Delete selected */
+        #delete-selected {
+            margin-top: 15px;
+        }
+
+        /* Modal footer */
+        .modal-footer {
+            gap: 10px;
+            padding: 15px 20px;
+        }
+
+        .modal-footer .btn {
+            min-width: 120px;
+        }
+
+        /* Nav tabs lebih rapi */
+        .nav-tabs {
+            gap: 8px;
+            border-bottom: none;
+        }
+
+        .nav-tabs .nav-link {
+            border-radius: 10px 10px 0 0;
+            padding: 10px 18px;
+            font-weight: 600;
+            border: none;
+            color: var(--maroon-main);
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            color: #fff !important;
+            box-shadow: 0 4px 12px rgba(122, 31, 43, .25);
+        }
+
+        /* =====================================================
+       📱 RESPONSIVE MOBILE
+    ===================================================== */
+        @media (max-width: 768px) {
+
+            /* Header button */
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            /* Filter */
+            .row.mb-3>div {
+                margin-bottom: 15px;
+            }
+
+            #clear-filter {
+                margin-top: 0 !important;
+            }
+
+            /* Table responsive */
+            .table-responsive {
+                border-radius: 10px;
+            }
+
+            /* Tombol aksi di tabel */
+            .action-buttons {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .btn-xs {
+                width: 36px;
+                height: 36px;
+            }
+
+            /* Footer modal */
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+            /* Tabs */
+            .nav-tabs {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+            }
+
+            .nav-tabs::-webkit-scrollbar {
+                height: 4px;
             }
         }
     </style>
@@ -300,7 +473,7 @@
                         <i class="fas fa-scroll"></i> Semua Data
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link {{ Route::currentRouteName() == 'loi.index' ? 'active' : '' }}"
                         href="{{ route('loi.index') }}">
@@ -516,7 +689,8 @@
                                         <label for="nomor_loiluar"
                                             class="col-sm-4 col-form-label">{{ __('Nomor LOI') }}</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="nomor_loiluar" name="nomor_loiluar">
+                                            <input type="text" class="form-control" id="nomor_loiluar"
+                                                name="nomor_loiluar">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -535,21 +709,26 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="perihal" class="col-sm-4 col-form-label">{{ __('Regarding') }}</label>
+                                        <label for="perihal"
+                                            class="col-sm-4 col-form-label">{{ __('Regarding') }}</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control" id="perihal" name="perihal">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="signature_imss" class="col-sm-4 col-form-label">{{ __('Signature PT Imss') }}</label>
+                                        <label for="signature_imss"
+                                            class="col-sm-4 col-form-label">{{ __('Signature PT Imss') }}</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="signature_imss" name="signature_imss">
+                                            <input type="text" class="form-control" id="signature_imss"
+                                                name="signature_imss">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="signature_vendor" class="col-sm-4 col-form-label">{{ __('Signature Vendor') }}</label>
+                                        <label for="signature_vendor"
+                                            class="col-sm-4 col-form-label">{{ __('Signature Vendor') }}</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="signature_vendor" name="signature_vendor">
+                                            <input type="text" class="form-control" id="signature_vendor"
+                                                name="signature_vendor">
                                         </div>
                                     </div>
 
@@ -569,7 +748,8 @@
                                         <label for="batas_loiluar"
                                             class="col-sm-4 col-form-label">{{ __('Deadline Loi') }}</label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" id="batas_loiluar" name="batas_loiluar">
+                                            <input type="date" class="form-control" id="batas_loiluar"
+                                                name="batas_loiluar">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -651,7 +831,7 @@
                         <div class="mb-3">
                             <form id="cetak-loi" method="GET" action="{{ route('loiluar.print') }}" target="_blank">
                                 <input type="hidden" name="loiluar_id" id="loiluar_id">
-                                
+
                                 <label for="currency">Pilih Mata Uang:</label>
                                 <select name="currency" id="currency" required>
                                     <option value="IDR">IDR (Rupiah)</option>
@@ -675,9 +855,9 @@
                                 </select>
                             </form>
                             <div class="row">
-                                
-                                
-                                
+
+
+
                                 <div class="col-12" id="container-form">
                                     <button id="button-cetak-loi" type="button" class="btn btn-primary"
                                         onclick="document.getElementById('cetak-loi').submit();">{{ __('Cetak') }}</button>
@@ -776,7 +956,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -828,7 +1008,7 @@
 
 
 
-        
+
 
         {{-- modal delete sjn --}}
         <div class="modal fade" id="delete-loi">
@@ -1802,7 +1982,8 @@
                             //         '" onclick="addToDetailsJs(' + value.id + ')" disabled>';
                             // }
 
-                            if (value.qty_loiluar === null || value.qty_loiluar === "" || value.qty_loiluar >= 0) {
+                            if (value.qty_loiluar === null || value.qty_loiluar === "" || value
+                                .qty_loiluar >= 0) {
                                 checkbox = '<input type="checkbox" id="addToDetails-' + value.id +
                                     '" class="row-checkbox" value="' + value.id +
                                     '" onclick="addToDetailsJs(' + value.id + ')">';
@@ -1820,7 +2001,8 @@
                                 '<td>' + checkbox + '</td>' +
                                 '<td>' + value.uraian + '</td>' +
                                 '<td>' + value.spek + '</td>' +
-                                '<td data-original-qty="' + value.qty_loiluar + '">' + value.qty_loiluar +
+                                '<td data-original-qty="' + value.qty_loiluar + '">' + value
+                                .qty_loiluar +
                                 // '<td><input type="text" class="form-control qty_nego1-input" style="width: 50px;" value="' + value.qty_nego1 + '" data-qty="' + value.qty_nego1 + '"></td>' +
                                 '<td>' +
                                 '<div style="display: block;">' +
@@ -1890,7 +2072,8 @@
                     }
                     selected = [];
                     $('#table-loi').empty();
-                    $('#loiluar_id').val(data.loiluar.id); // Pastikan #loiluar_id selalu diisi ulang setelah update
+                    $('#loiluar_id').val(data.loiluar
+                    .id); // Pastikan #loiluar_id selalu diisi ulang setelah update
                     $.each(data.loiluar.details, function(key, value) {
                         var loiluar_qty = value.loiluar_qty || 0;
                         var id = value.id;
@@ -2105,7 +2288,8 @@
                         $('#table-loi').empty();
                         $.each(data.sjn.products, function(key, value) {
                             $('#table-loi').append('<tr><td>' + (key + 1) + '</td><td>' + value
-                                .uraian + '</td><td>' + value.spek + '</td><td>' + value.loiluar_qty +
+                                .uraian + '</td><td>' + value.spek + '</td><td>' + value
+                                .loiluar_qty +
                                 '</td><td>' + value
                                 .satuan +
                                 '</td><td>' + value.nama_pekerjaan + '</td></tr>');
@@ -2266,7 +2450,8 @@
                 success: function(data) {
                     if (data.loiluar.details.length > 0) {
                         $('#table-loi').empty();
-                        $('#loiluar_id').val(data.loiluar.id); // Pastikan #loiluar_id selalu diisi ulang setelah update
+                        $('#loiluar_id').val(data.loiluar
+                        .id); // Pastikan #loiluar_id selalu diisi ulang setelah update
                         $.each(data.loiluar.details, function(key, value) {
                             var id = value.id;
                             var id_loiluar = value.id_loiluar;
@@ -2321,7 +2506,8 @@
                             $('#harga_per_unit' + id).closest('tr').find('.total').text(total);
                         });
                         setTimeout(function() {
-                            toastr.success(data?.message || 'Berhasil menyimpan detail LOI Luar!');
+                            toastr.success(data?.message ||
+                                'Berhasil menyimpan detail LOI Luar!');
                         }, 200);
                     } else {
                         $('#table-loi').empty();

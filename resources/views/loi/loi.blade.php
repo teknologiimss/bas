@@ -4,8 +4,8 @@
 @section('custom-css')
     <style>
         /* =====================================================
-           🔴 GLOBAL MAROON THEME – FULL VERSION
-           ===================================================== */
+               🔴 GLOBAL MAROON THEME – FULL VERSION
+               ===================================================== */
 
         /* ===== ROOT COLOR SYSTEM ===== */
         :root {
@@ -26,8 +26,8 @@
         }
 
         /* =====================================================
-           🪟 MODAL
-           ===================================================== */
+               🪟 MODAL
+               ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -38,8 +38,8 @@
         }
 
         /* =====================================================
-           📊 TABLE
-           ===================================================== */
+               📊 TABLE
+               ===================================================== */
         #table {
             width: 100%;
             border-collapse: separate;
@@ -112,8 +112,8 @@
         }
 
         /* =====================================================
-           🔘 BUTTON
-           ===================================================== */
+               🔘 BUTTON
+               ===================================================== */
         button,
         .btn {
             background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
@@ -139,8 +139,8 @@
         }
 
         /* =====================================================
-           📄 PAGINATION
-           ===================================================== */
+               📄 PAGINATION
+               ===================================================== */
         .page-item .page-link {
             background: #fff;
             color: var(--maroon-main);
@@ -159,8 +159,8 @@
         }
 
         /* =====================================================
-           🧾 INPUT, SELECT, CHECKBOX
-           ===================================================== */
+               🧾 INPUT, SELECT, CHECKBOX
+               ===================================================== */
         input,
         select,
         textarea {
@@ -182,8 +182,8 @@
         }
 
         /* =====================================================
-           📜 SCROLLBAR
-           ===================================================== */
+               📜 SCROLLBAR
+               ===================================================== */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -202,8 +202,8 @@
         }
 
         /* =====================================================
-           🌊 ANIMATION
-           ===================================================== */
+               🌊 ANIMATION
+               ===================================================== */
         @keyframes pulseMaroon {
             0% {
                 box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
@@ -215,6 +215,138 @@
 
             100% {
                 box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
+            }
+        }
+
+        /* =====================================================
+       🔥 BUTTON ALIGNMENT & CLEAN UI
+       ===================================================== */
+
+        /* Header button area */
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* Semua button */
+        .btn {
+            border-radius: 10px !important;
+            min-height: 38px;
+            padding: 8px 16px !important;
+            font-weight: 600;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        /* Button kecil tabel */
+        .btn-xs {
+            width: 36px;
+            height: 36px;
+            padding: 0 !important;
+            border-radius: 8px !important;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+        }
+
+        /* Kolom aksi */
+        td.text-center .btn {
+            vertical-align: middle;
+        }
+
+        /* Supaya tombol aksi sejajar */
+        td.text-center {
+            vertical-align: middle !important;
+        }
+
+        /* Container tombol aksi */
+        .table-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+
+        /* Filter button */
+        #clear-filter {
+            width: 100%;
+            margin-top: 32px !important;
+        }
+
+        /* Button bawah tabel */
+        #delete-selected {
+            margin-top: 14px;
+        }
+
+        /* Footer modal */
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Button modal */
+        .modal-footer .btn {
+            min-width: 130px;
+        }
+
+        /* Responsive HP */
+        @media (max-width: 768px) {
+
+            /* Header */
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            /* Filter */
+            .row.mb-3>.col-md-4 {
+                margin-bottom: 12px;
+            }
+
+            #clear-filter {
+                margin-top: 0 !important;
+            }
+
+            /* Tombol aksi tabel */
+            .table-action {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+
+            .btn-xs {
+                width: 34px;
+                height: 34px;
+            }
+
+            /* Footer modal */
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+            /* Table responsive */
+            .table td,
+            .table th {
+                font-size: 12px;
+                padding: 8px;
             }
         }
     </style>
