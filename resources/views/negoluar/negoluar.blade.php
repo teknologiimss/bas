@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', __('NEGO Luar Negeri'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     {{-- <style>
         /* Important part */
         .modal-dialog {
@@ -64,8 +64,8 @@
 
     <style>
         /* =====================================================
-       🔴 MAROON MODERN UI – TABLE + BUTTON (GERAK)
-       ===================================================== */
+           🔴 MAROON MODERN UI – TABLE + BUTTON (GERAK)
+           ===================================================== */
 
         /* ===== ROOT WARNA ===== */
         :root {
@@ -79,8 +79,8 @@
         }
 
         /* =====================================================
-       🪟 MODAL
-       ===================================================== */
+           🪟 MODAL
+           ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -91,8 +91,8 @@
         }
 
         /* =====================================================
-       📊 TABLE HEADER
-       ===================================================== */
+           📊 TABLE HEADER
+           ===================================================== */
         #table th {
             position: relative;
             cursor: pointer;
@@ -116,8 +116,8 @@
         }
 
         /* =====================================================
-       🔼🔽 SORT BUTTON
-       ===================================================== */
+           🔼🔽 SORT BUTTON
+           ===================================================== */
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -149,8 +149,8 @@
         }
 
         /* =====================================================
-       🔘 BUTTON – MAROON + GERAK
-       ===================================================== */
+           🔘 BUTTON – MAROON + GERAK
+           ===================================================== */
         button,
         .btn {
             background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
@@ -194,8 +194,8 @@
         }
 
         /* =====================================================
-       🌊 ANIMATIONS
-       ===================================================== */
+           🌊 ANIMATIONS
+           ===================================================== */
         @keyframes pulseArrow {
             0% {
                 box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
@@ -218,6 +218,159 @@
             to {
                 box-shadow: inset 0 -4px 0 var(--maroon-dark),
                     0 0 12px rgba(122, 31, 43, .4);
+            }
+        }
+
+        /* =====================================================
+       🔘 RAPIIKAN SEMUA BUTTON
+    ===================================================== */
+
+        /* AREA HEADER BUTTON */
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* BUTTON GLOBAL */
+        .btn,
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 42px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            white-space: nowrap;
+            transition: all .25s ease;
+        }
+
+        /* BUTTON KECIL DALAM TABLE */
+        .btn-xs {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+        }
+
+        /* AREA AKSI TABLE */
+        td.text-center .btn {
+            vertical-align: middle;
+        }
+
+        /* BUTTON AKSI DALAM TABLE */
+        td.text-center {
+            vertical-align: middle !important;
+        }
+
+        /* BUTTON FILTER */
+        #clear-filter {
+            margin-top: 31px !important;
+            width: 100%;
+        }
+
+        /* DELETE BUTTON */
+        #delete-selected {
+            margin-top: 14px;
+        }
+
+        /* MODAL FOOTER */
+        .modal-footer {
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .modal-footer .btn {
+            min-width: 130px;
+        }
+
+        /* BUTTON CETAK & TAMBAH PRODUK */
+        #button-cetak-nego,
+        #button-tambah-produk,
+        #btn-save-then-add {
+            margin-bottom: 12px;
+        }
+
+        /* TAB MENU */
+        .nav-tabs {
+            gap: 8px;
+            border-bottom: none;
+        }
+
+        .nav-tabs .nav-link {
+            border-radius: 10px 10px 0 0;
+            font-weight: 600;
+            padding: 10px 18px;
+            transition: all .25s ease;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            color: #fff !important;
+            border: none;
+        }
+
+        /* =====================================================
+       📱 RESPONSIVE MOBILE
+    ===================================================== */
+        @media (max-width: 768px) {
+
+            /* HEADER BUTTON */
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            /* FILTER */
+            .row.mb-3>.col-md-4 {
+                margin-bottom: 12px;
+            }
+
+            #clear-filter {
+                margin-top: 0 !important;
+            }
+
+            /* BUTTON MODAL */
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+            /* BUTTON TABLE */
+            .btn-xs {
+                width: 34px;
+                height: 34px;
+                font-size: 12px;
+            }
+
+            /* TABLE */
+            #table th,
+            #table td {
+                white-space: nowrap;
+                font-size: 12px;
+            }
+
+            /* CETAK & TAMBAH */
+            #button-cetak-nego,
+            #button-tambah-produk,
+            #btn-save-then-add {
+                width: 100%;
             }
         }
     </style>
@@ -461,7 +614,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="perihal" class="col-sm-4 col-form-label">{{ __('Regarding') }}</label>
+                                        <label for="perihal"
+                                            class="col-sm-4 col-form-label">{{ __('Regarding') }}</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control" id="perihal" name="perihal">
                                         </div>
@@ -520,11 +674,10 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label for="position"
-                                            class="col-sm-4 col-form-label">{{ __('Position') }} </label>
+                                        <label for="position" class="col-sm-4 col-form-label">{{ __('Position') }}
+                                        </label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="position"
-                                                name="position">
+                                            <input type="text" class="form-control" id="position" name="position">
                                         </div>
                                     </div>
 
@@ -609,7 +762,7 @@
                                     <option value="QAR">QAR (Riyal Qatar)</option>
                                 </select>
                             </form>
-                            
+
                             <div class="row">
 
 
@@ -717,7 +870,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -2072,7 +2225,8 @@
                 success: function(data) {
                     if (data.negoluar.details.length > 0) {
                         $('#table-nego').empty();
-                        $('#negoluar_id').val(data.negoluar.id); // Pastikan #negoluar_id selalu diisi ulang setelah update
+                        $('#negoluar_id').val(data.negoluar
+                        .id); // Pastikan #negoluar_id selalu diisi ulang setelah update
                         $.each(data.negoluar.details, function(key, value) {
                             var id = value.id;
                             var id_negoluar = value.id_negoluar;
@@ -2108,7 +2262,8 @@
                                 '<button type="button" class="btn btn-success btn-save" data-id="' +
                                 value.id + '" data-id_negoluar="' + value.id_negoluar +
                                 '" data-id_detail_negoluar="' + id_detail_negoluar +
-                                '" data-id_detail_pr="' + value.id_detail_pr + '">Simpan</button>' +
+                                '" data-id_detail_pr="' + value.id_detail_pr +
+                                '">Simpan</button>' +
                                 '</td>' +
                                 '</tr>'
                             );
@@ -2121,7 +2276,8 @@
                             var total = negoluar_qty * hargaPerUnit;
                             var totalImss = negoluar_qty * hargaPerUnitImss;
                             $('#harga_per_unit' + id).closest('tr').find('.total').text(total);
-                            $('#harga_per_unit_imss' + id).closest('tr').find('.total-imss').text(totalImss);
+                            $('#harga_per_unit_imss' + id).closest('tr').find('.total-imss')
+                                .text(totalImss);
                         });
                         setTimeout(function() {
                             toastr.success('Berhasil menyimpan detail negoluar!');

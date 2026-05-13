@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', __('NEGO Dalam Negeri'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     {{-- <style>
         /* Important part */
         .modal-dialog {
@@ -64,8 +64,8 @@
 
     <style>
         /* =====================================================
-       🔴 MAROON MODERN UI – TABLE + BUTTON (GERAK)
-       ===================================================== */
+           🔴 MAROON MODERN UI – TABLE + BUTTON (GERAK)
+           ===================================================== */
 
         /* ===== ROOT WARNA ===== */
         :root {
@@ -79,8 +79,8 @@
         }
 
         /* =====================================================
-       🪟 MODAL
-       ===================================================== */
+           🪟 MODAL
+           ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -91,8 +91,8 @@
         }
 
         /* =====================================================
-       📊 TABLE HEADER
-       ===================================================== */
+           📊 TABLE HEADER
+           ===================================================== */
         #table th {
             position: relative;
             cursor: pointer;
@@ -116,8 +116,8 @@
         }
 
         /* =====================================================
-       🔼🔽 SORT BUTTON
-       ===================================================== */
+           🔼🔽 SORT BUTTON
+           ===================================================== */
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -149,8 +149,8 @@
         }
 
         /* =====================================================
-       🔘 BUTTON – MAROON + GERAK
-       ===================================================== */
+           🔘 BUTTON – MAROON + GERAK
+           ===================================================== */
         button,
         .btn {
             background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
@@ -194,8 +194,8 @@
         }
 
         /* =====================================================
-       🌊 ANIMATIONS
-       ===================================================== */
+           🌊 ANIMATIONS
+           ===================================================== */
         @keyframes pulseArrow {
             0% {
                 box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
@@ -219,6 +219,232 @@
                 box-shadow: inset 0 -4px 0 var(--maroon-dark),
                     0 0 12px rgba(122, 31, 43, .4);
             }
+        }
+
+        /* =====================================================
+    🔘 BUTTON RAPIIIII + SEJAJAR
+    ===================================================== */
+
+        /* area tombol dalam card-header */
+        .card-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* tombol umum */
+        button,
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            min-height: 42px;
+            min-width: 42px;
+
+            padding: 10px 18px;
+
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1;
+
+            white-space: nowrap;
+        }
+
+        /* icon di button */
+        .btn i,
+        button i {
+            font-size: 13px;
+        }
+
+        /* tombol kecil pada aksi tabel */
+        .btn-xs {
+            width: 36px;
+            height: 36px;
+            padding: 0 !important;
+
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+            margin: 2px;
+        }
+
+        /* area aksi tabel */
+        td.text-center .btn {
+            vertical-align: middle;
+        }
+
+        /* tombol aksi agar sejajar */
+        td.text-center {
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+    📊 TABLE RAPIIIII
+    ===================================================== */
+
+        #table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        #table th,
+        #table td {
+            vertical-align: middle !important;
+        }
+
+        /* header */
+        #table thead th {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* isi tabel */
+        #table tbody td {
+            font-size: 13px;
+            padding: 10px;
+        }
+
+        /* hover row */
+        #table tbody tr:hover td {
+            background: #fff5f6;
+        }
+
+        /* =====================================================
+    📦 FILTER AREA
+    ===================================================== */
+
+        .row.mb-3 {
+            align-items: end;
+        }
+
+        .row.mb-3 .btn {
+            width: 100%;
+        }
+
+        /* =====================================================
+    📱 RESPONSIVE MOBILE
+    ===================================================== */
+
+        @media (max-width: 768px) {
+
+            /* tombol atas */
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            /* filter */
+            .row.mb-3 .col-md-4 {
+                margin-bottom: 12px;
+            }
+
+            /* tabel */
+            #table th,
+            #table td {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            /* tombol aksi */
+            .btn-xs {
+                width: 32px;
+                height: 32px;
+                margin: 1px;
+            }
+
+            /* modal */
+            .modal-dialog {
+                margin: 10px;
+            }
+
+            .modal-content {
+                border-radius: 14px;
+            }
+
+            /* footer modal */
+            .modal-footer {
+                gap: 10px;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+        }
+
+        /* =====================================================
+    ✨ NAV TAB RAPIIIII
+    ===================================================== */
+
+        .nav-tabs {
+            gap: 6px;
+            border-bottom: none;
+        }
+
+        .nav-tabs .nav-link {
+            border-radius: 10px 10px 0 0;
+            padding: 10px 18px;
+            font-weight: 600;
+            color: var(--maroon-main);
+            border: 1px solid #eee;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            color: white !important;
+            border-color: transparent;
+        }
+
+        /* =====================================================
+    🪟 MODAL RAPIIIII
+    ===================================================== */
+
+        .modal-content {
+            border-radius: 16px;
+            overflow: hidden;
+            border: none;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            color: white;
+        }
+
+        .modal-title {
+            font-weight: 700;
+        }
+
+        .modal-footer {
+            padding: 16px;
+        }
+
+        /* =====================================================
+    🧾 INPUT RAPIIIII
+    ===================================================== */
+
+        .form-control {
+            height: 42px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        textarea.form-control {
+            height: auto;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #444;
         }
     </style>
 
@@ -673,7 +899,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                            onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
