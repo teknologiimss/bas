@@ -423,13 +423,13 @@
 
                                         {{-- Aksi --}}
                                         <td class="text-center">
-                                            <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#add-pr"
+                                            <button class="btn btn-success btn-xs" data-toggle="modal" style="margin-bottom: 3" data-target="#add-pr"
                                                 onclick="editPR({{ json_encode($data) }})"
                                                 @if (!$data['editable']) disabled @endif>
                                                 <i class="fas fa-edit"></i>
                                             </button>
 
-                                            <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#detail-pr"
+                                            <button class="btn btn-info btn-xs" data-toggle="modal" style="margin-bottom: 3" data-target="#detail-pr"
                                                 data-detail="{{ json_encode($data) }}">
                                                 <i class="fas fa-list"></i>
                                             </button>
