@@ -1,14 +1,14 @@
 @extends('layouts.main')
 @section('title', __('Purchase Order Luar Negeri'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <style>
         /* =====================================================
-       🔴 MODERN MAROON UI – TABLE + SORT + BUTTON
-       ===================================================== */
+           🔴 MODERN MAROON UI – TABLE + SORT + BUTTON
+           ===================================================== */
 
         /* ===== ROOT WARNA ===== */
         :root {
@@ -22,8 +22,8 @@
         }
 
         /* =====================================================
-       🪟 MODAL
-       ===================================================== */
+           🪟 MODAL
+           ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -34,8 +34,8 @@
         }
 
         /* =====================================================
-       📊 TABLE HEADER
-       ===================================================== */
+           📊 TABLE HEADER
+           ===================================================== */
         #table th {
             position: relative;
             cursor: pointer;
@@ -61,8 +61,8 @@
         }
 
         /* =====================================================
-       🔼🔽 SORT BUTTON
-       ===================================================== */
+           🔼🔽 SORT BUTTON
+           ===================================================== */
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -95,8 +95,8 @@
         }
 
         /* =====================================================
-       🔘 BUTTON – MAROON + GERAK
-       ===================================================== */
+           🔘 BUTTON – MAROON + GERAK
+           ===================================================== */
         button,
         .btn {
             background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
@@ -143,8 +143,8 @@
         }
 
         /* =====================================================
-       🌊 ANIMATIONS
-       ===================================================== */
+           🌊 ANIMATIONS
+           ===================================================== */
         @keyframes arrowPulse {
             0% {
                 box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
@@ -168,6 +168,130 @@
                 box-shadow:
                     inset 0 -4px 0 var(--maroon-dark),
                     0 0 14px rgba(122, 31, 43, .4);
+            }
+        }
+
+        /* =====================================================
+       🔘 RAPIIKAN BUTTON
+    ===================================================== */
+
+        /* Header card */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* Area filter */
+        .row.mb-3 {
+            align-items: end;
+        }
+
+        #clear-filter {
+            width: 100%;
+            height: 45px;
+            margin-top: 30px !important;
+        }
+
+        /* Semua button */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 40px;
+            white-space: nowrap;
+        }
+
+        /* Button kecil tabel */
+        .btn-xs {
+            width: 38px;
+            height: 38px;
+            padding: 0 !important;
+            border-radius: 10px;
+            margin: 2px;
+        }
+
+        /* Kolom aksi */
+        td.text-center .btn {
+            vertical-align: middle;
+        }
+
+        /* Tombol action sejajar */
+        td.text-center {
+            white-space: nowrap;
+        }
+
+        /* Tombol hapus pilihan */
+        #delete-selected {
+            margin-top: 15px;
+            min-width: 200px;
+        }
+
+        /* Footer modal */
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Tombol modal */
+        .modal-footer .btn {
+            min-width: 130px;
+            height: 42px;
+        }
+
+        /* Tombol cetak & tambah detail */
+        #button-cetak-po,
+        #button-tambah-detail,
+        #btn-save-then-add {
+            min-width: 170px;
+            height: 42px;
+            margin-bottom: 10px;
+        }
+
+        /* Select currency */
+        #currency {
+            height: 42px;
+            border-radius: 10px;
+            padding: 0 12px;
+            border: 1px solid #ced4da;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        /* Responsive mobile */
+        @media (max-width: 768px) {
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+            #button-cetak-po,
+            #button-tambah-detail,
+            #btn-save-then-add,
+            #delete-selected {
+                width: 100%;
+            }
+
+            td.text-center {
+                white-space: nowrap;
             }
         }
     </style>
@@ -288,22 +412,13 @@
                                                 'destination' => $d->destination,
                                                 'payment' => $d->payment,
 
-
-
-
                                                 'nama_proyek' => $d->proyek_name,
-                                                
-                                                
-                                                
-                                                
+
                                                 'pr_no' => $d->pr_no,
-                                                
-                                                
-                                                
-                                                
+
                                                 'vendor_id' => $d->vendor_id,
                                                 'detail' => $d->detail,
-                                                
+
                                                 'pr_no' => $d->pr_no,
                                             ];
                                         @endphp
@@ -366,7 +481,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form role="form" id="save" action="{{ route('purchase_orderluar.store') }}" method="post">
+                    <form role="form" id="save" action="{{ route('purchase_orderluar.store') }}"
+                        method="post">
                         @csrf
                         <input type="hidden" id="save_id" name="id">
                         <input type="hidden" id="pr_id" name="pr_id">
@@ -410,7 +526,8 @@
                         <div class="form-group row">
                             <label for="tanggal_poluar" class="col-sm-4 col-form-label w-50">{{ __('Date PO') }} </label>
                             <div class="col-sm-8">
-                                <input type="date" class="form-control w-50" id="tanggal_poluar" name="tanggal_poluar">
+                                <input type="date" class="form-control w-50" id="tanggal_poluar"
+                                    name="tanggal_poluar">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -438,7 +555,8 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="final_quotation" class="col-sm-4 col-form-label">{{ __('Final Quotation') }} </label>
+                            <label for="final_quotation" class="col-sm-4 col-form-label">{{ __('Final Quotation') }}
+                            </label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="final_quotation" name="final_quotation">
                             </div>
@@ -459,15 +577,18 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="signature_imss" class="col-sm-4 col-form-label">{{ __('Signature PT IMSS') }} </label>
+                            <label for="signature_imss" class="col-sm-4 col-form-label">{{ __('Signature PT IMSS') }}
+                            </label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="signature_imss" name="signature_imss">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="signature_vendor" class="col-sm-4 col-form-label">{{ __('Signature Vendor') }} </label>
+                            <label for="signature_vendor" class="col-sm-4 col-form-label">{{ __('Signature Vendor') }}
+                            </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="signature_vendor" name="signature_vendor">
+                                <input type="text" class="form-control" id="signature_vendor"
+                                    name="signature_vendor">
                             </div>
                         </div>
 
@@ -488,16 +609,16 @@
                                     placeholder="contoh penulisan                            Delivery:2(dua) minggu setelah PO setelah itu enter untuk nomor selanjutnya"></textarea>
                             </div>
                         </div>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+
+
+
+
+
+
+
+
+
+
 
 
                     </form>
@@ -525,9 +646,10 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-12" id="container-form">
-                                <form id="cetak-po" method="GET" action="{{ route('cetak_poluar') }}" target="_blank">
+                                <form id="cetak-po" method="GET" action="{{ route('cetak_poluar') }}"
+                                    target="_blank">
                                     <input type="hidden" name="id_poluar" id="id_poluar">
-                                    
+
                                     <label for="currency">Pilih Mata Uang:</label>
                                     <select name="currency" id="currency" required>
                                         <option value="IDR">IDR (Rupiah)</option>
@@ -621,7 +743,7 @@
                                 <div id="form" class="card">
                                     <div class="card-body">
                                         <!-- <button type="button" class="btn btn-primary mb-3"
-                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                         <button id="btn-save-then-add" type="button" class="btn btn-primary mb-3">Tambah
                                             Pilihan</button>
 
@@ -768,7 +890,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form role="form" id="delete" action="{{ route('purchase_orderluar.destroy') }}" method="post">
+                    <form role="form" id="delete" action="{{ route('purchase_orderluar.destroy') }}"
+                        method="post">
                         @csrf
                         @method('delete')
                         <input type="hidden" id="delete_id" name="id">
@@ -988,7 +1111,7 @@
                 // $("#trainset_kode3").val(trainsetValues);
             })
 
-            
+
 
             $('#clear-filter').on('click', function() {
                 $('#filter-po-no, #filter-po-date').val('');
@@ -1154,7 +1277,7 @@
             var date = data.btpo.split('/');
             var newDate = date[2] + '-' + date[1] + '-' + date[0];
             $('#batas_poluar').val(newDate);
-           
+
             $('#pr_id').find('option').each(function() {
                 if ($(this).val() == data.pr_id) {
                     console.log('pr', $(this).val());
@@ -1181,7 +1304,7 @@
 
 
 
-            
+
             // $('#proyek_id').find('option').each(function() {
             //     if ($(this).val() == data.proyek_id) {
             //         console.log('proyek', $(this).val());
@@ -1196,7 +1319,7 @@
                 selectedDataProyek.push(item)
             })
             $("#proyek_id").val(split).change();
-            
+
 
 
             // Ambil `no_pr` berdasarkan `pr_id` dari database
@@ -1364,11 +1487,13 @@
                                 '" class="form-control" id="vat' + id + '" name="vat' + id + '"></td>' +
                                 '<td>' + total + '</td>' +
                                 '<td><button title="simpan" id="edit_poluar_save" type="button" class="btn btn-success btn-xs" data-id="' +
-                                id + '" data-idpoluar="' + id_poluar + '" ><i class="fas fa-save"></i>' +
+                                id + '" data-idpoluar="' + id_poluar +
+                                '" ><i class="fas fa-save"></i>' +
                                 '</button>' +
                                 '<button title="hapus" id="delete_poluar_save" type="button" class="btn btn-danger btn-xs" data-id="' +
                                 id +
-                                '" data-idpoluar="' + id_poluar + '" data-id_detail_pr="' + id_detail_pr +
+                                '" data-idpoluar="' + id_poluar + '" data-id_detail_pr="' +
+                                id_detail_pr +
                                 '" ><i class="fas fa-trash"></i>' +
                                 '</button>' +
                                 '</tr>';
@@ -1403,7 +1528,7 @@
                     var mata_uang = value.mata_uang ?? '-';
                     var vat = value.vat ?? '-';
                     var total = poluar_qty * harga_per_unit;
-                    
+
                     var html = '<tr>' +
                         '<td>' + no + '</td>' +
                         '<td>' + kode_material + '</td>' +
@@ -1513,21 +1638,25 @@
                     } else if (data?.poluar?.details == null || data?.poluar?.details == undefined) {
                         // Fallback: jika data detail kosong/null, ambil ulang dari server
                         $.ajax({
-                            url: "{{ url('products/purchase_orderluar_detail') }}" + "/" + id_poluar,
+                            url: "{{ url('products/purchase_orderluar_detail') }}" + "/" +
+                                id_poluar,
                             type: "GET",
                             dataType: "json",
                             success: function(fallbackData) {
-                                if (fallbackData?.poluar?.details && fallbackData.poluar.details.length > 0) {
+                                if (fallbackData?.poluar?.details && fallbackData.poluar
+                                    .details.length > 0) {
                                     // Render ulang dengan data dari fallback
                                     renderTableData(fallbackData.poluar.details, id_poluar);
                                 } else {
                                     $('#tabel-po').append(
-                                        '<tr><td colspan="11" class="text-center">Tidak ada data</td></tr>');
+                                        '<tr><td colspan="11" class="text-center">Tidak ada data</td></tr>'
+                                        );
                                 }
                             },
                             error: function() {
                                 $('#tabel-po').append(
-                                    '<tr><td colspan="11" class="text-center">Tidak ada data</td></tr>');
+                                    '<tr><td colspan="11" class="text-center">Tidak ada data</td></tr>'
+                                    );
                             }
                         });
                     } else {
@@ -1542,11 +1671,14 @@
                 },
                 error: function(xhr) {
                     // Tampilkan pesan error validasi dari backend jika ada
-                    if(xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors){
-                        var msg = Object.values(xhr.responseJSON.errors).map(function(e){return e.join('<br>')}).join('<br>');
+                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                        var msg = Object.values(xhr.responseJSON.errors).map(function(e) {
+                            return e.join('<br>')
+                        }).join('<br>');
                         toastr.error(msg);
                     } else {
-                        toastr.error(xhr.responseJSON?.message || 'Gagal menyimpan detail Purchase Order Luar!');
+                        toastr.error(xhr.responseJSON?.message ||
+                            'Gagal menyimpan detail Purchase Order Luar!');
                     }
                 }
             })
@@ -1628,11 +1760,14 @@
                 },
                 error: function(xhr) {
                     // Tampilkan pesan error validasi dari backend jika ada
-                    if(xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors){
-                        var msg = Object.values(xhr.responseJSON.errors).map(function(e){return e.join('<br>')}).join('<br>');
+                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                        var msg = Object.values(xhr.responseJSON.errors).map(function(e) {
+                            return e.join('<br>')
+                        }).join('<br>');
                         toastr.error(msg);
                     } else {
-                        toastr.error(xhr.responseJSON?.message || 'Gagal menghapus detail Purchase Order Luar!');
+                        toastr.error(xhr.responseJSON?.message ||
+                            'Gagal menghapus detail Purchase Order Luar!');
                     }
                 }
             })
@@ -1931,7 +2066,8 @@
 
 
                         var checkbox;
-                        if (value.qty_poluar === null || value.qty_poluar === "" || value.qty_poluar >= 0) {
+                        if (value.qty_poluar === null || value.qty_poluar === "" || value.qty_poluar >=
+                            0) {
                             checkbox = '<input type="checkbox" id="addToDetails-' + value.id +
                                 '" class="row-checkbox" value="' + value.id +
                                 '" onclick="addToDetailsJS(' + value.id + ')">';
@@ -2037,11 +2173,14 @@
                 },
                 error: function(xhr) {
                     // Tampilkan pesan error validasi dari backend jika ada
-                    if(xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors){
-                        var msg = Object.values(xhr.responseJSON.errors).map(function(e){return e.join('<br>')}).join('<br>');
+                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                        var msg = Object.values(xhr.responseJSON.errors).map(function(e) {
+                            return e.join('<br>')
+                        }).join('<br>');
                         toastr.error(msg);
                     } else {
-                        toastr.error(xhr.responseJSON?.message || 'Gagal menambahkan detail Purchase Order Luar!');
+                        toastr.error(xhr.responseJSON?.message ||
+                            'Gagal menambahkan detail Purchase Order Luar!');
                     }
                 }
 
@@ -2176,8 +2315,10 @@
                 },
                 error: function(xhr) {
                     // Tampilkan pesan error validasi dari backend jika ada
-                    if(xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors){
-                        var msg = Object.values(xhr.responseJSON.errors).map(function(e){return e.join('<br>')}).join('<br>');
+                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                        var msg = Object.values(xhr.responseJSON.errors).map(function(e) {
+                            return e.join('<br>')
+                        }).join('<br>');
                         toastr.error(msg);
                     } else {
                         toastr.error(xhr.responseJSON?.message || 'Gagal memperbarui data!');

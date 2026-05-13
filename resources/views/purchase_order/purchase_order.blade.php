@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', __('Purchase Order'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
@@ -67,8 +67,8 @@
 
     <style>
         /* =====================================================
-       🔴 MODERN MAROON UI – TABLE + SORT + BUTTON
-       ===================================================== */
+           🔴 MODERN MAROON UI – TABLE + SORT + BUTTON
+           ===================================================== */
 
         /* ===== ROOT WARNA ===== */
         :root {
@@ -82,8 +82,8 @@
         }
 
         /* =====================================================
-       🪟 MODAL
-       ===================================================== */
+           🪟 MODAL
+           ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -94,8 +94,8 @@
         }
 
         /* =====================================================
-       📊 TABLE HEADER
-       ===================================================== */
+           📊 TABLE HEADER
+           ===================================================== */
         #table th {
             position: relative;
             cursor: pointer;
@@ -121,8 +121,8 @@
         }
 
         /* =====================================================
-       🔼🔽 SORT BUTTON
-       ===================================================== */
+           🔼🔽 SORT BUTTON
+           ===================================================== */
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -155,8 +155,8 @@
         }
 
         /* =====================================================
-       🔘 BUTTON – MAROON + GERAK
-       ===================================================== */
+           🔘 BUTTON – MAROON + GERAK
+           ===================================================== */
         button,
         .btn {
             background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
@@ -203,8 +203,8 @@
         }
 
         /* =====================================================
-       🌊 ANIMATIONS
-       ===================================================== */
+           🌊 ANIMATIONS
+           ===================================================== */
         @keyframes arrowPulse {
             0% {
                 box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
@@ -228,6 +228,114 @@
                 box-shadow:
                     inset 0 -4px 0 var(--maroon-dark),
                     0 0 14px rgba(122, 31, 43, .4);
+            }
+        }
+
+
+        /* =====================================================
+       🔥 RAPIIKAN BUTTON
+    ===================================================== */
+
+        /* Area header */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* Semua button konsisten */
+        .btn,
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 38px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        /* Button kecil aksi tabel */
+        .btn-xs {
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            border-radius: 8px;
+        }
+
+        /* Area tombol aksi tabel */
+        td.text-center .btn {
+            margin: 2px;
+        }
+
+        /* Filter button sejajar */
+        .row.mb-3 {
+            align-items: end;
+        }
+
+        /* Clear filter button */
+        #clear-filter {
+            width: 100%;
+        }
+
+        /* Tombol hapus dipilih */
+        #delete-selected {
+            margin-top: 12px;
+        }
+
+        /* Footer modal */
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Button dalam modal */
+        .modal-footer .btn {
+            min-width: 130px;
+        }
+
+        /* Tombol tambah item/detail */
+        #button-tambah-detail,
+        #button-tambah-produk,
+        #btn-save-then-add {
+            min-width: 180px;
+        }
+
+        /* Tombol cetak */
+        #button-cetak-po,
+        #button-cetak-nego {
+            margin-bottom: 15px;
+        }
+
+        /* Responsive mobile */
+        @media (max-width: 768px) {
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+            td.text-center .btn {
+                margin-bottom: 5px;
             }
         }
     </style>
@@ -666,7 +774,7 @@
                                 <div id="form" class="card">
                                     <div class="card-body">
                                         <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                         <button id="btn-save-then-add" type="button" class="btn btn-primary mb-3">Tambah
                                             Pilihan</button>
 
@@ -2318,20 +2426,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                    success ') !!}');
+                                success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                    error ') !!}');
+                                error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                        ',
+                                    ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>
