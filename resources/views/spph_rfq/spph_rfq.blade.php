@@ -171,6 +171,193 @@
                 transform: translateY(0);
             }
         }
+
+        /* =========================
+       BUTTON AREA HEADER
+    ========================= */
+        .card-header {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            padding: 16px 20px;
+        }
+
+        .card-header .btn {
+            min-width: 170px;
+            height: 42px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        /* =========================
+       FILTER BUTTON
+    ========================= */
+        #clear-filter {
+            width: 100%;
+            height: 42px;
+            margin-top: 31px !important;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* =========================
+       BUTTON AKSI TABLE
+    ========================= */
+        td .btn-xs {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            margin: 2px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Supaya tombol edit/detail/delete sejajar */
+        td.text-center {
+            vertical-align: middle !important;
+        }
+
+        td.text-center .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* =========================
+       BUTTON MODAL FOOTER
+    ========================= */
+        .modal-footer {
+            gap: 10px;
+            padding: 15px 20px;
+        }
+
+        .modal-footer .btn {
+            min-width: 130px;
+            height: 42px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* =========================
+       BUTTON CETAK & TAMBAH
+    ========================= */
+        #button-cetak-spph,
+        #button-tambah-produk,
+        #btn-save-then-add {
+            min-width: 170px;
+            height: 42px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* =========================
+       TOMBOL TAMBAH VENDOR/LAMPIRAN
+    ========================= */
+        #tambah,
+        #tambah-lampiran {
+            display: inline-block;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            color: #fff;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all .2s ease;
+        }
+
+        #tambah:hover,
+        #tambah-lampiran:hover {
+            transform: translateY(-2px);
+            opacity: .92;
+            color: #fff;
+        }
+
+        /* =========================
+       DELETE SELECTED BUTTON
+    ========================= */
+        #delete-selected {
+            margin-top: 12px;
+            min-width: 200px;
+            height: 42px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* =========================
+       NAV TABS
+    ========================= */
+        .nav-tabs {
+            gap: 8px;
+            border-bottom: none;
+        }
+
+        .nav-tabs .nav-link {
+            border-radius: 12px 12px 0 0;
+            font-weight: 600;
+            padding: 10px 18px;
+            color: #495057;
+            transition: all .2s ease;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            color: white !important;
+            border: none;
+        }
+
+        /* =========================
+       RESPONSIVE MOBILE
+    ========================= */
+        @media (max-width: 768px) {
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+            #button-cetak-spph,
+            #button-tambah-produk,
+            #btn-save-then-add,
+            #delete-selected {
+                width: 100%;
+            }
+
+            .nav-tabs .nav-item {
+                width: 100%;
+            }
+
+            .nav-tabs .nav-link {
+                text-align: center;
+            }
+
+            td .btn-xs {
+                width: 34px;
+                height: 34px;
+            }
+        }
     </style>
 @endsection
 @section('content')
@@ -629,7 +816,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -2391,20 +2578,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                                                                                                                                success ') !!}');
+                                                                                                                                                                                            success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                                                                                                                                error ') !!}');
+                                                                                                                                                                                            error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                                                                                                                                    ',
+                                                                                                                                                                                                ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>

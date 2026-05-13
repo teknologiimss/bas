@@ -171,6 +171,283 @@
                 transform: translateY(0);
             }
         }
+
+
+        /* =========================================
+       HEADER LAYOUT
+    ========================================= */
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .card-header .btn {
+            min-height: 42px;
+            padding: 8px 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* =========================================
+       BUTTON RAPIIH
+    ========================================= */
+
+        .btn {
+            font-weight: 600;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .btn-xs {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+        }
+
+        /* Hover */
+        .btn-xs:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Area tombol aksi */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+
+        /* Tombol utama */
+        .btn-primary,
+        .btn-danger,
+        .btn-success,
+        .btn-info {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* =========================================
+       TABLE FIX
+    ========================================= */
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 12px;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle !important;
+            padding: 12px 10px;
+        }
+
+        /* Kolom aksi */
+        .table td:last-child {
+            min-width: 140px;
+        }
+
+        /* Hover smooth */
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        /* =========================================
+       FILTER AREA
+    ========================================= */
+
+        .row.mb-3 {
+            align-items: end;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            height: 40px;
+        }
+
+        textarea.form-control {
+            height: auto;
+        }
+
+        #clear-filter {
+            width: 100%;
+            height: 40px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        /* =========================================
+       MODAL FIX
+    ========================================= */
+
+        .modal-content {
+            border-radius: 18px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 14px 35px rgba(0, 0, 0, .15);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            color: #fff;
+        }
+
+        .modal-header .close {
+            color: #fff;
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 1.2rem;
+        }
+
+        .modal-footer {
+            gap: 10px;
+        }
+
+        .modal-footer .btn {
+            min-width: 120px;
+        }
+
+        /* =========================================
+       DETAIL BUTTON
+    ========================================= */
+
+        #button-cetak-spph,
+        #button-tambah-produk,
+        #btn-save-then-add {
+            min-height: 42px;
+            border-radius: 10px;
+        }
+
+        /* =========================================
+       PAGINATION
+    ========================================= */
+
+        .pagination {
+            gap: 4px;
+        }
+
+        .page-link {
+            border-radius: 8px !important;
+            color: var(--maroon);
+        }
+
+        .page-item.active .page-link {
+            background: var(--maroon);
+            border-color: var(--maroon);
+        }
+
+        /* =========================================
+       MOBILE RESPONSIVE
+    ========================================= */
+
+        @media (max-width: 768px) {
+
+            /* Header */
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            /* Filter */
+            .row.mb-3 .col-md-4 {
+                margin-bottom: 12px;
+            }
+
+            #clear-filter {
+                margin-top: 0;
+            }
+
+            /* Table */
+            .table {
+                font-size: 12px;
+            }
+
+            .table th,
+            .table td {
+                padding: 10px 8px;
+            }
+
+            /* Tombol aksi */
+            .action-buttons {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+
+            .btn-xs {
+                width: 34px;
+                height: 34px;
+            }
+
+            /* Modal */
+            .modal-dialog {
+                margin: 10px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+            /* Form */
+            .form-group.row {
+                flex-direction: column;
+            }
+
+            .form-group.row label {
+                max-width: 100%;
+                margin-bottom: 6px;
+            }
+
+            .form-group.row .col-sm-4,
+            .form-group.row .col-sm-8 {
+                max-width: 100%;
+                flex: 100%;
+            }
+
+            /* Tombol detail */
+            #button-cetak-spph,
+            #button-tambah-produk,
+            #btn-save-then-add {
+                width: 100%;
+            }
+
+            /* Tab menu */
+            .nav-tabs {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .nav-tabs .nav-link {
+                font-size: 13px;
+            }
+        }
     </style>
 @endsection
 @section('content')
@@ -243,7 +520,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group"> 
+                                <div class="form-group">
                                     <label for="filter-spph-date">Filter Tanggal SPPH</label>
                                     <input type="date" class="form-control" id="filter-spph-date">
                                 </div>
@@ -627,7 +904,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                                                onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -2404,20 +2681,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                                                                                                                                                                    success ') !!}');
+                                                                                                                                                                                                                                success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                                                                                                                                                                    error ') !!}');
+                                                                                                                                                                                                                                error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                                                                                                                                                                        ',
+                                                                                                                                                                                                                                    ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>
