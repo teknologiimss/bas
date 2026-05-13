@@ -12,7 +12,7 @@
 <style>
     /* ===============================
    MODERN MAROON BUTTON
-================================ */
+    ================================ */
     .btn-maroon-animated {
         background: linear-gradient(135deg, #800020, #a00028);
         border: none;
@@ -59,7 +59,7 @@
 
     /* ===============================
    MODERN BPM TABLE
-================================ */
+    ================================ */
     .table-modern {
         border-radius: 14px;
         overflow: hidden;
@@ -118,6 +118,244 @@
         accent-color: #800020;
         transform: scale(1.1);
     }
+
+    /* =========================================
+   GLOBAL SPACING
+========================================= */
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.card-body {
+    padding: 1.2rem;
+}
+
+/* =========================================
+   BUTTON FIX
+========================================= */
+
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+/* Button action tabel */
+.btn-xs {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    border-radius: 8px;
+}
+
+/* Hover tombol */
+.btn-xs:hover {
+    transform: translateY(-2px);
+}
+
+/* Supaya button sejajar */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+/* Button utama */
+.btn-maroon-animated {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Delete selected */
+#delete-selected {
+    margin-top: 14px;
+}
+
+/* =========================================
+   FILTER
+========================================= */
+
+.row.mb-3 {
+    align-items: end;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-control {
+    border-radius: 8px;
+    height: 40px;
+}
+
+textarea.form-control {
+    height: auto;
+}
+
+#clear-filter {
+    width: 100%;
+    height: 40px;
+    margin-top: 30px;
+}
+
+/* =========================================
+   TABLE FIX
+========================================= */
+
+.table-modern {
+    overflow: hidden;
+}
+
+.table-modern th,
+.table-modern td {
+    vertical-align: middle !important;
+    padding: 12px 10px;
+}
+
+.table-modern tbody td:last-child {
+    min-width: 140px;
+}
+
+/* Hover smooth */
+.table-modern tbody tr {
+    transition: all 0.2s ease;
+}
+
+/* =========================================
+   MODAL FIX
+========================================= */
+
+.modal-content {
+    border-radius: 14px;
+    overflow: hidden;
+    border: none;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #800020, #a00028);
+    color: #fff;
+}
+
+.modal-header .close {
+    color: #fff;
+    opacity: 1;
+}
+
+.modal-footer {
+    gap: 10px;
+}
+
+.modal-footer .btn {
+    min-width: 120px;
+}
+
+/* =========================================
+   DETAIL BUTTON AREA
+========================================= */
+
+#button-cetak-bpm,
+#button-tambah-produk {
+    margin-bottom: 12px;
+}
+
+/* =========================================
+   RESPONSIVE MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    /* Header */
+    .card-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .card-header .btn {
+        width: 100%;
+    }
+
+    /* Filter */
+    .row.mb-3 .col-md-4 {
+        margin-bottom: 12px;
+    }
+
+    #clear-filter {
+        margin-top: 0;
+    }
+
+    /* Table */
+    .table-modern {
+        font-size: 12px;
+    }
+
+    .table-modern th,
+    .table-modern td {
+        padding: 10px 8px;
+    }
+
+    /* Tombol aksi */
+    .action-buttons {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .btn-xs {
+        width: 34px;
+        height: 34px;
+    }
+
+    /* Modal */
+    .modal-dialog {
+        margin: 10px;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+    }
+
+    /* Form modal */
+    .form-group.row {
+        flex-direction: column;
+    }
+
+    .form-group.row label {
+        max-width: 100%;
+        margin-bottom: 6px;
+    }
+
+    .form-group.row .col-sm-4,
+    .form-group.row .col-sm-8 {
+        max-width: 100%;
+        flex: 100%;
+    }
+
+    /* Button detail */
+    #button-cetak-bpm,
+    #button-tambah-produk,
+    #button-update-bpm {
+        width: 100%;
+    }
+}
 </style>
 
 @section('content')
