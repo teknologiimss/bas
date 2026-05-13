@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', __('Kontrak'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
@@ -22,6 +22,7 @@
         border-radius: 14px;
         box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
         transition: all .25s ease;
+        overflow: hidden;
     }
 
     .card:hover {
@@ -34,6 +35,11 @@
         background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
         color: #fff;
         border-radius: 14px 14px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
     .card-header .btn {
@@ -44,12 +50,22 @@
     .table {
         border-radius: 12px;
         overflow: hidden;
+        min-width: 1000px;
     }
 
     .table thead th {
         background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
         color: #fff;
         text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+        font-size: 13px;
+    }
+
+    .table tbody td {
+        vertical-align: middle;
+        white-space: nowrap;
+        font-size: 13px;
     }
 
     .table tbody tr {
@@ -58,7 +74,12 @@
 
     .table tbody tr:hover {
         background-color: var(--maroon-soft);
-        transform: scale(1.005);
+        transform: scale(1.002);
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        border-radius: 12px;
     }
 
     /* ================= BUTTON ================= */
@@ -80,8 +101,28 @@
 
     .btn-success:hover,
     .btn-info:hover,
-    .btn-danger:hover {
+    .btn-danger:hover,
+    .btn-secondary:hover {
         transform: translateY(-2px);
+    }
+
+    /* ================= ACTION BUTTON ================= */
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: nowrap;
+    }
+
+    .action-buttons .btn {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     /* ================= FORM ================= */
@@ -92,25 +133,21 @@
 
     .form-control:focus {
         box-shadow: 0 0 0 .15rem rgba(220, 53, 69, .25);
-        transform: scale(1.02);
+        transform: scale(1.01);
     }
 
-    /* ================= STATUS BADGE FIX ================= */
+    /* ================= STATUS BADGE ================= */
     .badge-status {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-
         padding: 4px 14px;
         min-width: 110px;
-
         font-size: 12px;
         font-weight: 600;
         line-height: 1;
-
         border-radius: 999px;
         white-space: nowrap;
-
         text-align: center;
     }
 
@@ -129,11 +166,11 @@
         color: #fff;
     }
 
-
     /* ================= MODAL ================= */
     .modal-content {
         border-radius: 16px;
         animation: modalZoom .35s ease;
+        overflow: hidden;
     }
 
     @keyframes modalZoom {
@@ -150,8 +187,186 @@
 
     /* ================= CHECKBOX ================= */
     input[type="checkbox"] {
-        transform: scale(1.2);
+        transform: scale(1.1);
         cursor: pointer;
+    }
+
+    /* ================= FILTER BOX ================= */
+    .filter-box {
+        background: #fff;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .06);
+    }
+
+    .mobile-filter-toggle {
+        display: none;
+    }
+
+    /* ================= MOBILE ================= */
+    @media (max-width: 768px) {
+
+        .content-wrapper,
+        .content,
+        .container-fluid {
+            padding-left: 6px !important;
+            padding-right: 6px !important;
+        }
+
+        .card {
+            border-radius: 12px;
+        }
+
+        .card-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+            padding: 12px;
+        }
+
+        .card-header .btn {
+            width: 100%;
+            font-size: 13px;
+            padding: 8px 10px;
+        }
+
+        /* tombol mobile kecil dan sama */
+        .action-buttons {
+            gap: 4px;
+        }
+
+        .action-buttons .btn {
+            width: 28px !important;
+            height: 28px !important;
+            min-width: 28px !important;
+            font-size: 11px !important;
+            padding: 0 !important;
+            border-radius: 7px;
+        }
+
+        .btn-xs {
+            padding: 4px !important;
+        }
+
+        .table {
+            min-width: 900px;
+        }
+
+        .table thead th,
+        .table tbody td {
+            font-size: 11px;
+            padding: 6px;
+        }
+
+        .badge-status {
+            min-width: auto;
+            font-size: 10px;
+            padding: 4px 8px;
+        }
+
+        /* FILTER MOBILE */
+        .mobile-filter-toggle {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+
+        .filter-wrapper {
+            display: none;
+        }
+
+        .filter-wrapper.active {
+            display: block;
+            animation: fadeIn .3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .filter-box .row>[class*="col-"] {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            font-size: 12px;
+            padding: 7px 10px;
+        }
+
+        .modal-dialog {
+            margin: 10px;
+        }
+
+        .modal-body {
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .modal-body .row {
+            margin: 0;
+        }
+
+        .modal-body .col-sm-4,
+        .modal-body .col-sm-8 {
+            width: 100%;
+            max-width: 100%;
+            flex: 100%;
+        }
+
+        .modal-body label {
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+
+        .modal-body .form-control {
+            margin-bottom: 10px;
+        }
+
+        .pagination {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pagination .page-link {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        #delete-selected {
+            width: 100%;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        #button-update-kontrak,
+        #button-save {
+            width: 100%;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 20px;
+        }
     }
 </style>
 
@@ -389,7 +604,8 @@
                                 <label for="tanggal" class="col-sm-4 col-form-label">{{ __('Tanggal') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control @error('tanggal') is-invalid @enderror" id="tanggal" name="tanggal" value="{{ old('tanggal') }}">
+                                    <input type="date" class="form-control @error('tanggal') is-invalid @enderror"
+                                        id="tanggal" name="tanggal" value="{{ old('tanggal') }}">
 
                                     @error('tanggal')
                                         <small class="text-danger">Wajib diisi</small>
@@ -402,7 +618,8 @@
                                 <label for="kode_proyek" class="col-sm-4 col-form-label">{{ __('Kode Proyek') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control @error('kode_proyek') is-invalid @enderror" id="kode_proyek" name="kode_proyek" value="{{ old('kode_proyek') }}"
+                                    <input type="text" class="form-control @error('kode_proyek') is-invalid @enderror"
+                                        id="kode_proyek" name="kode_proyek" value="{{ old('kode_proyek') }}"
                                         autocomplete="off">
 
                                     @error('kode_proyek')
@@ -416,7 +633,9 @@
                                 <label for="nomor_kontrak" class="col-sm-4 col-form-label">{{ __('Nomor Dokumen') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control @error('nomor_kontrak') is-invalid @enderror" id="nomor_kontrak" name="nomor_kontrak" value="{{ old('nomor_kontrak') }}"
+                                    <input type="text"
+                                        class="form-control @error('nomor_kontrak') is-invalid @enderror"
+                                        id="nomor_kontrak" name="nomor_kontrak" value="{{ old('nomor_kontrak') }}"
                                         autocomplete="off">
 
                                     @error('nomor_kontrak')
@@ -430,10 +649,12 @@
                                 <label for="nama_pekerjaan" class="col-sm-4 col-form-label">{{ __('Nama Pekerjaan') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control @error('nama_pekerjaan') is-invalid @enderror" id="nama_pekerjaan" name="nama_pekerjaan" value="{{ old('nama_pekerjaan') }}"
+                                    <input type="text"
+                                        class="form-control @error('nama_pekerjaan') is-invalid @enderror"
+                                        id="nama_pekerjaan" name="nama_pekerjaan" value="{{ old('nama_pekerjaan') }}"
                                         autocomplete="off">
                                     {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
-                                    
+
                                     @error('nama_pekerjaan')
                                         <small class="text-danger">Wajib diisi</small>
                                     @enderror
@@ -457,11 +678,9 @@
                                     Nilai Pekerjaan (Rp.)
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" 
-                                        class="form-control @error('nilai_pekerjaan') is-invalid @enderror" 
-                                        id="nilai_pekerjaan"
-                                        name="nilai_pekerjaan"
-                                        autocomplete="off">
+                                    <input type="text"
+                                        class="form-control @error('nilai_pekerjaan') is-invalid @enderror"
+                                        id="nilai_pekerjaan" name="nilai_pekerjaan" autocomplete="off">
 
                                     @error('nilai_pekerjaan')
                                         <small class="text-danger">Wajib diisi</small>
@@ -474,7 +693,9 @@
                                 <label for="nama_pelanggan" class="col-sm-4 col-form-label">{{ __('Nama Pelanggan') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control @error('nama_pelanggan') is-invalid @enderror" id="nama_pelanggan" name="nama_pelanggan" value="{{ old('nama_pelanggan') }}"
+                                    <input type="text"
+                                        class="form-control @error('nama_pelanggan') is-invalid @enderror"
+                                        id="nama_pelanggan" name="nama_pelanggan" value="{{ old('nama_pelanggan') }}"
                                         autocomplete="off">
                                     {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
 
@@ -489,8 +710,8 @@
                                 <label for="tahun" class="col-sm-4 col-form-label">{{ __('Tahun') }}
                                 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control @error('tahun') is-invalid @enderror" id="tahun" name="tahun" value="{{ old('tahun') }}"
-                                        autocomplete="off">
+                                    <input type="text" class="form-control @error('tahun') is-invalid @enderror"
+                                        id="tahun" name="tahun" value="{{ old('tahun') }}" autocomplete="off">
                                     {{-- <textarea class="form-control" name="dasar_pr" id="dasar_pr" rows="3" readonly></textarea> --}}
 
                                     @error('tahun')
@@ -503,7 +724,8 @@
                             <div class="form-group row">
                                 <label for="tipe" class="col-sm-4 col-form-label">{{ __('Tipe') }}</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control @error('tipe') is-invalid @enderror" id="tipe" name="tipe">
+                                    <select class="form-control @error('tipe') is-invalid @enderror" id="tipe"
+                                        name="tipe">
                                         <option value="">-- Pilih Tipe --</option>
                                         <option value="NON INKA">NON INKA</option>
                                         <option value="INKA GROUP">INKA GROUP</option>
@@ -519,7 +741,8 @@
                             <div class="form-group row">
                                 <label for="status" class="col-sm-4 col-form-label">{{ __('Status') }}</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control @error('status') is-invalid @enderror" id="status" name="status">
+                                    <select class="form-control @error('status') is-invalid @enderror" id="status"
+                                        name="status">
                                         <option value=""></option>
                                         <!-- <option value="-">-</option> -->
                                         <option value="Konfirmasi Order">Konfirmasi Order</option>
@@ -676,13 +899,30 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group row">
+                                                {{-- <div class="form-group row">
                                                     <label for="tanggal_dokumen"
                                                         class="col-sm-4 col-form-label">{{ __('Tanggal') }}
                                                     </label>
                                                     <div class="col-sm-8">
                                                         <input type="date" class="form-control" id="tanggal_dokumen"
                                                             name="tanggal_dokumen">
+                                                    </div>
+                                                </div> --}}
+
+                                                <div class="form-group row">
+                                                    <label for="tanggal_dokumen" class="col-sm-4 col-form-label">
+
+                                                        {{ __('Tanggal') }}
+
+                                                    </label>
+
+                                                    <div class="col-sm-8">
+
+                                                        <input type="date" class="form-control" id="tanggal_dokumen"
+                                                            name="tanggal_dokumen"
+                                                            onclick="this.showPicker && this.showPicker()"
+                                                            onfocus="this.showPicker && this.showPicker()">
+
                                                     </div>
                                                 </div>
 
@@ -864,70 +1104,71 @@
     {{-- End Menampilkan form otomatis Dasar Proyek --}}
 
     <script>
-    $(document).ready(function () {
+        $(document).ready(function() {
 
-        $('#button-save').click(function (e) {
-            e.preventDefault();
+            $('#button-save').click(function(e) {
+                e.preventDefault();
 
-            let form = $('#save');
+                let form = $('#save');
 
-            // reset error dulu (WAJIB pakai scope form)
-            form.find('.is-invalid').removeClass('is-invalid');
-            form.find('.invalid-feedback').remove();
+                // reset error dulu (WAJIB pakai scope form)
+                form.find('.is-invalid').removeClass('is-invalid');
+                form.find('.invalid-feedback').remove();
 
-            $.ajax({
-                url: form.attr('action'),
-                method: "POST",
-                data: form.serialize(),
+                $.ajax({
+                    url: form.attr('action'),
+                    method: "POST",
+                    data: form.serialize(),
 
-                success: function (response) {
+                    success: function(response) {
 
-                    toastr.success('Kontrak berhasil disimpan');
+                        toastr.success('Kontrak berhasil disimpan');
 
-                    $('#add-kontrak').modal('hide');
+                        $('#add-kontrak').modal('hide');
 
-                    location.reload();
-                },
+                        location.reload();
+                    },
 
-                error: function (xhr) {
+                    error: function(xhr) {
 
-                    if (xhr.status == 422) {
+                        if (xhr.status == 422) {
 
-                        let errors = xhr.responseJSON.errors;
+                            let errors = xhr.responseJSON.errors;
 
-                        $.each(errors, function (key, value) {
+                            $.each(errors, function(key, value) {
 
-                            let input = form.find('[name="' + key + '"]');
+                                let input = form.find('[name="' + key + '"]');
 
-                            input.addClass('is-invalid');
+                                input.addClass('is-invalid');
 
-                            // tambahkan error tepat setelah input
-                            $('<div class="invalid-feedback">' + value[0] + '</div>')
-                                .insertAfter(input);
+                                // tambahkan error tepat setelah input
+                                $('<div class="invalid-feedback">' + value[0] +
+                                        '</div>')
+                                    .insertAfter(input);
 
-                        });
+                            });
 
-                    } else {
-                        toastr.error('Terjadi kesalahan sistem');
+                        } else {
+                            toastr.error('Terjadi kesalahan sistem');
+                        }
+
                     }
 
-                }
+                });
 
             });
 
         });
-
-    });
     </script>
 
     <!-- menampilkan field nilai pekerjaan -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const jenisNilai = document.getElementById("jenis_nilai");
             const fieldNilai = document.getElementById("field_nilai");
             const inputNilai = document.getElementById("nilai_pekerjaan");
 
-            jenisNilai.addEventListener("change", function () {
+            jenisNilai.addEventListener("change", function() {
                 if (this.value === "input") {
                     fieldNilai.style.display = "flex"; // tampilkan
                 } else {
@@ -981,7 +1222,7 @@
             $('#barcode_preview_container').hide();
         }
 
-        $('#add-kontrak').on('hidden.bs.modal', function () {
+        $('#add-kontrak').on('hidden.bs.modal', function() {
             let form = $('#save');
             form[0].reset();
             form.find('.is-invalid').removeClass('is-invalid');
@@ -2290,20 +2531,60 @@
     @endif
 
     <!-- {{-- VALIDATION ERRORS --}}
-    @if ($errors->any())
-        <script>
-            $(document).ready(function(){
-                $('#add-kontrak').modal('show');
-            });
-        </script>
+            @if ($errors->any())
+    <script>
+        $(document).ready(function() {
+            $('#add-kontrak').modal('show');
+        });
+    </script>
     @endif -->
 
 
     <!-- {{-- VALIDATION ERRORS --}}
-    @if ($errors->any())
-        <script>
-            toastr.error("{!! implode('<br>', $errors->all()) !!}");
-        </script>
+            @if ($errors->any())
+    <script>
+        toastr.error("{!! implode('<br>', $errors->all()) !!}");
+    </script>
     @endif -->
 
+    <script>
+        // TOGGLE FILTER MOBILE
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const toggleBtn = document.getElementById('toggleFilter');
+            const filterWrapper = document.getElementById('filterWrapper');
+
+            if (toggleBtn) {
+
+                toggleBtn.addEventListener('click', function() {
+
+                    filterWrapper.classList.toggle('active');
+
+                    if (filterWrapper.classList.contains('active')) {
+                        toggleBtn.innerHTML = '❌ Sembunyikan Filter';
+                    } else {
+                        toggleBtn.innerHTML = '🔍 Tampilkan Filter';
+                    }
+
+                });
+
+            }
+
+        });
+
+        // FIX DATE INPUT DI MODAL HP
+        document.addEventListener('shown.bs.modal', function() {
+
+            const tanggal = document.getElementById('tanggal_dokumen');
+
+            if (tanggal) {
+
+                tanggal.style.pointerEvents = 'auto';
+                tanggal.style.position = 'relative';
+                tanggal.style.zIndex = '99999';
+
+            }
+
+        });
+    </script>
 @endsection
