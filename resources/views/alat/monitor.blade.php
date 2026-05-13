@@ -179,6 +179,226 @@
                 transform: translateY(0);
             }
         }
+
+
+
+
+        /* =========================================
+       RESPONSIVE MOBILE
+    ========================================= */
+
+        .mobile-filter-toggle {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+
+            body {
+                overflow-x: hidden;
+            }
+
+            .container-fluid,
+            .content-wrapper,
+            .content {
+                padding-left: 6px !important;
+                padding-right: 6px !important;
+            }
+
+            /* HEADER */
+            .project-header {
+                width: 100%;
+                max-width: 100%;
+                padding: 14px;
+                border-radius: 10px;
+            }
+
+            .project-title {
+                font-size: 11px !important;
+            }
+
+            .project-name {
+                font-size: 16px !important;
+                line-height: 1.4;
+            }
+
+            /* BUTTON */
+            .btn,
+            .btn-success,
+            .btn-danger,
+            .btn-warning,
+            .btn-primary,
+            .btn-secondary,
+            .btn-info {
+                height: 34px !important;
+                min-height: 34px !important;
+                padding: 0 10px !important;
+                font-size: 11px !important;
+                border-radius: 8px !important;
+
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+
+                white-space: nowrap;
+            }
+
+            /* TOGGLE FILTER */
+            .mobile-filter-toggle {
+                display: block;
+                width: 100%;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            /* FILTER AREA */
+            #filterArea {
+                display: none;
+                animation: fadeFilter .3s ease;
+            }
+
+            #filterArea.show {
+                display: block;
+            }
+
+            @keyframes fadeFilter {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* FILTER */
+            #filterArea .col-md-3,
+            #filterArea .col-md-12 {
+                width: 100%;
+                max-width: 100%;
+                flex: 100%;
+            }
+
+            #filterArea label {
+                font-size: 11px;
+                margin-bottom: 4px;
+            }
+
+            .form-control {
+                height: 36px !important;
+                font-size: 12px !important;
+                border-radius: 8px !important;
+            }
+
+            /* SUMMARY CARD */
+            .summary-card {
+                padding: 12px !important;
+            }
+
+            .summary-title {
+                font-size: 13px;
+            }
+
+            .summary-section {
+                padding: 6px 8px;
+            }
+
+            .scroll-area {
+                max-height: 120px;
+            }
+
+            /* TABLE */
+            .table-container {
+                overflow-x: auto;
+                overflow-y: auto;
+                max-height: 72vh;
+                border-radius: 10px;
+                position: relative;
+            }
+
+            .table-monitoring {
+                min-width: 1500px;
+                font-size: 10px !important;
+                border-collapse: separate !important;
+            }
+
+            .table-monitoring th,
+            .table-monitoring td {
+                padding: 5px !important;
+                font-size: 10px !important;
+                white-space: nowrap;
+            }
+
+            /* STICKY HEADER */
+            .table-monitoring thead th {
+                position: sticky;
+                top: 0;
+                z-index: 500;
+                background: #b30000 !important;
+                color: white;
+            }
+
+            /* STICKY FIRST COLUMN */
+            .table-monitoring th:first-child {
+                position: sticky;
+                left: 0;
+                z-index: 700 !important;
+                background: #b30000 !important;
+                min-width: 50px;
+            }
+
+            .table-monitoring td:first-child {
+                position: sticky;
+                left: 0;
+                z-index: 600;
+                background: #fff !important;
+                min-width: 50px;
+            }
+
+            /* ACTION BUTTON */
+            .action-buttons {
+                display: flex;
+                gap: 4px;
+                flex-wrap: nowrap;
+            }
+
+            .action-buttons .btn {
+                width: 32px !important;
+                height: 32px !important;
+                padding: 0 !important;
+            }
+
+            /* MODAL */
+            .modal-dialog {
+                margin: 8px;
+                max-width: calc(100% - 16px);
+            }
+
+            .modal-content {
+                border-radius: 12px;
+            }
+
+            .modal-body .col-md-4,
+            .modal-body .col-md-6 {
+                width: 100%;
+                max-width: 100%;
+                flex: 100%;
+            }
+
+            .modal-body label {
+                font-size: 12px;
+            }
+
+            .modal-footer .btn {
+                flex: 1;
+            }
+
+            /* DELETE BUTTON */
+            #btnDeleteSelected {
+                width: 100%;
+            }
+        }
     </style>
 
     <div class="sticky-top-section">
@@ -202,7 +422,11 @@
 
 
         {{-- FILTER --}}
-        <div class="card mt-3 p-3">
+        {{-- BUTTON TOGGLE FILTER MOBILE --}}
+        <button type="button" class="btn btn-dark mobile-filter-toggle" id="toggleFilter">
+            🔍 Tampilkan / Sembunyikan Filter
+        </button>
+        <div class="card mt-3 p-3" id="filterArea">
 
             <form method="GET">
                 <div class="row">
@@ -635,5 +859,20 @@
                 document.getElementById('bulkDeleteForm').submit();
             }
         });
+    </script>
+
+    <script>
+        // TOGGLE FILTER MOBILE
+        const toggleBtn = document.getElementById('toggleFilter');
+        const filterArea = document.getElementById('filterArea');
+
+        toggleBtn.addEventListener('click', function() {
+            filterArea.classList.toggle('show');
+        });
+
+        // AUTO HIDE FILTER SAAT MOBILE
+        if (window.innerWidth > 768) {
+            filterArea.classList.add('show');
+        }
     </script>
 @endsection
