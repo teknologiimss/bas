@@ -293,6 +293,213 @@
     .btn-maroon-animated i {
         color: #ffffff !important;
     }
+
+
+    /* =========================================
+   BUTTON LAYOUT FIX
+========================================= */
+
+/* Area header button */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Semua button */
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 8px 14px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+/* Button action dalam tabel */
+td .btn {
+    margin: 2px;
+}
+
+/* Supaya button aksi sejajar */
+td.text-center {
+    white-space: nowrap;
+}
+
+/* Button kecil */
+.btn-xs {
+    min-width: 38px;
+    height: 34px;
+    padding: 4px 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Button tambah & cetak */
+.btn-maroon-animated {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 42px;
+}
+
+/* Hover lebih smooth */
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Filter section */
+.row.mb-3 {
+    align-items: end;
+}
+
+/* Clear filter button */
+#clear-filter {
+    width: 100%;
+    height: 38px;
+    border-radius: 8px;
+    margin-top: 30px;
+}
+
+/* Button hapus selected */
+#delete-selected {
+    margin-top: 15px;
+    border-radius: 8px;
+    padding: 10px 16px;
+}
+
+/* Footer modal button */
+.modal-footer .btn {
+    min-width: 120px;
+}
+
+/* =========================================
+   TABLE RESPONSIVE
+========================================= */
+
+.table-responsive {
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+/* Table lebih rapi */
+#table th,
+#table td {
+    padding: 12px 10px;
+    vertical-align: middle;
+}
+
+/* Kolom aksi */
+#table td:last-child {
+    min-width: 130px;
+}
+
+/* =========================================
+   FORM FIX
+========================================= */
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    height: 40px;
+    border-radius: 8px;
+}
+
+textarea.form-control {
+    height: auto;
+}
+
+/* =========================================
+   RESPONSIVE MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    /* Header */
+    .card-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .card-header .btn {
+        width: 100%;
+    }
+
+    /* Filter */
+    .row.mb-3 .col-md-4 {
+        margin-bottom: 12px;
+    }
+
+    #clear-filter {
+        margin-top: 0;
+    }
+
+    /* Table */
+    #table {
+        font-size: 13px;
+    }
+
+    #table th,
+    #table td {
+        padding: 10px 8px;
+    }
+
+    /* Button aksi */
+    td .btn {
+        margin-bottom: 4px;
+    }
+
+    /* Modal */
+    .modal-dialog {
+        margin: 10px;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+    }
+
+    /* Form modal */
+    .form-group.row {
+        flex-direction: column;
+    }
+
+    .form-group.row label {
+        max-width: 100%;
+        margin-bottom: 6px;
+    }
+
+    .form-group.row .col-sm-8,
+    .form-group.row .col-sm-4 {
+        max-width: 100%;
+        flex: 100%;
+    }
+
+    /* Tanggal */
+    #tgl_pr {
+        width: 100% !important;
+    }
+
+    /* Tombol tambah produk */
+    #button-tambah-produk {
+        width: 100%;
+    }
+
+    /* Tombol cetak */
+    #button-cetak {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
 </style>
 @section('content')
     <div class="content-header">
