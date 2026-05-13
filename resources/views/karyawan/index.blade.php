@@ -5,8 +5,8 @@
 
     <style>
         /* =====================================================
-       🎨 ROOT COLOR
-    ===================================================== */
+           🎨 ROOT COLOR
+        ===================================================== */
         :root {
             --maroon: #dc3545;
             --maroon-dark: #5a0b14;
@@ -16,28 +16,57 @@
         }
 
         /* =====================================================
-       📦 CARD
-    ===================================================== */
+           🌍 GLOBAL MOBILE FIX
+        ===================================================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .container-fluid,
+        .content-wrapper,
+        .content,
+        .card,
+        .card-body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           📦 CARD
+        ===================================================== */
         .card {
             border-radius: 14px;
             border: none;
             box-shadow: 0 12px 30px rgba(122, 15, 27, 0.25);
             animation: fadeUp .5s ease;
+            overflow: hidden;
         }
 
         .card-header {
             background: linear-gradient(135deg, var(--maroon), var(--maroon-light));
             color: #fff;
             font-weight: 700;
+
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
 
         .card-body {
             background: #fff;
+            width: 100%;
+            overflow-x: auto;
         }
 
         /* =====================================================
-       🔘 BUTTON – SEMUA MAROON
-    ===================================================== */
+           🔘 BUTTON – SEMUA MAROON
+        ===================================================== */
         .btn,
         button {
             position: relative;
@@ -50,7 +79,7 @@
             box-shadow: 0 6px 16px rgba(122, 15, 27, 0.35);
         }
 
-        /* override semua tipe bootstrap */
+        /* override semua bootstrap */
         .btn-primary,
         .btn-success,
         .btn-danger,
@@ -75,7 +104,7 @@
             transform: scale(0.95);
         }
 
-        /* icon ikut gerak */
+        /* icon animation */
         .btn i {
             transition: transform .25s ease;
         }
@@ -84,14 +113,37 @@
             transform: scale(1.2) rotate(-5deg);
         }
 
+        /* button kecil */
+        .btn-xs {
+            padding: 6px 10px !important;
+            font-size: 12px !important;
+            min-width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+        }
+
         /* =====================================================
-       📊 TABLE – MAROON TOTAL
-    ===================================================== */
+           📊 TABLE – RESPONSIVE HP
+        ===================================================== */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+        }
+
         #table,
         .table {
+            width: 100%;
+            min-width: 900px;
+            /* supaya desktop tetap rapi */
             border-radius: 14px;
             overflow: hidden;
             box-shadow: 0 12px 30px rgba(122, 15, 27, 0.25);
+            margin-bottom: 0;
         }
 
         /* header */
@@ -100,6 +152,8 @@
             color: #fff;
             text-align: center;
             border: none;
+            white-space: nowrap;
+            vertical-align: middle;
         }
 
         /* body row */
@@ -123,14 +177,21 @@
         /* cell */
         .table td {
             border-color: var(--maroon-border);
+            vertical-align: middle;
+            white-space: nowrap;
         }
 
         /* =====================================================
-       🪟 MODAL
-    ===================================================== */
+           🪟 MODAL
+        ===================================================== */
+        .modal-dialog {
+            max-width: 95%;
+        }
+
         .modal-content {
             border-radius: 16px;
             animation: zoomIn .4s ease;
+            overflow: hidden;
         }
 
         .modal-header {
@@ -138,9 +199,14 @@
             color: #fff;
         }
 
+        .modal-body {
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+        }
+
         /* =====================================================
-       🧾 INPUT / FORM
-    ===================================================== */
+           🧾 INPUT / FORM
+        ===================================================== */
         .form-control {
             border-radius: 10px;
             transition: all .25s ease;
@@ -152,8 +218,115 @@
         }
 
         /* =====================================================
-       ✨ ANIMATIONS
-    ===================================================== */
+           📱 MOBILE RESPONSIVE
+        ===================================================== */
+        @media (max-width: 768px) {
+
+            body {
+                font-size: 13px;
+            }
+
+            .container-fluid {
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+            }
+
+            .card {
+                border-radius: 10px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            .card-tools {
+                width: 100%;
+            }
+
+            .card-tools .input-group {
+                width: 100%;
+            }
+
+            /* tombol mobile kecil & sama */
+            .btn {
+                font-size: 12px !important;
+                padding: 7px 10px !important;
+                min-height: 38px;
+            }
+
+            .btn-xs {
+                width: 38px !important;
+                height: 38px !important;
+                padding: 0 !important;
+                font-size: 12px !important;
+                margin: 2px !important;
+            }
+
+            /* tabel mobile */
+            #table,
+            .table {
+                min-width: 850px;
+            }
+
+            .table th,
+            .table td {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            /* modal */
+            .modal-dialog {
+                margin: 10px auto;
+                max-width: 98%;
+            }
+
+            .modal-body {
+                padding: 12px;
+            }
+
+            /* form */
+            .form-group.row {
+                display: block;
+                margin-bottom: 12px;
+            }
+
+            .form-group.row label {
+                margin-bottom: 6px;
+                display: block;
+            }
+
+            .form-group.row .col-sm-4,
+            .form-group.row .col-sm-8 {
+                max-width: 100%;
+                flex: 100%;
+            }
+
+            .form-control {
+                font-size: 13px;
+            }
+
+            /* footer modal */
+            .modal-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+                margin: 0 !important;
+            }
+        }
+
+        /* =====================================================
+           ✨ ANIMATIONS
+        ===================================================== */
         @keyframes fadeUp {
             from {
                 opacity: 0;
