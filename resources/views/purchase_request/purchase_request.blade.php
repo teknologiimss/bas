@@ -68,7 +68,7 @@
 <style>
     /* ===============================
    THEME COLOR
-================================= */
+    ================================= */
     :root {
         --maroon: #800020;
         --maroon-dark: #5e0018;
@@ -78,7 +78,7 @@
 
     /* ===============================
    CARD
-================================= */
+    ================================= */
     .card {
         border-radius: 12px;
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
@@ -93,7 +93,7 @@
 
     /* ===============================
    BUTTON
-================================= */
+    ================================= */
     .btn {
         border-radius: 8px;
         font-weight: 500;
@@ -120,7 +120,7 @@
 
     /* ===============================
    TABLE
-================================= */
+    ================================= */
     #table {
         border-radius: 10px;
         overflow: hidden;
@@ -165,7 +165,7 @@
 
     /* ===============================
    CHECKBOX
-================================= */
+    ================================= */
     input[type="checkbox"] {
         transform: scale(1.1);
         accent-color: var(--maroon);
@@ -173,7 +173,7 @@
 
     /* ===============================
    SORT ICON
-================================= */
+    ================================= */
     .sort-buttons span {
         color: #f3c6d0;
     }
@@ -185,7 +185,7 @@
 
     /* ===============================
    FILTER FORM
-================================= */
+    ================================= */
     .form-control {
         border-radius: 8px;
     }
@@ -197,7 +197,7 @@
 
     /* ===============================
    MODAL
-================================= */
+    ================================= */
     .modal-content {
         border-radius: 12px;
     }
@@ -212,7 +212,7 @@
 
     /* ===============================
    BUTTON MAROON ANIMATED
-================================= */
+    ================================= */
     .btn-maroon-animated {
         background: linear-gradient(135deg, #800020, #5e0018);
         color: #fff;
@@ -267,7 +267,7 @@
 
     /* ===============================
    KEYFRAMES
-================================= */
+    ================================= */
     @keyframes pulseIcon {
         0% {
             transform: scale(1);
@@ -560,11 +560,11 @@
                                 </div>
 
                                 <!-- <div class="form-group row">
-                                            <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
-                                            <div class="col-sm-8">
-                                                <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
-                                            </div>
-                                        </div> -->
+                                                <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
+                                                <div class="col-sm-8">
+                                                    <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
+                                                </div>
+                                            </div> -->
 
                                 <div class="form-group row">
                                     <label for="revisi" class="col-sm-4 col-form-label">Revisi</label>
