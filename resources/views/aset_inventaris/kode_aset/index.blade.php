@@ -1,13 +1,13 @@
 @extends('layouts.main')
 @section('title', __('Kode Aset'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 
     <style>
         /* ===============================
-       🎨 ROOT COLOR
-    ================================ */
+               🎨 ROOT COLOR
+            ================================ */
         :root {
             --maroon: #dc3545;
             --maroon-dark: #5c0017;
@@ -17,8 +17,8 @@
         }
 
         /* ===============================
-       🪟 MODAL SCROLL
-    ================================ */
+               🪟 MODAL SCROLL
+            ================================ */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -29,8 +29,8 @@
         }
 
         /* ===============================
-       🔘 BUTTON (ALL WAJIB MAROON)
-    ================================ */
+               🔘 BUTTON (ALL WAJIB MAROON)
+            ================================ */
         .btn,
         .btn-primary,
         .btn-success,
@@ -63,8 +63,8 @@
         }
 
         /* ===============================
-       🔍 INPUT & SEARCH
-    ================================ */
+               🔍 INPUT & SEARCH
+            ================================ */
         .form-control {
             border-radius: 6px;
             border: 1px solid var(--maroon);
@@ -77,8 +77,8 @@
         }
 
         /* ===============================
-       📊 TABLE GLOBAL
-    ================================ */
+               📊 TABLE GLOBAL
+            ================================ */
         #table {
             border-collapse: separate;
             border-spacing: 0;
@@ -125,8 +125,8 @@
         }
 
         /* ===============================
-       🔼 SORT BUTTONS
-    ================================ */
+               🔼 SORT BUTTONS
+            ================================ */
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -154,16 +154,16 @@
         }
 
         /* ===============================
-       ☑️ CHECKBOX
-    ================================ */
+               ☑️ CHECKBOX
+            ================================ */
         input[type="checkbox"] {
             accent-color: var(--maroon);
             transform: scale(1.1);
         }
 
         /* ===============================
-       📄 PAGINATION
-    ================================ */
+               📄 PAGINATION
+            ================================ */
         .page-item.active .page-link {
             background-color: var(--maroon);
             border-color: var(--maroon);
@@ -181,8 +181,8 @@
         }
 
         /* ===============================
-       🪟 MODAL
-    ================================ */
+               🪟 MODAL
+            ================================ */
         .modal-content {
             border-radius: 10px;
             box-shadow: 0 10px 30px var(--shadow-maroon);
@@ -198,16 +198,16 @@
         }
 
         /* ===============================
-       🧠 CARD
-    ================================ */
+               🧠 CARD
+            ================================ */
         .card {
             border-radius: 10px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         /* ===============================
-       💥 ANIMATION ENTRY (BONUS)
-    ================================ */
+               💥 ANIMATION ENTRY (BONUS)
+            ================================ */
         @keyframes fadeSlideUp {
             from {
                 opacity: 0;
@@ -224,6 +224,306 @@
         .table,
         .btn {
             animation: fadeSlideUp 0.5s ease;
+        }
+
+        /* =========================================
+           RESPONSIVE MOBILE
+        ========================================= */
+        @media (max-width: 768px) {
+
+            /* CARD */
+            .card-body {
+                padding: 12px;
+            }
+
+            /* TABLE RESPONSIVE */
+            .table-responsive {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 10px;
+            }
+
+            #table {
+                min-width: 600px;
+                font-size: 12px;
+            }
+
+            #table th,
+            #table td {
+                white-space: nowrap;
+                padding: 8px 6px;
+                vertical-align: middle;
+            }
+
+            /* BUTTON GLOBAL */
+            .btn,
+            .btn-primary,
+            .btn-success,
+            .btn-danger,
+            .btn-default {
+                font-size: 11px !important;
+                padding: 6px 10px !important;
+                border-radius: 6px !important;
+                min-height: 34px;
+            }
+
+            /* BUTTON ACTION TABLE */
+            td .btn {
+                width: 34px !important;
+                height: 34px !important;
+                padding: 0 !important;
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+                margin: 2px !important;
+            }
+
+            td .btn i {
+                font-size: 12px;
+            }
+
+            /* BUTTON ADD */
+            .card-header .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            /* SEARCH */
+            .card-tools {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .card-tools .input-group {
+                width: 100%;
+            }
+
+            .card-tools input.form-control {
+                font-size: 13px;
+            }
+
+            /* FORM MODAL */
+            .form-group.row {
+                display: block;
+                margin-bottom: 12px;
+            }
+
+            .form-group.row label {
+                display: block;
+                width: 100%;
+                margin-bottom: 5px;
+                font-size: 13px;
+            }
+
+            .form-group.row .col-sm-8,
+            .form-group.row .col-sm-4 {
+                width: 100%;
+                max-width: 100%;
+                flex: 100%;
+            }
+
+            .form-control {
+                font-size: 13px;
+                min-height: 38px;
+            }
+
+            /* MODAL */
+            .modal-dialog {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+            }
+
+            .modal-content {
+                border-radius: 10px;
+            }
+
+            .modal-header h4 {
+                font-size: 16px;
+            }
+
+            /* MODAL FOOTER BUTTON */
+            .modal-footer {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .modal-footer .btn {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            /* DELETE BUTTON */
+            #delete-selected {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            /* PAGINATION */
+            .pagination {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .page-link {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
+            /* TEXT */
+            h4,
+            h5,
+            h6 {
+                font-size: 15px;
+            }
+
+            /* CHECKBOX */
+            input[type="checkbox"] {
+                transform: scale(1);
+            }
+        }
+
+        /* EXTRA SMALL DEVICE */
+        @media (max-width: 480px) {
+
+            #table {
+                font-size: 11px;
+            }
+
+            #table th,
+            #table td {
+                padding: 6px 5px;
+            }
+
+            .btn,
+            .btn-primary,
+            .btn-success,
+            .btn-danger,
+            .btn-default {
+                font-size: 10px !important;
+                padding: 5px 8px !important;
+            }
+
+            td .btn {
+                width: 30px !important;
+                height: 30px !important;
+            }
+
+            td .btn i {
+                font-size: 11px;
+            }
+
+            .modal-header h4 {
+                font-size: 14px;
+            }
+
+            .form-control {
+                font-size: 12px;
+            }
+        }
+
+        /* =========================================
+       FIX TABLE MOBILE AGAR TIDAK OVERFLOW
+    ========================================= */
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 10px;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #b5b5b5;
+            border-radius: 10px;
+        }
+
+        #table {
+            width: 100% !important;
+            min-width: unset !important;
+            table-layout: auto;
+        }
+
+        #table th,
+        #table td {
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+
+            .card-body {
+                overflow-x: hidden;
+                padding: 10px;
+            }
+
+            .table-responsive {
+                display: block;
+                width: 100%;
+                max-width: 100vw;
+                overflow-x: auto;
+            }
+
+            #table {
+                width: max-content !important;
+                min-width: 100% !important;
+            }
+
+            #table th,
+            #table td {
+                font-size: 11px;
+                padding: 7px 6px;
+            }
+
+            /* BUTTON AKSI */
+            td .btn {
+                width: 32px !important;
+                height: 32px !important;
+                padding: 0 !important;
+                margin: 2px !important;
+
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+            }
+
+            td .btn i {
+                font-size: 11px;
+            }
+        }
+
+        /* EXTRA SMALL */
+        @media (max-width: 480px) {
+
+            .container-fluid {
+                padding-left: 6px !important;
+                padding-right: 6px !important;
+            }
+
+            .card-body {
+                padding: 6px;
+            }
+
+            #table th,
+            #table td {
+                font-size: 10px;
+                padding: 6px 5px;
+            }
+
+            td .btn {
+                width: 28px !important;
+                height: 28px !important;
+            }
+
+            td .btn i {
+                font-size: 10px;
+            }
         }
     </style>
 @endsection
