@@ -112,6 +112,127 @@
         a:active {
             transform: scale(0.95);
         }
+
+
+
+        /* =========================================
+       RESPONSIVE MOBILE
+    ========================================= */
+        @media (max-width: 768px) {
+
+            /* CARD */
+            .card {
+                padding: 15px !important;
+                border-radius: 14px;
+            }
+
+            /* HEADER BUTTON */
+            .d-flex.justify-content-between.mb-3 {
+                flex-direction: column;
+            }
+
+            .d-flex.justify-content-between.mb-3 .btn {
+                width: 100%;
+                height: 42px;
+                font-size: 14px;
+                border-radius: 10px !important;
+            }
+
+            /* SEARCH */
+            .d-flex.justify-content-end.mb-3 {
+                justify-content: center !important;
+            }
+
+            .input-group {
+                width: 100%;
+            }
+
+            .input-group .form-control {
+                font-size: 13px;
+                height: 40px;
+            }
+
+            .input-group .btn {
+                font-size: 13px;
+                padding: 0 14px;
+                height: 40px;
+            }
+
+            /* ITEM CARD */
+            .border.p-3 {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px;
+                padding: 14px !important;
+            }
+
+            /* TITLE */
+            .border h5 {
+                font-size: 15px;
+                margin-bottom: 0;
+                word-break: break-word;
+            }
+
+            /* BUTTON AREA */
+            .border>div:last-child {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            /* BUTTON */
+            .border .btn,
+            .border form {
+                width: 100%;
+                margin: 0 !important;
+            }
+
+            .border .btn {
+                height: 38px;
+                font-size: 12px;
+                border-radius: 8px !important;
+                padding: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* FORM DELETE */
+            .border form {
+                display: flex;
+            }
+
+            /* MODAL */
+            .modal-dialog {
+                margin: 12px;
+            }
+
+            .modal-content {
+                border-radius: 14px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+            /* PAGINATION */
+            .pagination {
+                flex-wrap: wrap;
+                gap: 5px;
+                justify-content: center;
+            }
+
+            .page-link {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+        }
     </style>
 
     <!-- HEADER BUTTON -->
@@ -152,19 +273,19 @@
 
                 <div>
 
-                    <a href="{{ route('perencanaan.index', $p->id) }}" class="btn btn-danger btn-sm">
-                        📋 Buka
+                    <a href="{{ route('perencanaan.index', $p->id) }}" class="btn btn-primary btn-sm">
+                        📋 Open
                     </a>
 
                     <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#edit{{ $p->id }}">
-                        ✏️
+                        ✏️ Edit
                     </button>
 
                     <form action="{{ route('perencanaan.proyek.delete', $p->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus proyek?')">
-                            🗑️
+                            🗑️ Delete
                         </button>
                     </form>
 

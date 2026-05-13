@@ -203,6 +203,129 @@
         a:active {
             transform: scale(0.95);
         }
+
+
+
+        /* =========================================
+       RESPONSIVE MOBILE
+    ========================================= */
+        @media (max-width: 768px) {
+
+            /* CONTAINER */
+            .card {
+                padding: 15px !important;
+                border-radius: 14px;
+            }
+
+            /* HEADER BUTTON */
+            .d-flex.justify-content-between.mb-3 {
+                flex-direction: column;
+            }
+
+            .d-flex.justify-content-between.mb-3 .btn {
+                width: 100%;
+                margin: 0 !important;
+                height: 42px;
+                font-size: 14px;
+                border-radius: 10px !important;
+            }
+
+            /* SEARCH */
+            .search-box {
+                justify-content: center;
+            }
+
+            .search-wrapper {
+                width: 100%;
+                max-width: 100%;
+                border-radius: 12px;
+            }
+
+            .search-input {
+                font-size: 13px;
+                padding: 10px;
+            }
+
+            .search-btn {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+
+            /* CARD ITEM */
+            .border.p-3 {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px;
+                padding: 14px !important;
+            }
+
+            /* TITLE */
+            .border h5 {
+                font-size: 15px;
+                margin-bottom: 0;
+                word-break: break-word;
+            }
+
+            /* BUTTON GROUP */
+            .border>div:last-child {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+            }
+
+            /* BUTTON */
+            .border .btn,
+            .border form {
+                width: 100%;
+                margin: 0 !important;
+            }
+
+            .border .btn {
+                width: 100%;
+                height: 38px;
+                font-size: 12px;
+                padding: 6px;
+                border-radius: 8px !important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* FORM DELETE */
+            .border form {
+                display: flex;
+            }
+
+            /* MODAL */
+            .modal-dialog {
+                margin: 12px;
+            }
+
+            .modal-content {
+                border-radius: 14px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+            /* PAGINATION */
+            .pagination {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .page-link {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+        }
     </style>
 
     <div class="d-flex justify-content-between mb-3">

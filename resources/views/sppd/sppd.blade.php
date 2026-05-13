@@ -238,6 +238,7 @@
     .btn-maroon-animated i {
         color: #ffffff !important;
     }
+    
 </style>
 @section('content')
     <div class="content-header">

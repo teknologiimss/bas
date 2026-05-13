@@ -203,6 +203,108 @@
         a:active {
             transform: scale(0.95);
         }
+
+
+
+        /* =========================
+       RESPONSIVE MOBILE
+    ========================= */
+        @media (max-width: 768px) {
+
+            /* HEADER BUTTON */
+            .d-flex.justify-content-between.mb-3 {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+
+            .d-flex.justify-content-between.mb-3 .btn {
+                width: 100%;
+                margin: 0 !important;
+                height: 42px;
+                font-size: 14px;
+            }
+
+            /* SEARCH */
+            .search-box {
+                justify-content: center;
+            }
+
+            .search-wrapper {
+                max-width: 100%;
+            }
+
+            .search-input {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .search-btn {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+
+            /* CARD ITEM */
+            .border.p-3 {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px;
+            }
+
+            /* TITLE */
+            .border h5 {
+                font-size: 16px;
+                margin-bottom: 0;
+            }
+
+            /* BUTTON AREA */
+            .border .btn,
+            .border form {
+                width: 100%;
+            }
+
+            .border .btn {
+                width: 100%;
+                height: 40px;
+                font-size: 13px;
+                border-radius: 8px !important;
+                margin-bottom: 6px;
+            }
+
+            /* BUTTON GROUP */
+            .border>div:last-child {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            /* DELETE BUTTON */
+            .btn-danger,
+            .btn-success,
+            .btn-light {
+                padding: 8px 10px !important;
+            }
+
+            /* MODAL */
+            .modal-dialog {
+                margin: 15px;
+            }
+
+            .modal-content {
+                border-radius: 14px;
+            }
+
+            /* PAGINATION */
+            .pagination {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .page-link {
+                font-size: 13px;
+                padding: 6px 10px;
+            }
+        }
     </style>
 
     <div class="d-flex justify-content-between mb-3">
@@ -216,8 +318,8 @@
         <form method="GET" action="">
             <div class="search-wrapper">
                 <span class="search-icon">🔍</span>
-                <input type="text" name="search" class="search-input" autocomplete="off" placeholder="Cari nama proyek..."
-                    value="{{ request('search') }}">
+                <input type="text" name="search" class="search-input" autocomplete="off"
+                    placeholder="Cari nama proyek..." value="{{ request('search') }}">
                 <button class="search-btn">Cari</button>
             </div>
         </form>

@@ -146,6 +146,172 @@
         .col-md-6 {
             animation: fadeUp 0.6s ease;
         }
+
+
+        /* =========================
+       RESPONSIVE MOBILE
+    ========================= */
+        @media (max-width: 768px) {
+
+            body {
+                overflow-x: hidden;
+            }
+
+            /* ROW */
+            .row {
+                margin: 0 !important;
+            }
+
+            .col-md-6 {
+                padding: 0 !important;
+                margin-bottom: 20px;
+            }
+
+            /* TITLE */
+            h5 {
+                font-size: 16px;
+                text-align: center;
+            }
+
+            /* BUTTON TAMBAH */
+            .btn-success.mb-3 {
+                width: 100%;
+                height: 42px;
+                font-size: 13px !important;
+            }
+
+            /* TABLE */
+            .table-excel {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                border-radius: 12px;
+            }
+
+            .table-excel th,
+            .table-excel td {
+                font-size: 11px;
+                padding: 6px;
+                vertical-align: middle;
+            }
+
+            /* HEADER TABLE */
+            .header td {
+                font-size: 11px;
+                padding: 8px 6px;
+            }
+
+            /* BUTTON DALAM TABLE */
+            .table-excel .btn {
+                width: 32px;
+                height: 32px;
+                padding: 0 !important;
+                font-size: 12px !important;
+
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+
+                border-radius: 8px !important;
+            }
+
+            /* FORM DELETE */
+            .table-excel form {
+                display: inline-flex !important;
+            }
+
+            /* MODAL */
+            .modal-dialog {
+                margin: 10px;
+            }
+
+            .modal-content {
+                border-radius: 14px;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            /* INPUT */
+            .form-control,
+            select.form-control {
+                font-size: 13px;
+                height: 40px;
+            }
+
+            textarea.form-control {
+                height: auto;
+            }
+
+            /* FOOTER BUTTON */
+            .modal-footer {
+                gap: 10px;
+            }
+
+            .modal-footer .btn {
+                flex: 1;
+                height: 40px;
+                font-size: 13px !important;
+            }
+
+            /* LAMPIRAN */
+            .lampiran-item {
+                flex-direction: column;
+            }
+
+            .lampiran-item .col-md-5,
+            .lampiran-item .col-md-2,
+            .row.align-items-center .col-md-4,
+            .row.align-items-center .col-md-3,
+            .row.align-items-center .col-md-1 {
+                width: 100%;
+                max-width: 100%;
+                flex: 100%;
+                margin-bottom: 8px;
+            }
+
+            /* BUTTON HAPUS LAMPIRAN */
+            .lampiran-item .btn-danger {
+                width: 100%;
+                height: 38px;
+            }
+
+            /* BUTTON TAMBAH LAMPIRAN */
+            .btn-sm.btn-primary {
+                width: 100%;
+                height: 40px;
+                margin-top: 10px;
+                font-size: 12px !important;
+            }
+
+            /* FILE LINK */
+            a[target="_blank"] {
+                font-size: 12px;
+                word-break: break-word;
+            }
+
+            /* TEXT */
+            td,
+            small,
+            label {
+                font-size: 11px;
+            }
+
+        }
+
+        /* BUTTON AKSI */
+.btn-action-mobile {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 !important;
+    border-radius: 10px !important;
+}
     </style>
 
     <!-- ================= BUTTON TAMBAH ================= -->
@@ -184,7 +350,7 @@
                             <td>{{ $d->keterangan }}</td>
                             <td>
 
-                                <button class="btn btn-xs btn-warning" data-toggle="modal"
+                                <button class="btn btn-warning btn-action-mobile" data-toggle="modal"
                                     data-target="#edit-plan-{{ $d->id }}">
                                     ✏️
                                 </button>
@@ -193,7 +359,7 @@
                                     style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-xs btn-danger" onclick="return confirm('hapus data?')">
+                                    <button class="btn btn-danger btn-action-mobile" onclick="return confirm('hapus data?')">
                                         🗑️
                                     </button>
                                 </form>
@@ -304,7 +470,8 @@
                     <input type="text" name="uraian" class="form-control mb-2" autocomplete="off" placeholder="Uraian">
                     <input type="number" name="qty" class="form-control mb-2" autocomplete="off" placeholder="Qty">
                     <input type="text" name="satuan" class="form-control mb-2" autocomplete="off" placeholder="Satuan">
-                    <input type="text" name="keterangan" class="form-control mb-2" autocomplete="off" placeholder="Keterangan">
+                    <input type="text" name="keterangan" class="form-control mb-2" autocomplete="off"
+                        placeholder="Keterangan">
 
 
                 </div>
@@ -333,9 +500,12 @@
                         </div>
 
                         <div class="modal-body">
-                            <input type="text" name="uraian" autocomplete="off" value="{{ $d->uraian }}" class="form-control mb-2">
-                            <input type="number" name="qty" autocomplete="off" value="{{ $d->qty }}" class="form-control mb-2">
-                            <input type="text" name="satuan" autocomplete="off" value="{{ $d->satuan }}" class="form-control mb-2">
+                            <input type="text" name="uraian" autocomplete="off" value="{{ $d->uraian }}"
+                                class="form-control mb-2">
+                            <input type="number" name="qty" autocomplete="off" value="{{ $d->qty }}"
+                                class="form-control mb-2">
+                            <input type="text" name="satuan" autocomplete="off" value="{{ $d->satuan }}"
+                                class="form-control mb-2">
                             <input type="text" name="keterangan" autocomplete="off" value="{{ $d->keterangan }}"
                                 class="form-control mb-2">
                         </div>
@@ -366,9 +536,12 @@
                         </div>
 
                         <div class="modal-body">
-                            <input type="text" name="uraian" autocomplete="off" value="{{ $d->uraian }}" class="form-control mb-2">
-                            <input type="number" name="qty" autocomplete="off" value="{{ $d->qty }}" class="form-control mb-2">
-                            <input type="text" name="satuan" autocomplete="off" value="{{ $d->satuan }}" class="form-control mb-2">
+                            <input type="text" name="uraian" autocomplete="off" value="{{ $d->uraian }}"
+                                class="form-control mb-2">
+                            <input type="number" name="qty" autocomplete="off" value="{{ $d->qty }}"
+                                class="form-control mb-2">
+                            <input type="text" name="satuan" autocomplete="off" value="{{ $d->satuan }}"
+                                class="form-control mb-2">
                             <input type="text" name="keterangan" autocomplete="off" value="{{ $d->keterangan }}"
                                 class="form-control mb-2">
 
@@ -384,8 +557,9 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <input type="text" autocomplete="off" name="old_keterangan[{{ $l->id }}]"
-                                            value="{{ $l->keterangan }}" class="form-control">
+                                        <input type="text" autocomplete="off"
+                                            name="old_keterangan[{{ $l->id }}]" value="{{ $l->keterangan }}"
+                                            class="form-control">
                                     </div>
 
                                     <div class="col-md-3">
@@ -408,8 +582,8 @@
                                         <input type="file" name="lampiran[]" class="form-control">
                                     </div>
                                     <div class="col-md-5">
-                                        <input type="text" autocomplete="off" name="lampiran_keterangan[]" class="form-control"
-                                            placeholder="Keterangan file">
+                                        <input type="text" autocomplete="off" name="lampiran_keterangan[]"
+                                            class="form-control" placeholder="Keterangan file">
                                     </div>
                                     <div class="col-md-2">
                                         <button type="button" class="btn btn-danger btn-sm"

@@ -587,6 +587,196 @@
     .full-text {
         -webkit-line-clamp: unset;
     }
+
+
+    /* =========================
+   RESPONSIVE MOBILE
+========================= */
+    @media (max-width: 768px) {
+
+        /* HEADER */
+        .d-flex.justify-content-between.mb-3 {
+            flex-direction: column !important;
+            gap: 10px;
+            align-items: stretch !important;
+        }
+
+        .d-flex.justify-content-between.mb-3 h3 {
+            margin: 10px 0 !important;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .d-flex.justify-content-between.mb-3 .btn-success {
+            width: 100%;
+            margin: 0 !important;
+        }
+
+        /* FILTER BUTTON + EXPORT */
+        .d-flex.justify-content-between.align-items-center.mb-3 {
+            flex-direction: column;
+            gap: 10px;
+            align-items: stretch !important;
+        }
+
+        #toggleFilterBtn,
+        .btn-outline-primary {
+            width: 100%;
+            margin: 0 !important;
+            height: 42px !important;
+            font-size: 13px;
+        }
+
+        /* CARD MONITORING */
+        .position-relative.border.rounded.p-3.mb-3.shadow-sm {
+            padding: 14px !important;
+        }
+
+        /* HEADER CARD */
+        .modern-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .po-badge {
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        .jenis-badge {
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        /* INFO */
+        .info-item {
+            flex-direction: column;
+            gap: 4px;
+            padding: 10px;
+        }
+
+        .info-item span {
+            min-width: unset;
+            font-size: 12px;
+        }
+
+        .info-item b,
+        .nama-text {
+            font-size: 13px;
+        }
+
+        /* STATUS */
+        .status-badge {
+            position: static;
+            margin-bottom: 12px;
+            display: inline-flex;
+            font-size: 11px;
+            padding: 5px 12px;
+        }
+
+        /* BUTTON EDIT DELETE */
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 13px;
+        }
+
+        /* WRAPPER BUTTON */
+        .d-flex.align-items-center.gap-2 {
+            margin-top: 15px;
+            justify-content: flex-end;
+        }
+
+        /* DOKUMEN HEADER */
+        .dokumen-header {
+            flex-direction: column;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .dokumen-title {
+            justify-content: center;
+        }
+
+        .btn-dokumen {
+            width: 100%;
+            justify-content: center;
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        /* ITEM DOKUMEN */
+        .doc-item {
+            padding: 12px !important;
+        }
+
+        .doc-item .row {
+            flex-direction: column;
+        }
+
+        /* BUTTON SIMPAN HAPUS DOKUMEN */
+        .btn-update-doc,
+        .btn-delete-doc {
+            flex: 1;
+            width: 100%;
+            height: 38px;
+            font-size: 12px;
+            padding: 6px 10px !important;
+        }
+
+        .doc-item .d-flex.gap-2 {
+            flex-direction: column;
+        }
+
+        /* MODAL */
+        .modal-dialog {
+            margin: 10px;
+        }
+
+        .modal-body .row>div {
+            margin-bottom: 10px;
+        }
+
+        /* INPUT DOKUMEN TAMBAH */
+        #dokumenContainer .d-flex,
+        [id^="dokumenContainerEdit"] .d-flex {
+            flex-direction: column;
+        }
+
+        /* PROGRESS */
+        .progress {
+            height: 16px !important;
+        }
+
+        .progress-bar {
+            font-size: 10px;
+        }
+
+        /* TEXT */
+        small,
+        .small {
+            font-size: 11px !important;
+        }
+
+        /* BUTTON GLOBAL */
+        .btn {
+            font-size: 12px !important;
+            padding: 7px 10px !important;
+            border-radius: 8px !important;
+        }
+
+        /* BUTTON MODAL */
+        .modal-footer .btn {
+            flex: 1;
+            height: 38px;
+        }
+
+    }
 </style>
 
 @section('content')
@@ -685,7 +875,8 @@
                                 <span>📌 Nama Pekerjaan</span>
 
                                 <div class="nama-pekerjaan-content">
-                                    <div class="nama-text short-text nama-pekerjaan-filter" id="namaText{{ $m->id }}">
+                                    <div class="nama-text short-text nama-pekerjaan-filter"
+                                        id="namaText{{ $m->id }}">
                                         {{ $m->nama_pekerjaan }}
                                     </div>
 
@@ -1531,7 +1722,8 @@
 
                 monitorItems.forEach(item => {
                     const poText = (item.querySelector(".po-badge span")?.textContent || "").toLowerCase();
-                    const namaText = (item.querySelector(".nama-pekerjaan-filter")?.textContent || "").toLowerCase();
+                    const namaText = (item.querySelector(".nama-pekerjaan-filter")?.textContent || "")
+                        .toLowerCase();
 
                     // 🔥 ambil tanggal dari data attribute
                     const tanggalAttr = item.querySelector("[data-tanggal]")?.getAttribute(

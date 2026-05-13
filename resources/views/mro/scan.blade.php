@@ -7,12 +7,12 @@
 
     <a href="{{ route('mro.scan.stockin', $item->barcode) }}"
        class="btn btn-success btn-lg">
-        ➕ Stock In
+        ➕ Stok Masuk
     </a>
 
     <a href="{{ route('mro.scan.stockout', $item->barcode) }}"
        class="btn btn-danger btn-lg ml-2">
-        ➖ Stock Out
+        ➖ Stok Keluar
     </a>
 </div>
 @endsection

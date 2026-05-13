@@ -334,6 +334,270 @@
         .sticky-inner {
             background: #f8f9fa;
         }
+
+
+        /* =========================================
+           RESPONSIVE MOBILE MONITORING
+        ========================================= */
+
+        @media (max-width: 768px) {
+
+            /* CONTENT */
+            .content,
+            .container-fluid {
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+            }
+
+            /* STICKY HEADER */
+            .sticky-top-section {
+                top: 0;
+                z-index: 999;
+                padding-bottom: 5px;
+            }
+
+            .sticky-inner {
+                padding: 0;
+            }
+
+            /* PROJECT HEADER */
+            .project-header {
+                max-width: 100% !important;
+                padding: 14px !important;
+                border-radius: 10px;
+            }
+
+            .project-title {
+                font-size: 11px !important;
+            }
+
+            .project-name {
+                font-size: 16px !important;
+                line-height: 1.4;
+            }
+
+            /* CARD */
+            .card {
+                border-radius: 10px;
+            }
+
+            .card-body {
+                padding: 10px !important;
+            }
+
+            /* FILTER */
+            .row .col-md-2,
+            .row .col-md-11 {
+                width: 100%;
+                max-width: 100%;
+                flex: 100%;
+            }
+
+            .row label {
+                font-size: 11px;
+                margin-bottom: 3px;
+            }
+
+            .form-control {
+                height: 36px !important;
+                font-size: 12px !important;
+                border-radius: 8px !important;
+            }
+
+            /* BUTTONS */
+            .btn,
+            .btn-success,
+            .btn-warning,
+            .btn-danger,
+            .btn-primary,
+            .btn-secondary {
+                height: 34px !important;
+                min-height: 34px !important;
+                padding: 0 12px !important;
+                font-size: 11px !important;
+                border-radius: 8px !important;
+
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+
+                white-space: nowrap;
+            }
+
+            /* BUTTON ICON */
+            .btn i {
+                font-size: 10px !important;
+            }
+
+            /* BUTTON ACTION TABLE */
+            td .btn {
+                width: 32px !important;
+                height: 32px !important;
+                padding: 0 !important;
+            }
+
+            /* BUTTON FILTER */
+            .btn-primary.btn-sm,
+            .btn-secondary.btn-sm {
+                width: 100%;
+                margin-top: 6px;
+            }
+
+            /* BUTTON TAMBAH */
+            .header-wrapper .btn-success {
+                width: 100%;
+                max-width: 250px;
+                font-size: 12px !important;
+            }
+
+            /* TABLE CONTAINER */
+            .table-container {
+                overflow-x: auto;
+                overflow-y: auto;
+                max-height: 70vh;
+                border-radius: 10px;
+            }
+
+            /* TABLE */
+            .table-monitoring {
+                min-width: 1700px;
+                font-size: 11px !important;
+            }
+
+            .table-monitoring th,
+            .table-monitoring td {
+                padding: 6px !important;
+                font-size: 10px !important;
+                white-space: nowrap;
+            }
+
+            /* FREEZE FIRST COLUMN */
+            .table-monitoring th:first-child {
+                position: sticky;
+                left: 0;
+                z-index: 600;
+                background: #b30000 !important;
+                min-width: 50px;
+            }
+
+            .table-monitoring td:first-child {
+                position: sticky;
+                left: 0;
+                background: #ffffff !important;
+                z-index: 500;
+                min-width: 50px;
+            }
+
+            /* HEADER FREEZE */
+            /* HEADER */
+            .table-monitoring thead th {
+                position: sticky;
+                top: 0;
+                z-index: 550;
+                background: #b30000 !important;
+            }
+
+            /* POJOK KIRI ATAS */
+            .table-monitoring thead th:first-child {
+                z-index: 700 !important;
+            }
+
+            /* BADGE */
+            .badge {
+                font-size: 9px !important;
+                padding: 4px 7px !important;
+            }
+
+            /* MODAL */
+            .modal-dialog {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+            }
+
+            .modal-content {
+                border-radius: 12px;
+            }
+
+            .modal-header {
+                padding: 12px;
+            }
+
+            .modal-header h5 {
+                font-size: 15px;
+                margin: 0;
+            }
+
+            .modal-body {
+                padding: 12px;
+            }
+
+            .modal-footer {
+                padding: 10px;
+            }
+
+            /* FORM DALAM MODAL */
+            .modal-body .col-md-4,
+            .modal-body .col-md-12 {
+                width: 100%;
+                max-width: 100%;
+                flex: 100%;
+            }
+
+            .modal-body label {
+                font-size: 12px;
+                margin-bottom: 4px;
+            }
+
+            /* MODAL BUTTON */
+            .modal-footer .btn {
+                flex: 1;
+            }
+
+            /* CHECKBOX */
+            input[type="checkbox"] {
+                transform: scale(1);
+            }
+
+            /* HAPUS TERPILIH */
+            .table-container>.btn-danger,
+            form>.btn-danger.mt-2 {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+
+        /* =========================================
+           EXTRA SMALL DEVICE
+        ========================================= */
+
+        @media (max-width: 480px) {
+
+            .project-name {
+                font-size: 14px !important;
+            }
+
+            .project-title {
+                font-size: 10px !important;
+            }
+
+            .table-monitoring th,
+            .table-monitoring td {
+                font-size: 9px !important;
+                padding: 5px !important;
+            }
+
+            .btn {
+                font-size: 10px !important;
+            }
+
+            .form-control {
+                font-size: 11px !important;
+            }
+
+            .modal-header h5 {
+                font-size: 14px;
+            }
+        }
     </style>
 
 

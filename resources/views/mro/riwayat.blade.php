@@ -137,6 +137,126 @@
             background-color: #fff0f0;
             font-weight: bold;
         }
+
+
+        /* =========================================
+       RESPONSIVE MOBILE
+    ========================================= */
+        @media (max-width: 768px) {
+
+            /* CARD */
+            .card-modern {
+                border-radius: 10px;
+            }
+
+            .header-red {
+                padding: 14px;
+                text-align: center;
+            }
+
+            .header-red h5 {
+                font-size: 16px;
+            }
+
+            /* FILTER */
+            .filter-box {
+                padding: 12px;
+            }
+
+            .filter-box .row>div {
+                margin-bottom: 10px;
+            }
+
+            .form-control {
+                font-size: 12px;
+                height: 38px;
+                padding: 8px 10px;
+            }
+
+            /* BUTTON FILTER & RESET */
+            .btn-icon,
+            .btn-reset-icon {
+                width: 36px !important;
+                height: 36px !important;
+                min-width: 36px;
+                padding: 0 !important;
+                font-size: 13px !important;
+                border-radius: 8px;
+            }
+
+            .d-flex.align-items-center.gap-2 {
+                gap: 6px !important;
+            }
+
+            /* TABLE */
+            .table-responsive {
+                overflow-x: auto;
+                border-radius: 10px;
+            }
+
+            .table {
+                min-width: 950px;
+                font-size: 11px;
+            }
+
+            .table th,
+            .table td {
+                padding: 7px 6px;
+                white-space: nowrap;
+                vertical-align: middle;
+            }
+
+            .table th {
+                font-size: 11px;
+            }
+
+            /* TEXT */
+            .qty-highlight {
+                font-size: 11px;
+            }
+
+            /* REKAP BOX */
+            .total-box {
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            /* REKAP TABLE */
+            .total-box .table {
+                min-width: 700px;
+            }
+
+        }
+
+        /* EXTRA SMALL DEVICE */
+        @media (max-width: 480px) {
+
+            .header-red h5 {
+                font-size: 14px;
+            }
+
+            .form-control {
+                font-size: 11px;
+                height: 35px;
+            }
+
+            .btn-icon,
+            .btn-reset-icon {
+                width: 34px !important;
+                height: 34px !important;
+                font-size: 12px !important;
+            }
+
+            .table {
+                font-size: 10px;
+            }
+
+            .table th,
+            .table td {
+                padding: 6px 5px;
+            }
+
+        }
     </style>
 
     <div class="container-fluid">

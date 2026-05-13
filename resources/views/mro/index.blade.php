@@ -8,113 +8,7 @@
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endsection
 
-{{-- <style>
-    /* Table wrapper */
-    .table-modern {
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.15);
-        background: #fff;
-    }
 
-    /* Header */
-    .table-modern thead {
-        background: linear-gradient(135deg, #dc3545, #b02a37);
-        color: #fff;
-    }
-
-    .table-modern thead th {
-        border: none;
-        font-weight: 600;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    /* Body */
-    .table-modern tbody tr {
-        transition: all 0.2s ease;
-    }
-
-    .table-modern tbody tr:hover {
-        background-color: #fff5f5;
-    }
-
-    .table-modern tbody td {
-        vertical-align: middle;
-        border-color: #f1f1f1;
-        font-size: 13px;
-    }
-
-    /* Checkbox */
-    .table-modern input[type="checkbox"] {
-        transform: scale(1.1);
-        accent-color: #dc3545;
-        cursor: pointer;
-    }
-
-    /* Badge */
-    .badge-modern-in {
-        background: #198754;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 11px;
-    }
-
-    .badge-modern-out {
-        background: #dc3545;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 11px;
-    }
-
-    /* Proyek multi-line */
-    .proyek-cell {
-        white-space: pre-line;
-        font-weight: 500;
-    }
-
-
-    /* tombol responsive ukuran HP */
-    .header-actions>* {
-        margin-right: 8px;
-        margin-bottom: 8px;
-    }
-
-    /* tombol responsive ukuran HP */
-    @media (max-width: 767px) {
-        .header-actions>* {
-            width: 100%;
-        }
-    }
-
-
-    /* tombol responsive ukuran HP */
-    .action-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        justify-content: center;
-    }
-
-    /* tombol responsive ukuran HP */
-    .action-buttons .btn {
-        white-space: nowrap;
-    }
-
-    /* Mobile */
-    @media (max-width: 768px) {
-        .action-buttons {
-            gap: 8px;
-        }
-
-        /* tombol responsive ukuran HP */
-        .action-buttons .btn-stock {
-            flex: 1 1 48%;
-            font-size: 11px;
-        }
-    }
-</style> --}}
 
 <style>
     /* ===============================
@@ -254,6 +148,201 @@
 
     .table-modern tbody tr:hover .action-buttons {
         transform: scale(1.05);
+    }
+
+
+    /* =========================================
+   RESPONSIVE MOBILE
+========================================= */
+    @media (max-width: 768px) {
+
+        /* CARD */
+        .card {
+            border-radius: 12px;
+        }
+
+        .card-header {
+            padding: 12px;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+        /* HEADER BUTTON */
+        .header-actions {
+            width: 100%;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .header-actions .btn {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* BUTTON GLOBAL */
+        .btn,
+        .btn-sm,
+        .btn-xs,
+        .btn-maroon-animated {
+            height: 36px !important;
+            font-size: 12px !important;
+            padding: 6px 10px !important;
+            border-radius: 8px !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        /* ACTION BUTTON TABLE */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: nowrap;
+        }
+
+        .action-buttons .btn {
+            width: 32px !important;
+            height: 32px !important;
+            padding: 0 !important;
+            font-size: 11px !important;
+            border-radius: 7px !important;
+        }
+
+        /* BUTTON DELETE MULTIPLE */
+        #btnDeleteMultiple {
+            width: 100%;
+            height: 36px;
+            font-size: 12px;
+        }
+
+        /* SEARCH */
+        .input-group .form-control {
+            height: 36px;
+            font-size: 12px;
+        }
+
+        .input-group-append .btn {
+            width: 40px;
+            height: 36px;
+        }
+
+        /* SORT */
+        .form-group.row.col-sm-3 {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 0 12px 0;
+        }
+
+        .form-group.row.col-sm-3 label {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        /* TABLE */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-modern table {
+            min-width: 950px;
+        }
+
+        .table-modern thead th {
+            font-size: 11px;
+            padding: 8px;
+            white-space: nowrap;
+        }
+
+        .table-modern tbody td {
+            font-size: 11px;
+            padding: 7px;
+            vertical-align: middle;
+        }
+
+        /* LIST PROYEK */
+        .table-modern ul {
+            padding-left: 16px;
+            margin-bottom: 0;
+        }
+
+        .table-modern ul li {
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        /* BADGE */
+        .badge,
+        .bg-warning {
+            font-size: 10px !important;
+            padding: 3px 7px !important;
+        }
+
+        /* MODAL */
+        .modal-dialog {
+            margin: 10px;
+        }
+
+        .modal-content {
+            border-radius: 14px;
+        }
+
+        .modal-header {
+            padding: 12px;
+        }
+
+        .modal-title {
+            font-size: 16px;
+        }
+
+        .modal-body {
+            padding: 12px;
+        }
+
+        .modal-footer {
+            padding: 10px;
+        }
+
+        /* FORM */
+        .form-control {
+            font-size: 12px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        textarea.form-control {
+            height: auto !important;
+        }
+
+        /* LABEL */
+        label,
+        .col-form-label {
+            font-size: 12px;
+        }
+
+        /* QR CODE */
+        #qrcode-preview canvas,
+        #qrcode-view canvas {
+            width: 120px !important;
+            height: 120px !important;
+        }
+
+        /* PAGINATION */
+        .pagination {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .page-link {
+            font-size: 12px;
+            padding: 6px 10px;
+        }
     }
 </style>
 
