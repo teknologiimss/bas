@@ -1,191 +1,430 @@
 @extends('layouts.main')
 @section('title', $title)
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <style>
         /* =================================================
-   🎨 ROOT WARNA MAROON (WAJIB)
-================================================= */
-:root {
-    --maroon: #dc3545;
-    --maroon-dark: #5c0017;
-    --maroon-light: #a8324a;
-    --maroon-soft: #f6e3e8;
-    --shadow-maroon: rgba(128, 0, 32, 0.35);
-}
+           🎨 ROOT WARNA MAROON (WAJIB)
+        ================================================= */
+        :root {
+            --maroon: #dc3545;
+            --maroon-dark: #5c0017;
+            --maroon-light: #a8324a;
+            --maroon-soft: #f6e3e8;
+            --shadow-maroon: rgba(128, 0, 32, 0.35);
+        }
 
-/* =================================================
-   🪟 MODAL SCROLL
-================================================= */
-.modal-dialog {
-    overflow-y: initial !important;
-}
+        /* =================================================
+           🪟 MODAL SCROLL
+        ================================================= */
+        .modal-dialog {
+            overflow-y: initial !important;
+        }
 
-.modal-body {
-    max-height: calc(100vh - 200px);
-    overflow-y: auto;
-}
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
 
-/* =================================================
-   🔘 BUTTON — SEMUA MAROON + GERAK
-================================================= */
-.btn,
-.btn-primary,
-.btn-success,
-.btn-danger,
-.btn-default {
-    background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)) !important;
-    border: none !important;
-    color: #fff !important;
-    box-shadow: 0 6px 15px var(--shadow-maroon);
-    transition: all 0.3s ease;
-}
+        /* =================================================
+           🔘 BUTTON — SEMUA MAROON + GERAK
+        ================================================= */
+        .btn,
+        .btn-primary,
+        .btn-success,
+        .btn-danger,
+        .btn-default {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)) !important;
+            border: none !important;
+            color: #fff !important;
+            box-shadow: 0 6px 15px var(--shadow-maroon);
+            transition: all 0.3s ease;
+        }
 
-/* Hover */
-.btn:hover {
-    background: linear-gradient(135deg, var(--maroon-light), var(--maroon)) !important;
-    transform: translateY(-4px) scale(1.04);
-    box-shadow: 0 12px 25px var(--shadow-maroon);
-}
+        /* Hover */
+        .btn:hover {
+            background: linear-gradient(135deg, var(--maroon-light), var(--maroon)) !important;
+            transform: translateY(-4px) scale(1.04);
+            box-shadow: 0 12px 25px var(--shadow-maroon);
+        }
 
-/* Klik */
-.btn:active {
-    transform: scale(0.95);
-    box-shadow: inset 0 4px 10px rgba(0,0,0,0.35);
-}
+        /* Klik */
+        .btn:active {
+            transform: scale(0.95);
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.35);
+        }
 
-/* Button kecil */
-.btn-xs {
-    padding: 4px 8px;
-    font-size: 12px;
-}
+        /* Button kecil */
+        .btn-xs {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
 
-/* =================================================
-   🔍 INPUT & SELECT
-================================================= */
-.form-control {
-    border-radius: 6px;
-    border: 1px solid var(--maroon);
-    transition: all 0.25s ease;
-}
+        /* =================================================
+           🔍 INPUT & SELECT
+        ================================================= */
+        .form-control {
+            border-radius: 6px;
+            border: 1px solid var(--maroon);
+            transition: all 0.25s ease;
+        }
 
-.form-control:focus {
-    border-color: var(--maroon-light);
-    box-shadow: 0 0 0 0.2rem var(--maroon-soft);
-}
+        .form-control:focus {
+            border-color: var(--maroon-light);
+            box-shadow: 0 0 0 0.2rem var(--maroon-soft);
+        }
 
-/* =================================================
-   📊 TABLE GLOBAL
-================================================= */
-#table {
-    border-collapse: separate;
-    border-spacing: 0;
-}
+        /* =================================================
+           📊 TABLE GLOBAL
+        ================================================= */
+        #table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
 
-/* HEADER */
-#table th {
-    position: relative;
-    cursor: pointer;
-    user-select: none;
-    background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-    transition: all 0.3s ease;
-}
+        /* HEADER */
+        #table th {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
 
-/* HEADER HOVER */
-#table th:hover {
-    background: var(--maroon-light);
-    transform: translateY(-2px);
-}
+        /* HEADER HOVER */
+        #table th:hover {
+            background: var(--maroon-light);
+            transform: translateY(-2px);
+        }
 
-/* BODY ROW */
-#table tbody tr {
-    transition: all 0.25s ease;
-}
+        /* BODY ROW */
+        #table tbody tr {
+            transition: all 0.25s ease;
+        }
 
-/* ROW HOVER GERAK */
-#table tbody tr:hover {
-    background-color: var(--maroon-soft);
-    transform: scale(1.015);
-    box-shadow: 0 6px 15px rgba(128,0,32,0.25);
-}
+        /* ROW HOVER GERAK */
+        #table tbody tr:hover {
+            background-color: var(--maroon-soft);
+            transform: scale(1.015);
+            box-shadow: 0 6px 15px rgba(128, 0, 32, 0.25);
+        }
 
-/* CELL */
-#table td {
-    vertical-align: middle;
-}
+        /* CELL */
+        #table td {
+            vertical-align: middle;
+        }
 
-/* =================================================
-   ☑️ CHECKBOX MAROON
-================================================= */
-input[type="checkbox"] {
-    accent-color: var(--maroon);
-    transform: scale(1.1);
-}
+        /* =================================================
+           ☑️ CHECKBOX MAROON
+        ================================================= */
+        input[type="checkbox"] {
+            accent-color: var(--maroon);
+            transform: scale(1.1);
+        }
 
-/* =================================================
-   📄 PAGINATION
-================================================= */
-.page-item.active .page-link {
-    background-color: var(--maroon);
-    border-color: var(--maroon);
-}
+        /* =================================================
+           📄 PAGINATION
+        ================================================= */
+        .page-item.active .page-link {
+            background-color: var(--maroon);
+            border-color: var(--maroon);
+        }
 
-.page-link {
-    color: var(--maroon);
-    transition: all 0.2s ease;
-}
+        .page-link {
+            color: var(--maroon);
+            transition: all 0.2s ease;
+        }
 
-.page-link:hover {
-    background-color: var(--maroon-soft);
-    color: var(--maroon-dark);
-    transform: translateY(-2px);
-}
+        .page-link:hover {
+            background-color: var(--maroon-soft);
+            color: var(--maroon-dark);
+            transform: translateY(-2px);
+        }
 
-/* =================================================
-   🪟 MODAL
-================================================= */
-.modal-content {
-    border-radius: 12px;
-    box-shadow: 0 12px 30px var(--shadow-maroon);
-    animation: fadeUp 0.4s ease;
-}
+        /* =================================================
+           🪟 MODAL
+        ================================================= */
+        .modal-content {
+            border-radius: 12px;
+            box-shadow: 0 12px 30px var(--shadow-maroon);
+            animation: fadeUp 0.4s ease;
+        }
 
-.modal-header {
-    background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
-    color: #fff;
-}
+        .modal-header {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            color: #fff;
+        }
 
-.modal-footer .btn {
-    min-width: 120px;
-}
+        .modal-footer .btn {
+            min-width: 120px;
+        }
 
-/* =================================================
-   🧠 CARD
-================================================= */
-.card {
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-    animation: fadeUp 0.5s ease;
-}
+        /* =================================================
+           🧠 CARD
+        ================================================= */
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            animation: fadeUp 0.5s ease;
+        }
 
-/* =================================================
-   💥 ANIMATIONS
-================================================= */
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        /* =================================================
+           💥 ANIMATIONS
+        ================================================= */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================================
+           RESPONSIVE MOBILE FIX
+        ========================================= */
+
+        body,
+        .content-wrapper,
+        .content,
+        .container-fluid,
+        .card,
+        .card-body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* TABLE WRAPPER */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 10px;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #bbb;
+            border-radius: 10px;
+        }
+
+        /* TABLE */
+        #table {
+            width: max-content;
+            min-width: 100%;
+        }
+
+        #table th,
+        #table td {
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        /* =========================================
+           TABLET & MOBILE
+        ========================================= */
+        @media (max-width: 768px) {
+
+            /* CONTAINER */
+            .container-fluid {
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+            }
+
+            .card-body {
+                padding: 10px;
+            }
+
+            /* HEADER */
+            .card-header {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .card-tools {
+                width: 100%;
+            }
+
+            .card-tools .input-group {
+                width: 100%;
+            }
+
+            /* TABLE */
+            #table {
+                font-size: 11px;
+            }
+
+            #table th,
+            #table td {
+                padding: 7px 6px;
+            }
+
+            /* BUTTON GLOBAL */
+            .btn,
+            .btn-primary,
+            .btn-success,
+            .btn-danger,
+            .btn-default {
+                font-size: 11px !important;
+                padding: 6px 10px !important;
+                border-radius: 6px !important;
+                min-height: 34px;
+            }
+
+            /* BUTTON ADD */
+            .card-header>.btn {
+                width: 100%;
+            }
+
+            /* BUTTON AKSI TABLE */
+            td .btn {
+                width: 32px !important;
+                height: 32px !important;
+                padding: 0 !important;
+                margin: 2px !important;
+
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+            }
+
+            td .btn i {
+                font-size: 11px;
+            }
+
+            /* DELETE BUTTON */
+            #delete-selected {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            /* MODAL */
+            .modal-dialog {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            /* FORM */
+            .form-group.row {
+                display: block;
+                margin-bottom: 14px;
+            }
+
+            .form-group.row label {
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 5px;
+                font-size: 13px;
+            }
+
+            .form-group.row .col-sm-4,
+            .form-group.row .col-sm-8 {
+                width: 100%;
+                max-width: 100%;
+                flex: 100%;
+            }
+
+            .form-control {
+                width: 100%;
+                font-size: 13px;
+                min-height: 38px;
+            }
+
+            /* MODAL FOOTER */
+            .modal-footer {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .modal-footer .btn {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            /* PAGINATION */
+            .pagination {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .page-link {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+        }
+
+        /* =========================================
+           EXTRA SMALL DEVICE
+        ========================================= */
+        @media (max-width: 480px) {
+
+            .container-fluid {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+
+            .card-body {
+                padding: 6px;
+            }
+
+            #table {
+                font-size: 10px;
+            }
+
+            #table th,
+            #table td {
+                padding: 6px 5px;
+            }
+
+            /* BUTTON */
+            .btn,
+            .btn-primary,
+            .btn-success,
+            .btn-danger,
+            .btn-default {
+                font-size: 10px !important;
+                padding: 5px 8px !important;
+            }
+
+            td .btn {
+                width: 28px !important;
+                height: 28px !important;
+            }
+
+            td .btn i {
+                font-size: 10px;
+            }
+
+            /* SEARCH */
+            .card-tools input.form-control {
+                font-size: 12px;
+            }
+
+            /* MODAL */
+            .modal-header h4 {
+                font-size: 15px;
+            }
+
+            .form-control {
+                font-size: 12px;
+            }
+        }
     </style>
 @endsection
 @section('content')
@@ -219,74 +458,77 @@ input[type="checkbox"] {
                     </div>
                 </div>
                 <div class="card-body">
-                    <table id="table" class="table table-sm table-bordered table-hover table-striped">
-                        <thead>
-                            <tr class="text-center">
-                                <th><input type="checkbox" id="select-all"></th>
-                                <th>No.</th>
-                                <th>Nomor Aset</th>
-                                <th>Jenis Aset</th>
-                                <th>Merek</th>
-                                <th>No Seri</th>
-                                <th>Kondisi</th>
-                                <th>Lokasi/Unit Kerja</th>
-                                <th>Pengguna</th>
-                                <th>Tanggal Perolehan</th>
-                                <th>Keterangan</th>
-                                <th>{{ __('Aksi') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($items as $key => $d)
-                                @php
-                                    $data = $d->toArray();
-                                @endphp
-                                @php
-
-                                    setLocale(LC_TIME, 'id');
-                                    setlocale(LC_TIME, 'id_ID.utf8');
-                                    \Carbon\Carbon::setLocale('id');
-
-                                    $tanggal_perolehan = \Carbon\Carbon::parse($d->tanggal_perolehan)->isoFormat(
-                                        'D MMMM Y',
-                                    );
-
-                                @endphp
-                                <tr>
-                                    <td class="text-center"><input type="checkbox" name="hapus[]"
-                                            value="{{ $d->id }}"></td>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>{{ $d->nomor_aset }}</td>
-                                    <td>{{ $d->jenis_aset }}</td>
-                                    <td>{{ $d->merek }}</td>
-                                    <td>{{ $d->no_seri }}</td>
-                                    <td>{{ $d->kondisi }}</td>
-                                    <td>{{ $d->lokasi }}</td>
-                                    <td>{{ $d->pengguna }}</td>
-                                    <td>{{ $tanggal_perolehan }}</td>
-                                    <td>{{ $d->keterangan }}</td>
-                                    <td class="text-center">
-
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 6)
-                                            <button title="Edit Shelf" type="button" class="btn btn-success btn-xs"
-                                                data-toggle="modal" data-target="#add-kode-aset"
-                                                onclick="editAset({{ json_encode($data) }})"><i
-                                                    class="fas fa-edit"></i></button>
-                                            <button title="Hapus Produk" type="button" class="btn btn-danger btn-xs"
-                                                data-toggle="modal" data-target="#delete-suratkeluar"
-                                                onclick="deleteAset({{ json_encode($data) }})"><i
-                                                    class="fas fa-trash"></i></button>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @empty
+                    <div class="table-responsive">
+                        <table id="table" class="table table-sm table-bordered table-hover table-striped">
+                            <thead>
                                 <tr class="text-center">
-                                    <td colspan="11">{{ __('No data.') }}</td>
+                                    <th><input type="checkbox" id="select-all"></th>
+                                    <th>No.</th>
+                                    <th>Nomor Aset</th>
+                                    <th>Jenis Aset</th>
+                                    <th>Merek</th>
+                                    <th>No Seri</th>
+                                    <th>Kondisi</th>
+                                    <th>Lokasi/Unit Kerja</th>
+                                    <th>Pengguna</th>
+                                    <th>Tanggal Perolehan</th>
+                                    <th>Keterangan</th>
+                                    <th>{{ __('Aksi') }}</th>
                                 </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                    <button type="button" class="btn btn-danger" id="delete-selected" data-token="{{ csrf_token() }}">Hapus yang dipilih</button>
+                            </thead>
+                            <tbody>
+                                @forelse ($items as $key => $d)
+                                    @php
+                                        $data = $d->toArray();
+                                    @endphp
+                                    @php
+
+                                        setLocale(LC_TIME, 'id');
+                                        setlocale(LC_TIME, 'id_ID.utf8');
+                                        \Carbon\Carbon::setLocale('id');
+
+                                        $tanggal_perolehan = \Carbon\Carbon::parse($d->tanggal_perolehan)->isoFormat(
+                                            'D MMMM Y',
+                                        );
+
+                                    @endphp
+                                    <tr>
+                                        <td class="text-center"><input type="checkbox" name="hapus[]"
+                                                value="{{ $d->id }}"></td>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $d->nomor_aset }}</td>
+                                        <td>{{ $d->jenis_aset }}</td>
+                                        <td>{{ $d->merek }}</td>
+                                        <td>{{ $d->no_seri }}</td>
+                                        <td>{{ $d->kondisi }}</td>
+                                        <td>{{ $d->lokasi }}</td>
+                                        <td>{{ $d->pengguna }}</td>
+                                        <td>{{ $tanggal_perolehan }}</td>
+                                        <td>{{ $d->keterangan }}</td>
+                                        <td class="text-center">
+
+                                            @if (Auth::user()->role == 0 || Auth::user()->role == 6)
+                                                <button title="Edit Shelf" type="button" class="btn btn-success btn-xs"
+                                                    data-toggle="modal" data-target="#add-kode-aset"
+                                                    onclick="editAset({{ json_encode($data) }})"><i
+                                                        class="fas fa-edit"></i></button>
+                                                <button title="Hapus Produk" type="button" class="btn btn-danger btn-xs"
+                                                    data-toggle="modal" data-target="#delete-suratkeluar"
+                                                    onclick="deleteAset({{ json_encode($data) }})"><i
+                                                        class="fas fa-trash"></i></button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr class="text-center">
+                                        <td colspan="11">{{ __('No data.') }}</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-danger" id="delete-selected"
+                        data-token="{{ csrf_token() }}">Hapus yang dipilih</button>
                 </div>
             </div>
             <div>
@@ -443,41 +685,41 @@ input[type="checkbox"] {
 
         // Function to handle delete selected items
         $('#delete-selected').click(function() {
-        var ids = [];
-        $('input[name="hapus[]"]:checked').each(function() {
-            ids.push($(this).val());
+            var ids = [];
+            $('input[name="hapus[]"]:checked').each(function() {
+                ids.push($(this).val());
+            });
+
+            if (ids.length > 0) {
+                var token = $(this).data('token');
+                $.ajax({
+                    url: 'warehouse-imss/hapus-multiple',
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                        ids: ids
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Menghapus status checked dari semua checkbox
+                            $('input[name="hapus[]"]').prop('checked', false);
+                            $('#select-all').prop('checked', false);
+                            // Memuat ulang halaman setelah berhasil menghapus data
+                            location.reload();
+                            alert('Data berhasil dihapus');
+                        } else {
+                            alert('Gagal menghapus data');
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan saat menghapus data');
+                    }
+                });
+            } else {
+                alert('Pilih setidaknya satu item untuk dihapus');
+            }
         });
 
-        if (ids.length > 0) {
-            var token = $(this).data('token');
-            $.ajax({
-                url: 'warehouse-imss/hapus-multiple',
-                type: 'POST',
-                data: {
-                    _token: token,
-                    ids: ids
-                },
-                success: function(response) {
-                    if (response.success) {
-                        // Menghapus status checked dari semua checkbox
-                        $('input[name="hapus[]"]').prop('checked', false);
-                        $('#select-all').prop('checked', false);
-                        // Memuat ulang halaman setelah berhasil menghapus data
-                        location.reload();
-                        alert('Data berhasil dihapus');
-                    } else {
-                        alert('Gagal menghapus data');
-                    }
-                },
-                error: function(xhr) {
-                    alert('Terjadi kesalahan saat menghapus data');
-                }
-            });
-        } else {
-            alert('Pilih setidaknya satu item untuk dihapus');
-        }
-    });
-    
 
         function resetForm() {
             $('#save').trigger("reset");
