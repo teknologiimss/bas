@@ -337,8 +337,8 @@
 
 
         /* =========================================
-               RESPONSIVE MOBILE MONITORING
-            ========================================= */
+                       RESPONSIVE MOBILE MONITORING
+                    ========================================= */
 
         @media (max-width: 768px) {
 
@@ -567,8 +567,8 @@
         }
 
         /* =========================================
-               EXTRA SMALL DEVICE
-            ========================================= */
+                       EXTRA SMALL DEVICE
+                    ========================================= */
 
         @media (max-width: 480px) {
 
@@ -602,102 +602,45 @@
 
 
         /* =========================================
-       RESPONSIVE 768px
-    ========================================= */
+               RESPONSIVE 768px
+            ========================================= */
+        /* ======================================
+       FILTER MOBILE TOGGLE
+    ====================================== */
+
+        .filter-toggle-btn {
+            display: none;
+        }
+
+        /* MOBILE */
         @media (max-width: 768px) {
 
-            /* BODY */
-            body {
-                overflow-x: hidden;
-            }
-
-            .container-fluid,
-            .content-wrapper,
-            .content {
-                padding-left: 6px !important;
-                padding-right: 6px !important;
-            }
-
-            /* STICKY */
-            .sticky-top-section {
-                position: sticky;
-                top: 0;
-                z-index: 999;
-                background: #f8f9fa;
-                padding-bottom: 6px;
-            }
-
-            /* HEADER */
-            .header-wrapper {
-                margin-bottom: 10px;
-            }
-
-            .project-header {
-                width: 100%;
-                max-width: 100%;
-                padding: 14px;
-                border-radius: 10px;
-            }
-
-            .project-title {
-                font-size: 11px !important;
-            }
-
-            .project-name {
-                font-size: 16px !important;
-                line-height: 1.4;
-            }
-
-            /* BUTTON */
-            .btn,
-            .btn-success,
-            .btn-danger,
-            .btn-warning,
-            .btn-primary,
-            .btn-secondary {
-                height: 34px !important;
-                min-height: 34px !important;
-                padding: 0 10px !important;
-                font-size: 11px !important;
-                border-radius: 8px !important;
-
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-
-                white-space: nowrap;
-            }
-
-            /* BUTTON TAMBAH */
-            .header-wrapper .btn-success {
-                width: 100%;
-                max-width: 220px;
-            }
-
-            /* ACTION BUTTON */
-            td .btn {
-                width: 32px !important;
-                height: 32px !important;
-                padding: 0 !important;
-            }
-
-            /* FILTER BUTTON */
+            /* tombol filter */
             .filter-toggle-btn {
+                display: block;
                 width: 100%;
                 margin-top: 10px;
                 margin-bottom: 10px;
+
+                height: 38px !important;
+                font-size: 12px !important;
+                border-radius: 10px !important;
+
+                font-weight: 600;
             }
 
-            /* FILTER AREA */
+            /* filter default disembunyikan */
             #filterArea {
                 display: none;
-            }
-
-            #filterArea.show {
-                display: block;
                 animation: fadeFilter .3s ease;
             }
 
+            /* ketika dibuka */
+            #filterArea.show {
+                display: block;
+            }
+
+            /* animasi */
             @keyframes fadeFilter {
                 from {
                     opacity: 0;
@@ -710,106 +653,37 @@
                 }
             }
 
-            /* FILTER GRID */
-            #filterArea .col-md-2,
-            #filterArea .col-md-11 {
-                width: 100%;
-                max-width: 100%;
-                flex: 100%;
+            /* card lebih kecil */
+            .card.mt-3.p-3 {
+                padding: 8px !important;
             }
 
-            #filterArea label {
-                font-size: 11px;
-                margin-bottom: 4px;
-            }
-
-            .form-control {
-                height: 36px !important;
-                font-size: 12px !important;
-                border-radius: 8px !important;
-            }
-
-            /* TABLE */
+            /* table area lebih luas */
             .table-container {
-                overflow-x: auto;
-                overflow-y: auto;
-                max-height: 72vh;
-                border-radius: 10px;
-                position: relative;
+                max-height: 78vh;
             }
 
+            /* table lebih nyaman */
             .table-monitoring {
                 min-width: 1700px;
-                font-size: 10px !important;
-                border-collapse: separate !important;
             }
 
-            .table-monitoring th,
-            .table-monitoring td {
-                padding: 5px !important;
-                font-size: 10px !important;
-                white-space: nowrap;
+            /* sticky tetap aman */
+            .sticky-top-section {
+                background: #f8f9fa;
+                z-index: 999;
             }
 
-            /* FREEZE HEADER */
-            .table-monitoring thead th {
-                position: sticky !important;
-                top: 0;
-                z-index: 500;
-                background: #b30000 !important;
+            /* filter input */
+            #filterArea .form-control {
+                font-size: 12px !important;
+                height: 36px !important;
             }
 
-            /* FREEZE FIRST COLUMN */
-            .table-monitoring th:first-child {
-                position: sticky;
-                left: 0;
-                z-index: 700 !important;
-                background: #b30000 !important;
-                min-width: 50px;
-            }
-
-            .table-monitoring td:first-child {
-                position: sticky;
-                left: 0;
-                z-index: 600;
-                background: #fff !important;
-                min-width: 50px;
-            }
-
-            /* BADGE */
-            .badge {
-                font-size: 9px !important;
-                padding: 4px 6px !important;
-            }
-
-            /* MODAL */
-            .modal-dialog {
-                margin: 8px;
-                max-width: calc(100% - 16px);
-            }
-
-            .modal-content {
-                border-radius: 12px;
-            }
-
-            .modal-body .col-md-4,
-            .modal-body .col-md-12 {
-                width: 100%;
-                max-width: 100%;
-                flex: 100%;
-            }
-
-            .modal-body label {
-                font-size: 12px;
-            }
-
-            .modal-footer .btn {
+            /* tombol filter & reset */
+            #filterArea .btn {
                 flex: 1;
-            }
-
-            /* HAPUS TERPILIH */
-            .btn-danger.mt-2 {
-                width: 100%;
+                min-width: 100px;
             }
         }
     </style>
@@ -836,7 +710,7 @@
         </div>
 
         {{-- FILTER --}}
-        <div class="card mt-3 p-3 sticky-inner">
+        {{-- <div class="card mt-3 p-3 sticky-inner">
 
             <form method="GET" class="mb-3">
                 <div class="row">
@@ -897,6 +771,94 @@
                     <div class="col-md-11 mt-2">
                         <button class="btn btn-primary btn-sm">🔍 Filter</button>
                         <a href="{{ url()->current() }}" class="btn btn-secondary btn-sm">Reset</a>
+                    </div>
+
+                </div>
+            </form>
+
+        </div> --}}
+
+        {{-- BUTTON FILTER MOBILE --}}
+        <button type="button" class="btn btn-primary filter-toggle-btn d-md-none" id="toggleFilterBtn">
+            🔍 Tampilkan Filter
+        </button>
+
+        {{-- FILTER --}}
+        <div class="card mt-3 p-3 sticky-inner" id="filterArea">
+
+            <form method="GET" class="mb-3">
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <label>Trainset</label>
+                        <input type="text" name="trainset" autocomplete="off" value="{{ request('trainset') }}"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>No.Lambung</label>
+                        <input type="text" name="nomor_lambung" autocomplete="off" value="{{ request('nomor_lambung') }}"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Batch</label>
+                        <input type="text" name="batch" autocomplete="off" value="{{ request('batch') }}"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>No.SJN</label>
+                        <input type="text" name="no_sjn" autocomplete="off" value="{{ request('no_sjn') }}"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Actual Delivery</label>
+                        <input type="date" name="actual_delivery" value="{{ request('actual_delivery') }}"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Status</label>
+
+                        <select name="status_delivery" class="form-control">
+                            <option value="">-- Status --</option>
+
+                            <option value="On Time" {{ request('status_delivery') == 'On Time' ? 'selected' : '' }}>
+                                On Time
+                            </option>
+
+                            <option value="Overdue" {{ request('status_delivery') == 'Overdue' ? 'selected' : '' }}>
+                                Overdue
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mt-2">
+                        <label>Loading Truck</label>
+
+                        <input type="date" name="loading_truck" value="{{ request('loading_truck') }}"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-md-2 mt-2">
+                        <label>Actual Unloading</label>
+
+                        <input type="date" name="actual_unloading" value="{{ request('actual_unloading') }}"
+                            class="form-control">
+                    </div>
+
+                    <div class="col-md-12 mt-3 d-flex gap-2 flex-wrap">
+
+                        <button class="btn btn-primary btn-sm">
+                            🔍 Filter
+                        </button>
+
+                        <a href="{{ url()->current() }}" class="btn btn-secondary btn-sm">
+                            Reset
+                        </a>
+
                     </div>
 
                 </div>
@@ -1337,5 +1299,30 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        const toggleBtn = document.getElementById('toggleFilterBtn');
+        const filterArea = document.getElementById('filterArea');
+
+        if (toggleBtn) {
+
+            toggleBtn.addEventListener('click', function() {
+
+                filterArea.classList.toggle('show');
+
+                if (filterArea.classList.contains('show')) {
+
+                    toggleBtn.innerHTML = '❌ Sembunyikan Filter';
+
+                } else {
+
+                    toggleBtn.innerHTML = '🔍 Tampilkan Filter';
+
+                }
+
+            });
+
+        }
     </script>
 @endsection
