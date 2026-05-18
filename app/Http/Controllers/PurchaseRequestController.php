@@ -30,6 +30,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use setasign\Fpdi\Fpdi;
@@ -1113,30 +1114,64 @@ class PurchaseRequestController extends Controller
 
         // ➜ Lampiran PDF
         foreach ($lampiran as $file) {
-            $filePath = public_path("/lampiran/{$file->file}");  // contoh: lampiran/checksheet.pdf
+            $filePath = public_path('lampiran/' . $file->file);
 
             if (!file_exists($filePath)) {
                 continue;
             }
 
-            $pageCount = $fpdi->setSourceFile($filePath);
+            $normalized = null;
+
+            try {
+                // coba baca PDF asli
+                $sourceFile = $filePath;
+
+                $pageCount = $fpdi->setSourceFile($sourceFile);
+            } catch (\Exception $e) {
+                // jika gagal → normalize pakai Ghostscript
+                $normalized = $this->normalizePdf($filePath);
+
+                if (!$normalized) {
+                    continue;
+                }
+
+                $sourceFile = $normalized;
+
+                $pageCount = $fpdi->setSourceFile($sourceFile);
+            }
+
             for ($i = 1; $i <= $pageCount; $i++) {
                 $tpl = $fpdi->importPage($i);
+
                 $size = $fpdi->getTemplateSize($tpl);
 
-                $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+                $orientation =
+                    ($size['width'] > $size['height'])
+                        ? 'L'
+                        : 'P';
+
                 $fpdi->AddPage($orientation);
 
-                $pageWidth = $orientation === 'L' ? 297 : 210;
-                $pageHeight = $orientation === 'L' ? 210 : 297;
+                $pageWidth =
+                    $orientation === 'L'
+                        ? 297
+                        : 210;
+
+                $pageHeight =
+                    $orientation === 'L'
+                        ? 210
+                        : 297;
 
                 $scale = min(
                     $pageWidth / $size['width'],
                     $pageHeight / $size['height']
                 );
 
-                $x = ($pageWidth - ($size['width'] * $scale)) / 2;
-                $y = ($pageHeight - ($size['height'] * $scale)) / 2;
+                $x =
+                    ($pageWidth - ($size['width'] * $scale)) / 2;
+
+                $y =
+                    ($pageHeight - ($size['height'] * $scale)) / 2;
 
                 $fpdi->useTemplate(
                     $tpl,
@@ -1145,6 +1180,11 @@ class PurchaseRequestController extends Controller
                     $size['width'] * $scale,
                     $size['height'] * $scale
                 );
+            }
+
+            // hapus file normalize sementara
+            if ($normalized && file_exists($normalized)) {
+                unlink($normalized);
             }
         }
 
@@ -1286,28 +1326,64 @@ class PurchaseRequestController extends Controller
 
         // ➜ Lampiran PDF
         foreach ($lampiran as $file) {
-            $filePath = public_path("/lampiran/{$file->file}");
-            if (!file_exists($filePath))
-                continue;
+            $filePath = public_path('lampiran/' . $file->file);
 
-            $pageCount = $fpdi->setSourceFile($filePath);
+            if (!file_exists($filePath)) {
+                continue;
+            }
+
+            $normalized = null;
+
+            try {
+                // coba baca PDF asli
+                $sourceFile = $filePath;
+
+                $pageCount = $fpdi->setSourceFile($sourceFile);
+            } catch (\Exception $e) {
+                // jika gagal → normalize pakai Ghostscript
+                $normalized = $this->normalizePdf($filePath);
+
+                if (!$normalized) {
+                    continue;
+                }
+
+                $sourceFile = $normalized;
+
+                $pageCount = $fpdi->setSourceFile($sourceFile);
+            }
+
             for ($i = 1; $i <= $pageCount; $i++) {
                 $tpl = $fpdi->importPage($i);
+
                 $size = $fpdi->getTemplateSize($tpl);
 
-                $orientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+                $orientation =
+                    ($size['width'] > $size['height'])
+                        ? 'L'
+                        : 'P';
+
                 $fpdi->AddPage($orientation);
 
-                $pageWidth = $orientation === 'L' ? 297 : 210;
-                $pageHeight = $orientation === 'L' ? 210 : 297;
+                $pageWidth =
+                    $orientation === 'L'
+                        ? 297
+                        : 210;
+
+                $pageHeight =
+                    $orientation === 'L'
+                        ? 210
+                        : 297;
 
                 $scale = min(
                     $pageWidth / $size['width'],
                     $pageHeight / $size['height']
                 );
 
-                $x = ($pageWidth - ($size['width'] * $scale)) / 2;
-                $y = ($pageHeight - ($size['height'] * $scale)) / 2;
+                $x =
+                    ($pageWidth - ($size['width'] * $scale)) / 2;
+
+                $y =
+                    ($pageHeight - ($size['height'] * $scale)) / 2;
 
                 $fpdi->useTemplate(
                     $tpl,
@@ -1316,6 +1392,11 @@ class PurchaseRequestController extends Controller
                     $size['width'] * $scale,
                     $size['height'] * $scale
                 );
+            }
+
+            // hapus file normalize sementara
+            if ($normalized && file_exists($normalized)) {
+                unlink($normalized);
             }
         }
 
@@ -1328,6 +1409,42 @@ class PurchaseRequestController extends Controller
         return response(
             $fpdi->Output('S', 'SPPJP-' . $sppjp->no_pr . '.pdf')
         )->header('Content-Type', 'application/pdf');
+    }
+
+    private function normalizePdf($inputPath)
+    {
+        $outputPath = storage_path('app/normalized_' . uniqid() . '.pdf');
+
+        // WINDOWS LOCAL
+        $gs = '"C:\Program Files\gs\gs10.07.0\bin\gswin64c.exe"';
+
+        // Kalau hosting Linux:
+        // $gs = 'gs';
+
+        $command =
+            $gs
+            . ' -sDEVICE=pdfwrite'
+            . ' -dCompatibilityLevel=1.4'
+            . ' -dNOPAUSE'
+            . ' -dQUIET'
+            . ' -dBATCH'
+            . ' -sOutputFile="' . $outputPath . '"'
+            . ' "' . $inputPath . '"';
+
+        exec($command . ' 2>&1', $output, $returnVar);
+
+        if ($returnVar !== 0) {
+            Log::error('Ghostscript gagal');
+            Log::error(print_r($output, true));
+
+            return false;
+        }
+
+        if (!file_exists($outputPath)) {
+            return false;
+        }
+
+        return $outputPath;
     }
 
     /**
