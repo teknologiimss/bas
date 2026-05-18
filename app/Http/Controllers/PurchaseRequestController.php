@@ -1431,7 +1431,7 @@ class PurchaseRequestController extends Controller
             . ' -sOutputFile="' . $outputPath . '"'
             . ' "' . $inputPath . '"';
 
-        exec($command . ' 2>&1', $output, $returnVar);
+        \exec($command . ' 2>&1', $output, $returnVar);
 
         if ($returnVar !== 0) {
             Log::error('Ghostscript gagal');
