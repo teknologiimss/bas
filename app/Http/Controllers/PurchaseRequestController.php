@@ -30,6 +30,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use setasign\Fpdi\Fpdi;
@@ -1119,7 +1120,14 @@ class PurchaseRequestController extends Controller
                 continue;
             }
 
-            $pageCount = $fpdi->setSourceFile($filePath);
+            // $pageCount = $fpdi->setSourceFile($filePath);
+            $normalized = $this->normalizePdf($filePath);
+
+            if (!$normalized) {
+                continue;
+            }
+
+            $pageCount = $fpdi->setSourceFile($normalized);
             for ($i = 1; $i <= $pageCount; $i++) {
                 $tpl = $fpdi->importPage($i);
                 $size = $fpdi->getTemplateSize($tpl);
@@ -1290,7 +1298,14 @@ class PurchaseRequestController extends Controller
             if (!file_exists($filePath))
                 continue;
 
-            $pageCount = $fpdi->setSourceFile($filePath);
+            // $pageCount = $fpdi->setSourceFile($filePath);
+            $normalized = $this->normalizePdf($filePath);
+
+            if (!$normalized) {
+                continue;
+            }
+
+            $pageCount = $fpdi->setSourceFile($normalized);
             for ($i = 1; $i <= $pageCount; $i++) {
                 $tpl = $fpdi->importPage($i);
                 $size = $fpdi->getTemplateSize($tpl);
@@ -1328,6 +1343,36 @@ class PurchaseRequestController extends Controller
         return response(
             $fpdi->Output('S', 'SPPJP-' . $sppjp->no_pr . '.pdf')
         )->header('Content-Type', 'application/pdf');
+    }
+
+    private function normalizePdf($inputPath)
+    {
+        $outputPath = storage_path('app/normalized_' . uniqid() . '.pdf');
+
+        $gsPath = 'C:\Program Files\gs\gs10.07.0\bin\gswin64c.exe';
+
+        $command =
+            "\"{$gsPath}\" "
+            . '-sDEVICE=pdfwrite '
+            . '-dCompatibilityLevel=1.4 '
+            . '-dNOPAUSE '
+            . '-dQUIET '
+            . '-dBATCH '
+            . "-sOutputFile=\"{$outputPath}\" "
+            . "\"{$inputPath}\"";
+
+        exec($command, $output, $returnVar);
+
+        // DEBUG
+        Log::info('GS Command: ' . $command);
+        Log::info('GS Return: ' . $returnVar);
+        Log::info('GS Output: ', $output);
+
+        if ($returnVar !== 0 || !file_exists($outputPath)) {
+            return null;
+        }
+
+        return $outputPath;
     }
 
     /**
