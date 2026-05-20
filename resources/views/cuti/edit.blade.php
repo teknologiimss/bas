@@ -87,6 +87,12 @@
 
                                 </option>
 
+                                <option value="CD" {{ $cuti->jenis == 'CD' ? 'selected' : '' }}>
+
+                                    CUTI DISPENSASI
+
+                                </option>
+
                             </select>
 
                         </div>
