@@ -17,6 +17,8 @@ use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\PurchaseRequestSppjpController;
 use App\Http\Controllers\SppdController;
 use App\Http\Controllers\SuratJalanController;
+use App\Http\Controllers\CutiController;
+use App\Http\Controllers\CutiTahunanController;
 use App\Models\Kontrak;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -696,6 +698,48 @@ Route::get('/mro-progress', [MonitoringController::class, 'resumeProgress'])
 Route::get('/mro/profil', function () {
     return view('mro.profil');
 })->name('mro.profil');
+
+
+
+// CUTI MRO
+Route::get('/cuti', [CutiController::class, 'index'])
+    ->name('cuti.index');
+
+Route::post('/cuti/store', [CutiController::class, 'store'])
+    ->name('cuti.store');
+
+Route::get('/cuti/rekap', [CutiController::class, 'rekap'])
+    ->name('cuti.rekap');
+
+    Route::get('/cuti/{id}/edit',
+    [CutiController::class, 'edit'])
+    ->name('cuti.edit');
+
+Route::put('/cuti/{id}',
+    [CutiController::class, 'update'])
+    ->name('cuti.update');
+
+Route::delete('/cuti/{id}',
+    [CutiController::class, 'destroy'])
+    ->name('cuti.destroy');
+
+
+
+    Route::get('/cuti-tahunan',
+    [CutiTahunanController::class,'index'])
+    ->name('cuti.tahunan');
+
+Route::post('/cuti-tahunan/store',
+    [CutiTahunanController::class,'store'])
+    ->name('cuti.tahunan.store');
+
+Route::put('/cuti-tahunan/{id}',
+    [CutiTahunanController::class,'update'])
+    ->name('cuti.tahunan.update');
+
+Route::delete('/cuti-tahunan/{id}',
+    [CutiTahunanController::class,'destroy'])
+    ->name('cuti.tahunan.destroy');
 
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');

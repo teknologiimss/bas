@@ -504,6 +504,9 @@
                                         'alat.index',
                                         'checksheet.index',
                                         'mro.profil',
+                                        'cuti.index',
+                                        'cuti.rekap',
+                                        'cuti.tahunan',
                                         'products.stock.history',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
@@ -548,7 +551,9 @@
                                         'alat.index',
                                         'checksheet.index',
                                         'mro.profil',
-                                        
+                                        'cuti.index',
+                                        'cuti.rekap',
+                                        'cuti.tahunan',
                                     ]);
                                 @endphp
 
@@ -967,6 +972,43 @@
                                                             <p>Arsip SPPD MRO</p>
                                                         </a>
                                                     </li>
+
+                                                    {{-- CUTI --}}
+                                                    <li class="nav-item">
+
+                                                        <a href="{{ route('cuti.tahunan') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'cuti.tahunan' ? 'active' : '' }}">
+
+                                                            <i class="nav-icon fas fa-calendar-check"></i>
+
+                                                            <p>Master Cuti Tahunan</p>
+
+                                                        </a>
+
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('cuti.index') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'cuti.index' ? 'active' : '' }}">
+
+                                                            <i class="nav-icon fas fa-calendar-alt"></i>
+
+                                                            <p>Management Cuti</p>
+
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('cuti.rekap') }}"
+                                                            class="nav-link {{ Route::current()->getName() == 'cuti.rekap' ? 'active' : '' }}">
+
+                                                            <i class="nav-icon fas fa-table"></i>
+
+                                                            <p>Rekap Cuti Bulanan</p>
+
+                                                        </a>
+                                                    </li>
+
+                                                    
 
                                                 </ul>
                                             </li>
