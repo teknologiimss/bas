@@ -337,8 +337,8 @@
 
 
         /* =========================================
-                       RESPONSIVE MOBILE MONITORING
-                    ========================================= */
+                                   RESPONSIVE MOBILE MONITORING
+                                ========================================= */
 
         @media (max-width: 768px) {
 
@@ -567,8 +567,8 @@
         }
 
         /* =========================================
-                       EXTRA SMALL DEVICE
-                    ========================================= */
+                                   EXTRA SMALL DEVICE
+                                ========================================= */
 
         @media (max-width: 480px) {
 
@@ -602,11 +602,11 @@
 
 
         /* =========================================
-               RESPONSIVE 768px
-            ========================================= */
+                           RESPONSIVE 768px
+                        ========================================= */
         /* ======================================
-       FILTER MOBILE TOGGLE
-    ====================================== */
+                   FILTER MOBILE TOGGLE
+                ====================================== */
 
         .filter-toggle-btn {
             display: none;
@@ -1073,10 +1073,29 @@
                                             class="form-control">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
+                                    {{-- <div class="col-md-4 mb-2">
                                         <label>Status Delivery</label>
                                         <input type="text" name="status_delivery" value="{{ $d->status_delivery }}"
                                             class="form-control">
+                                    </div> --}}
+
+                                    <div class="col-md-4 mb-2">
+                                        <label>Status Delivery</label>
+
+                                        <select name="status_delivery" class="form-control">
+                                            <option value="">-- Pilih Status --</option>
+
+                                            <option value="-">
+                                                -
+                                            </option>
+                                            <option value="On Time">
+                                                On Time
+                                            </option>
+
+                                            <option value="Overdue">
+                                                Overdue
+                                            </option>
+                                        </select>
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -1205,7 +1224,7 @@
                             <input type="text" name="leadtime_delivery" class="form-control" autocomplete="off">
                         </div> --}}
 
-                        <div class="col-md-4 mb-2">
+                        {{-- <div class="col-md-4 mb-2">
                             <label>Status Delivery</label>
                             <input type="text" name="status_delivery" class="form-control" list="statusList"
                                 autocomplete="off">
@@ -1214,6 +1233,25 @@
                                 <option value="Overdue">
                                 <option value="On Time">
                             </datalist>
+                        </div> --}}
+
+                        <div class="col-md-4 mb-2">
+                            <label>Status Delivery</label>
+
+                            <select name="status_delivery" class="form-control">
+                                <option value="">-- Pilih Status --</option>
+
+                                <option value="-">
+                                    -
+                                </option>
+                                <option value="On Time">
+                                    On Time
+                                </option>
+
+                                <option value="Overdue">
+                                    Overdue
+                                </option>
+                            </select>
                         </div>
 
                         <div class="col-md-4 mb-2">
