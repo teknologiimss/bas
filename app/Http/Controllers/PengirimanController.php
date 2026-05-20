@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -94,8 +95,52 @@ class PengirimanController extends Controller
 
     // STORE DETAIL
     // ========================
+    // public function storeDetail(Request $r)
+    // {
+    //     DB::table('pengiriman_detail')->insert([
+    //         'pengiriman_id' => $r->pengiriman_id,
+    //         'trainset' => $r->trainset,
+    //         'tipe_kereta' => $r->tipe_kereta,
+    //         'nomor_lambung' => $r->nomor_lambung,
+    //         'batch' => $r->batch,
+    //         'trucking' => $r->trucking,
+    //         'nopol' => $r->nopol,
+    //         'no_sjn' => $r->no_sjn,
+    //         'code_armada' => $r->code_armada,
+    //         'plan_delivery' => $r->plan_delivery,
+    //         'actual_delivery' => $r->actual_delivery,
+    //         // 'leadtime_delivery' => $r->leadtime_delivery,
+    //         'status_delivery' => $r->status_delivery,
+    //         'loading_truck' => $r->loading_truck,
+    //         'loading_vessel' => $r->loading_vessel,
+    //         'plan_unloading' => $r->plan_unloading,
+    //         'actual_unloading' => $r->actual_unloading,
+    //         // 'leadtime_unloading' => $r->leadtime_unloading,
+    //         'vendor' => $r->vendor,
+    //         'keterangan' => $r->keterangan,
+    //         'created_at' => now(),
+    //         'updated_at' => now(),
+    //     ]);
+
+    //     return back()->with('success', 'Data pengiriman ditambahkan');
+    // }
+
     public function storeDetail(Request $r)
     {
+        // AUTO STATUS DELIVERY
+        $statusDelivery = null;
+
+        if ($r->plan_delivery && $r->actual_delivery) {
+            $plan = Carbon::parse($r->plan_delivery);
+            $actual = Carbon::parse($r->actual_delivery);
+
+            if ($actual->lte($plan)) {
+                $statusDelivery = 'On Time';
+            } else {
+                $statusDelivery = 'Overdue';
+            }
+        }
+
         DB::table('pengiriman_detail')->insert([
             'pengiriman_id' => $r->pengiriman_id,
             'trainset' => $r->trainset,
@@ -108,13 +153,12 @@ class PengirimanController extends Controller
             'code_armada' => $r->code_armada,
             'plan_delivery' => $r->plan_delivery,
             'actual_delivery' => $r->actual_delivery,
-            // 'leadtime_delivery' => $r->leadtime_delivery,
-            'status_delivery' => $r->status_delivery,
+            // AUTO STATUS
+            'status_delivery' => $statusDelivery,
             'loading_truck' => $r->loading_truck,
             'loading_vessel' => $r->loading_vessel,
             'plan_unloading' => $r->plan_unloading,
             'actual_unloading' => $r->actual_unloading,
-            // 'leadtime_unloading' => $r->leadtime_unloading,
             'vendor' => $r->vendor,
             'keterangan' => $r->keterangan,
             'created_at' => now(),
@@ -127,8 +171,50 @@ class PengirimanController extends Controller
     // ========================
     // UPDATE DETAIL
     // ========================
+    // public function updateDetail(Request $r, $id)
+    // {
+    //     DB::table('pengiriman_detail')->where('id', $id)->update([
+    //         'trainset' => $r->trainset,
+    //         'tipe_kereta' => $r->tipe_kereta,
+    //         'nomor_lambung' => $r->nomor_lambung,
+    //         'batch' => $r->batch,
+    //         'trucking' => $r->trucking,
+    //         'nopol' => $r->nopol,
+    //         'no_sjn' => $r->no_sjn,
+    //         'code_armada' => $r->code_armada,
+    //         'plan_delivery' => $r->plan_delivery,
+    //         'actual_delivery' => $r->actual_delivery,
+    //         // 'leadtime_delivery' => $r->leadtime_delivery,
+    //         'status_delivery' => $r->status_delivery,
+    //         'loading_truck' => $r->loading_truck,
+    //         'loading_vessel' => $r->loading_vessel,
+    //         'plan_unloading' => $r->plan_unloading,
+    //         'actual_unloading' => $r->actual_unloading,
+    //         // 'leadtime_unloading' => $r->leadtime_unloading,
+    //         'vendor' => $r->vendor,
+    //         'keterangan' => $r->keterangan,
+    //         'updated_at' => now(),
+    //     ]);
+
+    //     return back()->with('success', 'Data diupdate');
+    // }
+
     public function updateDetail(Request $r, $id)
     {
+        // AUTO STATUS DELIVERY
+        $statusDelivery = null;
+
+        if ($r->plan_delivery && $r->actual_delivery) {
+            $plan = Carbon::parse($r->plan_delivery);
+            $actual = Carbon::parse($r->actual_delivery);
+
+            if ($actual->lte($plan)) {
+                $statusDelivery = 'On Time';
+            } else {
+                $statusDelivery = 'Overdue';
+            }
+        }
+
         DB::table('pengiriman_detail')->where('id', $id)->update([
             'trainset' => $r->trainset,
             'tipe_kereta' => $r->tipe_kereta,
@@ -140,13 +226,12 @@ class PengirimanController extends Controller
             'code_armada' => $r->code_armada,
             'plan_delivery' => $r->plan_delivery,
             'actual_delivery' => $r->actual_delivery,
-            // 'leadtime_delivery' => $r->leadtime_delivery,
-            'status_delivery' => $r->status_delivery,
+            // AUTO STATUS
+            'status_delivery' => $statusDelivery,
             'loading_truck' => $r->loading_truck,
             'loading_vessel' => $r->loading_vessel,
             'plan_unloading' => $r->plan_unloading,
             'actual_unloading' => $r->actual_unloading,
-            // 'leadtime_unloading' => $r->leadtime_unloading,
             'vendor' => $r->vendor,
             'keterangan' => $r->keterangan,
             'updated_at' => now(),

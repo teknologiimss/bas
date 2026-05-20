@@ -337,8 +337,8 @@
 
 
         /* =========================================
-                                   RESPONSIVE MOBILE MONITORING
-                                ========================================= */
+                                       RESPONSIVE MOBILE MONITORING
+                                    ========================================= */
 
         @media (max-width: 768px) {
 
@@ -567,8 +567,8 @@
         }
 
         /* =========================================
-                                   EXTRA SMALL DEVICE
-                                ========================================= */
+                                       EXTRA SMALL DEVICE
+                                    ========================================= */
 
         @media (max-width: 480px) {
 
@@ -602,11 +602,11 @@
 
 
         /* =========================================
-                           RESPONSIVE 768px
-                        ========================================= */
+                               RESPONSIVE 768px
+                            ========================================= */
         /* ======================================
-                   FILTER MOBILE TOGGLE
-                ====================================== */
+                       FILTER MOBILE TOGGLE
+                    ====================================== */
 
         .filter-toggle-btn {
             display: none;
@@ -925,10 +925,32 @@
                                 <td>{{ $d->actual_delivery ? \Carbon\Carbon::parse($d->actual_delivery)->format('d/m/Y') : '-' }}
                                 </td>
                                 {{-- <td>{{ $d->leadtime_delivery }}</td> --}}
-                                <td>
+                                {{-- <td>
                                     @if ($d->plan_delivery && $d->actual_delivery)
                                         {{ \Carbon\Carbon::parse($d->plan_delivery)->diffInDays(\Carbon\Carbon::parse($d->actual_delivery)) }}
                                         hari
+                                    @else
+                                        -
+                                    @endif
+                                </td> --}}
+                                {{-- Leadtime delivery --}}
+                                <td>
+                                    @if ($d->plan_delivery && $d->actual_delivery)
+                                        @php
+                                            $plan = \Carbon\Carbon::parse($d->plan_delivery);
+                                            $actual = \Carbon\Carbon::parse($d->actual_delivery);
+
+                                            // beda hari (bisa minus)
+                                            $selisih = $plan->diffInDays($actual, false);
+                                        @endphp
+
+                                        @if ($selisih > 0)
+                                            +{{ $selisih }} hari
+                                        @elseif($selisih < 0)
+                                            {{ $selisih }} hari
+                                        @else
+                                            0 hari
+                                        @endif
                                     @else
                                         -
                                     @endif
@@ -1079,7 +1101,7 @@
                                             class="form-control">
                                     </div> --}}
 
-                                    <div class="col-md-4 mb-2">
+                                    {{-- <div class="col-md-4 mb-2">
                                         <label>Status Delivery</label>
 
                                         <select name="status_delivery" class="form-control">
@@ -1096,7 +1118,7 @@
                                                 Overdue
                                             </option>
                                         </select>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="col-md-4 mb-2">
                                         <label>Loading Truck</label>
@@ -1235,7 +1257,7 @@
                             </datalist>
                         </div> --}}
 
-                        <div class="col-md-4 mb-2">
+                        {{-- <div class="col-md-4 mb-2">
                             <label>Status Delivery</label>
 
                             <select name="status_delivery" class="form-control">
@@ -1252,7 +1274,7 @@
                                     Overdue
                                 </option>
                             </select>
-                        </div>
+                        </div> --}}
 
                         <div class="col-md-4 mb-2">
                             <label>Loading Truck</label>
