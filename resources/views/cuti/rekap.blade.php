@@ -757,6 +757,12 @@
 
                     <h6>
 
+                        *Cuti Dispensasi/Ibadah (CD) tidak mengurangi jatah cuti tahunan dan wajib melampirkan surat pernyataan.
+
+                    </h6>
+
+                    <h6>
+
                         Cuti Penting :
 
                     </h6>
