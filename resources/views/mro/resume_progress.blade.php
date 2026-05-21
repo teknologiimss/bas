@@ -348,11 +348,26 @@
                                 </td>
 
                                 {{-- Klik PO/Nodin Spesifik ke Halaman Monitoring --}}
-                                <td>
+                                {{-- <td>
                                     <a href="{{ route('monitoring.index', $m->proyek_id) }}?po={{ urlencode(trim($m->po_nota_dinas)) }}"
                                         class="text-primary font-weight-bold">
                                         {{ $m->po_nota_dinas }}
                                     </a>
+                                </td> --}}
+
+                                <td>
+
+                                    @if (Auth::user()->role == 17)
+                                        <span class="font-weight-bold text-dark">
+                                            {{ $m->po_nota_dinas }}
+                                        </span>
+                                    @else
+                                        <a href="{{ route('monitoring.index', $m->proyek_id) }}?po={{ urlencode(trim($m->po_nota_dinas)) }}"
+                                            class="text-primary font-weight-bold">
+                                            {{ $m->po_nota_dinas }}
+                                        </a>
+                                    @endif
+
                                 </td>
 
 

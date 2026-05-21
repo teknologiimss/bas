@@ -75,6 +75,8 @@
                                             $role = 'Pemasaran NON INKA';
                                         } elseif ($d->role == 16) {
                                             $role = 'Pemasaran INKA Grup';
+                                        } elseif ($d->role == 17) {
+                                            $role = 'Teknisi MRO';
                                         }
                                     @endphp
                                     <tr>
@@ -166,6 +168,7 @@
                                         <option value="14">MRO</option>
                                         <option value="15">Pemasaran NON INKA</option>
                                         <option value="16">Pemasaran INKA Grup</option>
+                                        <option value="17">Teknisi MRO</option>
                                         {{-- <option value="6">Keuangan</option>
                                         <option value="7">SDM</option>
                                         <option value="8">Ekspedisi</option>

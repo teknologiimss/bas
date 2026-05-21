@@ -881,7 +881,7 @@
 
 
                                         {{-- Contoh Menu role MRO --}}
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                        {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 14)
                                             <li
                                                 class="nav-item has-treeview {{ $menuMroActive ? 'menu-open' : '' }}">
                                                 <a href="#" class="nav-link">
@@ -973,7 +973,7 @@
                                                         </a>
                                                     </li>
 
-                                                    {{-- CUTI --}}
+                                                    
                                                     <li class="nav-item">
 
                                                         <a href="{{ route('cuti.tahunan') }}"
@@ -1009,6 +1009,199 @@
                                                     </li>
 
                                                     
+
+                                                </ul>
+                                            </li>
+                                        @endif --}}
+
+                                        {{-- MENU MRO --}}
+                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14 || Auth::user()->role == 17)
+                                            <li
+                                                class="nav-item has-treeview {{ $menuMroActive ? 'menu-open' : '' }}">
+                                                <a href="#" class="nav-link">
+                                                    <i class="nav-icon fas fa-tools"></i>
+                                                    <p>
+                                                        {{ __('MRO') }}
+                                                        <i class="right fas fa-angle-left"></i>
+                                                    </p>
+                                                </a>
+
+                                                <ul class="nav nav-treeview pl-3">
+
+                                                    {{-- ADMIN & MRO FULL ACCESS --}}
+                                                    @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.profil') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.profil' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-video"></i>
+                                                                <p>Personil MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('pengiriman.index') }}"
+                                                                class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-truck"></i>
+                                                                <p>Monitoring Pengiriman</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('checksheet.index') }}"
+                                                                class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-clipboard-check"></i>
+                                                                <p>Monitoring Preventive Maintenance</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('alat.index') }}"
+                                                                class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-bus"></i>
+                                                                <p>Monitoring Alat Angkut</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.riwayat') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-history"></i>
+                                                                <p>Riwayat PR/SPPJP MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('perencanaan.proyek') }}"
+                                                                class="nav-link {{ request()->routeIs('perencanaan.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-clipboard-list"></i>
+                                                                <p>Perencanaan Pekerjaan</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('proyek.index') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'proyek.index' ? 'active' : '' }}">
+                                                                <i class="fas fa-chart-bar nav-icon"></i>
+                                                                <p>Proyek MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.progress') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.progress' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-chart-line"></i>
+                                                                <p>Progress MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
+                                                                <i class="fas fa-box-open nav-icon"></i>
+                                                                <p>Stok Barang MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.stock.log') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.stock.log' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-people-carry"></i>
+                                                                <p>Mutasi Stok MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('sppd.index') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'sppd.index' ? 'active' : '' }}">
+                                                                <i class="nav-icon far fa-file-archive"></i>
+                                                                <p>Arsip SPPD MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('cuti.tahunan') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'cuti.tahunan' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-calendar-check"></i>
+                                                                <p>Master Cuti Tahunan</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('cuti.index') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'cuti.index' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                                                <p>Management Cuti</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('cuti.rekap') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'cuti.rekap' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-table"></i>
+                                                                <p>Rekap Cuti Bulanan</p>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
+
+                                                    {{-- KHUSUS TEKNISI MRO --}}
+                                                    @if (Auth::user()->role == 17)
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.profil') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.profil' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-video"></i>
+                                                                <p>Personil MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('checksheet.index') }}"
+                                                                class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-clipboard-check"></i>
+                                                                <p>Monitoring Preventive Maintenance</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.progress') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.progress' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-chart-line"></i>
+                                                                <p>Progress MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.riwayat') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-history"></i>
+                                                                <p>Riwayat PR/SPPJP MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
+                                                                <i class="fas fa-box-open nav-icon"></i>
+                                                                <p>Stok Barang MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.stock.log') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.stock.log' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-people-carry"></i>
+                                                                <p>Mutasi Stok MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('cuti.rekap') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'cuti.rekap' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-table"></i>
+                                                                <p>Rekap Cuti Bulanan</p>
+                                                            </a>
+                                                        </li>
+                                                    @endif
 
                                                 </ul>
                                             </li>
