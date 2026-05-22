@@ -213,10 +213,18 @@
                         </div>
 
                         {{-- PROYEK --}}
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label class="form-label">Proyek</label>
                             <input type="text" name="proyek" class="form-control"
                                 placeholder="Contoh: Cuci Kereta KRL KCI" required>
+                        </div> --}}
+
+                        <div class="mb-3">
+                            <label class="form-label">Proyek</label>
+
+                            <input type="text" class="form-control" value="{{ $item->proyek }}" readonly>
+
+                            <input type="hidden" name="proyek" value="{{ $item->proyek }}">
                         </div>
 
                         {{-- SPP --}}

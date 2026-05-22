@@ -213,18 +213,26 @@
                         </div>
 
                         {{-- PROYEK --}}
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label class="form-label">Proyek</label>
                             <input type="text" name="proyek" class="form-control"
                                 placeholder="Contoh: Cuci Kereta KRL KCI" required>
+                        </div> --}}
+
+                        <div class="mb-3">
+                            <label class="form-label">Proyek</label>
+
+                            <input type="text" class="form-control" value="{{ $item->proyek }}" readonly>
+
+                            <input type="hidden" name="proyek" value="{{ $item->proyek }}">
                         </div>
 
                         {{-- SPP --}}
-                        <div class="mb-4">
+                        {{-- <div class="mb-4">
                             <label class="form-label">Nomor SPP / PR</label>
                             <input type="text" name="spp" class="form-control" placeholder="Masukkan nomor SPP/PR"
                                 required>
-                        </div>
+                        </div> --}}
 
                         {{-- BUTTON --}}
                         <button class="btn-stockout">

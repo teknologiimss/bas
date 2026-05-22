@@ -51,13 +51,49 @@ class MroController extends Controller
         return view('mro.index', compact('mro'));
     }
 
+    // public function save(Request $request)
+    // {
+    //     $request->validate([
+    //         'mro_code' => 'required',
+    //         'mro_name' => 'required',
+    //         'stock' => 'required|numeric',
+    //     ]);
+
+    //     Mro::updateOrCreate(
+    //         ['mro_id' => $request->mro_id],
+    //         [
+    //             'mro_code' => $request->mro_code,
+    //             'mro_name' => $request->mro_name,
+    //             'spesifikasi' => $request->spesifikasi,
+    //             'stock' => $request->stock,
+    //             'satuan' => $request->satuan,
+    //             'proyek' => $request->proyek,
+    //             // QR CODE menggunakan isi ini
+    //             'barcode' => $request->mro_code
+    //         ]
+    //     );
+
+    //     return back()->with('success', 'Data MRO berhasil disimpan.');
+    // }
+
     public function save(Request $request)
     {
         $request->validate([
             'mro_code' => 'required',
             'mro_name' => 'required',
             'stock' => 'required|numeric',
+            'proyek' => 'required',
         ]);
+
+        // =====================================================
+        // BUAT BARCODE UNIK
+        // contoh:
+        // BRG001-CUCIKERETAKCI
+        // =====================================================
+
+        $barcode = strtoupper(
+            str_replace(' ', '', $request->mro_code . '-' . $request->proyek)
+        );
 
         Mro::updateOrCreate(
             ['mro_id' => $request->mro_id],
@@ -68,8 +104,8 @@ class MroController extends Controller
                 'stock' => $request->stock,
                 'satuan' => $request->satuan,
                 'proyek' => $request->proyek,
-                // QR CODE menggunakan isi ini
-                'barcode' => $request->mro_code
+                // BARCODE UNIK
+                'barcode' => $barcode
             ]
         );
 
@@ -100,10 +136,44 @@ class MroController extends Controller
         return view('mro.print_qrcode', compact('mro'));  // GANTI
     }
 
+    // public function stockIn(Request $r)
+    // {
+    //     $r->validate([
+    //         'spp' => 'required|string|max:100',
+    //     ], [
+    //         'spp.required' => 'No. SPP wajib diisi!',
+    //     ]);
+
+    //     $item = Mro::where('barcode', $r->barcode)->first();
+
+    //     if (!$item)
+    //         return back()->with('error', 'QR Code tidak ditemukan!');
+
+    //     $before = $item->stock;
+
+    //     $item->stock += $r->jumlah;
+    //     $item->save();
+
+    //     MroStockLog::create([
+    //         'mro_id' => $item->mro_id,
+    //         'barcode' => $item->barcode,  // isi QR code
+    //         'type' => 'IN',
+    //         'qty' => $r->jumlah,
+    //         'stock_before' => $before,
+    //         'stock_after' => $item->stock,
+    //         'proyek' => $r->proyek,
+    //         'spp' => $r->spp,
+    //         'user' => auth()->user()->name,
+    //     ]);
+
+    //     return back()->with('success', 'Stok berhasil ditambah!');
+    // }
+
     public function stockIn(Request $r)
     {
         $r->validate([
-            
+            'jumlah' => 'required|numeric|min:1',
+            'proyek' => 'required|string|max:255',
             'spp' => 'required|string|max:100',
         ], [
             'spp.required' => 'No. SPP wajib diisi!',
@@ -111,8 +181,9 @@ class MroController extends Controller
 
         $item = Mro::where('barcode', $r->barcode)->first();
 
-        if (!$item)
+        if (!$item) {
             return back()->with('error', 'QR Code tidak ditemukan!');
+        }
 
         $before = $item->stock;
 
@@ -121,7 +192,7 @@ class MroController extends Controller
 
         MroStockLog::create([
             'mro_id' => $item->mro_id,
-            'barcode' => $item->barcode,  // isi QR code
+            'barcode' => $item->barcode,
             'type' => 'IN',
             'qty' => $r->jumlah,
             'stock_before' => $before,
@@ -134,22 +205,58 @@ class MroController extends Controller
         return back()->with('success', 'Stok berhasil ditambah!');
     }
 
+    // public function stockOut(Request $r)
+    // {
+    //     $r->validate([
+    //         'spp' => 'required|string|max:100',
+    //     ], [
+    //         'spp.required' => 'No. SPP wajib diisi!',
+    //     ]);
+
+    //     $item = Mro::where('barcode', $r->barcode)->first();
+
+    //     if (!$item)
+    //         return back()->with('error', 'QR Code tidak ditemukan!');
+
+    //     if ($item->stock < $r->jumlah)
+    //         return back()->with('error', 'Stok tidak mencukupi!');
+
+    //     $before = $item->stock;
+
+    //     $item->stock -= $r->jumlah;
+    //     $item->save();
+
+    //     MroStockLog::create([
+    //         'mro_id' => $item->mro_id,
+    //         'barcode' => $item->barcode,
+    //         'type' => 'OUT',
+    //         'qty' => $r->jumlah,
+    //         'stock_before' => $before,
+    //         'stock_after' => $item->stock,
+    //         'proyek' => $r->proyek,
+    //         'spp' => $r->spp,
+    //         'user' => auth()->user()->name,
+    //     ]);
+
+    //     return back()->with('success', 'Stok berhasil dikurangi!');
+    // }
+
     public function stockOut(Request $r)
     {
         $r->validate([
-            
-            'spp' => 'required|string|max:100',
-        ], [
-            'spp.required' => 'No. SPP wajib diisi!',
+            'jumlah' => 'required|numeric|min:1',
+            'proyek' => 'required|string|max:255',
         ]);
-        
+
         $item = Mro::where('barcode', $r->barcode)->first();
 
-        if (!$item)
+        if (!$item) {
             return back()->with('error', 'QR Code tidak ditemukan!');
+        }
 
-        if ($item->stock < $r->jumlah)
+        if ($item->stock < $r->jumlah) {
             return back()->with('error', 'Stok tidak mencukupi!');
+        }
 
         $before = $item->stock;
 
@@ -164,7 +271,8 @@ class MroController extends Controller
             'stock_before' => $before,
             'stock_after' => $item->stock,
             'proyek' => $r->proyek,
-            'spp' => $r->spp,
+            // kosongkan spp
+            'spp' => null,
             'user' => auth()->user()->name,
         ]);
 
