@@ -230,7 +230,7 @@
                         {{-- SPP --}}
                         <div class="mb-4">
                             <label class="form-label">Nomor SPP / PR</label>
-                            <input type="text" name="spp" class="form-control" placeholder="Masukkan nomor SPP/PR"
+                            <input type="text" name="spp" class="form-control" autocomplete="off" placeholder="Masukkan nomor SPP/PR"
                                 required>
                         </div>
 
