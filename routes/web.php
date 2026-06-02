@@ -4,9 +4,12 @@ use App\Http\Controllers\AlatAngkutController;
 use App\Http\Controllers\AlatAngkutDetailController;
 use App\Http\Controllers\BpmController;
 use App\Http\Controllers\ChecksheetController;
+use App\Http\Controllers\CutiController;
+use App\Http\Controllers\CutiTahunanController;
 use App\Http\Controllers\DetailsjnController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KontrakController;
+use App\Http\Controllers\Lp3mController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\MroController;
 use App\Http\Controllers\NotificationController;
@@ -17,8 +20,6 @@ use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\PurchaseRequestSppjpController;
 use App\Http\Controllers\SppdController;
 use App\Http\Controllers\SuratJalanController;
-use App\Http\Controllers\CutiController;
-use App\Http\Controllers\CutiTahunanController;
 use App\Models\Kontrak;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -699,8 +700,6 @@ Route::get('/mro/profil', function () {
     return view('mro.profil');
 })->name('mro.profil');
 
-
-
 // CUTI MRO
 Route::get('/cuti', [CutiController::class, 'index'])
     ->name('cuti.index');
@@ -711,35 +710,62 @@ Route::post('/cuti/store', [CutiController::class, 'store'])
 Route::get('/cuti/rekap', [CutiController::class, 'rekap'])
     ->name('cuti.rekap');
 
-    Route::get('/cuti/{id}/edit',
-    [CutiController::class, 'edit'])
+Route::get('/cuti/{id}/edit',
+        [CutiController::class, 'edit'])
     ->name('cuti.edit');
 
 Route::put('/cuti/{id}',
-    [CutiController::class, 'update'])
+        [CutiController::class, 'update'])
     ->name('cuti.update');
 
 Route::delete('/cuti/{id}',
-    [CutiController::class, 'destroy'])
+        [CutiController::class, 'destroy'])
     ->name('cuti.destroy');
 
-
-
-    Route::get('/cuti-tahunan',
-    [CutiTahunanController::class,'index'])
+Route::get('/cuti-tahunan',
+        [CutiTahunanController::class, 'index'])
     ->name('cuti.tahunan');
 
 Route::post('/cuti-tahunan/store',
-    [CutiTahunanController::class,'store'])
+        [CutiTahunanController::class, 'store'])
     ->name('cuti.tahunan.store');
 
 Route::put('/cuti-tahunan/{id}',
-    [CutiTahunanController::class,'update'])
+        [CutiTahunanController::class, 'update'])
     ->name('cuti.tahunan.update');
 
 Route::delete('/cuti-tahunan/{id}',
-    [CutiTahunanController::class,'destroy'])
+        [CutiTahunanController::class, 'destroy'])
     ->name('cuti.tahunan.destroy');
+
+// LP3M (Tindak lanjut SPR)
+
+Route::get('/lp3m', [Lp3mController::class, 'index'])->name('lp3m.index');
+
+Route::get('/lp3m/create', [Lp3mController::class, 'create'])->name('lp3m.create');
+
+Route::post('/lp3m/store', [Lp3mController::class, 'store'])->name('lp3m.store');
+
+Route::get('/lp3m/form/{id}', [Lp3mController::class, 'form'])
+    ->name('lp3m.form');
+
+Route::post('/lp3m/save-form/{id}', [Lp3mController::class, 'saveForm'])
+    ->name('lp3m.saveForm');
+
+Route::get('/lp3m/edit/{id}', [Lp3mController::class, 'edit'])
+    ->name('lp3m.edit');
+
+Route::post('/lp3m/update/{id}', [Lp3mController::class, 'update'])
+    ->name('lp3m.update');
+
+Route::delete('/lp3m/delete/{id}', [Lp3mController::class, 'destroy'])
+    ->name('lp3m.destroy');
+
+Route::get('/lp3m/print/{id}', [Lp3mController::class, 'print'])
+    ->name('lp3m.print');
+
+Route::get('/lp3m/show/{id}', [Lp3mController::class, 'show'])
+    ->name('lp3m.show');
 
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');

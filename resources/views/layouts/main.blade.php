@@ -1063,6 +1063,14 @@
                                                         </li>
 
                                                         <li class="nav-item">
+                                                            <a href="{{ route('lp3m.index') }}"
+                                                                class="nav-link {{ request()->routeIs('lp3m.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-tools"></i>
+                                                                <p>Tindak Lanjut SPR</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
                                                             <a href="{{ route('mro.riwayat') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-history"></i>

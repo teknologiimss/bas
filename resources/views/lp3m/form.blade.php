@@ -1,0 +1,419 @@
+@extends('layouts.main')
+
+@section('content')
+    <style>
+        body {
+            background: #f5f6fa;
+        }
+
+        .main-card {
+            border-radius: 18px;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .card {
+            border: none;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        h5 {
+            color: #c82333;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        hr {
+            border-top: 2px solid #f1b0b7;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #444;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+            padding: 10px 12px;
+        }
+
+        .form-control:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.2);
+        }
+
+        .btn {
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #b02a37);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff4d4d, #dc3545);
+            border: none;
+        }
+
+        .input-group .btn {
+            border-radius: 0 10px 10px 0;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            accent-color: #dc3545;
+            margin-right: 5px;
+        }
+
+        .row>div {
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        /* MOBILE */
+        @media (max-width:768px) {
+
+            .card-body {
+                padding: 15px;
+            }
+
+            h5 {
+                font-size: 18px;
+            }
+
+            .btn {
+                width: 100%;
+                margin-top: 5px;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .input-group .form-control {
+                width: 100%;
+                border-radius: 10px;
+                margin-bottom: 5px;
+            }
+
+            .input-group .btn {
+                width: 100%;
+                border-radius: 10px;
+            }
+
+        }
+    </style>
+
+    {{-- <div class="container"> --}}
+    <div class="container-fluid mt-3">
+
+        {{-- <div class="card"> --}}
+        <div class="card shadow-lg border-0 main-card">
+            <div class="card-header bg-danger text-white py-3">
+
+                <h4 class="mb-0">
+
+                    <i class="fas fa-tools me-2"></i>
+
+                    Form Pekerjaan Perbaikan Perawatan Fasilitas
+
+                </h4>
+
+            </div>
+            <div class="card-body">
+
+                <form action="{{ route('lp3m.saveForm', $data->id) }}" method="POST">
+                    @csrf
+
+                    <div class="mb-3">
+
+                        <label>Status</label>
+
+                        <select name="status" class="form-control">
+
+                            <option value="OPEN">
+                                OPEN
+                            </option>
+
+                            <option value="CLOSED">
+                                CLOSED
+                            </option>
+
+                        </select>
+
+                    </div>
+                    <div class="mb-3">
+                        <label>SPR No</label>
+                        <input type="text" name="spr_no" autocomplete="off" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Hasil Pengukuran</label>
+                        <textarea name="hasil_pengukuran" autocomplete="off" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Penyebab Kerusakan</label>
+                        <textarea name="penyebab_kerusakan" autocomplete="off" class="form-control"></textarea>
+                    </div>
+
+                    <hr>
+
+                    <h5>Penyebab Kerusakan</h5>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="aus"> Aus
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="retak"> Retak/Patah
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="komponen_tak_berfungsi"> Komponen Tak Berfungsi
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="kelebihan_beban"> Kelebihan Beban
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="salah_operasi"> Salah Operasi
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="kelainan"> Kelainan
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="kecelakaan"> Kecelakaan
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="lain_lain_kerusakan"> Lain-lain
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <h5>Eksekusi</h5>
+
+                    <div class="row">
+
+                        {{-- <div class="col-md-6 mb-3">
+                            <label>Nama Teknisi</label>
+                            <input type="text" name="nama" class="form-control">
+                        </div> --}}
+
+                        <div class="col-md-12 mb-3">
+
+                            <label>Nama Teknisi</label>
+
+                            <div id="teknisi-wrapper">
+
+                                <div class="input-group mb-2">
+
+                                    <input type="text" name="nama[]" autocomplete="off" class="form-control"
+                                        placeholder="Masukkan nama teknisi">
+
+                                    <button type="button" class="btn btn-danger remove-teknisi">
+                                        Hapus
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            <button type="button" class="btn btn-primary btn-sm" id="add-teknisi">
+
+                                + Tambah Teknisi
+
+                            </button>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Tanggal</label>
+                            <input type="date" name="tanggal" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Jam Mulai</label>
+                            <input type="time" name="jam_mulai" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Jam Selesai</label>
+                            <input type="time" name="jam_selesai" class="form-control">
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label>Pekerjaan</label>
+                            <textarea name="pekerjaan" autocomplete="off" class="form-control"></textarea>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <h5>Tindakan</h5>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="komponen_diganti"> Komponen Diganti
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="diperiksa_disetel"> Diperiksa dan disetel
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="diperbaiki_dibuat"> Diperbaiki dengan dibuat
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="dimodifikasi"> Dimodifikasi
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="dipindah_pasang_baru"> Dipindah pasang baru
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="diperlukan_evaluasi"> Diperlukan evaluasi
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="checkbox" name="lain_lain_tindakan"> Lain-lain
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <h5>Sparepart / material yang digunakan</h5>
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+                            <label>Nama Barang</label>
+                            <input type="text" name="nama_barang" autocomplete="off" class="form-control"
+                                placeholder="Masukkan nama barang">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Kode</label>
+                            <input type="text" name="kode_barang" autocomplete="off" class="form-control"
+                                placeholder="Masukkan kode barang">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Jumlah</label>
+                            <input type="number" name="jumlah" class="form-control" placeholder="0">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Tanggal</label>
+                            <input type="date" name="tanggal_selesai" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Jam</label>
+                            <input type="time" name="jam_selesai_detail" class="form-control">
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label>Detail Penyelesaian</label>
+                            <textarea name="detail_penyelesaian" autocomplete="off" class="form-control"></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="text-end mt-3">
+
+                        <button class="btn btn-danger px-4 py-2">
+
+                            <i class="fas fa-save"></i>
+
+                            Simpan
+
+                        </button>
+                        <a href="{{ route('lp3m.index') }}" class="btn btn-secondary">
+
+                            Kembali
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('add-teknisi').addEventListener('click', function() {
+
+            let wrapper = document.getElementById('teknisi-wrapper');
+
+            let html = `
+            <div class="input-group mb-2">
+
+                <input type="text"
+                       name="nama[]"
+                       class="form-control" autocomplete="off"
+                       placeholder="Masukkan nama teknisi">
+
+                <button type="button"
+                        class="btn btn-danger remove-teknisi">
+                    Hapus
+                </button>
+
+            </div>
+        `;
+
+            wrapper.insertAdjacentHTML('beforeend', html);
+
+        });
+
+        document.addEventListener('click', function(e) {
+
+            if (e.target.classList.contains('remove-teknisi')) {
+
+                e.target.parentElement.remove();
+
+            }
+
+        });
+    </script>
+@endsection
