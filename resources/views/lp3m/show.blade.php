@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title', 'Detail LP3M')
-
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
 
     <style>

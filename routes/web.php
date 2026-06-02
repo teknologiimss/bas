@@ -767,6 +767,13 @@ Route::get('/lp3m/print/{id}', [Lp3mController::class, 'print'])
 Route::get('/lp3m/show/{id}', [Lp3mController::class, 'show'])
     ->name('lp3m.show');
 
+Route::get('/lp3m/riwayat-spr', [Lp3mController::class, 'getRiwayatSpr'])
+    ->name('lp3m.riwayatSpr');
+
+Route::post('/lp3m/upload-lampiran',
+        [Lp3mController::class, 'uploadLampiran'])
+    ->name('lp3m.uploadLampiran');
+
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');
 // Route::delete('service', [App\Http\Controllers\ServiceController::class, 'destroy'])->name('service.destroy');

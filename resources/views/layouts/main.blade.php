@@ -508,6 +508,7 @@
                                         'cuti.rekap',
                                         'cuti.tahunan',
                                         'products.stock.history',
+                                        'lp3m.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -554,6 +555,7 @@
                                         'cuti.index',
                                         'cuti.rekap',
                                         'cuti.tahunan',
+                                        'lp3m.index',
                                     ]);
                                 @endphp
 

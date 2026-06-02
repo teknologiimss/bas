@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('title', 'LP3M Mesin')
-
+@section('title', 'Lembar Pekerjaan Perbaikan Perawatan Fasilitas')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
     <style>
         .header-title {
@@ -12,18 +12,24 @@
 
 
         .btn-action {
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 6px;
+            width: 100px;
+            height: 38px;
+
             display: flex;
             align-items: center;
-            gap: 4px;
-            white-space: nowrap;
-            margin: 2px;
+            justify-content: center;
+
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 600;
+
+            border-radius: 8px;
         }
 
         .action-buttons {
-            min-width: 220px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
 
@@ -108,18 +114,32 @@
 
                     <div class="row g-2 align-items-end">
 
-                        <div class="col-md-5 col-12">
+                        {{-- Cari Deskripsi --}}
+                        <div class="col-md-4 col-12">
 
                             <label class="form-label fw-bold">
                                 Cari Deskripsi
                             </label>
 
-                            <input type="text" name="search" class="form-control" placeholder="Masukkan deskripsi..."
+                            <input type="text" name="search" class="form-control" autocomplete="off" placeholder="Masukkan deskripsi..."
                                 value="{{ request('search') }}">
 
                         </div>
 
-                        <div class="col-md-4 col-12">
+                        {{-- Cari No SPR --}}
+                        <div class="col-md-3 col-12">
+
+                            <label class="form-label fw-bold">
+                                Cari No. SPR
+                            </label>
+
+                            <input type="text" name="spr_no" class="form-control" autocomplete="off" placeholder="Masukkan No SPR..."
+                                value="{{ request('spr_no') }}">
+
+                        </div>
+
+                        {{-- Cari Tanggal --}}
+                        {{-- <div class="col-md-3 col-12">
 
                             <label class="form-label fw-bold">
                                 Cari Tanggal
@@ -127,9 +147,10 @@
 
                             <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}">
 
-                        </div>
+                        </div> --}}
 
-                        <div class="col-md-3 col-12 d-grid">
+                        {{-- Tombol --}}
+                        <div class="col-md-2 col-12 d-grid">
 
                             <button type="submit" class="btn btn-danger fw-bold">
 
@@ -138,7 +159,14 @@
 
                             </button>
 
+                            <a href="{{ route('lp3m.index') }}" class="btn btn-secondary fw-bold">
+
+                                Reset
+
+                            </a>
+
                         </div>
+
 
                     </div>
 
@@ -160,10 +188,12 @@
 
                             <tr>
                                 <th>No</th>
+                                <th>No. SPR</th>
                                 <th>Deskripsi</th>
                                 <th>Status</th>
                                 <th>Keterangan</th>
                                 <th>Tanggal</th>
+                                <th>Lampiran</th>
                                 <th>Aksi</th>
                             </tr>
 
@@ -175,6 +205,20 @@
                                 <tr>
 
                                     <td>{{ $loop->iteration }}</td>
+
+                                    <td>
+
+                                        @if ($d->spr_no)
+                                            <span>
+                                                {{ $d->spr_no }}
+                                            </span>
+                                        @else
+                                            <span class="text-muted">
+                                                Belum Ada
+                                            </span>
+                                        @endif
+
+                                    </td>
 
                                     <td>{{ $d->deskripsi }}</td>
 
@@ -196,6 +240,26 @@
 
                                     <td>
                                         {{ date('d-m-Y H:i', strtotime($d->created_at)) }}
+                                    </td>
+
+                                    <td>
+
+                                        @if ($d->lampiran)
+                                            <a href="{{ asset('lampiran/' . $d->lampiran) }}" target="_blank"
+                                                class="btn btn-success btn-action">
+
+                                                <i class="fas fa-paperclip"></i>
+                                                <span>Lihat</span>
+
+                                            </a>
+                                        @else
+                                            <span class="badge bg-secondary">
+
+                                                Tidak Ada
+
+                                            </span>
+                                        @endif
+
                                     </td>
 
                                     {{-- <td>
@@ -226,33 +290,45 @@
 
                                     <td>
 
-                                        <div class="d-flex flex-wrap gap-1 action-buttons">
-
-                                            {{-- FORM --}}
+                                        <div class="d-flex flex-wrap action-buttons">
+                                            {{-- Form --}}
                                             <a href="{{ route('lp3m.form', $d->id) }}" class="btn btn-primary btn-action">
-
                                                 <i class="fas fa-file-alt"></i>
-                                                <span>Form</span>
-
+                                                Form
                                             </a>
 
-                                            {{-- EDIT --}}
+                                            {{-- Edit --}}
                                             <a href="{{ route('lp3m.edit', $d->id) }}" class="btn btn-warning btn-action">
-
                                                 <i class="fas fa-edit"></i>
-                                                <span>Edit</span>
-
+                                                Edit
                                             </a>
 
-                                            {{-- LIHAT --}}
+                                            {{-- Lihat --}}
                                             <a href="{{ route('lp3m.show', $d->id) }}" class="btn btn-info btn-action">
-
                                                 <i class="fas fa-eye"></i>
-                                                <span>Lihat</span>
+                                                Lihat
+                                            </a>
+
+
+                                            {{-- Upload --}}
+                                            <button type="button" class="btn btn-secondary btn-action btn-upload"
+                                                data-id="{{ $d->id }}" data-bs-toggle="modal"
+                                                data-bs-target="#uploadLampiranModal">
+
+                                                <i class="fas fa-upload"></i>
+                                                Upload
+
+                                            </button>
+
+                                            {{-- Print --}}
+                                            <a href="{{ route('lp3m.print', $d->id) }}" class="btn btn-dark btn-action">
+
+                                                <i class="fas fa-print"></i>
+                                                Print
 
                                             </a>
 
-                                            {{-- HAPUS --}}
+                                            {{-- Delete --}}
                                             <form action="{{ route('lp3m.destroy', $d->id) }}" method="POST"
                                                 style="display:inline-block;"
                                                 onsubmit="return confirm('Yakin ingin menghapus data ini?')">
@@ -263,19 +339,11 @@
                                                 <button type="submit" class="btn btn-danger btn-action">
 
                                                     <i class="fas fa-trash"></i>
-                                                    <span>Hapus</span>
+                                                    Hapus
 
                                                 </button>
 
                                             </form>
-
-                                            {{-- PRINT --}}
-                                            <a href="{{ route('lp3m.print', $d->id) }}" class="btn btn-dark btn-action">
-
-                                                <i class="fas fa-print"></i>
-                                                <span>Print</span>
-
-                                            </a>
 
                                         </div>
 
@@ -310,4 +378,80 @@
 
     </div>
 
+    {{-- Modal Lampiran --}}
+    <div class="modal fade" id="uploadLampiranModal" tabindex="-1">
+
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <form action="{{ route('lp3m.uploadLampiran') }}" method="POST" enctype="multipart/form-data">
+
+                    @csrf
+
+                    <input type="hidden" name="id" id="lampiran_id">
+
+                    <div class="modal-header bg-danger text-white">
+
+                        <h5 class="modal-title">
+
+                            Upload Lampiran
+
+                        </h5>
+
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+                        </button>
+
+                    </div>
+
+                    <div class="modal-body">
+
+                        <label class="fw-bold">
+
+                            Pilih File
+
+                        </label>
+
+                        <input type="file" name="lampiran" class="form-control" required>
+
+                        <small class="text-muted">
+
+                            PDF, JPG, JPEG, PNG, DOC, DOCX
+
+                        </small>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="submit" class="btn btn-danger">
+
+                            Upload
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.btn-upload')
+            .forEach(function(button) {
+
+                button.addEventListener('click', function() {
+
+                    document.getElementById('lampiran_id').value =
+                        this.dataset.id;
+
+                });
+
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

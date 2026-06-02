@@ -1,5 +1,6 @@
 @extends('layouts.main')
-
+@section('title', 'Form Lembar Pekerjaan Perbaikan Perawatan Fasilitas')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
     <style>
         body {
@@ -126,6 +127,49 @@
                 border-radius: 10px;
             }
 
+            .btn-riwayat {
+                width: 100%;
+                margin-top: 5px;
+            }
+
+        }
+
+
+        .btn-riwayat {
+            min-width: 140px;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+        .riwayat-modal-body {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .riwayat-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .riwayat-modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .riwayat-modal-body::-webkit-scrollbar-thumb {
+            background: #dc3545;
+            border-radius: 10px;
+        }
+
+        .riwayat-modal-body::-webkit-scrollbar-thumb:hover {
+            background: #b02a37;
+        }
+
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #dc3545;
+            color: white;
         }
     </style>
 
@@ -167,9 +211,39 @@
                         </select>
 
                     </div>
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label>SPR No</label>
                         <input type="text" name="spr_no" autocomplete="off" class="form-control">
+                    </div> --}}
+
+                    <div class="mb-3">
+
+                        <div class="row align-items-center mb-2">
+
+                            <div class="col-12 col-md-6">
+
+                                <label class="mb-2 mb-md-0 fw-bold">
+                                    SPR No
+                                </label>
+
+                            </div>
+
+                            <div class="col-12 col-md-6 text-md-end">
+
+                                <button type="button" class="btn btn-outline-danger btn-riwayat" data-bs-toggle="modal"
+                                    data-bs-target="#modalRiwayatSpr">
+
+                                    <i class="fas fa-history me-1"></i>
+                                    Riwayat No. SPR
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <input type="text" name="spr_no" autocomplete="off" class="form-control">
+
                     </div>
 
                     <div class="mb-3">
@@ -416,4 +490,158 @@
 
         });
     </script>
+
+
+    {{-- Modal Riwayat No.SPR --}}
+    <div class="modal fade" id="modalRiwayatSpr" tabindex="-1" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+            <div class="modal-content border-0 shadow">
+
+                <div class="modal-header bg-danger text-white">
+
+                    <h5 class="modal-title">
+
+                        <i class="fas fa-history me-2"></i>
+
+                        Riwayat SPR
+
+                    </h5>
+
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body riwayat-modal-body">
+
+                    <table class="table table-bordered table-hover align-middle mb-0">
+
+                        <thead>
+
+                            <tr class="sticky-header">
+
+                                <th width="60" class="text-center">
+                                    No
+                                </th>
+
+                                <th>
+                                    Nomor SPR
+                                </th>
+
+                                <th width="180">
+                                    Tanggal Dibuat
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="riwayatSprBody">
+
+                            <tr>
+
+                                <td colspan="3" class="text-center">
+
+                                    <div class="py-3">
+
+                                        <i class="fas fa-spinner fa-spin"></i>
+
+                                        Loading...
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+
+                        Tutup
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{-- Riwayat No.SPR --}}
+    <script>
+        document.getElementById('modalRiwayatSpr')
+            .addEventListener('show.bs.modal', function() {
+
+                fetch("{{ route('lp3m.riwayatSpr') }}")
+
+                    .then(response => response.json())
+
+                    .then(data => {
+
+                        let html = '';
+
+                        if (data.length === 0) {
+
+                            html = `
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            Belum ada data SPR
+                        </td>
+                    </tr>
+                `;
+
+                        } else {
+
+                            data.forEach((item, index) => {
+
+                                html += `
+                        <tr>
+
+                            <td>${index+1}</td>
+
+                            <td>
+
+                                <span class="badge bg-danger">
+
+                                    ${item.spr_no}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                ${new Date(item.created_at)
+                                    .toLocaleDateString('id-ID')}
+
+                            </td>
+
+                        </tr>
+                    `;
+
+                            });
+
+                        }
+
+                        document
+                            .getElementById('riwayatSprBody')
+                            .innerHTML = html;
+
+                    });
+
+            });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

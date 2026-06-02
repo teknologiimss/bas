@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Lp3m;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class Lp3mController extends Controller
 {
@@ -13,18 +15,22 @@ class Lp3mController extends Controller
         $query = Lp3m::query();
 
         // SEARCH DESKRIPSI
-        if ($request->search) {
+        if ($request->filled('search')) {
             $query->where('deskripsi', 'like', '%' . $request->search . '%');
         }
 
+        // SEARCH NO SPR
+        if ($request->filled('spr_no')) {
+            $query->where('spr_no', 'like', '%' . $request->spr_no . '%');
+        }
+
         // FILTER TANGGAL
-        if ($request->tanggal) {
+        if ($request->filled('tanggal')) {
             $query->whereDate('created_at', $request->tanggal);
         }
 
         $data = $query->oldest()->paginate(10);
 
-        // agar pagination tetap membawa query search
         $data->appends($request->all());
 
         return view('lp3m.index', compact('data'));
@@ -118,7 +124,7 @@ class Lp3mController extends Controller
         ]);
 
         return redirect()
-            ->route('lp3m.form', $data->id)
+            ->route('lp3m.index', $data->id)
             ->with('success', 'Form LP3M berhasil disimpan');
     }
 
@@ -204,5 +210,56 @@ class Lp3mController extends Controller
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('LP3M-' . $data->id . '.pdf');
+    }
+
+    public function getRiwayatSpr()
+    {
+        $riwayat = Lp3m::whereNotNull('spr_no')
+            ->where('spr_no', '!=', '')
+            ->select('id', 'spr_no', 'created_at')
+            ->latest()
+            ->get();
+
+        return response()->json($riwayat);
+    }
+
+    public function uploadLampiran(Request $request)
+    {
+        $request->validate([
+            'lampiran' => 'required|file|max:5120'
+        ]);
+
+        $data = Lp3m::findOrFail($request->id);
+
+        if ($request->hasFile('lampiran')) {
+            // hapus file lama
+            if ($data->lampiran) {
+                $oldFile = public_path('lampiran/' . $data->lampiran);
+
+                if (File::exists($oldFile)) {
+                    File::delete($oldFile);
+                }
+            }
+
+            $file = $request->file('lampiran');
+
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            $file->move(
+                public_path('lampiran'),
+                $filename
+            );
+
+            $data->update([
+                'lampiran' => $filename
+            ]);
+        }
+
+        return redirect()
+            ->route('lp3m.index')
+            ->with(
+                'success',
+                'Lampiran berhasil diupload'
+            );
     }
 }
