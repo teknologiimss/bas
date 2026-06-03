@@ -407,7 +407,7 @@
 
             <div class="project-header">
                 <div class="project-title">
-                    Data Alat Angkut
+                    Data Alat Angkat - Angkut
                 </div>
                 <div class="project-name">
                     {{ $proyek->nama_proyek }}
@@ -471,7 +471,7 @@
     </div>
 
     <div class="card mt-3 p-3">
-        <h5 class="mb-3 fw-bold">📊 Ringkasan Data Alat Angkut</h5>
+        <h5 class="mb-3 fw-bold">📊 Ringkasan Data Alat Angkat - Angkut</h5>
 
         <div class="row">
             @forelse($summary as $unit => $data)

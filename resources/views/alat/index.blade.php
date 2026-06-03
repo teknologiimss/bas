@@ -348,7 +348,7 @@
 
     <!-- LIST PROYEK -->
     <div class="card p-3">
-        <h5 class="mb-3">Daftar Data Alat Angkut MRO</h5>
+        <h5 class="mb-3">Daftar Data Alat Angkat - Angkut MRO</h5>
 
         @foreach ($data as $p)
             <div class="d-flex justify-content-between align-items-center border p-3 mb-2 rounded">
