@@ -1060,7 +1060,7 @@
                                                             <a href="{{ route('alat.index') }}"
                                                                 class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-bus"></i>
-                                                                <p>Monitoring Alat Angkut</p>
+                                                                <p>Monitoring Alat Angkat-Angkut</p>
                                                             </a>
                                                         </li>
 
