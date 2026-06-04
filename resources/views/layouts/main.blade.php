@@ -1041,6 +1041,14 @@
                                                         </li>
 
                                                         <li class="nav-item">
+                                                            <a href="{{ route('perencanaan.proyek') }}"
+                                                                class="nav-link {{ request()->routeIs('perencanaan.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-clipboard-list"></i>
+                                                                <p>Perencanaan Pekerjaan</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
                                                             <a href="{{ route('pengiriman.index') }}"
                                                                 class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-truck"></i>
@@ -1077,14 +1085,6 @@
                                                                 class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-history"></i>
                                                                 <p>Riwayat PR/SPPJP MRO</p>
-                                                            </a>
-                                                        </li>
-
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('perencanaan.proyek') }}"
-                                                                class="nav-link {{ request()->routeIs('perencanaan.*') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-clipboard-list"></i>
-                                                                <p>Perencanaan Pekerjaan</p>
                                                             </a>
                                                         </li>
 
@@ -1128,28 +1128,45 @@
                                                             </a>
                                                         </li>
 
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('cuti.tahunan') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'cuti.tahunan' ? 'active' : '' }}">
+                                                        {{-- Cuti --}}
+                                                        <li
+                                                            class="nav-item has-treeview {{ request()->routeIs('cuti.*') ? 'menu-open' : '' }}">
+                                                            <a href="#"
+                                                                class="nav-link {{ request()->routeIs('cuti.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-calendar-check"></i>
-                                                                <p>Master Cuti Tahunan</p>
+                                                                <p>
+                                                                    Cuti
+                                                                    <i class="right fas fa-angle-left"></i>
+                                                                </p>
                                                             </a>
-                                                        </li>
 
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('cuti.index') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'cuti.index' ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-calendar-alt"></i>
-                                                                <p>Management Cuti</p>
-                                                            </a>
-                                                        </li>
+                                                            <ul class="nav nav-treeview">
 
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('cuti.rekap') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'cuti.rekap' ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-table"></i>
-                                                                <p>Rekap Cuti Bulanan</p>
-                                                            </a>
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('cuti.tahunan') }}"
+                                                                        class="nav-link {{ request()->routeIs('cuti.tahunan*') ? 'active' : '' }}">
+                                                                        <i class="far fa-circle nav-icon"></i>
+                                                                        <p>Master Cuti Tahunan</p>
+                                                                    </a>
+                                                                </li>
+
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('cuti.index') }}"
+                                                                        class="nav-link {{ request()->routeIs('cuti.index') || request()->routeIs('cuti.edit') ? 'active' : '' }}">
+                                                                        <i class="far fa-circle nav-icon"></i>
+                                                                        <p>Management Cuti</p>
+                                                                    </a>
+                                                                </li>
+
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('cuti.rekap') }}"
+                                                                        class="nav-link {{ request()->routeIs('cuti.rekap') ? 'active' : '' }}">
+                                                                        <i class="far fa-circle nav-icon"></i>
+                                                                        <p>Rekap Cuti Bulanan</p>
+                                                                    </a>
+                                                                </li>
+
+                                                            </ul>
                                                         </li>
                                                     @endif
 
