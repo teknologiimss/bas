@@ -149,8 +149,8 @@
 
 
         /* =========================
-           RESPONSIVE MOBILE
-        ========================= */
+                       RESPONSIVE MOBILE
+                    ========================= */
         @media (max-width: 768px) {
 
             body {
@@ -312,6 +312,11 @@
             padding: 0 !important;
             border-radius: 10px !important;
         }
+
+        .plan-table,
+        .realisasi-table {
+            transition: all .2s ease;
+        }
     </style>
 
     <!-- ================= BUTTON TAMBAH ================= -->
@@ -326,7 +331,7 @@
             <h5>PERENCANAAN</h5>
 
             @foreach ($plan as $kategori => $items)
-                <table class="table-excel mb-3">
+                <table class="table-excel mb-3 plan-table">
 
                     <tr class="header">
                         <td colspan="6">{{ strtoupper($kategori) }}</td>
@@ -377,7 +382,7 @@
             <h5>REALISASI</h5>
 
             @foreach ($realisasi as $kategori => $items)
-                <table class="table-excel mb-3">
+                <table class="table-excel mb-3 realisasi-table">
 
                     <tr class="header">
                         <td colspan="7">{{ strtoupper($kategori) }}</td>
@@ -483,8 +488,7 @@
                     <select name="kategori" class="form-control mb-2">
                         <option>Tools</option>
                         <option>Consumable</option>
-                        <option>Packing</option>
-                        <option>Loading</option>
+                        <option>Packing & Loading</option>
                         <option>Tenaga Orang</option>
                     </select>
 
@@ -659,4 +663,45 @@
     function hapusLampiran(btn) {
         btn.closest('.lampiran-item').remove();
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        function samakanTinggiTabel() {
+
+            let planTables = document.querySelectorAll('.plan-table');
+            let realTables = document.querySelectorAll('.realisasi-table');
+
+            // reset height dulu
+            planTables.forEach(t => t.style.height = 'auto');
+            realTables.forEach(t => t.style.height = 'auto');
+
+            let jumlah = Math.min(planTables.length, realTables.length);
+
+            for (let i = 0; i < jumlah; i++) {
+
+                let tinggiPlan = planTables[i].offsetHeight;
+                let tinggiReal = realTables[i].offsetHeight;
+
+                let tinggiTerbesar = Math.max(
+                    tinggiPlan,
+                    tinggiReal
+                );
+
+                planTables[i].style.height =
+                    tinggiTerbesar + 'px';
+
+                realTables[i].style.height =
+                    tinggiTerbesar + 'px';
+            }
+        }
+
+        samakanTinggiTabel();
+
+        window.addEventListener('resize', function() {
+            samakanTinggiTabel();
+        });
+
+    });
 </script>
