@@ -149,8 +149,8 @@
 
 
         /* =========================
-       RESPONSIVE MOBILE
-    ========================= */
+           RESPONSIVE MOBILE
+        ========================= */
         @media (max-width: 768px) {
 
             body {
@@ -301,17 +301,17 @@
         }
 
         /* BUTTON AKSI */
-.btn-action-mobile {
-    width: 38px;
-    height: 38px;
+        .btn-action-mobile {
+            width: 22px;
+            height: 22px;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
 
-    padding: 0 !important;
-    border-radius: 10px !important;
-}
+            padding: 0 !important;
+            border-radius: 10px !important;
+        }
     </style>
 
     <!-- ================= BUTTON TAMBAH ================= -->
@@ -359,7 +359,8 @@
                                     style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-action-mobile" onclick="return confirm('hapus data?')">
+                                    <button class="btn btn-danger btn-action-mobile"
+                                        onclick="return confirm('hapus data?')">
                                         🗑️
                                     </button>
                                 </form>
@@ -409,7 +410,7 @@
                                     </div>
                                 @endforeach
                             </td>
-                            <td>
+                            {{-- <td>
 
                                 <button class="btn btn-xs btn-warning" data-toggle="modal"
                                     data-target="#edit-real-{{ $d->id }}">
@@ -421,6 +422,26 @@
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-xs btn-danger">
+                                        🗑️
+                                    </button>
+                                </form>
+
+                            </td> --}}
+
+                            <td>
+
+                                <button class="btn btn-warning btn-action-mobile" data-toggle="modal"
+                                    data-target="#edit-real-{{ $d->id }}">
+                                    ✏️
+                                </button>
+
+                                <form action="{{ route('perencanaan.delete', $d->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button class="btn btn-danger btn-action-mobile"
+                                        onclick="return confirm('hapus data?')">
                                         🗑️
                                     </button>
                                 </form>
