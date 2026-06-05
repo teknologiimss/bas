@@ -1075,9 +1075,9 @@
                                                         </li> --}}
 
                                                         <li
-                                                            class="nav-item {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*','rewinding.*') ? 'menu-open' : '' }}">
+                                                            class="nav-item {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*', 'rewinding.*') ? 'menu-open' : '' }}">
                                                             <a href="#"
-                                                                class="nav-link {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*','rewinding.*') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*', 'rewinding.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
                                                                 <p>
                                                                     Monitoring
@@ -1270,6 +1270,14 @@
                                                                 class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-clipboard-check"></i>
                                                                 <p>Monitoring Preventive Maintenance</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('rewinding.index') }}"
+                                                                class="nav-link {{ request()->routeIs('rewinding.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-sync-alt"></i>
+                                                                <p>Monitoring Rewinding</p>
                                                             </a>
                                                         </li>
 
