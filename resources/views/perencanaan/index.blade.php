@@ -149,8 +149,8 @@
 
 
         /* =========================
-                       RESPONSIVE MOBILE
-                    ========================= */
+                               RESPONSIVE MOBILE
+                            ========================= */
         @media (max-width: 768px) {
 
             body {
@@ -493,7 +493,7 @@
                     </select>
 
                     <input type="text" name="uraian" class="form-control mb-2" autocomplete="off" placeholder="Uraian">
-                    <input type="number" name="qty" class="form-control mb-2" autocomplete="off" placeholder="Qty">
+                    <input type="text" name="qty" class="form-control mb-2" autocomplete="off" placeholder="Qty">
                     <input type="text" name="satuan" class="form-control mb-2" autocomplete="off" placeholder="Satuan">
                     <input type="text" name="keterangan" class="form-control mb-2" autocomplete="off"
                         placeholder="Keterangan">
@@ -525,14 +525,23 @@
                         </div>
 
                         <div class="modal-body">
+
+                            <label>Uraian Pekerjaan</label>
                             <input type="text" name="uraian" autocomplete="off" value="{{ $d->uraian }}"
-                                class="form-control mb-2">
-                            <input type="number" name="qty" autocomplete="off" value="{{ $d->qty }}"
-                                class="form-control mb-2">
+                                class="form-control mb-3">
+
+                            <label>Qty</label>
+                            <input type="text" name="qty" autocomplete="off" value="{{ $d->qty }}"
+                                class="form-control mb-3">
+
+                            <label>Satuan</label>
                             <input type="text" name="satuan" autocomplete="off" value="{{ $d->satuan }}"
-                                class="form-control mb-2">
+                                class="form-control mb-3">
+
+                            <label>Keterangan</label>
                             <input type="text" name="keterangan" autocomplete="off" value="{{ $d->keterangan }}"
-                                class="form-control mb-2">
+                                class="form-control">
+
                         </div>
 
                         <div class="modal-footer">
@@ -561,14 +570,24 @@
                         </div>
 
                         <div class="modal-body">
+                            <label>Uraian Pekerjaan</label>
                             <input type="text" name="uraian" autocomplete="off" value="{{ $d->uraian }}"
-                                class="form-control mb-2">
-                            <input type="number" name="qty" autocomplete="off" value="{{ $d->qty }}"
-                                class="form-control mb-2">
+                                class="form-control mb-3">
+
+                            <label>Qty</label>
+                            <input type="text" name="qty" autocomplete="off" value="{{ $d->qty }}"
+                                class="form-control mb-3">
+
+                            <label>Satuan</label>
                             <input type="text" name="satuan" autocomplete="off" value="{{ $d->satuan }}"
-                                class="form-control mb-2">
+                                class="form-control mb-3">
+
+                            <label>Keterangan Pekerjaan</label>
                             <input type="text" name="keterangan" autocomplete="off" value="{{ $d->keterangan }}"
-                                class="form-control mb-2">
+                                class="form-control mb-3">
+
+                            
+
 
                             <hr>
                             <h6>Lampiran Lama</h6>
