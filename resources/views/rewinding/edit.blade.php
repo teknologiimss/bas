@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title', 'Edit Rewinding')
-
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
 
     <div class="card shadow">
