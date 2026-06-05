@@ -509,6 +509,7 @@
                                         'cuti.tahunan',
                                         'products.stock.history',
                                         'lp3m.index',
+                                        'rewinding.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -556,6 +557,7 @@
                                         'cuti.rekap',
                                         'cuti.tahunan',
                                         'lp3m.index',
+                                        'rewinding.index',
                                     ]);
                                 @endphp
 
@@ -1073,9 +1075,9 @@
                                                         </li> --}}
 
                                                         <li
-                                                            class="nav-item {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*') ? 'menu-open' : '' }}">
+                                                            class="nav-item {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*','rewinding.*') ? 'menu-open' : '' }}">
                                                             <a href="#"
-                                                                class="nav-link {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*','rewinding.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
                                                                 <p>
                                                                     Monitoring
@@ -1106,6 +1108,14 @@
                                                                         class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
                                                                         <i class="nav-icon fas fa-bus"></i>
                                                                         <p>Monitoring Alat Angkat-Angkut</p>
+                                                                    </a>
+                                                                </li>
+
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('rewinding.index') }}"
+                                                                        class="nav-link {{ request()->routeIs('rewinding.*') ? 'active' : '' }}">
+                                                                        <i class="nav-icon fas fa-sync-alt"></i>
+                                                                        <p>Monitoring Rewinding</p>
                                                                     </a>
                                                                 </li>
 

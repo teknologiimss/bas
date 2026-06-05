@@ -18,6 +18,7 @@ use App\Http\Controllers\PerencanaanController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\PurchaseRequestSppjpController;
+use App\Http\Controllers\RewindingController;
 use App\Http\Controllers\SppdController;
 use App\Http\Controllers\SuratJalanController;
 use App\Models\Kontrak;
@@ -773,6 +774,18 @@ Route::get('/lp3m/riwayat-spr', [Lp3mController::class, 'getRiwayatSpr'])
 Route::post('/lp3m/upload-lampiran',
         [Lp3mController::class, 'uploadLampiran'])
     ->name('lp3m.uploadLampiran');
+
+
+
+// Rewinding
+
+Route::post(
+    '/rewinding/{rewinding}/hapus-lampiran',
+    [RewindingController::class, 'hapusLampiran']
+)->name('rewinding.hapusLampiran');
+
+Route::resource('rewinding', RewindingController::class)
+    ->except(['show']);
 
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');
