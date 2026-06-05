@@ -1048,7 +1048,7 @@
                                                             </a>
                                                         </li>
 
-                                                        <li class="nav-item">
+                                                        {{-- <li class="nav-item">
                                                             <a href="{{ route('pengiriman.index') }}"
                                                                 class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-truck"></i>
@@ -1070,6 +1070,46 @@
                                                                 <i class="nav-icon fas fa-bus"></i>
                                                                 <p>Monitoring Alat Angkat-Angkut</p>
                                                             </a>
+                                                        </li> --}}
+
+                                                        <li
+                                                            class="nav-item {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*') ? 'menu-open' : '' }}">
+                                                            <a href="#"
+                                                                class="nav-link {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-chart-line"></i>
+                                                                <p>
+                                                                    Monitoring
+                                                                    <i class="right fas fa-angle-left"></i>
+                                                                </p>
+                                                            </a>
+
+                                                            <ul class="nav nav-treeview">
+
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('pengiriman.index') }}"
+                                                                        class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
+                                                                        <i class="nav-icon fas fa-truck"></i>
+                                                                        <p>Monitoring Pengiriman</p>
+                                                                    </a>
+                                                                </li>
+
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('checksheet.index') }}"
+                                                                        class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
+                                                                        <i class="nav-icon fas fa-clipboard-check"></i>
+                                                                        <p>Monitoring Preventive Maintenance</p>
+                                                                    </a>
+                                                                </li>
+
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('alat.index') }}"
+                                                                        class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
+                                                                        <i class="nav-icon fas fa-bus"></i>
+                                                                        <p>Monitoring Alat Angkat-Angkut</p>
+                                                                    </a>
+                                                                </li>
+
+                                                            </ul>
                                                         </li>
 
                                                         <li class="nav-item">
@@ -1104,7 +1144,7 @@
                                                             </a>
                                                         </li>
 
-                                                        <li class="nav-item">
+                                                        {{-- <li class="nav-item">
                                                             <a href="{{ route('mro') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
                                                                 <i class="fas fa-box-open nav-icon"></i>
@@ -1118,8 +1158,42 @@
                                                                 <i class="nav-icon fas fa-people-carry"></i>
                                                                 <p>Mutasi Stok MRO</p>
                                                             </a>
+                                                        </li> --}}
+
+                                                        {{-- Gudang --}}
+                                                        <li
+                                                            class="nav-item {{ request()->routeIs('mro', 'mro.stock.log') ? 'menu-open' : '' }}">
+                                                            <a href="#"
+                                                                class="nav-link {{ request()->routeIs('mro', 'mro.stock.log') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-warehouse"></i>
+                                                                <p>
+                                                                    Gudang
+                                                                    <i class="right fas fa-angle-left"></i>
+                                                                </p>
+                                                            </a>
+
+                                                            <ul class="nav nav-treeview">
+
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('mro') }}"
+                                                                        class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
+                                                                        <i class="fas fa-box-open nav-icon"></i>
+                                                                        <p>Stok Barang MRO</p>
+                                                                    </a>
+                                                                </li>
+
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('mro.stock.log') }}"
+                                                                        class="nav-link {{ Route::current()->getName() == 'mro.stock.log' ? 'active' : '' }}">
+                                                                        <i class="nav-icon fas fa-people-carry"></i>
+                                                                        <p>Mutasi Stok MRO</p>
+                                                                    </a>
+                                                                </li>
+
+                                                            </ul>
                                                         </li>
 
+                                                        {{-- SPPD --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('sppd.index') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'sppd.index' ? 'active' : '' }}">
