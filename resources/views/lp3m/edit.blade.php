@@ -280,6 +280,17 @@
 
                     </div> --}}
 
+                    <div class="mb-3">
+                        <label>Deskripsi</label>
+                        <input type="text" name="deskripsi" autocomplete="off" class="form-control"
+                            value="{{ old('deskripsi', $data->deskripsi) }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Keterangan</label>
+                        <textarea name="keterangan" autocomplete="off" class="form-control" rows="4">{{ old('keterangan', $data->keterangan) }}</textarea>
+                    </div>
+
                     <div class="row align-items-center mb-2">
 
                         <div class="col-12 col-md-6">

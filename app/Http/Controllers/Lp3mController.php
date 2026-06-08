@@ -140,6 +140,8 @@ class Lp3mController extends Controller
         $data = Lp3m::findOrFail($id);
 
         $data->update([
+            'deskripsi' => $request->deskripsi,
+            'keterangan' => $request->keterangan,
             'status' => $request->status,
             'spr_no' => $request->spr_no,
             'hasil_pengukuran' => $request->hasil_pengukuran,
