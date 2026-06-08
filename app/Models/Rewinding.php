@@ -7,16 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 class Rewinding extends Model
 {
     protected $fillable = [
+
         'no_sjn',
-        'tanggal_sjn',
-        'tanggal_masuk_sjn',
-        'status',
+
+        'tanggal_sjn_keluar',
+        'lampiran_sjn_keluar',
+        'nama_lampiran_keluar',
+
+        'tanggal_sjn_masuk',
+        'lampiran_sjn_masuk',
+        'nama_lampiran_masuk',
+
         'deskripsi',
-        'qty',
-        'satuan',
+
+        'status',
+
         'keterangan',
-        'lampiran',
-        'nama_lampiran',
+
         'no_sppjp'
     ];
 }

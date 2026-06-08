@@ -779,13 +779,40 @@ Route::post('/lp3m/upload-lampiran',
 
 // Rewinding
 
+// Route::post(
+//     '/rewinding/{rewinding}/hapus-lampiran',
+//     [RewindingController::class, 'hapusLampiran']
+// )->name('rewinding.hapusLampiran');
+
+// Route::resource('rewinding', RewindingController::class)
+//     ->except(['show']);
 Route::post(
-    '/rewinding/{rewinding}/hapus-lampiran',
-    [RewindingController::class, 'hapusLampiran']
-)->name('rewinding.hapusLampiran');
+    '/rewinding/{rewinding}/hapus-lampiran-keluar',
+    [RewindingController::class, 'hapusLampiranKeluar']
+)->name('rewinding.hapusLampiranKeluar');
+
+Route::post(
+    '/rewinding/{rewinding}/hapus-lampiran-masuk',
+    [RewindingController::class, 'hapusLampiranMasuk']
+)->name('rewinding.hapusLampiranMasuk');
 
 Route::resource('rewinding', RewindingController::class)
     ->except(['show']);
+
+    Route::get(
+    '/rewinding/{rewinding}/detail',
+    [RewindingController::class,'detail']
+)->name('rewinding.detail');
+
+Route::post(
+    '/rewinding/{rewinding}/detail',
+    [RewindingController::class,'detailStore']
+)->name('rewinding.detail.store');
+
+Route::delete(
+    '/rewinding-lampiran/{lampiran}',
+    [RewindingController::class,'hapusLampiranDetail']
+)->name('rewinding.lampiran.delete');
 
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');

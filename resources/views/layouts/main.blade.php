@@ -510,6 +510,7 @@
                                         'products.stock.history',
                                         'lp3m.index',
                                         'rewinding.index',
+                                        // 'fasilitas.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -558,6 +559,7 @@
                                         'cuti.tahunan',
                                         'lp3m.index',
                                         'rewinding.index',
+                                        // 'fasilitas.index',
                                     ]);
                                 @endphp
 
@@ -1102,6 +1104,14 @@
                                                                         <p>Monitoring Preventive Maintenance</p>
                                                                     </a>
                                                                 </li>
+
+                                                                {{-- <li class="nav-item">
+                                                                    <a href="{{ route('fasilitas.index') }}"
+                                                                        class="nav-link {{ request()->routeIs('fasilitas.*') ? 'active' : '' }}">
+                                                                        <i class="nav-icon fas fa-clipboard-list"></i>
+                                                                        <p>Checksheet Harian Fasilitas</p>
+                                                                    </a>
+                                                                </li> --}}
 
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('alat.index') }}"

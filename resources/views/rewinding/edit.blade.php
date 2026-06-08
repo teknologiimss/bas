@@ -1,11 +1,14 @@
 @extends('layouts.main')
 
 @section('title', 'Edit Rewinding')
+
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+
 @section('content')
 
     <div class="card shadow">
 
+        
         <div class="card-header bg-danger text-white">
             <h4>
                 <i class="fas fa-edit"></i>
@@ -15,7 +18,12 @@
 
         <div class="card-body">
 
-            {{-- FORM UPDATE --}}
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <form action="{{ route('rewinding.update', $rewinding->id) }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
@@ -25,74 +33,48 @@
 
                     <div class="col-md-6 mb-3">
                         <label>No SJN</label>
-                        <input type="text" name="no_sjn" autocomplete="off" class="form-control" value="{{ $rewinding->no_sjn }}" required>
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label>Tanggal SJN</label>
-                        <input type="date" name="tanggal_sjn" class="form-control" value="{{ $rewinding->tanggal_sjn }}"
-                            required>
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label>Tanggal Masuk SJN</label>
-                        <input type="date" name="tanggal_masuk_sjn" class="form-control"
-                            value="{{ $rewinding->tanggal_masuk_sjn }}" required>
-                    </div>
-
-                    <div class="col-md-12 mb-3">
-                        <label>Deskripsi</label>
-                        <textarea name="deskripsi" autocomplete="off" class="form-control" rows="3">{{ $rewinding->deskripsi }}</textarea>
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label>Qty</label>
-                        <input type="text" name="qty" autocomplete="off" class="form-control" value="{{ $rewinding->qty }}">
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label>Satuan</label>
-                        <input type="text" name="satuan" autocomplete="off" class="form-control" value="{{ $rewinding->satuan }}">
+                        <input type="text" name="no_sjn" autocomplete="off" class="form-control"
+                            value="{{ $rewinding->no_sjn }}" required>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label>No SPPJP</label>
-                        <input type="text" name="no_sppjp" autocomplete="off" class="form-control" value="{{ $rewinding->no_sppjp }}">
+                        <input type="text" name="no_sppjp" autocomplete="off" class="form-control"
+                            value="{{ $rewinding->no_sppjp }}">
                     </div>
 
-                    <div class="col-md-12 mb-3">
-                        <label>Keterangan</label>
-                        <textarea name="keterangan" autocomplete="off" class="form-control" rows="3">{{ $rewinding->keterangan }}</textarea>
+                    <div class="col-md-6 mb-3">
+                        <label>Tanggal SJN Keluar</label>
+                        <input type="date" name="tanggal_sjn_keluar" class="form-control"
+                            value="{{ $rewinding->tanggal_sjn_keluar }}" required>
                     </div>
 
-                    {{-- LAMPIRAN --}}
-                    <div class="col-md-12 mb-3">
+                    <div class="col-md-6 mb-3">
 
-                        <label>Lampiran Baru</label>
+                        <label>Lampiran SJN Keluar</label>
 
-                        <input type="file" name="lampiran" class="form-control">
+                        <input type="file" name="lampiran_sjn_keluar" class="form-control">
 
-                        @if ($rewinding->lampiran)
-                            <div class="alert alert-info mt-3">
+                        @if ($rewinding->lampiran_sjn_keluar)
+                            <div class="alert alert-info mt-2">
 
                                 <strong>File Saat Ini :</strong>
 
                                 <br>
 
-                                <i class="fas fa-file-pdf text-danger"></i>
-
-                                {{ $rewinding->nama_lampiran ?? basename($rewinding->lampiran) }}
+                                {{ $rewinding->nama_lampiran_keluar }}
 
                             </div>
 
-                            <a href="{{ asset($rewinding->lampiran) }}" target="_blank" class="btn btn-success btn-sm">
+                            <a href="{{ asset($rewinding->lampiran_sjn_keluar) }}" target="_blank"
+                                class="btn btn-success btn-sm">
 
                                 <i class="fas fa-eye"></i>
-                                Lihat Lampiran
+                                Lihat
 
                             </a>
 
-                            <a href="{{ asset($rewinding->lampiran) }}" download class="btn btn-primary btn-sm">
+                            <a href="{{ asset($rewinding->lampiran_sjn_keluar) }}" download class="btn btn-primary btn-sm">
 
                                 <i class="fas fa-download"></i>
                                 Download
@@ -102,7 +84,57 @@
 
                     </div>
 
-                    {{-- STATUS --}}
+                    <div class="col-md-6 mb-3">
+                        <label>Tanggal SJN Masuk</label>
+                        <input type="date" name="tanggal_sjn_masuk" class="form-control"
+                            value="{{ $rewinding->tanggal_sjn_masuk }}">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Lampiran SJN Masuk</label>
+
+                        <input type="file" name="lampiran_sjn_masuk" class="form-control">
+
+                        @if ($rewinding->lampiran_sjn_masuk)
+                            <div class="alert alert-info mt-2">
+
+                                <strong>File Saat Ini :</strong>
+
+                                <br>
+
+                                {{ $rewinding->nama_lampiran_masuk }}
+
+                            </div>
+
+                            <a href="{{ asset($rewinding->lampiran_sjn_masuk) }}" target="_blank"
+                                class="btn btn-success btn-sm">
+
+                                <i class="fas fa-eye"></i>
+                                Lihat
+
+                            </a>
+
+                            <a href="{{ asset($rewinding->lampiran_sjn_masuk) }}" download class="btn btn-primary btn-sm">
+
+                                <i class="fas fa-download"></i>
+                                Download
+
+                            </a>
+                        @endif
+
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label>Deskripsi</label>
+                        <textarea name="deskripsi" rows="3" autocomplete="off" class="form-control">{{ $rewinding->deskripsi }}</textarea>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label>Keterangan</label>
+                        <textarea name="keterangan" rows="3" autocomplete="off" class="form-control">{{ $rewinding->keterangan }}</textarea>
+                    </div>
+
                     <div class="col-md-12 mb-3">
 
                         <label>Status</label>
@@ -110,16 +142,20 @@
                         <div>
 
                             @if ($rewinding->status == 'Closed')
-                                <span class="badge badge-success">
+                                <span class="badge badge-success p-2">
                                     CLOSED
                                 </span>
                             @else
-                                <span class="badge badge-warning">
+                                <span class="badge badge-warning p-2">
                                     OPEN
                                 </span>
                             @endif
 
                         </div>
+
+                        <small class="text-muted">
+                            Status otomatis CLOSED jika Lampiran SJN Masuk sudah diupload.
+                        </small>
 
                     </div>
 
@@ -140,19 +176,38 @@
 
             </form>
 
-            {{-- FORM HAPUS LAMPIRAN TERPISAH --}}
-            @if ($rewinding->lampiran)
-                <hr>
+            <hr>
 
-                <form action="{{ route('rewinding.hapusLampiran', $rewinding->id) }}" method="POST"
-                    onsubmit="return confirm('Yakin hapus lampiran ini?')">
+            {{-- HAPUS LAMPIRAN SJN KELUAR --}}
+            @if ($rewinding->lampiran_sjn_keluar)
+                <form action="{{ route('rewinding.hapusLampiranKeluar', $rewinding->id) }}" method="POST" class="d-inline"
+                    onsubmit="return confirm('Hapus lampiran SJN keluar?')">
 
                     @csrf
 
-                    <button type="submit" class="btn btn-danger">
+                    <button class="btn btn-danger">
 
                         <i class="fas fa-trash"></i>
-                        Hapus Lampiran
+
+                        Hapus Lampiran Keluar
+
+                    </button>
+
+                </form>
+            @endif
+
+            {{-- HAPUS LAMPIRAN SJN MASUK --}}
+            @if ($rewinding->lampiran_sjn_masuk)
+                <form action="{{ route('rewinding.hapusLampiranMasuk', $rewinding->id) }}" method="POST" class="d-inline"
+                    onsubmit="return confirm('Hapus lampiran SJN masuk?')">
+
+                    @csrf
+
+                    <button class="btn btn-warning">
+
+                        <i class="fas fa-trash"></i>
+
+                        Hapus Lampiran Masuk
 
                     </button>
 

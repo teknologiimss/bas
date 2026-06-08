@@ -114,6 +114,28 @@
                 gap: 3px;
             }
         }
+
+
+
+        .action-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .action-group .btn {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-group form {
+            margin: 0;
+        }
     </style>
 
     <div class="card card-rewinding animate-card">
@@ -161,18 +183,29 @@
                     <thead>
 
                         <tr>
-                            <th width="60">No</th>
+
+                            <th>No</th>
+
                             <th>No SJN</th>
-                            <th>Tanggal SJN</th>
-                            <th>Tanggal Masuk</th>
-                            <th>Status</th>
+
+                            <th>Tgl SJN Keluar</th>
+
+                            <th>Lampiran Keluar</th>
+
+                            <th>Tgl SJN Masuk</th>
+
+                            <th>Lampiran Masuk</th>
+
                             <th>Deskripsi</th>
-                            <th>Qty</th>
-                            <th>Satuan</th>
+
+                            <th>Status</th>
+
                             <th>Keterangan</th>
-                            <th>Lampiran</th>
+
                             <th>No SPPJP</th>
-                            <th width="120">Aksi</th>
+
+                            <th>Aksi</th>
+
                         </tr>
 
                     </thead>
@@ -189,42 +222,15 @@
                                 <td>{{ $item->no_sjn }}</td>
 
                                 <td>
-                                    {{ \Carbon\Carbon::parse($item->tanggal_sjn)->format('d-m-Y') }}
+                                    {{ $item->tanggal_sjn_keluar ? \Carbon\Carbon::parse($item->tanggal_sjn_keluar)->format('d-m-Y') : '-' }}
                                 </td>
 
                                 <td>
-                                    {{ \Carbon\Carbon::parse($item->tanggal_masuk_sjn)->format('d-m-Y') }}
-                                </td>
 
-                                <td class="text-center">
-                                    @if ($item->status == 'Open')
-                                        <span class="badge-open">
-                                            <i class="fas fa-clock"></i>
-                                            OPEN
-                                        </span>
-                                    @else
-                                        <span class="badge-closed">
-                                            <i class="fas fa-check-circle"></i>
-                                            CLOSED
-                                        </span>
-                                    @endif
-                                </td>
-
-                                <td>{{ $item->deskripsi }}</td>
-
-                                <td>{{ $item->qty }}</td>
-
-                                <td>{{ $item->satuan }}</td>
-
-                                <td>{{ $item->keterangan }}</td>
-
-                                <td>
-
-                                    @if ($item->lampiran)
-                                        <a href="{{ asset($item->lampiran) }}" target="_blank"
+                                    @if ($item->lampiran_sjn_keluar)
+                                        <a href="{{ asset($item->lampiran_sjn_keluar) }}" target="_blank"
                                             class="btn btn-success btn-sm">
 
-                                            <i class="fas fa-eye"></i>
                                             View
 
                                         </a>
@@ -234,13 +240,60 @@
 
                                 </td>
 
+                                <td>
+
+                                    {{ $item->tanggal_sjn_masuk ? \Carbon\Carbon::parse($item->tanggal_sjn_masuk)->format('d-m-Y') : '-' }}
+
+                                </td>
+
+                                <td>
+
+                                    @if ($item->lampiran_sjn_masuk)
+                                        <a href="{{ asset($item->lampiran_sjn_masuk) }}" target="_blank"
+                                            class="btn btn-primary btn-sm">
+
+                                            View
+
+                                        </a>
+                                    @else
+                                        -
+                                    @endif
+
+                                </td>
+
+                                <td>{{ $item->deskripsi }}</td>
+
+                                <td>
+
+                                    @if ($item->status == 'Open')
+                                        <span class="badge-open">
+                                            OPEN
+                                        </span>
+                                    @else
+                                        <span class="badge-closed">
+                                            CLOSED
+                                        </span>
+                                    @endif
+
+                                </td>
+
+                                <td>{{ $item->keterangan }}</td>
+
                                 <td>{{ $item->no_sppjp }}</td>
 
                                 <td>
 
-                                    <div class="btn-group">
+                                    <div class="action-group">
 
-                                        <a href="{{ route('rewinding.edit', $item->id) }}" class="btn btn-warning btn-sm">
+                                        <a href="{{ route('rewinding.detail', $item->id) }}" class="btn btn-info btn-sm"
+                                            title="Detail">
+
+                                            <i class="fas fa-list"></i>
+
+                                        </a>
+
+                                        <a href="{{ route('rewinding.edit', $item->id) }}" class="btn btn-warning btn-sm"
+                                            title="Edit">
 
                                             <i class="fas fa-edit"></i>
 
@@ -252,7 +305,7 @@
                                             @csrf
                                             @method('DELETE')
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
 
                                                 <i class="fas fa-trash"></i>
 

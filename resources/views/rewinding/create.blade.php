@@ -22,50 +22,42 @@
 
                     <div class="col-md-6 mb-3">
                         <label>No SJN</label>
-                        <input type="text" autocomplete="off" name="no_sjn" class="form-control" required>
+                        <input type="text" name="no_sjn" autocomplete="off" class="form-control" required>
                     </div>
 
                     <div class="col-md-3 mb-3">
-                        <label>Tanggal SJN</label>
-                        <input type="date" name="tanggal_sjn" class="form-control" required>
+                        <label>Tanggal SJN Keluar</label>
+                        <input type="date" name="tanggal_sjn_keluar" class="form-control" required>
                     </div>
 
                     <div class="col-md-3 mb-3">
-                        <label>Tanggal Masuk SJN</label>
-                        <input type="date" name="tanggal_masuk_sjn" class="form-control" required>
+                        <label>Lampiran SJN Keluar</label>
+                        <input type="file" name="lampiran_sjn_keluar" class="form-control">
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label>Tanggal SJN Masuk</label>
+                        <input type="date" name="tanggal_sjn_masuk" class="form-control">
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label>Lampiran SJN Masuk</label>
+                        <input type="file" name="lampiran_sjn_masuk" class="form-control">
                     </div>
 
                     <div class="col-md-12 mb-3">
                         <label>Deskripsi</label>
-                        <textarea name="deskripsi" autocomplete="off" class="form-control" rows="3"></textarea>
+                        <textarea name="deskripsi" autocomplete="off" class="form-control"></textarea>
                     </div>
 
-                    <div class="col-md-3 mb-3">
-                        <label>Qty</label>
-                        <input type="text" autocomplete="off" name="qty" class="form-control">
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label>Satuan</label>
-                        <input type="text" autocomplete="off" name="satuan" class="form-control">
+                    <div class="col-md-12 mb-3">
+                        <label>Keterangan</label>
+                        <textarea name="keterangan" autocomplete="off" class="form-control"></textarea>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label>No SPPJP</label>
                         <input type="text" autocomplete="off" name="no_sppjp" class="form-control">
-                    </div>
-
-                    <div class="col-md-12 mb-3">
-                        <label>Keterangan</label>
-                        <textarea name="keterangan" autocomplete="off" class="form-control" rows="3"></textarea>
-                    </div>
-
-                    <div class="col-md-12 mb-3">
-                        <label>Lampiran</label>
-                        <input type="file" name="lampiran" class="form-control">
-                        <small class="text-muted">
-                            Jika lampiran diupload maka status otomatis CLOSED.
-                        </small>
                     </div>
 
                 </div>
