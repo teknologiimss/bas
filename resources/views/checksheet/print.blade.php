@@ -10,7 +10,6 @@
     </title>
 
     <style>
-
         @page {
             size: A4 portrait;
             margin: 8mm;
@@ -97,15 +96,19 @@
             page-break-inside: auto;
         }
 
-        td,
+        /* td,
         th {
             overflow: hidden;
+        } */
+
+        td,
+        th {
+            word-wrap: break-word;
         }
 
         .signature-box {
             height: 70px;
         }
-
     </style>
 
 </head>
@@ -127,17 +130,14 @@
                         <tr>
 
                             {{-- LOGO --}}
-                            <td width="15%"
-                                class="text-center">
+                            <td width="15%" class="text-center">
 
-                                <img src="{{ public_path('img/IMSS.jpg') }}"
-                                     width="80">
+                                <img src="{{ public_path('img/IMSS.jpg') }}" width="80">
 
                             </td>
 
                             {{-- JUDUL --}}
-                            <td width="65%"
-                                class="text-center">
+                            <td width="65%" class="text-center">
 
                                 <div class="title">
                                     CHECKSHEET PERAWATAN
@@ -150,8 +150,7 @@
                             </td>
 
                             {{-- JENIS --}}
-                            <td width="20%"
-                                class="text-center jenis">
+                            <td width="20%" class="text-center jenis">
 
                                 {{ strtoupper($checksheet->jenis_perawatan ?? '-') }}
 
@@ -220,7 +219,6 @@
         <tbody>
 
             @foreach ($checksheet->sections as $section)
-
                 {{-- SECTION --}}
                 <tr class="section-row">
 
@@ -234,20 +232,16 @@
                 </tr>
 
                 @foreach ($section->items as $item)
-
                     @php
                         $detailCount = $item->details->count();
                     @endphp
 
                     @foreach ($item->details as $dIndex => $detail)
-
                         <tr>
 
                             {{-- NOMOR --}}
                             @if ($dIndex == 0)
-
-                                <td rowspan="{{ $detailCount }}"
-                                    class="text-center">
+                                <td rowspan="{{ $detailCount }}" class="text-center">
 
                                     {{ $item->nomor }}
 
@@ -259,7 +253,6 @@
                                     {{ $item->uraian }}
 
                                 </td>
-
                             @endif
 
                             {{-- AKTIVITAS --}}
@@ -280,9 +273,7 @@
                             <td class="text-center status-box">
 
                                 @if (optional($detail->result)->status == 'OK')
-
                                     &#10004;
-
                                 @endif
 
                             </td>
@@ -291,9 +282,7 @@
                             <td class="text-center status-box">
 
                                 @if (optional($detail->result)->status == 'NOK')
-
                                     &#10004;
-
                                 @endif
 
                             </td>
@@ -306,11 +295,8 @@
                             </td>
 
                         </tr>
-
                     @endforeach
-
                 @endforeach
-
             @endforeach
 
         </tbody>
@@ -348,9 +334,7 @@
 
         <tr>
 
-            <td width="50%"
-                style="border:none;"
-                class="text-center">
+            <td width="50%" style="border:none;" class="text-center">
 
                 <div style="height:40px;"></div>
 
@@ -362,9 +346,7 @@
 
             </td>
 
-            <td width="50%"
-                style="border:none;"
-                class="text-center">
+            <td width="50%" style="border:none;" class="text-center">
 
                 <div style="height:40px;">
 

@@ -510,7 +510,7 @@
                                         'products.stock.history',
                                         'lp3m.index',
                                         'rewinding.index',
-                                        // 'fasilitas.index',
+                                        'fasilitas-harian.*',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -559,7 +559,7 @@
                                         'cuti.tahunan',
                                         'lp3m.index',
                                         'rewinding.index',
-                                        // 'fasilitas.index',
+                                        'fasilitas-harian.*',
                                     ]);
                                 @endphp
 
@@ -1077,7 +1077,7 @@
                                                         </li> --}}
 
                                                         <li
-                                                            class="nav-item {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*', 'rewinding.*') ? 'menu-open' : '' }}">
+                                                            class="nav-item {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*', 'rewinding.*', 'fasilitas-harian.*') ? 'menu-open' : '' }}">
                                                             <a href="#"
                                                                 class="nav-link {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*', 'rewinding.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
@@ -1105,13 +1105,20 @@
                                                                     </a>
                                                                 </li>
 
-                                                                {{-- <li class="nav-item">
-                                                                    <a href="{{ route('fasilitas.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('fasilitas.*') ? 'active' : '' }}">
+                                                                <li class="nav-item">
+
+                                                                    <a href="{{ route('fasilitas-harian.index') }}"
+                                                                        class="nav-link {{ request()->routeIs('fasilitas-harian.*') ? 'active' : '' }}">
+
                                                                         <i class="nav-icon fas fa-clipboard-list"></i>
-                                                                        <p>Checksheet Harian Fasilitas</p>
+
+                                                                        <p>
+                                                                            Checksheet Harian Fasilitas
+                                                                        </p>
+
                                                                     </a>
-                                                                </li> --}}
+
+                                                                </li>
 
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('alat.index') }}"

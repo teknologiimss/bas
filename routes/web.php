@@ -7,6 +7,7 @@ use App\Http\Controllers\ChecksheetController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\CutiTahunanController;
 use App\Http\Controllers\DetailsjnController;
+use App\Http\Controllers\FasilitasHarianController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KontrakController;
 use App\Http\Controllers\Lp3mController;
@@ -813,6 +814,34 @@ Route::delete(
     '/rewinding-lampiran/{lampiran}',
     [RewindingController::class,'hapusLampiranDetail']
 )->name('rewinding.lampiran.delete');
+
+
+
+/*
+|--------------------------------------------------------------------------
+| CHECKSHEET HARIAN FASILITAS
+|--------------------------------------------------------------------------
+*/
+
+Route::resource(
+    'fasilitas-harian',
+    FasilitasHarianController::class
+);
+
+Route::get(
+    'fasilitas-harian/{id}/mobile',
+    [FasilitasHarianController::class, 'mobile']
+)->name('fasilitas.mobile');
+
+Route::post(
+    'fasilitas-harian/save-mobile',
+    [FasilitasHarianController::class, 'saveMobile']
+)->name('fasilitas.mobile.save');
+
+Route::get(
+    'fasilitas-harian/{id}/print',
+    [FasilitasHarianController::class, 'print']
+)->name('fasilitas.print');
 
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');

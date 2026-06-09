@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FasilitasHarianResult extends Model
+class FasilitasHarianAktivitas extends Model
 {
-    protected $guarded = [];
+    protected $table = 'fasilitas_harian_aktivitas';
 
-    protected $casts = [
-        'tanggal' => 'date'
+    protected $fillable = [
+        'item_id',
+        'aktivitas'
     ];
 
     public function item()
