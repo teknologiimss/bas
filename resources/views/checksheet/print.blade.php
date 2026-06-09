@@ -88,9 +88,9 @@
             display: table-row-group;
         }
 
-        tr {
+        /* tr {
             page-break-inside: avoid !important;
-        }
+        } */
 
         tbody {
             page-break-inside: auto;
