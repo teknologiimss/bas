@@ -5,9 +5,7 @@
 
     <meta charset="utf-8">
 
-    <title>
-        Checksheet PDF
-    </title>
+    <title>Checksheet PDF</title>
 
     <style>
         @page {
@@ -30,7 +28,6 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            border-spacing: 0;
         }
 
         th,
@@ -38,6 +35,7 @@
             border: 1px solid #000;
             padding: 4px;
             vertical-align: middle;
+            word-wrap: break-word;
         }
 
         th {
@@ -75,9 +73,10 @@
         }
 
         .status-box {
-            font-size: 16px;
-            font-weight: bold;
             font-family: DejaVu Sans, sans-serif;
+            font-size: 16px;
+            text-align: center;
+            font-weight: bold;
         }
 
         thead {
@@ -88,26 +87,16 @@
             display: table-row-group;
         }
 
-        /* tr {
-            page-break-inside: avoid !important;
-        } */
-
-        tbody {
-            page-break-inside: auto;
-        }
-
-        /* td,
-        th {
-            overflow: hidden;
-        } */
-
-        td,
-        th {
-            word-wrap: break-word;
-        }
-
         .signature-box {
             height: 70px;
+        }
+
+        .header-table td {
+            border: 1px solid #000;
+        }
+
+        .no-border {
+            border: none !important;
         }
     </style>
 
@@ -115,75 +104,62 @@
 
 <body>
 
+    {{-- HEADER --}}
+    <table class="header-table">
+
+        <tr>
+
+            <td width="15%" class="text-center">
+
+                <img src="{{ public_path('img/IMSS.jpg') }}" width="80">
+
+            </td>
+
+            <td width="65%" class="text-center">
+
+                <div class="title">
+                    CHECKSHEET PERAWATAN
+                </div>
+
+                <div class="subtitle">
+                    {{ strtoupper($checksheet->unit) }}
+                </div>
+
+            </td>
+
+            <td width="20%" class="text-center jenis">
+
+                {{ strtoupper($checksheet->jenis_perawatan ?? '-') }}
+
+            </td>
+
+        </tr>
+
+    </table>
+
+    <table style="margin-bottom:5px;">
+
+        <tr>
+
+            <td class="text-bold">
+
+                NO LAMBUNG :
+                {{ $checksheet->no_lambung }}
+
+            </td>
+
+        </tr>
+
+    </table>
+
+    {{-- TABEL CHECKSHEET --}}
     <table>
 
-        {{-- HEADER REPEAT --}}
         <thead>
 
-            {{-- HEADER --}}
             <tr>
 
-                <td colspan="7" style="padding:0;">
-
-                    <table>
-
-                        <tr>
-
-                            {{-- LOGO --}}
-                            <td width="15%" class="text-center">
-
-                                <img src="{{ public_path('img/IMSS.jpg') }}" width="80">
-
-                            </td>
-
-                            {{-- JUDUL --}}
-                            <td width="65%" class="text-center">
-
-                                <div class="title">
-                                    CHECKSHEET PERAWATAN
-                                </div>
-
-                                <div class="subtitle">
-                                    {{ strtoupper($checksheet->unit) }}
-                                </div>
-
-                            </td>
-
-                            {{-- JENIS --}}
-                            <td width="20%" class="text-center jenis">
-
-                                {{ strtoupper($checksheet->jenis_perawatan ?? '-') }}
-
-                            </td>
-
-                        </tr>
-
-                    </table>
-
-                    {{-- INFO --}}
-                    <table>
-
-                        <tr>
-
-                            <td class="text-bold">
-
-                                NO LAMBUNG :
-                                {{ $checksheet->no_lambung }}
-
-                            </td>
-
-                        </tr>
-
-                    </table>
-
-                </td>
-
-            </tr>
-
-            {{-- HEADER TABEL --}}
-            <tr>
-
-                <th width="4%">
+                <th width="5%">
                     No
                 </th>
 
@@ -199,15 +175,15 @@
                     Standar
                 </th>
 
-                <th width="4%">
+                <th width="5%">
                     OK
                 </th>
 
-                <th width="4%">
+                <th width="5%">
                     NOK
                 </th>
 
-                <th width="18%">
+                <th width="15%">
                     Keterangan
                 </th>
 
@@ -215,7 +191,6 @@
 
         </thead>
 
-        {{-- BODY --}}
         <tbody>
 
             @foreach ($checksheet->sections as $section)
@@ -232,28 +207,22 @@
                 </tr>
 
                 @foreach ($section->items as $item)
-                    @php
-                        $detailCount = $item->details->count();
-                    @endphp
-
-                    @foreach ($item->details as $dIndex => $detail)
+                    @foreach ($item->details as $index => $detail)
                         <tr>
 
                             {{-- NOMOR --}}
-                            @if ($dIndex == 0)
-                                <td rowspan="{{ $detailCount }}" class="text-center">
+                            <td class="text-center">
 
-                                    {{ $item->nomor }}
+                                {{ $index == 0 ? $item->nomor : '' }}
 
-                                </td>
+                            </td>
 
-                                {{-- URAIAN --}}
-                                <td rowspan="{{ $detailCount }}">
+                            {{-- URAIAN --}}
+                            <td>
 
-                                    {{ $item->uraian }}
+                                {{ $index == 0 ? $item->uraian : '' }}
 
-                                </td>
-                            @endif
+                            </td>
 
                             {{-- AKTIVITAS --}}
                             <td>
@@ -270,19 +239,19 @@
                             </td>
 
                             {{-- OK --}}
-                            <td class="text-center status-box">
+                            <td class="status-box">
 
                                 @if (optional($detail->result)->status == 'OK')
-                                    &#10004;
+                                    ✓
                                 @endif
 
                             </td>
 
                             {{-- NOK --}}
-                            <td class="text-center status-box">
+                            <td class="status-box">
 
                                 @if (optional($detail->result)->status == 'NOK')
-                                    &#10004;
+                                    ✓
                                 @endif
 
                             </td>
@@ -303,25 +272,24 @@
 
     </table>
 
-    {{-- FOOTER --}}
+    {{-- KETERANGAN AKHIR --}}
     <table style="margin-top:15px;">
 
         <tr>
 
             <td>
 
-                Berdasarkan hasil perawatan,
-                unit dinyatakan :
+                Berdasarkan hasil perawatan, unit dinyatakan :
 
                 <b>
-                    SO / SO dengan catatan / TSO
+                    SO / SO DENGAN CATATAN / TSO
                 </b>
 
                 <br><br>
 
                 Catatan :
 
-                <br><br><br>
+                <br><br><br><br>
 
             </td>
 
@@ -330,15 +298,17 @@
     </table>
 
     {{-- TTD --}}
-    <table style="margin-top:25px; border:none;">
+    <table style="margin-top:25px;">
 
         <tr>
 
-            <td width="50%" style="border:none;" class="text-center">
+            <td width="50%" class="no-border text-center">
 
                 <div style="height:40px;"></div>
 
-                <b>Kepala Departemen MRO 1</b>
+                <b>
+                    Kepala Departemen MRO 1
+                </b>
 
                 <div class="signature-box"></div>
 
@@ -346,16 +316,18 @@
 
             </td>
 
-            <td width="50%" style="border:none;" class="text-center">
+            <td width="50%" class="no-border text-center">
 
                 <div style="height:40px;">
 
                     Madiun,
-                    {{ \Carbon\Carbon::parse($checksheet->tanggal)->format('d/m/Y') }}
+                    {{ $checksheet->tanggal ? \Carbon\Carbon::parse($checksheet->tanggal)->format('d/m/Y') : date('d/m/Y') }}
 
                 </div>
 
-                <b>PELAKSANA</b>
+                <b>
+                    PELAKSANA
+                </b>
 
                 <div class="signature-box"></div>
 
