@@ -184,7 +184,7 @@
 
                         <div class="input-group">
 
-                            <input type="text" name="search" class="form-control"
+                            <input type="text" name="search" autocomplete="off" class="form-control"
                                 placeholder="Cari No SJN / Deskripsi / No SPPJP..." value="{{ request('search') }}">
 
                             <div class="input-group-append">
