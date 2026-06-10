@@ -10,11 +10,31 @@ use Illuminate\Support\Facades\File;
 
 class RewindingController extends Controller
 {
-    public function index()
-    {
-        $data = Rewinding::latest()->paginate(10);
+    // public function index()
+    // {
+    //     $data = Rewinding::latest()->paginate(10);
 
-        return view('rewinding.index', compact('data'));
+    //     return view('rewinding.index', compact('data'));
+    // }
+
+    public function index(Request $request)
+    {
+        $search = $request->search;
+
+        $data = Rewinding::query()
+            ->when($search, function ($q) use ($search) {
+                $q
+                    ->where('no_sjn', 'like', '%' . $search . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $search . '%')
+                    ->orWhere('no_sppjp', 'like', '%' . $search . '%');
+            })
+            ->latest()
+            ->paginate(20);
+
+        return view('rewinding.index', compact(
+            'data',
+            'search'
+        ));
     }
 
     public function create()

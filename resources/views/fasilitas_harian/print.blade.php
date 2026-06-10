@@ -157,7 +157,7 @@
 
         </thead>
 
-        <tbody>
+        {{-- <tbody>
 
             @foreach ($checksheet->items as $item)
                 <tr>
@@ -201,6 +201,58 @@
                         <td>
 
                             {{ $result->status ?? '' }}
+
+                        </td>
+                    @endfor
+
+                </tr>
+            @endforeach
+
+        </tbody> --}}
+
+        <tbody>
+
+            @foreach ($checksheet->items as $item)
+                <tr>
+
+                    <td>
+                        {{ $item->nomor }}
+                    </td>
+
+                    <td class="left">
+                        {{ $item->uraian_pekerjaan }}
+                    </td>
+
+                    <td class="left">
+
+                        @foreach ($item->aktivitas as $a)
+                            • {{ $a->aktivitas }}<br>
+                        @endforeach
+
+                    </td>
+
+                    @for ($tgl = 1; $tgl <= $jumlahHari; $tgl++)
+                        @php
+
+                            $tanggalCari = sprintf('%04d-%02d-%02d', $checksheet->tahun, $bulanAngka, $tgl);
+
+                            $result = $item->results->first(function ($r) use ($tanggalCari) {
+                                return optional($r->tanggal)->format('Y-m-d') == $tanggalCari;
+                            });
+
+                        @endphp
+
+                        <td>
+
+                            @if ($result)
+                                @if ($result->status == 'V')
+                                    V
+                                @elseif($result->status == 'X')
+                                    X
+                                @elseif($result->status == 'O')
+                                    O
+                                @endif
+                            @endif
 
                         </td>
                     @endfor

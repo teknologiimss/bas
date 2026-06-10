@@ -149,11 +149,23 @@ class FasilitasHarianController extends Controller
      * | EDIT
      * |--------------------------------------------------------------------------
      */
+    // public function edit($id)
+    // {
+    //     $data = FasilitasHarian::with(
+    //         'items'
+    //     )->findOrFail($id);
+
+    //     return view(
+    //         'fasilitas_harian.edit',
+    //         compact('data')
+    //     );
+    // }
+
     public function edit($id)
     {
-        $data = FasilitasHarian::with(
-            'items'
-        )->findOrFail($id);
+        $data = FasilitasHarian::with([
+            'items.aktivitas'
+        ])->findOrFail($id);
 
         return view(
             'fasilitas_harian.edit',
@@ -166,10 +178,8 @@ class FasilitasHarianController extends Controller
      * | UPDATE
      * |--------------------------------------------------------------------------
      */
-    public function update(
-        Request $request,
-        $id
-    ) {
+    public function update(Request $request, $id)
+    {
         $checksheet = FasilitasHarian::findOrFail($id);
 
         $checksheet->update([
@@ -179,26 +189,56 @@ class FasilitasHarianController extends Controller
             'tahun' => $request->tahun,
         ]);
 
-        $checksheet->items()->delete();
+        $existingIds = [];
 
-        if ($request->items) {
-            // foreach ($request->items as $item) {
-            //     FasilitasHarianItem::create([
-            //         'fasilitas_harian_id' => $checksheet->id,
-            //         'nomor' => $item['nomor'],
-            //         'uraian_pekerjaan' =>
-            //             $item['uraian'],
-            //         'aktivitas_pekerjaan' =>
-            //             $item['aktivitas']
-            //     ]);
-            // }
+        foreach ($request->items as $item) {
+            /*
+             * |--------------------------------------------------------------------------
+             * | UPDATE ITEM LAMA
+             * |--------------------------------------------------------------------------
+             */
+            if (!empty($item['id'])) {
+                $itemDb = FasilitasHarianItem::find($item['id']);
 
-            foreach ($request->items as $item) {
+                if ($itemDb) {
+                    $itemDb->update([
+                        'nomor' => $item['nomor'],
+                        'uraian_pekerjaan' => $item['uraian'],
+                    ]);
+
+                    $existingIds[] = $itemDb->id;
+
+                    /*
+                     * |--------------------------------------------------------------------------
+                     * | HAPUS AKTIVITAS LAMA
+                     * |--------------------------------------------------------------------------
+                     */
+                    $itemDb->aktivitas()->delete();
+
+                    if (isset($item['aktivitas'])) {
+                        foreach ($item['aktivitas'] as $aktivitas) {
+                            if (!empty($aktivitas)) {
+                                FasilitasHarianAktivitas::create([
+                                    'item_id' => $itemDb->id,
+                                    'aktivitas' => $aktivitas
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+            /*
+             * |--------------------------------------------------------------------------
+             * | ITEM BARU
+             * |--------------------------------------------------------------------------
+             */ else {
                 $itemDb = FasilitasHarianItem::create([
                     'fasilitas_harian_id' => $checksheet->id,
                     'nomor' => $item['nomor'],
                     'uraian_pekerjaan' => $item['uraian'],
                 ]);
+
+                $existingIds[] = $itemDb->id;
 
                 if (isset($item['aktivitas'])) {
                     foreach ($item['aktivitas'] as $aktivitas) {
@@ -213,10 +253,38 @@ class FasilitasHarianController extends Controller
             }
         }
 
+        /*
+         * |--------------------------------------------------------------------------
+         * | HAPUS ITEM YANG SUDAH DIHILANGKAN USER
+         * |--------------------------------------------------------------------------
+         */
+
+        $deletedItems = FasilitasHarianItem::where(
+            'fasilitas_harian_id',
+            $checksheet->id
+        )
+            ->whereNotIn('id', $existingIds)
+            ->get();
+
+        foreach ($deletedItems as $deleted) {
+            /*
+             * |--------------------------------------------------------------------------
+             * | HAPUS RESULT TERKAIT
+             * |--------------------------------------------------------------------------
+             */
+
+            FasilitasHarianResult::where(
+                'item_id',
+                $deleted->id
+            )->delete();
+
+            $deleted->aktivitas()->delete();
+
+            $deleted->delete();
+        }
+
         return redirect()
-            ->route(
-                'fasilitas-harian.index'
-            )
+            ->route('fasilitas-harian.index')
             ->with(
                 'success',
                 'Data berhasil diperbarui'
@@ -245,14 +313,24 @@ class FasilitasHarianController extends Controller
      * | MOBILE INPUT
      * |--------------------------------------------------------------------------
      */
+    // public function mobile($id)
+    // {
+
+    //     $checksheet = FasilitasHarian::with([
+    //         'items.aktivitas'
+    //     ])->findOrFail($id);
+
+    //     return view(
+    //         'fasilitas_harian.mobile',
+    //         compact('checksheet')
+    //     );
+    // }
+
     public function mobile($id)
     {
-        // $checksheet = FasilitasHarian::with(
-        //     'items'
-        // )->findOrFail($id);
-
         $checksheet = FasilitasHarian::with([
-            'items.aktivitas'
+            'items.aktivitas',
+            'items.results'
         ])->findOrFail($id);
 
         return view(

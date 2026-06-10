@@ -224,7 +224,9 @@
                                                 $tgl,
                                             );
 
-                                            $result = $item->results->where('tanggal', $tanggalCari)->first();
+                                            $result = $item->results->first(function ($r) use ($tanggalCari) {
+                                                return $r->tanggal->format('Y-m-d') == $tanggalCari;
+                                            });
 
                                         @endphp
 

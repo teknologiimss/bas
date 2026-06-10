@@ -359,79 +359,124 @@
             <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
 
             @foreach ($checksheet->items as $item)
-                <div class="item-card">
 
-                    <div class="item-title">
+    @php
 
-                        {{ $item->nomor }}.
-                        {{ $item->uraian_pekerjaan }}
+        $currentResult = $item->results->first(function ($r) {
 
-                    </div>
+            return $r->tanggal->format('Y-m-d') == date('Y-m-d');
 
-                    <div class="item-sub">
+        });
 
-                        {{ $item->aktivitas_pekerjaan }}
+    @endphp
 
-                    </div>
+    <div class="item-card">
 
-                    {{-- STATUS --}}
-                    <div class="status-group">
+        <div class="item-title">
+            {{ $item->nomor }}.
+            {{ $item->uraian_pekerjaan }}
+        </div>
 
-                        <label class="w-100">
+        <div class="item-sub">
 
-                            <input type="radio" class="status-radio" data-item="{{ $item->id }}"
-                                name="results[{{ $item->id }}][status]" value="V">
+            @foreach($item->aktivitas as $a)
 
-                            <div class="btn-status btn-v">
+                • {{ $a->aktivitas }}
+                <br>
 
-                                ✔ V
+            @endforeach
 
-                            </div>
+        </div>
 
-                        </label>
+        {{-- STATUS --}}
+        <div class="status-group">
 
-                        <label class="w-100">
+            {{-- V --}}
+            <label class="w-100">
 
-                            <input type="radio" class="status-radio" data-item="{{ $item->id }}"
-                                name="results[{{ $item->id }}][status]" value="X">
+                <input
+                    type="radio"
+                    class="status-radio"
+                    data-item="{{ $item->id }}"
+                    name="results[{{ $item->id }}][status]"
+                    value="V"
+                    {{ optional($currentResult)->status == 'V' ? 'checked' : '' }}>
 
-                            <div class="btn-status btn-x">
+                <div class="btn-status btn-v">
 
-                                ✖ X
-
-                            </div>
-
-                        </label>
-
-                        <label class="w-100">
-
-                            <input type="radio" class="status-radio" data-item="{{ $item->id }}"
-                                name="results[{{ $item->id }}][status]" value="O">
-
-                            <div class="btn-status btn-o">
-
-                                ⭕ O
-
-                            </div>
-
-                        </label>
-
-                    </div>
-
-                    {{-- KETERANGAN --}}
-                    <textarea class="form-control mt-3" rows="2" autocomplete="off" name="results[{{ $item->id }}][keterangan]"
-                        placeholder="Keterangan..."></textarea>
-
-                    {{-- SPR --}}
-                    <div class="spr-box" id="spr-{{ $item->id }}">
-
-                        <input type="text" autocomplete="off" class="form-control mt-2"
-                            name="results[{{ $item->id }}][nomor_spr]" placeholder="Nomor SPR">
-
-                    </div>
+                    ✔ V
 
                 </div>
-            @endforeach
+
+            </label>
+
+            {{-- X --}}
+            <label class="w-100">
+
+                <input
+                    type="radio"
+                    class="status-radio"
+                    data-item="{{ $item->id }}"
+                    name="results[{{ $item->id }}][status]"
+                    value="X"
+                    {{ optional($currentResult)->status == 'X' ? 'checked' : '' }}>
+
+                <div class="btn-status btn-x">
+
+                    ✖ X
+
+                </div>
+
+            </label>
+
+            {{-- O --}}
+            <label class="w-100">
+
+                <input
+                    type="radio"
+                    class="status-radio"
+                    data-item="{{ $item->id }}"
+                    name="results[{{ $item->id }}][status]"
+                    value="O"
+                    {{ optional($currentResult)->status == 'O' ? 'checked' : '' }}>
+
+                <div class="btn-status btn-o">
+
+                    ⭕ O
+
+                </div>
+
+            </label>
+
+        </div>
+
+        {{-- KETERANGAN --}}
+        <textarea
+            class="form-control mt-3"
+            rows="2"
+            autocomplete="off"
+            name="results[{{ $item->id }}][keterangan]"
+            placeholder="Keterangan...">{{ $currentResult->keterangan ?? '' }}</textarea>
+
+        {{-- SPR --}}
+        <div
+            class="spr-box"
+            id="spr-{{ $item->id }}"
+            style="{{ optional($currentResult)->status == 'X' ? 'display:block' : '' }}">
+
+            <input
+                type="text"
+                autocomplete="off"
+                class="form-control mt-2"
+                name="results[{{ $item->id }}][nomor_spr]"
+                value="{{ $currentResult->nomor_spr ?? '' }}"
+                placeholder="Nomor SPR">
+
+        </div>
+
+    </div>
+
+@endforeach
 
             {{-- SAVE --}}
             <div class="sticky-save">

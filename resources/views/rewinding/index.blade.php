@@ -136,6 +136,19 @@
         .action-group form {
             margin: 0;
         }
+
+
+        .search-box .form-control {
+            border-radius: 12px 0 0 12px;
+        }
+
+        .search-box .btn {
+            border-radius: 0;
+        }
+
+        .search-box .btn:last-child {
+            border-radius: 0 12px 12px 0;
+        }
     </style>
 
     <div class="card card-rewinding animate-card">
@@ -161,6 +174,44 @@
         </div>
 
         <div class="card-body">
+
+            {{-- Search --}}
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+
+                    <form method="GET" action="{{ route('rewinding.index') }}" class="search-box">
+
+                        <div class="input-group">
+
+                            <input type="text" name="search" class="form-control"
+                                placeholder="Cari No SJN / Deskripsi / No SPPJP..." value="{{ request('search') }}">
+
+                            <div class="input-group-append">
+
+                                <button class="btn btn-danger">
+
+                                    <i class="fas fa-search"></i>
+
+                                </button>
+
+                                @if (request('search'))
+                                    <a href="{{ route('rewinding.index') }}" class="btn btn-secondary">
+
+                                        <i class="fas fa-sync"></i>
+
+                                    </a>
+                                @endif
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
 
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show">

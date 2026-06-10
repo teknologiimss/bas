@@ -450,6 +450,9 @@
 
                 <label>Nomor</label>
 
+                <input type="hidden"
+    name="items[{{ $i }}][id]"
+    value="{{ $item->id }}">
                 <input
                     type="number"
                     class="form-control"
