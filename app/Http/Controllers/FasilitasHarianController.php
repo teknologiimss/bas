@@ -18,7 +18,7 @@ class FasilitasHarianController extends Controller
      */
     public function index()
     {
-        $data = FasilitasHarian::latest()->paginate(10);
+        $data = FasilitasHarian::oldest()->paginate(10);
 
         return view(
             'fasilitas_harian.index',
@@ -51,6 +51,10 @@ class FasilitasHarianController extends Controller
 
         $checksheet = FasilitasHarian::create([
             'judul' => $request->judul,
+            'nomor_dokumen' => $request->nomor_dokumen,
+            'nomor_fasilitas' => $request->nomor_fasilitas,
+            'nomor_sertifikasi' => $request->nomor_sertifikasi,
+            'nama_alat' => $request->nama_alat,
             'lokasi' => $request->lokasi,
             'bulan' => $request->bulan,
             'tahun' => $request->tahun,
@@ -184,11 +188,14 @@ class FasilitasHarianController extends Controller
 
         $checksheet->update([
             'judul' => $request->judul,
+            'nomor_dokumen' => $request->nomor_dokumen,
+            'nomor_fasilitas' => $request->nomor_fasilitas,
+            'nomor_sertifikasi' => $request->nomor_sertifikasi,
+            'nama_alat' => $request->nama_alat,
             'lokasi' => $request->lokasi,
             'bulan' => $request->bulan,
             'tahun' => $request->tahun,
         ]);
-
         $existingIds = [];
 
         foreach ($request->items as $item) {
@@ -313,11 +320,12 @@ class FasilitasHarianController extends Controller
      * | MOBILE INPUT
      * |--------------------------------------------------------------------------
      */
+
     // public function mobile($id)
     // {
-
     //     $checksheet = FasilitasHarian::with([
-    //         'items.aktivitas'
+    //         'items.aktivitas',
+    //         'items.results'
     //     ])->findOrFail($id);
 
     //     return view(
@@ -325,9 +333,10 @@ class FasilitasHarianController extends Controller
     //         compact('checksheet')
     //     );
     // }
-
-    public function mobile($id)
+    public function mobile(Request $request, $id)
     {
+        $tanggal = $request->tanggal ?? now()->format('Y-m-d');
+
         $checksheet = FasilitasHarian::with([
             'items.aktivitas',
             'items.results'
@@ -335,7 +344,10 @@ class FasilitasHarianController extends Controller
 
         return view(
             'fasilitas_harian.mobile',
-            compact('checksheet')
+            compact(
+                'checksheet',
+                'tanggal'
+            )
         );
     }
 
@@ -378,6 +390,12 @@ class FasilitasHarianController extends Controller
     // }
     public function saveMobile(Request $request)
     {
+        if ($request->tanggal > now()->format('Y-m-d')) {
+            return back()->with(
+                'error',
+                'Tidak boleh input tanggal masa depan'
+            );
+        }
         if (!$request->results) {
             return back()->with(
                 'error',
@@ -458,5 +476,55 @@ class FasilitasHarianController extends Controller
         return $pdf->stream(
             'checksheet-fasilitas.pdf'
         );
+    }
+
+    /*
+     * |--------------------------------------------------------------------------
+     * | DUPLICATE
+     * |--------------------------------------------------------------------------
+     */
+
+    public function duplicate($id)
+    {
+        $old = FasilitasHarian::with([
+            'items.aktivitas'
+        ])->findOrFail($id);
+
+        // HEADER
+        $new = FasilitasHarian::create([
+            'judul' => $old->judul,
+            'nomor_dokumen' => $old->nomor_dokumen,
+            'nomor_fasilitas' => $old->nomor_fasilitas,
+            'nomor_sertifikasi' => $old->nomor_sertifikasi,
+            'nama_alat' => $old->nama_alat,
+            'lokasi' => $old->lokasi,
+            'bulan' => $old->bulan,
+            'tahun' => $old->tahun,
+            'dibuat_oleh' => auth()->user()->name ?? null,
+        ]);
+
+        // ITEM
+        foreach ($old->items as $item) {
+            $newItem = FasilitasHarianItem::create([
+                'fasilitas_harian_id' => $new->id,
+                'nomor' => $item->nomor,
+                'uraian_pekerjaan' => $item->uraian_pekerjaan,
+            ]);
+
+            // AKTIVITAS
+            foreach ($item->aktivitas as $aktivitas) {
+                FasilitasHarianAktivitas::create([
+                    'item_id' => $newItem->id,
+                    'aktivitas' => $aktivitas->aktivitas
+                ]);
+            }
+        }
+
+        return redirect()
+            ->route('fasilitas-harian.index', $new->id)
+            ->with(
+                'success',
+                'Checksheet berhasil diduplikasi'
+            );
     }
 }

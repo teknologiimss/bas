@@ -843,6 +843,11 @@ Route::get(
     [FasilitasHarianController::class, 'print']
 )->name('fasilitas.print');
 
+Route::get(
+    'fasilitas-harian/{id}/duplicate',
+    [FasilitasHarianController::class, 'duplicate']
+)->name('fasilitas-harian.duplicate');
+
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');
 // Route::delete('service', [App\Http\Controllers\ServiceController::class, 'destroy'])->name('service.destroy');

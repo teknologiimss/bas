@@ -274,7 +274,7 @@ class ChecksheetController extends Controller
         }
 
         return redirect()
-            ->route('checksheet.show', $newChecksheet->id)
+            ->route('checksheet.index', $newChecksheet->id)
             ->with(
                 'success',
                 'Checksheet berhasil digunakan kembali'

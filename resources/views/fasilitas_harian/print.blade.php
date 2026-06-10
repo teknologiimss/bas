@@ -72,47 +72,152 @@
 
             height: 70px;
         }
+
+
+
+        /* Header tabel judul , logo form  */
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 8px;
+        }
+
+        .header-table td {
+            border: 1px solid #000;
+            vertical-align: middle;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+
+        .info td {
+            text-align: left;
+        }
+
+
+
+        .header-table td {
+            border: 1px solid #000;
+        }
+
+        .identitas-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .identitas-table td {
+            border: 1px solid #000;
+            padding: 3px;
+        }
+
+        /* Hilangkan border yang menempel ke border luar */
+        .identitas-table tr:first-child td {
+            border-top: none;
+        }
+
+        .identitas-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .identitas-table td:first-child {
+            border-left: none;
+        }
+
+        .identitas-table td:last-child {
+            border-right: none;
+        }
     </style>
 
 </head>
 
 <body>
 
-    <div class="header">
-
-        <h2>
-
-            CHECKSHEET HARIAN FASILITAS
-
-        </h2>
-
-        <div>
-
-            PT INDUSTRI MANUFAKTUR
-
-        </div>
-
-    </div>
-
-    <table class="info">
+    <table class="header-table">
 
         <tr>
 
-            <td width="15%">
-                Lokasi
+            {{-- LOGO --}}
+            <td width="15%" class="text-center">
+
+                <img src="{{ public_path('img/IMSS.jpg') }}" width="80">
+
             </td>
 
-            <td width="35%">
-                {{ $checksheet->lokasi }}
+            {{-- JUDUL --}}
+            <td width="50%" class="text-center">
+
+                <div class="title">
+                    CHECKSHEET HARIAN OPERATOR FORKLIFT
+                </div>
+
+
+
             </td>
 
-            <td width="15%">
-                Bulan
-            </td>
+            {{-- IDENTITAS DOKUMEN --}}
+            <td width="35%" style="padding:0">
 
-            <td width="35%">
-                {{ $checksheet->bulan }}
-                {{ $checksheet->tahun }}
+                <table class="identitas-table">
+
+                    <tr>
+                        <td width="45%">
+                            <b>No. Dokumen</b>
+                        </td>
+                        <td width="55%">
+                            {{ $checksheet->nomor_dokumen ?? '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <b>No. Fasilitas</b>
+                        </td>
+                        <td>
+                            {{ $checksheet->nomor_fasilitas ?? '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <b>No. Sertifikasi</b>
+                        </td>
+                        <td>
+                            {{ $checksheet->nomor_sertifikasi ?? '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <b>Nama Alat</b>
+                        </td>
+                        <td>
+                            {{ $checksheet->nama_alat ?? '-' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <b>Lokasi</b>
+                        </td>
+                        <td>
+                            {{ $checksheet->lokasi }}
+                        </td>
+                    </tr>
+
+                </table>
+
             </td>
 
         </tr>
@@ -138,7 +243,18 @@
                 </th>
 
                 <th colspan="{{ $jumlahHari }}">
-                    Tanggal
+
+                    TANGGAL
+
+                    <br>
+
+                    <span style="font-size:9px;font-weight:normal;">
+
+                        {{ strtoupper($checksheet->bulan) }}
+                        {{ $checksheet->tahun }}
+
+                    </span>
+
                 </th>
 
             </tr>
@@ -281,12 +397,12 @@
                 <br>
 
                 X = Pemeriksaan Jelek
-                (ditindaklanjuti SPR)
+                (ditindaklanjuti dengan pengajuan SPR)
 
                 <br>
 
-                O = Bagus tetapi
-                mesin tidak beroperasi
+                O = Pemeriksaan Bagus, tetapi
+                mesin tidak beroperasi, karena tidak ada pekerjaan
 
             </td>
 
@@ -300,17 +416,15 @@
 
             <td width="50%">
 
-                Mengetahui,
-
-                <br>
-
-                Supervisor
+                <b>Operator</b>
 
             </td>
 
             <td width="50%">
-
-                Petugas Pemeriksa
+                Madiun,
+                {{ $checksheet->tanggal ? \Carbon\Carbon::parse($checksheet->tanggal)->format('d/m/Y') : date('d/m/Y') }}
+                <br>
+                <b>Staff Teknisi</b>
 
             </td>
 

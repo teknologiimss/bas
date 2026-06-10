@@ -73,6 +73,15 @@
             font-weight: 700;
         }
 
+        .action-footer{
+    gap:15px;
+}
+
+.action-footer .btn{
+    min-width:180px;
+}
+
+
         @media(max-width:768px) {
 
             .btn {
@@ -126,6 +135,49 @@
                             </label>
 
                             <input type="text" name="judul" class="form-control" value="{{ $data->judul }}" required>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="fw-bold">
+                                Nomor Dokumen
+                            </label>
+
+                            <input type="text" name="nomor_dokumen" class="form-control"
+                                value="{{ $data->nomor_dokumen }}">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="fw-bold">
+                                Nomor Fasilitas
+                            </label>
+
+                            <input type="text" name="nomor_fasilitas" class="form-control"
+                                value="{{ $data->nomor_fasilitas }}">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="fw-bold">
+                                Nomor Sertifikasi
+                            </label>
+
+                            <input type="text" name="nomor_sertifikasi" class="form-control"
+                                value="{{ $data->nomor_sertifikasi }}">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="fw-bold">
+                                Nama Alat
+                            </label>
+
+                            <input type="text" name="nama_alat" class="form-control" value="{{ $data->nama_alat }}">
 
                         </div>
 
@@ -225,6 +277,8 @@
 
                         @foreach ($data->items as $i => $item)
                             <div class="item-row">
+
+                                <input type="hidden" name="items[{{ $i }}][id]" value="{{ $item->id }}">
 
                                 <div class="row">
 
@@ -339,13 +393,25 @@
 
             </div>
 
-            <button class="btn btn-success btn-save">
+            <div class="action-footer d-flex flex-wrap mt-4">
 
-                <i class="fa fa-save"></i>
+                <a href="{{ route('fasilitas-harian.index') }}" class="btn btn-secondary btn-save">
 
-                Update Checksheet
+                    <i class="fa fa-arrow-left"></i>
 
-            </button>
+                    Kembali
+
+                </a>
+
+                <button type="submit" class="btn btn-success btn-save">
+
+                    <i class="fa fa-save"></i>
+
+                    Update Checksheet
+
+                </button>
+
+            </div>
 
         </form>
 
@@ -579,6 +645,15 @@
 
         function removeAktivitas(btn) {
             btn.closest('.input-group').remove();
+        }
+
+        function removeItem(btn) {
+
+            if (!confirm('Hapus item ini?')) {
+                return;
+            }
+
+            btn.closest('.item-row').remove();
         }
     </script>
 

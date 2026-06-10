@@ -63,36 +63,132 @@
             background: #f3f3f3;
         }
 
-        @media(max-width:768px) {
+        .btn-action-group .btn {
+            min-width: 140px;
+        }
 
-            .table-checksheet {
-                font-size: 12px;
+
+        /* Tampilan Hp */
+        @media (max-width:768px) {
+
+            /* =====================
+               CARD
+            ===================== */
+
+            .container {
+                padding-left: 8px;
+                padding-right: 8px;
             }
 
-            /* BADGE MOBILE */
-            .badge-ok,
-            .badge-nok,
-            .badge-empty {
+            .main-card {
+                border-radius: 12px;
+            }
 
-                display: inline-block;
-                font-size: 10px;
-                padding: 3px 6px;
-                border-radius: 6px;
-                min-width: 42px;
-                text-align: center;
+            .main-card.p-4 {
+                padding: 15px !important;
+            }
+
+            /* =====================
+               HEADER
+            ===================== */
+
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+
+            h3 {
+                font-size: 18px;
+                line-height: 1.4;
+            }
+
+            /* =====================
+               INFO UNIT
+            ===================== */
+
+            .row>.col-md-4 {
+                width: 100%;
+                flex: 0 0 100%;
+                max-width: 100%;
+                margin-bottom: 8px;
+            }
+
+            /* =====================
+               BUTTON
+            ===================== */
+
+            .btn-action-group,
+            .mt-3.d-flex {
+
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 10px !important;
+                margin-top: 15px !important;
+
+            }
+
+            .btn-action-group .btn,
+            .mt-3.d-flex .btn {
+
+                width: 100%;
+                min-width: 100%;
+                height: 45px;
+                font-size: 14px;
                 font-weight: 600;
 
             }
 
-            /* TABLE MOBILE */
-            .table-checksheet td,
-            .table-checksheet th {
+            /* =====================
+               TABLE
+            ===================== */
 
-                padding: 8px 5px;
+            .table-responsive {
+                border-radius: 10px;
+            }
+
+            .table-checksheet {
+                font-size: 11px;
+                min-width: 700px;
+            }
+
+            .table-checksheet th,
+            .table-checksheet td {
+
+                padding: 6px 4px !important;
                 vertical-align: middle !important;
 
             }
 
+            .table-checksheet th {
+                font-size: 11px;
+                white-space: nowrap;
+            }
+
+            /* =====================
+               BADGE
+            ===================== */
+
+            .badge-ok,
+            .badge-nok,
+            .badge-empty {
+
+                font-size: 10px;
+                padding: 3px 6px;
+                min-width: 40px;
+                display: inline-block;
+                text-align: center;
+
+            }
+
+            /* =====================
+               SECTION HEADER
+            ===================== */
+
+            .section-header {
+                font-size: 14px;
+                padding: 10px;
+            }
         }
     </style>
 
@@ -142,15 +238,21 @@
 
                 </div>
 
-                <div class="mt-2">
+                <div class="btn-action-group">
+
+                    <a href="{{ route('checksheet.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        Kembali
+                    </a>
+
                     <a href="{{ route('checksheet.mobile', $checksheet->id) }}" class="btn btn-success">
                         📱 Isi dari HP
                     </a>
+
                     <a href="{{ route('checksheet.pdf', $checksheet->id) }}" target="_blank" class="btn btn-primary">
-
                         🖨️ Print PDF
-
                     </a>
+
                 </div>
 
             </div>

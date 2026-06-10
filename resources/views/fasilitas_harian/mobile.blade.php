@@ -288,6 +288,38 @@
 
             z-index: 999;
         }
+
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .status-badge {
+            width: 35px;
+            text-align: center;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 6px 0;
+        }
+
+        .status-v {
+            background: #198754;
+            color: white;
+        }
+
+        .status-x {
+            background: #dc3545;
+            color: white;
+        }
+
+        .status-o {
+            background: #ffc107;
+            color: black;
+        }
     </style>
 
     <div class="mobile-container py-3">
@@ -328,6 +360,22 @@
 
         </div>
 
+
+        <div class="progress-card">
+
+            <form method="GET">
+
+                <label>
+                    <strong>Tanggal Pemeriksaan</strong>
+                </label>
+
+                <input type="date" name="tanggal" class="form-control mt-2" value="{{ $tanggal }}"
+                    max="{{ date('Y-m-d') }}" onchange="this.form.submit()">
+
+            </form>
+
+        </div>
+
         {{-- PROGRESS --}}
         <div class="progress-card">
 
@@ -351,132 +399,130 @@
 
         </div>
 
+
+        {{-- Keterangan Status --}}
+        <div class="progress-card">
+
+            <h6 class="mb-3">
+                <i class="fa fa-circle-info"></i>
+                Keterangan
+            </h6>
+
+            <div class="status-info">
+                <span class="status-badge status-v">V</span>
+                <span>Pemeriksaan Bagus</span>
+            </div>
+
+            <div class="status-info">
+                <span class="status-badge status-x">X</span>
+                <span>Pemeriksaan Jelek di TL dan dibuatkan SPR</span>
+            </div>
+
+            <div class="status-info">
+                <span class="status-badge status-o">O</span>
+                <span>Pemeriksaan Bagus, tetapi tidak beroperasi</span>
+            </div>
+
+        </div>
+
         {{-- FORM --}}
         <form action="{{ route('fasilitas.mobile.save') }}" method="POST">
 
             @csrf
 
-            <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
+            <input type="hidden" name="tanggal" value="{{ $tanggal }}">
 
             @foreach ($checksheet->items as $item)
+                @php
 
-    @php
+                    $currentResult = $item->results->first(function ($r) use ($tanggal) {
+                        return $r->tanggal->format('Y-m-d') == $tanggal;
+                    });
 
-        $currentResult = $item->results->first(function ($r) {
+                @endphp
 
-            return $r->tanggal->format('Y-m-d') == date('Y-m-d');
+                <div class="item-card">
 
-        });
+                    <div class="item-title">
+                        {{ $item->nomor }}.
+                        {{ $item->uraian_pekerjaan }}
+                    </div>
 
-    @endphp
+                    <div class="item-sub">
 
-    <div class="item-card">
+                        @foreach ($item->aktivitas as $a)
+                            • {{ $a->aktivitas }}
+                            <br>
+                        @endforeach
 
-        <div class="item-title">
-            {{ $item->nomor }}.
-            {{ $item->uraian_pekerjaan }}
-        </div>
+                    </div>
 
-        <div class="item-sub">
+                    {{-- STATUS --}}
+                    <div class="status-group">
 
-            @foreach($item->aktivitas as $a)
+                        {{-- V --}}
+                        <label class="w-100">
 
-                • {{ $a->aktivitas }}
-                <br>
+                            <input type="radio" class="status-radio" data-item="{{ $item->id }}"
+                                name="results[{{ $item->id }}][status]" value="V"
+                                {{ optional($currentResult)->status == 'V' ? 'checked' : '' }}>
 
+                            <div class="btn-status btn-v">
+
+                                ✔ V
+
+                            </div>
+
+                        </label>
+
+                        {{-- X --}}
+                        <label class="w-100">
+
+                            <input type="radio" class="status-radio" data-item="{{ $item->id }}"
+                                name="results[{{ $item->id }}][status]" value="X"
+                                {{ optional($currentResult)->status == 'X' ? 'checked' : '' }}>
+
+                            <div class="btn-status btn-x">
+
+                                ✖ X
+
+                            </div>
+
+                        </label>
+
+                        {{-- O --}}
+                        <label class="w-100">
+
+                            <input type="radio" class="status-radio" data-item="{{ $item->id }}"
+                                name="results[{{ $item->id }}][status]" value="O"
+                                {{ optional($currentResult)->status == 'O' ? 'checked' : '' }}>
+
+                            <div class="btn-status btn-o">
+
+                                ⭕ O
+
+                            </div>
+
+                        </label>
+
+                    </div>
+
+                    {{-- KETERANGAN --}}
+                    {{-- <textarea class="form-control mt-3" rows="2" autocomplete="off" name="results[{{ $item->id }}][keterangan]"
+                        placeholder="Keterangan...">{{ $currentResult->keterangan ?? '' }}</textarea> --}}
+
+                    {{-- SPR --}}
+                    {{-- <div class="spr-box" id="spr-{{ $item->id }}"
+                        style="{{ optional($currentResult)->status == 'X' ? 'display:block' : '' }}">
+
+                        <input type="text" autocomplete="off" class="form-control mt-2"
+                            name="results[{{ $item->id }}][nomor_spr]" value="{{ $currentResult->nomor_spr ?? '' }}"
+                            placeholder="Nomor SPR">
+
+                    </div> --}}
+
+                </div>
             @endforeach
-
-        </div>
-
-        {{-- STATUS --}}
-        <div class="status-group">
-
-            {{-- V --}}
-            <label class="w-100">
-
-                <input
-                    type="radio"
-                    class="status-radio"
-                    data-item="{{ $item->id }}"
-                    name="results[{{ $item->id }}][status]"
-                    value="V"
-                    {{ optional($currentResult)->status == 'V' ? 'checked' : '' }}>
-
-                <div class="btn-status btn-v">
-
-                    ✔ V
-
-                </div>
-
-            </label>
-
-            {{-- X --}}
-            <label class="w-100">
-
-                <input
-                    type="radio"
-                    class="status-radio"
-                    data-item="{{ $item->id }}"
-                    name="results[{{ $item->id }}][status]"
-                    value="X"
-                    {{ optional($currentResult)->status == 'X' ? 'checked' : '' }}>
-
-                <div class="btn-status btn-x">
-
-                    ✖ X
-
-                </div>
-
-            </label>
-
-            {{-- O --}}
-            <label class="w-100">
-
-                <input
-                    type="radio"
-                    class="status-radio"
-                    data-item="{{ $item->id }}"
-                    name="results[{{ $item->id }}][status]"
-                    value="O"
-                    {{ optional($currentResult)->status == 'O' ? 'checked' : '' }}>
-
-                <div class="btn-status btn-o">
-
-                    ⭕ O
-
-                </div>
-
-            </label>
-
-        </div>
-
-        {{-- KETERANGAN --}}
-        <textarea
-            class="form-control mt-3"
-            rows="2"
-            autocomplete="off"
-            name="results[{{ $item->id }}][keterangan]"
-            placeholder="Keterangan...">{{ $currentResult->keterangan ?? '' }}</textarea>
-
-        {{-- SPR --}}
-        <div
-            class="spr-box"
-            id="spr-{{ $item->id }}"
-            style="{{ optional($currentResult)->status == 'X' ? 'display:block' : '' }}">
-
-            <input
-                type="text"
-                autocomplete="off"
-                class="form-control mt-2"
-                name="results[{{ $item->id }}][nomor_spr]"
-                value="{{ $currentResult->nomor_spr ?? '' }}"
-                placeholder="Nomor SPR">
-
-        </div>
-
-    </div>
-
-@endforeach
 
             {{-- SAVE --}}
             <div class="sticky-save">

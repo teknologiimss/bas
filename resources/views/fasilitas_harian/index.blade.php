@@ -324,6 +324,12 @@
                                     Judul
                                 </th>
 
+                                <th>No Dokumen</th>
+
+                                <th>No Fasilitas</th>
+
+                                <th>Nama Alat</th>
+
                                 <th>
                                     Lokasi
                                 </th>
@@ -336,7 +342,7 @@
                                     Tahun
                                 </th>
 
-                                <th width="380">
+                                <th width="500">
                                     Aksi
                                 </th>
 
@@ -358,6 +364,12 @@
                                         {{ $row->judul }}
 
                                     </td>
+
+                                    <td>{{ $row->nomor_dokumen }}</td>
+
+                                    <td>{{ $row->nomor_fasilitas }}</td>
+
+                                    <td>{{ $row->nama_alat }}</td>
 
                                     <td>
 
@@ -416,6 +428,15 @@
                                             <i class="fa fa-edit"></i>
 
                                             Edit
+
+                                        </a>
+
+                                        {{-- DUPLICATE --}}
+                                        <a href="{{ route('fasilitas-harian.duplicate', $row->id) }}"
+                                            class="btn btn-primary btn-sm btn-action">
+
+                                            <i class="fa fa-copy"></i>
+                                            Duplicate
 
                                         </a>
 

@@ -510,7 +510,7 @@
                                         'products.stock.history',
                                         'lp3m.index',
                                         'rewinding.index',
-                                        'fasilitas-harian.*',
+                                        'fasilitas-harian.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -559,7 +559,7 @@
                                         'cuti.tahunan',
                                         'lp3m.index',
                                         'rewinding.index',
-                                        'fasilitas-harian.*',
+                                        'fasilitas-harian.index',
                                     ]);
                                 @endphp
 

@@ -105,6 +105,25 @@
             border-radius: 10px;
         }
 
+        .action-buttons {
+            gap: 15px;
+        }
+
+        .btn-action {
+
+            height: 50px;
+            min-width: 180px;
+
+            border-radius: 12px;
+            font-weight: 700;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+        }
+
         /* MOBILE */
 
         @media(max-width:768px) {
@@ -162,6 +181,46 @@
 
                             <input type="text" name="judul" class="form-control" required autocomplete="off"
                                 placeholder="Contoh : Checksheet Harian Fasilitas">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="fw-bold">
+                                Nomor Dokumen
+                            </label>
+
+                            <input type="text" name="nomor_dokumen" class="form-control" autocomplete="off">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="fw-bold">
+                                Nomor Fasilitas
+                            </label>
+
+                            <input type="text" name="nomor_fasilitas" class="form-control" autocomplete="off">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="fw-bold">
+                                Nomor Sertifikasi
+                            </label>
+
+                            <input type="text" name="nomor_sertifikasi" class="form-control" autocomplete="off">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="fw-bold">
+                                Nama Alat
+                            </label>
+
+                            <input type="text" name="nama_alat" class="form-control" autocomplete="off">
 
                         </div>
 
@@ -256,14 +315,24 @@
 
             </div>
 
-            {{-- SAVE --}}
-            <button class="btn btn-success btn-save">
+            {{-- ACTION BUTTON --}}
+            <div class="mt-4 d-flex flex-wrap action-buttons">
 
-                <i class="fa fa-save"></i>
+                <a href="{{ route('fasilitas-harian.index') }}" class="btn btn-secondary btn-action">
 
-                Simpan Checksheet
+                    <i class="fa fa-arrow-left"></i>
+                    Kembali
 
-            </button>
+                </a>
+
+                <button type="submit" class="btn btn-success btn-action">
+
+                    <i class="fa fa-save"></i>
+                    Simpan Checksheet
+
+                </button>
+
+            </div>
 
         </form>
 
@@ -383,23 +452,22 @@
     </script>
 
     <script>
-    function addAktivitas(index)
-    {
-    let html = `
+        function addAktivitas(index) {
+            let html = `
 
     <input type="text" class="form-control mb-2" name="items[${index}][aktivitas][]" placeholder="Aktivitas">
 
     `;
 
-    document
-    .getElementById(
-    'aktivitas-' + index
-    )
-    .insertAdjacentHTML(
-    'beforeend',
-    html
-    );
-    }
+            document
+                .getElementById(
+                    'aktivitas-' + index
+                )
+                .insertAdjacentHTML(
+                    'beforeend',
+                    html
+                );
+        }
     </script>
 
 @endsection
