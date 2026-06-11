@@ -10,6 +10,7 @@ use App\Models\ChecksheetResultPhoto;
 use App\Models\ChecksheetSection;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Image;
 
 class ChecksheetController extends Controller
 {
@@ -251,11 +252,45 @@ class ChecksheetController extends Controller
                         . '.' . $photo
                             ->getClientOriginalExtension();
 
-                    $photo->move(
-                        public_path(
-                            'uploads/checksheet'
-                        ),
-                        $filename
+                    // $photo->move(
+                    //     public_path(
+                    //         'uploads/checksheet'
+                    //     ),
+                    //     $filename
+                    // );
+
+                    $path = public_path(
+                        'uploads/checksheet/' . $filename
+                    );
+
+                    $image = Image::make($photo);
+
+                    /*
+                     * |--------------------------------------------------------------------------
+                     * | PERBAIKI ORIENTASI FOTO HP
+                     * |--------------------------------------------------------------------------
+                     */
+
+                    $image->orientate();
+
+                    /*
+                     * |--------------------------------------------------------------------------
+                     * | KOMPRES AGAR FILE TIDAK BESAR
+                     * |--------------------------------------------------------------------------
+                     */
+
+                    $image->resize(
+                        1600,
+                        null,
+                        function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        }
+                    );
+
+                    $image->save(
+                        $path,
+                        85
                     );
 
                     ChecksheetResultPhoto::create([
