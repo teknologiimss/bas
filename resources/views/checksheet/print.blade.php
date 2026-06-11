@@ -98,6 +98,23 @@
         .no-border {
             border: none !important;
         }
+
+
+
+        .lampiran-cell {
+            border: 1px solid #000;
+            vertical-align: top;
+            padding: 5px;
+            height: 280px;
+        }
+
+        .lampiran-foto {
+            max-width: 220px;
+            max-height: 150px;
+            width: auto;
+            height: auto;
+            border: 1px solid #000;
+        }
     </style>
 
 </head>
@@ -340,92 +357,104 @@
     </table>
 
 
-    {{-- Lampiran --}}
+    {{-- ========================================= --}}
+    {{-- LAMPIRAN FOTO CHECKSHEET --}}
+    {{-- ========================================= --}}
+
     <div style="page-break-before:always;"></div>
 
-    <h2 style="
-text-align:center;
-margin-bottom:20px;
-">
+    <h2 style="text-align:center;">
         LAMPIRAN FOTO CHECKSHEET
     </h2>
 
-    @foreach ($checksheet->sections as $section)
-        @foreach ($section->items as $item)
-            @foreach ($item->details as $detail)
-                @if ($detail->result && $detail->result->photos->count())
-                    <table style="
-            margin-bottom:20px;
-            ">
+    @php
+        $counter = 0;
+    @endphp
 
-                        <tr>
+    <table width="100%" cellspacing="0" cellpadding="4">
 
-                            <td width="30%">
-                                Aktivitas
-                            </td>
+        <tr>
 
-                            <td>
-                                {{ $detail->aktivitas }}
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>
-                                Status
-                            </td>
-
-                            <td>
-
-                                {{ $detail->result->status }}
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>
-                                Keterangan
-                            </td>
-
-                            <td>
-
-                                {{ $detail->result->keterangan }}
-
-                            </td>
-
-                        </tr>
-
-                    </table>
-
-                    <table width="100%" style="
-            margin-bottom:30px;
-            ">
-
-                        <tr>
-
+            @foreach ($checksheet->sections as $section)
+                @foreach ($section->items as $item)
+                    @foreach ($item->details as $detail)
+                        @if ($detail->result && $detail->result->photos->count())
                             @foreach ($detail->result->photos as $photo)
-                                <td width="33%" align="center">
+                                @php
+                                    $counter++;
+                                @endphp
 
-                                    <img src="{{ public_path('uploads/checksheet/' . $photo->foto) }}"
+                                <td width="50%"
+                                    style="
+                            border:1px solid #000;
+                            vertical-align:top;
+                            height:280px;
+                            ">
+
+                                    <b>Aktivitas :</b><br>
+                                    {{ $detail->aktivitas }}
+
+                                    <br><br>
+
+                                    <b>Status :</b>
+                                    {{ $detail->result->status }}
+
+                                    <br><br>
+
+                                    <b>Keterangan :</b><br>
+                                    {{ $detail->result->keterangan }}
+
+                                    <br><br>
+
+                                    <div
                                         style="
-    width:auto;
-    height:220px;
-    border:1px solid #000;
-">
+                                text-align:center;
+                            ">
+
+                                        <img src="{{ public_path('uploads/checksheet/' . $photo->foto) }}"
+                                            style="
+                                    max-width:220px;
+                                    max-height:150px;
+                                    width:auto;
+                                    height:auto;
+                                    border:1px solid #000;
+                                ">
+
+                                    </div>
 
                                 </td>
-                            @endforeach
 
-                        </tr>
+                                @if ($counter % 2 == 0)
+        </tr>
+        <tr>
+            @endif
 
-                    </table>
-                @endif
+            {{-- PAGE BREAK SETELAH 6 FOTO --}}
+            @if ($counter % 6 == 0)
+        </tr>
+    </table>
+
+    <div style="page-break-after:always;"></div>
+
+    <h2 style="text-align:center;">
+        LAMPIRAN FOTO CHECKSHEET
+    </h2>
+
+    <table width="100%" cellspacing="0" cellpadding="4">
+
+        <tr>
+            @endif
             @endforeach
-        @endforeach
-    @endforeach
+            @endif
+            @endforeach
+            @endforeach
+            @endforeach
+
+        </tr>
+
+    </table>
+
+    {{-- End Lampiran --}}
 
 </body>
 
