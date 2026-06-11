@@ -339,6 +339,95 @@
 
     </table>
 
+
+    {{-- Lampiran --}}
+    <div style="page-break-before:always;"></div>
+
+    <h2 style="
+text-align:center;
+margin-bottom:20px;
+">
+        LAMPIRAN FOTO CHECKSHEET
+    </h2>
+
+    @foreach ($checksheet->sections as $section)
+        @foreach ($section->items as $item)
+            @foreach ($item->details as $detail)
+                @if ($detail->result && $detail->result->photos->count())
+                    <table style="
+            margin-bottom:20px;
+            ">
+
+                        <tr>
+
+                            <td width="30%">
+                                Aktivitas
+                            </td>
+
+                            <td>
+                                {{ $detail->aktivitas }}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                Status
+                            </td>
+
+                            <td>
+
+                                {{ $detail->result->status }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                Keterangan
+                            </td>
+
+                            <td>
+
+                                {{ $detail->result->keterangan }}
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                    <table width="100%" style="
+            margin-bottom:30px;
+            ">
+
+                        <tr>
+
+                            @foreach ($detail->result->photos as $photo)
+                                <td width="33%" align="center">
+
+                                    <img src="{{ public_path('uploads/checksheet/' . $photo->foto) }}"
+                                        style="
+                        width:170px;
+                        height:130px;
+                        object-fit:cover;
+                        border:1px solid #000;
+                        ">
+
+                                </td>
+                            @endforeach
+
+                        </tr>
+
+                    </table>
+                @endif
+            @endforeach
+        @endforeach
+    @endforeach
+
 </body>
 
 </html>

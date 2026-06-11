@@ -31,4 +31,12 @@ class ChecksheetResult extends Model
             'detail_id'
         );
     }
+
+    public function photos()
+    {
+        return $this->hasMany(
+            ChecksheetResultPhoto::class,
+            'result_id'
+        );
+    }
 }

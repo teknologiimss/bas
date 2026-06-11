@@ -6,6 +6,7 @@ use App\Models\Checksheet;
 use App\Models\ChecksheetItem;
 use App\Models\ChecksheetItemDetail;
 use App\Models\ChecksheetResult;
+use App\Models\ChecksheetResultPhoto;
 use App\Models\ChecksheetSection;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -174,29 +175,95 @@ class ChecksheetController extends Controller
     // =========================
     // SAVE MOBILE
     // =========================
+    // public function saveMobile(Request $request)
+    // {
+    //     if (empty($request->details)) {
+    //         return back()->with('error', 'Tidak ada data');
+    //     }
+
+    //     foreach ($request->details as $detailId => $data) {
+    //         $detail = \App\Models\ChecksheetItemDetail::find($detailId);
+
+    //         if (!$detail) {
+    //             continue;
+    //         }
+
+    //         ChecksheetResult::updateOrCreate(
+    //             [
+    //                 'detail_id' => $detailId
+    //             ],
+    //             [
+    //                 'item_id' => $detail->item_id,
+    //                 'status' => $data['status'] ?? null,
+    //                 'keterangan' => $data['keterangan'] ?? null,
+    //             ]
+    //         );
+    //     }
+
+    //     return back()->with(
+    //         'success',
+    //         'Checksheet berhasil disimpan'
+    //     );
+    // }
+
     public function saveMobile(Request $request)
     {
         if (empty($request->details)) {
-            return back()->with('error', 'Tidak ada data');
+            return back()
+                ->with('error', 'Tidak ada data');
         }
 
         foreach ($request->details as $detailId => $data) {
-            $detail = \App\Models\ChecksheetItemDetail::find($detailId);
+            $detail =
+                ChecksheetItemDetail::find($detailId);
 
             if (!$detail) {
                 continue;
             }
 
-            ChecksheetResult::updateOrCreate(
-                [
-                    'detail_id' => $detailId
-                ],
-                [
-                    'item_id' => $detail->item_id,
-                    'status' => $data['status'] ?? null,
-                    'keterangan' => $data['keterangan'] ?? null,
-                ]
-            );
+            $result =
+                ChecksheetResult::updateOrCreate(
+                    [
+                        'detail_id' => $detailId
+                    ],
+                    [
+                        'item_id' => $detail->item_id,
+                        'status' => $data['status'] ?? null,
+                        'keterangan' => $data['keterangan'] ?? null,
+                    ]
+                );
+
+            /*
+             * ==========================
+             * SIMPAN FOTO
+             * ==========================
+             */
+
+            if (
+                isset($data['photos'])
+            ) {
+                foreach (
+                    $data['photos'] as $photo
+                ) {
+                    $filename =
+                        time() . '_'
+                        . uniqid()
+                        . '.' . $photo
+                            ->getClientOriginalExtension();
+
+                    $photo->move(
+                        public_path(
+                            'uploads/checksheet'
+                        ),
+                        $filename
+                    );
+
+                    ChecksheetResultPhoto::create([
+                        'result_id' => $result->id,
+                        'foto' => $filename
+                    ]);
+                }
+            }
         }
 
         return back()->with(
@@ -487,8 +554,12 @@ class ChecksheetController extends Controller
 
     public function print($id)
     {
+        // $checksheet = Checksheet::with([
+        //     'sections.items.details.result'
+        // ])->findOrFail($id);
+
         $checksheet = Checksheet::with([
-            'sections.items.details.result'
+            'sections.items.details.result.photos'
         ])->findOrFail($id);
 
         return view(
@@ -499,8 +570,12 @@ class ChecksheetController extends Controller
 
     public function pdf($id)
     {
+        // $checksheet = Checksheet::with([
+        //     'sections.items.details.result'
+        // ])->findOrFail($id);
+
         $checksheet = Checksheet::with([
-            'sections.items.details.result'
+            'sections.items.details.result.photos'
         ])->findOrFail($id);
 
         $pdf = Pdf::loadView(

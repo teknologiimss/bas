@@ -317,6 +317,21 @@
         .save-btn {
             max-width: 100%;
         }
+
+        /* Photo */
+        .preview-area {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .preview-area img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
     </style>
 
     <div class="mobile-container py-3">
@@ -417,7 +432,8 @@
         </div>
 
         {{-- FORM --}}
-        <form method="POST" action="{{ route('checksheet.mobile.save') }}">
+        {{-- <form method="POST" action="{{ route('checksheet.mobile.save') }}"> --}}
+        <form method="POST" action="{{ route('checksheet.mobile.save') }}" enctype="multipart/form-data">
 
             @csrf
 
@@ -513,6 +529,42 @@
                                                 {{-- KETERANGAN --}}
                                                 <textarea name="details[{{ $detail->id }}][keterangan]" class="form-control mt-3" rows="2" autocomplete="off"
                                                     placeholder="Tambahkan keterangan jika diperlukan...">{{ optional($detail->result)->keterangan }}</textarea>
+
+                                                {{-- Photo --}}
+                                                <div class="mt-3">
+
+                                                    <label class="fw-bold">
+                                                        📷 Foto Kegiatan
+                                                    </label>
+
+                                                    <input type="file" class="form-control"
+                                                        name="details[{{ $detail->id }}][photos][]" accept="image/*"
+                                                        capture="environment" multiple>
+
+                                                    <div class="preview-area" id="preview-{{ $detail->id }}">
+                                                    </div>
+
+                                                    <label class="btn btn-danger">
+
+                                                        <i class="fa fa-camera"></i>
+                                                        Ambil Foto
+
+                                                        <input type="file" accept="image/*" capture="environment"
+                                                            style="display:none;">
+
+                                                    </label>
+
+                                                </div>
+                                                {{-- Preview Foto --}}
+                                                @if (optional($detail->result)->photos)
+                                                    <div class="preview-area">
+
+                                                        @foreach ($detail->result->photos as $photo)
+                                                            <img src="{{ asset('uploads/checksheet/' . $photo->foto) }}">
+                                                        @endforeach
+
+                                                    </div>
+                                                @endif
 
                                             </div>
                                         @endforeach
@@ -613,5 +665,43 @@
             });
 
         });
+    </script>
+
+
+    <script>
+        document.querySelectorAll('input[type=file]')
+            .forEach(input => {
+
+                input.addEventListener('change', function() {
+
+                    let id =
+                        this.name.match(/\[(\d+)\]/)[1];
+
+                    let preview =
+                        document.getElementById(
+                            'preview-' + id
+                        );
+
+                    preview.innerHTML = '';
+
+                    [...this.files].forEach(file => {
+
+                        let reader =
+                            new FileReader();
+
+                        reader.onload = function(e) {
+
+                            preview.innerHTML +=
+                                `<img src="${e.target.result}">`;
+
+                        }
+
+                        reader.readAsDataURL(file);
+
+                    });
+
+                });
+
+            });
     </script>
 @endsection
