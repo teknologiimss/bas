@@ -6,11 +6,11 @@ use App\Models\Checksheet;
 use App\Models\ChecksheetItem;
 use App\Models\ChecksheetItemDetail;
 use App\Models\ChecksheetResult;
-use Image;
 use App\Models\ChecksheetResultPhoto;
 use App\Models\ChecksheetSection;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Image;
 
 class ChecksheetController extends Controller
 {
@@ -240,24 +240,118 @@ class ChecksheetController extends Controller
              * ==========================
              */
 
-            if (
-                isset($data['photos'])
-            ) {
-                foreach (
-                    $data['photos'] as $photo
-                ) {
+            // if (
+            //     isset($data['photos'])
+            // ) {
+            //     foreach (
+            //         $data['photos'] as $photo
+            //     ) {
+            //         $filename =
+            //             time() . '_'
+            //             . uniqid()
+            //             . '.' . $photo
+            //                 ->getClientOriginalExtension();
+
+            //         $photo->move(
+            //             public_path(
+            //                 'uploads/checksheet'
+            //             ),
+            //             $filename
+            //         );
+
+            //         ChecksheetResultPhoto::create([
+            //             'result_id' => $result->id,
+            //             'foto' => $filename
+            //         ]);
+            //     }
+            // }
+
+            if (isset($data['photos'])) {
+                foreach ($data['photos'] as $photo) {
                     $filename =
                         time() . '_'
-                        . uniqid()
-                        . '.' . $photo
-                            ->getClientOriginalExtension();
+                        . uniqid() . '.'
+                        . $photo->getClientOriginalExtension();
+
+                    // ==========================
+                    // SIMPAN FOTO
+                    // ==========================
 
                     $photo->move(
-                        public_path(
-                            'uploads/checksheet'
-                        ),
+                        public_path('uploads/checksheet'),
                         $filename
                     );
+
+                    $filePath = public_path(
+                        'uploads/checksheet/' . $filename
+                    );
+
+                    // ==========================
+                    // AUTO ROTATE FOTO HP
+                    // ==========================
+
+                    try {
+                        if (function_exists('exif_read_data')) {
+                            $exif = @exif_read_data($filePath);
+
+                            if (
+                                isset($exif['Orientation'])
+                            ) {
+                                $orientation =
+                                    $exif['Orientation'];
+
+                                $image =
+                                    imagecreatefromstring(
+                                        file_get_contents(
+                                            $filePath
+                                        )
+                                    );
+
+                                switch ($orientation) {
+                                    case 3:
+                                        $image =
+                                            imagerotate(
+                                                $image,
+                                                180,
+                                                0
+                                            );
+                                        break;
+
+                                    case 6:
+                                        $image =
+                                            imagerotate(
+                                                $image,
+                                                -90,
+                                                0
+                                            );
+                                        break;
+
+                                    case 8:
+                                        $image =
+                                            imagerotate(
+                                                $image,
+                                                90,
+                                                0
+                                            );
+                                        break;
+                                }
+
+                                imagejpeg(
+                                    $image,
+                                    $filePath,
+                                    85
+                                );
+
+                                imagedestroy($image);
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        // abaikan jika exif gagal
+                    }
+
+                    // ==========================
+                    // SIMPAN DATABASE
+                    // ==========================
 
                     ChecksheetResultPhoto::create([
                         'result_id' => $result->id,

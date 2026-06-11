@@ -411,11 +411,9 @@ margin-bottom:20px;
 
                                     <img src="{{ public_path('uploads/checksheet/' . $photo->foto) }}"
                                         style="
-width:auto;
-height:auto;
-max-width:220px;
-max-height:220px;
-border:1px solid #000;
+    width:auto;
+    height:220px;
+    border:1px solid #000;
 ">
 
                                 </td>
