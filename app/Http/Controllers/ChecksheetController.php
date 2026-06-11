@@ -10,7 +10,7 @@ use App\Models\ChecksheetResultPhoto;
 use App\Models\ChecksheetSection;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Image;
+use Intervention\Image\Facades\Image;
 
 class ChecksheetController extends Controller
 {
