@@ -597,7 +597,6 @@
                                                                     onsubmit="return confirm('Hapus foto ini?')">
 
                                                                     @csrf
-                                                                    @method('DELETE')
 
                                                                     <button type="submit" class="btn-delete-photo">
                                                                         <i class="fa fa-trash"></i>

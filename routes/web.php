@@ -571,8 +571,8 @@ Route::prefix('products')->group(function () {
     Route::get('/checksheet/{id}/pdf', [ChecksheetController::class, 'pdf'])
         ->name('checksheet.pdf');
 
-    Route::delete(
-        '/checksheet/photo/{id}',
+    Route::post(
+        '/checksheet/photo/{id}/delete',
         [ChecksheetController::class, 'deletePhoto']
     )->name('checksheet.photo.delete');
 
