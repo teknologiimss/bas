@@ -544,15 +544,7 @@
                                                     <div class="preview-area" id="preview-{{ $detail->id }}">
                                                     </div>
 
-                                                    <label class="btn btn-danger">
-
-                                                        <i class="fa fa-camera"></i>
-                                                        Ambil Foto
-
-                                                        <input type="file" accept="image/*" capture="environment"
-                                                            style="display:none;">
-
-                                                    </label>
+                                                    
 
                                                 </div>
                                                 {{-- Preview Foto --}}
