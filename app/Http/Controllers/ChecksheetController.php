@@ -10,7 +10,6 @@ use App\Models\ChecksheetResultPhoto;
 use App\Models\ChecksheetSection;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Image;
 
 class ChecksheetController extends Controller
@@ -351,34 +350,6 @@ class ChecksheetController extends Controller
                     }
 
                     // ==========================
-                    // WATERMARK FOTO
-                    // ==========================
-
-                    $lokasi =
-                        $request->lokasi
-                            ?? 'Lokasi tidak tersedia';
-
-                    $unit =
-                        Checksheet::find(
-                            $detail
-                                ->item
-                                ->section
-                                ->checksheet_id
-                        )->unit ?? '-';
-
-                    Log::info('DATA LOKASI', [
-                        'latitude' => $request->latitude,
-                        'longitude' => $request->longitude,
-                        'lokasi' => $request->lokasi
-                    ]);
-
-                    $this->addTimestampToImage(
-                        $filePath,
-                        $unit,
-                        $lokasi
-                    );
-
-                    // ==========================
                     // SIMPAN DATABASE
                     // ==========================
 
@@ -395,8 +366,6 @@ class ChecksheetController extends Controller
             'Checksheet berhasil disimpan'
         );
     }
-
-    // gps
 
     // =========================
     // DELETE
@@ -714,191 +683,5 @@ class ChecksheetController extends Controller
         return $pdf->stream(
             'checksheet.pdf'
         );
-    }
-
-    private function addTimestampToImage(
-        $filePath,
-        $unit,
-        $lokasi
-    ) {
-        Log::info('=== TIMESTAMP START ===', [
-            'file' => $filePath,
-            'unit' => $unit,
-            'lokasi' => $lokasi
-        ]);
-
-        try {
-            if (!file_exists($filePath)) {
-                Log::error('File tidak ditemukan', [
-                    'file' => $filePath
-                ]);
-
-                return;
-            }
-
-            $image =
-                imagecreatefromstring(
-                    file_get_contents($filePath)
-                );
-
-            if (!$image) {
-                Log::error('Gagal membaca gambar');
-
-                return;
-            }
-
-            $width =
-                imagesx($image);
-
-            $height =
-                imagesy($image);
-
-            Log::info('Ukuran gambar', [
-                'width' => $width,
-                'height' => $height
-            ]);
-
-            $black =
-                imagecolorallocate(
-                    $image,
-                    0,
-                    0,
-                    0
-                );
-
-            $white =
-                imagecolorallocate(
-                    $image,
-                    255,
-                    255,
-                    255
-                );
-
-            $gray =
-                imagecolorallocate(
-                    $image,
-                    240,
-                    240,
-                    240
-                );
-
-            $tanggal =
-                now()
-                    ->timezone('Asia/Jakarta')
-                    ->format('d-m-Y H:i:s') . ' WIB';
-
-            $lokasi =
-                substr(
-                    $lokasi ?? '-',
-                    0,
-                    120
-                );
-
-            $line1 =
-                'Tanggal : ' . $tanggal;
-
-            $line2 =
-                'Unit : ' . $unit;
-
-            $line3 =
-                'Lokasi : ' . $lokasi;
-
-            $boxHeight = 90;
-
-            imagefilledrectangle(
-                $image,
-                0,
-                $height - $boxHeight,
-                $width,
-                $height,
-                $gray
-            );
-
-            imagerectangle(
-                $image,
-                0,
-                $height - $boxHeight,
-                $width - 1,
-                $height - 1,
-                $black
-            );
-
-            imagestring(
-                $image,
-                5,
-                10,
-                $height - 80,
-                $line1,
-                $black
-            );
-
-            imagestring(
-                $image,
-                5,
-                10,
-                $height - 55,
-                $line2,
-                $black
-            );
-
-            imagestring(
-                $image,
-                5,
-                10,
-                $height - 30,
-                $line3,
-                $black
-            );
-
-            $extension =
-                strtolower(
-                    pathinfo(
-                        $filePath,
-                        PATHINFO_EXTENSION
-                    )
-                );
-
-            Log::info('Extension', [
-                'ext' => $extension
-            ]);
-
-            switch ($extension) {
-                case 'png':
-                    imagepng(
-                        $image,
-                        $filePath
-                    );
-
-                    break;
-
-                case 'gif':
-                    imagegif(
-                        $image,
-                        $filePath
-                    );
-
-                    break;
-
-                default:
-                    imagejpeg(
-                        $image,
-                        $filePath,
-                        90
-                    );
-
-                    break;
-            }
-
-            imagedestroy($image);
-
-            Log::info(
-                '=== TIMESTAMP BERHASIL ==='
-            );
-        } catch (\Exception $e) {
-            Log::error(
-                'TIMESTAMP ERROR : '
-                . $e->getMessage()
-            );
-        }
     }
 }
