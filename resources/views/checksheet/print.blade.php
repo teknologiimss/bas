@@ -358,103 +358,179 @@
 
 
     {{-- ========================================= --}}
-    {{-- LAMPIRAN FOTO CHECKSHEET --}}
-    {{-- ========================================= --}}
+{{-- LAMPIRAN FOTO CHECKSHEET --}}
+{{-- ========================================= --}}
 
-    <div style="page-break-before:always;"></div>
+<div style="page-break-before: always;"></div>
 
-    <h2 style="text-align:center;">
+@php
+    $lampiran = [];
+
+    foreach ($checksheet->sections as $section) {
+        foreach ($section->items as $item) {
+            foreach ($item->details as $detail) {
+
+                if (
+                    $detail->result &&
+                    $detail->result->photos &&
+                    $detail->result->photos->count()
+                ) {
+                    foreach ($detail->result->photos as $photo) {
+
+                        $lampiran[] = [
+                            'aktivitas'   => $detail->aktivitas,
+                            'status'      => $detail->result->status,
+                            'keterangan'  => $detail->result->keterangan,
+                            'foto'        => $photo->foto,
+                        ];
+
+                    }
+                }
+
+            }
+        }
+    }
+
+    $chunks = array_chunk($lampiran, 6);
+@endphp
+
+@foreach($chunks as $halaman)
+
+    <h2 style="
+        text-align:center;
+        margin-bottom:10px;
+    ">
         LAMPIRAN FOTO CHECKSHEET
     </h2>
 
-    @php
-        $counter = 0;
-    @endphp
+    <table width="100%"
+        cellspacing="0"
+        cellpadding="0"
+        style="
+            border-collapse:collapse;
+            table-layout:fixed;
+            margin-bottom:20px;
+        ">
 
-    <table width="100%" cellspacing="0" cellpadding="4">
+        @foreach(array_chunk($halaman, 2) as $row)
 
-        <tr>
+            <tr>
 
-            @foreach ($checksheet->sections as $section)
-                @foreach ($section->items as $item)
-                    @foreach ($item->details as $detail)
-                        @if ($detail->result && $detail->result->photos->count())
-                            @foreach ($detail->result->photos as $photo)
-                                @php
-                                    $counter++;
-                                @endphp
+                @foreach($row as $item)
 
-                                <td width="50%"
-                                    style="
+                    <td
+                        width="50%"
+                        style="
                             border:1px solid #000;
                             vertical-align:top;
-                            height:280px;
-                            ">
+                            padding:8px;
+                            height:250px;
+                        "
+                    >
 
-                                    <b>Aktivitas :</b><br>
-                                    {{ $detail->aktivitas }}
+                        <table
+                            width="100%"
+                            cellspacing="0"
+                            cellpadding="2"
+                            style="
+                                border-collapse:collapse;
+                            "
+                        >
 
-                                    <br><br>
-
-                                    <b>Status :</b>
-                                    {{ $detail->result->status }}
-
-                                    <br><br>
-
-                                    <b>Keterangan :</b><br>
-                                    {{ $detail->result->keterangan }}
-
-                                    <br><br>
-
-                                    <div
-                                        style="
-                                text-align:center;
-                            ">
-
-                                        <img src="{{ public_path('uploads/checksheet/' . $photo->foto) }}"
-                                            style="
-                                    max-width:220px;
-                                    max-height:150px;
-                                    width:auto;
-                                    height:auto;
-                                    border:1px solid #000;
-                                ">
-
-                                    </div>
-
+                            <tr>
+                                <td width="28%">
+                                    <b>Aktivitas</b>
                                 </td>
 
-                                @if ($counter % 2 == 0)
-        </tr>
-        <tr>
-            @endif
+                                <td width="2%">
+                                    :
+                                </td>
 
-            {{-- PAGE BREAK SETELAH 6 FOTO --}}
-            @if ($counter % 6 == 0)
-        </tr>
+                                <td>
+                                    {{ $item['aktivitas'] }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <b>Status</b>
+                                </td>
+
+                                <td>
+                                    :
+                                </td>
+
+                                <td>
+                                    {{ $item['status'] }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <b>Keterangan</b>
+                                </td>
+
+                                <td>
+                                    :
+                                </td>
+
+                                <td>
+                                    {{ $item['keterangan'] }}
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <div
+                            style="
+                                text-align:center;
+                                margin-top:10px;
+                            "
+                        >
+
+                            <img
+                                src="{{ public_path('uploads/checksheet/' . $item['foto']) }}"
+                                style="
+                                    width:auto;
+                                    height:140px;
+                                    max-width:240px;
+                                    border:1px solid #000;
+                                "
+                            >
+
+                        </div>
+
+                    </td>
+
+                @endforeach
+
+                @if(count($row) == 1)
+
+                    <td
+                        width="50%"
+                        style="
+                            border:1px solid #000;
+                        "
+                    >
+                    </td>
+
+                @endif
+
+            </tr>
+
+        @endforeach
+
     </table>
 
-    <div style="page-break-after:always;"></div>
+    @if(!$loop->last)
+        <div style="page-break-after:always;"></div>
+    @endif
 
-    <h2 style="text-align:center;">
-        LAMPIRAN FOTO CHECKSHEET
-    </h2>
+@endforeach
 
-    <table width="100%" cellspacing="0" cellpadding="4">
-
-        <tr>
-            @endif
-            @endforeach
-            @endif
-            @endforeach
-            @endforeach
-            @endforeach
-
-        </tr>
-
-    </table>
-
-    {{-- End Lampiran --}}
+{{-- ========================================= --}}
+{{-- END LAMPIRAN FOTO CHECKSHEET --}}
+{{-- ========================================= --}}
 
 </body>
 
