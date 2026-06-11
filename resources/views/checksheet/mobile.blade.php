@@ -332,6 +332,40 @@
             object-fit: cover;
             border-radius: 10px;
         }
+
+
+        .photo-item {
+            position: relative;
+            display: inline-block;
+        }
+
+        .photo-item img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .btn-delete-photo {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 50%;
+            background: #dc3545;
+            color: white;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-delete-photo:hover {
+            background: #b02a37;
+        }
     </style>
 
     <div class="mobile-container py-3">
@@ -436,7 +470,7 @@
         <form method="POST" action="{{ route('checksheet.mobile.save') }}" enctype="multipart/form-data">
 
             @csrf
-            
+
 
             <div class="accordion" id="accordionChecksheet">
 
@@ -545,15 +579,33 @@
                                                     <div class="preview-area" id="preview-{{ $detail->id }}">
                                                     </div>
 
-                                                    
+
 
                                                 </div>
-                                                {{-- Preview Foto --}}
+                                                {{-- Preview dan hapus Foto --}}
                                                 @if (optional($detail->result)->photos)
                                                     <div class="preview-area">
 
                                                         @foreach ($detail->result->photos as $photo)
-                                                            <img src="{{ asset('uploads/checksheet/' . $photo->foto) }}">
+                                                            <div class="photo-item">
+
+                                                                <img
+                                                                    src="{{ asset('uploads/checksheet/' . $photo->foto) }}">
+
+                                                                <form method="POST"
+                                                                    action="{{ route('checksheet.photo.delete', $photo->id) }}"
+                                                                    onsubmit="return confirm('Hapus foto ini?')">
+
+                                                                    @csrf
+                                                                    @method('DELETE')
+
+                                                                    <button type="submit" class="btn-delete-photo">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </button>
+
+                                                                </form>
+
+                                                            </div>
                                                         @endforeach
 
                                                     </div>

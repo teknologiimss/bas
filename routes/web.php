@@ -571,6 +571,11 @@ Route::prefix('products')->group(function () {
     Route::get('/checksheet/{id}/pdf', [ChecksheetController::class, 'pdf'])
         ->name('checksheet.pdf');
 
+    Route::delete(
+        '/checksheet/photo/{id}',
+        [ChecksheetController::class, 'deletePhoto']
+    )->name('checksheet.photo.delete');
+
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     // Route::resource('justi', App\Http\Controllers\JustiController::class)->except(['destroy']);
@@ -776,8 +781,6 @@ Route::post('/lp3m/upload-lampiran',
         [Lp3mController::class, 'uploadLampiran'])
     ->name('lp3m.uploadLampiran');
 
-
-
 // Rewinding
 
 // Route::post(
@@ -800,28 +803,26 @@ Route::post(
 Route::resource('rewinding', RewindingController::class)
     ->except(['show']);
 
-    Route::get(
+Route::get(
     '/rewinding/{rewinding}/detail',
-    [RewindingController::class,'detail']
+    [RewindingController::class, 'detail']
 )->name('rewinding.detail');
 
 Route::post(
     '/rewinding/{rewinding}/detail',
-    [RewindingController::class,'detailStore']
+    [RewindingController::class, 'detailStore']
 )->name('rewinding.detail.store');
 
 Route::delete(
     '/rewinding-lampiran/{lampiran}',
-    [RewindingController::class,'hapusLampiranDetail']
+    [RewindingController::class, 'hapusLampiranDetail']
 )->name('rewinding.lampiran.delete');
 
-
-
 /*
-|--------------------------------------------------------------------------
-| CHECKSHEET HARIAN FASILITAS
-|--------------------------------------------------------------------------
-*/
+ * |--------------------------------------------------------------------------
+ * | CHECKSHEET HARIAN FASILITAS
+ * |--------------------------------------------------------------------------
+ */
 
 Route::resource(
     'fasilitas-harian',

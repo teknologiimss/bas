@@ -10,6 +10,7 @@ use App\Models\ChecksheetResultPhoto;
 use App\Models\ChecksheetSection;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Image;
 
 class ChecksheetController extends Controller
@@ -682,6 +683,30 @@ class ChecksheetController extends Controller
 
         return $pdf->stream(
             'checksheet.pdf'
+        );
+    }
+
+    // delete photo
+    public function deletePhoto($id)
+    {
+        $photo =
+            ChecksheetResultPhoto::findOrFail($id);
+
+        $path =
+            public_path(
+                'uploads/checksheet/'
+                . $photo->foto
+            );
+
+        if (File::exists($path)) {
+            File::delete($path);
+        }
+
+        $photo->delete();
+
+        return back()->with(
+            'success',
+            'Foto berhasil dihapus'
         );
     }
 }
