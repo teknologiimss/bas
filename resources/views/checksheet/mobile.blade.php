@@ -437,6 +437,11 @@
 
             @csrf
 
+            {{-- gps --}}
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+            <input type="hidden" name="lokasi" id="lokasi">
+
             <div class="accordion" id="accordionChecksheet">
 
                 @foreach ($checksheet->sections as $section)
@@ -544,7 +549,7 @@
                                                     <div class="preview-area" id="preview-{{ $detail->id }}">
                                                     </div>
 
-                                                    
+
 
                                                 </div>
                                                 {{-- Preview Foto --}}
@@ -695,5 +700,63 @@
                 });
 
             });
+    </script>
+
+    {{-- gps --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            if (!navigator.geolocation) {
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+
+                async function(position) {
+
+                        let lat = position.coords.latitude;
+                        let lng = position.coords.longitude;
+
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lng;
+
+                        try {
+
+                            const response = await fetch(
+                                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+                            );
+
+                            const data = await response.json();
+
+                            if (data.display_name) {
+
+                                document.getElementById('lokasi').value =
+                                    data.display_name;
+
+                            }
+
+                        } catch (err) {
+
+                            console.log(err);
+
+                        }
+
+                    },
+
+                    function(error) {
+
+                        console.log(error);
+
+                    },
+
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+
+            );
+
+        });
     </script>
 @endsection

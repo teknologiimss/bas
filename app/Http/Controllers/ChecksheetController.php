@@ -10,6 +10,7 @@ use App\Models\ChecksheetResultPhoto;
 use App\Models\ChecksheetSection;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Image;
 
 class ChecksheetController extends Controller
@@ -350,6 +351,28 @@ class ChecksheetController extends Controller
                     }
 
                     // ==========================
+                    // WATERMARK FOTO
+                    // ==========================
+
+                    $lokasi =
+                        $request->lokasi
+                            ?? 'Lokasi tidak tersedia';
+
+                    $unit =
+                        Checksheet::find(
+                            $detail
+                                ->item
+                                ->section
+                                ->checksheet_id
+                        )->unit ?? '-';
+
+                    $this->addTimestampToImage(
+                        $filePath,
+                        $unit,
+                        $lokasi
+                    );
+
+                    // ==========================
                     // SIMPAN DATABASE
                     // ==========================
 
@@ -366,6 +389,8 @@ class ChecksheetController extends Controller
             'Checksheet berhasil disimpan'
         );
     }
+
+    // gps
 
     // =========================
     // DELETE
@@ -683,5 +708,124 @@ class ChecksheetController extends Controller
         return $pdf->stream(
             'checksheet.pdf'
         );
+    }
+
+    private function addTimestampToImage(
+        $filePath,
+        $unit,
+        $lokasi
+    ) {
+        try {
+            $image =
+                imagecreatefromstring(
+                    file_get_contents($filePath)
+                );
+
+            if (!$image) {
+                return;
+            }
+
+            $width = imagesx($image);
+            $height = imagesy($image);
+
+            $white =
+                imagecolorallocate(
+                    $image,
+                    255,
+                    255,
+                    255
+                );
+
+            $black =
+                imagecolorallocate(
+                    $image,
+                    0,
+                    0,
+                    0
+                );
+
+            $gray =
+                imagecolorallocate(
+                    $image,
+                    240,
+                    240,
+                    240
+                );
+
+            $tanggal =
+                date('d-m-Y H:i:s') . ' WIB';
+
+            // batasi lokasi agar tidak terlalu panjang
+            $lokasi =
+                substr($lokasi, 0, 80);
+
+            $line1 =
+                'Tanggal : ' . $tanggal;
+
+            $line2 =
+                'Unit : ' . $unit;
+
+            $line3 =
+                'Lokasi : ' . $lokasi;
+
+            $boxHeight = 70;
+
+            imagefilledrectangle(
+                $image,
+                0,
+                $height - $boxHeight,
+                $width,
+                $height,
+                $gray
+            );
+
+            imagerectangle(
+                $image,
+                0,
+                $height - $boxHeight,
+                $width - 1,
+                $height - 1,
+                $black
+            );
+
+            imagestring(
+                $image,
+                4,
+                10,
+                $height - 60,
+                $line1,
+                $black
+            );
+
+            imagestring(
+                $image,
+                4,
+                10,
+                $height - 40,
+                $line2,
+                $black
+            );
+
+            imagestring(
+                $image,
+                4,
+                10,
+                $height - 20,
+                $line3,
+                $black
+            );
+
+            imagejpeg(
+                $image,
+                $filePath,
+                90
+            );
+
+            imagedestroy($image);
+        } catch (\Exception $e) {
+            Log::error(
+                $e->getMessage()
+            );
+        }
     }
 }
