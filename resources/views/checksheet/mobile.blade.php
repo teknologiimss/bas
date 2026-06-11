@@ -576,6 +576,18 @@
                                                         name="details[{{ $detail->id }}][photos][]" accept="image/*"
                                                         capture="environment" multiple>
 
+                                                    {{-- GPS --}}
+                                                    <input type="hidden" name="details[{{ $detail->id }}][latitude]"
+                                                        id="lat-{{ $detail->id }}">
+
+                                                    <input type="hidden" name="details[{{ $detail->id }}][longitude]"
+                                                        id="lng-{{ $detail->id }}">
+
+                                                    <input type="hidden" name="details[{{ $detail->id }}][alamat]"
+                                                        id="alamat-{{ $detail->id }}">
+
+                                                    {{-- End GPS --}}
+
                                                     <div class="preview-area" id="preview-{{ $detail->id }}">
                                                     </div>
 
@@ -709,39 +721,281 @@
 
 
     <script>
-        document.querySelectorAll('input[type=file]')
+        document
+            .querySelectorAll('input[type=file]')
             .forEach(input => {
 
-                input.addEventListener('change', function() {
+                input.addEventListener(
+                    'change',
+                    async function() {
 
-                    let id =
-                        this.name.match(/\[(\d+)\]/)[1];
+                        const files = [...this.files];
 
-                    let preview =
-                        document.getElementById(
-                            'preview-' + id
-                        );
+                        const detailId =
+                            this.name.match(/\[(\d+)\]/)[1];
 
-                    preview.innerHTML = '';
+                        const preview =
+                            document.getElementById(
+                                'preview-' + detailId
+                            );
 
-                    [...this.files].forEach(file => {
+                        preview.innerHTML = '';
 
-                        let reader =
-                            new FileReader();
+                        let dt =
+                            new DataTransfer();
 
-                        reader.onload = function(e) {
+                        for (const file of files) {
+
+                            const img =
+                                new Image();
+
+                            img.src =
+                                URL.createObjectURL(file);
+
+                            await new Promise(
+                                resolve => {
+                                    img.onload = resolve;
+                                }
+                            );
+
+                            const canvas =
+                                document.createElement(
+                                    'canvas'
+                                );
+
+                            canvas.width =
+                                img.width;
+
+                            canvas.height =
+                                img.height;
+
+                            const ctx =
+                                canvas.getContext(
+                                    '2d'
+                                );
+
+                            ctx.drawImage(
+                                img,
+                                0,
+                                0
+                            );
+
+                            
+
+                            // =====================
+                            // WATERMARK GPS CAMERA
+                            // =====================
+
+                            const now = new Date();
+
+                            const tanggal =
+                                now.toLocaleDateString('id-ID');
+
+                            const jam =
+                                now.toLocaleTimeString('id-ID');
+
+                            // alamat pendek
+                            let alamat = gpsData.alamat || '';
+
+                            if (alamat.length > 45) {
+                                alamat =
+                                    alamat.substring(0, 45) + '...';
+                            }
+
+                            // ukuran box
+                            const boxWidth =
+                                canvas.width * 0.45;
+
+                            const boxHeight = 140;
+
+                            const boxX =
+                                canvas.width - boxWidth - 15;
+
+                            const boxY =
+                                canvas.height - boxHeight - 15;
+
+                            // background transparan
+                            ctx.fillStyle =
+                                'rgba(0,0,0,0.45)';
+
+                            ctx.fillRect(
+                                boxX,
+                                boxY,
+                                boxWidth,
+                                boxHeight
+                            );
+
+                            // =====================
+                            // TEXT
+                            // =====================
+
+                            ctx.fillStyle = '#ffffff';
+
+                            ctx.textAlign = 'left';
+
+                            // tanggal jam
+                            ctx.font = 'bold 28px Arial';
+
+                            ctx.fillText(
+                                `${tanggal} ${jam}`,
+                                boxX + 15,
+                                boxY + 35
+                            );
+
+                            // latitude
+                            ctx.font = '22px Arial';
+
+                            ctx.fillText(
+                                `Lat : ${gpsData.lat}`,
+                                boxX + 15,
+                                boxY + 70
+                            );
+
+                            // longitude
+                            ctx.fillText(
+                                `Lng : ${gpsData.lng}`,
+                                boxX + 15,
+                                boxY + 100
+                            );
+
+                            // alamat
+                            ctx.fillText(
+                                alamat,
+                                boxX + 15,
+                                boxY + 130
+                            );
+
+                            // =====================
+                            // PREVIEW
+                            // =====================
 
                             preview.innerHTML +=
-                                `<img src="${e.target.result}">`;
+                                `
+                <img
+                    src="${canvas.toDataURL()}"
+                    style="
+                        width:90px;
+                        height:90px;
+                        object-fit:cover;
+                        border-radius:10px;
+                    ">
+                `;
+
+                            // =====================
+                            // GANTI FILE
+                            // =====================
+
+                            const blob =
+                                await new Promise(
+                                    resolve =>
+                                    canvas.toBlob(
+                                        resolve,
+                                        'image/jpeg',
+                                        0.92
+                                    )
+                                );
+
+                            const newFile =
+                                new File(
+                                    [blob],
+                                    file.name, {
+                                        type: 'image/jpeg'
+                                    }
+                                );
+
+                            dt.items.add(
+                                newFile
+                            );
 
                         }
 
-                        reader.readAsDataURL(file);
+                        this.files =
+                            dt.files;
 
-                    });
-
-                });
+                    }
+                );
 
             });
+    </script>
+
+
+    {{-- GPS --}}
+    <script>
+        let gpsData = {
+            lat: '',
+            lng: '',
+            alamat: ''
+        };
+
+        async function initLocation() {
+
+            if (!navigator.geolocation) {
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+
+                async function(position) {
+
+                        gpsData.lat =
+                            position.coords.latitude;
+
+                        gpsData.lng =
+                            position.coords.longitude;
+
+                        try {
+
+                            const response =
+                                await fetch(
+                                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${gpsData.lat}&lon=${gpsData.lng}`
+                                );
+
+                            const data =
+                                await response.json();
+
+                            gpsData.alamat =
+                                data.display_name ?? '';
+
+                        } catch (e) {
+
+                            console.log(e);
+
+                        }
+
+                        document
+                            .querySelectorAll('[id^=lat-]')
+                            .forEach(el => {
+                                el.value = gpsData.lat;
+                            });
+
+                        document
+                            .querySelectorAll('[id^=lng-]')
+                            .forEach(el => {
+                                el.value = gpsData.lng;
+                            });
+
+                        document
+                            .querySelectorAll('[id^=alamat-]')
+                            .forEach(el => {
+                                el.value = gpsData.alamat;
+                            });
+
+                    },
+
+                    function(err) {
+
+                        console.log(err);
+
+                    },
+
+                    {
+                        enableHighAccuracy: true
+                    }
+
+            );
+
+        }
+
+        initLocation();
     </script>
 @endsection

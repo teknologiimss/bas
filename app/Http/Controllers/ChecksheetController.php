@@ -354,9 +354,25 @@ class ChecksheetController extends Controller
                     // SIMPAN DATABASE
                     // ==========================
 
+                    // ChecksheetResultPhoto::create([
+                    //     'result_id' => $result->id,
+                    //     'foto' => $filename
+                    // ]);
+
                     ChecksheetResultPhoto::create([
                         'result_id' => $result->id,
-                        'foto' => $filename
+                        'foto' => $filename,
+                        'latitude' =>
+                            $data['latitude']
+                                ?? null,
+                        'longitude' =>
+                            $data['longitude']
+                                ?? null,
+                        'alamat' =>
+                            $data['alamat']
+                                ?? null,
+                        'taken_at' =>
+                            now()
                     ]);
                 }
             }
