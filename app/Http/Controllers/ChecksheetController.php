@@ -366,6 +366,12 @@ class ChecksheetController extends Controller
                                 ->checksheet_id
                         )->unit ?? '-';
 
+                    Log::info('DATA LOKASI', [
+                        'latitude' => $request->latitude,
+                        'longitude' => $request->longitude,
+                        'lokasi' => $request->lokasi
+                    ]);
+
                     $this->addTimestampToImage(
                         $filePath,
                         $unit,
@@ -715,26 +721,42 @@ class ChecksheetController extends Controller
         $unit,
         $lokasi
     ) {
+        Log::info('=== TIMESTAMP START ===', [
+            'file' => $filePath,
+            'unit' => $unit,
+            'lokasi' => $lokasi
+        ]);
+
         try {
+            if (!file_exists($filePath)) {
+                Log::error('File tidak ditemukan', [
+                    'file' => $filePath
+                ]);
+
+                return;
+            }
+
             $image =
                 imagecreatefromstring(
                     file_get_contents($filePath)
                 );
 
             if (!$image) {
+                Log::error('Gagal membaca gambar');
+
                 return;
             }
 
-            $width = imagesx($image);
-            $height = imagesy($image);
+            $width =
+                imagesx($image);
 
-            $white =
-                imagecolorallocate(
-                    $image,
-                    255,
-                    255,
-                    255
-                );
+            $height =
+                imagesy($image);
+
+            Log::info('Ukuran gambar', [
+                'width' => $width,
+                'height' => $height
+            ]);
 
             $black =
                 imagecolorallocate(
@@ -742,6 +764,14 @@ class ChecksheetController extends Controller
                     0,
                     0,
                     0
+                );
+
+            $white =
+                imagecolorallocate(
+                    $image,
+                    255,
+                    255,
+                    255
                 );
 
             $gray =
@@ -753,11 +783,16 @@ class ChecksheetController extends Controller
                 );
 
             $tanggal =
-                date('d-m-Y H:i:s') . ' WIB';
+                now()
+                    ->timezone('Asia/Jakarta')
+                    ->format('d-m-Y H:i:s') . ' WIB';
 
-            // batasi lokasi agar tidak terlalu panjang
             $lokasi =
-                substr($lokasi, 0, 80);
+                substr(
+                    $lokasi ?? '-',
+                    0,
+                    120
+                );
 
             $line1 =
                 'Tanggal : ' . $tanggal;
@@ -768,7 +803,7 @@ class ChecksheetController extends Controller
             $line3 =
                 'Lokasi : ' . $lokasi;
 
-            $boxHeight = 70;
+            $boxHeight = 90;
 
             imagefilledrectangle(
                 $image,
@@ -790,41 +825,79 @@ class ChecksheetController extends Controller
 
             imagestring(
                 $image,
-                4,
+                5,
                 10,
-                $height - 60,
+                $height - 80,
                 $line1,
                 $black
             );
 
             imagestring(
                 $image,
-                4,
+                5,
                 10,
-                $height - 40,
+                $height - 55,
                 $line2,
                 $black
             );
 
             imagestring(
                 $image,
-                4,
+                5,
                 10,
-                $height - 20,
+                $height - 30,
                 $line3,
                 $black
             );
 
-            imagejpeg(
-                $image,
-                $filePath,
-                90
-            );
+            $extension =
+                strtolower(
+                    pathinfo(
+                        $filePath,
+                        PATHINFO_EXTENSION
+                    )
+                );
+
+            Log::info('Extension', [
+                'ext' => $extension
+            ]);
+
+            switch ($extension) {
+                case 'png':
+                    imagepng(
+                        $image,
+                        $filePath
+                    );
+
+                    break;
+
+                case 'gif':
+                    imagegif(
+                        $image,
+                        $filePath
+                    );
+
+                    break;
+
+                default:
+                    imagejpeg(
+                        $image,
+                        $filePath,
+                        90
+                    );
+
+                    break;
+            }
 
             imagedestroy($image);
+
+            Log::info(
+                '=== TIMESTAMP BERHASIL ==='
+            );
         } catch (\Exception $e) {
             Log::error(
-                $e->getMessage()
+                'TIMESTAMP ERROR : '
+                . $e->getMessage()
             );
         }
     }
