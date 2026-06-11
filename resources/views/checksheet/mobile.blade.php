@@ -583,7 +583,7 @@
 
                                                 </div>
                                                 {{-- Preview dan hapus Foto --}}
-                                                @if (optional($detail->result)->photos)
+                                                @if ($detail->result && $detail->result->photos->count())
                                                     <div class="preview-area">
 
                                                         @foreach ($detail->result->photos as $photo)
@@ -592,17 +592,13 @@
                                                                 <img
                                                                     src="{{ asset('uploads/checksheet/' . $photo->foto) }}">
 
-                                                                <form method="POST"
-                                                                    action="{{ route('checksheet.photo.delete', $photo->id) }}"
-                                                                    onsubmit="return confirm('Hapus foto ini?')">
+                                                                <a href="{{ route('checksheet.photo.delete', $photo->id) }}"
+                                                                    class="btn-delete-photo"
+                                                                    onclick="return confirm('Yakin ingin menghapus foto ini?')">
 
-                                                                    @csrf
+                                                                    <i class="fa fa-trash"></i>
 
-                                                                    <button type="submit" class="btn-delete-photo">
-                                                                        <i class="fa fa-trash"></i>
-                                                                    </button>
-
-                                                                </form>
+                                                                </a>
 
                                                             </div>
                                                         @endforeach
