@@ -6,11 +6,11 @@ use App\Models\Checksheet;
 use App\Models\ChecksheetItem;
 use App\Models\ChecksheetItemDetail;
 use App\Models\ChecksheetResult;
+use Image;
 use App\Models\ChecksheetResultPhoto;
 use App\Models\ChecksheetSection;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 
 class ChecksheetController extends Controller
 {
@@ -252,45 +252,11 @@ class ChecksheetController extends Controller
                         . '.' . $photo
                             ->getClientOriginalExtension();
 
-                    // $photo->move(
-                    //     public_path(
-                    //         'uploads/checksheet'
-                    //     ),
-                    //     $filename
-                    // );
-
-                    $path = public_path(
-                        'uploads/checksheet/' . $filename
-                    );
-
-                    $image = Image::make($photo);
-
-                    /*
-                     * |--------------------------------------------------------------------------
-                     * | PERBAIKI ORIENTASI FOTO HP
-                     * |--------------------------------------------------------------------------
-                     */
-
-                    $image->orientate();
-
-                    /*
-                     * |--------------------------------------------------------------------------
-                     * | KOMPRES AGAR FILE TIDAK BESAR
-                     * |--------------------------------------------------------------------------
-                     */
-
-                    $image->resize(
-                        1600,
-                        null,
-                        function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        }
-                    );
-
-                    $image->save(
-                        $path,
-                        85
+                    $photo->move(
+                        public_path(
+                            'uploads/checksheet'
+                        ),
+                        $filename
                     );
 
                     ChecksheetResultPhoto::create([
