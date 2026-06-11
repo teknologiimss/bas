@@ -690,18 +690,27 @@ class ChecksheetController extends Controller
     public function deletePhoto($id)
     {
         $photo =
-            ChecksheetResultPhoto::findOrFail($id);
+            ChecksheetResultPhoto::find($id);
 
-        $path =
+        if (!$photo) {
+            return back()->with(
+                'error',
+                'Foto tidak ditemukan'
+            );
+        }
+
+        $filePath =
             public_path(
                 'uploads/checksheet/'
                 . $photo->foto
             );
 
-        if (File::exists($path)) {
-            File::delete($path);
+        // hapus file fisik
+        if (file_exists($filePath)) {
+            unlink($filePath);
         }
 
+        // hapus database
         $photo->delete();
 
         return back()->with(
