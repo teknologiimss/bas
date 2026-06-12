@@ -407,11 +407,11 @@
                     @foreach ($row as $item)
                         <td width="50%"
                             style="
-                            border:1px solid #000;
-                            vertical-align:top;
-                            padding:8px;
-                            height:340px;
-                        ">
+        border:1px solid #000;
+        vertical-align:top;
+        padding:5px;
+        height:250px;
+    ">
 
                             <table width="100%" cellspacing="0" cellpadding="2"
                                 style="
@@ -471,7 +471,7 @@
                                 <img src="{{ public_path('uploads/checksheet/' . $item['foto']) }}"
                                     style="
         width:100%;
-        height:220px;
+        height:150px;
         object-fit:contain;
         border:1px solid #000;
 ">
