@@ -780,7 +780,7 @@
                                 0
                             );
 
-
+                            
 
                             // =====================
                             // WATERMARK GPS CAMERA
@@ -803,52 +803,49 @@
                             }
 
                             // ukuran box
-                            const boxWidth = canvas.width * 0.55;
-                            const boxHeight = 220;
+const boxWidth = canvas.width * 0.65;
+const boxHeight = 320;
 
-                            const boxX = canvas.width - boxWidth - 20;
-                            const boxY = canvas.height - boxHeight - 20;
+const boxX = canvas.width - boxWidth - 20;
+const boxY = canvas.height - boxHeight - 20;
 
-                            // background transparan
-                            ctx.fillStyle = 'rgba(0,0,0,0.5)';
-                            ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+// background
+ctx.fillStyle = 'rgba(0,0,0,0.55)';
+ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
 
-                            // =====================
-                            // TEXT
-                            // =====================
+// text
+ctx.fillStyle = '#fff';
+ctx.textAlign = 'left';
 
-                            ctx.fillStyle = '#ffffff';
-                            ctx.textAlign = 'left';
+// tanggal jam
+ctx.font = 'bold 72px Arial';
+ctx.fillText(
+    `${tanggal} ${jam}`,
+    boxX + 25,
+    boxY + 80
+);
 
-                            // tanggal jam
-                            ctx.font = 'bold 48px Arial';
-                            ctx.fillText(
-                                `${tanggal} ${jam}`,
-                                boxX + 20,
-                                boxY + 55
-                            );
+// latitude
+ctx.font = '56px Arial';
+ctx.fillText(
+    `Lat : ${gpsData.lat}`,
+    boxX + 25,
+    boxY + 150
+);
 
-                            // latitude
-                            ctx.font = '36px Arial';
-                            ctx.fillText(
-                                `Lat : ${gpsData.lat}`,
-                                boxX + 20,
-                                boxY + 110
-                            );
+// longitude
+ctx.fillText(
+    `Lng : ${gpsData.lng}`,
+    boxX + 25,
+    boxY + 220
+);
 
-                            // longitude
-                            ctx.fillText(
-                                `Lng : ${gpsData.lng}`,
-                                boxX + 20,
-                                boxY + 155
-                            );
-
-                            // alamat
-                            ctx.fillText(
-                                alamat,
-                                boxX + 20,
-                                boxY + 200
-                            );
+// alamat
+ctx.fillText(
+    alamat,
+    boxX + 25,
+    boxY + 290
+);
 
                             // =====================
                             // PREVIEW
