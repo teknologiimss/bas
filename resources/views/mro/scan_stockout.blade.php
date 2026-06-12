@@ -208,7 +208,7 @@
                         {{-- JUMLAH --}}
                         <div class="mb-3">
                             <label class="form-label">Jumlah</label>
-                            <input type="number" name="jumlah" class="form-control" value="0" min="0"
+                            <input type="text" name="jumlah" class="form-control" value="0" min="0"
                                 required>
                         </div>
 

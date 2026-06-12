@@ -593,7 +593,7 @@
                             <input type="text" name="barcode" id="barcode-in" class="form-control" autofocus>
 
                             <label class="mt-2">Jumlah</label>
-                            <input type="number" name="jumlah" class="form-control" value="1">
+                            <input type="text" name="jumlah" class="form-control" value="1">
                         </div>
 
                         <div class="modal-footer">
@@ -622,7 +622,7 @@
                             <input type="text" name="barcode" id="barcode-out" class="form-control" autofocus>
 
                             <label class="mt-2">Jumlah</label>
-                            <input type="number" name="jumlah" class="form-control" value="1">
+                            <input type="text" name="jumlah" class="form-control" value="1">
                         </div>
 
                         <div class="modal-footer">
