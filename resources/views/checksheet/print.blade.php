@@ -410,7 +410,7 @@
         border:1px solid #000;
         vertical-align:top;
         padding:5px;
-        height:250px;
+        height:300px;
     ">
 
                             <table width="100%" cellspacing="0" cellpadding="2"
@@ -471,7 +471,7 @@
                                 <img src="{{ public_path('uploads/checksheet/' . $item['foto']) }}"
                                     style="
         width:100%;
-        height:150px;
+        height:200px;
         object-fit:contain;
         border:1px solid #000;
 ">
