@@ -63,6 +63,59 @@
 
 
         }
+
+        .text-break {
+            word-break: break-word;
+        }
+
+        .file-box {
+            min-width: 220px;
+        }
+
+        .file-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* button lampiran */
+        .file-card {
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            background: #fafafa;
+            padding: 10px;
+        }
+
+        .file-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #495057;
+            word-break: break-word;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-file {
+            height: 32px;
+            min-width: 75px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+
+            transition: all .2s ease;
+        }
+
+        .btn-file:hover {
+            transform: translateY(-1px);
+        }
     </style>
 
     <div class="container-fluid mt-3">
@@ -121,8 +174,8 @@
                                 Cari Deskripsi
                             </label>
 
-                            <input type="text" name="search" class="form-control" autocomplete="off" placeholder="Masukkan deskripsi..."
-                                value="{{ request('search') }}">
+                            <input type="text" name="search" class="form-control" autocomplete="off"
+                                placeholder="Masukkan deskripsi..." value="{{ request('search') }}">
 
                         </div>
 
@@ -133,8 +186,8 @@
                                 Cari No. SPR
                             </label>
 
-                            <input type="text" name="spr_no" class="form-control" autocomplete="off" placeholder="Masukkan No SPR..."
-                                value="{{ request('spr_no') }}">
+                            <input type="text" name="spr_no" class="form-control" autocomplete="off"
+                                placeholder="Masukkan No SPR..." value="{{ request('spr_no') }}">
 
                         </div>
 
@@ -242,21 +295,67 @@
                                         {{ date('d-m-Y H:i', strtotime($d->created_at)) }}
                                     </td>
 
-                                    <td>
+                                    <td style="min-width:280px">
 
                                         @if ($d->lampiran)
-                                            <a href="{{ asset('lampiran/' . $d->lampiran) }}" target="_blank"
-                                                class="btn btn-success btn-action">
+                                            @php
+                                                $namaFile = preg_replace('/^\d+_/', '', $d->lampiran);
+                                                $ext = strtoupper(pathinfo($d->lampiran, PATHINFO_EXTENSION));
+                                            @endphp
 
-                                                <i class="fas fa-paperclip"></i>
-                                                <span>Lihat</span>
+                                            <div class="file-card">
 
-                                            </a>
+                                                <div class="d-flex align-items-center justify-content-between">
+
+                                                    <div class="me-2">
+
+                                                        <div class="file-name">
+                                                            <i class="fas fa-file-alt text-primary me-1"></i>
+                                                            {{ $namaFile }}
+                                                        </div>
+
+                                                        <span class="badge bg-light text-dark border mt-1">
+                                                            {{ $ext }}
+                                                        </span>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="file-actions">
+
+                                                    {{-- Lihat --}}
+                                                    <a href="{{ asset('lampiran/' . $d->lampiran) }}" target="_blank"
+                                                        class="btn btn-success btn-file">
+
+                                                        <i class="fas fa-eye"></i>
+                                                        Lihat
+
+                                                    </a>
+
+                                                    {{-- Hapus --}}
+                                                    <form action="{{ route('lp3m.deleteLampiran', $d->id) }}"
+                                                        method="POST"
+                                                        onsubmit="return confirm('Yakin ingin menghapus lampiran ini?')">
+
+                                                        @csrf
+                                                        @method('DELETE')
+
+                                                        <button type="submit" class="btn btn-outline-danger btn-file">
+
+                                                            <i class="fas fa-trash"></i>
+                                                            Hapus
+
+                                                        </button>
+
+                                                    </form>
+
+                                                </div>
+
+                                            </div>
                                         @else
                                             <span class="badge bg-secondary">
-
-                                                Tidak Ada
-
+                                                Tidak Ada Lampiran
                                             </span>
                                         @endif
 
@@ -412,7 +511,9 @@
 
                         </label>
 
-                        <input type="file" name="lampiran" class="form-control" required>
+                        {{-- <input type="file" name="lampiran" class="form-control" required> --}}
+                        <input type="file" name="lampiran" class="form-control"
+                            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" required>
 
                         <small class="text-muted">
 

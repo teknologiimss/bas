@@ -191,6 +191,15 @@ class Lp3mController extends Controller
     {
         $data = Lp3m::findOrFail($id);
 
+        // Hapus file lampiran
+        if ($data->lampiran) {
+            $filePath = public_path('lampiran/' . $data->lampiran);
+
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
+        }
+
         $data->delete();
 
         return redirect()
@@ -225,16 +234,57 @@ class Lp3mController extends Controller
         return response()->json($riwayat);
     }
 
+    // public function uploadLampiran(Request $request)
+    // {
+    //     $request->validate([
+    //         'lampiran' => 'required|file|max:5120'
+    //     ]);
+
+    //     $data = Lp3m::findOrFail($request->id);
+
+    //     if ($request->hasFile('lampiran')) {
+    //         // hapus file lama
+    //         if ($data->lampiran) {
+    //             $oldFile = public_path('lampiran/' . $data->lampiran);
+
+    //             if (File::exists($oldFile)) {
+    //                 File::delete($oldFile);
+    //             }
+    //         }
+
+    //         $file = $request->file('lampiran');
+
+    //         $filename = time() . '_' . $file->getClientOriginalName();
+
+    //         $file->move(
+    //             public_path('lampiran'),
+    //             $filename
+    //         );
+
+    //         $data->update([
+    //             'lampiran' => $filename
+    //         ]);
+    //     }
+
+    //     return redirect()
+    //         ->route('lp3m.index')
+    //         ->with(
+    //             'success',
+    //             'Lampiran berhasil diupload'
+    //         );
+    // }
+
     public function uploadLampiran(Request $request)
     {
         $request->validate([
-            'lampiran' => 'required|file|max:5120'
+            'id' => 'required|exists:lp3m,id',
+            'lampiran' => 'required|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:51200'
         ]);
 
         $data = Lp3m::findOrFail($request->id);
 
         if ($request->hasFile('lampiran')) {
-            // hapus file lama
+            // Hapus file lama jika ada
             if ($data->lampiran) {
                 $oldFile = public_path('lampiran/' . $data->lampiran);
 
@@ -245,6 +295,7 @@ class Lp3mController extends Controller
 
             $file = $request->file('lampiran');
 
+            // Simpan dengan timestamp agar tidak bentrok
             $filename = time() . '_' . $file->getClientOriginalName();
 
             $file->move(
@@ -259,9 +310,27 @@ class Lp3mController extends Controller
 
         return redirect()
             ->route('lp3m.index')
-            ->with(
-                'success',
-                'Lampiran berhasil diupload'
-            );
+            ->with('success', 'Lampiran berhasil diupload');
+    }
+
+    public function deleteLampiran($id)
+    {
+        $data = Lp3m::findOrFail($id);
+
+        if ($data->lampiran) {
+            $filePath = public_path('lampiran/' . $data->lampiran);
+
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
+
+            $data->update([
+                'lampiran' => null
+            ]);
+        }
+
+        return redirect()
+            ->route('lp3m.index')
+            ->with('success', 'Lampiran berhasil dihapus');
     }
 }

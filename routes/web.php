@@ -786,6 +786,11 @@ Route::post('/lp3m/upload-lampiran',
         [Lp3mController::class, 'uploadLampiran'])
     ->name('lp3m.uploadLampiran');
 
+Route::delete(
+    '/lp3m/lampiran/{id}',
+    [Lp3mController::class, 'deleteLampiran']
+)->name('lp3m.deleteLampiran');
+
 // Rewinding
 
 // Route::post(
