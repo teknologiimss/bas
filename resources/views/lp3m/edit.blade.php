@@ -605,7 +605,7 @@
 
                     <div class="row">
 
-                        <div class="col-md-4 mb-3">
+                        {{-- <div class="col-md-4 mb-3">
 
                             <label>Nama Barang</label>
 
@@ -628,6 +628,101 @@
                             <label>Jumlah</label>
 
                             <input type="number" name="jumlah" class="form-control" value="{{ $data->jumlah }}">
+
+                        </div> --}}
+
+                        @php
+
+                            $namaBarang = json_decode($data->nama_barang, true) ?? [];
+                            $kodeBarang = json_decode($data->kode_barang, true) ?? [];
+                            $jumlahBarang = json_decode($data->jumlah, true) ?? [];
+
+                        @endphp
+
+                        <div class="mb-3">
+
+                            <div id="sparepart-wrapper">
+
+                                @if (count($namaBarang))
+
+                                    @foreach ($namaBarang as $i => $barang)
+                                        <div class="row sparepart-item mb-2">
+
+                                            <div class="col-md-4">
+
+                                                <input type="text" name="nama_barang[]" class="form-control"
+                                                    value="{{ $barang }}">
+
+                                            </div>
+
+                                            <div class="col-md-4">
+
+                                                <input type="text" name="kode_barang[]" class="form-control"
+                                                    value="{{ $kodeBarang[$i] ?? '' }}">
+
+                                            </div>
+
+                                            <div class="col-md-3">
+
+                                                <input type="text" name="jumlah[]" class="form-control"
+                                                    value="{{ $jumlahBarang[$i] ?? '' }}">
+
+                                            </div>
+
+                                            <div class="col-md-1">
+
+                                                <button type="button" class="btn btn-danger remove-sparepart">
+
+                                                    Hapus
+
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="row sparepart-item mb-2">
+
+                                        <div class="col-md-4">
+                                            <label>Nama Barang</label>
+                                            <input type="text" name="nama_barang[]" class="form-control">
+
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label>Kode Barang</label>
+                                            <input type="text" name="kode_barang[]" class="form-control">
+
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label>Jumlah</label>
+                                            <input type="text" name="jumlah[]" class="form-control">
+
+                                        </div>
+
+                                        <div class="col-md-1">
+
+                                            <button type="button" class="btn btn-danger remove-sparepart">
+
+                                                Hapus
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                @endif
+
+                            </div>
+
+                            <button type="button" class="btn btn-primary btn-sm mt-2" id="add-sparepart">
+
+                                + Tambah Barang
+
+                            </button>
 
                         </div>
 
@@ -714,6 +809,62 @@
             if (e.target.classList.contains('remove-teknisi')) {
 
                 e.target.parentElement.remove();
+
+            }
+
+        });
+    </script>
+
+    {{-- Sparepart --}}
+    <script>
+        document.getElementById('add-sparepart')
+            .addEventListener('click', function() {
+
+                let wrapper = document.getElementById('sparepart-wrapper');
+
+                let html = `
+        <div class="row sparepart-item mb-2">
+
+            <div class="col-md-4">
+                <input type="text"
+                       name="nama_barang[]"
+                       class="form-control"
+                       placeholder="Nama Barang">
+            </div>
+
+            <div class="col-md-4">
+                <input type="text"
+                       name="kode_barang[]"
+                       class="form-control"
+                       placeholder="Kode Barang">
+            </div>
+
+            <div class="col-md-3">
+                <input type="text"
+                       name="jumlah[]"
+                       class="form-control"
+                       placeholder="Jumlah">
+            </div>
+
+            <div class="col-md-1">
+                <button type="button"
+                        class="btn btn-danger remove-sparepart">
+                    Hapus
+                </button>
+            </div>
+
+        </div>
+    `;
+
+                wrapper.insertAdjacentHTML('beforeend', html);
+
+            });
+
+        document.addEventListener('click', function(e) {
+
+            if (e.target.classList.contains('remove-sparepart')) {
+
+                e.target.closest('.sparepart-item').remove();
 
             }
 

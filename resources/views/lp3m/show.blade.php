@@ -138,8 +138,8 @@
         }
 
         /* =========================
-               RESPONSIVE MOBILE FIX
-            ========================= */
+                   RESPONSIVE MOBILE FIX
+                ========================= */
 
         @media (max-width: 768px) {
 
@@ -640,7 +640,7 @@
 
                         <table class="table table-bordered table-hover">
 
-                            <tr>
+                            {{-- <tr>
 
                                 <th>Nama Barang</th>
 
@@ -661,6 +661,65 @@
                                 <th>Jumlah</th>
 
                                 <td>{{ $data->jumlah }}</td>
+
+                            </tr> --}}
+                            @php
+
+                                $namaBarang = json_decode($data->nama_barang, true) ?? [];
+                                $kodeBarang = json_decode($data->kode_barang, true) ?? [];
+                                $jumlahBarang = json_decode($data->jumlah, true) ?? [];
+
+                            @endphp
+
+                            <tr>
+
+                                <th>Sparepart / Material</th>
+
+                                <td>
+
+                                    @if (count($namaBarang))
+
+                                        <table class="table table-bordered mb-0">
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th>Nama Barang</th>
+                                                    <th>Kode</th>
+                                                    <th>Jumlah</th>
+
+                                                </tr>
+
+                                            </thead>
+
+                                            <tbody>
+
+                                                @foreach ($namaBarang as $i => $barang)
+                                                    <tr>
+
+                                                        <td>{{ $barang }}</td>
+
+                                                        <td>
+                                                            {{ $kodeBarang[$i] ?? '-' }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ $jumlahBarang[$i] ?? '-' }}
+                                                        </td>
+
+                                                    </tr>
+                                                @endforeach
+
+                                            </tbody>
+
+                                        </table>
+                                    @else
+                                        -
+
+                                    @endif
+
+                                </td>
 
                             </tr>
 

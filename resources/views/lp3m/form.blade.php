@@ -397,7 +397,7 @@
 
                     <div class="row">
 
-                        <div class="col-md-4 mb-3">
+                        {{-- <div class="col-md-4 mb-3">
                             <label>Nama Barang</label>
                             <input type="text" name="nama_barang" autocomplete="off" class="form-control"
                                 placeholder="Masukkan nama barang">
@@ -412,6 +412,46 @@
                         <div class="col-md-4 mb-3">
                             <label>Jumlah</label>
                             <input type="number" name="jumlah" class="form-control" placeholder="0">
+                        </div> --}}
+
+                        <div class="col-md-12 mb-3">
+
+                            <label>Sparepart / Material</label>
+
+                            <div id="sparepart-wrapper">
+
+                                <div class="row sparepart-item mb-2">
+
+                                    <div class="col-md-4">
+                                        <input type="text" name="nama_barang[]" class="form-control"
+                                            placeholder="Nama Barang">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <input type="text" name="kode_barang[]" class="form-control"
+                                            placeholder="Kode Barang">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <input type="text" name="jumlah[]" class="form-control" placeholder="Jumlah">
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-danger remove-sparepart">
+                                            X
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <button type="button" class="btn btn-primary btn-sm" id="add-sparepart">
+
+                                + Tambah Barang
+
+                            </button>
+
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -455,6 +495,7 @@
 
     </div>
 
+    {{-- Teknisi --}}
     <script>
         document.getElementById('add-teknisi').addEventListener('click', function() {
 
@@ -485,6 +526,62 @@
             if (e.target.classList.contains('remove-teknisi')) {
 
                 e.target.parentElement.remove();
+
+            }
+
+        });
+    </script>
+
+
+    {{-- Sparepart --}}
+    <script>
+        document.getElementById('add-sparepart')
+            .addEventListener('click', function() {
+
+                let wrapper = document.getElementById('sparepart-wrapper');
+
+                let html = `
+                <div class="row sparepart-item mb-2">
+
+                    <div class="col-md-4">
+                        <input type="text"
+                               name="nama_barang[]"
+                               class="form-control"
+                               placeholder="Nama Barang">
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text"
+                               name="kode_barang[]"
+                               class="form-control"
+                               placeholder="Kode Barang">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="text"
+                               name="jumlah[]"
+                               class="form-control"
+                               placeholder="Jumlah">
+                    </div>
+
+                    <div class="col-md-1">
+                        <button type="button"
+                                class="btn btn-danger remove-sparepart">
+                            X
+                        </button>
+                    </div>
+
+                </div>
+            `;
+
+                wrapper.insertAdjacentHTML('beforeend', html);
+            });
+
+        document.addEventListener('click', function(e) {
+
+            if (e.target.classList.contains('remove-sparepart')) {
+
+                e.target.closest('.sparepart-item').remove();
 
             }
 

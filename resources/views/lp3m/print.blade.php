@@ -427,7 +427,7 @@
     <br>
 
     {{-- SPAREPART --}}
-    <table>
+    {{-- <table>
 
         <tr>
 
@@ -452,13 +452,88 @@
             <td>{{ $data->nama_barang }}</td>
             <td>{{ $data->kode_barang }}</td>
             <td>{{ $data->jumlah }}</td>
-            {{-- <td>{{ $data->tanggal_selesai }}</td> --}}
+            
             <td>
                 {{ $data->tanggal_selesai ? \Carbon\Carbon::parse($data->tanggal_selesai)->format('d-m-Y') : '-' }}
             </td>
             <td>{{ $data->jam_selesai_detail }}</td>
 
         </tr>
+
+        <tr>
+
+            <td class="fw">
+                Detail Penyelesaian
+            </td>
+
+            <td colspan="4">
+                {{ $data->detail_penyelesaian }}
+            </td>
+
+        </tr>
+
+    </table> --}}
+
+    {{-- SPAREPART --}}
+    @php
+        $namaBarang = json_decode($data->nama_barang, true) ?? [];
+        $kodeBarang = json_decode($data->kode_barang, true) ?? [];
+        $jumlahBarang = json_decode($data->jumlah, true) ?? [];
+    @endphp
+
+    <table>
+
+        <tr>
+            <td colspan="5" class="fw text-center">
+                SPAREPART / MATERIAL YANG DIGUNAKAN
+            </td>
+        </tr>
+
+        <tr>
+            <th width="35%">Nama Barang</th>
+            <th width="20%">Kode Barang</th>
+            <th width="15%">Jumlah</th>
+            <th width="15%">Tanggal</th>
+            <th width="15%">Jam</th>
+        </tr>
+
+        @if (count($namaBarang) > 0)
+
+            @foreach ($namaBarang as $i => $nama)
+                <tr>
+
+                    <td>
+                        {{ $nama }}
+                    </td>
+
+                    <td>
+                        {{ $kodeBarang[$i] ?? '-' }}
+                    </td>
+
+                    <td>
+                        {{ $jumlahBarang[$i] ?? '-' }}
+                    </td>
+
+                    @if ($loop->first)
+                        <td rowspan="{{ count($namaBarang) }}">
+                            {{ $data->tanggal_selesai ? \Carbon\Carbon::parse($data->tanggal_selesai)->format('d-m-Y') : '' }}
+                        </td>
+
+                        <td rowspan="{{ count($namaBarang) }}">
+                            {{ $data->jam_selesai_detail }}
+                        </td>
+                    @endif
+
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="5" class="text-center">
+                    Tidak ada sparepart
+                </td>
+            </tr>
+
+        @endif
 
         <tr>
 
