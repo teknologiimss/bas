@@ -26,6 +26,8 @@ use App\Models\Kontrak;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AssetMaintenanceController;
+use App\Http\Controllers\AssetController;
 
 /*
  * |--------------------------------------------------------------------------
@@ -858,6 +860,37 @@ Route::get(
     'fasilitas-harian/{id}/duplicate',
     [FasilitasHarianController::class, 'duplicate']
 )->name('fasilitas-harian.duplicate');
+
+
+
+
+// Asset Matrix
+/*
+|--------------------------------------------------------------------------
+| MASTER ASSET
+|--------------------------------------------------------------------------
+*/
+
+Route::resource(
+    'assets',
+    AssetController::class
+);
+
+/*
+|--------------------------------------------------------------------------
+| MATRIX MAINTENANCE
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/asset-maintenance',
+    [AssetMaintenanceController::class, 'index']
+)->name('asset-maintenance.index');
+
+Route::post(
+    '/asset-maintenance/mark',
+    [AssetMaintenanceController::class, 'mark']
+)->name('asset-maintenance.mark');
 
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');
