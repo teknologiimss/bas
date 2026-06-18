@@ -1049,6 +1049,14 @@
                                                         </li>
 
                                                         <li class="nav-item">
+                                                            <a href="{{ route('perencanaan.proyek') }}"
+                                                                class="nav-link {{ request()->routeIs('perencanaan.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-clipboard-list"></i>
+                                                                <p>Perencanaan Pekerjaan</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
                                                             <a href="{{ route('proyek.index') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'proyek.index' ? 'active' : '' }}">
                                                                 <i class="fas fa-chart-bar nav-icon"></i>
@@ -1064,13 +1072,7 @@
                                                             </a>
                                                         </li>
 
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('perencanaan.proyek') }}"
-                                                                class="nav-link {{ request()->routeIs('perencanaan.*') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-clipboard-list"></i>
-                                                                <p>Perencanaan Pekerjaan</p>
-                                                            </a>
-                                                        </li>
+                                                        
                                                         <li class="nav-item">
                                                             <a href="{{ route('mro.riwayat') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
@@ -1117,7 +1119,7 @@
                                                                             ? 'active'
                                                                             : '' }}">
 
-                                                                        <i class="nav-icon fas fa-clipboard-check"></i>
+                                                                        <i class="nav-icon far fa-dot-circle"></i>
 
                                                                         <p>
                                                                             Monitoring PM
@@ -1281,7 +1283,7 @@
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('mro') }}"
                                                                         class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
-                                                                        <i class="fas fa-box-open nav-icon"></i>
+                                                                        <i class="far fa-circle nav-icon"></i>
                                                                         <p>Stok Barang MRO</p>
                                                                     </a>
                                                                 </li>
@@ -1289,7 +1291,7 @@
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('mro.stock.log') }}"
                                                                         class="nav-link {{ Route::current()->getName() == 'mro.stock.log' ? 'active' : '' }}">
-                                                                        <i class="nav-icon fas fa-people-carry"></i>
+                                                                        <i class="nav-icon far fa-circle"></i>
                                                                         <p>Mutasi Stok MRO</p>
                                                                     </a>
                                                                 </li>
