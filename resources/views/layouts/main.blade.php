@@ -1119,7 +1119,7 @@
                                                                             ? 'active'
                                                                             : '' }}">
 
-                                                                        <i class="nav-icon far fa-dot-circle"></i>
+                                                                        <i class="nav-icon far fa-circle"></i>
 
                                                                         <p>
                                                                             Monitoring PM
