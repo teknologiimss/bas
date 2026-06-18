@@ -382,11 +382,12 @@
 
     <br>
 
-    <table>
+    <table style="width:100%; border-collapse:collapse;">
 
         <tr>
 
-            <td colspan="3" class="left">
+            <!-- Keterangan -->
+            <td width="60%" class="left" style="vertical-align:top;">
 
                 <b>Keterangan :</b>
 
@@ -406,41 +407,75 @@
 
             </td>
 
-        </tr>
+            <!-- Tanda Tangan -->
+            <td width="40%" style="vertical-align:top; border:none;">
 
-    </table>
+                <table style="width:100%; border-collapse:collapse;">
 
-    <table class="signature">
+                    <tr>
 
-        <tr>
+                        <td colspan="2"
+                            style="
+                    border:1px solid #000;
+                    text-align:center;
+                    font-weight:bold;
+                    padding:5px;
+                ">
 
-            <td width="50%">
 
-                <b>Operator</b>
 
-            </td>
+                            <span style="font-weight:normal;">
 
-            <td width="50%">
-                Madiun,
-                {{ $checksheet->tanggal ? \Carbon\Carbon::parse($checksheet->tanggal)->format('d/m/Y') : date('d/m/Y') }}
-                <br>
-                <b>Staff Teknisi</b>
+                                <b>Madiun,
+                                    {{ $checksheet->tanggal ? \Carbon\Carbon::parse($checksheet->tanggal)->format('d/m/Y') : date('d/m/Y') }}
+                                </b>
+                            </span>
 
-            </td>
+                        </td>
 
-        </tr>
+                    </tr>
 
-        <tr>
+                    <tr>
 
-            <td>
+                        <td
+                            style="
+                    width:50%;
+                    border:1px solid #000;
+                    height:120px;
+                    text-align:center;
+                    vertical-align:top;
+                    padding-top:8px;
+                ">
 
-                ______________________
+                            <b>Operator</b>
 
-            </td>
+                            <br><br><br><br><br><br>
 
-            <td>
+                            ____________________
 
-                ______________________
+                        </td>
+
+                        <td
+                            style="
+                    width:50%;
+                    border:1px solid #000;
+                    height:120px;
+                    text-align:center;
+                    vertical-align:top;
+                    padding-top:8px;
+                ">
+
+                            <b>Staff Teknisi</b>
+
+                            <br><br><br><br><br><br>
+
+                            ____________________
+
+                        </td>
+
+                    </tr>
+
+                </table>
 
             </td>
 
