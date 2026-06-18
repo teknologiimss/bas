@@ -605,31 +605,7 @@
 
                     <div class="row">
 
-                        {{-- <div class="col-md-4 mb-3">
-
-                            <label>Nama Barang</label>
-
-                            <input type="text" autocomplete="off" name="nama_barang" class="form-control"
-                                value="{{ $data->nama_barang }}">
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-
-                            <label>Kode Barang</label>
-
-                            <input type="text" autocomplete="off" name="kode_barang" class="form-control"
-                                value="{{ $data->kode_barang }}">
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-
-                            <label>Jumlah</label>
-
-                            <input type="number" name="jumlah" class="form-control" value="{{ $data->jumlah }}">
-
-                        </div> --}}
+                        {{-- Edit Form --}}
 
                         @php
 
@@ -650,21 +626,21 @@
 
                                             <div class="col-md-4">
 
-                                                <input type="text" name="nama_barang[]" class="form-control"
+                                                <input type="text" autocomplete="off" name="nama_barang[]" class="form-control"
                                                     value="{{ $barang }}">
 
                                             </div>
 
                                             <div class="col-md-4">
 
-                                                <input type="text" name="kode_barang[]" class="form-control"
+                                                <input type="text" autocomplete="off" name="kode_barang[]" class="form-control"
                                                     value="{{ $kodeBarang[$i] ?? '' }}">
 
                                             </div>
 
                                             <div class="col-md-3">
 
-                                                <input type="text" name="jumlah[]" class="form-control"
+                                                <input type="text" autocomplete="off" name="jumlah[]" class="form-control"
                                                     value="{{ $jumlahBarang[$i] ?? '' }}">
 
                                             </div>

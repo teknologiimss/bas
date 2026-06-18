@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
         :root {
             --primary: #c62828;
@@ -243,6 +244,7 @@
 
                 </div>
 
+                {{-- Edit Form --}}
                 <form action="{{ route('assets.update', $asset->id) }}" method="POST">
 
                     @csrf
@@ -258,7 +260,7 @@
 
                         </label>
 
-                        <input type="text" name="unit" value="{{ $asset->unit }}" class="form-control"
+                        <input type="text" name="unit" autocomplete="off" value="{{ $asset->unit }}" class="form-control"
                             placeholder="Masukkan nama unit" required>
 
                     </div>
@@ -273,7 +275,7 @@
 
                         </label>
 
-                        <input type="text" name="no_lambung" value="{{ $asset->no_lambung }}" class="form-control"
+                        <input type="text" name="no_lambung" autocomplete="off" value="{{ $asset->no_lambung }}" class="form-control"
                             placeholder="Masukkan nomor lambung" required>
 
                     </div>
@@ -288,7 +290,7 @@
 
                         </label>
 
-                        <input type="text" name="lokasi" value="{{ $asset->lokasi }}" class="form-control"
+                        <input type="text" name="lokasi" autocomplete="off" value="{{ $asset->lokasi }}" class="form-control"
                             placeholder="Masukkan lokasi asset" required>
 
                     </div>

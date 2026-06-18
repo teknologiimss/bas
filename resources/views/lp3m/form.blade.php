@@ -423,17 +423,17 @@
                                 <div class="row sparepart-item mb-2">
 
                                     <div class="col-md-4">
-                                        <input type="text" name="nama_barang[]" class="form-control"
+                                        <input type="text" autocomplete="off" name="nama_barang[]" class="form-control"
                                             placeholder="Nama Barang">
                                     </div>
 
                                     <div class="col-md-4">
-                                        <input type="text" name="kode_barang[]" class="form-control"
+                                        <input type="text" autocomplete="off" name="kode_barang[]" class="form-control"
                                             placeholder="Kode Barang">
                                     </div>
 
                                     <div class="col-md-3">
-                                        <input type="text" name="jumlah[]" class="form-control" placeholder="Jumlah">
+                                        <input type="text" autocomplete="off" name="jumlah[]" class="form-control" placeholder="Jumlah">
                                     </div>
 
                                     <div class="col-md-1">

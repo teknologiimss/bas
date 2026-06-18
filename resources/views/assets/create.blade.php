@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
         :root {
             --primary: #c62828;
@@ -234,6 +235,7 @@
 
             </div>
 
+            {{-- Isi data Asset --}}
             <div class="card-body">
 
                 <form action="{{ route('assets.store') }}" method="POST">
@@ -250,7 +252,7 @@
 
                         </label>
 
-                        <input type="text" name="unit" class="form-control" placeholder="Masukkan nama unit" required>
+                        <input type="text" name="unit" autocomplete="off" class="form-control" placeholder="Masukkan nama unit" required>
 
                     </div>
 
@@ -264,7 +266,7 @@
 
                         </label>
 
-                        <input type="text" name="no_lambung" class="form-control" placeholder="Masukkan nomor lambung"
+                        <input type="text" name="no_lambung" autocomplete="off" class="form-control" placeholder="Masukkan nomor lambung"
                             required>
 
                     </div>
@@ -279,7 +281,7 @@
 
                         </label>
 
-                        <input type="text" name="lokasi" class="form-control" placeholder="Masukkan lokasi asset"
+                        <input type="text" name="lokasi" autocomplete="off" class="form-control" placeholder="Masukkan lokasi asset"
                             required>
 
                     </div>

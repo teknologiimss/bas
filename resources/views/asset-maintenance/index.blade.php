@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
     <style>
         :root {
@@ -206,20 +207,97 @@
             background: #8e0000;
         }
 
-        @media(max-width:768px) {
+        @media (max-width:768px) {
 
-            .matrix-table {
-                min-width: 5500px;
+            /* =====================
+                   HEADER RESPONSIVE
+                   ===================== */
+
+            .card-header-red .d-flex {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px;
             }
 
             .header-action {
-                display: block !important;
+                display: flex !important;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
             }
 
-            .header-action a {
+            .header-action .btn {
                 width: 100%;
-                margin-bottom: 5px;
             }
+
+            .card-header-red select {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            /* =====================
+                   SUMMARY CARD
+                   ===================== */
+
+            .row.mb-4>div {
+                margin-bottom: 10px;
+            }
+
+            /* =====================
+                   TABLE MOBILE
+                   ===================== */
+
+            .matrix-wrapper {
+                overflow-x: auto;
+                overflow-y: auto;
+                max-height: 70vh;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .matrix-table {
+                min-width: 2200px;
+                font-size: 10px;
+            }
+
+            .matrix-table th,
+            .matrix-table td {
+                padding: 2px;
+            }
+
+            /* HAPUS STICKY DI HP */
+
+            .sticky-1,
+            .sticky-2,
+            .sticky-3,
+            .sticky-4 {
+                position: static !important;
+                left: auto !important;
+                box-shadow: none !important;
+            }
+
+            thead .sticky-1,
+            thead .sticky-2,
+            thead .sticky-3,
+            thead .sticky-4 {
+                position: sticky;
+                top: 0;
+                z-index: 50;
+            }
+
+            .matrix-cell {
+                width: 18px;
+                min-width: 18px;
+                height: 18px;
+            }
+
+            .month-header {
+                font-size: 9px !important;
+            }
+
+            .week-header {
+                font-size: 8px !important;
+            }
+
         }
     </style>
 
@@ -229,7 +307,8 @@
 
             <div class="card-header card-header-red">
 
-                <div class="d-flex justify-content-between align-items-center">
+                {{-- <div class="d-flex justify-content-between align-items-center"> --}}
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
 
                     <div>
 
@@ -240,7 +319,7 @@
 
                         </h4>
 
-                        <div class="header-action">
+                        {{-- <div class="header-action">
 
                             <a href="{{ route('assets.index') }}" class="btn btn-light">
 
@@ -254,6 +333,20 @@
                                 <i class="fas fa-plus"></i>
                                 Tambah Asset
 
+                            </a>
+
+                        </div> --}}
+
+                        <div class="header-action d-flex flex-column flex-md-row">
+
+                            <a href="{{ route('assets.index') }}" class="btn btn-light mr-md-2 mb-2 mb-md-0">
+                                <i class="fas fa-database"></i>
+                                Master Asset
+                            </a>
+
+                            <a href="{{ route('assets.create') }}" class="btn btn-warning">
+                                <i class="fas fa-plus"></i>
+                                Tambah Asset
                             </a>
 
                         </div>

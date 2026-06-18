@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
         :root {
             --primary: #c62828;
@@ -158,8 +159,15 @@
             }
         }
 
-        @media(max-width:768px) {
+        /* RESPONSIVE MOBILE */
+        @media (max-width: 768px) {
 
+            .container-fluid {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            /* Header */
             .asset-header .header-flex {
                 flex-direction: column;
                 gap: 15px;
@@ -170,20 +178,53 @@
                 width: 100%;
             }
 
-            .table-modern {
-                min-width: 750px;
+            /* Summary */
+            .asset-count {
+                text-align: center;
             }
 
+            .asset-count .text-end {
+                text-align: center !important;
+                margin-top: 10px;
+            }
+
+            /* Table Scroll */
+            .table-responsive {
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 15px;
+            }
+
+            .table-modern {
+                min-width: 700px;
+                white-space: nowrap;
+            }
+
+            .table-modern th,
+            .table-modern td {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            /* Tombol aksi */
             .btn-action {
+                display: block;
                 width: 100%;
                 margin-bottom: 5px;
+            }
+
+            .number-badge {
+                width: 32px;
+                height: 32px;
+                font-size: 13px;
             }
         }
     </style>
 
     <div class="container-fluid mt-3">
 
-        
+
         <div class="asset-count">
 
             <div class="row align-items-center">
@@ -350,7 +391,7 @@
             </div>
 
         </div>
-        
+
 
     </div>
 

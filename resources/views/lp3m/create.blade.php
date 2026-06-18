@@ -22,34 +22,12 @@
 
                 @csrf
 
-                {{-- <div class="mb-3">
-
-                    <label>Status</label>
-
-                    <select name="status" class="form-control" required>
-
-                        <option value="">
-                            -- Pilih Status --
-                        </option>
-
-                        <option value="OPEN">
-                            OPEN
-                        </option>
-
-                        <option value="CLOSED">
-                            CLOSED
-                        </option>
-
-                    </select>
-
-                </div> --}}
-
                 <div class="mb-3">
 
                     <label>Deskripsi</label>
 
                     <textarea name="deskripsi"
-                              class="form-control"
+                              class="form-control" autocomplete="off"
                               rows="4"
                               required></textarea>
 
@@ -60,7 +38,7 @@
                     <label>Keterangan</label>
 
                     <textarea name="keterangan"
-                              class="form-control"
+                              class="form-control" autocomplete="off"
                               rows="4"
                               required></textarea>
 
