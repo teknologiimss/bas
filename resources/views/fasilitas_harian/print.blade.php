@@ -138,6 +138,19 @@
         .identitas-table td:last-child {
             border-right: none;
         }
+
+        .footer-area {
+            margin-top: 5px;
+            page-break-inside: avoid;
+        }
+
+        .footer-area table {
+            page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-inside: avoid;
+        }
     </style>
 
 </head>
@@ -380,108 +393,108 @@
 
     </table>
 
-    
-
-    <table style="width:100%; border-collapse:collapse;">
-
-        <tr>
-
-            <!-- Keterangan -->
-            <td width="60%" class="left" style="vertical-align:top;">
-
-                <b>Keterangan :</b>
-
-                <br><br>
-
-                V = Pemeriksaan Bagus
-
-                <br>
-
-                X = Pemeriksaan Jelek
-                (ditindaklanjuti dengan pengajuan SPR)
-
-                <br>
-
-                O = Pemeriksaan Bagus, tetapi
-                mesin tidak beroperasi, karena tidak ada pekerjaan
-
-            </td>
-
-            <!-- Tanda Tangan -->
-            <td width="40%" style="vertical-align:top; border:none;">
-
-                <table style="width:100%; border-collapse:collapse;">
-
-                    <tr>
-
-                        <td colspan="2"
-                            style="
-                    border:1px solid #000;
-                    text-align:center;
-                    font-weight:bold;
-                    padding:5px;
-                ">
 
 
+    <div class="footer-area">
 
-                            <span style="font-weight:normal;">
+        <table style="width:100%; border-collapse:collapse;">
 
-                                <b>Madiun,
+            <tr>
+
+                <td width="60%"
+                    style="vertical-align:top;
+                       border:1px solid #000;
+                       padding:5px;
+                       font-size:9px;">
+
+                    <b>Keterangan :</b>
+
+                    <br><br>
+
+                    V = Pemeriksaan Bagus
+
+                    <br>
+
+                    X = Pemeriksaan Jelek
+                    (ditindaklanjuti dengan pengajuan SPR)
+
+                    <br>
+
+                    O = Pemeriksaan Bagus, tetapi mesin tidak
+                    beroperasi karena tidak ada pekerjaan
+
+                </td>
+
+                <td width="40%" style="padding:0; border:none;">
+
+                    <table style="width:100%; border-collapse:collapse;">
+
+                        <tr>
+
+                            <td colspan="2"
+                                style="
+                                border:1px solid #000;
+                                text-align:center;
+                                padding:3px;
+                                font-size:9px;
+                            ">
+
+                                <b>
+                                    Madiun,
                                     {{ $checksheet->tanggal ? \Carbon\Carbon::parse($checksheet->tanggal)->format('d/m/Y') : date('d/m/Y') }}
                                 </b>
-                            </span>
 
-                        </td>
+                            </td>
 
-                    </tr>
+                        </tr>
 
-                    <tr>
+                        <tr>
 
-                        <td
-                            style="
-                    width:50%;
-                    border:1px solid #000;
-                    height:120px;
-                    text-align:center;
-                    vertical-align:top;
-                    padding-top:8px;
-                ">
+                            <td
+                                style="
+                            width:50%;
+                            height:65px;
+                            border:1px solid #000;
+                            text-align:center;
+                            vertical-align:top;
+                            font-size:9px;
+                            padding-top:5px;
+                        ">
+                                <b>Operator</b>
 
-                            <b>Operator</b>
+                                <div style="margin-top:35px;">
+                                    ____________
+                                </div>
+                            </td>
 
-                            <br><br><br><br><br><br>
+                            <td
+                                style="
+                            width:50%;
+                            height:65px;
+                            border:1px solid #000;
+                            text-align:center;
+                            vertical-align:top;
+                            font-size:9px;
+                            padding-top:5px;
+                        ">
+                                <b>Staff Teknisi</b>
 
-                            ____________________
+                                <div style="margin-top:35px;">
+                                    ____________
+                                </div>
+                            </td>
 
-                        </td>
+                        </tr>
 
-                        <td
-                            style="
-                    width:50%;
-                    border:1px solid #000;
-                    height:120px;
-                    text-align:center;
-                    vertical-align:top;
-                    padding-top:8px;
-                ">
+                    </table>
 
-                            <b>Staff Teknisi</b>
+                </td>
 
-                            <br><br><br><br><br><br>
+            </tr>
 
-                            ____________________
+        </table>
 
-                        </td>
-
-                    </tr>
-
-                </table>
-
-            </td>
-
-        </tr>
-
-    </table>
+    </div>
 
 </body>
 
