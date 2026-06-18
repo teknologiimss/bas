@@ -1365,7 +1365,7 @@
                                                             <a href="{{ route('checksheet.index') }}"
                                                                 class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-clipboard-check"></i>
-                                                                <p>Monitoring Preventive Maintenance</p>
+                                                                <p>Checksheet Preventive Maintenance</p>
                                                             </a>
                                                         </li>
 
