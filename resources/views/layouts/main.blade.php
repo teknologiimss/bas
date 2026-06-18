@@ -1049,36 +1049,35 @@
                                                         </li>
 
                                                         <li class="nav-item">
+                                                            <a href="{{ route('proyek.index') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'proyek.index' ? 'active' : '' }}">
+                                                                <i class="fas fa-chart-bar nav-icon"></i>
+                                                                <p>Proyek MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.progress') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.progress' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-chart-line"></i>
+                                                                <p>Progress MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
                                                             <a href="{{ route('perencanaan.proyek') }}"
                                                                 class="nav-link {{ request()->routeIs('perencanaan.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-clipboard-list"></i>
                                                                 <p>Perencanaan Pekerjaan</p>
                                                             </a>
                                                         </li>
-
-                                                        {{-- <li class="nav-item">
-                                                            <a href="{{ route('pengiriman.index') }}"
-                                                                class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-truck"></i>
-                                                                <p>Monitoring Pengiriman</p>
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.riwayat') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-history"></i>
+                                                                <p>Riwayat PR/SPPJP MRO</p>
                                                             </a>
                                                         </li>
-
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('checksheet.index') }}"
-                                                                class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-clipboard-check"></i>
-                                                                <p>Monitoring Preventive Maintenance</p>
-                                                            </a>
-                                                        </li>
-
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('alat.index') }}"
-                                                                class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-bus"></i>
-                                                                <p>Monitoring Alat Angkat-Angkut</p>
-                                                            </a>
-                                                        </li> --}}
 
                                                         <li
                                                             class="nav-item {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*', 'rewinding.*', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'menu-open' : '' }}">
@@ -1101,7 +1100,7 @@
                                                                     </a>
                                                                 </li>
 
-                                                                {{-- MATRIX ASSET --}} 
+                                                                {{-- MATRIX ASSET --}}
                                                                 <li
                                                                     class="nav-item has-treeview {{ request()->routeIs('assets.*') || request()->routeIs('asset-maintenance.*') ? 'menu-open' : '' }}">
                                                                     <a href="#"
@@ -1177,29 +1176,9 @@
                                                             </a>
                                                         </li>
 
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('mro.riwayat') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-history"></i>
-                                                                <p>Riwayat PR/SPPJP MRO</p>
-                                                            </a>
-                                                        </li>
 
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('proyek.index') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'proyek.index' ? 'active' : '' }}">
-                                                                <i class="fas fa-chart-bar nav-icon"></i>
-                                                                <p>Proyek MRO</p>
-                                                            </a>
-                                                        </li>
 
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('mro.progress') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'mro.progress' ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-chart-line"></i>
-                                                                <p>Progress MRO</p>
-                                                            </a>
-                                                        </li>
+
 
                                                         {{-- <li class="nav-item">
                                                             <a href="{{ route('mro') }}"
