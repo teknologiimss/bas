@@ -1095,51 +1095,118 @@
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('pengiriman.index') }}"
                                                                         class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
-                                                                        <i class="nav-icon fas fa-truck"></i>
+                                                                        <i class="nav-icon far fa-circle"></i>
                                                                         <p>Monitoring Pengiriman</p>
                                                                     </a>
                                                                 </li>
 
-                                                                {{-- MATRIX ASSET --}}
+                                                                {{-- Monitoring Preventive Maintenance --}}
                                                                 <li
-                                                                    class="nav-item has-treeview {{ request()->routeIs('assets.*') || request()->routeIs('asset-maintenance.*') ? 'menu-open' : '' }}">
+                                                                    class="nav-item has-treeview
+                                                                    {{ request()->routeIs('assets.*') ||
+                                                                    request()->routeIs('asset-maintenance.*') ||
+                                                                    request()->routeIs('checksheet.*')
+                                                                        ? 'menu-open'
+                                                                        : '' }}">
+
                                                                     <a href="#"
-                                                                        class="nav-link {{ request()->routeIs('assets.*') || request()->routeIs('asset-maintenance.*') ? 'active' : '' }}">
-                                                                        <i class="nav-icon fas fa-tools"></i>
-                                                                        <p> Matrix Asset <i
-                                                                                class="right fas fa-angle-left"></i>
-                                                                        </p>
-                                                                    </a>
-                                                                    <ul class="nav nav-treeview">
-                                                                        <li class="nav-item"> <a
-                                                                                href="{{ route('assets.index') }}"
-                                                                                class="nav-link {{ request()->routeIs('assets.*') ? 'active' : '' }}">
-                                                                                <i class="far fa-circle nav-icon"></i>
-                                                                                <p>Master Matrix Perawatan Asset</p>
-                                                                            </a> </li>
-                                                                        <li class="nav-item"> <a
-                                                                                href="{{ route('asset-maintenance.index') }}"
-                                                                                class="nav-link {{ request()->routeIs('asset-maintenance.*') ? 'active' : '' }}">
-                                                                                <i class="far fa-circle nav-icon"></i>
-                                                                                <p>Matrix Perawatan Asset</p>
-                                                                            </a> </li>
-                                                                    </ul>
-                                                                </li>
+                                                                        class="nav-link
+                                                                        {{ request()->routeIs('assets.*') ||
+                                                                        request()->routeIs('asset-maintenance.*') ||
+                                                                        request()->routeIs('checksheet.*')
+                                                                            ? 'active'
+                                                                            : '' }}">
 
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('checksheet.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
                                                                         <i class="nav-icon fas fa-clipboard-check"></i>
-                                                                        <p>Monitoring Preventive Maintenance</p>
+
+                                                                        <p>
+                                                                            Monitoring PM
+                                                                            <i class="right fas fa-angle-left"></i>
+                                                                        </p>
+
                                                                     </a>
+
+                                                                    <ul class="nav nav-treeview">
+
+                                                                        {{-- Matrix Asset --}}
+                                                                        <li
+                                                                            class="nav-item has-treeview
+                                                                            {{ request()->routeIs('assets.*') || request()->routeIs('asset-maintenance.*') ? 'menu-open' : '' }}">
+
+                                                                            <a href="#"
+                                                                                class="nav-link
+                                                                                {{ request()->routeIs('assets.*') || request()->routeIs('asset-maintenance.*') ? 'active' : '' }}">
+
+                                                                                <i class="far fa-dot-circle nav-icon"></i>
+
+                                                                                <p>
+                                                                                    Matrix Asset
+                                                                                    <i
+                                                                                        class="right fas fa-angle-left"></i>
+                                                                                </p>
+
+                                                                            </a>
+
+                                                                            <ul class="nav nav-treeview">
+
+                                                                                <li class="nav-item">
+
+                                                                                    <a href="{{ route('assets.index') }}"
+                                                                                        class="nav-link {{ request()->routeIs('assets.*') ? 'active' : '' }}">
+
+                                                                                        <i
+                                                                                            class="far fa-dot-circle nav-icon"></i>
+
+                                                                                        <p>Master Matrix Perawatan Asset
+                                                                                        </p>
+
+                                                                                    </a>
+
+                                                                                </li>
+
+                                                                                <li class="nav-item">
+
+                                                                                    <a href="{{ route('asset-maintenance.index') }}"
+                                                                                        class="nav-link {{ request()->routeIs('asset-maintenance.*') ? 'active' : '' }}">
+
+                                                                                        <i
+                                                                                            class="far fa-dot-circle nav-icon"></i>
+
+                                                                                        <p>Matrix Perawatan Asset</p>
+
+                                                                                    </a>
+
+                                                                                </li>
+
+                                                                            </ul>
+
+                                                                        </li>
+
+                                                                        {{-- Checksheet --}}
+                                                                        <li class="nav-item">
+
+                                                                            <a href="{{ route('checksheet.index') }}"
+                                                                                class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
+
+                                                                                <i class="far fa-dot-circle nav-icon"></i>
+
+                                                                                <p>Checksheet Preventive Maintenance</p>
+
+                                                                            </a>
+
+                                                                        </li>
+
+                                                                    </ul>
+
                                                                 </li>
 
+                                                                {{-- Checksheet Harian Fasilitas --}}
                                                                 <li class="nav-item">
 
                                                                     <a href="{{ route('fasilitas-harian.index') }}"
                                                                         class="nav-link {{ request()->routeIs('fasilitas-harian.*') ? 'active' : '' }}">
 
-                                                                        <i class="nav-icon fas fa-clipboard-list"></i>
+                                                                        <i class="nav-icon far fa-circle"></i>
 
                                                                         <p>
                                                                             Checksheet Harian Fasilitas
@@ -1149,10 +1216,11 @@
 
                                                                 </li>
 
+                                                                {{-- Monitoring Alat Angkat-angkut --}}
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('alat.index') }}"
                                                                         class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
-                                                                        <i class="nav-icon fas fa-bus"></i>
+                                                                        <i class="nav-icon far fa-circle"></i>
                                                                         <p>Monitoring Alat Angkat-Angkut</p>
                                                                     </a>
                                                                 </li>
@@ -1160,7 +1228,7 @@
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('rewinding.index') }}"
                                                                         class="nav-link {{ request()->routeIs('rewinding.*') ? 'active' : '' }}">
-                                                                        <i class="nav-icon fas fa-sync-alt"></i>
+                                                                        <i class="nav-icon far fa-circle"></i>
                                                                         <p>Monitoring Rewinding</p>
                                                                     </a>
                                                                 </li>

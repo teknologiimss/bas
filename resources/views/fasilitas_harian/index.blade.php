@@ -297,8 +297,28 @@
 
                     <div class="col-md-4">
 
-                        <input type="text" id="searchInput" class="form-control search-box"
-                            placeholder="Cari checksheet...">
+                        <form method="GET">
+
+                            <div class="input-group">
+
+                                <input type="text" name="search" class="form-control search-box"
+                                    placeholder="Cari checksheet..." value="{{ request('search') }}">
+
+                                <div class="input-group-append">
+
+                                    <button class="btn btn-danger">
+
+                                        <i class="fa fa-search"></i>
+
+                                        Cari
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
 
                     </div>
 
@@ -356,7 +376,7 @@
                                 <tr>
 
                                     <td>
-                                        {{ $loop->iteration }}
+                                        {{ $data->firstItem() + $loop->index }}
                                     </td>
 
                                     <td>
@@ -482,7 +502,7 @@
 
                 <div class="mt-3">
 
-                    {{ $data->links() }}
+                    {{ $data->appends(request()->query())->links('pagination::bootstrap-4') }}
 
                 </div>
 
@@ -512,7 +532,7 @@
         </script>
     @endif
 
-    <script>
+    {{-- <script>
         document
             .getElementById('searchInput')
             .addEventListener('keyup', function() {
@@ -575,6 +595,6 @@
                     });
 
             });
-    </script>
+    </script> --}}
 
 @endsection

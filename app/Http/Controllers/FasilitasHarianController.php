@@ -16,9 +16,36 @@ class FasilitasHarianController extends Controller
      * | INDEX
      * |--------------------------------------------------------------------------
      */
-    public function index()
+    // public function index()
+    // {
+    //     $data = FasilitasHarian::oldest()->paginate(10);
+
+    //     return view(
+    //         'fasilitas_harian.index',
+    //         compact('data')
+    //     );
+    // }
+    public function index(Request $request)
     {
-        $data = FasilitasHarian::oldest()->paginate(10);
+        $query = FasilitasHarian::query();
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q
+                    ->where('judul', 'like', '%' . $request->search . '%')
+                    ->orWhere('nomor_dokumen', 'like', '%' . $request->search . '%')
+                    ->orWhere('nomor_fasilitas', 'like', '%' . $request->search . '%')
+                    ->orWhere('nama_alat', 'like', '%' . $request->search . '%')
+                    ->orWhere('lokasi', 'like', '%' . $request->search . '%')
+                    ->orWhere('bulan', 'like', '%' . $request->search . '%')
+                    ->orWhere('tahun', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $data = $query
+            ->orderByDesc('id')
+            ->paginate(10)
+            ->withQueryString();
 
         return view(
             'fasilitas_harian.index',
