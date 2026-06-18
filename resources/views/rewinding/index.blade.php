@@ -162,11 +162,16 @@
                     Monitoring Rewinding
                 </h3>
 
-                <a href="{{ route('rewinding.create') }}" class="btn btn-light">
+                {{-- <a href="{{ route('rewinding.create') }}" class="btn btn-light">
 
                     <i class="fas fa-plus"></i>
                     Tambah
 
+                </a> --}}
+
+                <a href="{{ route('rewinding.create', $folder->id) }}" class="btn btn-light">
+                    <i class="fas fa-plus"></i>
+                    Tambah
                 </a>
 
             </div>

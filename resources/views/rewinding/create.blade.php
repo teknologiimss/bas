@@ -17,7 +17,7 @@
             <form action="{{ route('rewinding.store') }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
-
+                <input type="hidden" name="rewinding_folder_id" value="{{ $folder->id }}">
                 <div class="row">
 
                     <div class="col-md-6 mb-3">

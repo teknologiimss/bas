@@ -5,41 +5,82 @@ namespace App\Http\Controllers;
 use App\Models\Rewinding;
 use App\Models\RewindingDetail;
 use App\Models\RewindingDetailLampiran;
+use App\Models\RewindingFolder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class RewindingController extends Controller
 {
-    // public function index()
+    // public function index(Request $request)
     // {
-    //     $data = Rewinding::latest()->paginate(10);
+    //     $search = $request->search;
 
-    //     return view('rewinding.index', compact('data'));
+    //     $data = Rewinding::query()
+    //         ->when($search, function ($q) use ($search) {
+    //             $q
+    //                 ->where('no_sjn', 'like', '%' . $search . '%')
+    //                 ->orWhere('deskripsi', 'like', '%' . $search . '%')
+    //                 ->orWhere('no_sppjp', 'like', '%' . $search . '%');
+    //         })
+    //         ->latest()
+    //         ->paginate(20);
+
+    //     return view('rewinding.index', compact(
+    //         'data',
+    //         'search'
+    //     ));
     // }
 
-    public function index(Request $request)
-    {
+    public function monitor(
+        Request $request,
+        RewindingFolder $folder
+    ) {
         $search = $request->search;
 
-        $data = Rewinding::query()
-            ->when($search, function ($q) use ($search) {
-                $q
-                    ->where('no_sjn', 'like', '%' . $search . '%')
-                    ->orWhere('deskripsi', 'like', '%' . $search . '%')
-                    ->orWhere('no_sppjp', 'like', '%' . $search . '%');
-            })
+        $data = Rewinding::where(
+            'rewinding_folder_id',
+            $folder->id
+        )
+            ->when(
+                $search,
+                function ($q) use ($search) {
+                    $q
+                        ->where(
+                            'no_sjn',
+                            'like',
+                            "%$search%"
+                        )
+                        ->orWhere(
+                            'deskripsi',
+                            'like',
+                            "%$search%"
+                        )
+                        ->orWhere(
+                            'no_sppjp',
+                            'like',
+                            "%$search%"
+                        );
+                }
+            )
             ->latest()
             ->paginate(20);
 
-        return view('rewinding.index', compact(
-            'data',
-            'search'
-        ));
+        return view(
+            'rewinding.index',
+            compact(
+                'data',
+                'folder',
+                'search'
+            )
+        );
     }
 
-    public function create()
+    public function create(RewindingFolder $folder)
     {
-        return view('rewinding.create');
+        return view(
+            'rewinding.create',
+            compact('folder')
+        );
     }
 
     public function store(Request $request)
@@ -80,7 +121,8 @@ class RewindingController extends Controller
             $lampiranMasuk = 'lampiran/' . $namaFile;
         }
 
-        Rewinding::create([
+        $rewinding = Rewinding::create([
+            'rewinding_folder_id' => $request->rewinding_folder_id,
             'no_sjn' => $request->no_sjn,
             'tanggal_sjn_keluar' =>
                 $request->tanggal_sjn_keluar,
@@ -105,7 +147,10 @@ class RewindingController extends Controller
         ]);
 
         return redirect()
-            ->route('rewinding.index')
+            ->route(
+                'rewinding.monitor',
+                $rewinding->rewinding_folder_id
+            )
             ->with('success', 'Data berhasil disimpan');
     }
 
@@ -228,7 +273,10 @@ class RewindingController extends Controller
         ]);
 
         return redirect()
-            ->route('rewinding.index')
+            ->route(
+                'rewinding.monitor',
+                $rewinding->rewinding_folder_id
+            )
             ->with(
                 'success',
                 'Data berhasil diperbarui'
@@ -418,5 +466,113 @@ class RewindingController extends Controller
                 'success',
                 'Lampiran berhasil dihapus'
             );
+    }
+
+    public function folderIndex(Request $request)
+    {
+        $search = $request->search;
+
+        $data = RewindingFolder::when(
+            $search,
+            function ($q) use ($search) {
+                $q->where(
+                    'nama_folder',
+                    'like',
+                    "%$search%"
+                );
+            }
+        )
+            ->latest()
+            ->paginate(10);
+
+        return view(
+            'rewinding.folder-index',
+            compact(
+                'data',
+                'search'
+            )
+        );
+    }
+
+    public function createFolder()
+    {
+        return view(
+            'rewinding.folder-create'
+        );
+    }
+
+    public function storeFolder(
+        Request $request
+    ) {
+        RewindingFolder::create([
+            'nama_folder' =>
+                $request->nama_folder
+        ]);
+
+        return redirect()
+            ->route('rewinding.index')
+            ->with(
+                'success',
+                'Folder berhasil dibuat'
+            );
+    }
+
+    public function updateFolder(
+        Request $request,
+        RewindingFolder $folder
+    ) {
+        $folder->update([
+            'nama_folder' => $request->nama_folder
+        ]);
+
+        return back()->with(
+            'success',
+            'Folder berhasil diperbarui'
+        );
+    }
+
+    public function deleteFolder(
+        RewindingFolder $folder
+    ) {
+        foreach ($folder->rewindings as $rewinding) {
+            if (
+                $rewinding->lampiran_sjn_keluar &&
+                file_exists(
+                    public_path(
+                        $rewinding->lampiran_sjn_keluar
+                    )
+                )
+            ) {
+                unlink(
+                    public_path(
+                        $rewinding->lampiran_sjn_keluar
+                    )
+                );
+            }
+
+            if (
+                $rewinding->lampiran_sjn_masuk &&
+                file_exists(
+                    public_path(
+                        $rewinding->lampiran_sjn_masuk
+                    )
+                )
+            ) {
+                unlink(
+                    public_path(
+                        $rewinding->lampiran_sjn_masuk
+                    )
+                );
+            }
+
+            $rewinding->delete();
+        }
+
+        $folder->delete();
+
+        return back()->with(
+            'success',
+            'Folder beserta seluruh data dan lampiran berhasil dihapus'
+        );
     }
 }

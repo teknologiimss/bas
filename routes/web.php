@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AlatAngkutController;
 use App\Http\Controllers\AlatAngkutDetailController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AssetMaintenanceController;
 use App\Http\Controllers\BpmController;
 use App\Http\Controllers\ChecksheetController;
 use App\Http\Controllers\CutiController;
@@ -26,8 +28,6 @@ use App\Models\Kontrak;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AssetMaintenanceController;
-use App\Http\Controllers\AssetController;
 
 /*
  * |--------------------------------------------------------------------------
@@ -793,15 +793,9 @@ Route::delete(
     [Lp3mController::class, 'deleteLampiran']
 )->name('lp3m.deleteLampiran');
 
+
 // Rewinding
 
-// Route::post(
-//     '/rewinding/{rewinding}/hapus-lampiran',
-//     [RewindingController::class, 'hapusLampiran']
-// )->name('rewinding.hapusLampiran');
-
-// Route::resource('rewinding', RewindingController::class)
-//     ->except(['show']);
 Route::post(
     '/rewinding/{rewinding}/hapus-lampiran-keluar',
     [RewindingController::class, 'hapusLampiranKeluar']
@@ -812,8 +806,33 @@ Route::post(
     [RewindingController::class, 'hapusLampiranMasuk']
 )->name('rewinding.hapusLampiranMasuk');
 
-Route::resource('rewinding', RewindingController::class)
-    ->except(['show']);
+Route::get(
+    '/rewinding/{folder}/create',
+    [RewindingController::class, 'create']
+)->name('rewinding.create');
+
+Route::get(
+    '/rewinding/{rewinding}/edit',
+    [RewindingController::class, 'edit']
+)->name('rewinding.edit');
+
+Route::put(
+    '/rewinding/{rewinding}',
+    [RewindingController::class, 'update'
+])->name('rewinding.update');
+
+Route::delete(
+    '/rewinding/{rewinding}',
+    [RewindingController::class, 'destroy']
+)->name('rewinding.destroy');
+
+Route::post(
+    '/rewinding',
+    [RewindingController::class, 'store']
+)->name('rewinding.store');
+
+// Route::resource('rewinding', RewindingController::class)
+//     ->except(['show']);
 
 Route::get(
     '/rewinding/{rewinding}/detail',
@@ -829,6 +848,36 @@ Route::delete(
     '/rewinding-lampiran/{lampiran}',
     [RewindingController::class, 'hapusLampiranDetail']
 )->name('rewinding.lampiran.delete');
+
+Route::get(
+    '/rewinding',
+    [RewindingController::class, 'folderIndex']
+)->name('rewinding.index');
+
+Route::get(
+    '/rewinding/create-folder',
+    [RewindingController::class, 'createFolder']
+)->name('rewinding.folder.create');
+
+Route::post(
+    '/rewinding/store-folder',
+    [RewindingController::class, 'storeFolder']
+)->name('rewinding.folder.store');
+
+Route::get(
+    '/rewinding/{folder}/monitor',
+    [RewindingController::class, 'monitor']
+)->name('rewinding.monitor');
+
+Route::put(
+    '/rewinding-folder/{folder}',
+    [RewindingController::class, 'updateFolder']
+)->name('rewinding.folder.update');
+
+Route::delete(
+    '/rewinding-folder/{folder}',
+    [RewindingController::class, 'deleteFolder']
+)->name('rewinding.folder.delete');
 
 /*
  * |--------------------------------------------------------------------------
@@ -861,15 +910,13 @@ Route::get(
     [FasilitasHarianController::class, 'duplicate']
 )->name('fasilitas-harian.duplicate');
 
-
-
-
 // Asset Matrix
+
 /*
-|--------------------------------------------------------------------------
-| MASTER ASSET
-|--------------------------------------------------------------------------
-*/
+ * |--------------------------------------------------------------------------
+ * | MASTER ASSET
+ * |--------------------------------------------------------------------------
+ */
 
 Route::resource(
     'assets',
@@ -877,10 +924,10 @@ Route::resource(
 );
 
 /*
-|--------------------------------------------------------------------------
-| MATRIX MAINTENANCE
-|--------------------------------------------------------------------------
-*/
+ * |--------------------------------------------------------------------------
+ * | MATRIX MAINTENANCE
+ * |--------------------------------------------------------------------------
+ */
 
 Route::get(
     '/asset-maintenance',
