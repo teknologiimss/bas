@@ -480,6 +480,15 @@ Route::prefix('products')->group(function () {
     Route::delete('/pengiriman-detail/bulk-delete', [PengirimanController::class, 'bulkDelete'])
         ->name('pengiriman.detail.bulkDelete');
 
+    // Dashboard Pengiriman
+    Route::get('/dashboard-pengiriman',
+            [PengirimanController::class, 'dashboard'])
+        ->name('pengiriman.dashboard');
+
+    Route::get('/dashboard-pengiriman/detail/{type}',
+            [PengirimanController::class, 'dashboardDetail'])
+        ->name('pengiriman.dashboard.detail');
+
     // Perencanaan MRO
     // LIST PROYEK
     Route::get('/perencanaan', [PerencanaanController::class, 'proyek'])
@@ -793,7 +802,6 @@ Route::delete(
     [Lp3mController::class, 'deleteLampiran']
 )->name('lp3m.deleteLampiran');
 
-
 // Rewinding
 
 Route::post(
@@ -818,8 +826,8 @@ Route::get(
 
 Route::put(
     '/rewinding/{rewinding}',
-    [RewindingController::class, 'update'
-])->name('rewinding.update');
+    [RewindingController::class, 'update']
+)->name('rewinding.update');
 
 Route::delete(
     '/rewinding/{rewinding}',

@@ -513,6 +513,7 @@
                                         'fasilitas-harian.index',
                                         'asset-maintenance.index',
                                         'assets.index',
+                                        'pengiriman.dashboard',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -564,6 +565,7 @@
                                         'fasilitas-harian.index',
                                         'asset-maintenance.index',
                                         'assets.index',
+                                        'pengiriman.dashboard',
                                     ]);
                                 @endphp
 
@@ -1040,6 +1042,34 @@
 
                                                     {{-- ADMIN & MRO FULL ACCESS --}}
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+
+                                                        {{-- Dashboard --}}
+                                                        <li
+                                                            class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') ? 'menu-open' : '' }}">
+
+                                                            <a href="#"
+                                                                class="nav-link {{ Route::is('pengiriman.dashboard*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                                                <p>
+                                                                    Dashboard
+                                                                    <i class="right fas fa-angle-left"></i>
+                                                                </p>
+                                                            </a>
+
+                                                            <ul class="nav nav-treeview">
+
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('pengiriman.dashboard') }}"
+                                                                        class="nav-link {{ Route::currentRouteName() == 'pengiriman.dashboard' ? 'active' : '' }}">
+                                                                        <i class="far fa-circle nav-icon"></i>
+                                                                        <p>Dashboard Pengiriman</p>
+                                                                    </a>
+                                                                </li>
+
+                                                            </ul>
+
+                                                        </li>
+
                                                         <li class="nav-item">
                                                             <a href="{{ route('mro.profil') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'mro.profil' ? 'active' : '' }}">
@@ -1047,6 +1077,7 @@
                                                                 <p>Personil MRO</p>
                                                             </a>
                                                         </li>
+
 
                                                         <li class="nav-item">
                                                             <a href="{{ route('perencanaan.proyek') }}"
@@ -1072,7 +1103,7 @@
                                                             </a>
                                                         </li>
 
-                                                        
+
                                                         <li class="nav-item">
                                                             <a href="{{ route('mro.riwayat') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
@@ -1082,9 +1113,9 @@
                                                         </li>
 
                                                         <li
-                                                            class="nav-item {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*', 'rewinding.*', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'menu-open' : '' }}">
+                                                            class="nav-item {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.*', 'rewinding.*', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'menu-open' : '' }}">
                                                             <a href="#"
-                                                                class="nav-link {{ request()->routeIs('pengiriman.*', 'checksheet.*', 'alat.*', 'rewinding.*', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.*', 'rewinding.*', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
                                                                 <p>
                                                                     Monitoring
@@ -1096,7 +1127,7 @@
 
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('pengiriman.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('pengiriman.*') ? 'active' : '' }}">
+                                                                        class="nav-link {{ request()->routeIs('pengiriman.index') ? 'active' : '' }}">
                                                                         <i class="nav-icon far fa-circle"></i>
                                                                         <p>Monitoring Pengiriman</p>
                                                                     </a>
@@ -1139,7 +1170,8 @@
                                                                                 class="nav-link
                                                                                 {{ request()->routeIs('assets.*') || request()->routeIs('asset-maintenance.*') ? 'active' : '' }}">
 
-                                                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                                                <i
+                                                                                    class="far fa-dot-circle nav-icon"></i>
 
                                                                                 <p>
                                                                                     Matrix Asset
@@ -1190,7 +1222,8 @@
                                                                             <a href="{{ route('checksheet.index') }}"
                                                                                 class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
 
-                                                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                                                <i
+                                                                                    class="far fa-dot-circle nav-icon"></i>
 
                                                                                 <p>Checksheet Preventive Maintenance</p>
 

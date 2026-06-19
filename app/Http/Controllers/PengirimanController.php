@@ -260,4 +260,140 @@ class PengirimanController extends Controller
 
         return back()->with('success', 'Data terpilih berhasil dihapus');
     }
+
+    public function dashboard()
+    {
+        $detail = DB::table('pengiriman_detail')->get();
+
+        $totalData = $detail->count();
+
+        $onTime = $detail
+            ->where('status_delivery', 'On Time')
+            ->count();
+
+        $overdue = $detail
+            ->where('status_delivery', 'Overdue')
+            ->count();
+
+        $delivered = $detail
+            ->whereNotNull('actual_delivery')
+            ->count();
+
+        $unloading = $detail
+            ->whereNotNull('actual_unloading')
+            ->count();
+
+        $vendorCount = $detail
+            ->pluck('vendor')
+            ->filter()
+            ->unique()
+            ->count();
+
+        $trainsetCount = $detail
+            ->pluck('trainset')
+            ->filter()
+            ->unique()
+            ->count();
+
+        $projectCount = DB::table('pengiriman')->count();
+
+        return view(
+            'pengiriman.dashboard',
+            compact(
+                'totalData',
+                'onTime',
+                'overdue',
+                'delivered',
+                'unloading',
+                'vendorCount',
+                'trainsetCount',
+                'projectCount'
+            )
+        );
+    }
+
+    public function dashboardDetail($type)
+    {
+        switch ($type) {
+            case 'proyek':
+                $title = 'Daftar Proyek';
+
+                $data = DB::table('pengiriman')
+                    ->select(
+                        'id',
+                        'nama_proyek',
+                        
+                    )
+                    ->get();
+
+                break;
+
+            case 'pengiriman':
+                $title = 'Semua Data Pengiriman';
+
+                $data = DB::table('pengiriman_detail')
+                    ->get();
+
+                break;
+
+            case 'ontime':
+                $title = 'Data On Time';
+
+                $data = DB::table('pengiriman_detail')
+                    ->where('status_delivery', 'On Time')
+                    ->get();
+
+                break;
+
+            case 'overdue':
+                $title = 'Data Overdue';
+
+                $data = DB::table('pengiriman_detail')
+                    ->where('status_delivery', 'Overdue')
+                    ->get();
+
+                break;
+
+            case 'delivery':
+                $title = 'Data Sudah Delivery';
+
+                $data = DB::table('pengiriman_detail')
+                    ->whereNotNull('actual_delivery')
+                    ->get();
+
+                break;
+
+            case 'unloading':
+                $title = 'Data Sudah Unloading';
+
+                $data = DB::table('pengiriman_detail')
+                    ->whereNotNull('actual_unloading')
+                    ->get();
+
+                break;
+
+            case 'trainset':
+                $title = 'Daftar Trainset';
+
+                $data = DB::table('pengiriman_detail')
+                    ->select('trainset')
+                    ->distinct()
+                    ->orderBy('trainset')
+                    ->get();
+
+                break;
+
+            default:
+                abort(404);
+        }
+
+        return view(
+            'pengiriman.dashboard-detail',
+            compact(
+                'title',
+                'data',
+                'type'
+            )
+        );
+    }
 }
