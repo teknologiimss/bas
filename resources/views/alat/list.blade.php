@@ -295,7 +295,7 @@
 
         <div class="mt-3">
 
-            {{ $data->links() }}
+            {{ $data->links('pagination::bootstrap-4') }}
 
         </div>
 
