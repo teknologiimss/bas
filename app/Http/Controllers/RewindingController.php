@@ -6,7 +6,9 @@ use App\Models\Rewinding;
 use App\Models\RewindingDetail;
 use App\Models\RewindingDetailLampiran;
 use App\Models\RewindingFolder;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class RewindingController extends Controller
@@ -573,6 +575,95 @@ class RewindingController extends Controller
         return back()->with(
             'success',
             'Folder beserta seluruh data dan lampiran berhasil dihapus'
+        );
+    }
+
+    public function dashboard()
+    {
+        $total = Rewinding::count();
+
+        $open = Rewinding::where('status', 'Open')->count();
+
+        $closed = Rewinding::where('status', 'Closed')->count();
+
+        $progress = $total > 0
+            ? round(($closed / $total) * 100, 2)
+            : 0;
+
+        // Chart Open vs Closed
+        $statusChart = [
+            'open' => $open,
+            'closed' => $closed
+        ];
+
+        // Grafik per bulan
+        $monthlyData = Rewinding::select(
+            DB::raw('MONTH(created_at) as bulan'),
+            DB::raw('COUNT(*) as total')
+        )
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->get();
+
+        $bulan = [];
+        $jumlah = [];
+
+        $namaBulan = [
+            1 => 'Jan',
+            2 => 'Feb',
+            3 => 'Mar',
+            4 => 'Apr',
+            5 => 'Mei',
+            6 => 'Jun',
+            7 => 'Jul',
+            8 => 'Agu',
+            9 => 'Sep',
+            10 => 'Okt',
+            11 => 'Nov',
+            12 => 'Des'
+        ];
+
+        foreach ($monthlyData as $item) {
+            $bulan[] = $namaBulan[$item->bulan];
+            $jumlah[] = $item->total;
+        }
+
+        // Semua data Open
+        $openData = Rewinding::where('status', 'Open')
+            ->orderBy('tanggal_sjn_keluar')
+            ->get();
+
+        
+
+        return view('rewinding.dashboard', compact(
+            'total',
+            'open',
+            'closed',
+            'progress',
+            'statusChart',
+            'bulan',
+            'jumlah',
+            'openData'
+        ));
+    }
+
+    public function listData(Request $request)
+    {
+        $status = $request->status;
+
+        $data = Rewinding::with('folder')
+            ->when($status, function ($q) use ($status) {
+                $q->where('status', $status);
+            })
+            ->latest()
+            ->paginate(20);
+
+        return view(
+            'rewinding.list-data',
+            compact(
+                'data',
+                'status'
+            )
         );
     }
 }

@@ -592,6 +592,282 @@ Route::prefix('products')->group(function () {
         [ChecksheetController::class, 'deletePhoto']
     )->name('checksheet.photo.delete');
 
+    // Proyek MRO
+
+    Route::get('proyek', [ProyekController::class, 'index'])->name('proyek.index');
+    Route::post('/proyek/store', [ProyekController::class, 'store'])->name('proyek.store');
+    Route::post('/proyek/update/{id}', [ProyekController::class, 'update'])->name('proyek.update');
+    Route::delete('/proyek/delete/{id}', [ProyekController::class, 'destroy'])->name('proyek.delete');
+
+    // Monitoring MRO
+    Route::get('/proyek/{id}/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
+    Route::post('/proyek/{id}/monitoring', [MonitoringController::class, 'store'])->name('monitoring.store');
+    Route::post('/monitoring/{id}/update', [MonitoringController::class, 'update'])->name('monitoring.update');
+    Route::delete('/monitoring/{id}', [MonitoringController::class, 'destroy'])->name('monitoring.destroy');
+    Route::delete('/monitoring/document/{id}', [MonitoringController::class, 'destroyDocument'])->name('monitoring.document.destroy');
+    Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'updateDocument'])
+        ->name('monitoring.document.update');
+    // Route::post('/monitoring/update-status/{id}', [MonitoringController::class, 'updateStatus'])
+    //     ->name('monitoring.updateStatus');
+
+    Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'updateDocument'])->name('monitoring.document.update');
+    Route::get('/monitoring/export/{proyek_id}', [MonitoringController::class, 'exportZip'])
+        ->name('monitoring.export');
+
+    Route::post('/monitoring/{id}/docgroup/store', [MonitoringController::class, 'storeDocGroup'])
+        ->name('monitoring.docgroup.store');
+
+    Route::delete('/monitoring/docgroup/{id}/destroy', [MonitoringController::class, 'destroyDocGroup'])
+        ->name('monitoring.docgroup.destroy');
+
+    Route::post('/progress/{id}', [MonitoringController::class, 'updateProgress'])
+        ->name('mro.progress.update');
+
+    Route::delete('/progress/{id}', [MonitoringController::class, 'destroy'])
+        ->name('mro.progress.delete');
+
+    Route::get('/mro-progress/print', [MonitoringController::class, 'print'])
+        ->name('mro.progress.print');
+    Route::get('/mro-progress', [MonitoringController::class, 'resumeProgress'])
+        ->name('mro.progress.index');
+
+    // Profil MRO
+    Route::get('/mro/profil', function () {
+        return view('mro.profil');
+    })->name('mro.profil');
+
+    // CUTI MRO
+    Route::get('/cuti', [CutiController::class, 'index'])
+        ->name('cuti.index');
+
+    Route::post('/cuti/store', [CutiController::class, 'store'])
+        ->name('cuti.store');
+
+    Route::get('/cuti/rekap', [CutiController::class, 'rekap'])
+        ->name('cuti.rekap');
+
+    Route::get('/cuti/{id}/edit',
+            [CutiController::class, 'edit'])
+        ->name('cuti.edit');
+
+    Route::put('/cuti/{id}',
+            [CutiController::class, 'update'])
+        ->name('cuti.update');
+
+    Route::delete('/cuti/{id}',
+            [CutiController::class, 'destroy'])
+        ->name('cuti.destroy');
+
+    Route::get('/cuti-tahunan',
+            [CutiTahunanController::class, 'index'])
+        ->name('cuti.tahunan');
+
+    Route::post('/cuti-tahunan/store',
+            [CutiTahunanController::class, 'store'])
+        ->name('cuti.tahunan.store');
+
+    Route::put('/cuti-tahunan/{id}',
+            [CutiTahunanController::class, 'update'])
+        ->name('cuti.tahunan.update');
+
+    Route::delete('/cuti-tahunan/{id}',
+            [CutiTahunanController::class, 'destroy'])
+        ->name('cuti.tahunan.destroy');
+
+    // LP3M (Tindak lanjut SPR)
+
+    Route::get('/lp3m', [Lp3mController::class, 'index'])->name('lp3m.index');
+
+    Route::get('/lp3m/create', [Lp3mController::class, 'create'])->name('lp3m.create');
+
+    Route::post('/lp3m/store', [Lp3mController::class, 'store'])->name('lp3m.store');
+
+    Route::get('/lp3m/form/{id}', [Lp3mController::class, 'form'])
+        ->name('lp3m.form');
+
+    Route::post('/lp3m/save-form/{id}', [Lp3mController::class, 'saveForm'])
+        ->name('lp3m.saveForm');
+
+    Route::get('/lp3m/edit/{id}', [Lp3mController::class, 'edit'])
+        ->name('lp3m.edit');
+
+    Route::post('/lp3m/update/{id}', [Lp3mController::class, 'update'])
+        ->name('lp3m.update');
+
+    Route::delete('/lp3m/delete/{id}', [Lp3mController::class, 'destroy'])
+        ->name('lp3m.destroy');
+
+    Route::get('/lp3m/print/{id}', [Lp3mController::class, 'print'])
+        ->name('lp3m.print');
+
+    Route::get('/lp3m/show/{id}', [Lp3mController::class, 'show'])
+        ->name('lp3m.show');
+
+    Route::get('/lp3m/riwayat-spr', [Lp3mController::class, 'getRiwayatSpr'])
+        ->name('lp3m.riwayatSpr');
+
+    Route::post('/lp3m/upload-lampiran',
+            [Lp3mController::class, 'uploadLampiran'])
+        ->name('lp3m.uploadLampiran');
+
+    Route::delete(
+        '/lp3m/lampiran/{id}',
+        [Lp3mController::class, 'deleteLampiran']
+    )->name('lp3m.deleteLampiran');
+
+    // Rewinding
+
+    Route::post(
+        '/rewinding/{rewinding}/hapus-lampiran-keluar',
+        [RewindingController::class, 'hapusLampiranKeluar']
+    )->name('rewinding.hapusLampiranKeluar');
+
+    Route::post(
+        '/rewinding/{rewinding}/hapus-lampiran-masuk',
+        [RewindingController::class, 'hapusLampiranMasuk']
+    )->name('rewinding.hapusLampiranMasuk');
+
+    Route::get(
+        '/rewinding/{folder}/create',
+        [RewindingController::class, 'create']
+    )->name('rewinding.create');
+
+    Route::get(
+        '/rewinding/{rewinding}/edit',
+        [RewindingController::class, 'edit']
+    )->name('rewinding.edit');
+
+    Route::put(
+        '/rewinding/{rewinding}',
+        [RewindingController::class, 'update']
+    )->name('rewinding.update');
+
+    Route::delete(
+        '/rewinding/{rewinding}',
+        [RewindingController::class, 'destroy']
+    )->name('rewinding.destroy');
+
+    Route::post(
+        '/rewinding',
+        [RewindingController::class, 'store']
+    )->name('rewinding.store');
+
+    // Route::resource('rewinding', RewindingController::class)
+    //     ->except(['show']);
+
+    Route::get(
+        '/rewinding/{rewinding}/detail',
+        [RewindingController::class, 'detail']
+    )->name('rewinding.detail');
+
+    Route::post(
+        '/rewinding/{rewinding}/detail',
+        [RewindingController::class, 'detailStore']
+    )->name('rewinding.detail.store');
+
+    Route::delete(
+        '/rewinding-lampiran/{lampiran}',
+        [RewindingController::class, 'hapusLampiranDetail']
+    )->name('rewinding.lampiran.delete');
+
+    Route::get(
+        '/rewinding',
+        [RewindingController::class, 'folderIndex']
+    )->name('rewinding.index');
+
+    Route::get(
+        '/rewinding-data',
+        [RewindingController::class, 'listData']
+    )->name('rewinding.list');
+
+    Route::get(
+        '/rewinding/create-folder',
+        [RewindingController::class, 'createFolder']
+    )->name('rewinding.folder.create');
+
+    Route::post(
+        '/rewinding/store-folder',
+        [RewindingController::class, 'storeFolder']
+    )->name('rewinding.folder.store');
+
+    Route::get(
+        '/rewinding/{folder}/monitor',
+        [RewindingController::class, 'monitor']
+    )->name('rewinding.monitor');
+
+    Route::put(
+        '/rewinding-folder/{folder}',
+        [RewindingController::class, 'updateFolder']
+    )->name('rewinding.folder.update');
+
+    Route::delete(
+        '/rewinding-folder/{folder}',
+        [RewindingController::class, 'deleteFolder']
+    )->name('rewinding.folder.delete');
+
+    Route::get('/rewinding/dashboard', [RewindingController::class, 'dashboard'])
+        ->name('rewinding.dashboard');
+
+    /*
+     * |--------------------------------------------------------------------------
+     * | CHECKSHEET HARIAN FASILITAS
+     * |--------------------------------------------------------------------------
+     */
+
+    Route::resource(
+        'fasilitas-harian',
+        FasilitasHarianController::class
+    );
+
+    Route::get(
+        'fasilitas-harian/{id}/mobile',
+        [FasilitasHarianController::class, 'mobile']
+    )->name('fasilitas.mobile');
+
+    Route::post(
+        'fasilitas-harian/save-mobile',
+        [FasilitasHarianController::class, 'saveMobile']
+    )->name('fasilitas.mobile.save');
+
+    Route::get(
+        'fasilitas-harian/{id}/print',
+        [FasilitasHarianController::class, 'print']
+    )->name('fasilitas.print');
+
+    Route::get(
+        'fasilitas-harian/{id}/duplicate',
+        [FasilitasHarianController::class, 'duplicate']
+    )->name('fasilitas-harian.duplicate');
+
+    // Asset Matrix
+
+    /*
+     * |--------------------------------------------------------------------------
+     * | MASTER ASSET
+     * |--------------------------------------------------------------------------
+     */
+
+    Route::resource(
+        'assets',
+        AssetController::class
+    );
+
+    /*
+     * |--------------------------------------------------------------------------
+     * | MATRIX MAINTENANCE
+     * |--------------------------------------------------------------------------
+     */
+
+    Route::get(
+        '/asset-maintenance',
+        [AssetMaintenanceController::class, 'index']
+    )->name('asset-maintenance.index');
+
+    Route::post(
+        '/asset-maintenance/mark',
+        [AssetMaintenanceController::class, 'mark']
+    )->name('asset-maintenance.mark');
+
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
     // Route::resource('justi', App\Http\Controllers\JustiController::class)->except(['destroy']);
@@ -678,274 +954,6 @@ Route::get('karyawan', [App\Http\Controllers\KaryawanController::class, 'index']
 Route::post('karyawan', [App\Http\Controllers\KaryawanController::class, 'store'])->name('karyawan.store');
 Route::delete('karyawan', [App\Http\Controllers\KaryawanController::class, 'destroy'])->name('karyawan.destroy');
 Route::post('karyawan-warehouse-imss/hapus-multiple', [App\Http\Controllers\KaryawanController::class, 'hapusMultipleKaryawan'])->name('hapus-multiple');
-
-// Proyek MRO
-
-Route::get('proyek', [ProyekController::class, 'index'])->name('proyek.index');
-Route::post('/proyek/store', [ProyekController::class, 'store'])->name('proyek.store');
-Route::post('/proyek/update/{id}', [ProyekController::class, 'update'])->name('proyek.update');
-Route::delete('/proyek/delete/{id}', [ProyekController::class, 'destroy'])->name('proyek.delete');
-
-// Monitoring MRO
-Route::get('/proyek/{id}/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
-Route::post('/proyek/{id}/monitoring', [MonitoringController::class, 'store'])->name('monitoring.store');
-Route::post('/monitoring/{id}/update', [MonitoringController::class, 'update'])->name('monitoring.update');
-Route::delete('/monitoring/{id}', [MonitoringController::class, 'destroy'])->name('monitoring.destroy');
-Route::delete('/monitoring/document/{id}', [MonitoringController::class, 'destroyDocument'])->name('monitoring.document.destroy');
-Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'updateDocument'])
-    ->name('monitoring.document.update');
-// Route::post('/monitoring/update-status/{id}', [MonitoringController::class, 'updateStatus'])
-//     ->name('monitoring.updateStatus');
-
-Route::post('/monitoring/document/update/{id}', [MonitoringController::class, 'updateDocument'])->name('monitoring.document.update');
-Route::get('/monitoring/export/{proyek_id}', [MonitoringController::class, 'exportZip'])
-    ->name('monitoring.export');
-
-Route::post('/monitoring/{id}/docgroup/store', [MonitoringController::class, 'storeDocGroup'])
-    ->name('monitoring.docgroup.store');
-
-Route::delete('/monitoring/docgroup/{id}/destroy', [MonitoringController::class, 'destroyDocGroup'])
-    ->name('monitoring.docgroup.destroy');
-
-Route::post('/progress/{id}', [MonitoringController::class, 'updateProgress'])
-    ->name('mro.progress.update');
-
-Route::delete('/progress/{id}', [MonitoringController::class, 'destroy'])
-    ->name('mro.progress.delete');
-
-Route::get('/mro-progress/print', [MonitoringController::class, 'print'])
-    ->name('mro.progress.print');
-Route::get('/mro-progress', [MonitoringController::class, 'resumeProgress'])
-    ->name('mro.progress.index');
-
-// Profil MRO
-Route::get('/mro/profil', function () {
-    return view('mro.profil');
-})->name('mro.profil');
-
-// CUTI MRO
-Route::get('/cuti', [CutiController::class, 'index'])
-    ->name('cuti.index');
-
-Route::post('/cuti/store', [CutiController::class, 'store'])
-    ->name('cuti.store');
-
-Route::get('/cuti/rekap', [CutiController::class, 'rekap'])
-    ->name('cuti.rekap');
-
-Route::get('/cuti/{id}/edit',
-        [CutiController::class, 'edit'])
-    ->name('cuti.edit');
-
-Route::put('/cuti/{id}',
-        [CutiController::class, 'update'])
-    ->name('cuti.update');
-
-Route::delete('/cuti/{id}',
-        [CutiController::class, 'destroy'])
-    ->name('cuti.destroy');
-
-Route::get('/cuti-tahunan',
-        [CutiTahunanController::class, 'index'])
-    ->name('cuti.tahunan');
-
-Route::post('/cuti-tahunan/store',
-        [CutiTahunanController::class, 'store'])
-    ->name('cuti.tahunan.store');
-
-Route::put('/cuti-tahunan/{id}',
-        [CutiTahunanController::class, 'update'])
-    ->name('cuti.tahunan.update');
-
-Route::delete('/cuti-tahunan/{id}',
-        [CutiTahunanController::class, 'destroy'])
-    ->name('cuti.tahunan.destroy');
-
-// LP3M (Tindak lanjut SPR)
-
-Route::get('/lp3m', [Lp3mController::class, 'index'])->name('lp3m.index');
-
-Route::get('/lp3m/create', [Lp3mController::class, 'create'])->name('lp3m.create');
-
-Route::post('/lp3m/store', [Lp3mController::class, 'store'])->name('lp3m.store');
-
-Route::get('/lp3m/form/{id}', [Lp3mController::class, 'form'])
-    ->name('lp3m.form');
-
-Route::post('/lp3m/save-form/{id}', [Lp3mController::class, 'saveForm'])
-    ->name('lp3m.saveForm');
-
-Route::get('/lp3m/edit/{id}', [Lp3mController::class, 'edit'])
-    ->name('lp3m.edit');
-
-Route::post('/lp3m/update/{id}', [Lp3mController::class, 'update'])
-    ->name('lp3m.update');
-
-Route::delete('/lp3m/delete/{id}', [Lp3mController::class, 'destroy'])
-    ->name('lp3m.destroy');
-
-Route::get('/lp3m/print/{id}', [Lp3mController::class, 'print'])
-    ->name('lp3m.print');
-
-Route::get('/lp3m/show/{id}', [Lp3mController::class, 'show'])
-    ->name('lp3m.show');
-
-Route::get('/lp3m/riwayat-spr', [Lp3mController::class, 'getRiwayatSpr'])
-    ->name('lp3m.riwayatSpr');
-
-Route::post('/lp3m/upload-lampiran',
-        [Lp3mController::class, 'uploadLampiran'])
-    ->name('lp3m.uploadLampiran');
-
-Route::delete(
-    '/lp3m/lampiran/{id}',
-    [Lp3mController::class, 'deleteLampiran']
-)->name('lp3m.deleteLampiran');
-
-// Rewinding
-
-Route::post(
-    '/rewinding/{rewinding}/hapus-lampiran-keluar',
-    [RewindingController::class, 'hapusLampiranKeluar']
-)->name('rewinding.hapusLampiranKeluar');
-
-Route::post(
-    '/rewinding/{rewinding}/hapus-lampiran-masuk',
-    [RewindingController::class, 'hapusLampiranMasuk']
-)->name('rewinding.hapusLampiranMasuk');
-
-Route::get(
-    '/rewinding/{folder}/create',
-    [RewindingController::class, 'create']
-)->name('rewinding.create');
-
-Route::get(
-    '/rewinding/{rewinding}/edit',
-    [RewindingController::class, 'edit']
-)->name('rewinding.edit');
-
-Route::put(
-    '/rewinding/{rewinding}',
-    [RewindingController::class, 'update']
-)->name('rewinding.update');
-
-Route::delete(
-    '/rewinding/{rewinding}',
-    [RewindingController::class, 'destroy']
-)->name('rewinding.destroy');
-
-Route::post(
-    '/rewinding',
-    [RewindingController::class, 'store']
-)->name('rewinding.store');
-
-// Route::resource('rewinding', RewindingController::class)
-//     ->except(['show']);
-
-Route::get(
-    '/rewinding/{rewinding}/detail',
-    [RewindingController::class, 'detail']
-)->name('rewinding.detail');
-
-Route::post(
-    '/rewinding/{rewinding}/detail',
-    [RewindingController::class, 'detailStore']
-)->name('rewinding.detail.store');
-
-Route::delete(
-    '/rewinding-lampiran/{lampiran}',
-    [RewindingController::class, 'hapusLampiranDetail']
-)->name('rewinding.lampiran.delete');
-
-Route::get(
-    '/rewinding',
-    [RewindingController::class, 'folderIndex']
-)->name('rewinding.index');
-
-Route::get(
-    '/rewinding/create-folder',
-    [RewindingController::class, 'createFolder']
-)->name('rewinding.folder.create');
-
-Route::post(
-    '/rewinding/store-folder',
-    [RewindingController::class, 'storeFolder']
-)->name('rewinding.folder.store');
-
-Route::get(
-    '/rewinding/{folder}/monitor',
-    [RewindingController::class, 'monitor']
-)->name('rewinding.monitor');
-
-Route::put(
-    '/rewinding-folder/{folder}',
-    [RewindingController::class, 'updateFolder']
-)->name('rewinding.folder.update');
-
-Route::delete(
-    '/rewinding-folder/{folder}',
-    [RewindingController::class, 'deleteFolder']
-)->name('rewinding.folder.delete');
-
-/*
- * |--------------------------------------------------------------------------
- * | CHECKSHEET HARIAN FASILITAS
- * |--------------------------------------------------------------------------
- */
-
-Route::resource(
-    'fasilitas-harian',
-    FasilitasHarianController::class
-);
-
-Route::get(
-    'fasilitas-harian/{id}/mobile',
-    [FasilitasHarianController::class, 'mobile']
-)->name('fasilitas.mobile');
-
-Route::post(
-    'fasilitas-harian/save-mobile',
-    [FasilitasHarianController::class, 'saveMobile']
-)->name('fasilitas.mobile.save');
-
-Route::get(
-    'fasilitas-harian/{id}/print',
-    [FasilitasHarianController::class, 'print']
-)->name('fasilitas.print');
-
-Route::get(
-    'fasilitas-harian/{id}/duplicate',
-    [FasilitasHarianController::class, 'duplicate']
-)->name('fasilitas-harian.duplicate');
-
-// Asset Matrix
-
-/*
- * |--------------------------------------------------------------------------
- * | MASTER ASSET
- * |--------------------------------------------------------------------------
- */
-
-Route::resource(
-    'assets',
-    AssetController::class
-);
-
-/*
- * |--------------------------------------------------------------------------
- * | MATRIX MAINTENANCE
- * |--------------------------------------------------------------------------
- */
-
-Route::get(
-    '/asset-maintenance',
-    [AssetMaintenanceController::class, 'index']
-)->name('asset-maintenance.index');
-
-Route::post(
-    '/asset-maintenance/mark',
-    [AssetMaintenanceController::class, 'mark']
-)->name('asset-maintenance.mark');
 
 // Route::get('service', [App\Http\Controllers\ServiceController::class, 'index'])->name('service.index');
 // Route::post('service', [App\Http\Controllers\ServiceController::class, 'store'])->name('service.store');

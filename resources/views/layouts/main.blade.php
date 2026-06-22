@@ -514,6 +514,7 @@
                                         'asset-maintenance.index',
                                         'assets.index',
                                         'pengiriman.dashboard',
+                                        'rewinding.dashboard',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -566,6 +567,7 @@
                                         'asset-maintenance.index',
                                         'assets.index',
                                         'pengiriman.dashboard',
+                                        'rewinding.dashboard',
                                     ]);
                                 @endphp
 
@@ -1044,30 +1046,54 @@
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
                                                         {{-- Dashboard --}}
                                                         <li
-                                                            class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') ? 'menu-open' : '' }}">
+                                                            class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') ? 'menu-open' : '' }}">
 
                                                             <a href="#"
-                                                                class="nav-link {{ Route::is('pengiriman.dashboard*') ? 'active' : '' }}">
+                                                                class="nav-link {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') ? 'active' : '' }}">
+
                                                                 <i class="nav-icon fas fa-tachometer-alt"></i>
+
                                                                 <p>
                                                                     Dashboard
                                                                     <i class="right fas fa-angle-left"></i>
                                                                 </p>
+
                                                             </a>
 
                                                             <ul class="nav nav-treeview">
 
                                                                 <li class="nav-item">
+
                                                                     <a href="{{ route('pengiriman.dashboard') }}"
                                                                         class="nav-link {{ Route::currentRouteName() == 'pengiriman.dashboard' ? 'active' : '' }}">
+
                                                                         <i class="far fa-circle nav-icon"></i>
+
                                                                         <p>Dashboard Pengiriman</p>
+
                                                                     </a>
+
+                                                                </li>
+
+                                                                <li class="nav-item">
+
+                                                                    <a href="{{ route('rewinding.dashboard') }}"
+                                                                        class="nav-link {{ Route::currentRouteName() == 'rewinding.dashboard' ? 'active' : '' }}">
+
+                                                                        <i class="far fa-circle nav-icon"></i>
+
+                                                                        <p>Dashboard Rewinding</p>
+
+                                                                    </a>
+
                                                                 </li>
 
                                                             </ul>
 
                                                         </li>
+
+
+                                                        {{-- Personil MRO --}}
 
                                                         <li class="nav-item">
                                                             <a href="{{ route('mro.profil') }}"
@@ -1113,9 +1139,9 @@
 
                                                         {{-- Monitoring --}}
                                                         <li
-                                                            class="nav-item {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.*', 'rewinding.*', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'menu-open' : '' }}">
+                                                            class="nav-item {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.*', 'rewinding.index', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'menu-open' : '' }}">
                                                             <a href="#"
-                                                                class="nav-link {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.*', 'rewinding.*', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.*', 'rewinding.index', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
                                                                 <p>
                                                                     Monitoring
@@ -1272,7 +1298,7 @@
                                                                 {{-- Monitoring Rewinding --}}
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('rewinding.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('rewinding.*') ? 'active' : '' }}">
+                                                                        class="nav-link {{ request()->routeIs('rewinding.index') ? 'active' : '' }}">
                                                                         <i class="nav-icon far fa-circle"></i>
                                                                         <p>Monitoring Rewinding</p>
                                                                     </a>
