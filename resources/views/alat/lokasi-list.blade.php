@@ -257,20 +257,16 @@
 
                 <div class="table-responsive">
 
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover mb-0">
 
                         <thead>
-
                             <tr>
-
                                 <th width="60">No</th>
                                 <th>Lokasi</th>
                                 <th>Unit</th>
                                 <th>No Lambung</th>
                                 <th>Aset</th>
-
                             </tr>
-
                         </thead>
 
                         <tbody>
@@ -283,44 +279,28 @@
                                     </td>
 
                                     <td>
-
                                         <span class="badge badge-info badge-lokasi">
-
                                             {{ $item->lokasi }}
-
                                         </span>
-
                                     </td>
 
                                     <td>
-
-                                        <strong>
-
-                                            {{ $item->unit }}
-
-                                        </strong>
-
+                                        <strong>{{ $item->unit }}</strong>
                                     </td>
 
                                     <td>
-
                                         {{ $item->no_lambung }}
-
                                     </td>
 
                                     <td>
 
                                         @if (str_contains(strtoupper($item->aset ?? ''), 'IMSS'))
                                             <span class="badge badge-success badge-aset">
-
                                                 {{ $item->aset }}
-
                                             </span>
                                         @else
                                             <span class="badge badge-warning badge-aset">
-
                                                 {{ $item->aset }}
-
                                             </span>
                                         @endif
 
@@ -333,13 +313,7 @@
                                 <tr>
 
                                     <td colspan="5" class="text-center py-4">
-
-                                        <i class="fas fa-folder-open fa-2x text-muted mb-2"></i>
-
-                                        <br>
-
                                         Tidak ada data
-
                                     </td>
 
                                 </tr>
@@ -351,9 +325,32 @@
 
                 </div>
 
-                <div class="mt-4">
+                <div class="row mt-3 align-items-center">
 
-                    {{ $data->links() }}
+                    <div class="col-md-6">
+
+                        <small class="text-muted">
+
+                            Menampilkan
+                            {{ $data->firstItem() ?? 0 }}
+                            -
+                            {{ $data->lastItem() ?? 0 }}
+
+                            dari
+
+                            {{ $data->total() }}
+
+                            data
+
+                        </small>
+
+                    </div>
+
+                    <div class="col-md-6 d-flex justify-content-md-end justify-content-center mt-2 mt-md-0">
+
+                        {{ $data->links('pagination::bootstrap-4') }}
+
+                    </div>
 
                 </div>
 
