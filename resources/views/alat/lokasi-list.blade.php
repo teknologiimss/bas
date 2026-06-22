@@ -155,34 +155,6 @@
                 transform: translateY(0);
             }
         }
-
-        .pagination {
-            margin-bottom: 0;
-        }
-
-        .page-item.active .page-link {
-            background: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .page-link {
-            color: #dc3545;
-            border-radius: 8px !important;
-            margin: 0 2px;
-        }
-
-        .page-link:hover {
-            color: #fff;
-            background: #dc3545;
-        }
-
-        .container-fluid {
-            min-height: auto;
-        }
-
-        .modern-card {
-            margin-bottom: 20px;
-        }
     </style>
 
     <div class="container-fluid">
@@ -379,21 +351,9 @@
 
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center flex-wrap mt-3">
+                <div class="mt-4">
 
-                    <div class="text-muted mb-2">
-                        Showing
-                        {{ $data->firstItem() ?? 0 }}
-                        to
-                        {{ $data->lastItem() ?? 0 }}
-                        of
-                        {{ $data->total() }}
-                        results
-                    </div>
-
-                    <div>
-                        {{ $data->onEachSide(1)->links() }}
-                    </div>
+                    {{ $data->links() }}
 
                 </div>
 
