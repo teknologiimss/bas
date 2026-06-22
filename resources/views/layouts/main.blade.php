@@ -516,6 +516,7 @@
                                         'pengiriman.dashboard',
                                         'rewinding.dashboard',
                                         'lp3m.dashboard',
+                                        'alat.dashboard',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -570,6 +571,7 @@
                                         'pengiriman.dashboard',
                                         'rewinding.dashboard',
                                         'lp3m.dashboard',
+                                        'alat.dashboard',
                                     ]);
                                 @endphp
 
@@ -1048,10 +1050,10 @@
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
                                                         {{-- Dashboard --}}
                                                         <li
-                                                            class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') || Route::is('lp3m.dashboard*') ? 'menu-open' : '' }}">
+                                                            class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') || Route::is('lp3m.dashboard*') || Route::is('alat.dashboard*') ? 'menu-open' : '' }}">
 
                                                             <a href="#"
-                                                                class="nav-link {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') || Route::is('lp3m.dashboard*') ? 'active' : '' }}">
+                                                                class="nav-link {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') || Route::is('lp3m.dashboard*') || Route::is('alat.dashboard*') ? 'active' : '' }}">
 
                                                                 <i class="nav-icon fas fa-tachometer-alt"></i>
 
@@ -1072,6 +1074,21 @@
                                                                         <i class="far fa-circle nav-icon"></i>
 
                                                                         <p>Dashboard Pengiriman</p>
+
+                                                                    </a>
+
+                                                                </li>
+
+                                                                <li class="nav-item">
+
+                                                                    <a href="{{ route('alat.dashboard') }}"
+                                                                        class="nav-link {{ Route::currentRouteName() == 'alat.dashboard' ? 'active' : '' }}">
+
+                                                                        <i class="far fa-circle nav-icon"></i>
+
+                                                                        <p>
+                                                                            Dashboard Alat Angkat-Angkut
+                                                                        </p>
 
                                                                     </a>
 
@@ -1103,7 +1120,7 @@
 
                                                                 </li>
 
-                                                                
+
 
                                                             </ul>
 
@@ -1156,9 +1173,9 @@
 
                                                         {{-- Monitoring --}}
                                                         <li
-                                                            class="nav-item {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.*', 'rewinding.index', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'menu-open' : '' }}">
+                                                            class="nav-item {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.index', 'rewinding.index', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*', 'lp3m.index') ? 'menu-open' : '' }}">
                                                             <a href="#"
-                                                                class="nav-link {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.*', 'rewinding.index', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.index', 'rewinding.index', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*', 'lp3m.index') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
                                                                 <p>
                                                                     Monitoring
@@ -1179,7 +1196,7 @@
                                                                 {{-- Monitoring Alat Angkat-angkut --}}
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('alat.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
+                                                                        class="nav-link {{ request()->routeIs('alat.index') ? 'active' : '' }}">
                                                                         <i class="nav-icon far fa-circle"></i>
                                                                         <p>Monitoring Alat Angkat-Angkut</p>
                                                                     </a>
@@ -1306,7 +1323,7 @@
                                                                 {{-- Monitroing SPR --}}
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('lp3m.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('lp3m.*') ? 'active' : '' }}">
+                                                                        class="nav-link {{ request()->routeIs('lp3m.index') ? 'active' : '' }}">
                                                                         <i class="nav-icon far fa-circle"></i>
                                                                         <p>Monitoring SPR</p>
                                                                     </a>

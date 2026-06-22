@@ -545,6 +545,22 @@ Route::prefix('products')->group(function () {
 
         Route::delete('/lampiran/{id}', [AlatAngkutDetailController::class, 'deleteLampiran'])
             ->name('lampiran.delete');
+
+        // Dashboard
+        Route::get(
+            '/alat-angkut/dashboard',
+            [AlatAngkutController::class, 'dashboard']
+        )->name('alat.dashboard');
+
+        Route::get(
+            '/alat-angkut/list',
+            [AlatAngkutController::class, 'listData']
+        )->name('alat.list');
+
+        Route::get(
+            '/dashboard/lokasi',
+            [AlatAngkutController::class, 'lokasiList']
+        )->name('alat.lokasi.list');
     });
 
     // Checksheet MRO
@@ -716,10 +732,10 @@ Route::prefix('products')->group(function () {
     )->name('lp3m.deleteLampiran');
 
     Route::get('/lp3m/dashboard', [Lp3mController::class, 'dashboard'])
-    ->name('lp3m.dashboard');
-    
+        ->name('lp3m.dashboard');
+
     Route::get('/lp3m/spr', [Lp3mController::class, 'listSpr'])
-    ->name('lp3m.spr.list');
+        ->name('lp3m.spr.list');
 
     // Rewinding
 

@@ -111,4 +111,112 @@ class AlatAngkutController extends Controller
 
         return view('alat.monitor', compact('proyek', 'detail', 'summary'));
     }
+
+    public function dashboard()
+    {
+        $detail = AlatAngkutDetail::all();
+
+        $totalUnit = $detail->count();
+
+        $imss = $detail->filter(function ($item) {
+            return str_contains(
+                strtoupper($item->aset ?? ''),
+                'IMSS'
+            );
+        })->count();
+
+        $nonImss = $totalUnit - $imss;
+
+        $totalLokasi = $detail
+            ->pluck('lokasi')
+            ->filter()
+            ->unique()
+            ->count();
+
+        $statusChart = [
+            'imss' => $imss,
+            'non' => $nonImss
+        ];
+
+        $unitSummary = AlatAngkutDetail::get()
+            ->groupBy('unit')
+            ->map(function ($items) {
+                $imss = $items->filter(function ($item) {
+                    return str_contains(
+                        strtoupper($item->aset),
+                        'IMSS'
+                    );
+                })->count();
+
+                $nonImss = $items->count() - $imss;
+
+                return [
+                    'total' => $items->count(),
+                    'imss' => $imss,
+                    'non_imss' => $nonImss
+                ];
+            });
+
+        return view(
+            'alat.dashboard',
+            compact(
+                'totalUnit',
+                'imss',
+                'nonImss',
+                'totalLokasi',
+                'statusChart',
+                'unitSummary',
+            )
+        );
+    }
+
+    public function listData(Request $request)
+    {
+        $query = AlatAngkutDetail::query();
+
+        $filter = null;
+
+        if ($request->aset == 'IMSS') {
+            $query->where('aset', 'LIKE', '%IMSS%');
+
+            $filter = 'IMSS';
+        } elseif ($request->aset == 'NON') {
+            $query->where(function ($q) {
+                $q
+                    ->whereNull('aset')
+                    ->orWhere('aset', 'NOT LIKE', '%IMSS%');
+            });
+
+            $filter = 'NON IMSS';
+        }
+
+        $data = $query
+            ->oldest()
+            ->paginate(20);
+
+        return view(
+            'alat.list',
+            compact(
+                'data',
+                'filter'
+            )
+        );
+    }
+
+    public function lokasiList()
+    {
+        $data = AlatAngkutDetail::select(
+            'lokasi',
+            'unit',
+            'no_lambung',
+            'aset'
+        )
+            ->orderBy('lokasi')
+            ->paginate(20);
+
+        return view(
+            'alat.lokasi-list',
+            compact('data')
+        );
+    }
 }
