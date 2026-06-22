@@ -1042,7 +1042,6 @@
 
                                                     {{-- ADMIN & MRO FULL ACCESS --}}
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-
                                                         {{-- Dashboard --}}
                                                         <li
                                                             class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') ? 'menu-open' : '' }}">
@@ -1112,6 +1111,7 @@
                                                             </a>
                                                         </li>
 
+                                                        {{-- Monitoring --}}
                                                         <li
                                                             class="nav-item {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.*', 'rewinding.*', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*') ? 'menu-open' : '' }}">
                                                             <a href="#"
@@ -1124,13 +1124,38 @@
                                                             </a>
 
                                                             <ul class="nav nav-treeview">
-
+                                                                {{-- Monitoring Pengiriman --}}
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('pengiriman.index') }}"
                                                                         class="nav-link {{ request()->routeIs('pengiriman.index') ? 'active' : '' }}">
                                                                         <i class="nav-icon far fa-circle"></i>
                                                                         <p>Monitoring Pengiriman</p>
                                                                     </a>
+                                                                </li>
+
+                                                                {{-- Monitoring Alat Angkat-angkut --}}
+                                                                <li class="nav-item">
+                                                                    <a href="{{ route('alat.index') }}"
+                                                                        class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
+                                                                        <i class="nav-icon far fa-circle"></i>
+                                                                        <p>Monitoring Alat Angkat-Angkut</p>
+                                                                    </a>
+                                                                </li>
+
+                                                                {{-- Checksheet Harian Fasilitas --}}
+                                                                <li class="nav-item">
+
+                                                                    <a href="{{ route('fasilitas-harian.index') }}"
+                                                                        class="nav-link {{ request()->routeIs('fasilitas-harian.*') ? 'active' : '' }}">
+
+                                                                        <i class="nav-icon far fa-circle"></i>
+
+                                                                        <p>
+                                                                            Checksheet Harian Fasilitas
+                                                                        </p>
+
+                                                                    </a>
+
                                                                 </li>
 
                                                                 {{-- Monitoring Preventive Maintenance --}}
@@ -1235,31 +1260,16 @@
 
                                                                 </li>
 
-                                                                {{-- Checksheet Harian Fasilitas --}}
+                                                                {{-- Monitroing SPR --}}
                                                                 <li class="nav-item">
-
-                                                                    <a href="{{ route('fasilitas-harian.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('fasilitas-harian.*') ? 'active' : '' }}">
-
+                                                                    <a href="{{ route('lp3m.index') }}"
+                                                                        class="nav-link {{ request()->routeIs('lp3m.*') ? 'active' : '' }}">
                                                                         <i class="nav-icon far fa-circle"></i>
-
-                                                                        <p>
-                                                                            Checksheet Harian Fasilitas
-                                                                        </p>
-
-                                                                    </a>
-
-                                                                </li>
-
-                                                                {{-- Monitoring Alat Angkat-angkut --}}
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('alat.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('alat.*') ? 'active' : '' }}">
-                                                                        <i class="nav-icon far fa-circle"></i>
-                                                                        <p>Monitoring Alat Angkat-Angkut</p>
+                                                                        <p>Monitoring SPR</p>
                                                                     </a>
                                                                 </li>
 
+                                                                {{-- Monitoring Rewinding --}}
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('rewinding.index') }}"
                                                                         class="nav-link {{ request()->routeIs('rewinding.*') ? 'active' : '' }}">
@@ -1271,13 +1281,9 @@
                                                             </ul>
                                                         </li>
 
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('lp3m.index') }}"
-                                                                class="nav-link {{ request()->routeIs('lp3m.*') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-tools"></i>
-                                                                <p>Tindak Lanjut SPR</p>
-                                                            </a>
-                                                        </li>
+                                                        {{-- End Monitoring --}}
+
+
 
 
 
@@ -1414,7 +1420,7 @@
                                                             <a href="{{ route('lp3m.index') }}"
                                                                 class="nav-link {{ request()->routeIs('lp3m.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-tools"></i>
-                                                                <p>Tindak Lanjut SPR</p>
+                                                                <p>Monitoring SPR</p>
                                                             </a>
                                                         </li>
 
