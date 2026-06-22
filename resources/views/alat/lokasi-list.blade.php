@@ -175,6 +175,14 @@
             color: #fff;
             background: #dc3545;
         }
+
+        .container-fluid {
+            min-height: auto;
+        }
+
+        .modern-card {
+            margin-bottom: 20px;
+        }
     </style>
 
     <div class="container-fluid">
