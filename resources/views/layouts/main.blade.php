@@ -515,6 +515,7 @@
                                         'assets.index',
                                         'pengiriman.dashboard',
                                         'rewinding.dashboard',
+                                        'lp3m.dashboard',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -568,6 +569,7 @@
                                         'assets.index',
                                         'pengiriman.dashboard',
                                         'rewinding.dashboard',
+                                        'lp3m.dashboard',
                                     ]);
                                 @endphp
 
@@ -1046,10 +1048,10 @@
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
                                                         {{-- Dashboard --}}
                                                         <li
-                                                            class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') ? 'menu-open' : '' }}">
+                                                            class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') || Route::is('lp3m.dashboard*') ? 'menu-open' : '' }}">
 
                                                             <a href="#"
-                                                                class="nav-link {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') ? 'active' : '' }}">
+                                                                class="nav-link {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') || Route::is('lp3m.dashboard*') ? 'active' : '' }}">
 
                                                                 <i class="nav-icon fas fa-tachometer-alt"></i>
 
@@ -1077,6 +1079,19 @@
 
                                                                 <li class="nav-item">
 
+                                                                    <a href="{{ route('lp3m.dashboard') }}"
+                                                                        class="nav-link {{ Route::currentRouteName() == 'lp3m.dashboard' ? 'active' : '' }}">
+
+                                                                        <i class="far fa-circle nav-icon"></i>
+
+                                                                        <p>Dashboard SPR</p>
+
+                                                                    </a>
+
+                                                                </li>
+
+                                                                <li class="nav-item">
+
                                                                     <a href="{{ route('rewinding.dashboard') }}"
                                                                         class="nav-link {{ Route::currentRouteName() == 'rewinding.dashboard' ? 'active' : '' }}">
 
@@ -1087,6 +1102,8 @@
                                                                     </a>
 
                                                                 </li>
+
+                                                                
 
                                                             </ul>
 

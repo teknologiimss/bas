@@ -339,4 +339,58 @@ class Lp3mController extends Controller
             ->route('lp3m.index')
             ->with('success', 'Lampiran berhasil dihapus');
     }
+
+    public function dashboard()
+    {
+        $total = Lp3m::count();
+
+        $open = Lp3m::where('status', 'OPEN')->count();
+        $closed = Lp3m::where('status', 'CLOSED')->count();
+
+        $progress = $total > 0 ? round(($closed / $total) * 100, 2) : 0;
+
+        // Data open untuk tabel scroll
+        $openData = Lp3m::where('status', 'OPEN')
+            ->latest()
+            ->get();
+
+        // overdue SPR (misal >14 hari)
+        $overdue = Lp3m::where('status', 'OPEN')
+            ->whereDate('created_at', '<', now()->subDays(14))
+            ->get();
+
+        $statusChart = [
+            'open' => $open,
+            'closed' => $closed
+        ];
+
+        return view('lp3m.dashboard', compact(
+            'total',
+            'open',
+            'closed',
+            'progress',
+            'openData',
+            'overdue',
+            'statusChart'
+        ));
+    }
+
+    public function listSpr(Request $request)
+    {
+        $status = $request->status;
+
+        $query = Lp3m::query()->whereNotNull('spr_no');
+
+        if ($status == 'OPEN') {
+            $query->where('status', 'OPEN');
+        }
+
+        if ($status == 'CLOSED') {
+            $query->where('status', 'CLOSED');
+        }
+
+        $data = $query->latest()->paginate(10);
+
+        return view('lp3m.list_spr', compact('data', 'status'));
+    }
 }

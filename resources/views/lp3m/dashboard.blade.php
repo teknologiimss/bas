@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Dashboard Rewinding')
+@section('title', 'Dashboard Monitoring SPR')
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
 @section('content')
@@ -10,6 +10,7 @@
             background: #f4f6f9;
         }
 
+        /* HEADER */
         .dashboard-header {
             background: linear-gradient(135deg, #dc3545, #ff4d4d);
             color: white;
@@ -23,11 +24,7 @@
             font-weight: bold;
         }
 
-        .dashboard-header p {
-            margin: 0;
-            opacity: .9;
-        }
-
+        /* KPI CARD */
         .stat-card {
             background: white;
             border-radius: 15px;
@@ -39,21 +36,21 @@
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
         }
 
         .stat-value {
             font-size: 32px;
             font-weight: bold;
-            margin-bottom: 5px;
         }
 
         .stat-title {
-            color: #666;
             font-size: 13px;
+            color: #666;
         }
 
+        /* CARD */
         .card {
             border-radius: 15px;
             border: none;
@@ -64,19 +61,15 @@
             background: #dc3545;
             color: white;
             font-weight: bold;
-            border-radius: 15px 15px 0 0 !important;
         }
 
-        .table td,
-        .table th {
-            vertical-align: middle;
-        }
-
+        /* SCROLL TABLE */
         .scroll-table {
             max-height: 450px;
             overflow-y: auto;
         }
 
+        /* MOBILE */
         @media(max-width:768px) {
             .stat-value {
                 font-size: 24px;
@@ -88,47 +81,47 @@
 
         {{-- HEADER --}}
         <div class="dashboard-header">
-            <h3>📊 Dashboard Monitoring Rewinding</h3>
-            <p>Monitoring Data Rewinding</p>
+            <h3>📊 Dashboard Monitoring SPR</h3>
+            <p>Monitoring Data SPR</p>
         </div>
 
         {{-- KPI --}}
         <div class="row">
 
-            {{-- Total --}}
+            {{-- TOTAL --}}
             <div class="col-md-3 mb-3">
-                <a href="{{ route('rewinding.list') }}" style="text-decoration:none;color:inherit">
+                <a href="{{ route('lp3m.spr.list') }}" style="text-decoration:none;">
                     <div class="stat-card">
-                        <i class="fas fa-sync-alt fa-2x text-danger mb-2"></i>
+                        <i class="fas fa-database fa-2x text-danger mb-2"></i>
                         <div class="stat-value text-danger">{{ $total }}</div>
-                        <div class="stat-title">Total Rewinding</div>
+                        <div class="stat-title">Total SPR</div>
                     </div>
                 </a>
             </div>
 
-            {{-- Open --}}
+            {{-- OPEN --}}
             <div class="col-md-3 mb-3">
-                <a href="{{ route('rewinding.list', ['status' => 'Open']) }}" style="text-decoration:none;color:inherit">
+                <a href="{{ route('lp3m.spr.list', ['status' => 'OPEN']) }}" style="text-decoration:none;">
                     <div class="stat-card">
                         <i class="fas fa-folder-open fa-2x text-warning mb-2"></i>
                         <div class="stat-value text-warning">{{ $open }}</div>
-                        <div class="stat-title">Open</div>
+                        <div class="stat-title">Open SPR</div>
                     </div>
                 </a>
             </div>
 
-            {{-- Closed --}}
+            {{-- CLOSED --}}
             <div class="col-md-3 mb-3">
-                <a href="{{ route('rewinding.list', ['status' => 'Closed']) }}" style="text-decoration:none;color:inherit">
+                <a href="{{ route('lp3m.spr.list', ['status' => 'CLOSED']) }}" style="text-decoration:none;">
                     <div class="stat-card">
                         <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
                         <div class="stat-value text-success">{{ $closed }}</div>
-                        <div class="stat-title">Closed</div>
+                        <div class="stat-title">Closed SPR</div>
                     </div>
                 </a>
             </div>
 
-            {{-- Progress --}}
+            {{-- PROGRESS --}}
             <div class="col-md-3 mb-3">
                 <div class="stat-card">
                     <i class="fas fa-chart-pie fa-2x text-info mb-2"></i>
@@ -139,7 +132,7 @@
 
         </div>
 
-        {{-- CHART + TABLE --}}
+        {{-- CHART + TABLE (SEJAJAR) --}}
         <div class="row mt-3">
 
             {{-- CHART --}}
@@ -148,14 +141,12 @@
                 <div class="card">
 
                     <div class="card-header">
-                        Status Rewinding
+                        Status SPR
                     </div>
 
                     <div class="card-body text-center">
 
-                        <div style="max-width:280px; margin:auto;">
-                            <canvas id="statusChart"></canvas>
-                        </div>
+                        <canvas id="sprChart" height="200"></canvas>
 
                     </div>
 
@@ -169,76 +160,44 @@
                 <div class="card">
 
                     <div class="card-header">
-
-                        Data Rewinding Open
+                        Data SPR Open
 
                         <span class="badge badge-light float-right">
                             {{ $openData->count() }} Data
                         </span>
-
                     </div>
 
                     <div class="card-body p-0">
 
                         <div class="scroll-table">
 
-                            <table class="table table-bordered table-hover mb-0">
+                            <table class="table table-bordered mb-0">
 
                                 <thead class="thead-light">
-
                                     <tr>
-                                        <th>No</th>
-                                        <th>No SJN</th>
-                                        <th>Tanggal</th>
+                                        <th>No SPR</th>
                                         <th>Deskripsi</th>
-                                        <th>No SPPJP</th>
+                                        <th>Status</th>
                                         <th>Jumlah Hari</th>
                                     </tr>
-
                                 </thead>
 
                                 <tbody>
 
                                     @forelse($openData as $item)
                                         <tr>
-
-                                            <td>{{ $loop->iteration }}</td>
-
-                                            <td>{{ $item->no_sjn }}</td>
-
-                                            <td>
-                                                {{ $item->tanggal_sjn_keluar ? \Carbon\Carbon::parse($item->tanggal_sjn_keluar)->format('d-m-Y') : '-' }}
-                                            </td>
-
+                                            <td>{{ $item->spr_no ?? '-' }}</td>
                                             <td>{{ $item->deskripsi }}</td>
-
-                                            <td>{{ $item->no_sppjp }}</td>
-
                                             <td>
-                                                @if ($item->tanggal_sjn_keluar)
-                                                    @php
-                                                        $umur = \Carbon\Carbon::parse(
-                                                            $item->tanggal_sjn_keluar,
-                                                        )->diffInDays(now());
-                                                    @endphp
-
-                                                    <span
-                                                        class="badge {{ $umur > 14 ? 'badge-danger' : 'badge-warning' }}">
-                                                        {{ $umur }} Hari
-                                                    </span>
-                                                @else
-                                                    -
-                                                @endif
+                                                <span class="badge badge-warning">OPEN</span>
                                             </td>
-
+                                            <td>
+                                                {{ $item->created_at->diffInDays(now()) }} Hari
+                                            </td>
                                         </tr>
-
                                     @empty
-
                                         <tr>
-                                            <td colspan="6" class="text-center">
-                                                Tidak ada data Open
-                                            </td>
+                                            <td colspan="4" class="text-center">Tidak ada data</td>
                                         </tr>
                                     @endforelse
 
@@ -258,26 +217,24 @@
 
     </div>
 
-    {{-- CHART --}}
+    {{-- CHART JS --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        const statusCtx = document.getElementById('statusChart');
+        const ctx = document.getElementById('sprChart');
 
-        new Chart(statusCtx, {
+        new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ['Open', 'Closed'],
                 datasets: [{
-                    data: [
-                        {{ $statusChart['open'] }},
-                        {{ $statusChart['closed'] }}
-                    ],
+                    data: [{{ $open }}, {{ $closed }}],
                     backgroundColor: ['#ffc107', '#28a745']
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         position: 'bottom'

@@ -715,6 +715,12 @@ Route::prefix('products')->group(function () {
         [Lp3mController::class, 'deleteLampiran']
     )->name('lp3m.deleteLampiran');
 
+    Route::get('/lp3m/dashboard', [Lp3mController::class, 'dashboard'])
+    ->name('lp3m.dashboard');
+    
+    Route::get('/lp3m/spr', [Lp3mController::class, 'listSpr'])
+    ->name('lp3m.spr.list');
+
     // Rewinding
 
     Route::post(
