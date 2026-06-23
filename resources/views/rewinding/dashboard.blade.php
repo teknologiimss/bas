@@ -189,10 +189,12 @@
                                     <tr>
                                         <th>No</th>
                                         <th>No SJN</th>
-                                        <th>Tanggal</th>
+                                        <th>Tgl Keluar</th>
+                                        <th>Tgl Masuk</th>
                                         <th>Deskripsi</th>
                                         <th>No SPPJP</th>
-                                        <th>Jumlah Hari</th>
+                                        <th>Status</th>
+                                        <th>Durasi</th>
                                     </tr>
 
                                 </thead>
@@ -200,6 +202,24 @@
                                 <tbody>
 
                                     @forelse($openData as $item)
+                                        @php
+
+                                            $durasi = 0;
+
+                                            if ($item->tanggal_sjn_keluar) {
+                                                $tglKeluar = \Carbon\Carbon::parse($item->tanggal_sjn_keluar);
+
+                                                if ($item->tanggal_sjn_masuk) {
+                                                    $tglMasuk = \Carbon\Carbon::parse($item->tanggal_sjn_masuk);
+
+                                                    $durasi = $tglKeluar->diffInDays($tglMasuk);
+                                                } else {
+                                                    $durasi = $tglKeluar->diffInDays(now());
+                                                }
+                                            }
+
+                                        @endphp
+
                                         <tr>
 
                                             <td>{{ $loop->iteration }}</td>
@@ -210,25 +230,41 @@
                                                 {{ $item->tanggal_sjn_keluar ? \Carbon\Carbon::parse($item->tanggal_sjn_keluar)->format('d-m-Y') : '-' }}
                                             </td>
 
+                                            <td>
+                                                {{ $item->tanggal_sjn_masuk ? \Carbon\Carbon::parse($item->tanggal_sjn_masuk)->format('d-m-Y') : '-' }}
+                                            </td>
+
                                             <td>{{ $item->deskripsi }}</td>
 
                                             <td>{{ $item->no_sppjp }}</td>
 
                                             <td>
-                                                @if ($item->tanggal_sjn_keluar)
-                                                    @php
-                                                        $umur = \Carbon\Carbon::parse(
-                                                            $item->tanggal_sjn_keluar,
-                                                        )->diffInDays(now());
-                                                    @endphp
 
-                                                    <span
-                                                        class="badge {{ $umur > 14 ? 'badge-danger' : 'badge-warning' }}">
-                                                        {{ $umur }} Hari
+                                                @if ($item->status == 'Closed')
+                                                    <span class="badge badge-success">
+                                                        Closed
                                                     </span>
                                                 @else
-                                                    -
+                                                    <span class="badge badge-warning">
+                                                        Open
+                                                    </span>
                                                 @endif
+
+                                            </td>
+
+                                            <td>
+
+                                                @if ($item->status == 'Closed')
+                                                    <span class="badge badge-success">
+                                                        {{ $durasi }} Hari
+                                                    </span>
+                                                @else
+                                                    <span
+                                                        class="badge {{ $durasi > 14 ? 'badge-danger' : 'badge-warning' }}">
+                                                        {{ $durasi }} Hari
+                                                    </span>
+                                                @endif
+
                                             </td>
 
                                         </tr>
@@ -236,8 +272,8 @@
                                     @empty
 
                                         <tr>
-                                            <td colspan="6" class="text-center">
-                                                Tidak ada data Open
+                                            <td colspan="8" class="text-center">
+                                                Tidak ada data
                                             </td>
                                         </tr>
                                     @endforelse

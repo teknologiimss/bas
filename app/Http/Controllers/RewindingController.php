@@ -629,11 +629,8 @@ class RewindingController extends Controller
         }
 
         // Semua data Open
-        $openData = Rewinding::where('status', 'Open')
-            ->orderBy('tanggal_sjn_keluar')
+        $openData = Rewinding::orderBy('tanggal_sjn_keluar')
             ->get();
-
-        
 
         return view('rewinding.dashboard', compact(
             'total',
