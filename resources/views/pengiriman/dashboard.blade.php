@@ -87,6 +87,161 @@
                 font-size: 24px;
             }
         }
+
+
+        /* =====================================
+                   PROGRESS DELIVERY PER PROYEK
+                ===================================== */
+
+        .delivery-project-card {
+            background: #fff;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .delivery-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .delivery-title-icon {
+            font-size: 34px;
+            color: #c62828;
+            line-height: 1;
+        }
+
+        .delivery-title h4 {
+            margin: 0;
+            color: #c62828;
+            font-weight: 700;
+        }
+
+        .delivery-title small {
+            font-style: italic;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .project-accordion {
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            background: #fff;
+        }
+
+        .project-accordion summary {
+            list-style: none;
+        }
+
+        .project-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .project-header {
+            background: #f3f3f3;
+            border-bottom: 1px solid #dddddd;
+            padding: 14px 18px;
+            cursor: pointer;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .project-arrow {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .project-arrow i {
+            transition: all .2s ease;
+            transform: rotate(0deg);
+        }
+
+        .project-accordion[open] .project-arrow i {
+            transform: rotate(90deg);
+        }
+
+        .project-content {
+            padding: 15px 18px;
+        }
+
+        .train-item {
+            margin-bottom: 18px;
+        }
+
+        .train-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .train-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .train-name {
+            font-size: 15px;
+            color: #222;
+        }
+
+        .train-total {
+            font-size: 15px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .progress-rail {
+            height: 14px;
+            background: #e8e8e8;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-custom {
+            height: 100%;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background-size: 20px 20px;
+            background-image:
+                linear-gradient(45deg,
+                    rgba(255, 255, 255, .10) 25%,
+                    transparent 25%,
+                    transparent 50%,
+                    rgba(255, 255, 255, .10) 50%,
+                    rgba(255, 255, 255, .10) 75%,
+                    transparent 75%,
+                    transparent);
+        }
+
+        .progress-green {
+            background-color: #28a745;
+        }
+
+        .progress-yellow {
+            background-color: #f0ad00;
+        }
+
+        .progress-red {
+            background-color: #dc3545;
+        }
     </style>
 
     <div class="container-fluid">
@@ -278,50 +433,74 @@
 
 
         {{-- By Tipe Kereta --}}
-        <div class="card-dashboard">
+        {{-- =========================================
+     PROGRESS DELIVERY PER PROYEK
+========================================= --}}
 
-            <h5>🚆 Progress Delivery Per Proyek</h5>
+        <div class="delivery-project-card p-3 mt-4">
+
+            <div class="delivery-title">
+
+                <div class="delivery-title-icon">
+                    🚆
+                </div>
+
+                <div>
+                    <h4>Progress Delivery Per Proyek</h4>
+                    <small>*Mengambil data tipe kereta</small>
+                </div>
+
+            </div>
 
             @foreach ($tipeKeretaProgress as $namaProyek => $items)
-                <details class="mb-3">
+                <details class="project-accordion">
 
-                    <summary
-                        style="
-                    cursor:pointer;
-                    font-weight:bold;
-                    padding:10px;
-                    background:#f8f9fa;
-                    border-radius:8px;
-                ">
+                    <summary class="project-header">
 
-                        📦 {{ $namaProyek }}
+                        <div class="project-name">
+                            🚆 {{ $namaProyek }}
+                        </div>
+
+                        <div class="project-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
 
                     </summary>
 
-                    <div class="mt-3">
+                    <div class="project-content">
 
                         @foreach ($items as $row)
-                            <div class="mb-3">
+                            @php
+                                $progress = $row->progress;
 
-                                <div class="d-flex justify-content-between">
+                                if ($progress >= 90) {
+                                    $colorClass = 'progress-green';
+                                } elseif ($progress >= 60) {
+                                    $colorClass = 'progress-yellow';
+                                } else {
+                                    $colorClass = 'progress-red';
+                                }
+                            @endphp
 
-                                    <strong>
+                            <div class="train-item">
+
+                                <div class="train-header">
+
+                                    <div class="train-name">
                                         {{ $row->tipe_kereta }}
-                                    </strong>
+                                    </div>
 
-                                    <span>
-                                        {{ $row->delivered }}
-                                        /
-                                        {{ $row->total_unit }}
-                                    </span>
+                                    <div class="train-total">
+                                        {{ $row->delivered }} / {{ $row->total_unit }}
+                                    </div>
 
                                 </div>
 
-                                <div class="progress mt-1">
+                                <div class="progress-rail">
 
-                                    <div class="progress-bar bg-success" style="width:{{ $row->progress }}%">
+                                    <div class="progress-custom {{ $colorClass }}" style="width: {{ $progress }}%;">
 
-                                        {{ $row->progress }}%
+                                        {{ $progress }}%
 
                                     </div>
 

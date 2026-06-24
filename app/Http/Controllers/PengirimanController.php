@@ -297,7 +297,7 @@ class PengirimanController extends Controller
 
         $projectCount = DB::table('pengiriman')->count();
 
-        // mengambil by Tipe kereta
+        // Progress per Proyek mengambil by Tipe kereta
         $tipeKeretaProgress = DB::table('pengiriman')
             ->join(
                 'pengiriman_detail',
