@@ -3,7 +3,7 @@
 @section('title', 'Dashboard Pengiriman')
 
 @section('content')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
     <style>
         body {
@@ -273,6 +273,53 @@
                 </div>
 
             </div>
+
+        </div>
+
+
+        {{-- By Tipe Kereta --}}
+        <div class="card-dashboard">
+
+            <h5>
+                🚆 Progress Delivery Per Tipe Kereta
+            </h5>
+
+            @foreach ($tipeKeretaProgress as $row)
+                <div class="mb-4">
+
+                    <div class="d-flex justify-content-between mb-1">
+
+                        <strong>
+                            {{ $row->tipe_kereta }}
+                        </strong>
+
+                        <span>
+                            {{ $row->delivered }}
+                            /
+                            {{ $row->total_unit }}
+                            Unit
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+
+                        <div class="progress-bar
+                    @if ($row->progress >= 100) bg-success
+                    @elseif($row->progress >= 50)
+                        bg-warning
+                    @else
+                        bg-danger @endif"
+                            style="width: {{ $row->progress }}%;">
+
+                            {{ $row->progress }}%
+
+                        </div>
+
+                    </div>
+
+                </div>
+            @endforeach
 
         </div>
 
