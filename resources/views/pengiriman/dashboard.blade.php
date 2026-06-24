@@ -90,8 +90,8 @@
 
 
         /* =====================================
-                                                           PROGRESS DELIVERY PER PROYEK
-                                                        ===================================== */
+                                                               PROGRESS DELIVERY PER PROYEK
+                                                            ===================================== */
 
         .delivery-project-card {
             background: #fff;
@@ -347,22 +347,9 @@
         {{-- KPI --}}
         <div class="row">
 
-            <div class="col-md-3 mb-3">
-                <a href="{{ route('pengiriman.dashboard.detail', 'proyek') }}" style="text-decoration:none;color:inherit">
-                    <div class="stat-card">
-                        <div class="stat-value">
-                            {{ $projectCount }}
-                        </div>
-                        <div class="stat-title">
-                            Total Proyek
-                        </div>
-                    </div>
-                </a>
-            </div>
 
             <div class="col-md-3 mb-3">
-                <a href="{{ route('pengiriman.dashboard.detail', 'pengiriman') }}"
-                    style="text-decoration:none;color:inherit">
+                <a href="{{ route('pengiriman.dashboard.detail', 'pengiriman') }}" style="text-decoration:none;color:inherit">
                     <div class="stat-card">
                         <div class="stat-value text-primary">
                             {{ $totalData }}
@@ -432,29 +419,19 @@
             </div>
 
             <div class="col-md-3 mb-3">
-                <div class="stat-card">
-                    <div class="stat-value">
-                        {{ $vendorCount }}
-                    </div>
-                    <div class="stat-title">
-                        Vendor Aktif
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 mb-3">
-                <a href="{{ route('pengiriman.dashboard.detail', 'trainset') }}"
-                    style="text-decoration:none;color:inherit">
+                <a href="{{ route('pengiriman.dashboard.detail', 'vendor') }}" style="text-decoration:none;color:inherit">
                     <div class="stat-card">
                         <div class="stat-value">
-                            {{ $trainsetCount }}
+                            {{ $vendorCount }}
                         </div>
                         <div class="stat-title">
-                            Trainset
+                            Vendor Aktif
                         </div>
                     </div>
                 </a>
             </div>
+
+
 
         </div>
 

@@ -3,7 +3,7 @@
 @section('title', $title)
 
 @section('content')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
     <style>
         .card-custom {
@@ -66,7 +66,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Proyek</th>
-                                    
+
                                 </tr>
                             </thead>
 
@@ -76,10 +76,26 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $row->nama_proyek }}</td>
-                                        
+
                                     </tr>
                                 @endforeach
 
+                            </tbody>
+                        @elseif($type == 'vendor')
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Vendor</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach ($data as $row)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $row->vendor }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         @elseif($type == 'trainset')
                             <thead>

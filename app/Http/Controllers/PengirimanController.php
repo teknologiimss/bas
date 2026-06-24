@@ -415,6 +415,18 @@ class PengirimanController extends Controller
 
                 break;
 
+            case 'vendor':
+                $title = 'Daftar Vendor Aktif';
+
+                $data = DB::table('pengiriman_detail')
+                    ->select('vendor')
+                    ->whereNotNull('vendor')
+                    ->distinct()
+                    ->orderBy('vendor')
+                    ->get();
+
+                break;
+
             case 'trainset':
                 $title = 'Daftar Trainset';
 
