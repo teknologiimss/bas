@@ -90,8 +90,8 @@
 
 
         /* =====================================
-                   PROGRESS DELIVERY PER PROYEK
-                ===================================== */
+                                                           PROGRESS DELIVERY PER PROYEK
+                                                        ===================================== */
 
         .delivery-project-card {
             background: #fff;
@@ -209,6 +209,7 @@
             overflow: hidden;
         }
 
+        /* Progress Bar per Proyek Gerak */
         .progress-custom {
             height: 100%;
             color: white;
@@ -222,14 +223,28 @@
             background-size: 20px 20px;
             background-image:
                 linear-gradient(45deg,
-                    rgba(255, 255, 255, .10) 25%,
+                    rgba(255, 255, 255, .15) 25%,
                     transparent 25%,
                     transparent 50%,
-                    rgba(255, 255, 255, .10) 50%,
-                    rgba(255, 255, 255, .10) 75%,
+                    rgba(255, 255, 255, .15) 50%,
+                    rgba(255, 255, 255, .15) 75%,
                     transparent 75%,
                     transparent);
+
+            animation: progress-stripes 1s linear infinite;
         }
+
+        @keyframes progress-stripes {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 20px 0;
+            }
+        }
+
+        /* End Progress Bar per Proyek Gerak */
 
         .progress-green {
             background-color: #28a745;
@@ -241,6 +256,84 @@
 
         .progress-red {
             background-color: #dc3545;
+        }
+
+
+        /* Progress Delivery Animasi */
+
+        .progress-wrapper {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .progress-delivery {
+            height: 32px;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .progress-delivery-bar {
+
+            font-weight: bold;
+
+            background-size: 25px 25px;
+
+            background-image:
+                linear-gradient(45deg,
+                    rgba(255, 255, 255, .15) 25%,
+                    transparent 25%,
+                    transparent 50%,
+                    rgba(255, 255, 255, .15) 50%,
+                    rgba(255, 255, 255, .15) 75%,
+                    transparent 75%,
+                    transparent);
+
+            animation: delivery-stripes 1s linear infinite;
+        }
+
+        @keyframes delivery-stripes {
+
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 25px 0;
+            }
+
+        }
+
+        /* Kereta */
+
+        .train-runner {
+
+            position: absolute;
+
+            top: -28px;
+
+            left: 0;
+
+            font-size: 28px;
+
+            z-index: 10;
+
+            transition: left 2s ease;
+
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .3));
+
+            animation: train-bounce .6s infinite alternate;
+        }
+
+        @keyframes train-bounce {
+
+            from {
+                transform: translateY(0px);
+            }
+
+            to {
+                transform: translateY(-3px);
+            }
+
         }
     </style>
 
@@ -374,11 +467,20 @@
                 $progress = $totalData > 0 ? round(($delivered / $totalData) * 100, 1) : 0;
             @endphp
 
-            <div class="progress">
+            <div class="progress-wrapper">
 
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $progress }}%">
+                <div class="train-runner">
+                    <i class="fas fa-truck"></i>
+                </div>
 
-                    {{ $progress }}%
+                <div class="progress progress-delivery">
+
+                    <div class="progress-bar bg-success progress-delivery-bar" role="progressbar"
+                        data-width="{{ $progress }}" style="width:0%;">
+
+                        {{ $progress }}%
+
+                    </div>
 
                 </div>
 
@@ -435,7 +537,7 @@
         {{-- By Tipe Kereta --}}
         {{-- =========================================
      PROGRESS DELIVERY PER PROYEK
-========================================= --}}
+        ========================================= --}}
 
         <div class="delivery-project-card p-3 mt-4">
 
@@ -498,7 +600,8 @@
 
                                 <div class="progress-rail">
 
-                                    <div class="progress-custom {{ $colorClass }}" style="width: {{ $progress }}%;">
+                                    <div class="progress-custom {{ $colorClass }}" data-width="{{ $progress }}"
+                                        style="width:0%;">
 
                                         {{ $progress }}%
 
@@ -516,47 +619,57 @@
 
         </div>
 
-        {{-- Ringkasan --}}
-        {{-- <div class="card-dashboard">
-
-            <h5>Ringkasan Dashboard</h5>
-
-            <table class="table table-bordered">
-
-                <tr>
-                    <th width="250">Total Proyek</th>
-                    <td>{{ $projectCount }}</td>
-                </tr>
-
-                <tr>
-                    <th>Total Pengiriman</th>
-                    <td>{{ $totalData }}</td>
-                </tr>
-
-                <tr>
-                    <th>On Time</th>
-                    <td>{{ $onTime }}</td>
-                </tr>
-
-                <tr>
-                    <th>Overdue</th>
-                    <td>{{ $overdue }}</td>
-                </tr>
-
-                <tr>
-                    <th>Vendor Aktif</th>
-                    <td>{{ $vendorCount }}</td>
-                </tr>
-
-                <tr>
-                    <th>Trainset Aktif</th>
-                    <td>{{ $trainsetCount }}</td>
-                </tr>
-
-            </table>
-
-        </div> --}}
-
     </div>
+
+
+    {{-- Progress Bar gerak gerak --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const deliveryBar =
+                document.querySelector('.progress-delivery-bar');
+
+            const train =
+                document.querySelector('.train-runner');
+
+            if (deliveryBar) {
+
+                const width =
+                    parseFloat(deliveryBar.dataset.width);
+
+                setTimeout(() => {
+
+                    deliveryBar.style.transition =
+                        'width 2s ease';
+
+                    deliveryBar.style.width =
+                        width + '%';
+
+                    train.style.left =
+                        `calc(${width}% - 20px)`;
+
+                }, 300);
+            }
+
+            document.querySelectorAll('.progress-custom')
+                .forEach(bar => {
+
+                    const width =
+                        bar.dataset.width;
+
+                    setTimeout(() => {
+
+                        bar.style.transition =
+                            'width 1.5s ease';
+
+                        bar.style.width =
+                            width + '%';
+
+                    }, 500);
+
+                });
+
+        });
+    </script>
 
 @endsection
