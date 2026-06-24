@@ -243,7 +243,7 @@
 
                                             <td>
 
-                                                <span class="badge badge-danger">
+                                                <span class="badge badge-success">
 
                                                     {{ $item['total'] }}
 
@@ -253,7 +253,7 @@
 
                                             <td>
 
-                                                <span class="badge badge-success">
+                                                <span class="badge badge-danger">
 
                                                     {{ $item['imss'] }}
 
@@ -310,7 +310,7 @@
 
                         backgroundColor: [
                             '#dc3545',
-                            '#17a2b8'
+                            '#ffd43b'
                         ]
                     }]
                 }
