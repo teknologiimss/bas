@@ -280,45 +280,59 @@
         {{-- By Tipe Kereta --}}
         <div class="card-dashboard">
 
-            <h5>
-                🚆 Progress Delivery Per Tipe Kereta
-            </h5>
+            <h5>🚆 Progress Delivery Per Proyek</h5>
 
-            @foreach ($tipeKeretaProgress as $row)
-                <div class="mb-4">
+            @foreach ($tipeKeretaProgress as $namaProyek => $items)
+                <details class="mb-3">
 
-                    <div class="d-flex justify-content-between mb-1">
+                    <summary
+                        style="
+                    cursor:pointer;
+                    font-weight:bold;
+                    padding:10px;
+                    background:#f8f9fa;
+                    border-radius:8px;
+                ">
 
-                        <strong>
-                            {{ $row->tipe_kereta }}
-                        </strong>
+                        📦 {{ $namaProyek }}
 
-                        <span>
-                            {{ $row->delivered }}
-                            /
-                            {{ $row->total_unit }}
-                            Unit
-                        </span>
+                    </summary>
+
+                    <div class="mt-3">
+
+                        @foreach ($items as $row)
+                            <div class="mb-3">
+
+                                <div class="d-flex justify-content-between">
+
+                                    <strong>
+                                        {{ $row->tipe_kereta }}
+                                    </strong>
+
+                                    <span>
+                                        {{ $row->delivered }}
+                                        /
+                                        {{ $row->total_unit }}
+                                    </span>
+
+                                </div>
+
+                                <div class="progress mt-1">
+
+                                    <div class="progress-bar bg-success" style="width:{{ $row->progress }}%">
+
+                                        {{ $row->progress }}%
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        @endforeach
 
                     </div>
 
-                    <div class="progress">
-
-                        <div class="progress-bar
-                    @if ($row->progress >= 100) bg-success
-                    @elseif($row->progress >= 50)
-                        bg-warning
-                    @else
-                        bg-danger @endif"
-                            style="width: {{ $row->progress }}%;">
-
-                            {{ $row->progress }}%
-
-                        </div>
-
-                    </div>
-
-                </div>
+                </details>
             @endforeach
 
         </div>

@@ -298,23 +298,34 @@ class PengirimanController extends Controller
         $projectCount = DB::table('pengiriman')->count();
 
         // mengambil by Tipe kereta
-        $tipeKeretaProgress = DB::table('pengiriman_detail')
+        $tipeKeretaProgress = DB::table('pengiriman')
+            ->join(
+                'pengiriman_detail',
+                'pengiriman.id',
+                '=',
+                'pengiriman_detail.pengiriman_id'
+            )
             ->select(
-                'tipe_kereta',
-                DB::raw('COUNT(*) as total_unit'),
+                'pengiriman.id as proyek_id',
+                'pengiriman.nama_proyek',
+                'pengiriman_detail.tipe_kereta',
+                DB::raw('COUNT(pengiriman_detail.id) as total_unit'),
                 DB::raw('
             SUM(
                 CASE
-                    WHEN actual_delivery IS NOT NULL
+                    WHEN pengiriman_detail.actual_delivery IS NOT NULL
                     THEN 1
                     ELSE 0
                 END
             ) as delivered
         ')
             )
-            ->whereNotNull('tipe_kereta')
-            ->groupBy('tipe_kereta')
-            ->orderBy('tipe_kereta')
+            ->groupBy(
+                'pengiriman.id',
+                'pengiriman.nama_proyek',
+                'pengiriman_detail.tipe_kereta'
+            )
+            ->orderBy('pengiriman.nama_proyek')
             ->get()
             ->map(function ($item) {
                 $item->progress =
@@ -326,7 +337,8 @@ class PengirimanController extends Controller
                         : 0;
 
                 return $item;
-            });
+            })
+            ->groupBy('nama_proyek');
 
         return view(
             'pengiriman.dashboard',
