@@ -17,7 +17,7 @@
             <div class="card-body text-center">
 
                 <video width="100%" controls autoplay muted loop playsinline>
-                    <source src="{{ asset('video/profil-mro.mp4') }}" type="video/mp4">
+                    <source src="{{ asset('video/personil.mp4') }}" type="video/mp4">
                     Browser tidak mendukung video.
                 </video>
 
