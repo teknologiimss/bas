@@ -1048,6 +1048,16 @@
 
                                                     {{-- ADMIN & MRO FULL ACCESS --}}
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                                        {{-- Personil MRO --}}
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.profil') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'mro.profil' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-video"></i>
+                                                                <p>Personil MRO</p>
+                                                            </a>
+                                                        </li>
+                                                        
                                                         {{-- Dashboard --}}
                                                         <li
                                                             class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') || Route::is('lp3m.dashboard*') || Route::is('alat.dashboard*') ? 'menu-open' : '' }}">
@@ -1127,15 +1137,6 @@
                                                         </li>
 
 
-                                                        {{-- Personil MRO --}}
-
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('mro.profil') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'mro.profil' ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-video"></i>
-                                                                <p>Personil MRO</p>
-                                                            </a>
-                                                        </li>
 
 
                                                         <li class="nav-item">
