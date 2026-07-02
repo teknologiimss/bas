@@ -64,19 +64,18 @@
 
     <style>
         /* =====================================================
-           🔴 GLOBAL MAROON THEME – FULL VERSION
-           ===================================================== */
+                               GLOBAL Navy THEME – FULL VERSION
+                               ===================================================== */
 
         /* ===== ROOT COLOR SYSTEM ===== */
         :root {
-            --maroon-main: #dc3545;
-            --maroon-dark: #5a1620;
-
-            --maroon-soft: #f4e6e8;
-            --maroon-hover: #8f2735;
-            --maroon-border: #e3c2c7;
-            --maroon-muted: #b88a92;
-            --maroon-text: #3a0f15;
+            --primary-main: #0B3D91;
+            --primary-dark: #082567;
+            --primary-hover: #1E4F9E;
+            --primary-soft: #EAF2FF;
+            --primary-border: #BFD3F2;
+            --primary-muted: #6F8FC7;
+            --primary-text: #0F2A5F;
         }
 
         /* ===== RESET SMALL ===== */
@@ -86,8 +85,8 @@
         }
 
         /* =====================================================
-           🪟 MODAL
-           ===================================================== */
+                               🪟 MODAL
+                               ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -98,8 +97,8 @@
         }
 
         /* =====================================================
-           📊 TABLE
-           ===================================================== */
+                               📊 TABLE
+                               ===================================================== */
         #table {
             width: 100%;
             border-collapse: separate;
@@ -111,7 +110,7 @@
 
         /* ===== TABLE HEADER ===== */
         #table thead th {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
             color: #fff;
             padding: 12px 36px 12px 12px;
             text-align: center;
@@ -123,12 +122,12 @@
         /* Hover header */
         #table thead th:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(122, 31, 43, .35);
+            box-shadow: 0 6px 14px rgba(11, 61, 145, .35);
         }
 
         /* Active sort */
         #table thead th.active-sort {
-            box-shadow: inset 0 -4px 0 var(--maroon-dark);
+            box-shadow: inset 0 -4px 0 var(--primary-dark);
         }
 
         /* ===== SORT BUTTON ===== */
@@ -144,7 +143,7 @@
         }
 
         .sort-buttons span {
-            color: #f1c6cc;
+            color: #d7e6ff;
             cursor: pointer;
         }
 
@@ -161,22 +160,22 @@
         /* ===== TABLE BODY ===== */
         #table tbody td {
             padding: 12px;
-            color: var(--maroon-text);
-            border-bottom: 1px solid var(--maroon-border);
+            color: var(--primary-text);
+            border-bottom: 1px solid var(--primary-border);
         }
 
         /* Hover row */
         #table tbody tr:hover td {
-            background: var(--maroon-soft);
+            background: var(--primary-soft);
             transform: scale(1.01);
         }
 
         /* =====================================================
-           🔘 BUTTON
-           ===================================================== */
+                               🔘 BUTTON
+                               ===================================================== */
         button,
         .btn {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -189,7 +188,7 @@
         button:hover,
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(122, 31, 43, .4);
+            box-shadow: 0 6px 14px rgba(11, 61, 145, .4);
         }
 
         /* Active button */
@@ -199,32 +198,32 @@
         }
 
         /* =====================================================
-           📄 PAGINATION
-           ===================================================== */
+                               📄 PAGINATION
+                               ===================================================== */
         .page-item .page-link {
             background: #fff;
-            color: var(--maroon-main);
-            border: 1px solid var(--maroon-border);
+            color: var(--primary-main);
+            border: 1px solid var(--primary-border);
         }
 
         .page-item .page-link:hover {
-            background: var(--maroon-soft);
+            background: var(--primary-soft);
             transform: translateY(-2px);
         }
 
         .page-item.active .page-link {
-            background: var(--maroon-main);
+            background: var(--primary-main);
             color: #fff;
-            border-color: var(--maroon-main);
+            border-color: var(--primary-main);
         }
 
         /* =====================================================
-           🧾 INPUT, SELECT, CHECKBOX
-           ===================================================== */
+                               🧾 INPUT, SELECT, CHECKBOX
+                               ===================================================== */
         input,
         select,
         textarea {
-            border: 1px solid var(--maroon-border);
+            border: 1px solid var(--primary-border);
             border-radius: 6px;
             padding: 6px 10px;
         }
@@ -232,55 +231,55 @@
         input:focus,
         select:focus,
         textarea:focus {
-            border-color: var(--maroon-main);
-            box-shadow: 0 0 0 3px rgba(122, 31, 43, .2);
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 3px rgba(11, 61, 145, .2);
             outline: none;
         }
 
         input[type="checkbox"]:checked {
-            accent-color: var(--maroon-main);
+            accent-color: var(--primary-main);
         }
 
         /* =====================================================
-           📜 SCROLLBAR
-           ===================================================== */
+                               📜 SCROLLBAR
+                               ===================================================== */
         ::-webkit-scrollbar {
             width: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: var(--maroon-soft);
+            background: var(--primary-soft);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--maroon-main);
+            background: var(--primary-main);
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--maroon-hover);
+            background: var(--primary-hover);
         }
 
         /* =====================================================
-           🌊 ANIMATION
-           ===================================================== */
-        @keyframes pulseMaroon {
+                               🌊 ANIMATION
+                               ===================================================== */
+        @keyframes pulseBlue {
             0% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
+                box-shadow: 0 0 0 0 rgba(11, 61, 145, .6);
             }
 
             70% {
-                box-shadow: 0 0 0 8px rgba(122, 31, 43, 0);
+                box-shadow: 0 0 0 8px rgba(11, 61, 145, 0);
             }
 
             100% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
+                box-shadow: 0 0 0 0 rgba(11, 61, 145, 0);
             }
         }
 
         /* =====================================================
-       🔘 BUTTON RAPIIH & SEJAJAR
-    ===================================================== */
+                           🔘 BUTTON RAPIIH & SEJAJAR
+                        ===================================================== */
 
         /* Header button area */
         .card-header {
@@ -379,18 +378,18 @@
             padding: 10px 18px;
             font-weight: 600;
             border: none;
-            color: var(--maroon-main);
+            color: var(--primary-main);
         }
 
         .nav-tabs .nav-link.active {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
             color: #fff !important;
-            box-shadow: 0 4px 12px rgba(122, 31, 43, .25);
+            box-shadow: 0 4px 12px rgba(11, 61, 145, .25);
         }
 
         /* =====================================================
-       📱 RESPONSIVE MOBILE
-    ===================================================== */
+                           📱 RESPONSIVE MOBILE
+                        ===================================================== */
         @media (max-width: 768px) {
 
             /* Header button */
@@ -956,7 +955,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                            onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -2073,7 +2072,7 @@
                     selected = [];
                     $('#table-loi').empty();
                     $('#loiluar_id').val(data.loiluar
-                    .id); // Pastikan #loiluar_id selalu diisi ulang setelah update
+                        .id); // Pastikan #loiluar_id selalu diisi ulang setelah update
                     $.each(data.loiluar.details, function(key, value) {
                         var loiluar_qty = value.loiluar_qty || 0;
                         var id = value.id;
@@ -2451,7 +2450,7 @@
                     if (data.loiluar.details.length > 0) {
                         $('#table-loi').empty();
                         $('#loiluar_id').val(data.loiluar
-                        .id); // Pastikan #loiluar_id selalu diisi ulang setelah update
+                            .id); // Pastikan #loiluar_id selalu diisi ulang setelah update
                         $.each(data.loiluar.details, function(key, value) {
                             var id = value.id;
                             var id_loiluar = value.id_loiluar;

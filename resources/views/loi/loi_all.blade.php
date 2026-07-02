@@ -4,25 +4,27 @@
 @section('custom-css')
     <style>
         /* =====================================================
-           🔴 GLOBAL MAROON THEME – FULL VERSION
+           🔵 GLOBAL NAVY BLUE THEME
            ===================================================== */
 
         /* ===== ROOT COLOR SYSTEM ===== */
         :root {
-            --maroon-main: #dc3545;
-            --maroon-dark: #5a1620;
-
-            --maroon-soft: #f4e6e8;
-            --maroon-hover: #8f2735;
-            --maroon-border: #e3c2c7;
-            --maroon-muted: #b88a92;
-            --maroon-text: #3a0f15;
+            --primary-main: #0B3D91;
+            --primary-dark: #082567;
+            --primary-light: #1E5BB8;
+            --primary-soft: #EAF2FF;
+            --primary-hover: #1049B5;
+            --primary-border: #C9D8F2;
+            --primary-muted: #6B8EC8;
+            --primary-text: #1A2E4F;
         }
 
         /* ===== RESET SMALL ===== */
         * {
-            transition: background-color .25s ease, color .25s ease,
-                transform .25s ease, box-shadow .25s ease;
+            transition: background-color .25s ease,
+                color .25s ease,
+                transform .25s ease,
+                box-shadow .25s ease;
         }
 
         /* =====================================================
@@ -47,11 +49,14 @@
             background: #fff;
             border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0 6px 20px rgba(11, 61, 145, .12);
         }
 
         /* ===== TABLE HEADER ===== */
         #table thead th {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg,
+                    var(--primary-main),
+                    var(--primary-dark));
             color: #fff;
             padding: 12px 36px 12px 12px;
             text-align: center;
@@ -63,15 +68,17 @@
         /* Hover header */
         #table thead th:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(122, 31, 43, .35);
+            box-shadow: 0 6px 14px rgba(11, 61, 145, .35);
         }
 
         /* Active sort */
         #table thead th.active-sort {
-            box-shadow: inset 0 -4px 0 var(--maroon-dark);
+            box-shadow: inset 0 -4px 0 #63A4FF;
         }
 
-        /* ===== SORT BUTTON ===== */
+        /* =====================================================
+           🔼 SORT BUTTON
+           ===================================================== */
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -84,8 +91,9 @@
         }
 
         .sort-buttons span {
-            color: #f1c6cc;
+            color: #BFD8FF;
             cursor: pointer;
+            transition: all .2s ease;
         }
 
         .sort-buttons span:hover {
@@ -95,20 +103,30 @@
 
         .sort-buttons span.active {
             color: #fff;
-            animation: pulseMaroon 1.2s infinite;
+            animation: pulseBlue 1.2s infinite;
         }
 
-        /* ===== TABLE BODY ===== */
+        /* =====================================================
+           📋 TABLE BODY
+           ===================================================== */
         #table tbody td {
             padding: 12px;
-            color: var(--maroon-text);
-            border-bottom: 1px solid var(--maroon-border);
+            color: var(--primary-text);
+            border-bottom: 1px solid var(--primary-border);
         }
 
-        /* Hover row */
+        #table tbody tr {
+            transition: all .25s ease;
+        }
+
         #table tbody tr:hover td {
-            background: var(--maroon-soft);
+            background: var(--primary-soft);
             transform: scale(1.01);
+        }
+
+        /* Zebra */
+        #table tbody tr:nth-child(even) td {
+            background: #F8FBFF;
         }
 
         /* =====================================================
@@ -116,23 +134,26 @@
            ===================================================== */
         button,
         .btn {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg,
+                    var(--primary-main),
+                    var(--primary-dark));
             color: #fff;
             border: none;
             border-radius: 8px;
             padding: 8px 16px;
             font-weight: 600;
-            cursor: pointer;
         }
 
-        /* Hover button */
         button:hover,
         .btn:hover {
+            background: linear-gradient(135deg,
+                    var(--primary-light),
+                    var(--primary-main));
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(122, 31, 43, .4);
+            box-shadow: 0 8px 18px rgba(11, 61, 145, .35);
+            color: #fff;
         }
 
-        /* Active button */
         button:active,
         .btn:active {
             transform: scale(.96);
@@ -143,28 +164,30 @@
            ===================================================== */
         .page-item .page-link {
             background: #fff;
-            color: var(--maroon-main);
-            border: 1px solid var(--maroon-border);
+            color: var(--primary-main);
+            border: 1px solid var(--primary-border);
+            transition: all .2s ease;
         }
 
         .page-item .page-link:hover {
-            background: var(--maroon-soft);
+            background: var(--primary-soft);
+            color: var(--primary-main);
             transform: translateY(-2px);
         }
 
         .page-item.active .page-link {
-            background: var(--maroon-main);
+            background: var(--primary-main);
             color: #fff;
-            border-color: var(--maroon-main);
+            border-color: var(--primary-main);
         }
 
         /* =====================================================
-           🧾 INPUT, SELECT, CHECKBOX
+           🧾 INPUT
            ===================================================== */
         input,
         select,
         textarea {
-            border: 1px solid var(--maroon-border);
+            border: 1px solid var(--primary-border);
             border-radius: 6px;
             padding: 6px 10px;
         }
@@ -172,13 +195,13 @@
         input:focus,
         select:focus,
         textarea:focus {
-            border-color: var(--maroon-main);
-            box-shadow: 0 0 0 3px rgba(122, 31, 43, .2);
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 3px rgba(11, 61, 145, .20);
             outline: none;
         }
 
         input[type="checkbox"]:checked {
-            accent-color: var(--maroon-main);
+            accent-color: var(--primary-main);
         }
 
         /* =====================================================
@@ -186,35 +209,69 @@
            ===================================================== */
         ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: var(--maroon-soft);
+            background: var(--primary-soft);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--maroon-main);
-            border-radius: 4px;
+            background: var(--primary-main);
+            border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--maroon-hover);
+            background: var(--primary-dark);
+        }
+
+        /* =====================================================
+           🪟 MODAL
+           ===================================================== */
+        .modal-content {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(11, 61, 145, .20);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg,
+                    var(--primary-main),
+                    var(--primary-dark));
+            color: #fff;
+        }
+
+        /* =====================================================
+           🌊 CARD
+           ===================================================== */
+        .card {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 8px 24px rgba(11, 61, 145, .12);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg,
+                    var(--primary-main),
+                    var(--primary-dark));
+            color: #fff;
+            font-weight: 600;
         }
 
         /* =====================================================
            🌊 ANIMATION
            ===================================================== */
-        @keyframes pulseMaroon {
+        @keyframes pulseBlue {
             0% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
+                box-shadow: 0 0 0 0 rgba(11, 61, 145, .50);
             }
 
             70% {
-                box-shadow: 0 0 0 8px rgba(122, 31, 43, 0);
+                box-shadow: 0 0 0 8px rgba(11, 61, 145, 0);
             }
 
             100% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
+                box-shadow: 0 0 0 0 rgba(11, 61, 145, 0);
             }
         }
     </style>
@@ -257,11 +314,11 @@
 
             <div class="card">
                 <!-- <div class="card-header"> -->
-                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-LOI"
-                        onclick="addLOI()"><i class="fas fa-plus"></i> Add New LOI</button> -->
-                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#import-product" onclick="importProduct()"><i class="fas fa-file-excel"></i> Import Product (Excel)</button> -->
-                    <!-- <button type="button" class="btn btn-primary" onclick="download('xls')"><i class="fas fa-file-excel"></i> Export Product (XLS)</button> -->
-                    {{-- <div class="card-tools">
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-LOI"
+                            onclick="addLOI()"><i class="fas fa-plus"></i> Add New LOI</button> -->
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#import-product" onclick="importProduct()"><i class="fas fa-file-excel"></i> Import Product (Excel)</button> -->
+                <!-- <button type="button" class="btn btn-primary" onclick="download('xls')"><i class="fas fa-file-excel"></i> Export Product (XLS)</button> -->
+                {{-- <div class="card-tools">
                         <form>
                             <div class="input-group input-group">
                                 <input type="text" class="form-control" name="q" placeholder="Search">
@@ -395,20 +452,20 @@
                                             {{-- <td class="text-center">{{ $data['penerima'] }}</td> --}}
                                             <td class="text-center">
                                                 <!-- <button title="Edit LOI" type="button" class="btn btn-success btn-xs"
-                                                    data-toggle="modal" data-target="#add-LOI"
-                                                    onclick="editLOI({{ json_encode($data) }})"><i
-                                                        class="fas fa-edit"></i></button> -->
+                                                        data-toggle="modal" data-target="#add-LOI"
+                                                        onclick="editLOI({{ json_encode($data) }})"><i
+                                                            class="fas fa-edit"></i></button> -->
 
                                                 <button title="Lihat Detail" type="button" data-toggle="modal"
                                                     data-target="#detail-loi" class="btn-lihat btn btn-info btn-xs"
                                                     data-detail="{{ json_encode($data) }}"><i
                                                         class="fas fa-list"></i></button>
                                                 <!-- @if (Auth::user()->role == 0 || Auth::user()->role == 1)
-                                                    <button title="Hapus LOI" type="button" class="btn btn-danger btn-xs"
-                                                        data-toggle="modal" data-target="#delete-loi"
-                                                        onclick="deleteloi({{ json_encode($data) }})"><i
-                                                            class="fas fa-trash"></i></button>
-                                                @endif -->
+    <button title="Hapus LOI" type="button" class="btn btn-danger btn-xs"
+                                                            data-toggle="modal" data-target="#delete-loi"
+                                                            onclick="deleteloi({{ json_encode($data) }})"><i
+                                                                class="fas fa-trash"></i></button>
+    @endif -->
                                             </td>
                                         </tr>
                                     @endforeach
@@ -636,9 +693,9 @@
                                         </tr>
                                         <tr>
                                             <!-- <td colspan="3">
-                                                <button id="button-tambah-produk" type="button"
-                                                    class="btn btn-info mb-3">{{ __('Tambah Produk') }}</button>
-                                            </td> -->
+                                                    <button id="button-tambah-produk" type="button"
+                                                        class="btn btn-info mb-3">{{ __('Tambah Produk') }}</button>
+                                                </td> -->
                                             {{-- <button title="Edit SPPH" type="button" class="btn btn-success btn-xs"
                                             data-toggle="modal" data-target="#add-SPPH"
                                             onclick="editSPPH({{ json_encode($data) }})"> --}}
@@ -2079,7 +2136,8 @@
                                 '<td>' + loi_qty + '</td>' +
                                 '<td>' + (value.satuan || '-') + '</td>' +
                                 '<td>' + 'Rp ' + harga_per_unit.toLocaleString('id-ID') + '</td>' +
-                                '<td class="total">' + 'Rp ' + total.toLocaleString('id-ID') + '</td>' +
+                                '<td class="total">' + 'Rp ' + total.toLocaleString('id-ID') +
+                                '</td>' +
                                 // '<td>' +
                                 // '<button type="button" class="btn btn-danger btn-delete" data-id="' +
                                 // value.id + '" data-id_loi="' + id_loi +

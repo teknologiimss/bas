@@ -12,9 +12,10 @@
 <style>
     /* ================= ROOT ================= */
     :root {
-        --maroon: #dc3545;
-        --maroon-dark: #b02a37;
-        --maroon-soft: #fdecee;
+        --primary: #0B3D91;
+        --primary-dark: #082567;
+        --primary-light: #1E5BB8;
+        --primary-soft: #EAF2FF;
     }
 
     /* ================= CARD ================= */
@@ -32,7 +33,7 @@
 
     /* ================= HEADER ================= */
     .card-header {
-        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
         color: #fff;
         border-radius: 14px 14px 0 0;
         display: flex;
@@ -54,7 +55,7 @@
     }
 
     .table thead th {
-        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
         color: #fff;
         text-align: center;
         vertical-align: middle;
@@ -73,7 +74,7 @@
     }
 
     .table tbody tr:hover {
-        background-color: var(--maroon-soft);
+        background: var(--primary-soft);
         transform: scale(1.002);
     }
 
@@ -90,13 +91,14 @@
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
         border: none;
     }
 
     .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-light), var(--primary));
         transform: translateY(-3px);
-        box-shadow: 0 10px 22px rgba(220, 53, 69, .45);
+        box-shadow:0 10px 22px rgba(11,61,145,.35);
     }
 
     .btn-success:hover,
@@ -2531,7 +2533,7 @@
     @endif
 
     <!-- {{-- VALIDATION ERRORS --}}
-            @if ($errors->any())
+                @if ($errors->any())
     <script>
         $(document).ready(function() {
             $('#add-kontrak').modal('show');
@@ -2541,7 +2543,7 @@
 
 
     <!-- {{-- VALIDATION ERRORS --}}
-            @if ($errors->any())
+                @if ($errors->any())
     <script>
         toastr.error("{!! implode('<br>', $errors->all()) !!}");
     </script>

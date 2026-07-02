@@ -4,30 +4,32 @@
 @section('custom-css')
     <style>
         /* =====================================================
-               🔴 GLOBAL MAROON THEME – FULL VERSION
-               ===================================================== */
+       🔵 GLOBAL DARK BLUE THEME – FULL VERSION
+    ===================================================== */
 
         /* ===== ROOT COLOR SYSTEM ===== */
         :root {
-            --maroon-main: #dc3545;
-            --maroon-dark: #5a1620;
-
-            --maroon-soft: #f4e6e8;
-            --maroon-hover: #8f2735;
-            --maroon-border: #e3c2c7;
-            --maroon-muted: #b88a92;
-            --maroon-text: #3a0f15;
+            --primary-main: #0B3D91;
+            --primary-dark: #082567;
+            --primary-hover: #1E4F9E;
+            --primary-soft: #EAF2FF;
+            --primary-border: #BFD3F2;
+            --primary-muted: #6F8FC7;
+            --primary-text: #0F2A5F;
         }
 
-        /* ===== RESET SMALL ===== */
+        /* ===== RESET ===== */
         * {
-            transition: background-color .25s ease, color .25s ease,
-                transform .25s ease, box-shadow .25s ease;
+            transition: background-color .25s ease,
+                color .25s ease,
+                transform .25s ease,
+                box-shadow .25s ease;
         }
 
         /* =====================================================
-               🪟 MODAL
-               ===================================================== */
+       MODAL
+    ===================================================== */
+
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -38,8 +40,9 @@
         }
 
         /* =====================================================
-               📊 TABLE
-               ===================================================== */
+       TABLE
+    ===================================================== */
+
         #table {
             width: 100%;
             border-collapse: separate;
@@ -49,9 +52,10 @@
             overflow: hidden;
         }
 
-        /* ===== TABLE HEADER ===== */
+        /* HEADER */
+
         #table thead th {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
             color: #fff;
             padding: 12px 36px 12px 12px;
             text-align: center;
@@ -60,18 +64,17 @@
             cursor: pointer;
         }
 
-        /* Hover header */
         #table thead th:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(122, 31, 43, .35);
+            box-shadow: 0 6px 14px rgba(11, 61, 145, .35);
         }
 
-        /* Active sort */
         #table thead th.active-sort {
-            box-shadow: inset 0 -4px 0 var(--maroon-dark);
+            box-shadow: inset 0 -4px 0 #021840;
         }
 
-        /* ===== SORT BUTTON ===== */
+        /* SORT BUTTON */
+
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -84,7 +87,7 @@
         }
 
         .sort-buttons span {
-            color: #f1c6cc;
+            color: #d4e4ff;
             cursor: pointer;
         }
 
@@ -95,198 +98,160 @@
 
         .sort-buttons span.active {
             color: #fff;
-            animation: pulseMaroon 1.2s infinite;
+            animation: pulseBlue 1.2s infinite;
         }
 
-        /* ===== TABLE BODY ===== */
+        /* BODY */
+
         #table tbody td {
             padding: 12px;
-            color: var(--maroon-text);
-            border-bottom: 1px solid var(--maroon-border);
+            color: var(--primary-text);
+            border-bottom: 1px solid var(--primary-border);
         }
 
-        /* Hover row */
         #table tbody tr:hover td {
-            background: var(--maroon-soft);
+            background: var(--primary-soft);
             transform: scale(1.01);
         }
 
         /* =====================================================
-               🔘 BUTTON
-               ===================================================== */
+       BUTTON
+    ===================================================== */
+
         button,
         .btn {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
-            color: #fff;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
+            color: #fff !important;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 8px 16px;
             font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             cursor: pointer;
         }
 
-        /* Hover button */
         button:hover,
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(122, 31, 43, .4);
+            box-shadow: 0 6px 14px rgba(11, 61, 145, .40);
         }
 
-        /* Active button */
         button:active,
         .btn:active {
             transform: scale(.96);
         }
 
-        /* =====================================================
-               📄 PAGINATION
-               ===================================================== */
-        .page-item .page-link {
-            background: #fff;
-            color: var(--maroon-main);
-            border: 1px solid var(--maroon-border);
-        }
+        /* BUTTON KECIL */
 
-        .page-item .page-link:hover {
-            background: var(--maroon-soft);
-            transform: translateY(-2px);
-        }
-
-        .page-item.active .page-link {
-            background: var(--maroon-main);
-            color: #fff;
-            border-color: var(--maroon-main);
+        .btn-xs {
+            width: 36px;
+            height: 36px;
+            padding: 0 !important;
+            border-radius: 8px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
         }
 
         /* =====================================================
-               🧾 INPUT, SELECT, CHECKBOX
-               ===================================================== */
-        input,
-        select,
-        textarea {
-            border: 1px solid var(--maroon-border);
-            border-radius: 6px;
-            padding: 6px 10px;
-        }
+       CARD HEADER
+    ===================================================== */
 
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: var(--maroon-main);
-            box-shadow: 0 0 0 3px rgba(122, 31, 43, .2);
-            outline: none;
-        }
-
-        input[type="checkbox"]:checked {
-            accent-color: var(--maroon-main);
-        }
-
-        /* =====================================================
-               📜 SCROLLBAR
-               ===================================================== */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--maroon-soft);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--maroon-main);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--maroon-hover);
-        }
-
-        /* =====================================================
-               🌊 ANIMATION
-               ===================================================== */
-        @keyframes pulseMaroon {
-            0% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
-            }
-
-            70% {
-                box-shadow: 0 0 0 8px rgba(122, 31, 43, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
-            }
-        }
-
-        /* =====================================================
-       🔥 BUTTON ALIGNMENT & CLEAN UI
-       ===================================================== */
-
-        /* Header button area */
         .card-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
+            color: #fff;
         }
 
-        /* Semua button */
-        .btn {
-            border-radius: 10px !important;
-            min-height: 38px;
-            padding: 8px 16px !important;
-            font-weight: 600;
-            display: inline-flex !important;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            white-space: nowrap;
-        }
+        /* =====================================================
+       TABLE ACTION
+    ===================================================== */
 
-        /* Button kecil tabel */
-        .btn-xs {
-            width: 36px;
-            height: 36px;
-            padding: 0 !important;
-            border-radius: 8px !important;
-            display: inline-flex !important;
-            align-items: center;
-            justify-content: center;
-            margin: 2px;
-        }
-
-        /* Kolom aksi */
-        td.text-center .btn {
-            vertical-align: middle;
-        }
-
-        /* Supaya tombol aksi sejajar */
-        td.text-center {
-            vertical-align: middle !important;
-        }
-
-        /* Container tombol aksi */
         .table-action {
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             gap: 6px;
             flex-wrap: nowrap;
         }
 
-        /* Filter button */
+        td.text-center {
+            vertical-align: middle !important;
+        }
+
+        /* =====================================================
+       PAGINATION
+    ===================================================== */
+
+        .page-item .page-link {
+            background: #fff;
+            color: var(--primary-main);
+            border: 1px solid var(--primary-border);
+        }
+
+        .page-item .page-link:hover {
+            background: var(--primary-soft);
+            transform: translateY(-2px);
+        }
+
+        .page-item.active .page-link {
+            background: var(--primary-main);
+            color: #fff;
+            border-color: var(--primary-main);
+        }
+
+        /* =====================================================
+       FORM
+    ===================================================== */
+
+        input,
+        select,
+        textarea {
+            border: 1px solid var(--primary-border);
+            border-radius: 8px;
+            padding: 6px 10px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 3px rgba(11, 61, 145, .20);
+            outline: none;
+        }
+
+        input[type=checkbox]:checked {
+            accent-color: var(--primary-main);
+        }
+
+        /* =====================================================
+       FILTER
+    ===================================================== */
+
         #clear-filter {
             width: 100%;
             margin-top: 32px !important;
         }
 
-        /* Button bawah tabel */
+        /* =====================================================
+       DELETE BUTTON
+    ===================================================== */
+
         #delete-selected {
             margin-top: 14px;
         }
 
-        /* Footer modal */
+        /* =====================================================
+       MODAL FOOTER
+    ===================================================== */
+
         .modal-footer {
             display: flex;
             justify-content: space-between;
@@ -295,15 +260,57 @@
             flex-wrap: wrap;
         }
 
-        /* Button modal */
         .modal-footer .btn {
             min-width: 130px;
         }
 
-        /* Responsive HP */
-        @media (max-width: 768px) {
+        /* =====================================================
+       SCROLLBAR
+    ===================================================== */
 
-            /* Header */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary-soft);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-main);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-hover);
+        }
+
+        /* =====================================================
+       ANIMATION
+    ===================================================== */
+
+        @keyframes pulseBlue {
+
+            0% {
+                box-shadow: 0 0 0 0 rgba(11, 61, 145, .6);
+            }
+
+            70% {
+                box-shadow: 0 0 0 8px rgba(11, 61, 145, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(11, 61, 145, 0);
+            }
+
+        }
+
+        /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+        @media(max-width:768px) {
+
             .card-header {
                 flex-direction: column;
                 align-items: stretch;
@@ -313,7 +320,6 @@
                 width: 100%;
             }
 
-            /* Filter */
             .row.mb-3>.col-md-4 {
                 margin-bottom: 12px;
             }
@@ -322,7 +328,6 @@
                 margin-top: 0 !important;
             }
 
-            /* Tombol aksi tabel */
             .table-action {
                 flex-wrap: wrap;
                 gap: 4px;
@@ -333,7 +338,6 @@
                 height: 34px;
             }
 
-            /* Footer modal */
             .modal-footer {
                 flex-direction: column;
             }
@@ -342,12 +346,12 @@
                 width: 100%;
             }
 
-            /* Table responsive */
             .table td,
             .table th {
                 font-size: 12px;
                 padding: 8px;
             }
+
         }
     </style>
 @endsection

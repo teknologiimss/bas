@@ -1,10 +1,14 @@
 @extends('layouts.main')
 @section('title', __('DATA SPPH DAN RFQ'))
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('custom-css')
     <style>
-        /* Important part */
+        /* ===============================
+           MODAL
+        ================================ */
+
         .modal-dialog {
-            overflow-y: initial !important
+            overflow-y: initial !important;
         }
 
         .modal-body {
@@ -12,28 +16,35 @@
             overflow-y: auto;
         }
 
-        /* 🌈 Gaya header File Explorer */
+        /* ===============================
+           TABLE HEADER
+        ================================ */
+
         #table th {
             position: relative;
             cursor: pointer;
             user-select: none;
-            background-color: #f8f9fa;
-            transition: background-color 0.2s ease;
+            background: linear-gradient(135deg, #0B3D91, #082567);
+            color: #fff;
+            transition: all .25s ease;
             padding-right: 30px;
             text-align: center;
         }
 
         #table th:hover {
-            background-color: #e9ecef;
+            background: linear-gradient(135deg, #1E5BB8, #0B3D91);
         }
 
         #table th.active-sort {
-            background-color: #dbeafe;
-            color: #0d6efd;
+            background: linear-gradient(135deg, #1E5BB8, #0B3D91);
+            color: #fff;
             font-weight: 600;
         }
 
-        /* 🔼🔽 Tombol panah permanen */
+        /* ===============================
+           SORT BUTTON
+        ================================ */
+
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -47,43 +58,55 @@
 
         .sort-buttons span {
             cursor: pointer;
-            color: #9ca3af;
-            transition: color 0.2s ease, transform 0.1s ease;
+            color: rgba(255, 255, 255, .65);
+            transition: all .2s ease;
         }
 
         .sort-buttons span:hover {
-            color: #0d6efd;
+            color: #ffffff;
             transform: scale(1.2);
         }
 
         .sort-buttons span.active {
-            color: #0d6efd;
+            color: #ffffff;
             font-weight: bold;
         }
 
-        /* ================= ROOT COLOR ================= */
+        /* ===============================
+           ROOT COLOR
+        ================================ */
+
         :root {
-            --maroon: #dc3545;
-            --maroon-dark: #b02a37;
-            --maroon-soft: #fdecee;
+            --primary: #0B3D91;
+            --primary-dark: #082567;
+            --primary-light: #1E5BB8;
+            --primary-soft: #EAF2FF;
         }
 
-        /* ================= CARD ================= */
+        /* ===============================
+           CARD
+        ================================ */
+
         .card {
             border-radius: 14px;
-            box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
-            transition: transform .25s ease, box-shadow .25s ease;
+            border: none;
+            box-shadow: 0 10px 28px rgba(11, 61, 145, .15);
+            transition: transform .25s ease,
+                box-shadow .25s ease;
         }
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 36px rgba(0, 0, 0, .12);
+            box-shadow: 0 16px 36px rgba(11, 61, 145, .25);
         }
 
-        /* ================= HEADER ================= */
+        /* ===============================
+           CARD HEADER
+        ================================ */
+
         .card-header {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
-            color: white;
+            background: linear-gradient(135deg, #0B3D91, #082567);
+            color: #fff;
             border-radius: 14px 14px 0 0;
         }
 
@@ -92,17 +115,21 @@
             font-weight: 600;
         }
 
-        /* ================= TABLE ================= */
+        /* ===============================
+           TABLE
+        ================================ */
+
         .table {
             border-radius: 12px;
             overflow: hidden;
         }
 
         thead th {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
-            color: white;
+            background: linear-gradient(135deg, #0B3D91, #082567);
+            color: #fff;
             text-align: center;
             letter-spacing: .6px;
+            border: none;
         }
 
         tbody tr {
@@ -110,29 +137,39 @@
         }
 
         tbody tr:hover {
-            background-color: var(--maroon-soft);
+            background: var(--primary-soft);
             transform: scale(1.005);
         }
 
-        /* ================= BUTTON ================= */
+        tbody td {
+            vertical-align: middle;
+        }
+
+        /* ===============================
+           BUTTON
+        ================================ */
+
         .btn-primary {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            background: linear-gradient(135deg, #0B3D91, #082567);
             border: none;
+            color: #fff;
             border-radius: 20px;
-            box-shadow: 0 6px 16px rgba(220, 53, 69, .4);
+            box-shadow: 0 6px 16px rgba(11, 61, 145, .35);
             transition: all .25s ease;
         }
 
         .btn-primary:hover {
+            background: linear-gradient(135deg, #1E5BB8, #0B3D91);
+            color: #fff;
             transform: translateY(-3px);
-            box-shadow: 0 10px 22px rgba(220, 53, 69, .55);
+            box-shadow: 0 10px 22px rgba(11, 61, 145, .45);
         }
 
         .btn-success,
         .btn-info,
         .btn-danger {
             border-radius: 16px;
-            transition: transform .15s ease;
+            transition: all .2s ease;
         }
 
         .btn-success:hover,
@@ -141,25 +178,67 @@
             transform: scale(1.08);
         }
 
-        /* ================= FILTER ================= */
+        /* ===============================
+           FORM
+        ================================ */
+
         .form-control {
             border-radius: 10px;
-            transition: box-shadow .2s ease, transform .15s ease;
+            border: 1px solid #d9e6ff;
+            transition: all .2s ease;
         }
 
         .form-control:focus {
-            box-shadow: 0 0 0 .15rem rgba(220, 53, 69, .25);
+            border-color: #0B3D91;
+            box-shadow: 0 0 0 .15rem rgba(11, 61, 145, .25);
             transform: scale(1.02);
         }
 
-        /* ================= MODAL ================= */
+        /* ===============================
+           MODAL
+        ================================ */
+
         .modal-content {
+            border: none;
             border-radius: 16px;
             animation: fadeUp .35s ease;
         }
 
-        /* ================= ANIMATION ================= */
+        .modal-header {
+            background: linear-gradient(135deg, #0B3D91, #082567);
+            color: #fff;
+            border: none;
+        }
+
+        .modal-header .close {
+            color: #fff;
+            opacity: 1;
+        }
+
+        /* ===============================
+           SCROLLBAR
+        ================================ */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0B3D91;
+            border-radius: 20px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #edf4ff;
+        }
+
+        /* ===============================
+           ANIMATION
+        ================================ */
+
         @keyframes fadeUp {
+
             from {
                 opacity: 0;
                 transform: translateY(12px);
@@ -169,6 +248,7 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+
         }
     </style>
 @endsection
@@ -227,7 +307,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group"> 
+                                <div class="form-group">
                                     <label for="filter-spph-date">Filter Tanggal SPPH dan RFQ</label>
                                     <input type="date" class="form-control" id="filter-spph-date">
                                 </div>
@@ -258,7 +338,6 @@
                             <tbody>
                                 @if ($data && $data->count() > 0)
                                     @foreach ($data as $key => $d)
-
                                         @php
                                             $lampiran = !empty($d->lampiran) ? explode(',', $d->lampiran) : [];
                                         @endphp
@@ -275,7 +354,7 @@
                                             <td class="text-center">{{ date('d/m/Y', strtotime($d->batas)) }}</td>
                                             <td class="text-center">{{ $d->vendor }}</td>
                                             <td class="text-center">
-                                                @if(count($lampiran) > 0)
+                                                @if (count($lampiran) > 0)
                                                     @foreach ($lampiran as $file)
                                                         <a href="{{ asset('/lampiran/' . trim($file)) }}" target="_blank">
                                                             <i class="fa fa-eye"></i> Lihat
@@ -289,10 +368,10 @@
                                             <td class="text-center">
                                                 <button title="Lihat Detail" type="button" data-toggle="modal"
                                                     data-target="#detail-spph" class="btn-lihat btn btn-info btn-xs"
-                                                    data-detail='@json($d)'><i class="fas fa-list"></i></button>
+                                                    data-detail='@json($d)'><i
+                                                        class="fas fa-list"></i></button>
                                             </td>
                                         </tr>
-
                                     @endforeach
                                 @else
                                     <tr class="text-center">
@@ -324,8 +403,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="row">
-                                <form id="cetak-spph" method="GET" action="{{ route('spph.print') }}"
-                                    target="_blank">
+                                <form id="cetak-spph" method="GET" action="{{ route('spph.print') }}" target="_blank">
                                     <input type="hidden" name="id" id="spph_id">
                                     <input type="hidden" name="tipe" id="tipe_data">
                                 </form>
@@ -357,14 +435,14 @@
                                             <td><b>Produk</b></td>
                                         </tr>
                                         <!-- <tr>
-                                            <td colspan="3">
-                                                <button id="button-tambah-produk" type="button"
-                                                    class="btn btn-info mb-3">{{ __('Tambah Produk') }}</button>
-                                            </td>
-                                            {{-- <button title="Edit SPPH" type="button" class="btn btn-success btn-xs"
+                                                <td colspan="3">
+                                                    <button id="button-tambah-produk" type="button"
+                                                        class="btn btn-info mb-3">{{ __('Tambah Produk') }}</button>
+                                                </td>
+                                                {{-- <button title="Edit SPPH" type="button" class="btn btn-success btn-xs"
                                             data-toggle="modal" data-target="#add-SPPH"
                                             onclick="editSPPH({{ json_encode($data) }})"> --}}
-                                        </tr> -->
+                                            </tr> -->
                                     </table>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
@@ -408,7 +486,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                                                onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -1837,7 +1915,9 @@
 
                     if (!header) {
                         console.error('Response tidak sesuai:', res);
-                        $('#table-spph').html('<tr><td colspan="7" class="text-danger text-center">Format data salah</td></tr>');
+                        $('#table-spph').html(
+                            '<tr><td colspan="7" class="text-danger text-center">Format data salah</td></tr>'
+                            );
                         return;
                     }
 
@@ -1877,7 +1957,8 @@
                 },
 
                 error: function() {
-                    $('#table-spph').html('<tr><td colspan="7" class="text-danger text-center">Gagal load data</td></tr>');
+                    $('#table-spph').html(
+                        '<tr><td colspan="7" class="text-danger text-center">Gagal load data</td></tr>');
                 }
             });
         }
@@ -2201,20 +2282,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                                                                                                                                                                    success ') !!}');
+                                                                                                                                                                                                                                success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                                                                                                                                                                    error ') !!}');
+                                                                                                                                                                                                                                error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                                                                                                                                                                        ',
+                                                                                                                                                                                                                                    ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>

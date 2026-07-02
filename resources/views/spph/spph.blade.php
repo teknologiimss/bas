@@ -18,19 +18,20 @@
             position: relative;
             cursor: pointer;
             user-select: none;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
             transition: background-color 0.2s ease;
             padding-right: 30px;
             text-align: center;
         }
 
         #table th:hover {
-            background-color: #e9ecef;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
         }
 
         #table th.active-sort {
-            background-color: #dbeafe;
-            color: #0d6efd;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: #fff;
             font-weight: 600;
         }
 
@@ -49,24 +50,26 @@
         .sort-buttons span {
             cursor: pointer;
             color: #9ca3af;
+            color: rgba(255, 255, 255, .65);
             transition: color 0.2s ease, transform 0.1s ease;
         }
 
         .sort-buttons span:hover {
-            color: #0d6efd;
+            color: #fff;
             transform: scale(1.2);
         }
 
         .sort-buttons span.active {
-            color: #0d6efd;
+            color: #fff;
             font-weight: bold;
         }
 
         /* ================= ROOT COLOR ================= */
         :root {
-            --maroon: #dc3545;
-            --maroon-dark: #b02a37;
-            --maroon-soft: #fdecee;
+            --primary: #0B3D91;
+            --primary-dark: #082567;
+            --primary-light: #1E5BB8;
+            --primary-soft: #EAF2FF;
         }
 
         /* ================= CARD ================= */
@@ -117,16 +120,17 @@
 
         /* ================= BUTTON ================= */
         .btn-primary {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border: none;
-            border-radius: 20px;
-            box-shadow: 0 6px 16px rgba(220, 53, 69, .4);
+            color: #fff;
+            box-shadow: 0 6px 16px rgba(11, 61, 145, .35);
             transition: all .25s ease;
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 22px rgba(220, 53, 69, .55);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            box-shadow: 0 10px 22px rgba(11, 61, 145, .45);
         }
 
         .btn-success,
@@ -149,8 +153,8 @@
         }
 
         .form-control:focus {
-            box-shadow: 0 0 0 .15rem rgba(220, 53, 69, .25);
-            transform: scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 .15rem rgba(11, 61, 145, .25);
         }
 
         /* ================= MODAL ================= */
@@ -174,8 +178,8 @@
 
 
         /* =========================================
-       HEADER LAYOUT
-    ========================================= */
+                                       HEADER LAYOUT
+                                    ========================================= */
 
         .card-header {
             display: flex;
@@ -194,8 +198,8 @@
         }
 
         /* =========================================
-       BUTTON RAPIIH
-    ========================================= */
+                                       BUTTON RAPIIH
+                                    ========================================= */
 
         .btn {
             font-weight: 600;
@@ -240,8 +244,8 @@
         }
 
         /* =========================================
-       TABLE FIX
-    ========================================= */
+                                       TABLE FIX
+                                    ========================================= */
 
         .table-responsive {
             overflow-x: auto;
@@ -265,8 +269,8 @@
         }
 
         /* =========================================
-       FILTER AREA
-    ========================================= */
+                                       FILTER AREA
+                                    ========================================= */
 
         .row.mb-3 {
             align-items: end;
@@ -293,8 +297,8 @@
         }
 
         /* =========================================
-       MODAL FIX
-    ========================================= */
+                                       MODAL FIX
+                                    ========================================= */
 
         .modal-content {
             border-radius: 18px;
@@ -304,7 +308,7 @@
         }
 
         .modal-header {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: #fff;
         }
 
@@ -326,8 +330,8 @@
         }
 
         /* =========================================
-       DETAIL BUTTON
-    ========================================= */
+                                       DETAIL BUTTON
+                                    ========================================= */
 
         #button-cetak-spph,
         #button-tambah-produk,
@@ -337,8 +341,8 @@
         }
 
         /* =========================================
-       PAGINATION
-    ========================================= */
+                                       PAGINATION
+                                    ========================================= */
 
         .pagination {
             gap: 4px;
@@ -346,17 +350,17 @@
 
         .page-link {
             border-radius: 8px !important;
-            color: var(--maroon);
+            color: var(--primary);
         }
 
         .page-item.active .page-link {
-            background: var(--maroon);
-            border-color: var(--maroon);
+            background: var(--primary);
+            border-color: var(--primary);
         }
 
         /* =========================================
-       MOBILE RESPONSIVE
-    ========================================= */
+                                       MOBILE RESPONSIVE
+                                    ========================================= */
 
         @media (max-width: 768px) {
 
@@ -904,7 +908,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -2681,20 +2685,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                                                                                                                                                                                success ') !!}');
+                                                                                                                                                                                                                                                                                                                                success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                                                                                                                                                                                error ') !!}');
+                                                                                                                                                                                                                                                                                                                                error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                                                                                                                                                                                    ',
+                                                                                                                                                                                                                                                                                                                                    ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>

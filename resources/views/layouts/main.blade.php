@@ -33,88 +33,87 @@
     <style>
         .notifi-container {
             max-height: 240px;
-            /* Sesuaikan dengan tinggi yang diinginkan */
             overflow-y: auto;
         }
 
         .notifi-item {
             display: flex;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #d6dee8;
             padding: 5px 10px;
-            margin-bottom: 0px;
+            margin-bottom: 0;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .notifi-item:hover {
-            background-color: #eee;
+            background-color: #eaf2ff;
         }
 
         .notifi-item .text h4 {
-            color: #777;
+            color: #1e3a5f;
             font-size: 16px;
             margin-top: 1px;
         }
 
         .notifi-item .text p {
-            color: #aaa;
+            color: #6c7a89;
             font-size: 12px;
         }
 
-
-        /* ===== SUBMENU STYLE (RAPIH & SEJAJAR) ===== */
+        /* ===== SUBMENU STYLE ===== */
         .sidebar .nav-treeview .nav-link {
             display: flex;
             align-items: center;
-            /* sejajarkan vertikal ikon dan teks */
             gap: 8px;
-            /* jarak antar ikon dan teks */
             padding: 5px 12px 5px 32px;
-            /* padding kiri cukup agar sejajar */
             font-size: 0.82rem;
-            /* ukuran tulisan submenu */
             line-height: 1.2em;
+            transition: all 0.3s ease;
         }
 
-        /* Teks submenu: bisa turun ke bawah jika panjang */
         .sidebar .nav-treeview .nav-link p {
             margin: 0;
             white-space: normal !important;
             word-break: break-word;
             flex: 1;
-            /* isi sisa ruang agar teks rapi */
         }
 
-        /* Ukuran dan posisi ikon submenu */
         .sidebar .nav-treeview .nav-link i.nav-icon,
         .sidebar .nav-treeview .nav-link i.far,
         .sidebar .nav-treeview .nav-link i.fas {
             font-size: 0.7rem !important;
-            /* ikon kecil tapi proporsional */
             width: 18px;
-            /* lebar tetap agar sejajar */
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-top: 1px;
-            /* sedikit geser agar benar-benar tengah */
         }
 
-        /* Warna aktif */
+        /* ===== SUBMENU AKTIF ===== */
         .sidebar-dark-primary .nav-treeview>.nav-item>.nav-link.active {
-            background-color: #c40202 !important;
-            color: #fff !important;
-        }
-
-        /* Hover lembut */
-        .sidebar .nav-treeview .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.08);
-        }
-
-        /* Menu utama aktif */
-        .nav-sidebar .nav-link.active {
-            background-color: #c40202 !important;
+            background-color: #0b3d91 !important;
             color: #ffffff !important;
+            border-left: 3px solid #64b5ff;
+        }
+
+        /* Hover submenu */
+        .sidebar .nav-treeview .nav-link:hover {
+            background-color: rgba(11, 61, 145, 0.18);
+            color: #ffffff;
+        }
+
+        /* ===== MENU UTAMA AKTIF ===== */
+        .nav-sidebar .nav-link.active {
+            background: linear-gradient(90deg, #0b3d91, #1e5bb8);
+            color: #ffffff !important;
+            border-radius: 6px;
+        }
+
+        /* Hover menu utama */
+        .nav-sidebar .nav-link:hover {
+            background-color: rgba(30, 91, 184, 0.18);
+            color: #ffffff;
         }
     </style>
 
@@ -441,7 +440,7 @@
 
 
         </nav>
-        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: maroon;">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: navy;">
             <a href="/" class="brand-link text-center" style="background-color: rgb(255, 253, 253);">
                 <img src="{{ asset('img/logobas.png') }}" class="d-block w-100" height="30" alt=""
                     style="object-fit: contain;height: 50px;">
@@ -517,6 +516,8 @@
                                         'rewinding.dashboard',
                                         'lp3m.dashboard',
                                         'alat.dashboard',
+                                        'mro.daily-activity.index',
+                                        'mro.weekly-activity',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -572,6 +573,8 @@
                                         'rewinding.dashboard',
                                         'lp3m.dashboard',
                                         'alat.dashboard',
+                                        'mro.daily-activity.index',
+                                        'mro.weekly-activity',
                                     ]);
                                 @endphp
 
@@ -1057,7 +1060,23 @@
                                                                 <p>Personil MRO</p>
                                                             </a>
                                                         </li>
-                                                        
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.daily-activity.index') }}"
+                                                                class="nav-link {{ request()->routeIs('mro.daily-activity.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-calendar-check"></i>
+                                                                <p>Daily Activity</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.weekly-activity') }}"
+                                                                class="nav-link {{ request()->routeIs('mro.weekly-activity') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-chart-line"></i>
+                                                                <p>Weekly Activity</p>
+                                                            </a>
+                                                        </li>
+
                                                         {{-- Dashboard --}}
                                                         <li
                                                             class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') || Route::is('lp3m.dashboard*') || Route::is('alat.dashboard*') ? 'menu-open' : '' }}">

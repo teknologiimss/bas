@@ -129,9 +129,8 @@
     <div class="information">
         <table width="100%">
             <tr style="border: 1px solid black;">
-                <td align="left" style="width: 22%; border: 1px solid black;">
-                    <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
-                        alt="Logo" width="150" class="logo" /><br>
+                <td align="center" style="width:22%; border:1px solid #000;">
+                    <img src="{{ public_path('img/IMST.png') }}" alt="Logo" style="width:120px; height:95px;">
                 </td>
 
                 {{-- <td align="center" style="width: 85%; border-style: none;">
@@ -152,7 +151,8 @@
             </tr>
         </table>
 
-        <table style="width:100%; border-collapse:collapse; border:1px solid black; table-layout:fixed;margin-top:12px;">
+        <table
+            style="width:100%; border-collapse:collapse; border:1px solid black; table-layout:fixed;margin-top:12px;">
             <tr>
 
                 <!-- KIRI -->

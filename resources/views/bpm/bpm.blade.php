@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', __('BPM'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
@@ -11,22 +11,23 @@
 
 <style>
     /* ===============================
-   MODERN MAROON BUTTON
+       MODERN NAVY BUTTON
     ================================ */
     .btn-maroon-animated {
-        background: linear-gradient(135deg, #800020, #a00028);
+        background: linear-gradient(135deg, #0B3D91, #082567);
         border: none;
         color: #fff !important;
         font-weight: 600;
         border-radius: 8px;
         padding: 8px 16px;
-        box-shadow: 0 6px 16px rgba(128, 0, 32, 0.35);
+        box-shadow: 0 6px 16px rgba(11, 61, 145, 0.35);
         transition: all 0.3s ease;
     }
 
     .btn-maroon-animated:hover {
+        background: linear-gradient(135deg, #1E5BB8, #0B3D91);
         transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(128, 0, 32, 0.45);
+        box-shadow: 0 10px 25px rgba(11, 61, 145, 0.45);
         color: #fff !important;
     }
 
@@ -40,32 +41,33 @@
 
     /* Pulse */
     .btn-maroon-animated.pulse {
-        animation: pulseMaroon 1.8s infinite;
+        animation: pulseBlue 1.8s infinite;
     }
 
-    @keyframes pulseMaroon {
+    @keyframes pulseBlue {
         0% {
-            box-shadow: 0 0 0 0 rgba(128, 0, 32, .6);
+            box-shadow: 0 0 0 0 rgba(11, 61, 145, .6);
         }
 
         70% {
-            box-shadow: 0 0 0 12px rgba(128, 0, 32, 0);
+            box-shadow: 0 0 0 12px rgba(11, 61, 145, 0);
         }
 
         100% {
-            box-shadow: 0 0 0 0 rgba(128, 0, 32, 0);
+            box-shadow: 0 0 0 0 rgba(11, 61, 145, 0);
         }
     }
 
     /* ===============================
-   MODERN BPM TABLE
+       MODERN TABLE
     ================================ */
+
     .table-modern {
         border-radius: 14px;
         overflow: hidden;
         background: #fff;
-        box-shadow: 0 8px 25px rgba(128, 0, 32, 0.18);
-        animation: fadeUp 0.5s ease;
+        box-shadow: 0 8px 25px rgba(11, 61, 145, 0.18);
+        animation: fadeUp .5s ease;
     }
 
     @keyframes fadeUp {
@@ -81,281 +83,280 @@
     }
 
     .table-modern thead {
-        background: linear-gradient(135deg, #800020, #a00028);
+        background: linear-gradient(135deg, #0B3D91, #082567);
     }
 
     .table-modern thead th {
         color: #fff;
         border: none;
         font-size: 12px;
-        letter-spacing: 0.6px;
+        letter-spacing: .6px;
         text-transform: uppercase;
         padding: 12px;
     }
 
     .table-modern tbody tr {
-        transition: all 0.25s ease;
+        transition: all .25s ease;
     }
 
     .table-modern tbody tr:hover {
         background: linear-gradient(90deg,
-                rgba(128, 0, 32, .10),
-                rgba(128, 0, 32, .02));
+                rgba(11, 61, 145, .10),
+                rgba(11, 61, 145, .02));
         transform: translateX(4px);
     }
 
     .table-modern tbody td {
         font-size: 13px;
         padding: 10px;
-        border-color: #f3f3f3;
+        border-color: #edf2fb;
     }
 
     .table-modern tbody tr:nth-child(even) {
-        background-color: #fff6f8;
+        background-color: #f5f9ff;
     }
 
     .table-modern input[type="checkbox"] {
-        accent-color: #800020;
+        accent-color: #0B3D91;
         transform: scale(1.1);
     }
 
     /* =========================================
-   GLOBAL SPACING
-========================================= */
+       GLOBAL SPACING
+    ========================================= */
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 14px;
-    flex-wrap: wrap;
-}
-
-.card-body {
-    padding: 1.2rem;
-}
-
-/* =========================================
-   BUTTON FIX
-========================================= */
-
-.btn {
-    border-radius: 10px;
-    font-weight: 600;
-    transition: all 0.25s ease;
-    white-space: nowrap;
-}
-
-/* Button action tabel */
-.btn-xs {
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin: 2px;
-    border-radius: 8px;
-}
-
-/* Hover tombol */
-.btn-xs:hover {
-    transform: translateY(-2px);
-}
-
-/* Supaya button sejajar */
-.action-buttons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: nowrap;
-}
-
-/* Button utama */
-.btn-maroon-animated {
-    min-height: 42px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-/* Delete selected */
-#delete-selected {
-    margin-top: 14px;
-}
-
-/* =========================================
-   FILTER
-========================================= */
-
-.row.mb-3 {
-    align-items: end;
-}
-
-.form-group label {
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
-.form-control {
-    border-radius: 8px;
-    height: 40px;
-}
-
-textarea.form-control {
-    height: auto;
-}
-
-#clear-filter {
-    width: 100%;
-    height: 40px;
-    margin-top: 30px;
-}
-
-/* =========================================
-   TABLE FIX
-========================================= */
-
-.table-modern {
-    overflow: hidden;
-}
-
-.table-modern th,
-.table-modern td {
-    vertical-align: middle !important;
-    padding: 12px 10px;
-}
-
-.table-modern tbody td:last-child {
-    min-width: 140px;
-}
-
-/* Hover smooth */
-.table-modern tbody tr {
-    transition: all 0.2s ease;
-}
-
-/* =========================================
-   MODAL FIX
-========================================= */
-
-.modal-content {
-    border-radius: 14px;
-    overflow: hidden;
-    border: none;
-}
-
-.modal-header {
-    background: linear-gradient(135deg, #800020, #a00028);
-    color: #fff;
-}
-
-.modal-header .close {
-    color: #fff;
-    opacity: 1;
-}
-
-.modal-footer {
-    gap: 10px;
-}
-
-.modal-footer .btn {
-    min-width: 120px;
-}
-
-/* =========================================
-   DETAIL BUTTON AREA
-========================================= */
-
-#button-cetak-bpm,
-#button-tambah-produk {
-    margin-bottom: 12px;
-}
-
-/* =========================================
-   RESPONSIVE MOBILE
-========================================= */
-
-@media (max-width: 768px) {
-
-    /* Header */
     .card-header {
-        flex-direction: column;
-        align-items: stretch;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+
+        background: linear-gradient(135deg, #0B3D91, #082567);
+        color: #fff;
     }
 
-    .card-header .btn {
-        width: 100%;
+    .card-body {
+        padding: 1.2rem;
     }
 
-    /* Filter */
-    .row.mb-3 .col-md-4 {
-        margin-bottom: 12px;
+    /* =========================================
+       BUTTON FIX
+    ========================================= */
+
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all .25s ease;
+        white-space: nowrap;
+    }
+
+    /* Button action tabel */
+
+    .btn-xs {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 2px;
+        border-radius: 8px;
+    }
+
+    .btn-xs:hover {
+        transform: translateY(-2px);
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: nowrap;
+    }
+
+    .btn-maroon-animated {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    #delete-selected {
+        margin-top: 14px;
+    }
+
+    /* =========================================
+       FILTER
+    ========================================= */
+
+    .row.mb-3 {
+        align-items: end;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #0B3D91;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        height: 40px;
+        border: 1px solid #d8e6ff;
+    }
+
+    .form-control:focus {
+        border-color: #0B3D91;
+        box-shadow: 0 0 0 .15rem rgba(11, 61, 145, .2);
+    }
+
+    textarea.form-control {
+        height: auto;
     }
 
     #clear-filter {
-        margin-top: 0;
+        width: 100%;
+        height: 40px;
+        margin-top: 30px;
     }
 
-    /* Table */
+    /* =========================================
+       TABLE FIX
+    ========================================= */
+
     .table-modern {
-        font-size: 12px;
+        overflow: hidden;
     }
 
     .table-modern th,
     .table-modern td {
-        padding: 10px 8px;
+        vertical-align: middle !important;
+        padding: 12px 10px;
     }
 
-    /* Tombol aksi */
-    .action-buttons {
-        flex-wrap: wrap;
-        gap: 4px;
+    .table-modern tbody td:last-child {
+        min-width: 140px;
     }
 
-    .btn-xs {
-        width: 34px;
-        height: 34px;
+    .table-modern tbody tr {
+        transition: all .2s ease;
     }
 
-    /* Modal */
-    .modal-dialog {
-        margin: 10px;
+    /* =========================================
+       MODAL
+    ========================================= */
+
+    .modal-content {
+        border-radius: 14px;
+        overflow: hidden;
+        border: none;
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, #0B3D91, #082567);
+        color: #fff;
+    }
+
+    .modal-header .close {
+        color: #fff;
+        opacity: 1;
     }
 
     .modal-footer {
-        flex-direction: column;
+        gap: 10px;
     }
 
     .modal-footer .btn {
-        width: 100%;
+        min-width: 120px;
     }
 
-    /* Form modal */
-    .form-group.row {
-        flex-direction: column;
-    }
+    /* =========================================
+       DETAIL BUTTON
+    ========================================= */
 
-    .form-group.row label {
-        max-width: 100%;
-        margin-bottom: 6px;
-    }
-
-    .form-group.row .col-sm-4,
-    .form-group.row .col-sm-8 {
-        max-width: 100%;
-        flex: 100%;
-    }
-
-    /* Button detail */
     #button-cetak-bpm,
-    #button-tambah-produk,
-    #button-update-bpm {
-        width: 100%;
+    #button-tambah-produk {
+        margin-bottom: 12px;
     }
-}
+
+    /* =========================================
+       RESPONSIVE MOBILE
+    ========================================= */
+
+    @media (max-width:768px) {
+
+        .card-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .card-header .btn {
+            width: 100%;
+        }
+
+        .row.mb-3 .col-md-4 {
+            margin-bottom: 12px;
+        }
+
+        #clear-filter {
+            margin-top: 0;
+        }
+
+        .table-modern {
+            font-size: 12px;
+        }
+
+        .table-modern th,
+        .table-modern td {
+            padding: 10px 8px;
+        }
+
+        .action-buttons {
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .btn-xs {
+            width: 34px;
+            height: 34px;
+        }
+
+        .modal-dialog {
+            margin: 10px;
+        }
+
+        .modal-footer {
+            flex-direction: column;
+        }
+
+        .modal-footer .btn {
+            width: 100%;
+        }
+
+        .form-group.row {
+            flex-direction: column;
+        }
+
+        .form-group.row label {
+            max-width: 100%;
+            margin-bottom: 6px;
+        }
+
+        .form-group.row .col-sm-4,
+        .form-group.row .col-sm-8 {
+            max-width: 100%;
+            flex: 100%;
+        }
+
+        #button-cetak-bpm,
+        #button-tambah-produk,
+        #button-update-bpm {
+            width: 100%;
+        }
+    }
 </style>
 
 @section('content')
@@ -467,7 +468,8 @@ textarea.form-control {
                                             </button>
 
                                             {{-- DETAIL --}}
-                                            <button class="btn btn-info btn-xs btn-detail" data-detail="{{ json_encode($data) }}">
+                                            <button class="btn btn-info btn-xs btn-detail"
+                                                data-detail="{{ json_encode($data) }}">
                                                 <i class="fas fa-list"></i>
                                             </button>
 
@@ -484,8 +486,8 @@ textarea.form-control {
 
                                 @empty
                                     <!-- <tr class="text-center">
-                                        <td colspan="6">No data.</td>
-                                    </tr> -->
+                                            <td colspan="6">No data.</td>
+                                        </tr> -->
                                 @endforelse
                             </tbody>
 
@@ -528,7 +530,7 @@ textarea.form-control {
                                 </label>
                                 <div class="col-sm-8">
                                     <input type="date" class="form-control" id="tgl_bpm" name="tgl_bpm">
-                                        <!-- min="{{ date('Y-m-d', strtotime('-7 days')) }}"> -->
+                                    <!-- min="{{ date('Y-m-d', strtotime('-7 days')) }}"> -->
                                 </div>
                             </div>
                             <div class="form-group
@@ -548,7 +550,8 @@ textarea.form-control {
                             <div class="form-group row">
                                 <label for="revisi" class="col-sm-4 col-form-label">{{ __('Revisi') }}</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="revisi" name="revisi" autocomplete="off">
+                                    <input type="text" class="form-control" id="revisi" name="revisi"
+                                        autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -865,15 +868,18 @@ textarea.form-control {
     {{-- End Menampilkan form otomatis Dasar Proyek --}}
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#table').DataTable({
                 paging: false,
                 info: false,
                 searching: false,
-                order: [[3, 'desc']], // sort kolom tanggal
-                columnDefs: [
-                    { orderable: false, targets: [0,5] }
-                ],
+                order: [
+                    [3, 'desc']
+                ], // sort kolom tanggal
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 5]
+                }],
                 language: {
                     emptyTable: "No data."
                 }
@@ -1891,7 +1897,7 @@ textarea.form-control {
         //     lihatBPM(data);
         // });
 
-        $('#table').on('click', '.btn-detail', function () {
+        $('#table').on('click', '.btn-detail', function() {
             var data = $(this).data('detail');
             console.log(data);
             lihatBPM(data);

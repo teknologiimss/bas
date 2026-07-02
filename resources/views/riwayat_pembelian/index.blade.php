@@ -5,96 +5,205 @@
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @endsection
 <style>
-    /* ================= ROOT MAROON ================= */
+    /* ================= ROOT NAVY ================= */
     :root {
-        --maroon: #dc3545;
-        --maroon-dark: #b02a37;
-        --maroon-soft: #fdecee;
+        --primary: #0B3D91;
+        --primary-dark: #082567;
+        --primary-light: #1E5BB8;
+        --primary-soft: #EAF2FF;
+        --border: #D6E4FF;
     }
 
     /* ================= GLOBAL ================= */
     body {
-        background-color: #f5f6f8;
+        background: #f4f7fc;
+        color: #2d3748;
     }
 
     /* ================= CARD ================= */
+
     .card {
-        border-radius: 14px;
         border: none;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 10px 28px rgba(11, 61, 145, .15);
         animation: fadeUp .5s ease both;
     }
 
     .card-header {
-        background-color: #fff;
-        border-bottom: 2px solid var(--maroon);
+        background: linear-gradient(135deg, #0B3D91, #082567);
+        color: #fff;
+        border-bottom: none;
+        padding: 15px 20px;
+    }
+
+    .card-header h3,
+    .card-header h4,
+    .card-header h5,
+    .card-header label {
+        color: #fff;
     }
 
     /* ================= TABLE ================= */
+
     .table {
         font-size: 13px;
+        margin-bottom: 0;
     }
 
     .table thead th {
-        background-color: var(--maroon);
+        background: linear-gradient(135deg, #0B3D91, #082567);
         color: #fff;
-        text-transform: uppercase;
-        letter-spacing: .4px;
         border: none;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        font-size: 12px;
     }
 
     .table tbody tr {
-        transition: all .2s ease;
+        transition: .25s;
     }
 
     .table tbody tr:hover {
-        background-color: var(--maroon-soft);
-        transform: scale(1.01);
+        background: #EAF2FF;
+        transform: scale(1.003);
+    }
+
+    .table-bordered td,
+    .table-bordered th {
+        border-color: #d9e6f7;
     }
 
     /* ================= BUTTON ================= */
+
+    .btn {
+        border-radius: 8px;
+        transition: .25s;
+    }
+
     .btn-primary {
-        background-color: var(--maroon);
-        border-color: var(--maroon);
-        border-radius: 20px;
-        transition: all .25s ease;
+        background: linear-gradient(135deg, #0B3D91, #082567);
+        border: none;
     }
 
     .btn-primary:hover {
-        background-color: var(--maroon-dark);
-        border-color: var(--maroon-dark);
+        background: linear-gradient(135deg, #1E5BB8, #0B3D91);
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(139, 29, 44, .4);
+        box-shadow: 0 8px 18px rgba(11, 61, 145, .35);
+    }
+
+    .btn-info {
+        background: #1E5BB8;
+        border: none;
+    }
+
+    .btn-info:hover {
+        background: #0B3D91;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        border: none;
     }
 
     /* ================= INPUT ================= */
+
     .form-control {
         border-radius: 10px;
-        transition: box-shadow .2s ease, transform .15s ease;
+        border: 1px solid #d7e4f5;
+        transition: .2s;
     }
 
     .form-control:focus {
-        box-shadow: 0 0 0 .2rem rgba(139, 29, 44, .25);
-        transform: scale(1.02);
+        border-color: #0B3D91;
+        box-shadow: 0 0 0 .2rem rgba(11, 61, 145, .18);
+    }
+
+    /* ================= LABEL ================= */
+
+    label {
+        font-weight: 600;
+        color: #163B70;
     }
 
     /* ================= MODAL ================= */
+
     .modal-content {
+        border: none;
         border-radius: 14px;
-        animation: zoomIn .3s ease;
+        overflow: hidden;
+        animation: zoomIn .3s;
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, #0B3D91, #082567);
+        color: #fff;
+        border: none;
+    }
+
+    .modal-header .close {
+        color: #fff;
+        opacity: 1;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #e8eef9;
     }
 
     /* ================= PAGINATION ================= */
+
     .page-item.active .page-link {
-        background-color: var(--maroon);
-        border-color: var(--maroon);
+        background: #0B3D91;
+        border-color: #0B3D91;
+    }
+
+    .page-link {
+        color: #0B3D91;
+    }
+
+    .page-link:hover {
+        background: #EAF2FF;
+        color: #082567;
+    }
+
+    /* ================= FILTER ================= */
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    #clear-filter {
+        margin-top: 31px;
+    }
+
+    /* ================= TABLE RESPONSIVE ================= */
+
+    .table-responsive {
+        border-radius: 10px;
+        overflow-x: auto;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: #0B3D91;
+        border-radius: 10px;
+    }
+
+    /* ================= BADGE ================= */
+
+    .badge-primary {
+        background: #0B3D91;
     }
 
     /* ================= ANIMATION ================= */
+
     @keyframes fadeUp {
         from {
             opacity: 0;
-            transform: translateY(14px);
+            transform: translateY(15px);
         }
 
         to {
@@ -106,7 +215,7 @@
     @keyframes zoomIn {
         from {
             opacity: 0;
-            transform: scale(.92);
+            transform: scale(.95);
         }
 
         to {
@@ -115,11 +224,10 @@
         }
     }
 
+    /* ================= MOBILE ================= */
 
-    /* ================= RESPONSIVE MOBILE ================= */
-    @media (max-width: 768px) {
+    @media(max-width:768px) {
 
-        /* CONTENT */
         .content-wrapper,
         .content,
         .container-fluid {
@@ -127,316 +235,98 @@
             padding-right: 6px !important;
         }
 
-        /* CARD */
         .card {
             border-radius: 10px;
-            margin-bottom: 12px;
         }
 
         .card-body {
             padding: 10px;
         }
 
-        .card-header {
-            padding: 10px;
-        }
-
-        /* TABLE */
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 10px;
-        }
-
         .table {
-            min-width: 1000px;
+            min-width: 950px;
             font-size: 11px;
         }
 
-        .table thead th,
-        .table tbody td {
-            padding: 7px 6px !important;
-            vertical-align: middle !important;
+        .table th,
+        .table td {
             white-space: nowrap;
-        }
-
-        /* FILTER */
-        .row.mb-3 .col-md-4 {
-            margin-bottom: 10px;
-        }
-
-        .form-group label {
-            font-size: 12px;
-            margin-bottom: 4px;
+            padding: 7px !important;
         }
 
         .form-control {
-            font-size: 12px;
             height: 36px;
-            border-radius: 8px;
+            font-size: 12px;
         }
 
-        textarea.form-control {
-            height: auto;
-        }
-
-        /* BUTTON GLOBAL */
         .btn {
-            border-radius: 8px !important;
             font-size: 11px !important;
-            font-weight: 600;
             padding: 6px 10px !important;
-            min-height: 34px;
         }
 
-        /* BUTTON ICON */
-        .btn i {
-            font-size: 11px;
-        }
-
-        /* BUTTON XS */
         .btn-xs {
-            width: 32px !important;
-            height: 32px !important;
+            width: 32px;
+            height: 32px;
             padding: 0 !important;
-
-            display: inline-flex !important;
-            align-items: center;
+            display: flex;
             justify-content: center;
-
-            margin: 2px;
-            border-radius: 8px !important;
+            align-items: center;
         }
 
-        .btn-xs i {
-            font-size: 12px !important;
-        }
-
-        /* BUTTON MODAL */
-        .modal-footer .btn {
-            flex: 1;
-            height: 38px;
-            font-size: 12px !important;
-        }
-
-        /* MODAL */
         .modal-dialog {
             margin: 10px;
             max-width: calc(100% - 20px);
         }
 
-        .modal-content {
-            border-radius: 12px;
-        }
-
-        .modal-header {
-            padding: 10px 14px;
-        }
-
         .modal-body {
-            padding: 12px;
             max-height: 75vh;
             overflow-y: auto;
         }
 
-        .modal-footer {
-            padding: 10px;
-        }
-
-        .modal-title {
-            font-size: 16px;
-        }
-
-        /* FORM DI MODAL */
-        .form-group.row {
-            display: block;
-            margin-bottom: 12px;
-        }
-
-        .form-group.row label {
-            max-width: 100%;
-            margin-bottom: 5px;
-            font-size: 12px;
-        }
-
-        .form-group.row .col-sm-4,
-        .form-group.row .col-sm-8 {
-            max-width: 100%;
-            flex: 100%;
-            padding: 0;
-        }
-
-        /* FIX INPUT DATE MOBILE */
-        input[type="date"] {
-            min-height: 38px !important;
-            font-size: 12px !important;
-            position: relative;
-            z-index: 10;
-            background: #fff;
-        }
-
-        /* FIX DATE CLICK DI MODAL */
-        .modal {
-            z-index: 1055 !important;
-        }
-
-        .modal-dialog {
-            pointer-events: auto !important;
-        }
-
-        .modal-content {
-            overflow: visible !important;
-        }
-
-        .modal-body {
-            overflow-x: hidden;
-        }
-
-        /* DETAIL TABLE */
-        #table-pr td,
-        #table-pr th {
-            white-space: nowrap;
-            font-size: 11px;
-        }
-
-        /* BUTTON FULL WIDTH MOBILE */
-        #button-update-pr,
-        #button-tambah-detail,
-        #clear-filter {
-            width: 100%;
-        }
-
-        /* PAGINATION */
         .pagination {
             justify-content: center;
             flex-wrap: wrap;
         }
-
-        .page-link {
-            padding: 6px 10px;
-            font-size: 11px;
-        }
     }
 
-    /* ================= EXTRA SMALL DEVICE ================= */
-    @media (max-width: 576px) {
+    @media(max-width:576px) {
 
         .table {
+            min-width: 850px;
             font-size: 10px;
         }
 
         .btn {
             font-size: 10px !important;
-            padding: 5px 8px !important;
-        }
-
-        .btn-xs {
-            width: 28px !important;
-            height: 28px !important;
-        }
-
-        .btn-xs i {
-            font-size: 10px !important;
-        }
-
-        .modal-title {
-            font-size: 14px;
         }
 
         .form-control {
             font-size: 11px;
         }
 
-        .table thead th,
-        .table tbody td {
-            padding: 5px !important;
+        .modal-title {
+            font-size: 15px;
         }
     }
-
-    /* ================= FIX TABLE OVERFLOW MOBILE ================= */
 
     html,
     body {
         overflow-x: hidden;
     }
 
-    /* CARD BODY */
     .card-body {
         overflow-x: auto;
-        width: 100%;
     }
 
-    /* TABLE RESPONSIVE */
-    .table-responsive {
-        width: 100%;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
-        display: block;
-    }
-
-    /* TABLE */
     .table {
         width: max-content !important;
         min-width: 100% !important;
-        margin-bottom: 0;
     }
 
-    /* BIAR KOLOM TIDAK MELEBAR */
     .table th,
     .table td {
-        white-space: nowrap;
         vertical-align: middle !important;
-    }
-
-    /* MOBILE */
-    @media (max-width: 768px) {
-
-        .container-fluid {
-            padding-left: 5px !important;
-            padding-right: 5px !important;
-        }
-
-        .content-wrapper {
-            overflow-x: hidden;
-        }
-
-        .card {
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .card-body {
-            padding: 8px !important;
-        }
-
-        .table-responsive {
-            border-radius: 10px;
-            overflow-x: auto !important;
-        }
-
-        .table {
-            min-width: 900px !important;
-            font-size: 11px !important;
-        }
-
-        .table th,
-        .table td {
-            padding: 6px !important;
-        }
-    }
-
-    /* EXTRA SMALL */
-    @media (max-width: 576px) {
-
-        .table {
-            min-width: 850px !important;
-            font-size: 10px !important;
-        }
-
-        .table th,
-        .table td {
-            padding: 5px !important;
-        }
+        white-space: nowrap;
     }
 </style>
 
@@ -535,28 +425,28 @@
                             @endforelse
                         </tbody>
                         <!-- <tbody>
-                                    @forelse ($items as $key => $d)
-                                        @php
-                                            $data = $d->toArray();
-                                            $detailPr = $data['detail_pr'][0] ?? null;
-                                        @endphp
-                                        <tr>
-                                            <td class="text-center">{{ $items->firstItem() + $key }}</td>
-                                            <td class="text-center">
-                                                {{ $d->kode_material }}
-                                            </td>
-                                            <td class="text-center">
-                                                {{ $d->uraian }}
-                                            </td>
-                                            <td class="text-center">{{ $d->spek }}</td>
-                                            {{-- <td>{{ $d->kode_material }}</td>
+                                        @forelse ($items as $key => $d)
+                                            @php
+                                                $data = $d->toArray();
+                                                $detailPr = $data['detail_pr'][0] ?? null;
+                                            @endphp
+                                            <tr>
+                                                <td class="text-center">{{ $items->firstItem() + $key }}</td>
+                                                <td class="text-center">
+                                                    {{ $d->kode_material }}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{ $d->uraian }}
+                                                </td>
+                                                <td class="text-center">{{ $d->spek }}</td>
+                                                {{-- <td>{{ $d->kode_material }}</td>
                                     <td>{{ $d->uraian }}</td>
                                     <td>{{ $d->spek }}</td>
                                     <td>{{ $d->qty }}</td>
                                     <td>{{ $d->satuan }}</td>
                                     <td>{{ $d->nama_proyek }}</td> --}}
-                                            <td class="text-center">
-                                                @if (Auth::user()->role == 0 || Auth::user()->role == 8)
+                                                <td class="text-center">
+                                                    @if (Auth::user()->role == 0 || Auth::user()->role == 8)
     @if (!$d->diterima)
     {{-- <button title="Accept Barang" type="button" class="btn btn-success btn-xs"
                                                     data-toggle="modal" data-target="#accept-barang"
@@ -564,26 +454,26 @@
                                                         class="fas fa-check"></i></button> --}}
 @else
     <button title="Edit Barang" type="button" class="btn btn-primary btn-xs"
-                                                            data-toggle="modal" data-target="#edit-barang"
-                                                            onclick="editBarang({{ json_encode($data) }})"><i
-                                                                class="fas fa-edit"></i></button>
+                                                                data-toggle="modal" data-target="#edit-barang"
+                                                                onclick="editBarang({{ json_encode($data) }})"><i
+                                                                    class="fas fa-edit"></i></button>
     @endif
     @endif
-                                                {{-- <button title="Edit Barang" type="button" class="btn btn-primary btn-xs"
+                                                    {{-- <button title="Edit Barang" type="button" class="btn btn-primary btn-xs"
                                             data-toggle="modal" data-target="#edit-barang"
                                             onclick="editBarang({{ json_encode($data) }})"><i
                                                 class="fas fa-list"></i></button> --}}
-                                                <button title="Lihat Detail" type="button" data-toggle="modal"
-                                                    data-target="#detail-pr" class="btn-lihat btn btn-info btn-xs"
-                                                    data-detail="{{ json_encode($data) }}"><i class="fas fa-list"></i></button>
-                                            </td>
-                                        </tr>
+                                                    <button title="Lihat Detail" type="button" data-toggle="modal"
+                                                        data-target="#detail-pr" class="btn-lihat btn btn-info btn-xs"
+                                                        data-detail="{{ json_encode($data) }}"><i class="fas fa-list"></i></button>
+                                                </td>
+                                            </tr>
                             @empty
-                                        <tr class="text-center">
-                                            <td colspan="7">{{ __('No data.') }}</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody> -->
+                                            <tr class="text-center">
+                                                <td colspan="7">{{ __('No data.') }}</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody> -->
                     </table>
                 </div>
             </div>
@@ -1117,20 +1007,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                success ') !!}');
+                                            success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                error ') !!}');
+                                            error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                    ',
+                                                ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>

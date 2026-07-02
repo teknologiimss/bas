@@ -5,7 +5,7 @@
     <style>
         /* Important part */
         .modal-dialog {
-            overflow-y: initial !important
+            overflow-y: initial !important;
         }
 
         .modal-body {
@@ -13,28 +13,40 @@
             overflow-y: auto;
         }
 
-        /* 🌈 Gaya header File Explorer */
+        /* ================= ROOT COLOR ================= */
+
+        :root {
+            --primary: #0B3D91;
+            --primary-dark: #082567;
+            --primary-light: #1E5BB8;
+            --primary-soft: #EAF2FF;
+        }
+
+        /* ================= HEADER TABLE ================= */
+
         #table th {
             position: relative;
             cursor: pointer;
             user-select: none;
-            background-color: #f8f9fa;
-            transition: background-color 0.2s ease;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            transition: all .25s ease;
             padding-right: 30px;
             text-align: center;
         }
 
         #table th:hover {
-            background-color: #e9ecef;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
         }
 
         #table th.active-sort {
-            background-color: #dbeafe;
-            color: #0d6efd;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: #fff;
             font-weight: 600;
         }
 
-        /* 🔼🔽 Tombol panah permanen */
+        /* ================= SORT ================= */
+
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -48,134 +60,37 @@
 
         .sort-buttons span {
             cursor: pointer;
-            color: #9ca3af;
-            transition: color 0.2s ease, transform 0.1s ease;
+            color: rgba(255, 255, 255, .7);
+            transition: all .2s ease;
         }
 
-        .sort-buttons span:hover {
-            color: #0d6efd;
-            transform: scale(1.2);
-        }
-
+        .sort-buttons span:hover,
         .sort-buttons span.active {
-            color: #0d6efd;
-            font-weight: bold;
-        }
-
-        /* ================= ROOT COLOR ================= */
-        :root {
-            --maroon: #dc3545;
-            --maroon-dark: #b02a37;
-            --maroon-soft: #fdecee;
+            color: #fff;
+            transform: scale(1.15);
         }
 
         /* ================= CARD ================= */
+
         .card {
             border-radius: 14px;
-            box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
-            transition: transform .25s ease, box-shadow .25s ease;
+            border: none;
+            box-shadow: 0 10px 28px rgba(11, 61, 145, .15);
+            transition: .25s;
         }
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 36px rgba(0, 0, 0, .12);
+            box-shadow: 0 16px 36px rgba(11, 61, 145, .25);
         }
 
         /* ================= HEADER ================= */
+
         .card-header {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
             border-radius: 14px 14px 0 0;
-        }
 
-        .card-header .btn {
-            border-radius: 20px;
-            font-weight: 600;
-        }
-
-        /* ================= TABLE ================= */
-        .table {
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        thead th {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
-            color: white;
-            text-align: center;
-            letter-spacing: .6px;
-        }
-
-        tbody tr {
-            transition: all .2s ease;
-        }
-
-        tbody tr:hover {
-            background-color: var(--maroon-soft);
-            transform: scale(1.005);
-        }
-
-        /* ================= BUTTON ================= */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 6px 16px rgba(220, 53, 69, .4);
-            transition: all .25s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 22px rgba(220, 53, 69, .55);
-        }
-
-        .btn-success,
-        .btn-info,
-        .btn-danger {
-            border-radius: 16px;
-            transition: transform .15s ease;
-        }
-
-        .btn-success:hover,
-        .btn-info:hover,
-        .btn-danger:hover {
-            transform: scale(1.08);
-        }
-
-        /* ================= FILTER ================= */
-        .form-control {
-            border-radius: 10px;
-            transition: box-shadow .2s ease, transform .15s ease;
-        }
-
-        .form-control:focus {
-            box-shadow: 0 0 0 .15rem rgba(220, 53, 69, .25);
-            transform: scale(1.02);
-        }
-
-        /* ================= MODAL ================= */
-        .modal-content {
-            border-radius: 16px;
-            animation: fadeUp .35s ease;
-        }
-
-        /* ================= ANIMATION ================= */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* =========================
-       BUTTON AREA HEADER
-    ========================= */
-        .card-header {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
@@ -186,6 +101,7 @@
         .card-header .btn {
             min-width: 170px;
             height: 42px;
+            border-radius: 20px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
@@ -194,45 +110,97 @@
             white-space: nowrap;
         }
 
-        /* =========================
-       FILTER BUTTON
-    ========================= */
-        #clear-filter {
-            width: 100%;
-            height: 42px;
-            margin-top: 31px !important;
+        /* ================= TABLE ================= */
+
+        .table {
             border-radius: 12px;
-            font-weight: 600;
+            overflow: hidden;
         }
 
-        /* =========================
-       BUTTON AKSI TABLE
-    ========================= */
-        td .btn-xs {
-            width: 36px;
-            height: 36px;
-            padding: 0;
-            margin: 2px;
+        thead th {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            text-align: center;
+            letter-spacing: .6px;
+        }
+
+        tbody tr {
+            transition: .2s;
+        }
+
+        tbody tr:hover {
+            background: var(--primary-soft);
+            transform: scale(1.005);
+        }
+
+        /* ================= BUTTON ================= */
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 6px 16px rgba(11, 61, 145, .35);
+            transition: .25s;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(11, 61, 145, .45);
+        }
+
+        .btn-success,
+        .btn-info,
+        .btn-danger {
+            border-radius: 16px;
+            transition: .2s;
+        }
+
+        .btn-success:hover,
+        .btn-info:hover,
+        .btn-danger:hover {
+            transform: scale(1.08);
+        }
+
+        /* ================= FORM ================= */
+
+        .form-control {
             border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            transition: .2s;
         }
 
-        /* Supaya tombol edit/detail/delete sejajar */
-        td.text-center {
-            vertical-align: middle !important;
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 .15rem rgba(11, 61, 145, .25);
+            transform: scale(1.02);
         }
 
-        td.text-center .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        /* ================= MODAL ================= */
+
+        .modal-content {
+            border-radius: 18px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 14px 35px rgba(11, 61, 145, .20);
+            animation: fadeUp .35s ease;
         }
 
-        /* =========================
-       BUTTON MODAL FOOTER
-    ========================= */
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+
+        .modal-header .close {
+            color: #fff;
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 1.2rem;
+        }
+
         .modal-footer {
             gap: 10px;
             padding: 15px 20px;
@@ -245,12 +213,35 @@
             font-weight: 600;
         }
 
-        /* =========================
-       BUTTON CETAK & TAMBAH
-    ========================= */
+        /* ================= BUTTON ================= */
+
+        #clear-filter {
+            width: 100%;
+            height: 42px;
+            margin-top: 31px !important;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        td .btn-xs {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            margin: 2px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        td .btn-xs:hover {
+            transform: translateY(-2px);
+        }
+
         #button-cetak-spph,
         #button-tambah-produk,
-        #btn-save-then-add {
+        #btn-save-then-add,
+        #delete-selected {
             min-width: 170px;
             height: 42px;
             border-radius: 12px;
@@ -258,44 +249,31 @@
             margin-bottom: 10px;
         }
 
-        /* =========================
-       TOMBOL TAMBAH VENDOR/LAMPIRAN
-    ========================= */
+        /* ================= TAMBAH ================= */
+
         #tambah,
         #tambah-lampiran {
             display: inline-block;
             margin-top: 8px;
             margin-bottom: 8px;
             padding: 10px 16px;
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: #fff;
             border-radius: 10px;
             font-weight: 600;
             text-decoration: none;
-            transition: all .2s ease;
+            transition: .2s;
         }
 
         #tambah:hover,
         #tambah-lampiran:hover {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
             transform: translateY(-2px);
-            opacity: .92;
             color: #fff;
         }
 
-        /* =========================
-       DELETE SELECTED BUTTON
-    ========================= */
-        #delete-selected {
-            margin-top: 12px;
-            min-width: 200px;
-            height: 42px;
-            border-radius: 12px;
-            font-weight: 600;
-        }
+        /* ================= NAV TAB ================= */
 
-        /* =========================
-       NAV TABS
-    ========================= */
         .nav-tabs {
             gap: 8px;
             border-bottom: none;
@@ -306,19 +284,32 @@
             font-weight: 600;
             padding: 10px 18px;
             color: #495057;
-            transition: all .2s ease;
+            transition: .2s;
         }
 
         .nav-tabs .nav-link.active {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
-            color: white !important;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff !important;
             border: none;
         }
 
-        /* =========================
-       RESPONSIVE MOBILE
-    ========================= */
-        @media (max-width: 768px) {
+        /* ================= ANIMATION ================= */
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width:768px) {
 
             .card-header {
                 flex-direction: column;
@@ -816,7 +807,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                                            onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -2578,20 +2569,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                                                                                                                                                                            success ') !!}');
+                                                                                                                                                                                                        success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                                                                                                                                                                            error ') !!}');
+                                                                                                                                                                                                        error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                                                                                                                                                                                ',
+                                                                                                                                                                                                            ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>

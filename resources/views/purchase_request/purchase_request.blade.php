@@ -67,46 +67,48 @@
 
 <style>
     /* ===============================
-   THEME COLOR
+       THEME COLOR
     ================================= */
     :root {
-        --maroon: #800020;
-        --maroon-dark: #5e0018;
-        --maroon-soft: #f7e9ed;
+        --navy: #0B3D91;
+        --navy-dark: #082567;
+        --navy-light: #1E5BB8;
+        --navy-soft: #EAF2FF;
         --gray-bg: #f8f9fa;
     }
 
     /* ===============================
-   CARD
+       CARD
     ================================= */
     .card {
         border-radius: 12px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 6px 18px rgba(11, 61, 145, 0.15);
         border: none;
     }
 
     .card-header {
-        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        background: linear-gradient(135deg, var(--navy), var(--navy-dark));
         color: #fff;
         border-radius: 12px 12px 0 0;
     }
 
     /* ===============================
-   BUTTON
+       BUTTON
     ================================= */
     .btn {
         border-radius: 8px;
         font-weight: 500;
+        transition: .25s;
     }
 
     .btn-primary {
-        background-color: var(--maroon);
-        border-color: var(--maroon);
+        background-color: var(--navy);
+        border-color: var(--navy);
     }
 
     .btn-primary:hover {
-        background-color: var(--maroon-dark);
-        border-color: var(--maroon-dark);
+        background-color: var(--navy-dark);
+        border-color: var(--navy-dark);
     }
 
     .btn-danger {
@@ -119,17 +121,17 @@
     }
 
     /* ===============================
-   TABLE
+       TABLE
     ================================= */
+
     #table {
         border-radius: 10px;
         overflow: hidden;
-        background-color: #fff;
+        background: #fff;
     }
 
-    /* HEADER */
     #table thead th {
-        background-color: var(--maroon);
+        background: linear-gradient(135deg, var(--navy), var(--navy-dark));
         color: #fff;
         text-align: center;
         vertical-align: middle;
@@ -138,44 +140,43 @@
         position: relative;
     }
 
-    /* SORT ACTIVE */
     #table th.active-sort {
-        background-color: var(--maroon-dark);
+        background: var(--navy-dark);
     }
 
-    /* BODY */
     #table tbody tr {
-        transition: background-color 0.2s ease, transform 0.15s ease;
+        transition: .25s;
     }
 
     #table tbody tr:hover {
-        background-color: var(--maroon-soft);
+        background: var(--navy-soft);
         transform: scale(1.003);
     }
 
     #table td {
         vertical-align: middle;
-        border-color: #eee;
+        border-color: #e4e8ef;
     }
 
-    /* STRIPED */
     .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #fcfcfc;
+        background: #fbfcff;
     }
 
     /* ===============================
-   CHECKBOX
+       CHECKBOX
     ================================= */
+
     input[type="checkbox"] {
         transform: scale(1.1);
-        accent-color: var(--maroon);
+        accent-color: var(--navy);
     }
 
     /* ===============================
-   SORT ICON
+       SORT ICON
     ================================= */
+
     .sort-buttons span {
-        color: #f3c6d0;
+        color: #a7c4ff;
     }
 
     .sort-buttons span.active,
@@ -184,69 +185,68 @@
     }
 
     /* ===============================
-   FILTER FORM
+       FILTER
     ================================= */
+
     .form-control {
         border-radius: 8px;
+        border: 1px solid #d8e4f7;
+    }
+
+    .form-control:focus {
+        border-color: var(--navy);
+        box-shadow: 0 0 0 .15rem rgba(11, 61, 145, .18);
     }
 
     label {
         font-weight: 600;
-        color: #555;
+        color: #3d4c63;
     }
 
     /* ===============================
-   MODAL
+       MODAL
     ================================= */
+
     .modal-content {
         border-radius: 12px;
     }
 
     .modal-header {
-        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        background: linear-gradient(135deg, var(--navy), var(--navy-dark));
         color: #fff;
         border-radius: 12px 12px 0 0;
     }
 
-
-
     /* ===============================
-   BUTTON MAROON ANIMATED
+       BUTTON NAVY
     ================================= */
+
     .btn-maroon-animated {
-        background: linear-gradient(135deg, #800020, #5e0018);
+        background: linear-gradient(135deg, var(--navy), var(--navy-dark));
         color: #fff;
         border: none;
         border-radius: 10px;
         padding: 10px 18px;
         font-weight: 600;
-        letter-spacing: 0.3px;
-        box-shadow: 0 6px 14px rgba(128, 0, 32, 0.35);
-        transition: all 0.25s ease;
+        letter-spacing: .3px;
+        box-shadow: 0 6px 14px rgba(11, 61, 145, .35);
+        transition: all .25s ease;
         position: relative;
         overflow: hidden;
     }
 
-    /* ICON ANIMATION */
-    .btn-maroon-animated i {
-        animation: pulseIcon 1.6s infinite;
-    }
-
-    /* HOVER */
     .btn-maroon-animated:hover {
-        background: linear-gradient(135deg, #8f0024, #6b001c);
+        background: linear-gradient(135deg, var(--navy-light), var(--navy));
         transform: translateY(-3px);
-        box-shadow: 0 10px 22px rgba(128, 0, 32, 0.45);
+        box-shadow: 0 10px 22px rgba(11, 61, 145, .45);
         color: #fff;
     }
 
-    /* ACTIVE / CLICK */
     .btn-maroon-animated:active {
-        transform: scale(0.96);
-        box-shadow: 0 4px 10px rgba(128, 0, 32, 0.4);
+        transform: scale(.96);
+        box-shadow: 0 4px 10px rgba(11, 61, 145, .35);
     }
 
-    /* SOFT SHINE EFFECT */
     .btn-maroon-animated::after {
         content: "";
         position: absolute;
@@ -256,18 +256,27 @@
         height: 100%;
         background: linear-gradient(120deg,
                 transparent,
-                rgba(255, 255, 255, 0.25),
+                rgba(255, 255, 255, .25),
                 transparent);
-        transition: 0.6s;
+        transition: .6s;
     }
 
     .btn-maroon-animated:hover::after {
         left: 120%;
     }
 
-    /* ===============================
-   KEYFRAMES
-    ================================= */
+    .btn-maroon-animated,
+    .btn-maroon-animated:hover,
+    .btn-maroon-animated:focus,
+    .btn-maroon-animated:active {
+        color: #fff !important;
+    }
+
+    .btn-maroon-animated i {
+        color: #fff !important;
+        animation: pulseIcon 1.6s infinite;
+    }
+
     @keyframes pulseIcon {
         0% {
             transform: scale(1);
@@ -282,224 +291,196 @@
         }
     }
 
-    .btn-maroon-animated,
-    .btn-maroon-animated:hover,
-    .btn-maroon-animated:focus,
-    .btn-maroon-animated:active {
-        color: #ffffff !important;
-    }
-
-    /* Pastikan icon juga putih */
-    .btn-maroon-animated i {
-        color: #ffffff !important;
-    }
-
-
     /* =========================================
-   BUTTON LAYOUT FIX
-========================================= */
+       BUTTON LAYOUT
+    ========================================= */
 
-/* Area header button */
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-/* Semua button */
-.btn {
-    border-radius: 10px;
-    font-weight: 600;
-    padding: 8px 14px;
-    transition: all 0.25s ease;
-    white-space: nowrap;
-}
-
-/* Button action dalam tabel */
-td .btn {
-    margin: 2px;
-}
-
-/* Supaya button aksi sejajar */
-td.text-center {
-    white-space: nowrap;
-}
-
-/* Button kecil */
-.btn-xs {
-    min-width: 38px;
-    height: 34px;
-    padding: 4px 8px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Button tambah & cetak */
-.btn-maroon-animated {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    min-height: 42px;
-}
-
-/* Hover lebih smooth */
-.btn:hover {
-    transform: translateY(-1px);
-}
-
-/* Filter section */
-.row.mb-3 {
-    align-items: end;
-}
-
-/* Clear filter button */
-#clear-filter {
-    width: 100%;
-    height: 38px;
-    border-radius: 8px;
-    margin-top: 30px;
-}
-
-/* Button hapus selected */
-#delete-selected {
-    margin-top: 15px;
-    border-radius: 8px;
-    padding: 10px 16px;
-}
-
-/* Footer modal button */
-.modal-footer .btn {
-    min-width: 120px;
-}
-
-/* =========================================
-   TABLE RESPONSIVE
-========================================= */
-
-.table-responsive {
-    overflow-x: auto;
-    border-radius: 10px;
-}
-
-/* Table lebih rapi */
-#table th,
-#table td {
-    padding: 12px 10px;
-    vertical-align: middle;
-}
-
-/* Kolom aksi */
-#table td:last-child {
-    min-width: 130px;
-}
-
-/* =========================================
-   FORM FIX
-========================================= */
-
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.form-control {
-    height: 40px;
-    border-radius: 8px;
-}
-
-textarea.form-control {
-    height: auto;
-}
-
-/* =========================================
-   RESPONSIVE MOBILE
-========================================= */
-
-@media (max-width: 768px) {
-
-    /* Header */
     .card-header {
-        flex-direction: column;
-        align-items: stretch;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
     }
 
-    .card-header .btn {
-        width: 100%;
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 8px 14px;
+        transition: .25s;
+        white-space: nowrap;
     }
 
-    /* Filter */
-    .row.mb-3 .col-md-4 {
-        margin-bottom: 12px;
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    td .btn {
+        margin: 2px;
+    }
+
+    td.text-center {
+        white-space: nowrap;
+    }
+
+    .btn-xs {
+        min-width: 38px;
+        height: 34px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn-maroon-animated {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 42px;
+    }
+
+    .row.mb-3 {
+        align-items: end;
     }
 
     #clear-filter {
-        margin-top: 0;
+        width: 100%;
+        height: 38px;
+        border-radius: 8px;
+        margin-top: 30px;
     }
 
-    /* Table */
-    #table {
-        font-size: 13px;
+    #delete-selected {
+        margin-top: 15px;
+        border-radius: 8px;
+        padding: 10px 16px;
+    }
+
+    .modal-footer .btn {
+        min-width: 120px;
+    }
+
+    /* =========================================
+       TABLE RESPONSIVE
+    ========================================= */
+
+    .table-responsive {
+        overflow-x: auto;
+        border-radius: 10px;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: var(--navy);
+        border-radius: 20px;
     }
 
     #table th,
     #table td {
-        padding: 10px 8px;
+        padding: 12px 10px;
+        vertical-align: middle;
     }
 
-    /* Button aksi */
-    td .btn {
-        margin-bottom: 4px;
+    #table td:last-child {
+        min-width: 130px;
     }
 
-    /* Modal */
-    .modal-dialog {
-        margin: 10px;
+    /* =========================================
+       FORM
+    ========================================= */
+
+    .form-group {
+        margin-bottom: 1rem;
     }
 
-    .modal-footer {
-        flex-direction: column;
-        gap: 10px;
+    .form-control {
+        height: 40px;
     }
 
-    .modal-footer .btn {
-        width: 100%;
+    textarea.form-control {
+        height: auto;
     }
 
-    /* Form modal */
-    .form-group.row {
-        flex-direction: column;
-    }
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
 
-    .form-group.row label {
-        max-width: 100%;
-        margin-bottom: 6px;
-    }
+    @media(max-width:768px) {
 
-    .form-group.row .col-sm-8,
-    .form-group.row .col-sm-4 {
-        max-width: 100%;
-        flex: 100%;
-    }
+        .card-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
 
-    /* Tanggal */
-    #tgl_pr {
-        width: 100% !important;
-    }
+        .card-header .btn {
+            width: 100%;
+        }
 
-    /* Tombol tambah produk */
-    #button-tambah-produk {
-        width: 100%;
-    }
+        .row.mb-3 .col-md-4 {
+            margin-bottom: 12px;
+        }
 
-    /* Tombol cetak */
-    #button-cetak {
-        width: 100%;
-        margin-top: 10px;
+        #clear-filter {
+            margin-top: 0;
+        }
+
+        #table {
+            font-size: 13px;
+        }
+
+        #table th,
+        #table td {
+            padding: 10px 8px;
+        }
+
+        td .btn {
+            margin-bottom: 4px;
+        }
+
+        .modal-dialog {
+            margin: 10px;
+        }
+
+        .modal-footer {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-footer .btn {
+            width: 100%;
+        }
+
+        .form-group.row {
+            flex-direction: column;
+        }
+
+        .form-group.row label {
+            max-width: 100%;
+            margin-bottom: 6px;
+        }
+
+        .form-group.row .col-sm-8,
+        .form-group.row .col-sm-4 {
+            max-width: 100%;
+            flex: 100%;
+        }
+
+        #tgl_pr {
+            width: 100% !important;
+        }
+
+        #button-tambah-produk,
+        #button-cetak {
+            width: 100%;
+        }
+
+        #button-cetak {
+            margin-top: 10px;
+        }
     }
-}
 </style>
 @section('content')
     <div class="content-header">
@@ -767,11 +748,11 @@ textarea.form-control {
                                 </div>
 
                                 <!-- <div class="form-group row">
-                                                <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
-                                                <div class="col-sm-8">
-                                                    <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
-                                                </div>
-                                            </div> -->
+                                                    <label for="catatan" class="col-sm-4 col-form-label">Catatan</label>
+                                                    <div class="col-sm-8">
+                                                        <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
+                                                    </div>
+                                                </div> -->
 
                                 <div class="form-group row">
                                     <label for="revisi" class="col-sm-4 col-form-label">Revisi</label>

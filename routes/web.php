@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MRO\DailyActivityController;
 use App\Http\Controllers\AlatAngkutController;
 use App\Http\Controllers\AlatAngkutDetailController;
 use App\Http\Controllers\AssetController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\PurchaseRequestSppjpController;
 use App\Http\Controllers\RewindingController;
 use App\Http\Controllers\SppdController;
 use App\Http\Controllers\SuratJalanController;
+use App\Http\Controllers\WeeklyActivityController;
 use App\Models\Kontrak;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -889,6 +891,21 @@ Route::prefix('products')->group(function () {
         '/asset-maintenance/mark',
         [AssetMaintenanceController::class, 'mark']
     )->name('asset-maintenance.mark');
+
+    // Daily Activity
+    Route::resource('mro/daily-activity', App\Http\Controllers\MRO\DailyActivityController::class)
+        ->names('mro.daily-activity');
+
+    Route::delete(
+        'mro/daily-activity/lampiran/{id}',
+        [DailyActivityController::class, 'destroyLampiran']
+    )->name('mro.daily-activity.lampiran.destroy');
+
+    Route::get('/mro/weekly-activity', [App\Http\Controllers\WeeklyActivityController::class, 'index'])
+        ->name('mro.weekly-activity');
+
+    Route::get('/mro/weekly-activity/export-excel', [WeeklyActivityController::class, 'exportExcel'])
+        ->name('mro.weekly.export');
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store

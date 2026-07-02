@@ -10,78 +10,85 @@
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 <style>
-    /* Background dashboard */
+    /* ===============================
+       DASHBOARD
+    =============================== */
+
     #tab-pemasaran {
-        /* background: linear-gradient(180deg, #0f172a, #020617); */
-        /* min-height: 100vh; */
-        /* padding: 30px; */
+        /* background: linear-gradient(135deg, #0B3D91, #082567); */
+        padding: 1px;
     }
 
-    /* Card */
-    .card-tv {
-        border-radius: 18px;
-        border: none;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, .4);
-    }
-
-    /* Header */
-    .card-header-tv {
+    .slide-pemasaran {
         background: transparent;
+    }
+
+    /* ===============================
+       CARD
+    =============================== */
+
+    .card-tv {
+        background: linear-gradient(180deg, #ffffff, #eef4ff);
+        border-radius: 16px;
+        border: 1px solid #d7e3f5;
+        box-shadow: 0 10px 25px rgba(11, 61, 145, 0.15);
+        overflow: hidden;
+    }
+
+    .card-tv.mt-3 {
+        margin-top: 2px !important;
+    }
+
+    .card-header-tv {
+        background: linear-gradient(90deg, #0B3D91, #1E5BB8);
+        color: #ffffff;
         padding: 12px 16px;
         font-weight: 700;
         font-size: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, .1);
+        border-bottom: none;
     }
 
-    /* Chart kecil di header */
+    /* ===============================
+       CHART
+    =============================== */
+
     .chart-mini {
         height: 100px;
         margin-top: 6px;
     }
 
-    /* List kontrak */
-    .list-kontrak-tv {
-        overflow: hidden;
-        width: 100%;
-        min-height: 360px;
-    }
-
-    /* Item kontrak */
-    .item-kontrak-tv {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 14px;
-        font-size: 1.0rem;
-        height: 60px;
-
-    }
-
-    /* Badge status kecil */
-    .status-kontrak {
-        min-width: 110px;
-        padding: 6px 10px;
-        font-size: 0.8rem;
-        border-radius: 10px;
-        text-align: center;
-    }
-
-    /* Nama pekerjaan */
-    .nama-kontrak {
-        line-height: 1.3;
-        font-weight: 500;
-    }
-
-    /* Chart kanan */
     .chart-body {
         height: 250px;
         padding: 10px;
     }
 
-    /* Scrollbar */
+    .chart-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
 
-    /* daftar kontrak */
+    .chart-wrapper {
+        position: relative;
+        min-width: 720px;
+        height: 650px;
+    }
 
+    @media (max-width:576px) {
+        .chart-wrapper {
+            min-width: 900px;
+            height: 320px;
+        }
+    }
+
+    /* ===============================
+       LIST KONTRAK
+    =============================== */
+
+    .list-kontrak-tv {
+        overflow: hidden;
+        width: 100%;
+        min-height: 360px;
+    }
 
     .kontrak-slide {
         display: grid !important;
@@ -94,129 +101,98 @@
 
     .kontrak-col {
         display: contents;
-        /* biar grid ngatur itemnya */
     }
 
-
-    #dashboardFullscreen:fullscreen {
-        background: #fff;
-        padding: 15px;
-        overflow: auto;
-    }
-
-    /* Firefox */
-    #dashboardFullscreen:-moz-full-screen {
-        background: #fff;
-        padding: 15px;
-    }
-
-    /* Safari */
-    #dashboardFullscreen:-webkit-full-screen {
-        background: #fff;
-        padding: 15px;
-    }
-
-    /* Optional: grafik biar maksimal */
-    #dashboardFullscreen canvas {
-        max-height: 90vh;
-    }
-
-
-
-    #tab-pemasaran {
-        /* background: linear-gradient(135deg, #dc3545, #8c1d18); */
-        padding: 1px;
-        /* min-height: 100vh; */
-    }
-
-    .slide-pemasaran {
-        background: transparent;
-    }
-
-    .card-tv {
-        background: linear-gradient(180deg, #ffffff, #e9e9e9);
-        border-radius: 16px;
-        border: none;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-        overflow: hidden;
-    }
-
-    .card-tv.mt-3 {
-        margin-top: 2px !important;
-    }
-
-
-    /* Responsive HP grafik PO&PR */
-    .chart-scroll {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    .chart-wrapper {
-        position: relative;
-        min-width: 720px;
-        height: 650px;
-    }
-
-    @media (max-width: 576px) {
-        .chart-wrapper {
-            min-width: 900px;
-            height: 320px;
-        }
-    }
-
-
-    /* Responsive ukuran hp Pemasaran */
-    /* =================================
-   KONTRAK ITEM - RESET FLEX
-================================= */
-
-    /* mengatur ukuran kotak daftar kontrak bagian nama_pekerjaan */
     .item-kontrak-tv {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         gap: 10px;
+        padding: 10px 14px;
+        height: 60px;
+        border-radius: 10px;
+        transition: .25s;
+    }
+
+    .item-kontrak-tv:hover {
+        background: #edf4ff;
     }
 
     .item-kontrak-tv>div:first-child {
         flex: 1;
         min-width: 0;
-        /* 🔥 penting supaya teks bisa wrap */
     }
 
     .item-kontrak-tv .fw-bold {
         font-size: 13px;
         line-height: 1.3;
         margin-bottom: 2px;
-
+        color: #163B70;
         white-space: normal;
         word-break: break-word;
         overflow-wrap: anywhere;
-        /* jaga kalau ada kata super panjang */
+    }
+
+    .item-kontrak-tv small {
+        color: #5f6f85;
+    }
+
+    .nama-kontrak {
+        line-height: 1.3;
+        font-weight: 500;
+    }
+
+    /* ===============================
+       BADGE
+    =============================== */
+
+    .status-kontrak {
+        min-width: 110px;
+        padding: 6px 10px;
+        font-size: .8rem;
+        border-radius: 10px;
+        text-align: center;
+        background: #DCEBFF;
+        color: #0B3D91;
+        font-weight: 600;
     }
 
     .pelanggan-badge {
         white-space: nowrap;
         flex-shrink: 0;
-        /* 🔥 supaya badge tidak kegencet */
+        background: #0B3D91;
+        color: #fff;
+        border-radius: 20px;
+        padding: 4px 10px;
     }
 
-    /* mengatur ukuran kotak daftar kontrak bagian nama_pekerjaan */
+    /* ===============================
+       FULLSCREEN
+    =============================== */
 
-    /* =================================
-   MODE HP - PAKSA STACK KE BAWAH
-================================= */
-    @media (max-width: 576px) {
+    #dashboardFullscreen:fullscreen,
+    #dashboardFullscreen:-moz-full-screen,
+    #dashboardFullscreen:-webkit-full-screen {
+        background: #f4f8ff;
+        padding: 15px;
+        overflow: auto;
+    }
+
+    #dashboardFullscreen canvas {
+        max-height: 90vh;
+    }
+
+    /* ===============================
+       RESPONSIVE HP
+    =============================== */
+
+    @media (max-width:576px) {
 
         .list-group-item.item-kontrak-tv {
             display: block !important;
             height: auto !important;
-            /* 🔥 kunci utama */
             min-height: unset !important;
             overflow: visible !important;
-            /* 🔥 biar tidak kepotong */
-
             padding: 12px;
         }
 
@@ -227,12 +203,7 @@
         .item-kontrak-tv .fw-bold {
             font-size: 12px;
             line-height: 1.4;
-            /* 🔥 tambah lega biar tidak numpuk */
             margin-bottom: 6px;
-
-            white-space: normal;
-            word-break: break-word;
-            overflow-wrap: anywhere;
         }
 
         .item-kontrak-tv small {
@@ -245,26 +216,23 @@
             display: inline-block;
             font-size: 11px;
             padding: 4px 8px;
-
             white-space: normal;
             word-break: break-word;
         }
     }
 
+    /* ===============================
+       RESPONSIVE TABLET
+    =============================== */
 
-    /* Mode Tablet */
-    @media (min-width: 577px) and (max-width: 991px) {
+    @media (min-width:577px) and (max-width:991px) {
 
         .list-group-item.item-kontrak-tv {
             display: flex !important;
             flex-direction: column !important;
-
             height: auto !important;
-            /* 🔥 WAJIB */
             min-height: unset !important;
             overflow: visible !important;
-            /* 🔥 WAJIB */
-
             padding: 12px;
             gap: 6px;
         }
@@ -278,10 +246,6 @@
             font-size: 13px;
             line-height: 1.4;
             margin-bottom: 4px;
-
-            white-space: normal;
-            word-break: break-word;
-            overflow-wrap: anywhere;
         }
 
         .item-kontrak-tv small {
@@ -293,45 +257,39 @@
         .pelanggan-badge {
             display: inline-block;
             align-self: flex-start;
-
             white-space: normal;
             word-break: break-word;
-
             flex-shrink: 0;
         }
     }
 
     /* ===============================
-   NAV TAB MERAH - DASHBOARD
-================================ */
+       NAV TAB BIRU TUA
+    =============================== */
 
     #dashboardTabs {
-        border-bottom: 2px solid #dc2626;
-        /* merah */
+        border-bottom: 2px solid #0B3D91;
     }
 
     #dashboardTabs .nav-link {
-        color: #991b1b;
-        /* merah tua */
+        color: #163B70;
         font-weight: 600;
         border: none;
         border-radius: 0;
         padding: 10px 18px;
-        transition: all 0.25s ease;
+        transition: all .25s ease;
     }
 
     #dashboardTabs .nav-link:hover {
-        color: #dc2626;
-        background-color: #fee2e2;
-        /* merah muda */
+        color: #0B3D91;
+        background-color: #EAF2FF;
     }
 
     #dashboardTabs .nav-link.active {
-        color: #fff;
-        background-color: #dc2626;
-        /* MERAH UTAMA */
+        color: #ffffff;
+        background: linear-gradient(90deg, #0B3D91, #1E5BB8);
         border-radius: 6px 6px 0 0;
-        box-shadow: 0 -2px 0 #b91c1c inset;
+        box-shadow: inset 0 -3px 0 #64B5FF;
     }
 </style>
 @section('content')
@@ -354,7 +312,7 @@
     <section class="content">
         <div class="container-fluid pb-5">
 
-            <button id="btnFullscreen" class="btn btn-sm btn-danger mb-2">
+            <button id="btnFullscreen" class="btn btn-sm btn-primary mb-2">
                 ⛶ Fullscreen
             </button>
 
