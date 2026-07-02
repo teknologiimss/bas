@@ -1,100 +1,118 @@
 @extends('layouts.main')
 
-@section('title', 'Monitoring Pekerjaan Pengiriman MRO')
+@section('title', 'Monitoring Alat Angkat Angkut MRO')
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
 @section('content')
 
     <style>
         body {
-            background: #f5f6fa;
+            background: #f4f7fb;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         /* HEADER BUTTON AREA */
         .d-flex.justify-content-between.mb-3 {
-            animation: fadeDown 0.5s ease;
+            animation: fadeDown .5s ease;
         }
 
-        /* CARD LIST */
+        /* CARD */
         .card {
             border: none;
             border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            animation: fadeUp 0.6s ease;
+            background: #fff;
+            box-shadow: 0 10px 25px rgba(13, 42, 84, .08);
+            animation: fadeUp .5s ease;
         }
 
         /* ITEM ROW */
         .border {
             border: none !important;
-            border-left: 5px solid #c40000 !important;
+            border-left: 5px solid #0d3b66 !important;
             border-radius: 14px !important;
-            transition: all 0.25s ease;
             background: #fff;
+            transition: .3s;
         }
 
         .border:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(196, 0, 0, 0.15);
+            box-shadow: 0 12px 22px rgba(13, 42, 84, .15);
         }
 
         /* TITLE */
         h5 {
-            color: #b30000;
+            color: #0d3b66;
             font-weight: 700;
         }
 
-        /* BUTTON STYLE */
+        /* PRIMARY BUTTON */
         .btn-success {
-            background: linear-gradient(135deg, #c40000, #7a0000) !important;
+            background: linear-gradient(135deg, #0d3b66, #1d4f91) !important;
             border: none !important;
+            color: #fff !important;
             border-radius: 10px !important;
-            transition: 0.2s;
+            transition: .25s;
         }
 
         .btn-success:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(196, 0, 0, 0.3);
+            background: linear-gradient(135deg, #0a2f55, #2d5ea6) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 18px rgba(13, 59, 102, .25);
         }
 
-        /* LIGHT BUTTON */
+        /* MONITOR BUTTON */
         .btn-light {
+            background: #fff;
+            color: #0d3b66;
+            border: 1px solid #0d3b66;
             border-radius: 10px;
-            border: 1px solid #c40000;
-            color: #c40000;
-            transition: 0.2s;
+            transition: .25s;
         }
 
         .btn-light:hover {
-            background: #c40000;
-            color: white;
+            background: #0d3b66;
+            color: #fff;
+            border-color: #0d3b66;
             transform: translateY(-2px);
         }
 
         /* DELETE BUTTON */
         .btn-danger {
+            background: linear-gradient(135deg, #d63031, #b71c1c);
+            border: none;
             border-radius: 10px;
-            transition: 0.2s;
+            transition: .25s;
         }
 
         .btn-danger:hover {
             transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(214, 48, 49, .25);
         }
 
         /* MODAL */
         .modal-content {
+            border: none;
             border-radius: 18px;
             overflow: hidden;
-            animation: pop 0.3s ease;
+            animation: pop .3s ease;
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #c40000, #7a0000);
+            background: linear-gradient(135deg, #0d3b66, #1d4f91);
             color: white;
+            border: none;
         }
 
         /* INPUT */
         .form-control {
             border-radius: 10px;
+            border: 1px solid #d6dee8;
+            transition: .25s;
+        }
+
+        .form-control:focus {
+            border-color: #0d3b66;
+            box-shadow: 0 0 0 .2rem rgba(13, 59, 102, .15);
         }
 
         /* PAGINATION */
@@ -102,40 +120,47 @@
             justify-content: center;
         }
 
-        .page-item.active .page-link {
-            background: #c40000;
-            border-color: #c40000;
+        .page-link {
+            color: #0d3b66;
+            border-radius: 8px;
+            margin: 0 2px;
         }
 
-        /* SEARCH MODERN */
+        .page-item.active .page-link {
+            background: #0d3b66;
+            border-color: #0d3b66;
+            color: #fff;
+        }
+
+        /* SEARCH */
         .search-box {
             display: flex;
             justify-content: flex-end;
-            /* pindah ke kanan */
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .search-wrapper {
             display: flex;
             align-items: center;
+            width: 100%;
+            max-width: 460px;
             background: #fff;
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(196, 0, 0, 0.2);
-            max-width: 450px;
-            width: 100%;
-            transition: 0.3s;
+            border: 1px solid #d8e1eb;
+            box-shadow: 0 8px 18px rgba(13, 42, 84, .08);
+            transition: .3s;
         }
 
         .search-wrapper:focus-within {
-            box-shadow: 0 10px 25px rgba(196, 0, 0, 0.25);
-            transform: translateY(-2px);
+            border-color: #0d3b66;
+            box-shadow: 0 10px 20px rgba(13, 59, 102, .18);
         }
 
         .search-icon {
-            padding: 10px 12px;
-            color: #c40000;
+            padding: 12px;
+            color: #0d3b66;
+            font-size: 16px;
         }
 
         .search-input {
@@ -143,25 +168,37 @@
             border: none;
             outline: none;
             padding: 12px;
+            background: transparent;
         }
 
         .search-btn {
-            background: linear-gradient(135deg, #c40000, #7a0000);
-            color: #fff;
+            background: linear-gradient(135deg, #0d3b66, #1d4f91);
+            color: white;
             border: none;
             padding: 12px 18px;
-            cursor: pointer;
+            transition: .3s;
         }
 
         .search-btn:hover {
-            transform: scale(1.05);
+            background: linear-gradient(135deg, #0a2f55, #2d5ea6);
+        }
+
+        /* BUTTON */
+        button,
+        a {
+            transition: .25s;
+        }
+
+        button:active,
+        a:active {
+            transform: scale(.97);
         }
 
         /* ANIMATION */
         @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(25px);
             }
 
             to {
@@ -184,7 +221,7 @@
 
         @keyframes pop {
             from {
-                transform: scale(0.9);
+                transform: scale(.9);
                 opacity: 0;
             }
 
@@ -194,30 +231,16 @@
             }
         }
 
-        button,
-        a {
-            transition: all 0.2s ease;
-        }
+        /* =========================
+           RESPONSIVE MOBILE
+        ========================= */
 
-        button:active,
-        a:active {
-            transform: scale(0.95);
-        }
+        @media (max-width:768px) {
 
-
-
-        /* =========================================
-       RESPONSIVE MOBILE
-    ========================================= */
-        @media (max-width: 768px) {
-
-            /* CONTAINER */
             .card {
                 padding: 15px !important;
-                border-radius: 14px;
             }
 
-            /* HEADER BUTTON */
             .d-flex.justify-content-between.mb-3 {
                 flex-direction: column;
             }
@@ -227,10 +250,8 @@
                 margin: 0 !important;
                 height: 42px;
                 font-size: 14px;
-                border-radius: 10px !important;
             }
 
-            /* SEARCH */
             .search-box {
                 justify-content: center;
             }
@@ -238,72 +259,56 @@
             .search-wrapper {
                 width: 100%;
                 max-width: 100%;
-                border-radius: 12px;
             }
 
             .search-input {
                 font-size: 13px;
-                padding: 10px;
             }
 
             .search-btn {
-                padding: 10px 14px;
                 font-size: 13px;
+                padding: 10px 15px;
             }
 
-            /* CARD ITEM */
             .border.p-3 {
                 flex-direction: column !important;
                 align-items: flex-start !important;
-                gap: 12px;
-                padding: 14px !important;
+                gap: 14px;
+                padding: 15px !important;
             }
 
-            /* TITLE */
             .border h5 {
-                font-size: 15px;
+                font-size: 16px;
                 margin-bottom: 0;
                 word-break: break-word;
             }
 
-            /* BUTTON GROUP */
             .border>div:last-child {
                 width: 100%;
                 display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
             }
 
-            /* BUTTON */
             .border .btn,
             .border form {
                 width: 100%;
-                margin: 0 !important;
             }
 
             .border .btn {
-                width: 100%;
                 height: 38px;
                 font-size: 12px;
-                padding: 6px;
-                border-radius: 8px !important;
                 display: flex;
-                align-items: center;
                 justify-content: center;
+                align-items: center;
             }
 
-            /* FORM DELETE */
-            .border form {
-                display: flex;
-            }
-
-            /* MODAL */
             .modal-dialog {
                 margin: 12px;
             }
 
             .modal-content {
-                border-radius: 14px;
+                border-radius: 15px;
             }
 
             .modal-footer {
@@ -315,10 +320,8 @@
                 width: 100%;
             }
 
-            /* PAGINATION */
             .pagination {
                 flex-wrap: wrap;
-                gap: 5px;
             }
 
             .page-link {
