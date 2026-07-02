@@ -1,62 +1,76 @@
 @extends('layouts.main')
 
-@section('title', 'Buat LP3M')
+@section('title', 'Buat Lembar Pekerjaan Perbaikan Perawatan Fasilitas')
+
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+
 @section('content')
 
-<div class="container mt-4">
+    <style>
+        .bg-navy {
+            background-color: #0b1f3a !important;
+        }
 
-    <div class="card shadow">
+        .btn-navy {
+            background-color: #0b1f3a;
+            color: #fff;
+            border: none;
+        }
 
-        <div class="card-header bg-danger text-white">
+        .btn-navy:hover {
+            background-color: #102a52;
+            color: #fff;
+        }
 
-            <h5 class="mb-0">
-                Buat Data Pekerjaan Perbaikan Perawatan Fasilitas
-            </h5>
+        .card {
+            border: none;
+            border-radius: 12px;
+        }
 
-        </div>
+        .card-header {
+            border-radius: 12px 12px 0 0 !important;
+        }
+    </style>
 
-        <div class="card-body">
+    <div class="container mt-4">
 
-            <form action="{{ route('lp3m.store') }}" method="POST">
+        <div class="card shadow">
 
-                @csrf
+            <div class="card-header bg-navy text-white">
 
-                <div class="mb-3">
+                <h5 class="mb-0">
+                    Buat Data Pekerjaan Perbaikan Perawatan Fasilitas
+                </h5>
 
-                    <label>Deskripsi</label>
+            </div>
 
-                    <textarea name="deskripsi"
-                              class="form-control" autocomplete="off"
-                              rows="4"
-                              required></textarea>
+            <div class="card-body">
 
-                </div>
+                <form action="{{ route('lp3m.store') }}" method="POST">
 
-                <div class="mb-3">
+                    @csrf
 
-                    <label>Keterangan</label>
+                    <div class="mb-3">
+                        <label class="form-label">Deskripsi</label>
+                        <textarea name="deskripsi" class="form-control" autocomplete="off" rows="4" required></textarea>
+                    </div>
 
-                    <textarea name="keterangan"
-                              class="form-control" autocomplete="off"
-                              rows="4"
-                              required></textarea>
+                    <div class="mb-3">
+                        <label class="form-label">Keterangan</label>
+                        <textarea name="keterangan" class="form-control" autocomplete="off" rows="4" required></textarea>
+                    </div>
 
-                </div>
+                    <button class="btn btn-navy">
+                        <i class="fas fa-save"></i>
+                        Simpan
+                    </button>
 
-                <button class="btn btn-danger">
+                </form>
 
-                    <i class="fas fa-save"></i>
-                    Simpan
-
-                </button>
-
-            </form>
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 @endsection

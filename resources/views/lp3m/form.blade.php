@@ -3,6 +3,13 @@
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
     <style>
+        :root {
+            --navy: #0b1f3a;
+            --navy-2: #102a52;
+            --navy-soft: #163a63;
+            --navy-border: #1f3b5c;
+        }
+
         body {
             background: #f5f6fa;
         }
@@ -21,34 +28,42 @@
             padding: 25px;
         }
 
+        /* HEADER NAVY */
+        .card-header.bg-danger {
+            background: linear-gradient(135deg, var(--navy), var(--navy-2)) !important;
+            border: none;
+        }
+
+        h4,
         h5 {
-            color: #c82333;
+            color: var(--white);
             font-weight: 700;
             margin-bottom: 15px;
         }
 
         hr {
-            border-top: 2px solid #f1b0b7;
+            border-top: 2px solid #d6e0ee;
         }
 
         label {
             font-weight: 600;
             margin-bottom: 6px;
-            color: #444;
+            color: #2d3748;
         }
 
         .form-control {
             border-radius: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #d0d7e2;
             transition: all 0.3s ease;
             padding: 10px 12px;
         }
 
         .form-control:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 10px rgba(220, 53, 69, 0.2);
+            border-color: var(--navy);
+            box-shadow: 0 0 0 0.2rem rgba(11, 31, 58, 0.15);
         }
 
+        /* BUTTONS NAVY */
         .btn {
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -58,13 +73,20 @@
             transform: translateY(-2px);
         }
 
-        .btn-danger {
-            background: linear-gradient(135deg, #dc3545, #b02a37);
-            border: none;
+        .btn-danger,
+        .btn-primary {
+            background: linear-gradient(135deg, var(--navy), var(--navy-2)) !important;
+            border: none !important;
+            color: #fff !important;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #ff4d4d, #dc3545);
+        .btn-danger:hover,
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--navy-2), var(--navy)) !important;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
             border: none;
         }
 
@@ -72,9 +94,10 @@
             border-radius: 0 10px 10px 0;
         }
 
+        /* CHECKBOX NAVY */
         input[type="checkbox"] {
             transform: scale(1.2);
-            accent-color: #dc3545;
+            accent-color: var(--navy);
             margin-right: 5px;
         }
 
@@ -82,8 +105,61 @@
             margin-bottom: 10px;
         }
 
-        @keyframes fadeIn {
+        /* BUTTON RIWAYAT */
+        .btn-riwayat {
+            min-width: 140px;
+            font-weight: 600;
+            border-radius: 10px;
+            border: 1px solid var(--navy);
+            color: var(--navy);
+            background: transparent;
+        }
 
+        .btn-riwayat:hover {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        /* MODAL NAVY */
+        .modal-header.bg-danger {
+            background: linear-gradient(135deg, var(--navy), var(--navy-2)) !important;
+        }
+
+        /* SCROLLBAR */
+        .riwayat-modal-body {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .riwayat-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .riwayat-modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .riwayat-modal-body::-webkit-scrollbar-thumb {
+            background: var(--navy);
+            border-radius: 10px;
+        }
+
+        .riwayat-modal-body::-webkit-scrollbar-thumb:hover {
+            background: var(--navy-2);
+        }
+
+        /* STICKY TABLE HEADER */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--navy) !important;
+            color: white;
+        }
+
+        /* ANIMATION */
+        @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(15px);
@@ -93,7 +169,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-
         }
 
         /* MOBILE */
@@ -103,6 +178,7 @@
                 padding: 15px;
             }
 
+            h4,
             h5 {
                 font-size: 18px;
             }
@@ -131,45 +207,6 @@
                 width: 100%;
                 margin-top: 5px;
             }
-
-        }
-
-
-        .btn-riwayat {
-            min-width: 140px;
-            font-weight: 600;
-            border-radius: 10px;
-        }
-
-        .riwayat-modal-body {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .riwayat-modal-body::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .riwayat-modal-body::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .riwayat-modal-body::-webkit-scrollbar-thumb {
-            background: #dc3545;
-            border-radius: 10px;
-        }
-
-        .riwayat-modal-body::-webkit-scrollbar-thumb:hover {
-            background: #b02a37;
-        }
-
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background: #dc3545;
-            color: white;
         }
     </style>
 
@@ -423,17 +460,18 @@
                                 <div class="row sparepart-item mb-2">
 
                                     <div class="col-md-4">
-                                        <input type="text" autocomplete="off" name="nama_barang[]" class="form-control"
-                                            placeholder="Nama Barang">
+                                        <input type="text" autocomplete="off" name="nama_barang[]"
+                                            class="form-control" placeholder="Nama Barang">
                                     </div>
 
                                     <div class="col-md-4">
-                                        <input type="text" autocomplete="off" name="kode_barang[]" class="form-control"
-                                            placeholder="Kode Barang">
+                                        <input type="text" autocomplete="off" name="kode_barang[]"
+                                            class="form-control" placeholder="Kode Barang">
                                     </div>
 
                                     <div class="col-md-3">
-                                        <input type="text" autocomplete="off" name="jumlah[]" class="form-control" placeholder="Jumlah">
+                                        <input type="text" autocomplete="off" name="jumlah[]" class="form-control"
+                                            placeholder="Jumlah">
                                     </div>
 
                                     <div class="col-md-1">

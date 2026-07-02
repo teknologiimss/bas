@@ -4,6 +4,121 @@
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
 
+    <style>
+        body {
+            background: #f4f6fb;
+        }
+
+        .card {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(10, 25, 60, 0.10);
+            overflow: hidden;
+            animation: fadeUp 0.5s ease;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #0b1f3a, #142d55) !important;
+            color: #fff;
+            border: none;
+            padding: 18px 22px;
+        }
+
+        .card-header h4 {
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.3px;
+        }
+
+        .card-body {
+            padding: 24px;
+            background: #fff;
+        }
+
+        label {
+            font-weight: 600;
+            color: #1f2d3d;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #d0d7e2;
+            padding: 10px 12px;
+            transition: 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #0b1f3a;
+            box-shadow: 0 0 0 0.2rem rgba(11, 31, 58, 0.15);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+        }
+
+        .btn {
+            border-radius: 10px;
+            transition: 0.2s;
+            font-weight: 600;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #0b1f3a, #142d55);
+            border: none;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(11, 31, 58, 0.25);
+        }
+
+        .btn-secondary {
+            background: #e9eef6;
+            border: none;
+            color: #0b1f3a;
+        }
+
+        .btn-secondary:hover {
+            background: #dbe4f3;
+            transform: translateY(-2px);
+        }
+
+        .row>div {
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        button:active,
+        a:active {
+            transform: scale(0.97);
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 16px;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+
     <div class="card shadow">
         <div class="card-header bg-danger text-white">
             <h4>

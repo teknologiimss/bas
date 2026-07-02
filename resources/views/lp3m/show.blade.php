@@ -5,6 +5,13 @@
 @section('content')
 
     <style>
+        :root {
+            --navy: #0b1f3a;
+            --navy-2: #102a52;
+            --navy-soft: #163a63;
+            --navy-light: #e8eef7;
+        }
+
         body {
             background: #f4f6f9;
         }
@@ -16,23 +23,26 @@
             animation: fadeIn 0.6s ease;
         }
 
+        /* HEADER NAVY */
         .lp3m-header {
-            background: linear-gradient(135deg, #b30000, #ff4d4d);
+            background: linear-gradient(135deg, var(--navy), var(--navy-2));
             padding: 18px;
         }
 
         .lp3m-header h4 {
             font-weight: bold;
             letter-spacing: 1px;
+            color: #fff;
         }
 
+        /* SECTION TITLE NAVY */
         .section-title {
-            background: linear-gradient(90deg, #ffe5e5, #fff);
-            border-left: 5px solid #dc3545;
+            background: linear-gradient(90deg, #eef3fb, #ffffff);
+            border-left: 5px solid var(--navy);
             padding: 12px 15px;
             border-radius: 10px;
             font-weight: bold;
-            color: #b30000;
+            color: var(--navy);
             margin-bottom: 15px;
             margin-top: 25px;
             animation: slideIn 0.5s ease;
@@ -42,7 +52,7 @@
             background: white;
             border-radius: 15px;
             padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 5px 15px rgba(11, 31, 58, 0.08);
             animation: fadeUp 0.6s ease;
         }
 
@@ -51,8 +61,8 @@
         }
 
         .table th {
-            background: #fff3f3;
-            color: #b30000;
+            background: #eef3fb;
+            color: var(--navy);
             font-weight: bold;
             width: 250px;
         }
@@ -62,19 +72,20 @@
         }
 
         .table-hover tbody tr:hover {
-            background: #fff0f0;
+            background: #f0f5ff;
             transition: 0.3s;
         }
 
         .check-box {
             font-size: 18px;
             font-weight: bold;
-            color: #dc3545;
+            color: var(--navy);
             margin-right: 5px;
         }
 
+        /* BADGE NAVY STYLE */
         .badge-open {
-            background: #dc3545;
+            background: var(--navy);
             color: white;
             padding: 7px 14px;
             border-radius: 20px;
@@ -82,7 +93,7 @@
         }
 
         .badge-closed {
-            background: #198754;
+            background: #1f8f5f;
             color: white;
             padding: 7px 14px;
             border-radius: 20px;
@@ -98,9 +109,25 @@
 
         .btn-modern:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(11, 31, 58, 0.25);
         }
 
+        /* NAVY BUTTON VARIANT */
+        .btn-danger {
+            background: linear-gradient(135deg, var(--navy), var(--navy-2));
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, var(--navy-2), var(--navy));
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            border: none;
+        }
+
+        /* ANIMATION */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -137,10 +164,7 @@
             }
         }
 
-        /* =========================
-                   RESPONSIVE MOBILE FIX
-                ========================= */
-
+        /* RESPONSIVE */
         @media (max-width: 768px) {
 
             .container-fluid {
@@ -150,10 +174,6 @@
 
             .card-body {
                 padding: 12px;
-            }
-
-            .lp3m-header {
-                padding: 14px 10px;
             }
 
             .lp3m-header h4 {
@@ -171,11 +191,6 @@
                 border-radius: 12px;
             }
 
-            .table-responsive {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
             .table {
                 min-width: 600px;
             }
@@ -184,30 +199,12 @@
             .table td {
                 font-size: 12px;
                 padding: 8px;
-                vertical-align: top;
-                white-space: normal;
-                word-break: break-word;
-            }
-
-            .table th {
-                min-width: 140px;
-            }
-
-            .check-box {
-                font-size: 15px;
             }
 
             .btn-modern {
                 width: 100%;
                 font-size: 13px;
-                padding: 10px;
-                border-radius: 10px;
             }
-
-            .d-flex.gap-2 {
-                gap: 8px !important;
-            }
-
         }
 
         @media (max-width: 480px) {
@@ -223,13 +220,11 @@
             .table th,
             .table td {
                 font-size: 11px;
-                padding: 7px;
             }
 
             .check-box {
                 font-size: 14px;
             }
-
         }
 
         .badge-open,
@@ -241,18 +236,6 @@
             font-weight: bold;
             padding: 7px 12px;
             border-radius: 12px;
-        }
-
-        @media(max-width:768px) {
-
-            .table {
-                min-width: unset !important;
-            }
-
-            .table th {
-                width: 35%;
-            }
-
         }
     </style>
 

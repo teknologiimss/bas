@@ -5,6 +5,13 @@
 @section('content')
 
     <style>
+        :root {
+            --navy: #0b1f3a;
+            --navy-2: #102a52;
+            --navy-soft: #163a63;
+            --accent: #1f4b82;
+        }
+
         body {
             background: #f5f6fa;
         }
@@ -17,7 +24,7 @@
         }
 
         .card-header {
-            background: linear-gradient(135deg, #b71c1c, #e53935) !important;
+            background: linear-gradient(135deg, var(--navy), var(--navy-2)) !important;
             border: none;
             padding: 18px 25px;
         }
@@ -25,6 +32,7 @@
         .card-header h5 {
             font-weight: 700;
             letter-spacing: .5px;
+            color: #fff;
         }
 
         .card-body {
@@ -35,20 +43,20 @@
         label {
             font-weight: 600;
             margin-bottom: 6px;
-            color: #444;
+            color: #2d3748;
         }
 
         .form-control {
             border-radius: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #d6dbe3;
             padding: 12px;
             transition: .3s;
             box-shadow: none !important;
         }
 
         .form-control:focus {
-            border-color: #e53935;
-            box-shadow: 0 0 0 0.15rem rgba(229, 57, 53, .15) !important;
+            border-color: var(--navy);
+            box-shadow: 0 0 0 0.2rem rgba(11, 31, 58, .15) !important;
             transform: translateY(-1px);
         }
 
@@ -56,16 +64,12 @@
             min-height: 110px;
         }
 
-        h5 {
-            font-weight: 700;
-            color: #ffffff;
-        }
-
         hr {
-            border-top: 2px dashed #eee;
+            border-top: 2px dashed #e5e7eb;
             margin: 28px 0;
         }
 
+        /* BUTTON STYLE (NAVY THEME) */
         .btn {
             border-radius: 12px;
             padding: 10px 18px;
@@ -77,58 +81,81 @@
             transform: translateY(-2px);
         }
 
-        .btn-warning {
-            background: linear-gradient(135deg, #c62828, #e53935);
-            border: none;
-            color: #fff;
-        }
-
-        .btn-warning:hover {
-            background: linear-gradient(135deg, #b71c1c, #d32f2f);
-            color: #fff;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #d32f2f, #f44336);
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #b71c1c, #e53935);
-        }
-
+        .btn-warning,
+        .btn-primary,
         .btn-danger {
-            background: #ef5350;
-            border: none;
+            background: var(--navy) !important;
+            border: none !important;
+            color: #fff !important;
         }
 
+        .btn-warning:hover,
+        .btn-primary:hover,
         .btn-danger:hover {
-            background: #e53935;
+            background: var(--navy-2) !important;
+            color: #fff !important;
         }
 
         .btn-secondary {
+            background: #6b7280;
             border: none;
-            background: #757575;
         }
 
-        .input-group {
-            animation: slideUp .3s ease;
+        .btn-outline-danger.btn-riwayat {
+            border: 1px solid var(--navy);
+            color: var(--navy);
+            background: transparent;
         }
 
+        .btn-outline-danger.btn-riwayat:hover {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        /* CHECKBOX */
         input[type="checkbox"] {
             width: 18px;
             height: 18px;
-            accent-color: #d32f2f;
+            accent-color: var(--navy);
             cursor: pointer;
             margin-right: 6px;
         }
 
-        .row>div {
-            margin-bottom: 10px;
+        /* INPUT GROUP ANIMATION */
+        .input-group {
+            animation: slideUp .3s ease;
         }
 
-        @keyframes fadeIn {
+        /* MODAL HEADER */
+        .modal-header.bg-danger {
+            background: linear-gradient(135deg, var(--navy), var(--navy-2)) !important;
+        }
 
+        /* TABLE STICKY HEADER */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--navy) !important;
+            color: #fff;
+        }
+
+        /* SCROLLBAR */
+        .riwayat-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .riwayat-modal-body::-webkit-scrollbar-thumb {
+            background: var(--navy);
+            border-radius: 10px;
+        }
+
+        .riwayat-modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* ANIMATION */
+        @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(10px);
@@ -138,11 +165,9 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-
         }
 
         @keyframes slideUp {
-
             from {
                 opacity: 0;
                 transform: translateY(10px);
@@ -152,11 +177,10 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-
         }
 
+        /* RESPONSIVE */
         @media(max-width:768px) {
-
             .card-body {
                 padding: 20px;
             }
@@ -178,50 +202,6 @@
                 width: 100%;
                 margin-top: 8px;
             }
-
-            .btn-riwayat {
-                width: 100%;
-                margin-top: 5px;
-            }
-
-
-        }
-
-        .btn-riwayat {
-            min-width: 140px;
-            font-weight: 600;
-            border-radius: 10px;
-        }
-
-        .riwayat-modal-body {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .riwayat-modal-body::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .riwayat-modal-body::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .riwayat-modal-body::-webkit-scrollbar-thumb {
-            background: #dc3545;
-            border-radius: 10px;
-        }
-
-        .riwayat-modal-body::-webkit-scrollbar-thumb:hover {
-            background: #b02a37;
-        }
-
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background: #dc3545;
-            color: white;
         }
     </style>
 
@@ -626,22 +606,22 @@
 
                                             <div class="col-md-4">
 
-                                                <input type="text" autocomplete="off" name="nama_barang[]" class="form-control"
-                                                    value="{{ $barang }}">
+                                                <input type="text" autocomplete="off" name="nama_barang[]"
+                                                    class="form-control" value="{{ $barang }}">
 
                                             </div>
 
                                             <div class="col-md-4">
 
-                                                <input type="text" autocomplete="off" name="kode_barang[]" class="form-control"
-                                                    value="{{ $kodeBarang[$i] ?? '' }}">
+                                                <input type="text" autocomplete="off" name="kode_barang[]"
+                                                    class="form-control" value="{{ $kodeBarang[$i] ?? '' }}">
 
                                             </div>
 
                                             <div class="col-md-3">
 
-                                                <input type="text" autocomplete="off" name="jumlah[]" class="form-control"
-                                                    value="{{ $jumlahBarang[$i] ?? '' }}">
+                                                <input type="text" autocomplete="off" name="jumlah[]"
+                                                    class="form-control" value="{{ $jumlahBarang[$i] ?? '' }}">
 
                                             </div>
 

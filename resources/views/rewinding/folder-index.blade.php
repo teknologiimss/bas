@@ -7,7 +7,7 @@
 
     <style>
         body {
-            background: #f5f6fa;
+            background: #f4f6fb;
         }
 
         /* HEADER BUTTON AREA */
@@ -19,33 +19,33 @@
         .card {
             border: none;
             border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(10, 25, 60, 0.10);
             animation: fadeUp 0.6s ease;
         }
 
         /* ITEM ROW */
         .border {
             border: none !important;
-            border-left: 5px solid #c40000 !important;
+            border-left: 5px solid #0b1f3a !important;
             border-radius: 14px !important;
             transition: all 0.25s ease;
-            background: #fff;
+            background: #ffffff;
         }
 
         .border:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(196, 0, 0, 0.15);
+            box-shadow: 0 10px 25px rgba(11, 31, 58, 0.18);
         }
 
         /* TITLE */
         h5 {
-            color: #b30000;
+            color: #0b1f3a;
             font-weight: 700;
         }
 
         /* BUTTON STYLE */
         .btn-success {
-            background: linear-gradient(135deg, #c40000, #7a0000) !important;
+            background: linear-gradient(135deg, #0b1f3a, #142d55) !important;
             border: none !important;
             border-radius: 10px !important;
             transition: 0.2s;
@@ -53,19 +53,20 @@
 
         .btn-success:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(196, 0, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(11, 31, 58, 0.35);
         }
 
         /* LIGHT BUTTON */
         .btn-light {
             border-radius: 10px;
-            border: 1px solid #c40000;
-            color: #c40000;
+            border: 1px solid #0b1f3a;
+            color: #0b1f3a;
             transition: 0.2s;
+            background: #fff;
         }
 
         .btn-light:hover {
-            background: #c40000;
+            background: #0b1f3a;
             color: white;
             transform: translateY(-2px);
         }
@@ -74,10 +75,13 @@
         .btn-danger {
             border-radius: 10px;
             transition: 0.2s;
+            background: #c0392b;
+            border: none;
         }
 
         .btn-danger:hover {
             transform: scale(1.05);
+            background: #a93226;
         }
 
         /* MODAL */
@@ -88,13 +92,19 @@
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #c40000, #7a0000);
+            background: linear-gradient(135deg, #0b1f3a, #142d55);
             color: white;
         }
 
         /* INPUT */
         .form-control {
             border-radius: 10px;
+            border: 1px solid #d0d7e2;
+        }
+
+        .form-control:focus {
+            border-color: #0b1f3a;
+            box-shadow: 0 0 0 0.2rem rgba(11, 31, 58, 0.15);
         }
 
         /* PAGINATION */
@@ -103,15 +113,14 @@
         }
 
         .page-item.active .page-link {
-            background: #c40000;
-            border-color: #c40000;
+            background: #0b1f3a;
+            border-color: #0b1f3a;
         }
 
         /* SEARCH MODERN */
         .search-box {
             display: flex;
             justify-content: flex-end;
-            /* pindah ke kanan */
             margin-bottom: 15px;
         }
 
@@ -121,21 +130,21 @@
             background: #fff;
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(196, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(10, 25, 60, 0.10);
+            border: 1px solid rgba(11, 31, 58, 0.2);
             max-width: 450px;
             width: 100%;
             transition: 0.3s;
         }
 
         .search-wrapper:focus-within {
-            box-shadow: 0 10px 25px rgba(196, 0, 0, 0.25);
+            box-shadow: 0 10px 25px rgba(11, 31, 58, 0.25);
             transform: translateY(-2px);
         }
 
         .search-icon {
             padding: 10px 12px;
-            color: #c40000;
+            color: #0b1f3a;
         }
 
         .search-input {
@@ -146,7 +155,7 @@
         }
 
         .search-btn {
-            background: linear-gradient(135deg, #c40000, #7a0000);
+            background: linear-gradient(135deg, #0b1f3a, #142d55);
             color: #fff;
             border: none;
             padding: 12px 18px;
@@ -204,14 +213,9 @@
             transform: scale(0.95);
         }
 
-
-
-        /* =========================
-                           RESPONSIVE MOBILE
-                        ========================= */
+        /* RESPONSIVE MOBILE */
         @media (max-width: 768px) {
 
-            /* HEADER BUTTON */
             .d-flex.justify-content-between.mb-3 {
                 flex-direction: column;
                 align-items: stretch !important;
@@ -224,7 +228,6 @@
                 font-size: 14px;
             }
 
-            /* SEARCH */
             .search-box {
                 justify-content: center;
             }
@@ -243,20 +246,17 @@
                 font-size: 14px;
             }
 
-            /* CARD ITEM */
             .border.p-3 {
                 flex-direction: column !important;
                 align-items: flex-start !important;
                 gap: 12px;
             }
 
-            /* TITLE */
             .border h5 {
                 font-size: 16px;
                 margin-bottom: 0;
             }
 
-            /* BUTTON AREA */
             .border .btn,
             .border form {
                 width: 100%;
@@ -270,7 +270,6 @@
                 margin-bottom: 6px;
             }
 
-            /* BUTTON GROUP */
             .border>div:last-child {
                 width: 100%;
                 display: flex;
@@ -278,14 +277,12 @@
                 gap: 8px;
             }
 
-            /* DELETE BUTTON */
             .btn-danger,
             .btn-success,
             .btn-light {
                 padding: 8px 10px !important;
             }
 
-            /* MODAL */
             .modal-dialog {
                 margin: 15px;
             }
@@ -294,7 +291,6 @@
                 border-radius: 14px;
             }
 
-            /* PAGINATION */
             .pagination {
                 flex-wrap: wrap;
                 gap: 5px;
@@ -340,8 +336,8 @@
         <form method="GET" action="">
             <div class="search-wrapper">
                 <span class="search-icon">🔍</span>
-                <input type="text" name="search" class="search-input" autocomplete="off"
-                    placeholder="Cari rewinding..." value="{{ request('search') }}">
+                <input type="text" name="search" class="search-input" autocomplete="off" placeholder="Cari rewinding..."
+                    value="{{ request('search') }}">
                 <button class="search-btn">Cari</button>
             </div>
         </form>

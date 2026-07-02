@@ -79,7 +79,7 @@
             <td width="120" class="logo-box">
 
                 <img class="logo"
-                    src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('img/imss-remove.png'))) }}">
+                    src="data:image/jpg;base64,{{ base64_encode(file_get_contents(public_path('img/ptimst.png'))) }}">
 
             </td>
 

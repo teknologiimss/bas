@@ -4,14 +4,105 @@
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
     <style>
-        .header-title {
-            font-size: 18px;
-            font-weight: bold;
-            line-height: 1.4;
+        :root {
+            --navy: #0f172a;
+            --navy2: #1e3a8a;
+            --navy3: #2563eb;
+            --bg: #edf4fb;
+            --border: #d8e3f0;
+            --shadow: 0 8px 25px rgba(15, 23, 42, .08);
         }
 
+        body {
+            background: var(--bg);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #fff;
+        }
+
+        /* ===========================
+           CARD
+        ============================*/
+
+        .card {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--navy), var(--navy2)) !important;
+            border: none;
+            padding: 18px 22px;
+        }
+
+        .card-body {
+            background: #fff;
+        }
+
+        /* ===========================
+           BUTTON
+        ============================*/
+
+        .btn {
+            border-radius: 10px;
+            font-weight: 600;
+            transition: .25s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--navy2);
+            border-color: var(--navy2);
+        }
+
+        .btn-primary:hover {
+            background: var(--navy);
+            border-color: var(--navy);
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .btn-secondary {
+            background: #334155;
+            border-color: #334155;
+        }
+
+        .btn-info {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: #fff;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            border-color: #f59e0b;
+            color: #fff;
+        }
+
+        .btn-dark {
+            background: var(--navy);
+            border-color: var(--navy);
+        }
+
+        /* ===========================
+           ACTION BUTTON
+        ============================*/
 
         .btn-action {
+
             width: 100px;
             height: 38px;
 
@@ -20,20 +111,200 @@
             justify-content: center;
 
             gap: 5px;
+
             font-size: 12px;
             font-weight: 600;
 
-            border-radius: 8px;
+            border-radius: 10px;
+
+            transition: .25s;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(15, 23, 42, .18);
         }
 
         .action-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 6px;
         }
 
+        /* ===========================
+           FORM
+        ============================*/
 
-        @media (max-width: 768px) {
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            height: 42px;
+        }
+
+        .form-control:focus {
+            border-color: var(--navy2);
+            box-shadow: 0 0 0 .15rem rgba(37, 99, 235, .15);
+        }
+
+        /* ===========================
+           TABLE
+        ============================*/
+
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+        .table thead {
+            background: #eaf2ff;
+        }
+
+        .table thead th {
+            border: none;
+            color: var(--navy);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            padding: 14px;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            padding: 14px;
+            border-color: #edf2f7;
+        }
+
+        .table-hover tbody tr {
+            transition: .2s;
+        }
+
+        .table-hover tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        /* ===========================
+           BADGE
+        ============================*/
+
+        .badge-danger {
+            background: #dc2626;
+            color: #fff;
+            padding: 7px 12px;
+            border-radius: 30px;
+        }
+
+        .badge-success {
+            background: #2563eb;
+            color: #fff;
+            padding: 7px 12px;
+            border-radius: 30px;
+        }
+
+        /* ===========================
+           FILE
+        ============================*/
+
+        .file-card {
+
+            background: #fff;
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            padding: 12px;
+
+            transition: .2s;
+        }
+
+        .file-card:hover {
+
+            box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
+
+        }
+
+        .file-name {
+
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+
+            word-break: break-word;
+        }
+
+        .file-actions {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 12px;
+
+        }
+
+        .btn-file {
+
+            height: 34px;
+
+            min-width: 80px;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 5px;
+
+        }
+
+        /* ===========================
+           MODAL
+        ============================*/
+
+        .modal-content {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--navy), var(--navy2));
+            color: #fff;
+            border: none;
+        }
+
+        .modal-footer {
+            border: none;
+        }
+
+        /* ===========================
+           PAGINATION
+        ============================*/
+
+        .pagination .page-link {
+            color: var(--navy2);
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .pagination .active .page-link {
+            background: var(--navy2);
+            border-color: var(--navy2);
+        }
+
+        /* ===========================
+           RESPONSIVE
+        ============================*/
+
+        @media(max-width:768px) {
 
             .header-title {
                 font-size: 15px;
@@ -41,12 +312,17 @@
 
             .card-header .btn {
                 width: 100%;
-                text-align: center;
             }
 
             .btn-action {
+
+                width: 82px;
+
+                height: 34px;
+
                 font-size: 10px;
-                padding: 3px 6px;
+
+                padding: 4px;
             }
 
             .btn-action i {
@@ -61,60 +337,21 @@
                 vertical-align: middle !important;
             }
 
+            .table {
+                min-width: 1100px;
+            }
 
-        }
+            .file-card {
+                min-width: 230px;
+            }
 
-        .text-break {
-            word-break: break-word;
-        }
+            .btn-file {
 
-        .file-box {
-            min-width: 220px;
-        }
+                min-width: 70px;
 
-        .file-name {
-            font-size: 13px;
-            font-weight: 600;
-        }
+                font-size: 11px;
+            }
 
-        /* button lampiran */
-        .file-card {
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            background: #fafafa;
-            padding: 10px;
-        }
-
-        .file-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #495057;
-            word-break: break-word;
-        }
-
-        .file-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .btn-file {
-            height: 32px;
-            min-width: 75px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-
-            transition: all .2s ease;
-        }
-
-        .btn-file:hover {
-            transform: translateY(-1px);
         }
     </style>
 

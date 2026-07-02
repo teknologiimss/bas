@@ -13,11 +13,11 @@
             border: none;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 8px 30px rgba(255, 0, 0, .08);
+            box-shadow: 0 8px 30px rgba(11, 31, 58, .10);
         }
 
         .header-red {
-            background: linear-gradient(135deg, #dc3545, #ff4d4d);
+            background: linear-gradient(135deg, #0b1f3a, #102a52);
             color: white;
             padding: 20px;
         }
@@ -28,7 +28,7 @@
         }
 
         .table thead {
-            background: #dc3545;
+            background: #0b1f3a;
             color: white;
         }
 
@@ -41,9 +41,9 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffe69c;
+            background: #e8eef7;
+            color: #0b1f3a;
+            border: 1px solid #cfdcf0;
             padding: 3px 8px;
             border-radius: 50px;
             font-size: 12px;
@@ -55,9 +55,9 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #b8dfc2;
+            background: #e6f4ec;
+            color: #1f7a4d;
+            border: 1px solid #bfe6d0;
             padding: 3px 8px;
             border-radius: 50px;
             font-size: 12px;
@@ -86,8 +86,78 @@
         }
 
         .empty-state i {
-            color: #dc3545;
+            color: #0b1f3a;
             opacity: .4;
+        }
+
+        .btn-group .btn {
+            margin-right: 2px;
+        }
+
+        .table-hover tbody tr:hover {
+            background: #eef4ff;
+            transition: 0.3s;
+        }
+
+        .action-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .action-group .btn {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-group form {
+            margin: 0;
+        }
+
+        .search-box .form-control {
+            border-radius: 12px 0 0 12px;
+        }
+
+        .search-box .btn {
+            border-radius: 0;
+            background: #0b1f3a;
+            color: #fff;
+            border: none;
+        }
+
+        .search-box .btn:last-child {
+            border-radius: 0 12px 12px 0;
+        }
+
+        .search-box .btn:hover {
+            background: #102a52;
+        }
+
+        /* BUTTON OVERRIDE → NAVY */
+        .btn-primary,
+        .btn-danger,
+        .btn-warning,
+        .btn-info {
+            background: #0b1f3a !important;
+            border: none !important;
+            color: #fff !important;
+        }
+
+        .btn-primary:hover,
+        .btn-danger:hover,
+        .btn-warning:hover,
+        .btn-info:hover {
+            background: #102a52 !important;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            border: none;
         }
 
         .btn-group .btn {
@@ -115,39 +185,8 @@
             }
         }
 
-
-
-        .action-group {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-
-        .action-group .btn {
-            width: 38px;
-            height: 38px;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .action-group form {
-            margin: 0;
-        }
-
-
-        .search-box .form-control {
-            border-radius: 12px 0 0 12px;
-        }
-
-        .search-box .btn {
-            border-radius: 0;
-        }
-
-        .search-box .btn:last-child {
-            border-radius: 0 12px 12px 0;
+        .empty-state i {
+            opacity: .4;
         }
     </style>
 
