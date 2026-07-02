@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
     <div class="container-fluid">
 
