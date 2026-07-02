@@ -7,11 +7,14 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #f4f7fb;
         }
 
+        /* =========================
+           HEADER NAVY BLUE
+        ========================= */
         .dashboard-header {
-            background: linear-gradient(135deg, #b30000, #ff3333);
+            background: linear-gradient(135deg, #0b1f3a, #163a6b);
             color: white;
             padding: 25px;
             border-radius: 15px;
@@ -25,48 +28,67 @@
 
         .dashboard-header p {
             margin: 0;
-            opacity: .9;
+            opacity: .85;
         }
 
+        /* =========================
+           STAT CARD
+        ========================= */
         .stat-card {
             background: white;
             border-radius: 15px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, .08);
+            box-shadow: 0 3px 15px rgba(11, 31, 58, .08);
             transition: .3s;
             height: 100%;
+            border: 1px solid #e6eef8;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(11, 31, 58, .15);
         }
 
         .stat-value {
             font-size: 30px;
             font-weight: bold;
             margin-bottom: 5px;
+            color: #163a6b;
         }
 
         .stat-title {
-            color: #666;
+            color: #5b6b82;
             font-size: 13px;
         }
 
+        /* =========================
+           CARD DASHBOARD
+        ========================= */
         .card-dashboard {
             background: white;
             border-radius: 15px;
             padding: 20px;
             margin-top: 20px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, .08);
+            box-shadow: 0 3px 15px rgba(11, 31, 58, .08);
+            border: 1px solid #e6eef8;
         }
 
         .card-dashboard h5 {
-            color: #b30000;
+            color: #163a6b;
             font-weight: bold;
             margin-bottom: 15px;
         }
 
+        .big-number {
+            font-size: 50px;
+            font-weight: bold;
+            color: #163a6b;
+        }
+
+        /* =========================
+           PROGRESS BAR
+        ========================= */
         .progress {
             height: 28px;
             border-radius: 30px;
@@ -76,26 +98,17 @@
             font-weight: bold;
         }
 
-        .big-number {
-            font-size: 50px;
+        .progress-delivery-bar {
             font-weight: bold;
-            color: #b30000;
+            background: linear-gradient(90deg, #1e3a8a, #2563eb);
         }
 
-        @media(max-width:768px) {
-            .stat-value {
-                font-size: 24px;
-            }
-        }
-
-
-        /* =====================================
-                                                               PROGRESS DELIVERY PER PROYEK
-                                                            ===================================== */
-
+        /* =========================
+           DELIVERY PROJECT CARD
+        ========================= */
         .delivery-project-card {
             background: #fff;
-            border: 1px solid #dcdcdc;
+            border: 1px solid #dbe6f5;
             border-radius: 8px;
             overflow: hidden;
         }
@@ -109,24 +122,26 @@
 
         .delivery-title-icon {
             font-size: 34px;
-            color: #c62828;
-            line-height: 1;
+            color: #1e3a8a;
         }
 
         .delivery-title h4 {
             margin: 0;
-            color: #c62828;
+            color: #1e3a8a;
             font-weight: 700;
         }
 
         .delivery-title small {
             font-style: italic;
             font-weight: 600;
-            color: #222;
+            color: #4b5d78;
         }
 
+        /* =========================
+           ACCORDION PROJECT
+        ========================= */
         .project-accordion {
-            border: 1px solid #dddddd;
+            border: 1px solid #dbe6f5;
             border-radius: 8px;
             overflow: hidden;
             margin-bottom: 12px;
@@ -142,8 +157,8 @@
         }
 
         .project-header {
-            background: #f3f3f3;
-            border-bottom: 1px solid #dddddd;
+            background: #eef4ff;
+            border-bottom: 1px solid #dbe6f5;
             padding: 14px 18px;
             cursor: pointer;
 
@@ -155,12 +170,12 @@
         .project-name {
             font-size: 16px;
             font-weight: 700;
-            color: #222;
+            color: #1e3a8a;
         }
 
         .project-arrow {
             font-size: 14px;
-            color: #666;
+            color: #5b6b82;
         }
 
         .project-arrow i {
@@ -176,12 +191,11 @@
             padding: 15px 18px;
         }
 
+        /* =========================
+           TRAIN ITEM
+        ========================= */
         .train-item {
             margin-bottom: 18px;
-        }
-
-        .train-item:last-child {
-            margin-bottom: 0;
         }
 
         .train-header {
@@ -202,14 +216,16 @@
             color: #222;
         }
 
+        /* =========================
+           PROGRESS BAR PROJECT
+        ========================= */
         .progress-rail {
             height: 14px;
-            background: #e8e8e8;
+            background: #e8eef7;
             border-radius: 4px;
             overflow: hidden;
         }
 
-        /* Progress Bar per Proyek Gerak */
         .progress-custom {
             height: 100%;
             color: white;
@@ -244,88 +260,40 @@
             }
         }
 
-        /* End Progress Bar per Proyek Gerak */
-
+        /* BLUE GRADIENT STATUS */
         .progress-green {
-            background-color: #28a745;
+            background: linear-gradient(90deg, #1e3a8a, #2563eb);
         }
 
         .progress-yellow {
-            background-color: #f0ad00;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
         }
 
         .progress-red {
-            background-color: #dc3545;
+            background: linear-gradient(90deg, #1e40af, #1d4ed8);
         }
 
-
-        /* Progress Delivery Animasi */
-
+        /* =========================
+           TRAIN ANIMATION
+        ========================= */
         .progress-wrapper {
             position: relative;
             margin-top: 20px;
         }
 
-        .progress-delivery {
-            height: 32px;
-            border-radius: 30px;
-            overflow: hidden;
-        }
-
-        .progress-delivery-bar {
-
-            font-weight: bold;
-
-            background-size: 25px 25px;
-
-            background-image:
-                linear-gradient(45deg,
-                    rgba(255, 255, 255, .15) 25%,
-                    transparent 25%,
-                    transparent 50%,
-                    rgba(255, 255, 255, .15) 50%,
-                    rgba(255, 255, 255, .15) 75%,
-                    transparent 75%,
-                    transparent);
-
-            animation: delivery-stripes 1s linear infinite;
-        }
-
-        @keyframes delivery-stripes {
-
-            from {
-                background-position: 0 0;
-            }
-
-            to {
-                background-position: 25px 0;
-            }
-
-        }
-
-        /* Kereta */
-
         .train-runner {
-
             position: absolute;
-
             top: -28px;
-
             left: 0;
-
             font-size: 28px;
-
             z-index: 10;
-
             transition: left 2s ease;
-
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .3));
-
             animation: train-bounce .6s infinite alternate;
+            color: #1e3a8a;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .25));
         }
 
         @keyframes train-bounce {
-
             from {
                 transform: translateY(0px);
             }
@@ -333,7 +301,6 @@
             to {
                 transform: translateY(-3px);
             }
-
         }
     </style>
 
