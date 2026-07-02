@@ -7,17 +7,19 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #f4f7fb;
         }
 
-        /* HEADER */
+        /* =========================
+           HEADER
+        ========================= */
         .page-header {
-            background: linear-gradient(135deg, #dc3545, #ff4d4d);
+            background: linear-gradient(135deg, #0b1f3a, #163a6b);
             color: white;
             padding: 20px;
             border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(220, 53, 69, .25);
+            box-shadow: 0 8px 20px rgba(11, 31, 58, .20);
             animation: fadeDown .6s ease;
         }
 
@@ -33,12 +35,15 @@
             }
         }
 
-        /* CARD */
+        /* =========================
+           CARD
+        ========================= */
         .card {
-            border: none;
+            border: 1px solid #e6eef8;
             border-radius: 15px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, .08);
+            box-shadow: 0 3px 15px rgba(11, 31, 58, .08);
             animation: fadeUp .6s ease;
+            overflow: hidden;
         }
 
         @keyframes fadeUp {
@@ -54,41 +59,78 @@
         }
 
         .card-header {
-            background: #dc3545;
+            background: #163a6b;
             color: white;
             font-weight: bold;
             border-radius: 15px 15px 0 0 !important;
+            border: none;
         }
 
-        /* TABLE */
-        .table thead {
-            background: #f8f9fa;
+        /* =========================
+           TABLE
+        ========================= */
+        .table thead,
+        .table thead th {
+            background: #163a6b;
+            color: white;
+            border-color: #163a6b;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
         }
 
         .table tbody tr {
-            transition: .2s;
+            transition: .25s;
         }
 
         .table tbody tr:hover {
-            background: #fff5f5;
-            transform: scale(1.01);
+            background: #eef4ff;
+            transform: scale(1.005);
         }
 
-        /* BUTTON */
+        /* =========================
+           BUTTON
+        ========================= */
         .btn-back {
+            background: #163a6b;
+            border: none;
+            color: white;
             border-radius: 10px;
             font-weight: 600;
+            transition: .3s;
         }
 
-        /* BADGE */
+        .btn-back:hover {
+            background: #0b1f3a;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           BADGE
+        ========================= */
         .badge {
             font-size: 12px;
             padding: 6px 10px;
             border-radius: 8px;
         }
 
-        /* MOBILE CARD MODE */
-        @media (max-width: 768px) {
+        .bg-warning {
+            background: #2563eb !important;
+            color: white !important;
+        }
+
+        .bg-success {
+            background: #1e3a8a !important;
+            color: white !important;
+        }
+
+        /* =========================
+           MOBILE CARD
+        ========================= */
+        @media (max-width:768px) {
 
             table {
                 display: none;
@@ -101,29 +143,49 @@
             .spr-card {
                 background: white;
                 border-radius: 12px;
-                padding: 12px;
-                margin-bottom: 10px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
-                border-left: 4px solid #dc3545;
+                padding: 15px;
+                margin-bottom: 12px;
+                box-shadow: 0 3px 12px rgba(11, 31, 58, .08);
+                border-left: 5px solid #163a6b;
                 animation: fadeUp .4s ease;
             }
 
             .spr-title {
                 font-weight: bold;
-                font-size: 14px;
+                font-size: 15px;
+                color: #163a6b;
             }
 
             .spr-text {
                 font-size: 13px;
-                color: #555;
+                color: #6b7280;
             }
 
         }
 
-        @media (min-width: 769px) {
+        @media (min-width:769px) {
             .mobile-card {
                 display: none;
             }
+        }
+
+        /* =========================
+           PAGINATION
+        ========================= */
+        .pagination .page-link {
+            color: #163a6b;
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: #163a6b;
+            border-color: #163a6b;
+        }
+
+        .pagination .page-link:hover {
+            background: #eef4ff;
+            color: #0b1f3a;
         }
     </style>
 
