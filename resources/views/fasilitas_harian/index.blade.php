@@ -10,142 +10,315 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #edf2f7;
+            font-family: "Segoe UI", sans-serif;
         }
 
-        /* HEADER */
-
+        /* ===============================
+           HEADER
+        =============================== */
         .page-header {
-
-            background: linear-gradient(135deg,
-                    #b30000,
-                    #ff2d2d);
-
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
             color: white;
-
             border-radius: 20px;
-
             padding: 25px;
-
             margin-bottom: 25px;
-
-            box-shadow: 0 10px 25px rgba(179,
-                    0,
-                    0,
-                    .20);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, .25);
+            animation: fadeDown .4s ease;
         }
 
         .page-header h3 {
-
-            font-weight: 700;
-
             margin: 0;
+            font-weight: 700;
         }
 
-        /* CARD */
+        .page-header small {
+            opacity: .9;
+            font-size: 13px;
+        }
+
+        /* ===============================
+           CARD
+        =============================== */
+
+        .stat-card,
+        .card-table {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, .08);
+            animation: fadeUp .4s ease;
+        }
 
         .stat-card {
-
-            border: none;
-
-            border-radius: 18px;
-
-            overflow: hidden;
-
-            transition: .25s;
-
-            box-shadow:
-                0 4px 12px rgba(0, 0, 0, .06);
-
+            transition: .3s;
         }
 
         .stat-card:hover {
-
-            transform: translateY(-4px);
-
-        }
-
-        .stat-icon {
-
-            width: 60px;
-            height: 60px;
-
-            border-radius: 50%;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            color: white;
-
-            font-size: 22px;
+            transform: translateY(-5px);
+            box-shadow: 0 18px 35px rgba(30, 58, 138, .18);
         }
 
         .card-table {
-
-            border: none;
-
             border-radius: 20px;
-
-            overflow: hidden;
-
-            box-shadow:
-                0 5px 15px rgba(0, 0, 0, .05);
         }
 
-        .table th {
+        /* ===============================
+           ICON
+        =============================== */
 
-            background: #b30000;
-
+        .stat-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             color: white;
-
-            border: none;
-
-            vertical-align: middle;
+            font-size: 22px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, .15);
         }
 
-        .table td {
+        .bg-danger {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb) !important;
+        }
+
+        .bg-success {
+            background: linear-gradient(135deg, #0f766e, #14b8a6) !important;
+        }
+
+        .bg-primary {
+            background: linear-gradient(135deg, #312e81, #4338ca) !important;
+        }
+
+        /* ===============================
+           TABLE
+        =============================== */
+
+        .table-responsive {
+            border-radius: 15px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            border: none;
             vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            border-color: #e5e7eb;
+        }
+
+        .table-hover tbody tr:hover {
+            background: #eff6ff;
+        }
+
+        /* ===============================
+           BUTTON
+        =============================== */
+
+        .btn {
+            border-radius: 10px;
+            transition: .25s;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-light {
+            background: white;
+            color: #1e3a8a;
+            border: none;
+        }
+
+        .btn-light:hover {
+            background: #dbeafe;
+            color: #1e3a8a;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            border: none;
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 8px 20px rgba(37, 99, 235, .35);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #0284c7, #0ea5e9);
+            border: none;
+        }
+
+        .btn-info:hover {
+            box-shadow: 0 8px 20px rgba(2, 132, 199, .35);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4338ca, #6366f1);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 8px 20px rgba(67, 56, 202, .35);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: white;
+            border: none;
+        }
+
+        .btn-warning:hover {
+            box-shadow: 0 8px 20px rgba(245, 158, 11, .35);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            border: none;
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 8px 20px rgba(220, 38, 38, .35);
+        }
+
+        .btn-dark {
+            background: linear-gradient(135deg, #334155, #1e293b);
+            border: none;
+        }
+
+        .btn-dark:hover {
+            box-shadow: 0 8px 20px rgba(30, 41, 59, .35);
         }
 
         .btn-action {
-
-            border-radius: 10px;
-
-            margin: 2px;
+            margin: 3px;
+            border-radius: 8px;
         }
+
+        /* ===============================
+           SEARCH
+        =============================== */
 
         .search-box {
-
             border-radius: 12px;
+            border: 1px solid #dbe4f0;
+            height: 42px;
         }
+
+        .search-box:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
+        }
+
+        .input-group .btn {
+            border-radius: 0 12px 12px 0;
+        }
+
+        /* ===============================
+           PAGINATION
+        =============================== */
+
+        .pagination {
+            justify-content: center;
+        }
+
+        .page-item.active .page-link {
+            background: #1e3a8a;
+            border-color: #1e3a8a;
+        }
+
+        .page-link {
+            color: #1e3a8a;
+        }
+
+        /* ===============================
+           ANIMATION
+        =============================== */
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===============================
+           RESPONSIVE
+        =============================== */
 
         @media(max-width:768px) {
 
-            .table-responsive {
-
-                font-size: 12px;
-
-            }
-
-            .btn-action {
-
-                width: 100%;
-
-                margin-bottom: 5px;
-
-            }
-
             .page-header {
-
                 padding: 18px;
+                border-radius: 15px;
             }
 
             .page-header h3 {
-
                 font-size: 20px;
+            }
+
+            .page-header small {
+                font-size: 11px;
+            }
+
+            .stat-card {
+                margin-bottom: 15px;
+            }
+
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+
+            .table-responsive {
+                font-size: 12px;
+            }
+
+            .table thead th,
+            .table tbody td {
+                white-space: nowrap;
+            }
+
+            .btn-action {
+                width: 100%;
+                margin-bottom: 6px;
+            }
+
+            .search-box {
+                margin-bottom: 10px;
+            }
+
+            .input-group {
+                flex-wrap: nowrap;
             }
         }
     </style>

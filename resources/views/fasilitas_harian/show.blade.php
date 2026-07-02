@@ -8,260 +8,448 @@
 
     <style>
         body {
-            background: #f5f6fa;
+            background: #eef3f9;
+            font-family: 'Segoe UI', sans-serif;
         }
+
+        /* ===========================
+            CARD
+    =========================== */
 
         .matrix-card {
             border: none;
-            border-radius: 18px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .08);
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .12);
         }
+
+        /* ===========================
+            HEADER
+    =========================== */
 
         .matrix-header {
-            background: linear-gradient(135deg, #b30000, #ff2d2d);
+
+            background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
+
             color: white;
-            padding: 20px;
+
+            padding: 25px;
+
+            box-shadow: 0 8px 25px rgba(30, 58, 138, .25);
+
         }
 
+        .matrix-header h4 {
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+        }
+
+        .matrix-header .btn {
+
+            border-radius: 12px;
+
+            font-weight: 600;
+
+        }
+
+        /* ===========================
+            TABLE
+    =========================== */
+
         .table-wrapper {
+
             overflow: auto;
+
             max-height: 80vh;
+
+            border-radius: 15px;
+
         }
 
         .matrix-table {
+
             white-space: nowrap;
+
             min-width: 1800px;
+
+            margin-bottom: 0;
+
         }
 
         .matrix-table th {
-            background: #b30000;
+
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+
             color: white;
+
             text-align: center;
+
             vertical-align: middle;
+
             position: sticky;
+
             top: 0;
+
             z-index: 10;
+
             font-size: 12px;
+
+            border: 1px solid #23395d;
+
         }
 
         .matrix-table td {
+
             text-align: center;
+
             vertical-align: middle;
+
             font-size: 12px;
+
+            background: #fff;
+
+            border: 1px solid #dee2e6;
+
         }
 
+        .matrix-table tbody tr:nth-child(even) {
+
+            background: #f8fbff;
+
+        }
+
+        .matrix-table tbody tr:hover td {
+
+            background: #eef5ff;
+
+        }
+
+        /* ===========================
+            FREEZE COLUMN
+    =========================== */
+
         .left-col {
+
             position: sticky;
+
             left: 0;
-            background: white;
+
+            background: #fff;
+
             z-index: 5;
+
             min-width: 70px;
+
+            font-weight: 700;
+
         }
 
         .left-col-2 {
+
             position: sticky;
+
             left: 70px;
-            background: white;
+
+            background: #fff;
+
             z-index: 5;
+
             min-width: 280px;
+
+            text-align: left;
+
         }
 
         .left-col-3 {
+
             position: sticky;
+
             left: 350px;
-            background: white;
+
+            background: #fff;
+
             z-index: 5;
+
             min-width: 350px;
+
+            text-align: left;
+
         }
 
-        /* ==========================
-               FREEZE HEADER + KOLOM
-            ========================== */
+        /* Freeze Header */
 
         .header-freeze {
+
             position: sticky !important;
+
             top: 0;
-            background: #b30000 !important;
-            color: white !important;
+
+            background: linear-gradient(135deg, #0f172a, #1e3a8a) !important;
+
+            color: #fff !important;
+
         }
 
-        /* Header No */
         th.left-col {
+
             left: 0;
+
             z-index: 30 !important;
+
         }
 
-        /* Header Uraian */
         th.left-col-2 {
+
             left: 70px;
+
             z-index: 29 !important;
+
         }
 
-        /* Header Aktivitas */
         th.left-col-3 {
+
             left: 350px;
+
             z-index: 28 !important;
+
         }
 
-        /* Isi tabel */
         td.left-col {
+
             z-index: 20;
+
         }
 
         td.left-col-2 {
+
             z-index: 19;
+
         }
 
         td.left-col-3 {
+
             z-index: 18;
+
         }
 
+        /* ===========================
+            BADGE STATUS
+    =========================== */
+
+        .badge {
+
+            font-size: 12px;
+
+            padding: 6px 10px;
+
+            border-radius: 8px;
+
+        }
+
+        .bg-success {
+
+            background: #16a34a !important;
+
+        }
+
+        .bg-danger {
+
+            background: #dc2626 !important;
+
+        }
+
+        .bg-warning {
+
+            background: #facc15 !important;
+
+            color: #111827 !important;
+
+        }
+
+        /* ===========================
+            LEGEND
+    =========================== */
+
         .legend {
+
             display: flex;
-            gap: 10px;
+
+            gap: 12px;
+
             flex-wrap: wrap;
+
         }
 
         .legend span {
-            padding: 6px 12px;
-            border-radius: 10px;
+
+            padding: 8px 15px;
+
+            border-radius: 12px;
+
             color: white;
+
             font-size: 12px;
+
+            font-weight: 600;
+
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .08);
+
         }
 
         .badge-v {
-            background: #198754;
+
+            background: #16a34a;
+
         }
 
         .badge-x {
-            background: #dc3545;
+
+            background: #dc2626;
+
         }
 
         .badge-o {
-            background: #ffc107;
-            color: black !important;
+
+            background: #facc15;
+
+            color: #111827 !important;
+
         }
 
+        /* ===========================
+            BUTTON
+    =========================== */
 
-        /* Tampilan Hp  */
-        /* ==========================
-                                       MOBILE RESPONSIVE
-                                    ========================== */
-        @media (max-width: 768px) {
+        .btn-light {
 
-            .matrix-header .d-flex {
-                flex-direction: column;
-                align-items: flex-start !important;
+            background: #fff;
+
+            border: none;
+
+            color: #1e3a8a;
+
+        }
+
+        .btn-light:hover {
+
+            background: #eef5ff;
+
+        }
+
+        .btn-outline-light {
+
+            border: 1px solid rgba(255, 255, 255, .6);
+
+            color: #fff;
+
+        }
+
+        .btn-outline-light:hover {
+
+            background: #fff;
+
+            color: #1e3a8a;
+
+        }
+
+        /* ===========================
+            MOBILE
+    =========================== */
+
+        @media(max-width:768px) {
+
+            .matrix-header {
+
+                padding: 18px;
+
             }
 
             .matrix-header h4 {
-                font-size: 18px;
-            }
 
-            .matrix-header .btn {
-                width: 100%;
-                margin-top: 8px;
-            }
+                font-size: 20px;
 
-            .table-wrapper {
-                max-height: 65vh;
-                overflow: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .matrix-table {
-                min-width: 1200px;
-                font-size: 11px;
-            }
-
-            .matrix-table th,
-            .matrix-table td {
-                padding: 4px;
-                font-size: 11px;
-            }
-
-            .left-col {
-                min-width: 50px;
-                font-size: 11px;
-            }
-
-            .left-col-2 {
-                left: 50px;
-                min-width: 180px;
-                font-size: 11px;
-            }
-
-            .left-col-3 {
-                left: 230px;
-                min-width: 220px;
-                font-size: 11px;
-            }
-
-            .legend {
-                gap: 6px;
-            }
-
-            .legend span {
-                font-size: 10px;
-                padding: 5px 8px;
             }
 
             .header-responsive {
-                flex-direction: column;
-                align-items: stretch;
-            }
 
-            .header-responsive .action-btn {
                 display: flex;
+
                 flex-direction: column;
+
+                gap: 15px;
+
+            }
+
+            .action-btn {
+
+                display: flex;
+
+                flex-direction: column;
+
                 gap: 10px;
+
+            }
+
+            .action-btn .btn {
+
                 width: 100%;
-            }
 
-            .header-responsive .action-btn .btn {
-                width: 100%;
-            }
-
-            /* Freeze */
-            /* ==========================
-           MOBILE TANPA FREEZE
-        ========================== */
-
-            /* MATIKAN SEMUA STICKY DI HP */
-            .left-col,
-            .left-col-2,
-            .left-col-3,
-            .header-freeze,
-            th.left-col,
-            th.left-col-2,
-            th.left-col-3 {
-                position: static !important;
-                left: auto !important;
-                top: auto !important;
-                z-index: auto !important;
-            }
-
-            .matrix-table th {
-                position: static !important;
             }
 
             .table-wrapper {
-                overflow-x: auto;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
+
+                overflow: auto;
+
                 max-height: 70vh;
+
+                -webkit-overflow-scrolling: touch;
+
             }
 
             .matrix-table {
+
                 min-width: 1200px;
+
             }
 
             .matrix-table th,
+
             .matrix-table td {
+
                 font-size: 11px;
-                padding: 4px;
+
+                padding: 5px;
+
             }
+
+            .left-col,
+
+            .left-col-2,
+
+            .left-col-3,
+
+            .header-freeze,
+
+            th.left-col,
+
+            th.left-col-2,
+
+            th.left-col-3 {
+
+                position: static !important;
+
+                left: auto !important;
+
+                top: auto !important;
+
+                z-index: auto !important;
+
+            }
+
         }
     </style>
 

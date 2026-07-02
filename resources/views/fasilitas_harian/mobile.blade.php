@@ -7,262 +7,380 @@
 
     <style>
         body {
-            background: #eef2f7;
+            background: #edf2f8;
             font-family: 'Segoe UI', sans-serif;
         }
 
         .mobile-container {
-            max-width: 800px;
+            max-width: 850px;
             margin: auto;
             padding-bottom: 100px;
         }
 
-        /* HEADER */
+        /* ===========================
+                HEADER
+        =========================== */
 
         .header-card {
 
-            background:
-                linear-gradient(135deg,
-                    #b30000,
-                    #ff2d2d);
+            background: linear-gradient(135deg,
+                    #0f172a,
+                    #1e3a8a,
+                    #2563eb);
 
             color: white;
 
             border-radius: 22px;
 
-            padding: 20px;
+            padding: 22px;
 
-            margin-bottom: 18px;
+            margin-bottom: 20px;
 
-            box-shadow:
-                0 8px 24px rgba(0, 0, 0, .12);
+            box-shadow: 0 12px 28px rgba(30, 58, 138, .25);
         }
 
         .header-title {
 
-            font-size: 22px;
+            font-size: 24px;
 
             font-weight: 700;
+
         }
 
         .header-info {
 
             margin-top: 12px;
 
-            font-size: 13px;
+            font-size: 14px;
 
             line-height: 1.8;
+
+            color: rgba(255, 255, 255, .9);
+
         }
 
-        /* PROGRESS */
+        /* ===========================
+                CARD
+        =========================== */
 
-        .progress-card {
-
-            background: white;
-
-            border-radius: 18px;
-
-            padding: 15px;
-
-            margin-bottom: 15px;
-
-            box-shadow:
-                0 3px 12px rgba(0, 0, 0, .05);
-        }
-
-        .progress {
-            height: 8px;
-            border-radius: 20px;
-        }
-
-        /* ITEM */
-
+        .progress-card,
         .item-card {
 
             background: white;
 
+            border: none;
+
             border-radius: 18px;
 
-            padding: 15px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
 
-            margin-bottom: 15px;
+            margin-bottom: 18px;
 
-            box-shadow:
-                0 4px 14px rgba(0, 0, 0, .06);
+        }
 
-            transition: .25s;
+        .item-card {
+
+            padding: 18px;
+
+            transition: .3s;
+
         }
 
         .item-card:hover {
-            transform: translateY(-2px);
+
+            transform: translateY(-4px);
+
+            box-shadow: 0 12px 30px rgba(30, 58, 138, .15);
+
         }
+
+        .progress-card {
+
+            padding: 18px;
+
+        }
+
+        /* ===========================
+                TITLE
+        =========================== */
 
         .item-title {
 
-            font-size: 16px;
+            font-size: 17px;
 
             font-weight: 700;
 
-            color: #222;
+            color: #0f172a;
 
             margin-bottom: 10px;
+
         }
 
         .item-sub {
 
-            font-size: 13px;
+            color: #64748b;
 
-            color: #666;
+            font-size: 14px;
+
+            line-height: 1.8;
+
         }
 
-        /* BUTTON STATUS */
+        /* ===========================
+                INPUT
+        =========================== */
+
+        .form-control {
+
+            border-radius: 12px;
+
+            border: 1px solid #cbd5e1;
+
+        }
+
+        .form-control:focus {
+
+            border-color: #2563eb;
+
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
+
+        }
+
+        /* ===========================
+                PROGRESS
+        =========================== */
+
+        .progress {
+
+            height: 10px;
+
+            border-radius: 20px;
+
+            background: #dbeafe;
+
+        }
+
+        .progress-bar {
+
+            background: linear-gradient(90deg,
+                    #1e3a8a,
+                    #2563eb) !important;
+
+        }
+
+        /* ===========================
+            STATUS BUTTON
+        =========================== */
 
         .status-group {
 
             display: flex;
 
-            gap: 8px;
+            gap: 10px;
 
-            margin-top: 15px;
+            margin-top: 18px;
+
         }
 
         .status-group input {
+
             display: none;
+
         }
 
         .btn-status {
 
             flex: 1;
 
-            padding: 12px;
-
-            text-align: center;
+            padding: 13px;
 
             border-radius: 12px;
+
+            text-align: center;
 
             font-weight: 700;
 
             cursor: pointer;
 
             transition: .25s;
+
         }
 
-        /* V */
+        .btn-status:hover {
+
+            transform: translateY(-2px);
+
+        }
+
+        /* ===========================
+                    V
+        =========================== */
 
         .btn-v {
 
-            background: #ecfff3;
+            background: #eff6ff;
 
-            border: 1px solid #bfe8cf;
+            border: 1px solid #93c5fd;
 
-            color: #198754;
+            color: #2563eb;
+
         }
 
         input:checked+.btn-v {
 
-            background: #198754;
+            background: #2563eb;
 
             color: white;
+
+            border-color: #2563eb;
+
         }
 
-        /* X */
+        /* ===========================
+                    X
+        =========================== */
 
         .btn-x {
 
-            background: #fff0f0;
+            background: #fef2f2;
 
-            border: 1px solid #ffc7c7;
+            border: 1px solid #fca5a5;
 
-            color: #dc3545;
+            color: #dc2626;
+
         }
 
         input:checked+.btn-x {
 
-            background: #dc3545;
+            background: #dc2626;
 
             color: white;
+
+            border-color: #dc2626;
+
         }
 
-        /* O */
+        /* ===========================
+                    O
+        =========================== */
 
         .btn-o {
 
-            background: #fff9e6;
+            background: #fefce8;
 
-            border: 1px solid #ffe69c;
+            border: 1px solid #fde047;
 
-            color: #d39e00;
+            color: #ca8a04;
+
         }
 
         input:checked+.btn-o {
 
-            background: #ffc107;
+            background: #facc15;
 
-            color: black;
+            color: #111827;
+
+            border-color: #facc15;
+
         }
 
-        /* TEXTAREA */
-
-        .form-control {
-
-            border-radius: 12px;
-        }
-
-        /* SPR */
+        /* ===========================
+                SPR
+        =========================== */
 
         .spr-box {
 
             display: none;
 
-            margin-top: 10px;
+            margin-top: 12px;
 
             animation: fade .3s ease;
+
         }
 
         @keyframes fade {
 
             from {
+
                 opacity: 0;
+
                 transform: translateY(10px);
+
             }
 
             to {
+
                 opacity: 1;
-                transform: none;
+
+                transform: translateY(0);
+
             }
 
         }
 
-        /* SAVE */
+        /* ===========================
+                STICKY SAVE
+        =========================== */
 
         .sticky-save {
 
             position: fixed;
 
             left: 0;
+
             right: 0;
+
             bottom: 0;
 
             background: white;
 
-            padding: 10px;
+            padding: 14px;
 
-            box-shadow:
-                0 -3px 12px rgba(0, 0, 0, .08);
+            border-top: 1px solid #dbeafe;
+
+            box-shadow: 0 -8px 20px rgba(15, 23, 42, .08);
 
             z-index: 999;
+
         }
 
         .save-btn {
 
             width: 100%;
 
-            height: 48px;
+            height: 54px;
 
-            border-radius: 12px;
+            border: none;
+
+            border-radius: 14px;
+
+            background: linear-gradient(135deg,
+                    #0f172a,
+                    #1e3a8a);
+
+            color: white;
+
+            font-size: 16px;
 
             font-weight: 700;
+
+            transition: .3s;
+
         }
+
+        .save-btn:hover {
+
+            transform: translateY(-2px);
+
+            background: linear-gradient(135deg,
+                    #1e3a8a,
+                    #2563eb);
+
+        }
+
+        /* ===========================
+                SCROLL TOP
+        =========================== */
 
         .scroll-top {
 
@@ -270,55 +388,178 @@
 
             right: 20px;
 
-            bottom: 80px;
+            bottom: 90px;
 
-            width: 45px;
+            width: 50px;
 
-            height: 45px;
+            height: 50px;
 
             border: none;
 
             border-radius: 50%;
 
-            background: #b30000;
+            background: linear-gradient(135deg,
+                    #0f172a,
+                    #1e3a8a);
 
             color: white;
+
+            box-shadow: 0 6px 20px rgba(30, 58, 138, .30);
 
             display: none;
 
+            transition: .3s;
+
             z-index: 999;
+
         }
 
+        .scroll-top:hover {
+
+            transform: scale(1.08);
+
+        }
+
+        /* ===========================
+                STATUS INFO
+        =========================== */
 
         .status-info {
+
             display: flex;
+
             align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            font-size: 13px;
+
+            gap: 12px;
+
+            margin-bottom: 10px;
+
+            font-size: 14px;
+
+            color: #475569;
+
         }
 
         .status-badge {
-            width: 35px;
+
+            width: 40px;
+
             text-align: center;
+
             font-weight: 700;
-            border-radius: 8px;
-            padding: 6px 0;
+
+            border-radius: 10px;
+
+            padding: 8px 0;
+
         }
 
         .status-v {
-            background: #198754;
+
+            background: #2563eb;
+
             color: white;
+
         }
 
         .status-x {
-            background: #dc3545;
+
+            background: #dc2626;
+
             color: white;
+
         }
 
         .status-o {
-            background: #ffc107;
-            color: black;
+
+            background: #facc15;
+
+            color: #111827;
+
+        }
+
+        /* ===========================
+                BUTTON
+        =========================== */
+
+        .btn-light {
+
+            border-radius: 12px;
+
+            color: #1e3a8a;
+
+            font-weight: 600;
+
+        }
+
+        .btn-light:hover {
+
+            background: #dbeafe;
+
+        }
+
+        /* ===========================
+                MOBILE
+        =========================== */
+
+        @media(max-width:768px) {
+
+            .mobile-container {
+
+                padding: 12px;
+
+                padding-bottom: 100px;
+
+            }
+
+            .header-card {
+
+                padding: 18px;
+
+            }
+
+            .header-title {
+
+                font-size: 20px;
+
+            }
+
+            .status-group {
+
+                flex-direction: row;
+
+                gap: 8px;
+
+            }
+
+            .btn-status {
+
+                font-size: 13px;
+
+                padding: 11px;
+
+            }
+
+            .item-title {
+
+                font-size: 15px;
+
+            }
+
+            .item-sub {
+
+                font-size: 13px;
+
+            }
+
+            .save-btn {
+
+                height: 50px;
+
+                font-size: 15px;
+
+            }
+
         }
     </style>
 

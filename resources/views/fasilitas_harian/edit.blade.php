@@ -10,89 +10,297 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #eef3f8;
+            font-family: "Segoe UI", sans-serif;
         }
+
+        /* ===========================
+           PAGE TITLE
+        =========================== */
 
         .page-title {
             font-weight: 700;
-            color: #b30000;
-            margin-bottom: 20px;
+            color: #0f172a;
+            margin-bottom: 24px;
         }
+
+        .page-title i {
+            color: #1e3a8a;
+            margin-right: 8px;
+        }
+
+        /* ===========================
+           CARD
+        =========================== */
 
         .main-card {
             border: none;
-            border-radius: 20px;
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+            animation: fadeUp .4s ease;
         }
 
         .card-header-red {
-            background: linear-gradient(135deg,
-                    #b30000,
-                    #ff2d2d);
-            color: white;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: #fff;
+            border: none;
+            padding: 18px 24px;
         }
+
+        .card-header-red h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* ===========================
+           LABEL
+        =========================== */
+
+        label {
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        /* ===========================
+           FORM CONTROL
+        =========================== */
+
+        .form-control,
+        .form-select,
+        select {
+            height: 46px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            transition: .25s;
+            box-shadow: none;
+        }
+
+        textarea.form-control {
+            height: auto;
+            min-height: 90px;
+        }
+
+        .form-control:focus,
+        .form-select:focus,
+        select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
+        }
+
+        /* ===========================
+           ITEM
+        =========================== */
 
         .item-row {
-
-            background: white;
-
-            border-radius: 15px;
-
-            padding: 15px;
-
-            margin-bottom: 15px;
-
-            border-left: 5px solid #b30000;
-
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
-
-            animation: fadeIn .25s ease;
+            background: #fff;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 18px;
+            border-left: 5px solid #1e3a8a;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, .06);
+            transition: .25s;
+            animation: fadeUp .35s ease;
         }
 
-        @keyframes fadeIn {
+        .item-row:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(15, 23, 42, .12);
+        }
+
+        /* ===========================
+           INPUT GROUP
+        =========================== */
+
+        .input-group .form-control {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .input-group .btn {
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* ===========================
+           BUTTON
+        =========================== */
+
+        .btn {
+            border-radius: 12px;
+            transition: .25s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #172554, #1d4ed8);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, .25);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #b91c1c, #dc2626);
+        }
+
+        .btn-secondary {
+            background: #64748b;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .btn-light {
+            background: white;
+            color: #1e3a8a;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-light:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        /* ===========================
+           SAVE BUTTON
+        =========================== */
+
+        .btn-save {
+            height: 50px;
+            min-width: 190px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        /* ===========================
+           ACTION FOOTER
+        =========================== */
+
+        .action-footer {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .action-footer .btn {
+            min-width: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* ===========================
+           SCROLLBAR
+        =========================== */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 20px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* ===========================
+           ANIMATION
+        =========================== */
+
+        @keyframes fadeUp {
 
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(15px);
             }
 
             to {
                 opacity: 1;
-                transform: none;
+                transform: translateY(0);
             }
-
         }
 
-        .btn-save {
-
-            height: 50px;
-
-            border-radius: 12px;
-
-            font-weight: 700;
-        }
-
-        .action-footer{
-    gap:15px;
-}
-
-.action-footer .btn{
-    min-width:180px;
-}
-
+        /* ===========================
+           MOBILE
+        =========================== */
 
         @media(max-width:768px) {
 
-            .btn {
-                width: 100%;
-                margin-bottom: 5px;
+            .container-fluid {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .page-title {
+                font-size: 22px;
+                text-align: center;
+            }
+
+            .card-header-red {
+                padding: 15px;
             }
 
             .item-row {
-                padding: 12px;
+                padding: 14px;
             }
 
+            .item-row .row>div {
+                margin-bottom: 10px;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+
+            .btn-save {
+                width: 100%;
+                min-width: 100%;
+                height: 46px;
+            }
+
+            .action-footer {
+                flex-direction: column;
+            }
+
+            .form-control,
+            select {
+                height: 42px;
+                font-size: 14px;
+            }
+
+            label {
+                font-size: 13px;
+            }
+
+            .input-group {
+                flex-wrap: nowrap;
+            }
+
+            .input-group .btn {
+                width: auto;
+                min-width: 45px;
+            }
         }
     </style>
 
