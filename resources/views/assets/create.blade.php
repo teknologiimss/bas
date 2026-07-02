@@ -1,33 +1,70 @@
 @extends('layouts.main')
 
 @section('content')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
         :root {
-            --primary: #c62828;
-            --primary-dark: #8e0000;
-            --primary-light: #ffebee;
+            --primary: #0f172a;
+            --primary-dark: #020617;
+            --primary-light: #1e3a8a;
+            --secondary: #2563eb;
+            --soft: #dbeafe;
+            --bg: #f1f5f9;
+            --text: #1e293b;
         }
 
         body {
-            background: #f5f6fa;
+            background: linear-gradient(135deg, #eef4ff, #f8fafc);
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--text);
         }
 
-        /* CARD */
+        /* ==========================
+            TOP BANNER
+        ========================== */
+
+        .top-banner {
+            background: linear-gradient(135deg,
+                    var(--primary),
+                    var(--primary-light));
+            color: white;
+            border-radius: 22px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, .25);
+            animation: fadeUp .5s ease;
+        }
+
+        .top-banner h2 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 30px;
+        }
+
+        .top-banner p {
+            margin-top: 8px;
+            opacity: .9;
+            font-size: 15px;
+        }
+
+        /* ==========================
+            CARD
+        ========================== */
 
         .asset-card {
             border: none;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, .08);
+            background: white;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, .08);
             animation: fadeUp .6s ease;
         }
 
         .asset-header {
             background: linear-gradient(135deg,
                     var(--primary),
-                    var(--primary-dark));
-            padding: 22px;
+                    var(--primary-light));
+            padding: 22px 25px;
         }
 
         .asset-header h4 {
@@ -37,38 +74,60 @@
             letter-spacing: .5px;
         }
 
-        /* FORM */
+        .card-body {
+            padding: 35px;
+        }
+
+        /* ==========================
+            FORM
+        ========================== */
+
+        .form-group {
+            animation: fadeUp .5s ease;
+            transition: .3s;
+        }
 
         .form-label {
             font-weight: 600;
-            color: #444;
+            color: var(--text);
             margin-bottom: 8px;
         }
 
+        .form-label i {
+            color: var(--secondary) !important;
+        }
+
         .form-control {
+            border: 2px solid #dbeafe;
             border-radius: 14px;
-            border: 2px solid #f1f1f1;
-            min-height: 52px;
-            transition: .3s;
+            min-height: 54px;
             box-shadow: none !important;
+            transition: .3s;
+            font-size: 15px;
         }
 
         .form-control:focus {
-            border-color: #c62828;
-            box-shadow: 0 0 0 4px rgba(198, 40, 40, .12) !important;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, .15) !important;
             transform: translateY(-2px);
         }
 
-        /* BUTTON */
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+
+        /* ==========================
+            BUTTON
+        ========================== */
 
         .btn-save {
             background: linear-gradient(135deg,
-                    #c62828,
-                    #8e0000);
+                    var(--primary),
+                    var(--primary-light));
             color: white;
             border: none;
             border-radius: 14px;
-            padding: 12px 28px;
+            padding: 12px 30px;
             font-weight: 600;
             transition: .3s;
         }
@@ -76,80 +135,44 @@
         .btn-save:hover {
             color: white;
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(198, 40, 40, .35);
+            box-shadow: 0 12px 25px rgba(15, 23, 42, .25);
         }
 
         .btn-back {
+            background: #64748b;
+            color: white;
+            border: none;
             border-radius: 14px;
-            padding: 12px 28px;
+            padding: 12px 30px;
             font-weight: 600;
             transition: .3s;
         }
 
         .btn-back:hover {
+            background: #475569;
+            color: white;
             transform: translateY(-3px);
         }
 
-        /* ICON BOX */
+        /* ==========================
+            INPUT EFFECT
+        ========================== */
 
-        .top-banner {
-            background: linear-gradient(135deg,
-                    #ef5350,
-                    #c62828);
-            border-radius: 20px;
-            padding: 20px;
-            color: white;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(198, 40, 40, .25);
-            animation: fadeUp .4s ease;
+        .form-group:hover {
+            transform: translateX(4px);
         }
 
-        .top-banner h2 {
-            margin: 0;
-            font-weight: 700;
+        /* ==========================
+            ICON
+        ========================== */
+
+        .pulse-icon {
+            animation: pulse 2s infinite;
         }
 
-        .top-banner p {
-            margin: 0;
-            opacity: .9;
-        }
-
-        /* INPUT ANIMATION */
-
-        .form-group {
-            animation: fadeUp .5s ease;
-        }
-
-        /* CARD BODY */
-
-        .card-body {
-            padding: 30px;
-        }
-
-        /* MOBILE */
-
-        @media(max-width:768px) {
-
-            .card-body {
-                padding: 20px;
-            }
-
-            .top-banner {
-                text-align: center;
-            }
-
-            .btn-save,
-            .btn-back {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-
-            .action-group {
-                display: block !important;
-            }
-        }
-
-        /* ANIMATION */
+        /* ==========================
+            ANIMATION
+        ========================== */
 
         @keyframes fadeUp {
 
@@ -172,7 +195,7 @@
             }
 
             50% {
-                transform: scale(1.05);
+                transform: scale(1.08);
             }
 
             100% {
@@ -181,14 +204,53 @@
 
         }
 
-        .pulse-icon {
-            animation: pulse 2s infinite;
+        /* ==========================
+            MOBILE
+        ========================== */
+
+        @media(max-width:768px) {
+
+            .container-fluid {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .top-banner {
+                text-align: center;
+                padding: 20px;
+            }
+
+            .top-banner h2 {
+                font-size: 24px;
+            }
+
+            .asset-header {
+                text-align: center;
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .action-group {
+                display: block !important;
+            }
+
+            .btn-save,
+            .btn-back {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .form-control {
+                min-height: 50px;
+            }
         }
     </style>
 
     <div class="container-fluid mt-3">
 
-        
+
         <div class="top-banner">
 
             <div class="row align-items-center">
@@ -252,7 +314,8 @@
 
                         </label>
 
-                        <input type="text" name="unit" autocomplete="off" class="form-control" placeholder="Masukkan nama unit" required>
+                        <input type="text" name="unit" autocomplete="off" class="form-control"
+                            placeholder="Masukkan nama unit" required>
 
                     </div>
 
@@ -266,8 +329,8 @@
 
                         </label>
 
-                        <input type="text" name="no_lambung" autocomplete="off" class="form-control" placeholder="Masukkan nomor lambung"
-                            required>
+                        <input type="text" name="no_lambung" autocomplete="off" class="form-control"
+                            placeholder="Masukkan nomor lambung" required>
 
                     </div>
 
@@ -281,8 +344,8 @@
 
                         </label>
 
-                        <input type="text" name="lokasi" autocomplete="off" class="form-control" placeholder="Masukkan lokasi asset"
-                            required>
+                        <input type="text" name="lokasi" autocomplete="off" class="form-control"
+                            placeholder="Masukkan lokasi asset" required>
 
                     </div>
 
@@ -311,7 +374,7 @@
             </div>
 
         </div>
-        
+
 
     </div>
 

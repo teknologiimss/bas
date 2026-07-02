@@ -3,61 +3,181 @@
 @section('content')
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
-        body {
-            background: #f4f6f9;
+        :root {
+            --primary: #0f172a;
+            --primary-dark: #020617;
+            --secondary: #1e3a8a;
+            --accent: #2563eb;
+            --light: #eff6ff;
+            --border: #dbeafe;
+            --success: #16a34a;
+            --danger: #dc2626;
         }
 
-        .page-title {
-            font-weight: bold;
-            color: #b30000;
+        body {
+            background: #eef4fb;
+            font-family: 'Segoe UI', sans-serif;
         }
+
+        /* TITLE */
+
+        .page-title {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+
+        /* MAIN CARD */
 
         .main-card {
             border: none;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, .08);
+            animation: fadeUp .4s ease;
         }
+
+        /* SECTION */
 
         .section-card {
             border: none;
-            border-radius: 14px;
+            border-radius: 20px;
             background: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-            transition: 0.2s;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, .07);
+            transition: .25s;
+            border-top: 5px solid var(--secondary);
         }
 
         .section-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 18px 35px rgba(15, 23, 42, .12);
         }
 
         .section-header {
             display: flex;
-            gap: 10px;
             align-items: center;
+            gap: 10px;
         }
 
-        .btn-add {
-            border-radius: 10px;
-            font-weight: 600;
-        }
+        /* ITEM */
 
         .item-row {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 10px;
+            background: #f8fbff;
+            border: 1px solid var(--border) !important;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .detail-row {
+            background: #ffffff;
+            border: 1px solid #e5eefc;
+            border-radius: 12px;
+            padding: 12px;
             margin-bottom: 10px;
         }
 
-        .btn-remove {
-            border-radius: 10px;
+        /* FORM */
+
+        .form-control {
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            height: 48px;
+            transition: .25s;
+            box-shadow: none !important;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 .25rem rgba(37, 99, 235, .15) !important;
+        }
+
+        label.fw-bold {
+            color: #334155;
+            font-weight: 600 !important;
+        }
+
+        /* BUTTON */
+
+        .btn {
+            border-radius: 12px;
+            font-weight: 600;
+            transition: .25s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border: none;
+            color: #fff;
+        }
+
+        .btn-info:hover {
+            color: #fff;
+            background: #0369a1;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: #166534;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-add {
+            padding: 12px 22px;
+            border-radius: 14px;
         }
 
         .save-btn {
-            border-radius: 12px;
-            padding: 12px 30px;
-            font-weight: bold;
+            border-radius: 14px;
+            padding: 14px 34px;
             font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(22, 163, 74, .25);
         }
+
+        /* ANIMATION */
+
+        @keyframes fadeUp {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        /* MOBILE */
 
         @media(max-width:768px) {
 
@@ -70,115 +190,67 @@
                 padding-right: 10px;
             }
 
-            /* TITLE */
             .page-title {
-                font-size: 22px;
-                line-height: 1.3;
-                margin-bottom: 18px !important;
+                font-size: 23px;
+                line-height: 1.4;
             }
 
-            /* CARD */
             .main-card,
             .section-card {
-
-                border-radius: 16px;
-                padding: 14px !important;
-
+                border-radius: 18px;
+                padding: 16px !important;
             }
 
-            /* FORM */
+            .row>div {
+                margin-bottom: 10px;
+            }
+
             .form-control {
-
-                height: 42px;
+                height: 44px;
                 font-size: 13px;
-                border-radius: 10px;
-
             }
 
             label.fw-bold {
-
                 font-size: 13px;
-                margin-bottom: 6px;
-
             }
 
-            /* ROW */
-            .row>div {
-
-                margin-bottom: 10px;
-
-            }
-
-            /* SECTION HEADER */
             .section-header {
                 flex-direction: column;
             }
 
-            /* ITEM */
             .item-row {
-
-                padding: 12px;
-                border-radius: 14px;
-                background: #f8fafc;
-
+                padding: 14px;
             }
 
-            /* BUTTON */
+            .detail-row {
+                padding: 10px;
+            }
+
             .btn {
-
-                border-radius: 10px;
-                font-size: 12px;
-                padding: 9px 12px;
-
+                width: 100%;
+                font-size: 13px;
+                padding: 10px;
             }
 
             .btn-add {
-
                 width: 100%;
-                margin-top: 5px;
-
+                margin-top: 10px;
             }
 
             .save-btn {
-
                 width: 100%;
-                font-size: 14px;
-                padding: 12px;
-
+                font-size: 15px;
+                padding: 13px;
             }
 
-            /* BUTTON HAPUS */
-            .btn-danger.w-100 {
-
-                width: 42px !important;
-                height: 42px;
-                padding: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: auto;
-
+            .btn-danger {
+                width: 100%;
             }
 
-            /* DETAIL */
-            .detail-row {
-
-                background: white;
-                border-radius: 12px;
-                padding: 10px;
-                margin-bottom: 10px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
-
-            }
-
-            /* TOMBOL AKTIVITAS */
             .btn-info.btn-sm,
             .btn-primary.btn-sm {
-
                 width: 100%;
                 margin-top: 8px;
-                padding: 10px;
-
             }
 
         }

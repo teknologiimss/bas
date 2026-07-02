@@ -21,7 +21,7 @@
         /* HEADER */
 
         .header-card {
-            background: linear-gradient(135deg, #b30000, #ff2d2d);
+            background: linear-gradient(135deg, #12003f, #1f006c);
             color: white;
             border-radius: 22px;
             padding: 20px;
@@ -82,8 +82,8 @@
         }
 
         .accordion-button:not(.collapsed) {
-            background: #fff0f0;
-            color: #b30000;
+            background: #f2f0ff;
+            color: #0f00b3;
         }
 
         .accordion-button:focus {
@@ -114,7 +114,7 @@
             border-radius: 14px;
             padding: 12px;
             margin-bottom: 12px;
-            border-left: 4px solid #b30000;
+            border-left: 4px solid #2700b3;
         }
 
         .detail-label {

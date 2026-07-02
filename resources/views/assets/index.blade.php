@@ -1,31 +1,69 @@
 @extends('layouts.main')
 
 @section('content')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
         :root {
-            --primary: #c62828;
-            --primary-dark: #8e0000;
-            --primary-light: #ffebee;
+            --primary: #0f172a;
+            --primary-dark: #020617;
+            --primary-light: #1e3a8a;
+            --secondary: #3b82f6;
+            --soft: #dbeafe;
+            --bg: #f1f5f9;
+            --text: #1e293b;
         }
 
         body {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #eef4ff, #f8fafc);
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--text);
         }
+
+        /* =========================
+            SUMMARY CARD
+        ========================= */
+
+        .asset-count {
+            background: linear-gradient(135deg,
+                    var(--primary),
+                    var(--primary-light));
+            color: white;
+            border-radius: 22px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, .25);
+        }
+
+        .asset-count h2 {
+            font-size: 40px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .asset-count small {
+            opacity: .9;
+            letter-spacing: .5px;
+            font-size: 14px;
+        }
+
+        /* =========================
+            CARD
+        ========================= */
 
         .asset-card {
             border: none;
-            border-radius: 20px;
+            border-radius: 22px;
             overflow: hidden;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
+            background: white;
+            box-shadow: 0 10px 35px rgba(15, 23, 42, .08);
             animation: fadeUp .5s ease;
         }
 
         .asset-header {
             background: linear-gradient(135deg,
                     var(--primary),
-                    var(--primary-dark));
-            padding: 20px;
+                    var(--primary-light));
+            padding: 20px 25px;
         }
 
         .asset-header h5 {
@@ -33,16 +71,50 @@
             letter-spacing: .5px;
         }
 
+        /* =========================
+            BUTTON
+        ========================= */
+
         .btn-modern {
             border: none;
             border-radius: 12px;
+            padding: 10px 18px;
             font-weight: 600;
             transition: .3s;
         }
 
         .btn-modern:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+            box-shadow: 0 12px 25px rgba(15, 23, 42, .18);
+        }
+
+        .btn-edit {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #1d4ed8;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #b91c1c;
+            color: white;
+        }
+
+        /* =========================
+            TABLE
+        ========================= */
+
+        .table-responsive {
+            border-radius: 18px;
+            overflow: hidden;
         }
 
         .table-modern {
@@ -50,86 +122,64 @@
         }
 
         .table-modern thead th {
-            background: #c62828;
+
+            background: linear-gradient(135deg,
+                    var(--primary),
+                    var(--primary-light));
+
             color: white;
+            border: none;
             text-align: center;
             vertical-align: middle;
-            border: none;
             white-space: nowrap;
-            padding: 14px;
+            padding: 15px;
+            font-size: 14px;
+            letter-spacing: .3px;
         }
 
         .table-modern tbody td {
+            padding: 15px;
             vertical-align: middle;
-            padding: 14px;
         }
 
         .table-modern tbody tr {
             transition: .25s;
         }
 
+        .table-modern tbody tr:nth-child(even) {
+            background: #f8fbff;
+        }
+
         .table-modern tbody tr:hover {
-            background: #ffebee;
+            background: #dbeafe;
             transform: scale(1.002);
         }
 
+        /* =========================
+            NUMBER BADGE
+        ========================= */
+
         .number-badge {
-            width: 38px;
-            height: 38px;
-            background: #c62828;
-            color: white;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
             margin: auto;
-        }
 
-        .btn-edit {
-            background: #ff9800;
-            color: white;
-        }
-
-        .btn-edit:hover {
-            background: #f57c00;
-            color: white;
-        }
-
-        .btn-delete {
-            background: #e53935;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background: #c62828;
-            color: white;
-        }
-
-        .asset-count {
             background: linear-gradient(135deg,
-                    #ef5350,
-                    #c62828);
+                    var(--primary),
+                    var(--primary-light));
+
             color: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(198, 40, 40, .25);
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(15, 23, 42, .2);
         }
 
-        .asset-count h2 {
-            margin: 0;
-            font-weight: 700;
-        }
-
-        .asset-count small {
-            opacity: .9;
-        }
-
-        .table-responsive {
-            border-radius: 15px;
-            overflow: hidden;
-        }
+        /* =========================
+            PAGINATION
+        ========================= */
 
         .pagination {
             justify-content: center;
@@ -137,17 +187,44 @@
         }
 
         .page-link {
-            color: #c62828;
+            color: var(--primary);
             border-radius: 10px !important;
             margin: 0 3px;
+            border: 1px solid #dbeafe;
+        }
+
+        .page-link:hover {
+            background: #dbeafe;
+            color: var(--primary);
         }
 
         .page-item.active .page-link {
-            background: #c62828;
-            border-color: #c62828;
+            background: var(--primary);
+            border-color: var(--primary);
         }
 
+        /* =========================
+            EMPTY DATA
+        ========================= */
+
+        .empty-data {
+            padding: 50px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .empty-data i {
+            font-size: 55px;
+            margin-bottom: 15px;
+            color: #94a3b8;
+        }
+
+        /* =========================
+            ANIMATION
+        ========================= */
+
         @keyframes fadeUp {
+
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -159,65 +236,65 @@
             }
         }
 
-        /* RESPONSIVE MOBILE */
-        @media (max-width: 768px) {
+        /* =========================
+            RESPONSIVE
+        ========================= */
+
+        @media (max-width:768px) {
 
             .container-fluid {
-                padding-left: 10px;
-                padding-right: 10px;
+                padding-left: 12px;
+                padding-right: 12px;
             }
 
-            /* Header */
             .asset-header .header-flex {
                 flex-direction: column;
-                gap: 15px;
                 text-align: center;
+                gap: 15px;
             }
 
             .asset-header .btn {
                 width: 100%;
             }
 
-            /* Summary */
             .asset-count {
                 text-align: center;
             }
 
             .asset-count .text-end {
                 text-align: center !important;
-                margin-top: 10px;
+                margin-top: 15px;
             }
 
-            /* Table Scroll */
             .table-responsive {
                 overflow-x: auto;
-                overflow-y: hidden;
                 -webkit-overflow-scrolling: touch;
-                border-radius: 15px;
             }
 
             .table-modern {
-                min-width: 700px;
-                white-space: nowrap;
+                min-width: 720px;
             }
 
             .table-modern th,
             .table-modern td {
-                padding: 10px;
                 font-size: 13px;
+                padding: 10px;
             }
 
-            /* Tombol aksi */
             .btn-action {
-                display: block;
                 width: 100%;
-                margin-bottom: 5px;
+                display: block;
+                margin-bottom: 6px;
             }
 
             .number-badge {
-                width: 32px;
-                height: 32px;
+                width: 34px;
+                height: 34px;
                 font-size: 13px;
+            }
+
+            .asset-count h2 {
+                font-size: 32px;
             }
         }
     </style>

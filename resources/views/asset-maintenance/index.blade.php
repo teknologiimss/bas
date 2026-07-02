@@ -1,40 +1,125 @@
 @extends('layouts.main')
 
 @section('content')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
     <style>
         :root {
-            --primary: #c62828;
-            --primary-dark: #8e0000;
-            --primary-light: #ffebee;
+            --primary: #0f172a;
+            --primary-dark: #020617;
+            --primary-light: #1e3a8a;
+            --secondary: #2563eb;
+            --bg: #eef4fb;
+            --border: #dbe7f5;
 
-            --planning: #42a5f5;
-            --realisasi: #00c853;
+            --planning: #3b82f6;
+            --realisasi: #10b981;
         }
 
         body {
-            background: #fafafa;
+            background: var(--bg);
         }
+
+        /* ===========================
+            CARD
+        ============================ */
 
         .card-matrix {
             border: none;
-            border-radius: 20px;
+            border-radius: 22px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+            box-shadow: 0 12px 35px rgba(15, 23, 42, .12);
         }
 
         .card-header-red {
-            background: linear-gradient(135deg,
-                    var(--primary),
-                    var(--primary-dark));
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
+            padding: 22px;
         }
+
+        .card-header-red h4 {
+            font-weight: 700;
+            letter-spacing: .5px;
+        }
+
+        /* BUTTON */
+
+        .header-action .btn {
+            border-radius: 12px;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .header-action .btn-light {
+            background: white;
+            color: var(--primary);
+            border: none;
+        }
+
+        .header-action .btn-warning {
+            background: var(--secondary);
+            color: white;
+            border: none;
+        }
+
+        .header-action .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, .18);
+        }
+
+        .card-header-red select {
+            border-radius: 12px;
+            border: none;
+            min-width: 120px;
+            font-weight: 600;
+        }
+
+        /* ===========================
+            SUMMARY CARD
+        ============================ */
+
+        .card-body>.row .card {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, .08);
+            transition: .3s;
+        }
+
+        .card-body>.row .card:hover {
+            transform: translateY(-3px);
+        }
+
+        .card-body>.row h3 {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* ===========================
+            TABLE
+        ============================ */
 
         .matrix-wrapper {
             overflow: auto;
             max-height: 80vh;
-            border: 1px solid #f5c6cb;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+        }
+
+        .matrix-wrapper::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .matrix-wrapper::-webkit-scrollbar-track {
+            background: #dbe7f5;
+        }
+
+        .matrix-wrapper::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 20px;
+        }
+
+        .matrix-wrapper::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
         }
 
         .matrix-table {
@@ -46,10 +131,12 @@
 
         .matrix-table th,
         .matrix-table td {
-            border: 1px solid #f1d4d4 !important;
+            border: 1px solid var(--border) !important;
         }
 
-        /* HEADER */
+        /* ===========================
+            HEADER TABLE
+        ============================ */
 
         .matrix-table thead th {
             position: sticky;
@@ -63,19 +150,19 @@
         }
 
         .month-header {
-            background: linear-gradient(180deg,
-                    #ef5350,
-                    #c62828) !important;
+            background: linear-gradient(180deg, var(--primary), var(--primary-light)) !important;
             color: white !important;
         }
 
         .week-header {
-            background: #ffcdd2 !important;
-            color: #7f0000 !important;
+            background: #dbeafe !important;
+            color: #1e3a8a !important;
             font-weight: 700;
         }
 
-        /* STICKY COLUMN */
+        /* ===========================
+            STICKY COLUMN
+        ============================ */
 
         .sticky-1,
         .sticky-2,
@@ -84,145 +171,131 @@
             position: sticky;
             z-index: 25;
             font-weight: 600;
-            border-right: 2px solid #d32f2f !important;
-            box-shadow: 3px 0 8px rgba(0, 0, 0, .08);
+            border-right: 2px solid var(--primary-light) !important;
+            box-shadow: 3px 0 8px rgba(15, 23, 42, .08);
         }
 
         .sticky-1 {
             left: 0;
             min-width: 70px;
-            background: #ffebee;
+            background: #eff6ff;
         }
 
         .sticky-2 {
             left: 70px;
             min-width: 180px;
-            background: #fff5f5;
+            background: white;
         }
 
         .sticky-3 {
             left: 250px;
             min-width: 150px;
-            background: #ffebee;
+            background: #eff6ff;
         }
 
         .sticky-4 {
             left: 400px;
             min-width: 200px;
-            background: #fff5f5;
+            background: white;
         }
-
-        /* HEADER STICKY */
 
         thead .sticky-1,
         thead .sticky-2,
         thead .sticky-3,
         thead .sticky-4 {
-            background: linear-gradient(180deg,
-                    #c62828,
-                    #8e0000) !important;
-
+            background: linear-gradient(180deg, var(--primary), var(--primary-light)) !important;
             color: white !important;
             z-index: 50;
         }
 
-        /* ROW */
+        /* ===========================
+            ROW
+        ============================ */
 
         .asset-row:nth-child(even) {
-            background: #fffafa;
+            background: #f8fbff;
         }
 
         .asset-row:hover {
-            background: #ffebee !important;
+            background: #e8f2ff !important;
         }
 
-        /* CELL */
+        /* ===========================
+            CELL
+        ============================ */
 
         .matrix-cell {
             width: 24px;
             min-width: 24px;
             height: 24px;
             cursor: pointer;
-            transition: .2s;
+            transition: .25s;
         }
 
         .matrix-cell:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-            z-index: 10;
+            transform: scale(1.18);
+            box-shadow: 0 0 10px rgba(37, 99, 235, .45);
             position: relative;
+            z-index: 10;
         }
 
         /* STATUS */
 
         .planning {
-            background: #42a5f5;
+            background: var(--planning);
         }
 
         .realisasi {
-            background: #00c853;
+            background: var(--realisasi);
         }
 
-        /* LEGEND */
+        /* ===========================
+            LEGEND
+        ============================ */
 
         .legend-box {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             display: inline-block;
             border-radius: 5px;
         }
 
-        /* FOOTER */
+        /* ===========================
+            FOOTER
+        ============================ */
 
         tfoot td {
-            background: #fff5f5;
+            background: #f8fbff;
             font-weight: 600;
         }
 
         .progress {
             height: 28px;
-            background: #f8d7da;
+            border-radius: 20px;
+            background: #dbeafe;
         }
 
         .progress-bar {
-            font-weight: bold;
+            font-weight: 700;
+            background: linear-gradient(90deg, #10b981, #22c55e) !important;
         }
 
-        /* SCROLLBAR */
+        /* ===========================
+            MOBILE
+        ============================ */
 
-        .matrix-wrapper::-webkit-scrollbar {
-            height: 12px;
-        }
-
-        .matrix-wrapper::-webkit-scrollbar-track {
-            background: #f5f5f5;
-        }
-
-        .matrix-wrapper::-webkit-scrollbar-thumb {
-            background: #c62828;
-            border-radius: 10px;
-        }
-
-        .matrix-wrapper::-webkit-scrollbar-thumb:hover {
-            background: #8e0000;
-        }
-
-        @media (max-width:768px) {
-
-            /* =====================
-                   HEADER RESPONSIVE
-                   ===================== */
+        @media(max-width:768px) {
 
             .card-header-red .d-flex {
                 flex-direction: column;
                 align-items: stretch !important;
-                gap: 10px;
+                gap: 12px;
             }
 
             .header-action {
                 display: flex !important;
                 flex-direction: column;
-                gap: 8px;
+                gap: 10px;
                 width: 100%;
             }
 
@@ -232,24 +305,14 @@
 
             .card-header-red select {
                 width: 100%;
-                margin-top: 10px;
             }
-
-            /* =====================
-                   SUMMARY CARD
-                   ===================== */
 
             .row.mb-4>div {
-                margin-bottom: 10px;
+                margin-bottom: 12px;
             }
 
-            /* =====================
-                   TABLE MOBILE
-                   ===================== */
-
             .matrix-wrapper {
-                overflow-x: auto;
-                overflow-y: auto;
+                overflow: auto;
                 max-height: 70vh;
                 -webkit-overflow-scrolling: touch;
             }
@@ -261,10 +324,8 @@
 
             .matrix-table th,
             .matrix-table td {
-                padding: 2px;
+                padding: 3px;
             }
-
-            /* HAPUS STICKY DI HP */
 
             .sticky-1,
             .sticky-2,
@@ -297,7 +358,6 @@
             .week-header {
                 font-size: 8px !important;
             }
-
         }
     </style>
 

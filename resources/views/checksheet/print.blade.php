@@ -128,7 +128,7 @@
 
             <td width="15%" class="text-center">
 
-                <img src="{{ public_path('img/IMSS.jpg') }}" width="80">
+                <img src="{{ public_path('img/ptimst.png') }}" width="80">
 
             </td>
 
