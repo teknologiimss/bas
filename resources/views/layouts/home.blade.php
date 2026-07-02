@@ -239,10 +239,10 @@
             @yield('content')
         </div>
 
-        <footer class="main-footer" style="margin-left: 0">
+        {{-- <footer class="main-footer" style="margin-left: 0">
             <b>PT</b> {{ config('app.version') }}
             <img src="{{ asset('img/garis.jpg') }}" style="width: 100%;" />
-        </footer>
+        </footer> --}}
 
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
