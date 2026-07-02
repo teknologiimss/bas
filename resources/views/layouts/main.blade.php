@@ -440,7 +440,7 @@
 
 
         </nav>
-        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: navy;">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: rgb(1, 1, 58);">
             <a href="/" class="brand-link text-center" style="background-color: rgb(255, 253, 253);">
                 <img src="{{ asset('img/logobas.png') }}" class="d-block w-100" height="30" alt=""
                     style="object-fit: contain;height: 50px;">
