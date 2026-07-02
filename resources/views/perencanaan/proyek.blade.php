@@ -6,79 +6,175 @@
 
     <style>
         body {
-            background: #f5f6fa;
+            background: #eef3f9;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        /* CARD */
+        /* ==========================
+            CARD
+        ========================== */
         .card {
             border: none;
             border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            animation: fadeUp 0.6s ease;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .10);
+            animation: fadeUp .5s ease;
         }
 
-        /* ITEM */
+        /* ==========================
+            LIST ITEM
+        ========================== */
         .border {
             border: none !important;
-            border-left: 5px solid #c40000 !important;
+            border-left: 6px solid #0f172a !important;
             border-radius: 14px !important;
             background: #fff;
-            transition: 0.25s ease;
+            transition: .3s ease;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, .05);
         }
 
         .border:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(196, 0, 0, 0.15);
+            box-shadow: 0 12px 25px rgba(15, 23, 42, .15);
+            border-left-color: #2563eb !important;
+            background: #f8fbff;
         }
 
-        /* TITLE */
+        /* ==========================
+            TITLE
+        ========================== */
         h5 {
-            color: #b30000;
+            color: #0f172a;
             font-weight: 700;
         }
 
-        /* BUTTON */
+        /* ==========================
+            BUTTON
+        ========================== */
+
         .btn-success {
-            background: linear-gradient(135deg, #c40000, #7a0000) !important;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a) !important;
             border: none !important;
             border-radius: 10px !important;
+            color: white;
+            font-weight: 600;
+            transition: .25s;
         }
 
         .btn-success:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(196, 0, 0, 0.3);
+            background: linear-gradient(135deg, #1e3a8a, #2563eb) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, .30);
         }
 
         .btn-primary {
+            background: #2563eb;
+            border: none;
             border-radius: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
         }
 
         .btn-warning {
+            background: #f59e0b;
+            border: none;
+            color: white;
             border-radius: 10px;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
         }
 
         .btn-danger {
+            background: #dc2626;
+            border: none;
             border-radius: 10px;
         }
 
-        /* MODAL */
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-secondary {
+            border-radius: 10px;
+        }
+
+        /* ==========================
+            SEARCH
+        ========================== */
+
+        .input-group .form-control {
+            border-radius: 10px 0 0 10px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .input-group .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
+        }
+
+        .input-group .btn {
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* ==========================
+            MODAL
+        ========================== */
+
         .modal-content {
+            border: none;
             border-radius: 18px;
             overflow: hidden;
-            animation: pop 0.3s ease;
+            animation: pop .3s ease;
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #c40000, #7a0000);
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            border: none;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* ==========================
+            INPUT
+        ========================== */
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
+        }
+
+        /* ==========================
+            PAGINATION
+        ========================== */
+
+        .pagination .page-link {
+            color: #1e3a8a;
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .pagination .active .page-link {
+            background: #1e3a8a;
+            border-color: #1e3a8a;
             color: white;
         }
 
-        /* INPUT */
-        .form-control {
-            border-radius: 10px;
-        }
+        /* ==========================
+            ANIMATION
+        ========================== */
 
-        /* ANIMATION */
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -93,52 +189,45 @@
 
         @keyframes pop {
             from {
-                transform: scale(0.9);
                 opacity: 0;
+                transform: scale(.95);
             }
 
             to {
-                transform: scale(1);
                 opacity: 1;
+                transform: scale(1);
             }
         }
 
         button,
         a {
-            transition: 0.2s ease;
+            transition: .25s ease;
         }
 
         button:active,
         a:active {
-            transform: scale(0.95);
+            transform: scale(.97);
         }
 
+        /* ==========================
+            MOBILE
+        ========================== */
 
+        @media (max-width:768px) {
 
-        /* =========================================
-       RESPONSIVE MOBILE
-    ========================================= */
-        @media (max-width: 768px) {
-
-            /* CARD */
             .card {
                 padding: 15px !important;
-                border-radius: 14px;
             }
 
-            /* HEADER BUTTON */
             .d-flex.justify-content-between.mb-3 {
                 flex-direction: column;
+                gap: 10px;
             }
 
             .d-flex.justify-content-between.mb-3 .btn {
                 width: 100%;
-                height: 42px;
-                font-size: 14px;
-                border-radius: 10px !important;
             }
 
-            /* SEARCH */
             .d-flex.justify-content-end.mb-3 {
                 justify-content: center !important;
             }
@@ -147,33 +236,12 @@
                 width: 100%;
             }
 
-            .input-group .form-control {
-                font-size: 13px;
-                height: 40px;
-            }
-
-            .input-group .btn {
-                font-size: 13px;
-                padding: 0 14px;
-                height: 40px;
-            }
-
-            /* ITEM CARD */
             .border.p-3 {
                 flex-direction: column !important;
                 align-items: flex-start !important;
-                gap: 12px;
-                padding: 14px !important;
+                gap: 15px;
             }
 
-            /* TITLE */
-            .border h5 {
-                font-size: 15px;
-                margin-bottom: 0;
-                word-break: break-word;
-            }
-
-            /* BUTTON AREA */
             .border>div:last-child {
                 width: 100%;
                 display: grid;
@@ -181,56 +249,39 @@
                 gap: 8px;
             }
 
-            /* BUTTON */
             .border .btn,
             .border form {
                 width: 100%;
-                margin: 0 !important;
             }
 
             .border .btn {
-                height: 38px;
                 font-size: 12px;
-                border-radius: 8px !important;
-                padding: 6px;
+                height: 38px;
                 display: flex;
-                align-items: center;
                 justify-content: center;
+                align-items: center;
             }
 
-            /* FORM DELETE */
-            .border form {
-                display: flex;
-            }
-
-            /* MODAL */
             .modal-dialog {
-                margin: 12px;
-            }
-
-            .modal-content {
-                border-radius: 14px;
+                margin: 10px;
             }
 
             .modal-footer {
                 flex-direction: column;
-                gap: 8px;
+                gap: 10px;
             }
 
             .modal-footer .btn {
                 width: 100%;
             }
 
-            /* PAGINATION */
             .pagination {
-                flex-wrap: wrap;
-                gap: 5px;
                 justify-content: center;
+                flex-wrap: wrap;
             }
 
-            .page-link {
-                font-size: 12px;
-                padding: 6px 10px;
+            h5 {
+                font-size: 17px;
             }
         }
     </style>

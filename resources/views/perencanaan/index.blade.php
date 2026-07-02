@@ -5,7 +5,7 @@
 
     <style>
         body {
-            background: #f5f6fa;
+            background: #f4f7fb;
         }
 
         /* ====== CARD TABLE ====== */
@@ -15,95 +15,147 @@
             background: #fff;
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-            animation: fadeUp 0.5s ease;
+            box-shadow: 0 8px 25px rgba(11, 31, 58, 0.10);
+            animation: fadeUp .5s ease;
         }
 
         .table-excel th,
         .table-excel td {
-            border: 1px solid #eee;
+            border: 1px solid #d6e2f0;
             padding: 8px;
             font-size: 13px;
+            vertical-align: middle;
         }
 
+        /* HEADER TABLE */
         .header {
-            background: linear-gradient(135deg, #c40000, #7a0000);
+            background: linear-gradient(135deg, #0B1F3A, #1E3A5F);
             color: #fff;
             font-weight: bold;
         }
 
-        /* ====== ROW STYLE ====== */
+        /* ====== ROW PLAN ====== */
         .plan {
             background: #fff;
-            transition: 0.25s ease;
+            transition: .25s ease;
         }
 
         .plan:hover {
-            background: #fff5f5;
+            background: #eef5ff;
             transform: scale(1.01);
         }
 
+        /* ====== ROW REALISASI ====== */
         .realisasi {
             background: #fff;
-            transition: 0.25s ease;
+            transition: .25s ease;
         }
 
         .realisasi:hover {
-            background: #fff0f0;
+            background: #e8f2ff;
             transform: scale(1.01);
         }
 
         /* ====== TITLE ====== */
         h5 {
-            color: #b30000;
+            color: #0B1F3A;
             font-weight: 700;
         }
 
-        /* ====== BUTTON RED THEME ====== */
+        /* ====== BUTTON SUCCESS ====== */
         .btn-success {
-            background: linear-gradient(135deg, #c40000, #7a0000) !important;
+            background: linear-gradient(135deg, #0B1F3A, #1E3A5F) !important;
             border: none !important;
             border-radius: 10px !important;
-            transition: 0.2s;
+            transition: .25s;
         }
 
         .btn-success:hover {
+            background: linear-gradient(135deg, #102B4E, #284C7A) !important;
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(196, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(11, 31, 58, .35);
         }
 
+        /* ====== BUTTON PRIMARY ====== */
         .btn-primary {
+            background: #1E3A5F;
+            border: none;
             border-radius: 10px;
+            transition: .25s;
         }
 
+        .btn-primary:hover {
+            background: #284C7A;
+            transform: translateY(-2px);
+        }
+
+        /* ====== BUTTON WARNING ====== */
         .btn-warning {
+            background: #2E5B88;
+            border: none;
+            color: white;
             border-radius: 10px;
+            transition: .25s;
         }
 
+        .btn-warning:hover {
+            background: #24486D;
+            color: white;
+        }
+
+        /* ====== BUTTON DANGER ====== */
         .btn-danger {
+            background: #D9534F;
+            border: none;
             border-radius: 10px;
+            transition: .25s;
+        }
+
+        .btn-danger:hover {
+            background: #C9302C;
         }
 
         /* ====== MODAL ====== */
         .modal-content {
             border-radius: 18px;
             overflow: hidden;
-            animation: pop 0.25s ease;
+            animation: pop .25s ease;
+            border: none;
+            box-shadow: 0 10px 30px rgba(11, 31, 58, .15);
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #c40000, #7a0000);
+            background: linear-gradient(135deg, #0B1F3A, #1E3A5F);
             color: white;
+            border-bottom: none;
         }
 
         .edit-judul {
-            color: #eee;
+            color: white;
+            font-weight: bold;
         }
-
 
         /* ====== INPUT ====== */
         .form-control {
             border-radius: 10px;
+            border: 1px solid #cfd8e3;
+            transition: .25s;
+        }
+
+        .form-control:focus {
+            border-color: #1E3A5F;
+            box-shadow: 0 0 0 .2rem rgba(30, 58, 95, .15);
+        }
+
+        /* ====== TABLE EFFECT ====== */
+        .plan-table,
+        .realisasi-table {
+            transition: .25s;
+        }
+
+        .plan-table:hover,
+        .realisasi-table:hover {
+            box-shadow: 0 12px 30px rgba(11, 31, 58, .15);
         }
 
         /* ====== ANIMATION ====== */
@@ -121,7 +173,7 @@
 
         @keyframes pop {
             from {
-                transform: scale(0.9);
+                transform: scale(.9);
                 opacity: 0;
             }
 
@@ -134,30 +186,29 @@
         /* ====== BUTTON ANIMATION ====== */
         button,
         a {
-            transition: 0.2s ease;
+            transition: .2s ease;
         }
 
         button:active,
         a:active {
-            transform: scale(0.95);
+            transform: scale(.95);
         }
 
-        /* ====== SECTION ANIMATION ====== */
+        /* ====== COLUMN ANIMATION ====== */
         .col-md-6 {
-            animation: fadeUp 0.6s ease;
+            animation: fadeUp .6s ease;
         }
-
 
         /* =========================
-                               RESPONSIVE MOBILE
-                            ========================= */
-        @media (max-width: 768px) {
+           RESPONSIVE MOBILE
+        ========================= */
+
+        @media (max-width:768px) {
 
             body {
                 overflow-x: hidden;
             }
 
-            /* ROW */
             .row {
                 margin: 0 !important;
             }
@@ -167,20 +218,17 @@
                 margin-bottom: 20px;
             }
 
-            /* TITLE */
             h5 {
                 font-size: 16px;
                 text-align: center;
             }
 
-            /* BUTTON TAMBAH */
             .btn-success.mb-3 {
                 width: 100%;
                 height: 42px;
                 font-size: 13px !important;
             }
 
-            /* TABLE */
             .table-excel {
                 display: block;
                 overflow-x: auto;
@@ -195,32 +243,26 @@
                 vertical-align: middle;
             }
 
-            /* HEADER TABLE */
             .header td {
                 font-size: 11px;
                 padding: 8px 6px;
             }
 
-            /* BUTTON DALAM TABLE */
             .table-excel .btn {
                 width: 32px;
                 height: 32px;
                 padding: 0 !important;
                 font-size: 12px !important;
-
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-
                 border-radius: 8px !important;
             }
 
-            /* FORM DELETE */
             .table-excel form {
                 display: inline-flex !important;
             }
 
-            /* MODAL */
             .modal-dialog {
                 margin: 10px;
             }
@@ -233,7 +275,6 @@
                 padding: 15px;
             }
 
-            /* INPUT */
             .form-control,
             select.form-control {
                 font-size: 13px;
@@ -244,7 +285,6 @@
                 height: auto;
             }
 
-            /* FOOTER BUTTON */
             .modal-footer {
                 gap: 10px;
             }
@@ -255,7 +295,6 @@
                 font-size: 13px !important;
             }
 
-            /* LAMPIRAN */
             .lampiran-item {
                 flex-direction: column;
             }
@@ -271,13 +310,11 @@
                 margin-bottom: 8px;
             }
 
-            /* BUTTON HAPUS LAMPIRAN */
             .lampiran-item .btn-danger {
                 width: 100%;
                 height: 38px;
             }
 
-            /* BUTTON TAMBAH LAMPIRAN */
             .btn-sm.btn-primary {
                 width: 100%;
                 height: 40px;
@@ -285,37 +322,27 @@
                 font-size: 12px !important;
             }
 
-            /* FILE LINK */
             a[target="_blank"] {
                 font-size: 12px;
                 word-break: break-word;
             }
 
-            /* TEXT */
             td,
             small,
             label {
                 font-size: 11px;
             }
-
         }
 
         /* BUTTON AKSI */
         .btn-action-mobile {
             width: 22px;
             height: 22px;
-
             display: inline-flex;
             align-items: center;
             justify-content: center;
-
             padding: 0 !important;
-            border-radius: 10px !important;
-        }
-
-        .plan-table,
-        .realisasi-table {
-            transition: all .2s ease;
+            border-radius: 8px !important;
         }
     </style>
 
@@ -586,7 +613,7 @@
                             <input type="text" name="keterangan" autocomplete="off" value="{{ $d->keterangan }}"
                                 class="form-control mb-3">
 
-                            
+
 
 
                             <hr>
