@@ -6,53 +6,69 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #f4f7fb;
         }
 
-        /* CARD UTAMA */
+        /* =========================
+           CARD
+        ========================= */
         .modern-card {
-            border: none;
+            border: 1px solid #e6eef8;
             border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+            box-shadow: 0 5px 20px rgba(11, 31, 58, .08);
             animation: fadeIn .4s ease-in-out;
+            background: #fff;
         }
 
-        /* HEADER GRADIENT MERAH */
+        /* =========================
+           HEADER
+        ========================= */
         .modern-header {
-            background: linear-gradient(135deg, #dc3545, #ff4d4d);
+            background: linear-gradient(135deg, #0b1f3a, #163a6b);
             color: white;
             padding: 18px 20px;
             font-weight: bold;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 12px rgba(11, 31, 58, .15);
         }
 
-        /* BUTTON BACK */
+        /* =========================
+           BUTTON BACK
+        ========================= */
         .btn-back {
             background: white;
-            color: #dc3545;
+            color: #163a6b;
+            border: 1px solid #dbe6f5;
             border-radius: 10px;
-            padding: 6px 12px;
+            padding: 6px 14px;
             font-weight: 600;
             transition: .3s;
+            text-decoration: none;
         }
 
         .btn-back:hover {
-            background: #ffe5e5;
-            transform: scale(1.05);
+            background: #eef4ff;
+            color: #0b1f3a;
+            transform: translateY(-2px);
         }
 
-        /* TABLE */
+        /* =========================
+           TABLE
+        ========================= */
         .modern-table {
             width: 100%;
             margin: 0;
         }
 
-        .modern-table thead {
-            background: #dc3545;
+        .modern-table thead,
+        .modern-table thead th {
+            background: #163a6b;
             color: white;
+            border-color: #163a6b;
+            white-space: nowrap;
         }
 
         .modern-table th,
@@ -63,37 +79,72 @@
         }
 
         .modern-table tbody tr {
-            transition: .2s;
+            transition: .25s;
         }
 
         .modern-table tbody tr:hover {
-            background: #fff1f1;
-            transform: scale(1.01);
+            background: #eef4ff;
         }
 
-        /* BADGE */
+        /* =========================
+           BADGE
+        ========================= */
         .badge-open {
-            background: #ffc107;
-            color: #000;
-            padding: 6px 10px;
+            background: #2563eb;
+            color: white;
+            padding: 6px 12px;
             border-radius: 8px;
             font-size: 12px;
+            font-weight: 600;
         }
 
         .badge-closed {
-            background: #28a745;
-            color: #fff;
-            padding: 6px 10px;
+            background: #1e3a8a;
+            color: white;
+            padding: 6px 12px;
             border-radius: 8px;
             font-size: 12px;
+            font-weight: 600;
         }
 
-        /* SCROLL MOBILE */
+        /* =========================
+           TABLE RESPONSIVE
+        ========================= */
         .table-responsive-custom {
             overflow-x: auto;
         }
 
-        /* ANIMASI */
+        .table-responsive-custom::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-responsive-custom::-webkit-scrollbar-thumb {
+            background: #163a6b;
+            border-radius: 10px;
+        }
+
+        /* =========================
+           PAGINATION
+        ========================= */
+        .pagination .page-link {
+            color: #163a6b;
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: #163a6b;
+            border-color: #163a6b;
+        }
+
+        .pagination .page-link:hover {
+            background: #eef4ff;
+            color: #0b1f3a;
+        }
+
+        /* =========================
+           ANIMATION
+        ========================= */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -106,13 +157,22 @@
             }
         }
 
-        /* MOBILE */
+        /* =========================
+           MOBILE
+        ========================= */
         @media(max-width:768px) {
+
             .modern-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 10px;
+                gap: 12px;
             }
+
+            .btn-back {
+                width: 100%;
+                text-align: center;
+            }
+
         }
     </style>
 

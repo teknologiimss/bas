@@ -7,15 +7,19 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #f4f7fb;
         }
 
+        /* =========================
+           HEADER
+        ========================= */
         .dashboard-header {
-            background: linear-gradient(135deg, #dc3545, #ff4d4d);
+            background: linear-gradient(135deg, #0b1f3a, #163a6b);
             color: white;
             padding: 25px;
             border-radius: 15px;
             margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(11, 31, 58, .18);
         }
 
         .dashboard-header h3 {
@@ -24,47 +28,77 @@
         }
 
         .dashboard-header p {
-            margin: 0;
+            margin: 5px 0 0;
             opacity: .9;
         }
 
+        /* =========================
+           KPI CARD
+        ========================= */
         .stat-card {
             background: white;
+            border: 1px solid #e6eef8;
             border-radius: 15px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, .08);
+            box-shadow: 0 3px 15px rgba(11, 31, 58, .08);
             transition: .3s;
             height: 100%;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(11, 31, 58, .18);
         }
 
         .stat-value {
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 5px;
+            color: #163a6b;
         }
 
         .stat-title {
-            color: #666;
+            color: #6b7280;
             font-size: 13px;
         }
 
+        /* =========================
+           ICON
+        ========================= */
+        .text-danger,
+        .text-warning,
+        .text-success,
+        .text-info {
+            color: #2563eb !important;
+        }
+
+        /* =========================
+           CARD
+        ========================= */
         .card {
+            border: 1px solid #e6eef8;
             border-radius: 15px;
-            border: none;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, .08);
+            box-shadow: 0 3px 15px rgba(11, 31, 58, .08);
+            overflow: hidden;
         }
 
         .card-header {
-            background: #dc3545;
+            background: #163a6b;
             color: white;
             font-weight: bold;
-            border-radius: 15px 15px 0 0 !important;
+            border: none;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+        .table thead,
+        .table thead th,
+        .thead-light th {
+            background: #163a6b !important;
+            color: white !important;
+            border-color: #163a6b !important;
         }
 
         .table td,
@@ -72,15 +106,64 @@
             vertical-align: middle;
         }
 
+        .table tbody tr {
+            transition: .25s;
+        }
+
+        .table tbody tr:hover {
+            background: #eef4ff;
+        }
+
+        
+
+        /* =========================
+           SCROLLBAR
+        ========================= */
         .scroll-table {
             max-height: 450px;
             overflow-y: auto;
         }
 
+        .scroll-table::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-table::-webkit-scrollbar-thumb {
+            background: #163a6b;
+            border-radius: 10px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
         @media(max-width:768px) {
+
             .stat-value {
                 font-size: 24px;
             }
+
+            .dashboard-header {
+                text-align: center;
+            }
+        }
+
+        /* =========================
+           PAGINATION
+        ========================= */
+        .pagination .page-link {
+            color: #163a6b;
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: #163a6b;
+            border-color: #163a6b;
+        }
+
+        .pagination .page-link:hover {
+            background: #eef4ff;
+            color: #0b1f3a;
         }
     </style>
 
