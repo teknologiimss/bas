@@ -8,7 +8,7 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #f4f7fb;
         }
 
         /* CARD */
@@ -21,15 +21,15 @@
             background: #fff;
             border-radius: 22px;
             overflow: hidden;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
-            animation: fadeUp 0.4s ease;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, .12);
+            animation: fadeUp .4s ease;
         }
 
         /* HEADER */
         .stock-header {
-            background: linear-gradient(135deg, #7a0000, #d60000);
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
             padding: 24px;
-            color: white;
+            color: #fff;
         }
 
         .stock-header h3 {
@@ -40,7 +40,7 @@
 
         .stock-header p {
             margin: 6px 0 0;
-            opacity: 0.9;
+            opacity: .9;
             font-size: 14px;
         }
 
@@ -52,7 +52,7 @@
         /* LABEL */
         .form-label {
             font-weight: 600;
-            color: #444;
+            color: #334155;
             margin-bottom: 8px;
         }
 
@@ -60,15 +60,16 @@
         .form-control {
             height: 48px;
             border-radius: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #cbd5e1;
             padding: 10px 14px;
-            transition: all 0.2s ease;
+            transition: .25s;
             font-size: 14px;
+            background: #fff;
         }
 
         .form-control:focus {
-            border-color: #c40000;
-            box-shadow: 0 0 0 4px rgba(196, 0, 0, 0.08);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .18);
         }
 
         /* BUTTON */
@@ -77,33 +78,38 @@
             height: 48px;
             border: none;
             border-radius: 12px;
-            background: linear-gradient(135deg, #c40000, #7a0000);
-            color: white;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: #fff;
             font-weight: 700;
             font-size: 14px;
-            transition: all 0.25s ease;
+            transition: .25s;
         }
 
         .btn-stockout:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(196, 0, 0, 0.25);
+            background: linear-gradient(135deg, #1e293b, #2563eb);
+            box-shadow: 0 12px 28px rgba(30, 58, 138, .28);
         }
 
         .btn-stockout:active {
-            transform: scale(0.98);
+            transform: scale(.98);
         }
 
         /* INFO BOX */
         .info-box {
-            background: #fff3f3;
-            border-left: 5px solid #c40000;
+            background: #eff6ff;
+            border-left: 5px solid #1e3a8a;
             padding: 14px;
             border-radius: 12px;
             margin-bottom: 20px;
         }
 
+        .info-box strong {
+            color: #0f172a;
+        }
+
         .info-box small {
-            color: #666;
+            color: #64748b;
         }
 
         /* ANIMATION */
@@ -120,7 +126,7 @@
         }
 
         /* MOBILE */
-        @media (max-width: 768px) {
+        @media (max-width:768px) {
 
             .container {
                 padding-left: 10px;

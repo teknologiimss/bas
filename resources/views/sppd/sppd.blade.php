@@ -12,115 +12,123 @@
 
 <style>
     /* ===============================
-   THEME COLOR
-================================= */
+       THEME NAVY
+    ================================= */
     :root {
-        --maroon: #800020;
-        --maroon-dark: #5e0018;
-        --maroon-soft: #f7e9ed;
+        --navy: #0b1f3a;
+        --navy-dark: #07162c;
+        --navy-light: #214d84;
+        --navy-soft: #eef4fb;
         --gray-bg: #f8f9fa;
+        --border: #d8e4f2;
+    }
+
+    body {
+        background: var(--gray-bg);
     }
 
     /* ===============================
-   CARD
-================================= */
+       CARD
+    ================================= */
     .card {
-        border-radius: 12px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
         border: none;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(11, 31, 58, .12);
     }
 
     .card-header {
-        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        background: linear-gradient(135deg, var(--navy), var(--navy-light));
         color: #fff;
-        border-radius: 12px 12px 0 0;
+        border: none;
     }
 
     /* ===============================
-   BUTTON
-================================= */
+       BUTTON
+    ================================= */
     .btn {
-        border-radius: 8px;
-        font-weight: 500;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all .25s ease;
     }
 
     .btn-primary {
-        background-color: var(--maroon);
-        border-color: var(--maroon);
+        background: linear-gradient(135deg, var(--navy), var(--navy-light));
+        border: none;
     }
 
     .btn-primary:hover {
-        background-color: var(--maroon-dark);
-        border-color: var(--maroon-dark);
+        background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(11, 31, 58, .25);
     }
 
     .btn-danger {
-        border-radius: 8px;
+        border-radius: 10px;
     }
 
     .btn-xs {
-        padding: 4px 8px;
+        padding: 4px 9px;
         font-size: 12px;
     }
 
     /* ===============================
-   TABLE
-================================= */
+       TABLE
+    ================================= */
     #table {
-        border-radius: 10px;
+        background: #fff;
+        border-radius: 14px;
         overflow: hidden;
-        background-color: #fff;
+        box-shadow: 0 8px 25px rgba(11, 31, 58, .10);
     }
 
-    /* HEADER */
     #table thead th {
-        background-color: var(--maroon);
+        background: linear-gradient(135deg, var(--navy), var(--navy-light));
         color: #fff;
         text-align: center;
         vertical-align: middle;
         font-weight: 600;
         border: none;
-        position: relative;
+        letter-spacing: .4px;
     }
 
-    /* SORT ACTIVE */
     #table th.active-sort {
-        background-color: var(--maroon-dark);
+        background: var(--navy-dark);
     }
 
-    /* BODY */
     #table tbody tr {
-        transition: background-color 0.2s ease, transform 0.15s ease;
+        transition: all .25s ease;
     }
 
     #table tbody tr:hover {
-        background-color: var(--maroon-soft);
-        transform: scale(1.003);
+        background: rgba(33, 77, 132, .08);
+        transform: translateX(3px);
     }
 
     #table td {
         vertical-align: middle;
-        border-color: #eee;
+        border-color: #edf2f7;
     }
 
-    /* STRIPED */
     .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #fcfcfc;
+        background: #f8fbff;
     }
 
     /* ===============================
-   CHECKBOX
-================================= */
+       CHECKBOX
+    ================================= */
     input[type="checkbox"] {
         transform: scale(1.1);
-        accent-color: var(--maroon);
+        accent-color: var(--navy);
+        cursor: pointer;
     }
 
     /* ===============================
-   SORT ICON
-================================= */
+       SORT
+    ================================= */
     .sort-buttons span {
-        color: #f3c6d0;
+        color: rgba(255, 255, 255, .55);
+        transition: .2s;
     }
 
     .sort-buttons span.active,
@@ -129,70 +137,74 @@
     }
 
     /* ===============================
-   FILTER FORM
-================================= */
+       FORM
+    ================================= */
     .form-control {
-        border-radius: 8px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        transition: .3s;
+    }
+
+    .form-control:focus {
+        border-color: var(--navy-light);
+        box-shadow: 0 0 0 .2rem rgba(33, 77, 132, .15);
     }
 
     label {
         font-weight: 600;
-        color: #555;
+        color: var(--navy);
     }
 
     /* ===============================
-   MODAL
-================================= */
+       MODAL
+    ================================= */
     .modal-content {
-        border-radius: 12px;
+        border: none;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(11, 31, 58, .18);
     }
 
     .modal-header {
-        background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+        background: linear-gradient(135deg, var(--navy), var(--navy-light));
         color: #fff;
-        border-radius: 12px 12px 0 0;
+        border: none;
     }
 
-
-
     /* ===============================
-   BUTTON MAROON ANIMATED
-================================= */
-    .btn-maroon-animated {
-        background: linear-gradient(135deg, #800020, #5e0018);
-        color: #fff;
+       NAVY ANIMATED BUTTON
+    ================================= */
+    .btn-navy-animated {
+        background: linear-gradient(135deg, var(--navy), var(--navy-light));
+        color: #fff !important;
         border: none;
         border-radius: 10px;
         padding: 10px 18px;
         font-weight: 600;
-        letter-spacing: 0.3px;
-        box-shadow: 0 6px 14px rgba(128, 0, 32, 0.35);
-        transition: all 0.25s ease;
+        letter-spacing: .3px;
+        box-shadow: 0 6px 16px rgba(11, 31, 58, .30);
+        transition: all .3s ease;
         position: relative;
         overflow: hidden;
     }
 
-    /* ICON ANIMATION */
-    .btn-maroon-animated i {
+    .btn-navy-animated:hover {
+        background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+        transform: translateY(-3px);
+        box-shadow: 0 10px 24px rgba(11, 31, 58, .40);
+        color: #fff !important;
+    }
+
+    .btn-navy-animated:active {
+        transform: scale(.96);
+    }
+
+    .btn-navy-animated i {
+        color: #fff !important;
         animation: pulseIcon 1.6s infinite;
     }
 
-    /* HOVER */
-    .btn-maroon-animated:hover {
-        background: linear-gradient(135deg, #8f0024, #6b001c);
-        transform: translateY(-3px);
-        box-shadow: 0 10px 22px rgba(128, 0, 32, 0.45);
-        color: #fff;
-    }
-
-    /* ACTIVE / CLICK */
-    .btn-maroon-animated:active {
-        transform: scale(0.96);
-        box-shadow: 0 4px 10px rgba(128, 0, 32, 0.4);
-    }
-
-    /* SOFT SHINE EFFECT */
-    .btn-maroon-animated::after {
+    .btn-navy-animated::after {
         content: "";
         position: absolute;
         top: 0;
@@ -201,18 +213,15 @@
         height: 100%;
         background: linear-gradient(120deg,
                 transparent,
-                rgba(255, 255, 255, 0.25),
+                rgba(255, 255, 255, .25),
                 transparent);
-        transition: 0.6s;
+        transition: .6s;
     }
 
-    .btn-maroon-animated:hover::after {
+    .btn-navy-animated:hover::after {
         left: 120%;
     }
 
-    /* ===============================
-   KEYFRAMES
-================================= */
     @keyframes pulseIcon {
         0% {
             transform: scale(1);
@@ -227,18 +236,54 @@
         }
     }
 
-    .btn-maroon-animated,
-    .btn-maroon-animated:hover,
-    .btn-maroon-animated:focus,
-    .btn-maroon-animated:active {
-        color: #ffffff !important;
+    /* ===============================
+       BADGE
+    ================================= */
+    .badge-navy {
+        background: var(--navy);
+        color: #fff;
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 11px;
     }
 
-    /* Pastikan icon juga putih */
-    .btn-maroon-animated i {
-        color: #ffffff !important;
+    /* ===============================
+       RESPONSIVE
+    ================================= */
+    @media (max-width:768px) {
+
+        .card {
+            border-radius: 12px;
+        }
+
+        .card-header {
+            padding: 14px;
+        }
+
+        .btn,
+        .btn-navy-animated {
+            font-size: 12px;
+            padding: 8px 12px;
+        }
+
+        .form-control {
+            height: 38px;
+            font-size: 12px;
+        }
+
+        #table {
+            overflow-x: auto;
+        }
+
+        #table thead th {
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        #table td {
+            font-size: 11px;
+        }
     }
-    
 </style>
 @section('content')
     <div class="content-header">
@@ -253,7 +298,7 @@
             <div class="card">
                 <div class="card-header">
 
-                    <button type="button" class="btn btn-maroon-animated" data-toggle="modal" data-target="#add-sppd"
+                    <button type="button" class="btn btn-navy-animated" data-toggle="modal" data-target="#add-sppd"
                         onclick="addSPPD()">
                         <i class="fas fa-plus mr-1"></i> Add SPPD
                     </button>
@@ -561,7 +606,7 @@
                         {{-- <button id="button-save" type="button" class="btn btn-primary" onclick="setSaveIdAndSubmit();">
                             {{ __('Simpan') }}
                         </button> --}}
-                        <button id="button-save" type="button" class="btn btn-maroon-animated"
+                        <button id="button-save" type="button" class="btn btn-navy-animated"
                             onclick="setSaveIdAndSubmit();">
                             <i class="fas fa-save mr-1"></i> {{ __('Simpan') }}
                         </button>
@@ -615,7 +660,7 @@
                                                     onclick="showAddProduct()">{{ __('Tambah Item Detail') }}</button> --}}
 
                                                 <button id="button-tambah-produk" type="button"
-                                                    class="btn btn-maroon-animated mb-3" onclick="showAddProduct()">
+                                                    class="btn btn-navy-animated mb-3" onclick="showAddProduct()">
                                                     <i class="fas fa-plus-circle mr-1"></i> {{ __('Tambah Item Detail') }}
                                                 </button>
 
@@ -783,7 +828,7 @@
 
                                             </form>
                                             <button id="button-update-pr" type="button"
-                                                class="btn btn-maroon-animated w-100">
+                                                class="btn btn-navy-animated w-100">
                                                 <i class="fas fa-plus mr-1"></i> {{ __('Tambahkan') }}
                                             </button>
 

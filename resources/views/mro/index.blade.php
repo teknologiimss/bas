@@ -8,72 +8,66 @@
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endsection
 
-
-
 <style>
     /* ===============================
-   MODERN MAROON ANIMATED BUTTON
+   MODERN NAVY ANIMATED BUTTON
 ================================= */
     .btn-maroon-animated {
-        background: linear-gradient(135deg, #800020, #a00028);
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
         border: none;
         color: #fff !important;
         font-weight: 600;
         border-radius: 8px;
         padding: 8px 16px;
-        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.35);
-        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, .35);
+        transition: all .3s ease;
         position: relative;
         overflow: hidden;
     }
 
-    /* Hover naik */
     .btn-maroon-animated:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(128, 0, 32, 0.45);
+        box-shadow: 0 8px 22px rgba(30, 58, 138, .35);
         color: #fff !important;
     }
 
-    /* Klik */
     .btn-maroon-animated:active {
-        transform: scale(0.96);
+        transform: scale(.96);
     }
 
-    /* Icon putih */
     .btn-maroon-animated i {
         color: #fff !important;
     }
 
-    /* Animasi pulse lembut */
     .btn-maroon-animated.pulse {
-        animation: pulseMaroon 1.8s infinite;
+        animation: pulseNavy 1.8s infinite;
     }
 
-    @keyframes pulseMaroon {
+    @keyframes pulseNavy {
         0% {
-            box-shadow: 0 0 0 0 rgba(128, 0, 32, 0.6);
+            box-shadow: 0 0 0 0 rgba(30, 58, 138, .5);
         }
 
         70% {
-            box-shadow: 0 0 0 10px rgba(128, 0, 32, 0);
+            box-shadow: 0 0 0 12px rgba(30, 58, 138, 0);
         }
 
         100% {
-            box-shadow: 0 0 0 0 rgba(128, 0, 32, 0);
+            box-shadow: 0 0 0 0 rgba(30, 58, 138, 0);
         }
     }
 
+
     /* ===============================
-   MODERN MAROON TABLE ANIMATION
+   NAVY TABLE
 ================================= */
 
-    /* Wrapper */
     .table-modern {
         border-radius: 14px;
         overflow: hidden;
         background: #fff;
-        box-shadow: 0 8px 25px rgba(128, 0, 32, 0.18);
-        animation: tableFadeUp 0.6s ease;
+        box-shadow: 0 8px 25px rgba(15, 23, 42, .12);
+        animation: tableFadeUp .6s ease;
     }
 
     @keyframes tableFadeUp {
@@ -88,52 +82,45 @@
         }
     }
 
-    /* Header */
     .table-modern thead {
-        background: linear-gradient(135deg, #800020, #a00028);
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
     }
 
     .table-modern thead th {
-        color: #fff;
+        color: white;
         border: none;
         font-size: 12px;
-        letter-spacing: 0.6px;
         text-transform: uppercase;
+        letter-spacing: .6px;
         padding: 12px;
     }
 
-    /* Row */
     .table-modern tbody tr {
-        transition: all 0.25s ease;
+        transition: .25s;
     }
 
-    /* Hover row naik */
     .table-modern tbody tr:hover {
         background: linear-gradient(90deg,
-                rgba(128, 0, 32, 0.08),
-                rgba(128, 0, 32, 0.02));
+                rgba(30, 58, 138, .08),
+                rgba(30, 58, 138, .02));
         transform: translateX(4px);
     }
 
-    /* Cell */
     .table-modern tbody td {
-        font-size: 13px;
         padding: 10px;
-        border-color: #f3f3f3;
+        font-size: 13px;
+        border-color: #edf2f7;
     }
 
-    /* Striping modern */
     .table-modern tbody tr:nth-child(even) {
-        background-color: #fff7f9;
+        background: #f8fbff;
     }
 
-    /* Checkbox */
     .table-modern input[type="checkbox"] {
-        accent-color: #800020;
-        transform: scale(1.1);
+        accent-color: #1e3a8a;
+        transform: scale(1.08);
     }
 
-    /* Badge stok */
     .table-modern .badge,
     .table-modern .bg-warning {
         border-radius: 20px;
@@ -141,9 +128,8 @@
         font-size: 11px;
     }
 
-    /* Action buttons container anim */
     .action-buttons {
-        transition: all 0.3s ease;
+        transition: .3s;
     }
 
     .table-modern tbody tr:hover .action-buttons {
@@ -151,200 +137,178 @@
     }
 
 
-    /* =========================================
-   RESPONSIVE MOBILE
-========================================= */
-    @media (max-width: 768px) {
+    /* CARD */
 
-        /* CARD */
+    .card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(15, 23, 42, .12);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
+        color: white;
+        border-bottom: none;
+    }
+
+
+    /* BUTTON */
+
+    .btn-danger {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background: linear-gradient(135deg, #1e293b, #2563eb);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border: none;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #1e40af, #2563eb);
+        border: none;
+    }
+
+    .btn-dark {
+        background: #0f172a;
+        border: none;
+    }
+
+    .btn-secondary {
+        background: #64748b;
+        border: none;
+    }
+
+
+    /* SEARCH */
+
+    .input-group .form-control {
+        border-radius: 10px 0 0 10px;
+    }
+
+    .input-group-append .btn {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
+        border: none;
+    }
+
+
+    /* MODAL */
+
+    .modal-content {
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
+        color: white;
+    }
+
+    .modal-footer {
+        background: #f8fafc;
+    }
+
+
+    /* FORM */
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+    }
+
+    .form-control:focus {
+        border-color: #1e40af;
+        box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .18);
+    }
+
+
+    /* PAGINATION */
+
+    .page-item.active .page-link {
+        background: #1e3a8a;
+        border-color: #1e3a8a;
+    }
+
+    .page-link {
+        color: #1e3a8a;
+    }
+
+    .page-link:hover {
+        color: #0f172a;
+    }
+
+
+    /* RESPONSIVE tetap */
+
+    @media (max-width:768px) {
+
         .card {
             border-radius: 12px;
         }
 
-        .card-header {
+        .card-header,
+        .card-body {
             padding: 12px;
         }
 
-        .card-body {
-            padding: 10px;
-        }
-
-        /* HEADER BUTTON */
-        .header-actions {
-            width: 100%;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .header-actions .btn {
-            flex: 1;
-            min-width: 0;
-        }
-
-        /* BUTTON GLOBAL */
-        .btn,
-        .btn-sm,
-        .btn-xs,
-        .btn-maroon-animated {
-            height: 36px !important;
-            font-size: 12px !important;
-            padding: 6px 10px !important;
-            border-radius: 8px !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            white-space: nowrap;
-        }
-
-        /* ACTION BUTTON TABLE */
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 4px;
-            flex-wrap: nowrap;
-        }
-
-        .action-buttons .btn {
-            width: 32px !important;
-            height: 32px !important;
-            padding: 0 !important;
-            font-size: 11px !important;
-            border-radius: 7px !important;
-        }
-
-        /* BUTTON DELETE MULTIPLE */
-        #btnDeleteMultiple {
-            width: 100%;
-            height: 36px;
-            font-size: 12px;
-        }
-
-        /* SEARCH */
-        .input-group .form-control {
-            height: 36px;
-            font-size: 12px;
-        }
-
-        .input-group-append .btn {
-            width: 40px;
-            height: 36px;
-        }
-
-        /* SORT */
-        .form-group.row.col-sm-3 {
-            width: 100%;
-            max-width: 100%;
-            margin: 0 0 12px 0;
-        }
-
-        .form-group.row.col-sm-3 label {
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-
-        /* TABLE */
         .table-responsive {
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
         }
 
         .table-modern table {
             min-width: 950px;
         }
 
-        .table-modern thead th {
-            font-size: 11px;
-            padding: 8px;
-            white-space: nowrap;
+        .btn,
+        .btn-sm,
+        .btn-xs,
+        .btn-maroon-animated {
+            height: 36px !important;
+            font-size: 12px !important;
+            border-radius: 8px;
         }
 
-        .table-modern tbody td {
-            font-size: 11px;
-            padding: 7px;
-            vertical-align: middle;
+        .action-buttons {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
         }
 
-        /* LIST PROYEK */
-        .table-modern ul {
-            padding-left: 16px;
-            margin-bottom: 0;
+        .action-buttons .btn {
+            width: 32px;
+            height: 32px;
+            padding: 0;
         }
 
-        .table-modern ul li {
-            font-size: 11px;
-            line-height: 1.3;
-        }
-
-        /* BADGE */
-        .badge,
-        .bg-warning {
-            font-size: 10px !important;
-            padding: 3px 7px !important;
-        }
-
-        /* MODAL */
         .modal-dialog {
             margin: 10px;
         }
 
-        .modal-content {
-            border-radius: 14px;
-        }
-
-        .modal-header {
-            padding: 12px;
-        }
-
-        .modal-title {
-            font-size: 16px;
-        }
-
-        .modal-body {
-            padding: 12px;
-        }
-
-        .modal-footer {
-            padding: 10px;
-        }
-
-        /* FORM */
         .form-control {
-            font-size: 12px;
             height: 36px;
-            border-radius: 8px;
+            font-size: 12px;
         }
 
         textarea.form-control {
-            height: auto !important;
+            height: auto;
         }
 
-        /* LABEL */
-        label,
-        .col-form-label {
-            font-size: 12px;
-        }
-
-        /* QR CODE */
-        #qrcode-preview canvas,
-        #qrcode-view canvas {
-            width: 120px !important;
-            height: 120px !important;
-        }
-
-        /* PAGINATION */
         .pagination {
             justify-content: center;
             flex-wrap: wrap;
         }
-
-        .page-link {
-            font-size: 12px;
-            padding: 6px 10px;
-        }
     }
 </style>
+
+
 
 @section('content')
     <div class="content-header">

@@ -6,64 +6,85 @@
 <style>
     /* Table wrapper */
     .table-modern {
-        border-radius: 10px;
+        border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.15);
+        box-shadow: 0 8px 25px rgba(13, 42, 89, .18);
         background: #fff;
+        animation: fadeTable .4s ease;
+    }
+
+    @keyframes fadeTable {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Header */
     .table-modern thead {
-        background: linear-gradient(135deg, #dc3545, #b02a37);
-        color: #fff;
+        background: linear-gradient(135deg, #0d2a59, #1b4d8a);
     }
 
     .table-modern thead th {
+        color: #fff;
         border: none;
         font-weight: 600;
         font-size: 13px;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: .5px;
+        padding: 12px;
     }
 
     /* Body */
     .table-modern tbody tr {
-        transition: all 0.2s ease;
+        transition: .25s ease;
     }
 
     .table-modern tbody tr:hover {
-        background-color: #fff5f5;
+        background: rgba(27, 77, 138, .06);
+        transform: translateX(3px);
     }
 
     .table-modern tbody td {
+        border-color: #edf2f7;
         vertical-align: middle;
-        border-color: #f1f1f1;
         font-size: 13px;
+    }
+
+    /* Zebra */
+    .table-modern tbody tr:nth-child(even) {
+        background: #f8fbff;
     }
 
     /* Checkbox */
     .table-modern input[type="checkbox"] {
-        transform: scale(1.1);
-        accent-color: #dc3545;
+        accent-color: #1b4d8a;
+        transform: scale(1.08);
         cursor: pointer;
     }
 
     /* Badge */
     .badge-modern-in {
         background: #198754;
-        padding: 5px 10px;
+        color: white;
         border-radius: 20px;
+        padding: 5px 10px;
         font-size: 11px;
     }
 
     .badge-modern-out {
-        background: #dc3545;
-        padding: 5px 10px;
+        background: #1b4d8a;
+        color: white;
         border-radius: 20px;
+        padding: 5px 10px;
         font-size: 11px;
     }
 
-    /* Proyek multi-line */
     .proyek-cell {
         white-space: pre-line;
         font-weight: 500;
