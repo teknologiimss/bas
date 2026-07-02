@@ -1481,6 +1481,29 @@
                                                         </li>
 
                                                         <li class="nav-item">
+                                                            <a href="{{ route('mro.daily-activity.index') }}"
+                                                                class="nav-link {{ request()->routeIs('mro.daily-activity.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-calendar-check"></i>
+                                                                <p>Daily Activity</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+
+                                                            <a href="{{ route('fasilitas-harian.index') }}"
+                                                                class="nav-link {{ request()->routeIs('fasilitas-harian.*') ? 'active' : '' }}">
+
+                                                                <i class="nav-icon far fa-circle"></i>
+
+                                                                <p>
+                                                                    Checksheet Harian Fasilitas
+                                                                </p>
+
+                                                            </a>
+
+                                                        </li>
+
+                                                        <li class="nav-item">
                                                             <a href="{{ route('checksheet.index') }}"
                                                                 class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-clipboard-check"></i>
