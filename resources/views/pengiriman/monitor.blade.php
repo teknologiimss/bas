@@ -7,280 +7,254 @@
 
     <style>
         body {
-            background: #f8f9fa;
+            background: #eef3f9;
+            font-family: 'Segoe UI', sans-serif;
         }
 
+        /* ==========================
+            CARD
+        ========================== */
         .card {
             border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            animation: fadeIn 0.6s ease-in-out;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
+            animation: fadeIn .5s ease;
         }
 
         h4 {
-            font-weight: 600;
-            color: #b30000;
+            font-weight: 700;
+            color: #173B6C;
         }
 
-        /* BUTTON */
+        /* ==========================
+            PROJECT HEADER
+        ========================== */
+
+        .header-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .project-header {
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+            padding: 22px;
+            border-radius: 15px;
+            color: white;
+            background: linear-gradient(135deg, #0B1F3A, #173B6C);
+            box-shadow: 0 10px 25px rgba(11, 31, 58, .25);
+        }
+
+        .project-title {
+            font-size: 14px;
+            opacity: .9;
+        }
+
+        .project-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* ==========================
+            BUTTON
+        ========================== */
+
+        .btn {
+            border-radius: 10px;
+            transition: .25s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
         .btn-success {
-            background: linear-gradient(45deg, #b30000, #ff4d4d);
+            background: linear-gradient(135deg, #173B6C, #28528C);
             border: none;
-            transition: 0.3s;
+            color: white;
         }
 
         .btn-success:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+            background: linear-gradient(135deg, #0B1F3A, #173B6C);
+            box-shadow: 0 8px 18px rgba(23, 59, 108, .3);
+        }
+
+        .btn-primary {
+            background: #173B6C;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #0B1F3A;
+        }
+
+        .btn-secondary {
+            background: #64748B;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
         }
 
         .btn-warning {
-            background: #ffcc00;
+            background: #F59E0B;
             border: none;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #D97706;
         }
 
         .btn-danger {
-            background: #e60000;
+            background: #DC2626;
             border: none;
         }
 
-        /* TABLE */
-        .table-monitoring {
-            font-size: 12px;
-            white-space: nowrap;
+        .btn-danger:hover {
+            background: #B91C1C;
+        }
+
+        /* ==========================
+            FORM
+        ========================== */
+
+        .form-control {
             border-radius: 10px;
-            overflow: hidden;
+            border: 1px solid #CBD5E1;
         }
 
-        .table-monitoring th {
-            position: sticky;
-            top: 0;
-            z-index: 2;
-            background: linear-gradient(45deg, #990000, #ff3333);
-            color: white;
-            text-align: center;
-            vertical-align: middle;
+        .form-control:focus {
+            border-color: #173B6C;
+            box-shadow: 0 0 0 .2rem rgba(23, 59, 108, .15);
         }
 
-        .table-monitoring td {
-            vertical-align: middle;
-            transition: 0.2s;
+        /* ==========================
+            TABLE
+        ========================== */
+
+        .table-container {
+            overflow: auto;
+            max-height: 500px;
+            position: relative;
+            border-radius: 10px;
         }
 
-        .table-monitoring tbody tr {
-            transition: all 0.25s ease;
-        }
-
-        .table-monitoring tbody tr:hover {
-            background-color: #ffe6e6;
-            transform: scale(1.01);
+        .table-monitoring {
+            border-collapse: separate !important;
+            border-spacing: 0;
+            white-space: nowrap;
+            font-size: 13px;
         }
 
         .table-monitoring th,
         .table-monitoring td {
-            padding: 6px 10px;
+            padding: 8px 10px;
+            vertical-align: middle;
         }
 
-        /* Freeze kolom pertama */
-        .table-monitoring td:first-child,
-        .table-monitoring th:first-child {
-            position: sticky;
-            left: 0;
-            background: #fff;
-            z-index: 3;
-        }
-
-        .table-monitoring th:first-child {
-            background: #990000;
-        }
-
-        /* BADGE STATUS */
-        .badge-danger {
-            background: #ff1a1a;
-            padding: 5px 8px;
-            border-radius: 20px;
-        }
-
-        /* SCROLL CONTAINER */
-        .table-container {
-            overflow: auto;
-            max-height: 500px;
-            /* WAJIB supaya header nempel */
-            position: relative;
-        }
-
-        /* FIX TABLE */
-        .table-monitoring {
-            border-collapse: separate !important;
-            border-spacing: 0;
-        }
-
-        /* HEADER TABLE (TH) FREEZE */
         .table-monitoring thead th {
-            position: sticky !important;
+            position: sticky;
             top: 0;
             z-index: 200;
-            /* harus di bawah sticky atas */
-            background: #b30000 !important;
             color: white;
+            background: linear-gradient(135deg, #0B1F3A, #173B6C) !important;
+            text-align: center;
         }
 
-        /* KOLOM PERTAMA */
+        .table-monitoring tbody tr {
+            transition: .2s;
+        }
+
+        .table-monitoring tbody tr:hover {
+            background: #EAF2FF;
+        }
+
+        /* ==========================
+            STICKY FIRST COLUMN
+        ========================== */
+
         .table-monitoring th:first-child {
             position: sticky;
             left: 0;
-            z-index: 201;
+            background: #173B6C !important;
+            z-index: 300;
         }
 
         .table-monitoring td:first-child {
             position: sticky;
             left: 0;
-            background: #fff;
-            z-index: 150;
+            background: white;
+            z-index: 100;
         }
 
-        /* POJOK KIRI ATAS */
         .table-monitoring thead th:first-child {
-            z-index: 300;
+            z-index: 400;
         }
+
+        /* ==========================
+            BADGE
+        ========================== */
 
         .badge-success {
-            background: #00cc66;
-            padding: 5px 8px;
+            background: #001e5e;
+            color: white;
             border-radius: 20px;
+            padding: 6px 10px;
         }
 
-        /* MODAL */
+        .badge-danger {
+            background: #DC2626;
+            color: white;
+            border-radius: 20px;
+            padding: 6px 10px;
+        }
+
+        /* ==========================
+            MODAL
+        ========================== */
+
         .modal-content {
-            border-radius: 12px;
-            animation: slideUp 0.4s ease;
+            border-radius: 15px;
+            border: none;
+            overflow: hidden;
+            animation: zoomIn .3s;
         }
 
         .modal-header {
-            background: linear-gradient(45deg, #990000, #ff3333);
+            background: linear-gradient(135deg, #0B1F3A, #173B6C);
             color: white;
         }
 
-        /* ANIMATIONS */
+        /* ==========================
+            STICKY HEADER
+        ========================== */
+
+        .sticky-top-section {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            background: #eef3f9;
+        }
+
+        .sticky-inner {
+            background: #eef3f9;
+        }
+
+        /* ==========================
+            ANIMATION
+        ========================== */
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(40px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* HEADER PROJECT */
-        .project-header {
-            background: linear-gradient(135deg, #b30000, #ff1a1a);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            animation: fadeInDown 0.5s ease;
-        }
-
-        .project-title {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .project-name {
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        /* CARD */
-        .card {
-            border-radius: 12px;
-            border: none;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-            animation: fadeInUp 0.4s ease;
-        }
-
-        /* BUTTON */
-        .btn-success {
-            background: linear-gradient(135deg, #ff1a1a, #cc0000);
-            border: none;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(255, 0, 0, 0.4);
-        }
-
-        /* TABLE */
-        .table-monitoring {
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .table-monitoring th {
-            background: #b30000 !important;
-            color: white;
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .table-monitoring tbody tr {
-            transition: 0.2s;
-        }
-
-        .table-monitoring tbody tr:hover {
-            background-color: #ffe5e5;
-            transform: scale(1.01);
-        }
-
-        /* BADGE */
-        .badge-danger {
-            background-color: #ff1a1a;
-        }
-
-        .badge-success {
-            background-color: #28a745;
-        }
-
-        /* MODAL */
-        .modal-content {
-            border-radius: 12px;
-            animation: zoomIn 0.3s ease;
-        }
-
-        /* ANIMATIONS */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(15px);
             }
 
             to {
@@ -291,399 +265,150 @@
 
         @keyframes zoomIn {
             from {
-                transform: scale(0.8);
                 opacity: 0;
+                transform: scale(.9);
             }
 
             to {
-                transform: scale(1);
                 opacity: 1;
-            }
-        }
-
-        .table {
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .header-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* bikin center horizontal */
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .project-header {
-            width: 100%;
-            max-width: 600px;
-            /* ini penting biar tidak kepanjangan */
-            text-align: center;
-        }
-
-        /* 🔥 HEADER + FILTER + BUTTON STICKY */
-        .sticky-top-section {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: #f8f9fa;
-        }
-
-        /* biar tiap layer rapi */
-        .sticky-inner {
-            background: #f8f9fa;
-        }
-
-
-        /* =========================================
-                                       RESPONSIVE MOBILE MONITORING
-                                    ========================================= */
-
-        @media (max-width: 768px) {
-
-            /* CONTENT */
-            .content,
-            .container-fluid {
-                padding-left: 8px !important;
-                padding-right: 8px !important;
-            }
-
-            /* STICKY HEADER */
-            .sticky-top-section {
-                top: 0;
-                z-index: 999;
-                padding-bottom: 5px;
-            }
-
-            .sticky-inner {
-                padding: 0;
-            }
-
-            /* PROJECT HEADER */
-            .project-header {
-                max-width: 100% !important;
-                padding: 14px !important;
-                border-radius: 10px;
-            }
-
-            .project-title {
-                font-size: 11px !important;
-            }
-
-            .project-name {
-                font-size: 16px !important;
-                line-height: 1.4;
-            }
-
-            /* CARD */
-            .card {
-                border-radius: 10px;
-            }
-
-            .card-body {
-                padding: 10px !important;
-            }
-
-            /* FILTER */
-            .row .col-md-2,
-            .row .col-md-11 {
-                width: 100%;
-                max-width: 100%;
-                flex: 100%;
-            }
-
-            .row label {
-                font-size: 11px;
-                margin-bottom: 3px;
-            }
-
-            .form-control {
-                height: 36px !important;
-                font-size: 12px !important;
-                border-radius: 8px !important;
-            }
-
-            /* BUTTONS */
-            .btn,
-            .btn-success,
-            .btn-warning,
-            .btn-danger,
-            .btn-primary,
-            .btn-secondary {
-                height: 34px !important;
-                min-height: 34px !important;
-                padding: 0 12px !important;
-                font-size: 11px !important;
-                border-radius: 8px !important;
-
-                display: inline-flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-
-                white-space: nowrap;
-            }
-
-            /* BUTTON ICON */
-            .btn i {
-                font-size: 10px !important;
-            }
-
-            /* BUTTON ACTION TABLE */
-            td .btn {
-                width: 32px !important;
-                height: 32px !important;
-                padding: 0 !important;
-            }
-
-            /* BUTTON FILTER */
-            .btn-primary.btn-sm,
-            .btn-secondary.btn-sm {
-                width: 100%;
-                margin-top: 6px;
-            }
-
-            /* BUTTON TAMBAH */
-            .header-wrapper .btn-success {
-                width: 100%;
-                max-width: 250px;
-                font-size: 12px !important;
-            }
-
-            /* TABLE CONTAINER */
-            .table-container {
-                overflow-x: auto;
-                overflow-y: auto;
-                max-height: 70vh;
-                border-radius: 10px;
-            }
-
-            /* TABLE */
-            .table-monitoring {
-                min-width: 1700px;
-                font-size: 11px !important;
-            }
-
-            .table-monitoring th,
-            .table-monitoring td {
-                padding: 6px !important;
-                font-size: 10px !important;
-                white-space: nowrap;
-            }
-
-            /* FREEZE FIRST COLUMN */
-            .table-monitoring th:first-child {
-                position: sticky;
-                left: 0;
-                z-index: 600;
-                background: #b30000 !important;
-                min-width: 50px;
-            }
-
-            .table-monitoring td:first-child {
-                position: sticky;
-                left: 0;
-                background: #ffffff !important;
-                z-index: 500;
-                min-width: 50px;
-            }
-
-            /* HEADER FREEZE */
-            /* HEADER */
-            .table-monitoring thead th {
-                position: sticky;
-                top: 0;
-                z-index: 550;
-                background: #b30000 !important;
-            }
-
-            /* POJOK KIRI ATAS */
-            .table-monitoring thead th:first-child {
-                z-index: 700 !important;
-            }
-
-            /* BADGE */
-            .badge {
-                font-size: 9px !important;
-                padding: 4px 7px !important;
-            }
-
-            /* MODAL */
-            .modal-dialog {
-                margin: 10px;
-                max-width: calc(100% - 20px);
-            }
-
-            .modal-content {
-                border-radius: 12px;
-            }
-
-            .modal-header {
-                padding: 12px;
-            }
-
-            .modal-header h5 {
-                font-size: 15px;
-                margin: 0;
-            }
-
-            .modal-body {
-                padding: 12px;
-            }
-
-            .modal-footer {
-                padding: 10px;
-            }
-
-            /* FORM DALAM MODAL */
-            .modal-body .col-md-4,
-            .modal-body .col-md-12 {
-                width: 100%;
-                max-width: 100%;
-                flex: 100%;
-            }
-
-            .modal-body label {
-                font-size: 12px;
-                margin-bottom: 4px;
-            }
-
-            /* MODAL BUTTON */
-            .modal-footer .btn {
-                flex: 1;
-            }
-
-            /* CHECKBOX */
-            input[type="checkbox"] {
                 transform: scale(1);
             }
-
-            /* HAPUS TERPILIH */
-            .table-container>.btn-danger,
-            form>.btn-danger.mt-2 {
-                width: 100%;
-                margin-top: 10px;
-            }
         }
 
-        /* =========================================
-                                       EXTRA SMALL DEVICE
-                                    ========================================= */
-
-        @media (max-width: 480px) {
-
-            .project-name {
-                font-size: 14px !important;
-            }
-
-            .project-title {
-                font-size: 10px !important;
-            }
-
-            .table-monitoring th,
-            .table-monitoring td {
-                font-size: 9px !important;
-                padding: 5px !important;
-            }
-
-            .btn {
-                font-size: 10px !important;
-            }
-
-            .form-control {
-                font-size: 11px !important;
-            }
-
-            .modal-header h5 {
-                font-size: 14px;
-            }
-        }
-
-
-
-        /* =========================================
-                               RESPONSIVE 768px
-                            ========================================= */
-        /* ======================================
-                       FILTER MOBILE TOGGLE
-                    ====================================== */
+        /* ==========================
+            MOBILE
+        ========================== */
 
         .filter-toggle-btn {
             display: none;
         }
 
-        /* MOBILE */
-        @media (max-width: 768px) {
+        @media (max-width:768px) {
 
-            /* tombol filter */
-            .filter-toggle-btn {
-                display: block;
-                width: 100%;
-                margin-top: 10px;
-                margin-bottom: 10px;
-
-                height: 38px !important;
-                font-size: 12px !important;
-                border-radius: 10px !important;
-
-                font-weight: 600;
+            body {
+                background: #eef3f9;
             }
 
-            /* filter default disembunyikan */
-            #filterArea {
-                display: none;
-                animation: fadeFilter .3s ease;
-            }
-
-            /* ketika dibuka */
-            #filterArea.show {
-                display: block;
-            }
-
-            /* animasi */
-            @keyframes fadeFilter {
-                from {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                }
-
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            /* card lebih kecil */
-            .card.mt-3.p-3 {
-                padding: 8px !important;
-            }
-
-            /* table area lebih luas */
-            .table-container {
-                max-height: 78vh;
-            }
-
-            /* table lebih nyaman */
-            .table-monitoring {
-                min-width: 1700px;
-            }
-
-            /* sticky tetap aman */
             .sticky-top-section {
-                background: #f8f9fa;
                 z-index: 999;
             }
 
-            /* filter input */
-            #filterArea .form-control {
-                font-size: 12px !important;
-                height: 36px !important;
+            .project-header {
+                max-width: 100%;
+                padding: 16px;
             }
 
-            /* tombol filter & reset */
-            #filterArea .btn {
-                flex: 1;
-                min-width: 100px;
+            .project-title {
+                font-size: 11px;
+            }
+
+            .project-name {
+                font-size: 18px;
+            }
+
+            .card {
+                border-radius: 12px;
+            }
+
+            .card-body {
+                padding: 10px;
+            }
+
+            .form-control {
+                height: 36px;
+                font-size: 12px;
+            }
+
+            .btn {
+                height: 36px;
+                font-size: 12px;
+                border-radius: 8px;
+            }
+
+            .table-container {
+                max-height: 75vh;
+                overflow: auto;
+            }
+
+            .table-monitoring {
+                min-width: 1700px;
+                font-size: 11px;
+            }
+
+            .table-monitoring th,
+            .table-monitoring td {
+                padding: 6px;
+                font-size: 10px;
+            }
+
+            .table-monitoring th:first-child {
+                min-width: 50px;
+                left: 0;
+                background: #173B6C !important;
+                z-index: 600;
+            }
+
+            .table-monitoring td:first-child {
+                min-width: 50px;
+                left: 0;
+                background: white;
+                z-index: 500;
+            }
+
+            .table-monitoring thead th:first-child {
+                z-index: 700;
+            }
+
+            .badge {
+                font-size: 10px;
+            }
+
+            .modal-dialog {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+            }
+
+            .filter-toggle-btn {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+                background: #173B6C;
+                color: white;
+                border: none;
+            }
+
+            #filterArea {
+                display: none;
+            }
+
+            #filterArea.show {
+                display: block;
+                animation: fadeIn .3s;
+            }
+        }
+
+        @media (max-width:480px) {
+
+            .project-name {
+                font-size: 15px;
+            }
+
+            .project-title {
+                font-size: 10px;
+            }
+
+            .table-monitoring th,
+            .table-monitoring td {
+                font-size: 9px;
+                padding: 5px;
+            }
+
+            .btn {
+                font-size: 10px;
+            }
+
+            .form-control {
+                font-size: 11px;
             }
         }
     </style>

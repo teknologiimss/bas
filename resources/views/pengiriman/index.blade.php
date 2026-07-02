@@ -7,135 +7,127 @@
 
     <style>
         body {
-            background: #f5f6fa;
+            background: #f4f7fc;
         }
 
-        /* HEADER BUTTON AREA */
+        :root {
+            --navy: #0F172A;
+            --navy-dark: #020617;
+            --navy-light: #1E3A8A;
+            --navy-soft: #EFF6FF;
+            --border: #D6E4F5;
+            --text: #334155;
+        }
+
+        /* ================= HEADER ================= */
         .d-flex.justify-content-between.mb-3 {
-            animation: fadeDown 0.5s ease;
+            animation: fadeDown .45s ease;
         }
 
-        /* CARD LIST */
+        /* ================= CARD ================= */
         .card {
             border: none;
             border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            animation: fadeUp 0.6s ease;
-        }
-
-        /* ITEM ROW */
-        .border {
-            border: none !important;
-            border-left: 5px solid #c40000 !important;
-            border-radius: 14px !important;
-            transition: all 0.25s ease;
             background: #fff;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+            animation: fadeUp .5s ease;
         }
 
-        .border:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(196, 0, 0, 0.15);
-        }
-
-        /* TITLE */
+        /* ================= TITLE ================= */
         h5 {
-            color: #b30000;
+            color: var(--navy);
             font-weight: 700;
         }
 
-        /* BUTTON STYLE */
+        /* ================= ITEM ================= */
+        .border {
+            border: none !important;
+            border-left: 5px solid var(--navy-light) !important;
+            border-radius: 14px !important;
+            background: white;
+            transition: .25s;
+        }
+
+        .border:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(15, 23, 42, .12);
+            background: #fbfdff;
+        }
+
+        /* ================= BUTTON PRIMARY ================= */
         .btn-success {
-            background: linear-gradient(135deg, #c40000, #7a0000) !important;
+            background: linear-gradient(135deg, var(--navy-light), var(--navy)) !important;
             border: none !important;
             border-radius: 10px !important;
-            transition: 0.2s;
+            color: #fff !important;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(30, 58, 138, .25);
+            transition: .25s;
         }
 
         .btn-success:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(196, 0, 0, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 58, 138, .35);
         }
 
-        /* LIGHT BUTTON */
+        /* ================= BUTTON MONITOR ================= */
         .btn-light {
+            background: white;
+            color: var(--navy);
+            border: 1px solid var(--navy-light);
             border-radius: 10px;
-            border: 1px solid #c40000;
-            color: #c40000;
-            transition: 0.2s;
+            font-weight: 600;
+            transition: .25s;
         }
 
         .btn-light:hover {
-            background: #c40000;
+            background: var(--navy-light);
             color: white;
-            transform: translateY(-2px);
+            border-color: var(--navy-light);
         }
 
-        /* DELETE BUTTON */
+        /* ================= DELETE ================= */
         .btn-danger {
             border-radius: 10px;
-            transition: 0.2s;
+            transition: .25s;
         }
 
         .btn-danger:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
         }
 
-        /* MODAL */
-        .modal-content {
-            border-radius: 18px;
-            overflow: hidden;
-            animation: pop 0.3s ease;
-        }
+        /* ================= SEARCH ================= */
 
-        .modal-header {
-            background: linear-gradient(135deg, #c40000, #7a0000);
-            color: white;
-        }
-
-        /* INPUT */
-        .form-control {
-            border-radius: 10px;
-        }
-
-        /* PAGINATION */
-        .pagination {
-            justify-content: center;
-        }
-
-        .page-item.active .page-link {
-            background: #c40000;
-            border-color: #c40000;
-        }
-
-        /* SEARCH MODERN */
         .search-box {
             display: flex;
             justify-content: flex-end;
-            /* pindah ke kanan */
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .search-wrapper {
             display: flex;
             align-items: center;
-            background: #fff;
+            width: 100%;
+            max-width: 450px;
+
+            background: white;
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(196, 0, 0, 0.2);
-            max-width: 450px;
-            width: 100%;
-            transition: 0.3s;
+
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
+            transition: .25s;
         }
 
         .search-wrapper:focus-within {
-            box-shadow: 0 10px 25px rgba(196, 0, 0, 0.25);
-            transform: translateY(-2px);
+            border-color: var(--navy-light);
+            box-shadow: 0 10px 25px rgba(30, 58, 138, .18);
         }
 
         .search-icon {
-            padding: 10px 12px;
-            color: #c40000;
+            padding: 12px;
+            color: var(--navy-light);
+            font-size: 18px;
         }
 
         .search-input {
@@ -143,21 +135,75 @@
             border: none;
             outline: none;
             padding: 12px;
+            background: white;
         }
 
         .search-btn {
-            background: linear-gradient(135deg, #c40000, #7a0000);
-            color: #fff;
             border: none;
-            padding: 12px 18px;
-            cursor: pointer;
+            color: white;
+            font-weight: 600;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--navy-light), var(--navy));
+            transition: .25s;
         }
 
         .search-btn:hover {
-            transform: scale(1.05);
+            background: linear-gradient(135deg, var(--navy), var(--navy-dark));
         }
 
-        /* ANIMATION */
+        /* ================= MODAL ================= */
+
+        .modal-content {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--navy-light), var(--navy));
+            color: white;
+        }
+
+        .modal-header h5 {
+            color: white;
+            margin: 0;
+        }
+
+        /* ================= INPUT ================= */
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .form-control:focus {
+            border-color: var(--navy-light);
+            box-shadow: 0 0 0 .2rem rgba(30, 58, 138, .12);
+        }
+
+        /* ================= PAGINATION ================= */
+
+        .pagination {
+            justify-content: center;
+        }
+
+        .page-item.active .page-link {
+            background: var(--navy-light);
+            border-color: var(--navy-light);
+        }
+
+        .page-link {
+            color: var(--navy);
+        }
+
+        .page-link:hover {
+            color: white;
+            background: var(--navy-light);
+            border-color: var(--navy-light);
+        }
+
+        /* ================= ANIMATION ================= */
+
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -173,7 +219,7 @@
         @keyframes fadeDown {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-15px);
             }
 
             to {
@@ -182,49 +228,29 @@
             }
         }
 
-        @keyframes pop {
-            from {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
         button,
         a {
-            transition: all 0.2s ease;
+            transition: .25s;
         }
 
         button:active,
         a:active {
-            transform: scale(0.95);
+            transform: scale(.96);
         }
 
+        /* ================= MOBILE ================= */
 
+        @media(max-width:768px) {
 
-        /* =========================
-       RESPONSIVE MOBILE
-    ========================= */
-        @media (max-width: 768px) {
-
-            /* HEADER BUTTON */
             .d-flex.justify-content-between.mb-3 {
                 flex-direction: column;
-                align-items: stretch !important;
+                gap: 10px;
             }
 
             .d-flex.justify-content-between.mb-3 .btn {
                 width: 100%;
-                margin: 0 !important;
-                height: 42px;
-                font-size: 14px;
             }
 
-            /* SEARCH */
             .search-box {
                 justify-content: center;
             }
@@ -233,44 +259,11 @@
                 max-width: 100%;
             }
 
-            .search-input {
-                font-size: 14px;
-                padding: 10px;
-            }
-
-            .search-btn {
-                padding: 10px 14px;
-                font-size: 14px;
-            }
-
-            /* CARD ITEM */
             .border.p-3 {
                 flex-direction: column !important;
                 align-items: flex-start !important;
-                gap: 12px;
             }
 
-            /* TITLE */
-            .border h5 {
-                font-size: 16px;
-                margin-bottom: 0;
-            }
-
-            /* BUTTON AREA */
-            .border .btn,
-            .border form {
-                width: 100%;
-            }
-
-            .border .btn {
-                width: 100%;
-                height: 40px;
-                font-size: 13px;
-                border-radius: 8px !important;
-                margin-bottom: 6px;
-            }
-
-            /* BUTTON GROUP */
             .border>div:last-child {
                 width: 100%;
                 display: flex;
@@ -278,31 +271,16 @@
                 gap: 8px;
             }
 
-            /* DELETE BUTTON */
-            .btn-danger,
-            .btn-success,
-            .btn-light {
-                padding: 8px 10px !important;
+            .border .btn {
+                width: 100%;
             }
 
-            /* MODAL */
             .modal-dialog {
-                margin: 15px;
+                margin: 12px;
             }
 
-            .modal-content {
-                border-radius: 14px;
-            }
-
-            /* PAGINATION */
             .pagination {
                 flex-wrap: wrap;
-                gap: 5px;
-            }
-
-            .page-link {
-                font-size: 13px;
-                padding: 6px 10px;
             }
         }
     </style>
