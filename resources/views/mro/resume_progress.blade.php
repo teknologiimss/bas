@@ -123,138 +123,284 @@
     <style>
         /* ================= ROOT COLOR ================= */
         :root {
-            --maroon: #dc3545;
-            --maroon-dark: #b02a37;
-            --maroon-soft: #fdecee;
+            --navy: #0f172a;
+            --navy-dark: #020617;
+            --blue: #2563eb;
+            --blue-soft: #eff6ff;
+            --border: #bfdbfe;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc, #eff6ff);
         }
 
         /* ================= CARD MODERN ================= */
         .card {
+            border: none;
             border-radius: 14px;
-            box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
-            transition: transform .25s ease, box-shadow .25s ease;
+            background: #fff;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, .08);
+            transition: .25s;
         }
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 36px rgba(0, 0, 0, .12);
+            box-shadow: 0 16px 36px rgba(15, 23, 42, .12);
         }
 
         /* ================= HEADER ================= */
         h3 {
-            color: var(--maroon);
+            background: linear-gradient(90deg, var(--navy), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
             animation: fadeDown .6s ease;
         }
 
         /* ================= TABLE ================= */
+
         .table {
             border-radius: 12px;
             overflow: hidden;
         }
 
+        .table td,
+        .table th {
+            vertical-align: middle;
+        }
+
         thead.thead-dark th {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)) !important;
-            letter-spacing: .6px;
+            background: linear-gradient(135deg,
+                    var(--navy),
+                    var(--blue)) !important;
+            color: white;
+            border: none;
+            letter-spacing: .5px;
         }
 
         tbody tr {
-            transition: all .2s ease;
+            transition: .25s;
         }
 
         tbody tr:hover {
-            background-color: var(--maroon-soft);
-            transform: scale(1.005);
+            background: #f8fbff;
+            transform: scale(1.003);
         }
 
         /* ================= LINK ================= */
+
         a.text-primary {
-            position: relative;
-            transition: color .2s ease;
+            color: var(--blue) !important;
+            font-weight: 600;
+            transition: .25s;
         }
 
-        a.text-primary::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background: var(--maroon);
-            transition: width .3s;
-        }
-
-        a.text-primary:hover::after {
-            width: 100%;
+        a.text-primary:hover {
+            color: var(--navy) !important;
+            text-decoration: none;
         }
 
         /* ================= BADGE ================= */
+
         .badge {
-            transition: transform .2s ease;
+            border-radius: 30px;
+            padding: 7px 12px;
+            font-weight: 500;
+            transition: .2s;
         }
 
         .badge:hover {
-            transform: scale(1.08);
+            transform: scale(1.05);
+        }
+
+        .badge-warning {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: #222;
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+
+        .badge-danger {
+            background: linear-gradient(135deg, #2563eb, #0f172a);
+            color: white;
+        }
+
+        .badge-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .badge-primary {
+            background: linear-gradient(135deg, #2563eb, #0f172a);
         }
 
         /* ================= PROGRESS ================= */
+
         .progress {
-            border-radius: 20px;
+            height: 18px;
+            border-radius: 30px;
+            background: #dbeafe;
             overflow: hidden;
         }
 
         .progress-bar {
+            font-size: 11px;
             font-weight: 600;
-            animation: progressGrow 1.2s ease;
-            box-shadow: inset 0 0 6px rgba(255, 255, 255, .3);
+            animation: progressGrow 1s ease;
+            box-shadow: inset 0 0 8px rgba(255, 255, 255, .35);
         }
 
-        /* ================= BUTTON MODERN ================= */
+        /* ================= BUTTON ================= */
+
         .btn-primary {
-            background: linear-gradient(135deg, var(--maroon), var(--maroon-dark));
+
+            background: linear-gradient(135deg,
+                    var(--blue),
+                    var(--navy));
+
             border: none;
-            border-radius: 20px;
+            border-radius: 30px;
             font-weight: 600;
-            box-shadow: 0 6px 16px rgba(220, 53, 69, .4);
-            transition: all .25s ease;
+            padding: 8px 18px;
+
+            box-shadow: 0 6px 16px rgba(37, 99, 235, .25);
+
+            transition: .25s;
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 22px rgba(220, 53, 69, .55);
+
+            transform: translateY(-2px);
+
+            background: linear-gradient(135deg,
+                    var(--navy),
+                    var(--blue));
+
+            box-shadow: 0 10px 24px rgba(37, 99, 235, .35);
+
         }
 
-        .btn-primary:active {
-            transform: scale(.95);
+        .btn-secondary {
+
+            border-radius: 30px;
+
         }
 
-        /* ================= FILTER INPUT ================= */
+        /* ================= INPUT ================= */
+
         .form-control {
-            border-radius: 10px;
-            transition: box-shadow .2s ease, transform .15s ease;
+
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: .25s;
+
         }
 
         .form-control:focus {
-            box-shadow: 0 0 0 .15rem rgba(220, 53, 69, .25);
-            transform: scale(1.02);
+
+            border-color: var(--blue);
+
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .18);
+
+            transform: scale(1.01);
+
+        }
+
+        /* ================= FILTER CARD ================= */
+
+        .card .card-body {
+
+            padding: 1.5rem;
+
+        }
+
+        /* ================= TABLE CARD ================= */
+
+        .table-responsive {
+
+            border-radius: 12px;
+
+        }
+
+        /* ================= NOTE ================= */
+
+        h6.text-danger {
+
+            color: var(--navy) !important;
+
+            font-weight: 700;
+
+        }
+
+        /* ================= PAGINATION ================= */
+
+        .pagination .page-link {
+
+            color: var(--blue);
+
+            border-radius: 8px;
+
+            margin: 0 2px;
+
+        }
+
+        .pagination .page-item.active .page-link {
+
+            background: linear-gradient(135deg, var(--blue), var(--navy));
+
+            border: none;
+
+        }
+
+        /* ================= SCROLL ================= */
+
+        ::-webkit-scrollbar {
+
+            width: 8px;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+
+            background: linear-gradient(var(--blue), var(--navy));
+
+            border-radius: 10px;
+
         }
 
         /* ================= ANIMATION ================= */
+
         @keyframes fadeDown {
+
             from {
+
                 opacity: 0;
-                transform: translateY(-12px);
+
+                transform: translateY(-10px);
+
             }
 
             to {
+
                 opacity: 1;
+
                 transform: translateY(0);
+
             }
+
         }
 
         @keyframes progressGrow {
+
             from {
+
                 width: 0;
+
             }
+
         }
     </style>
 
