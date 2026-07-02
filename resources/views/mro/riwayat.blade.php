@@ -4,61 +4,93 @@
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
     <style>
-        body {
-            background-color: #f8f9fc;
+        :root {
+            --navy: #0F172A;
+            --navy-dark: #020617;
+            --blue: #2563EB;
+            --blue-light: #EFF6FF;
+            --blue-soft: #F8FBFF;
+            --border: #BFDBFE;
         }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc, #eff6ff);
+        }
+
+        /* =========================
+           CARD
+        ========================= */
 
         .card-modern {
             border: none;
             border-radius: 14px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
             overflow: hidden;
+            transition: .25s;
         }
 
+        .card-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 34px rgba(15, 23, 42, .12);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
         .header-red {
-            background: linear-gradient(135deg, #b30000, #ff3333);
-            color: white;
+            background: linear-gradient(135deg, var(--navy), var(--blue));
+            color: #fff;
             padding: 18px 22px;
         }
 
         .header-red h5 {
             margin: 0;
             font-weight: 600;
-            letter-spacing: 0.5px;
+            letter-spacing: .5px;
         }
 
+        /* =========================
+           FILTER
+        ========================= */
+
         .filter-box {
-            background: #ffffff;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            margin-bottom: 15px;
+            background: #fff;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, .05);
+            margin-bottom: 18px;
         }
 
         .form-control {
             border-radius: 10px;
-            border: 1px solid #eee;
+            border: 1px solid var(--border);
             padding: 10px 12px;
-            transition: all 0.2s ease;
+            transition: .25s;
         }
 
         .form-control:focus {
-            border-color: #cc0000;
-            box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.1);
+            border-color: var(--blue);
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
         }
 
+        /* =========================
+           BUTTON
+        ========================= */
+
         .btn-red {
-            background: linear-gradient(135deg, #cc0000, #ff1a1a);
-            color: white;
+            background: linear-gradient(135deg, var(--blue), var(--navy));
+            color: #fff;
             border: none;
             border-radius: 10px;
         }
 
         .btn-red:hover {
-            background: linear-gradient(135deg, #a30000, #e60000);
+            background: linear-gradient(135deg, var(--navy), var(--blue));
+            color: #fff;
         }
 
-        /* ICON BUTTON */
         .btn-icon {
             width: 42px;
             height: 42px;
@@ -66,194 +98,228 @@
             align-items: center;
             justify-content: center;
             border-radius: 10px;
-            font-size: 16px;
-        }
-
-        .btn-reset-icon {
-            width: 42px;
-            height: 42px;
-            background-color: #6c757d;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .btn-reset-icon:hover {
-            background-color: #5a6268;
-            color: white;
-            transform: scale(1.05);
+            transition: .25s;
         }
 
         .btn-icon:hover {
             transform: scale(1.05);
         }
 
-        .table {
+        .btn-reset-icon {
+
+            width: 42px;
+            height: 42px;
+
+            background: #64748b;
+            color: #fff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             border-radius: 10px;
+
+            text-decoration: none;
+
+            transition: .25s;
+        }
+
+        .btn-reset-icon:hover {
+
+            background: #475569;
+            color: white;
+
+            transform: scale(1.05);
+
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table {
+            border-radius: 12px;
             overflow: hidden;
         }
 
         .table thead {
-            background-color: #fff5f5;
+
+            background: var(--blue-soft);
+
         }
 
         .table th {
-            color: #b30000;
+
+            background: linear-gradient(135deg, var(--navy), var(--blue));
+
+            color: white;
+
+            border: none;
+
             font-weight: 600;
-            border-bottom: 2px solid #f1f1f1;
-        }
 
-        .table tbody tr {
-            transition: all 0.15s ease;
-        }
+            text-align: center;
 
-        .table tbody tr:hover {
-            background-color: #fff0f0;
-            transform: scale(1.002);
         }
 
         .table td {
+
             vertical-align: middle;
+
         }
+
+        .table tbody tr {
+
+            transition: .2s;
+
+        }
+
+        .table tbody tr:hover {
+
+            background: #f4f8ff;
+
+            transform: scale(1.002);
+
+        }
+
+        /* =========================
+           QTY
+        ========================= */
 
         .qty-highlight {
-            font-weight: 600;
-            color: #cc0000;
+
+            color: var(--blue);
+
+            font-weight: 700;
+
         }
 
+        /* =========================
+           REKAP
+        ========================= */
+
         .total-box {
-            background: #fff5f5;
-            border-left: 6px solid #cc0000;
-            padding: 12px 16px;
+
+            background: #f8fbff;
+
+            border-left: 5px solid var(--blue);
+
             border-radius: 10px;
-            font-size: 15px;
+
+            padding: 14px 16px;
+
         }
 
         tfoot {
-            background-color: #fff0f0;
+
+            background: #eef5ff;
+
             font-weight: bold;
+
         }
 
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
-        /* =========================================
-       RESPONSIVE MOBILE
-    ========================================= */
-        @media (max-width: 768px) {
+        @media(max-width:768px) {
 
-            /* CARD */
             .card-modern {
+
                 border-radius: 10px;
+
             }
 
             .header-red {
+
                 padding: 14px;
                 text-align: center;
+
             }
 
             .header-red h5 {
+
                 font-size: 16px;
+
             }
 
-            /* FILTER */
             .filter-box {
+
                 padding: 12px;
+
             }
 
             .filter-box .row>div {
+
                 margin-bottom: 10px;
+
             }
 
             .form-control {
+
                 font-size: 12px;
                 height: 38px;
-                padding: 8px 10px;
+
             }
 
-            /* BUTTON FILTER & RESET */
             .btn-icon,
             .btn-reset-icon {
+
                 width: 36px !important;
                 height: 36px !important;
-                min-width: 36px;
-                padding: 0 !important;
                 font-size: 13px !important;
-                border-radius: 8px;
+
             }
 
-            .d-flex.align-items-center.gap-2 {
-                gap: 6px !important;
-            }
-
-            /* TABLE */
             .table-responsive {
+
                 overflow-x: auto;
-                border-radius: 10px;
+
             }
 
             .table {
+
                 min-width: 950px;
                 font-size: 11px;
+
             }
 
             .table th,
             .table td {
-                padding: 7px 6px;
+
                 white-space: nowrap;
-                vertical-align: middle;
+                padding: 7px 6px;
+
             }
 
-            .table th {
-                font-size: 11px;
-            }
-
-            /* TEXT */
-            .qty-highlight {
-                font-size: 11px;
-            }
-
-            /* REKAP BOX */
             .total-box {
-                padding: 10px;
-                font-size: 12px;
-            }
 
-            /* REKAP TABLE */
-            .total-box .table {
-                min-width: 700px;
+                font-size: 12px;
+
             }
 
         }
 
-        /* EXTRA SMALL DEVICE */
-        @media (max-width: 480px) {
+        @media(max-width:480px) {
 
             .header-red h5 {
+
                 font-size: 14px;
+
             }
 
-            .form-control {
-                font-size: 11px;
-                height: 35px;
+            .table {
+
+                font-size: 10px;
+
             }
 
             .btn-icon,
             .btn-reset-icon {
+
                 width: 34px !important;
                 height: 34px !important;
-                font-size: 12px !important;
-            }
 
-            .table {
-                font-size: 10px;
-            }
-
-            .table th,
-            .table td {
-                padding: 6px 5px;
             }
 
         }
