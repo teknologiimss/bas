@@ -75,7 +75,7 @@
     }
 
     .action-btn.text-danger:hover {
-        background-color: rgba(220, 53, 69, 0.1);
+        background-color: rgba(53, 53, 220, 0.1);
     }
 
     /* button edit dan delete */
@@ -85,7 +85,7 @@
    🌈 THEME MODERN MERAH
 ========================= */
     body {
-        background: linear-gradient(135deg, #fff5f5, #ffeaea);
+        background: linear-gradient(135deg, #f7f5ff, #ffeaea);
     }
 
     /* CARD UTAMA */
@@ -93,7 +93,7 @@
         border-radius: 16px !important;
         background: rgba(255, 255, 255, 0.85);
         /* backdrop-filter: blur(8px); */
-        box-shadow: 0 10px 30px rgba(179, 0, 0, 0.08);
+        box-shadow: 0 10px 30px rgba(36, 0, 179, 0.08);
         /* transition: all 0.3s ease; */
     }
 
@@ -104,23 +104,23 @@
 
     /* HEADER */
     h3 b {
-        background: linear-gradient(45deg, #b30000, #ff4d4d);
+        background: linear-gradient(45deg, #14003f, #1c008d);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
     /* BUTTON */
     .btn-success {
-        background: linear-gradient(135deg, #ff1a1a, #b30000) !important;
+        background: linear-gradient(135deg, #14003f, #1c008d) !important;
         border: none;
         border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25);
+        box-shadow: 0 4px 12px rgba(15, 0, 74, 0.25);
         transition: all 0.25s ease;
     }
 
     .btn-success:hover {
         transform: translateY(-2px) scale(1.03);
-        box-shadow: 0 6px 18px rgba(255, 0, 0, 0.4);
+        box-shadow: 0 6px 18px rgba(15, 0, 74, 0.25);
     }
 
     /* FILTER */
@@ -134,8 +134,8 @@
     .position-relative.border.rounded {
         border: none !important;
         border-radius: 18px !important;
-        background: linear-gradient(145deg, #ffffff, #fff0f0);
-        box-shadow: 0 8px 20px rgba(179, 0, 0, 0.08);
+        background: linear-gradient(145deg, #ffffff, #f4f1ff);
+        box-shadow: 0 8px 20px rgba(15, 0, 74, 0.25);
         transition: all 0.3s ease;
         overflow: hidden;
     }
@@ -147,12 +147,12 @@
         top: 0;
         width: 5px;
         height: 100%;
-        background: linear-gradient(#b30000, #ff4d4d);
+        background: linear-gradient(#14003f, #1c008d);
     }
 
     .position-relative.border.rounded:hover {
         transform: translateY(-5px) scale(1.01);
-        box-shadow: 0 12px 30px rgba(179, 0, 0, 0.15);
+        box-shadow: 0 12px 30px rgba(15, 0, 74, 0.25);
     }
 
     /* STATUS BADGE */
@@ -165,11 +165,11 @@
 
     @keyframes pulseBadge {
         0% {
-            box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 0 0 rgba(15, 0, 74, 0.25);
         }
 
         70% {
-            box-shadow: 0 0 0 8px rgba(255, 0, 0, 0);
+            box-shadow: 0 0 0 8px rgba(15, 0, 74, 0.25);
         }
 
         100% {
@@ -201,26 +201,26 @@
         border-radius: 16px;
         background: linear-gradient(145deg, #ffffff, #fff5f5);
         transition: all 0.3s ease;
-        border-left: 4px solid #ff1a1a;
+        border-left: 4px solid #14003f;
     }
 
     .doc-item:hover {
         transform: scale(1.02);
-        box-shadow: 0 10px 25px rgba(255, 0, 0, 0.15);
+        box-shadow: 0 10px 25px rgba(20, 0, 80, 0.15);
     }
 
     /* INPUT */
     .form-control,
     .form-select {
         border-radius: 10px;
-        border: 1px solid #ffd6d6;
+        border: 1px solid #ddd6ff;
         transition: all 0.2s ease;
     }
 
     .form-control:focus,
     .form-select:focus {
-        border-color: #ff1a1a;
-        box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.1);
+        border-color: #14003f;
+        box-shadow: 0 0 0 3px rgba(6, 0, 72, 0.1);
     }
 
     /* ACTION BUTTON */
@@ -257,7 +257,7 @@
     }
 
     #toggleFilterBtn:hover {
-        background: #ff1a1a;
+        background: #14003f;
         color: white;
     }
 
@@ -274,9 +274,9 @@
         display: inline-block;
         padding: 6px 14px;
         border-radius: 12px;
-        background: linear-gradient(135deg, #b30000, #ff4d4d);
+        background: linear-gradient(135deg, #14003f, #17008c);
         color: white;
-        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25);
+        box-shadow: 0 4px 12px rgba(20, 0, 106, 0.25);
         position: relative;
         overflow: hidden;
         transition: all 0.3s ease;
@@ -302,7 +302,7 @@
     /* efek hover */
     .position-relative.border.rounded:hover h5 {
         transform: scale(1.03);
-        box-shadow: 0 6px 18px rgba(255, 0, 0, 0.35);
+        box-shadow: 0 6px 18px rgba(17, 0, 92, 0.35);
     }
 
 
@@ -316,13 +316,13 @@
 
     /* BADGE PO */
     .po-badge {
-        background: linear-gradient(135deg, #ff1a1a, #b30000);
+        background: linear-gradient(135deg, #14003f, #180066);
         color: white;
         padding: 10px 18px;
         border-radius: 999px;
         font-weight: 600;
         font-size: 14px;
-        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25);
+        box-shadow: 0 4px 12px rgba(0, 7, 74, 0.25);
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -337,8 +337,8 @@
 
     /* BADGE JENIS */
     .jenis-badge {
-        background: #fff0f0;
-        color: #b30000;
+        background: #e1deff;
+        color: #210264;
         padding: 6px 12px;
         border-radius: 20px;
         font-size: 12px;
@@ -357,7 +357,7 @@
         background: #fff;
         padding: 10px 14px;
         border-radius: 10px;
-        border-left: 4px solid #ff1a1a;
+        border-left: 4px solid #14003f;
 
         display: flex;
         align-items: flex-start;
@@ -370,13 +370,13 @@
     /* HOVER EFFECT */
     .info-item:hover {
         transform: translateX(4px);
-        background: #fff5f5;
+        background: #f8f5ff;
     }
 
     /* LABEL */
     .info-item span {
         font-size: 13px;
-        color: #777;
+        color: #777777;
         min-width: 140px;
         /* biar semua sejajar */
         flex-shrink: 0;
@@ -433,8 +433,8 @@
     /* BUTTON */
     .btn-lihat {
         background: transparent;
-        border: 1px solid #ff1a1a;
-        color: #ff1a1a;
+        border: 1px solid #14003f;
+        color: #14003f;
         padding: 4px 10px;
         font-size: 12px;
         border-radius: 20px;
@@ -445,7 +445,7 @@
 
     /* HOVER */
     .btn-lihat:hover {
-        background: #ff1a1a;
+        background: #14003f;
         color: white;
     }
 
@@ -456,15 +456,15 @@
         align-items: center;
         padding: 12px 16px;
         border-radius: 14px;
-        background: linear-gradient(135deg, #fff5f5, #ffeaea);
-        border: 1px solid #ffd6d6;
+        background: linear-gradient(135deg, #f7f5ff, #eeeaff);
+        border: 1px solid #e2d6ff;
         transition: 0.3s;
     }
 
     /* HOVER CARD */
     .dokumen-header:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(255, 0, 0, 0.1);
+        box-shadow: 0 6px 18px rgba(26, 0, 113, 0.1);
     }
 
     /* TITLE */
@@ -473,21 +473,21 @@
         align-items: center;
         gap: 10px;
         font-weight: 600;
-        color: #b30000;
+        color: #14003f;
     }
 
     /* ICON */
     .icon-box {
         width: 36px;
         height: 36px;
-        background: linear-gradient(135deg, #ff1a1a, #b30000);
+        background: linear-gradient(135deg, #14003f, #1d0170);
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 10px;
         font-size: 16px;
-        box-shadow: 0 4px 10px rgba(255, 0, 0, 0.2);
+        box-shadow: 0 4px 10px rgba(37, 0, 170, 0.2);
     }
 
     /* BUTTON MODERN */
@@ -496,8 +496,8 @@
         align-items: center;
         gap: 8px;
         background: white;
-        color: #ff1a1a;
-        border: 1px solid #ff1a1a;
+        color: #14003f;
+        border: 1px solid #14003f;
         padding: 6px 14px;
         border-radius: 999px;
         font-size: 13px;
@@ -508,10 +508,10 @@
 
     /* HOVER BUTTON */
     .btn-dokumen:hover {
-        background: linear-gradient(135deg, #ff1a1a, #b30000);
+        background: linear-gradient(135deg, #14003f, #1d005c);
         color: white;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+        box-shadow: 0 4px 12px rgba(64, 0, 255, 0.3);
     }
 
     /* ARROW ANIMATION */

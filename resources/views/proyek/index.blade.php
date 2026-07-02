@@ -7,107 +7,218 @@
 
     <style>
         body {
-            background: #f5f6fa;
+            background: #eef3f9;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         /* HEADER */
         .d-flex.justify-content-between.mb-3 {
-            animation: fadeDown 0.5s ease;
+            animation: fadeDown .5s ease;
         }
 
-        /* CARD LIST */
+        /* ===========================
+           CARD
+        ============================ */
+
         .card {
             border: none;
             border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            animation: fadeUp 0.6s ease;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .10);
+            animation: fadeUp .6s ease;
         }
 
-        /* ITEM LIST */
+        /* ===========================
+           LIST ITEM
+        ============================ */
+
         .border {
             border: none !important;
-            border-left: 5px solid #c40000 !important;
+            border-left: 6px solid #0f172a !important;
             border-radius: 14px !important;
             background: #fff;
-            transition: 0.25s;
+            transition: .3s ease;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, .06);
         }
 
         .border:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(196, 0, 0, 0.15);
+            border-left-color: #2563eb !important;
+            background: #f8fbff;
+            box-shadow: 0 12px 25px rgba(15, 23, 42, .15);
         }
 
-        /* TITLE */
+        /* ===========================
+           TITLE
+        ============================ */
+
         h5 {
-            color: #b30000;
+            color: #0f172a;
             font-weight: 700;
         }
 
-        /* BUTTON PRIMARY (CREATE + SUBMIT) */
+        /* ===========================
+           BUTTON PRIMARY
+        ============================ */
+
         .btn-success {
-            background: linear-gradient(135deg, #c40000, #7a0000) !important;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a) !important;
             border: none !important;
+            color: #fff;
             border-radius: 10px !important;
-            transition: 0.2s;
+            font-weight: 600;
+            transition: .25s;
         }
 
         .btn-success:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(196, 0, 0, 0.3);
+            background: linear-gradient(135deg, #1e3a8a, #2563eb) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, .30);
         }
 
-        /* MONITOR BUTTON */
+        /* ===========================
+           BUTTON MONITOR
+        ============================ */
+
         .btn-light {
+            background: #fff;
+            border: 1px solid #1e3a8a;
+            color: #1e3a8a;
             border-radius: 10px;
-            border: 1px solid #c40000;
-            color: #c40000;
-            transition: 0.2s;
+            font-weight: 600;
+            transition: .25s;
         }
 
         .btn-light:hover {
-            background: #c40000;
-            color: #fff;
+            background: #1e3a8a;
+            color: white;
             transform: translateY(-2px);
         }
 
-        /* DELETE */
+        /* ===========================
+           DELETE BUTTON
+        ============================ */
+
         .btn-danger {
             border-radius: 10px;
-            transition: 0.2s;
+            transition: .25s;
         }
 
         .btn-danger:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
         }
 
-        /* MODAL */
-        .modal-content {
-            border-radius: 18px;
-            overflow: hidden;
-            animation: pop 0.3s ease;
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, #c40000, #7a0000);
-            color: #fff;
-        }
-
-        /* INPUT */
-        .form-control {
+        .btn-secondary {
             border-radius: 10px;
         }
 
-        /* PAGINATION */
+        /* ===========================
+           SEARCH
+        ============================ */
+
+        .search-wrapper-box {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
+            transition: .3s;
+        }
+
+        .search-wrapper:focus-within {
+            border-color: #2563eb;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, .20);
+            transform: translateY(-2px);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            transition: .25s;
+        }
+
+        .search-btn:hover {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+        }
+
+        /* ===========================
+           MODAL
+        ============================ */
+
+        .modal-content {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+            animation: pop .3s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            border: none;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* ===========================
+           INPUT
+        ============================ */
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
+        }
+
+        /* ===========================
+           PAGINATION
+        ============================ */
+
         .pagination {
             justify-content: center;
         }
 
-        .page-item.active .page-link {
-            background: #c40000;
-            border-color: #c40000;
+        .page-link {
+            color: #1e3a8a;
+            border-radius: 8px;
+            margin: 0 2px;
         }
 
-        /* ANIMATION */
+        .page-item.active .page-link {
+            background: #1e3a8a;
+            border-color: #1e3a8a;
+            color: white;
+        }
+
+        /* ===========================
+           ANIMATION
+        ============================ */
+
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -134,7 +245,7 @@
 
         @keyframes pop {
             from {
-                transform: scale(0.9);
+                transform: scale(.95);
                 opacity: 0;
             }
 
@@ -144,82 +255,27 @@
             }
         }
 
-        /* BUTTON CLICK EFFECT */
         button,
         a {
-            transition: all 0.2s ease;
+            transition: .25s ease;
         }
 
         button:active,
         a:active {
-            transform: scale(0.95);
+            transform: scale(.97);
         }
 
-        /* SEARCH WRAPPER POSISI KANAN */
-        .search-wrapper-box {
-            display: flex;
-            justify-content: flex-end;
-            /* INI KUNCINYA */
-        }
+        /* ===========================
+           MOBILE
+        ============================ */
 
-        /* SEARCH BOX MODERN */
-        .search-wrapper {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(196, 0, 0, 0.2);
-            max-width: 380px;
-            width: 100%;
-            transition: 0.3s;
-        }
+        @media (max-width:768px) {
 
-        .search-wrapper:focus-within {
-            box-shadow: 0 10px 25px rgba(196, 0, 0, 0.25);
-            transform: translateY(-2px);
-        }
-
-        /* INPUT */
-        .search-input {
-            flex: 1;
-            border: none;
-            outline: none;
-            padding: 12px;
-            font-size: 14px;
-        }
-
-        /* BUTTON */
-        .search-btn {
-            background: linear-gradient(135deg, #c40000, #7a0000);
-            color: #fff;
-            border: none;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .search-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .search-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* =========================================
-       RESPONSIVE MOBILE
-    ========================================= */
-        @media (max-width: 768px) {
-
-            /* CARD */
             .card {
                 padding: 15px !important;
                 border-radius: 14px;
             }
 
-            /* HEADER BUTTON */
             .d-flex.justify-content-between.mb-3 {
                 flex-direction: column;
             }
@@ -228,11 +284,8 @@
                 width: 100%;
                 margin: 0 !important;
                 height: 42px;
-                font-size: 14px;
-                border-radius: 10px !important;
             }
 
-            /* SEARCH */
             .search-wrapper-box {
                 justify-content: center;
             }
@@ -240,7 +293,6 @@
             .search-wrapper {
                 width: 100%;
                 max-width: 100%;
-                border-radius: 12px;
             }
 
             .search-input {
@@ -253,7 +305,6 @@
                 font-size: 13px;
             }
 
-            /* ITEM LIST */
             .border.p-3 {
                 flex-direction: column !important;
                 align-items: flex-start !important;
@@ -261,14 +312,11 @@
                 padding: 14px !important;
             }
 
-            /* TITLE */
             .border h5 {
                 font-size: 15px;
-                margin-bottom: 0;
                 word-break: break-word;
             }
 
-            /* BUTTON AREA */
             .border>div:last-child {
                 width: 100%;
                 display: grid;
@@ -276,7 +324,6 @@
                 gap: 8px;
             }
 
-            /* BUTTON */
             .border .btn,
             .border form {
                 width: 100%;
@@ -287,18 +334,15 @@
                 height: 38px;
                 font-size: 12px;
                 border-radius: 8px !important;
-                padding: 6px;
                 display: flex;
-                align-items: center;
                 justify-content: center;
+                align-items: center;
             }
 
-            /* FORM DELETE */
             .border form {
                 display: flex;
             }
 
-            /* MODAL */
             .modal-dialog {
                 margin: 12px;
             }
@@ -316,10 +360,8 @@
                 width: 100%;
             }
 
-            /* PAGINATION */
             .pagination {
                 flex-wrap: wrap;
-                justify-content: center;
                 gap: 5px;
             }
 
