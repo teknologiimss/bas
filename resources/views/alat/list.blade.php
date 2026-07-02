@@ -7,11 +7,14 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #f4f7fb;
         }
 
+        /* =========================
+           HEADER
+        ========================= */
         .page-header {
-            background: linear-gradient(135deg, #dc3545, #ff4d4d);
+            background: linear-gradient(135deg, #0b1f3a, #163a6b);
             color: white;
             padding: 20px;
             border-radius: 15px;
@@ -19,71 +22,105 @@
             animation: fadeDown .5s ease;
         }
 
+        /* =========================
+           CARD
+        ========================= */
         .modern-card {
-            border: none;
+            border: 1px solid #e6eef8;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 15px rgba(11, 31, 58, .08);
             animation: fadeUp .5s ease;
         }
 
         .modern-card .card-header {
-            background: #dc3545;
+            background: #163a6b;
             color: white;
             font-weight: 600;
             border: none;
         }
 
+        /* =========================
+           BUTTON
+        ========================= */
         .btn-back {
             border-radius: 10px;
             font-weight: 600;
             padding: 8px 15px;
             transition: .3s;
+            background: white;
+            color: #163a6b;
+            border: 1px solid #dbe6f5;
         }
 
         .btn-back:hover {
+            background: #eef4ff;
+            color: #0b1f3a;
             transform: translateY(-2px);
         }
 
+        /* =========================
+           TABLE
+        ========================= */
         .table {
             margin-bottom: 0;
         }
 
         .table thead th {
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
+            background: #163a6b;
+            color: white;
+            border-bottom: none;
             font-size: 13px;
             white-space: nowrap;
         }
 
+        .table tbody td {
+            vertical-align: middle;
+        }
+
         .table tbody tr {
-            transition: .2s;
+            transition: .25s;
         }
 
         .table tbody tr:hover {
-            background: #fff5f5;
+            background: #eef4ff;
             transform: scale(1.002);
         }
 
+        /* =========================
+           BADGE
+        ========================= */
         .badge-imss {
-            background: #28a745;
+            background: #1e3a8a;
             color: white;
-            padding: 7px 10px;
+            padding: 7px 12px;
             border-radius: 20px;
+            font-weight: 600;
         }
 
         .badge-non {
-            background: #ffc107;
-            color: #212529;
-            padding: 7px 10px;
+            background: #60a5fa;
+            color: white;
+            padding: 7px 12px;
             border-radius: 20px;
+            font-weight: 600;
         }
 
+        /* =========================
+           ICON
+        ========================= */
         .unit-icon {
-            color: #dc3545;
+            color: #1e3a8a;
             margin-right: 5px;
         }
 
+        .fa-map-marker-alt {
+            color: #2563eb !important;
+        }
+
+        /* =========================
+           ANIMATION
+        ========================= */
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -108,7 +145,9 @@
             }
         }
 
-        /* MOBILE */
+        /* =========================
+           MOBILE
+        ========================= */
         @media(max-width:768px) {
 
             .page-header h3 {
@@ -132,7 +171,8 @@
                 margin-bottom: 12px;
                 border-radius: 12px;
                 padding: 10px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+                box-shadow: 0 2px 10px rgba(11, 31, 58, .08);
+                border: 1px solid #e6eef8;
             }
 
             .table td {
@@ -148,8 +188,27 @@
                 left: 10px;
                 font-weight: bold;
                 text-align: left;
-                color: #555;
+                color: #163a6b;
             }
+        }
+
+        /* =========================
+           PAGINATION
+        ========================= */
+        .pagination .page-link {
+            color: #163a6b;
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: #163a6b;
+            border-color: #163a6b;
+        }
+
+        .pagination .page-link:hover {
+            background: #eef4ff;
+            color: #0b1f3a;
         }
     </style>
 

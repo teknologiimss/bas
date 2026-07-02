@@ -7,76 +7,108 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #f4f7fb;
         }
 
-        /* HEADER */
+        /* =========================
+           HEADER
+        ========================= */
         .page-header {
-            background: linear-gradient(135deg, #dc3545, #ff4d4d);
+            background: linear-gradient(135deg, #0b1f3a, #163a6b);
             color: white;
             padding: 25px;
             border-radius: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(220, 53, 69, .25);
+            box-shadow: 0 8px 25px rgba(11, 31, 58, .25);
             animation: fadeInDown .5s ease;
         }
 
-        /* CARD */
+        /* =========================
+           CARD
+        ========================= */
         .modern-card {
             background: white;
-            border: none;
+            border: 1px solid #e6eef8;
             border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 20px rgba(11, 31, 58, .08);
             overflow: hidden;
             animation: fadeInUp .6s ease;
         }
 
         .modern-card .card-header {
-            background: #dc3545;
+            background: #163a6b;
             color: white;
             font-weight: 600;
             border: none;
             padding: 15px 20px;
         }
 
-        /* STAT */
+        /* =========================
+           SUMMARY CARD
+        ========================= */
         .stat-box {
             background: white;
+            border: 1px solid #e6eef8;
             border-radius: 15px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 15px rgba(11, 31, 58, .08);
             transition: .3s;
             height: 100%;
         }
 
         .stat-box:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+            box-shadow: 0 10px 25px rgba(11, 31, 58, .15);
         }
 
         .stat-value {
             font-size: 28px;
             font-weight: bold;
-            color: #dc3545;
+            color: #163a6b;
         }
 
         .stat-title {
-            color: #777;
+            color: #6b7280;
             font-size: 13px;
         }
 
-        /* SEARCH */
+        /* =========================
+           ICON COLOR
+        ========================= */
+        .fa-truck,
+        .fa-map-marked-alt,
+        .fa-map-marker-alt,
+        .text-danger,
+        .text-success,
+        .text-info {
+            color: #2563eb !important;
+        }
+
+        /* =========================
+           SEARCH
+        ========================= */
         .search-box {
             border-radius: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #dbe6f5;
             padding: 10px 15px;
         }
 
-        /* TABLE */
+        /* =========================
+           TABLE
+        ========================= */
         .table thead {
-            background: #dc3545;
+            background: #163a6b;
             color: white;
+        }
+
+        .table thead th {
+            border: none;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
         }
 
         .table tbody tr {
@@ -84,29 +116,80 @@
         }
 
         .table tbody tr:hover {
-            background: #fff5f5;
+            background: #eef4ff;
             transform: translateX(4px);
         }
 
+        /* =========================
+           BADGE
+        ========================= */
         .badge-aset {
             padding: 8px 12px;
             border-radius: 30px;
             font-size: 12px;
+            font-weight: 600;
         }
 
         .badge-lokasi {
             padding: 8px 12px;
             border-radius: 30px;
             font-size: 12px;
+            font-weight: 600;
         }
 
-        /* BUTTON */
+        .badge-success {
+            background: #1e3a8a;
+        }
+
+        .badge-warning {
+            background: #60a5fa;
+            color: white;
+        }
+
+        .badge-info {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
         .btn-back {
             border-radius: 10px;
             padding: 10px 18px;
+            background: #163a6b;
+            border: none;
+            color: white;
+            transition: .3s;
         }
 
-        /* MOBILE */
+        .btn-back:hover {
+            background: #0b1f3a;
+            color: white;
+        }
+
+        /* =========================
+           PAGINATION
+        ========================= */
+        .pagination .page-link {
+            color: #163a6b;
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: #163a6b;
+            border-color: #163a6b;
+        }
+
+        .pagination .page-link:hover {
+            background: #eef4ff;
+            color: #0b1f3a;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
         @media(max-width:768px) {
 
             .page-header {
@@ -131,7 +214,9 @@
             }
         }
 
-        /* ANIMATION */
+        /* =========================
+           ANIMATION
+        ========================= */
         @keyframes fadeInDown {
             from {
                 opacity: 0;

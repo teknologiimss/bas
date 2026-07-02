@@ -7,60 +7,90 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #f4f7fb;
         }
 
+        /* =========================
+           HEADER NAVY
+        ========================= */
         .dashboard-header {
-            background: linear-gradient(135deg, #dc3545, #ff4d4d);
+            background: linear-gradient(135deg, #0b1f3a, #163a6b);
             color: white;
             padding: 25px;
             border-radius: 15px;
             margin-bottom: 20px;
         }
 
+        /* =========================
+           STAT CARD
+        ========================= */
         .stat-card {
             background: white;
             border-radius: 15px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, .08);
+            box-shadow: 0 3px 15px rgba(11, 31, 58, .08);
             transition: .3s;
             height: 100%;
+            border: 1px solid #e6eef8;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+            box-shadow: 0 10px 25px rgba(11, 31, 58, .15);
         }
 
         .stat-value {
             font-size: 32px;
             font-weight: bold;
+            color: #163a6b;
         }
 
         .stat-title {
-            color: #666;
+            color: #5b6b82;
             font-size: 13px;
         }
 
+        /* =========================
+           CARD
+        ========================= */
         .card {
-            border: none;
+            border: 1px solid #e6eef8;
             border-radius: 15px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, .08);
+            box-shadow: 0 3px 15px rgba(11, 31, 58, .08);
         }
 
         .card-header {
-            background: #dc3545;
+            background: #163a6b;
             color: white;
             font-weight: bold;
+            border-bottom: none;
+        }
+
+        
+
+        /* =========================
+           TABLE
+        ========================= */
+        .table th {
+            background: #163a6b;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .table td {
+            white-space: nowrap;
+            color: #1f2d3d;
+        }
+
+        .table-hover tbody tr:hover {
+            background: #eef4ff;
         }
 
         @media(max-width:768px) {
-
             .stat-value {
                 font-size: 24px;
             }
-
         }
     </style>
 
