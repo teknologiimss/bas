@@ -6,17 +6,61 @@
 
     <style>
         body {
-            background: #f8f9fa;
+            background: #eef3f8;
+            font-family: "Segoe UI", sans-serif;
         }
 
+        /* HEADER */
+        .header-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .header-box {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, .25);
+            animation: fadeDown .4s ease;
+        }
+
+        .header-title {
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: .85;
+        }
+
+        .header-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        /* CARD */
+        .card {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .08);
+            animation: fadeUp .4s ease;
+        }
+
+        /* TABLE */
         .table-container {
             overflow-x: auto;
             width: 100%;
-            border-radius: 10px;
+            border-radius: 14px;
         }
 
         .table-check {
-            min-width: 1400px;
+            min-width: 1450px;
             border-collapse: separate !important;
             border-spacing: 0;
         }
@@ -25,59 +69,63 @@
         .table-check td {
             text-align: center;
             vertical-align: middle;
-            padding: 6px;
+            padding: 8px;
+            border: 1px solid #d9e2ef;
         }
 
         .table-check th {
-            background: linear-gradient(45deg, #b30000, #ff3333);
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
             color: white;
             position: sticky;
             top: 0;
             z-index: 4;
+            font-weight: 600;
         }
 
         .table-check th:first-child {
             position: sticky;
             left: 0;
-            z-index: 5;
+            z-index: 6;
         }
 
         .table-check td:first-child {
             position: sticky;
             left: 0;
-            background: #fff;
-            z-index: 3;
+            background: white;
+            z-index: 5;
             font-weight: bold;
         }
 
+        .table-check tbody tr:hover td {
+            background: #edf4ff;
+        }
+
+        /* STATUS */
         .ok {
-            background: #00cc66 !important;
+            background: #16a34a !important;
             color: white;
+            font-weight: bold;
         }
 
         .nok {
-            background: #ff1a1a !important;
+            background: #dc2626 !important;
             color: white;
+            font-weight: bold;
         }
 
-        select {
+        /* INPUT */
+        select,
+        input[type=text],
+        input[type=date] {
+            width: 100%;
             border: none;
             background: transparent;
-            width: 100%;
             text-align: center;
-            font-weight: bold;
-            cursor: pointer;
+            font-size: 13px;
         }
 
-        input[type="date"],
-        input[type="text"] {
-            border: none;
-            text-align: center;
+        input[type=file] {
             font-size: 12px;
-        }
-
-        input[type="file"] {
-            font-size: 11px;
         }
 
         input:focus,
@@ -86,48 +134,179 @@
             box-shadow: none;
         }
 
-        .header-box {
-            background: linear-gradient(135deg, #b30000, #ff1a1a);
-            color: white;
-            padding: 15px;
+        /* BUTTON */
+        .btn {
             border-radius: 10px;
-            text-align: center;
-            margin-bottom: 15px;
+            transition: .25s;
+            font-weight: 500;
         }
 
-        .header-title {
-            font-size: 14px;
+        .btn:hover {
+            transform: translateY(-2px);
         }
 
-        .header-name {
-            font-size: 20px;
-            font-weight: bold;
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 8px 20px rgba(37, 99, 235, .3);
         }
 
         .btn-success {
-            background: linear-gradient(45deg, #094701, #36bc01);
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
             border: none;
-            border-radius: 8px;
+            color: white;
         }
 
-        .header-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
+        .btn-success:hover {
+            box-shadow: 0 8px 20px rgba(30, 58, 138, .35);
         }
 
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            border: none;
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 8px 20px rgba(220, 38, 38, .3);
+        }
+
+        /* LAMPIRAN */
         .lampiran-box {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 5px;
-            margin-bottom: 8px;
-            background: #fff;
+            border: 1px solid #dbe5f0;
+            border-radius: 12px;
+            background: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            transition: .25s;
+        }
+
+        .lampiran-box:hover {
+            box-shadow: 0 8px 20px rgba(30, 58, 138, .15);
+            transform: translateY(-2px);
         }
 
         .img-thumbnail {
-            border-radius: 8px;
+            border-radius: 10px;
+            border: 2px solid #dbeafe;
+        }
+
+        /* SCROLLBAR */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 20px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #e5e7eb;
+        }
+
+        /* ANIMATION */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:768px) {
+
+            body {
+                overflow-x: hidden;
+            }
+
+            .header-box {
+                padding: 15px;
+                border-radius: 14px;
+            }
+
+            .header-title {
+                font-size: 11px;
+            }
+
+            .header-name {
+                font-size: 17px;
+            }
+
+            .card {
+                border-radius: 14px;
+                padding: 12px !important;
+            }
+
+            .table-container {
+                max-height: 75vh;
+                overflow: auto;
+            }
+
+            .table-check {
+                min-width: 1400px;
+                font-size: 11px;
+            }
+
+            .table-check th,
+            .table-check td {
+                padding: 5px;
+                font-size: 10px;
+            }
+
+            .table-check th {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            .table-check th:first-child {
+                left: 0;
+                z-index: 200;
+            }
+
+            .table-check td:first-child {
+                left: 0;
+                z-index: 150;
+                background: white;
+            }
+
+            .btn {
+                height: 34px;
+                font-size: 11px;
+                padding: 0 12px;
+            }
+
+            input[type=file] {
+                font-size: 10px;
+            }
+
+            .lampiran-box {
+                padding: 8px;
+            }
+
+            .img-thumbnail {
+                width: 65px;
+            }
         }
     </style>
 
