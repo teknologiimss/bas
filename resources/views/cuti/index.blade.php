@@ -3,17 +3,13 @@
 @section('content')
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
-        /* =====================================================
-                   🔴 MODERN RED UI
-                ===================================================== */
-
         :root {
 
-            --red-main: #dc3545;
-            --red-dark: #8b1e2d;
-            --red-soft: #fff5f6;
-            --red-border: #f3c8cf;
-            --red-hover: #b52b3a;
+            --navy-main: #1e3a8a;
+            --navy-dark: #0f172a;
+            --navy-soft: #eff6ff;
+            --navy-border: #bfdbfe;
+            --navy-hover: #2563eb;
 
         }
 
@@ -24,8 +20,8 @@
         }
 
         /* =====================================================
-                   CARD
-                ===================================================== */
+                                                   CARD
+                                                ===================================================== */
 
         .cuti-card {
 
@@ -43,8 +39,8 @@
         .cuti-header {
 
             background: linear-gradient(135deg,
-                    var(--red-main),
-                    var(--red-dark));
+                    var(--navy-dark),
+                    var(--navy-main));
 
             padding: 20px 25px;
 
@@ -83,8 +79,8 @@
         }
 
         /* =====================================================
-                   FORM
-                ===================================================== */
+                                                   FORM
+                                                ===================================================== */
 
         .form-control {
 
@@ -99,10 +95,10 @@
 
         .form-control:focus {
 
-            border-color: var(--red-main);
+            border-color: var(--navy-main);
 
             box-shadow:
-                0 0 0 .15rem rgba(220, 53, 69, .15);
+                0 0 0 .15rem rgba(37, 99, 235, .15);
 
         }
 
@@ -117,8 +113,8 @@
         }
 
         /* =====================================================
-                   BUTTON
-                ===================================================== */
+                                                   BUTTON
+                                                ===================================================== */
 
         .btn {
 
@@ -132,8 +128,8 @@
         .btn-success {
 
             background: linear-gradient(135deg,
-                    #28a745,
-                    #1d7f34);
+                    #1e3a8a,
+                    #2563eb);
 
             border: none;
 
@@ -146,15 +142,15 @@
             transform: translateY(-2px);
 
             box-shadow:
-                0 8px 18px rgba(40, 167, 69, .25);
+                0 8px 20px rgba(37, 99, 235, .35);
 
         }
 
         .btn-primary {
 
             background: linear-gradient(135deg,
-                    var(--red-main),
-                    var(--red-dark));
+                    var(--navy-main),
+                    var(--navy-dark));
 
             border: none;
 
@@ -163,8 +159,8 @@
         .btn-primary:hover {
 
             background: linear-gradient(135deg,
-                    var(--red-hover),
-                    var(--red-dark));
+                    var(--navy-hover),
+                    var(--navy-main));
 
             transform: translateY(-2px);
 
@@ -183,8 +179,8 @@
         }
 
         /* =====================================================
-                   TABLE
-                ===================================================== */
+                                                   TABLE
+                                                ===================================================== */
 
         .table {
 
@@ -198,8 +194,8 @@
         .table thead {
 
             background: linear-gradient(135deg,
-                    var(--red-main),
-                    var(--red-dark));
+                    var(--navy-dark),
+                    var(--navy-main));
 
             color: white;
 
@@ -234,15 +230,15 @@
 
         .table tbody tr:hover {
 
-            background: #fff7f8;
+            background:#eff6ff;
 
             transform: scale(1.003);
 
         }
 
         /* =====================================================
-                   ALERT
-                ===================================================== */
+                                                   ALERT
+                                                ===================================================== */
 
         .alert {
 
@@ -254,14 +250,14 @@
         }
 
         /* =====================================================
-                   FILTER AREA
-                ===================================================== */
+                                                   FILTER AREA
+                                                ===================================================== */
 
         .filter-box {
 
-            background: var(--red-soft);
+            background: var(--navy-soft);
 
-            border: 1px solid var(--red-border);
+            border: 1px solid var(--navy-border);
 
             border-radius: 18px;
 
@@ -272,8 +268,8 @@
         }
 
         /* =====================================================
-                   ACTION BUTTON
-                ===================================================== */
+                                                   ACTION BUTTON
+                                                ===================================================== */
 
         .action-group {
 
@@ -284,8 +280,8 @@
         }
 
         /* =====================================================
-                   ANIMATION
-                ===================================================== */
+                                                   ANIMATION
+                                                ===================================================== */
 
         @keyframes fadeUp {
 
@@ -324,8 +320,8 @@
         }
 
         /* =====================================================
-                   MOBILE
-                ===================================================== */
+                                                   MOBILE
+                                                ===================================================== */
 
         @media(max-width:768px) {
 
@@ -588,7 +584,7 @@
                 {{-- TITLE --}}
                 <h5 class="mb-3">
 
-                    <i class="fas fa-history text-danger"></i>
+                    <i class="fas fa-history" style="color:#1e3a8a"></i>
 
                     RIWAYAT CUTI
 

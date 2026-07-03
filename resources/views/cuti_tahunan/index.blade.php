@@ -3,17 +3,15 @@
 @section('content')
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
-        /* =====================================================
-                                   🔴 MODERN RED UI
-                                ===================================================== */
+        
 
         :root {
 
-            --red-main: #dc3545;
-            --red-dark: #8b1e2d;
-            --red-soft: #fff5f6;
-            --red-border: #f3c8cf;
-            --red-hover: #b52b3a;
+            --navy-main: #1e3a8a;
+            --navy-dark: #0f172a;
+            --navy-soft: #eff6ff;
+            --navy-border: #bfdbfe;
+            --navy-hover: #2563eb;
 
         }
 
@@ -34,7 +32,7 @@
             overflow: hidden;
 
             box-shadow:
-                0 10px 30px rgba(0, 0, 0, .08);
+                0 10px 30px rgba(0, 0, 0, 0.08);
 
             animation: fadeUp .5s ease;
 
@@ -43,8 +41,8 @@
         .modern-header {
 
             background: linear-gradient(135deg,
-                    var(--red-main),
-                    var(--red-dark));
+                    var(--navy-main),
+                    var(--navy-dark));
 
             padding: 22px 25px;
 
@@ -63,7 +61,7 @@
             width: 250px;
             height: 250px;
 
-            background: rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, 0.08);
 
             border-radius: 50%;
 
@@ -101,13 +99,13 @@
 
         .form-box {
 
-            background: #fff;
+            background: #ffffff;
 
             border-radius: 18px;
 
             padding: 20px;
 
-            border: 1px solid #eee;
+            border: 1px solid #eeeeee;
 
             margin-bottom: 20px;
 
@@ -120,7 +118,7 @@
             font-size: 13px;
             font-weight: 600;
 
-            color: #444;
+            color: #444444;
 
             margin-bottom: 6px;
 
@@ -129,7 +127,7 @@
         .form-control {
 
             border-radius: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #dddddd;
 
             height: 45px;
 
@@ -139,10 +137,10 @@
 
         .form-control:focus {
 
-            border-color: var(--red-main);
+            border-color: var(--navy-main);
 
             box-shadow:
-                0 0 0 .15rem rgba(220, 53, 69, .15);
+                0 0 0 .15rem rgba(67, 53, 220, 0.15);
 
         }
 
@@ -218,8 +216,8 @@
         .table thead {
 
             background: linear-gradient(135deg,
-                    var(--red-main),
-                    var(--red-dark));
+                    var(--navy-main),
+                    var(--navy-dark));
 
             color: white;
 
@@ -258,7 +256,7 @@
 
         .table tbody tr:hover {
 
-            background: #fff8f8;
+            background: #f9f8ff;
 
             transform: scale(1.002);
 
@@ -269,7 +267,7 @@
             font-size: 14px;
             font-weight: 700;
 
-            color: var(--red-dark);
+            color: var(--navy-dark);
 
         }
 
@@ -406,10 +404,10 @@
 
         .table-total-total {
 
-            background: #ffe9ec;
-            color: #8b1e2d;
+            background: #ece9ff;
+            color: #271e8b;
 
-            border: 1px solid #f5b8c0;
+            border: 1px solid #c2b8f5;
 
             font-size: 14px;
             font-weight: 700;
@@ -428,13 +426,11 @@
 
             transform: scale(1.08);
 
-            background: #ffd7dd;
+            background: #ddd7ff;
 
         }
 
-        /* =====================================================
-                       🔴 MODAL RED STYLE
-                    ===================================================== */
+        
 
         .modal-content {
 
@@ -450,8 +446,8 @@
         .modal-header-red {
 
             background: linear-gradient(135deg,
-                    #dc3545,
-                    #8b1e2d);
+                    #5135dc,
+                    #2d1e8b);
 
             border: none;
 
@@ -474,7 +470,7 @@
 
             font-weight: 600;
             font-size: 13px;
-            color: #8b1e2d;
+            color: #2e1e8b;
 
         }
 
@@ -490,7 +486,7 @@
 
         .modal-body .form-control:focus {
 
-            border-color: #dc3545;
+            border-color: #4635dc;
             box-shadow: 0 0 0 0.15rem rgba(220, 53, 69, .15);
 
         }
@@ -510,7 +506,7 @@
 
         .modal-footer .btn-warning {
 
-            background: #dc3545;
+            background: #5435dc;
             border: none;
             color: white;
             border-radius: 10px;
@@ -522,7 +518,7 @@
 
         .modal-footer .btn-warning:hover {
 
-            background: #8b1e2d;
+            background: #201e8b;
             transform: translateY(-2px);
 
         }

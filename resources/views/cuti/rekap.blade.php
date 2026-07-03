@@ -4,16 +4,21 @@
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
         /* =====================================================
-                       🔴 MODERN RED UI
-                    ===================================================== */
+           🔵 MODERN NAVY UI
+        ===================================================== */
 
         :root {
 
-            --red-main: #dc3545;
-            --red-dark: #8b1e2d;
-            --red-soft: #fff5f6;
-            --red-border: #f3c8cf;
+            --navy-main: #1e3a8a;
+            --navy-dark: #0f172a;
+            --navy-soft: #eff6ff;
+            --navy-border: #bfdbfe;
+            --navy-hover: #2563eb;
 
+        }
+
+        body {
+            background: #f5f7fb;
         }
 
         .card {
@@ -21,7 +26,8 @@
             border: none;
             border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+            box-shadow: 0 10px 25px rgba(15, 23, 42, .12);
 
             animation: fadeUp .5s ease;
 
@@ -30,8 +36,8 @@
         .card-header {
 
             background: linear-gradient(135deg,
-                    var(--red-main),
-                    var(--red-dark)) !important;
+                    var(--navy-dark),
+                    var(--navy-main)) !important;
 
             padding: 18px 22px;
 
@@ -45,24 +51,41 @@
         }
 
         /* =====================================================
-                       FILTER
-                    ===================================================== */
+           FILTER
+        ===================================================== */
 
         .form-control {
 
             border-radius: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #dbe4f0;
             height: 45px;
+            transition: .3s;
+
+        }
+
+        .form-control:focus {
+
+            border-color: var(--navy-hover);
+
+            box-shadow:
+                0 0 0 .15rem rgba(37, 99, 235, .15);
 
         }
 
         .btn-primary {
 
-            background: var(--red-main);
+            background: linear-gradient(135deg,
+                    var(--navy-main),
+                    var(--navy-dark));
+
             border: none;
+
             border-radius: 12px;
+
             height: 45px;
+
             font-weight: 600;
+
             transition: .3s;
 
         }
@@ -70,13 +93,19 @@
         .btn-primary:hover {
 
             transform: translateY(-2px);
-            background: var(--red-dark);
+
+            background: linear-gradient(135deg,
+                    var(--navy-hover),
+                    var(--navy-main));
+
+            box-shadow:
+                0 8px 20px rgba(37, 99, 235, .30);
 
         }
 
         /* =====================================================
-                       TABLE
-                    ===================================================== */
+           TABLE
+        ===================================================== */
 
         .table-rekap {
 
@@ -88,30 +117,39 @@
         .table-rekap th {
 
             font-size: 12px;
+
             text-align: center;
+
             vertical-align: middle;
+
             padding: 6px;
+
             white-space: nowrap;
 
         }
 
         .table-rekap thead th {
 
-            background: var(--red-main);
-            color: white;
+            background: linear-gradient(135deg,
+                    var(--navy-dark),
+                    var(--navy-main));
+
+            color: #fff;
+
             border-color: #fff;
 
         }
 
         .table-rekap tbody tr {
 
-            transition: .2s;
+            transition: .25s;
 
         }
 
         .table-rekap tbody tr:hover {
 
-            background: #fff8f8;
+            background: #eff6ff;
+
             transform: scale(1.002);
 
         }
@@ -119,26 +157,33 @@
         .nama-col {
 
             min-width: 220px;
+
             text-align: left !important;
+
             font-weight: 600;
 
             position: sticky;
+
             left: 0;
 
-            background: white;
+            background: #fff;
+
             z-index: 5;
 
         }
 
         /* =====================================================
-                       BADGE LEGEND
-                    ===================================================== */
+           LEGEND
+        ===================================================== */
 
         .legend-box {
 
             display: flex;
+
             flex-wrap: wrap;
+
             gap: 10px;
+
             margin-bottom: 15px;
 
         }
@@ -146,24 +191,33 @@
         .legend-item {
 
             padding: 7px 14px;
+
             border-radius: 30px;
+
             font-size: 12px;
+
             font-weight: 600;
+
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
 
             animation: fadeUp .5s ease;
 
         }
 
         /* =====================================================
-                       NOTE AREA
-                    ===================================================== */
+           NOTE
+        ===================================================== */
 
         .note-box {
 
-            background: var(--red-soft);
-            border: 1px solid var(--red-border);
+            background: var(--navy-soft);
+
+            border: 1px solid var(--navy-border);
+
             border-radius: 16px;
+
             padding: 18px;
+
             margin-top: 20px;
 
             animation: fadeUp .7s ease;
@@ -173,15 +227,20 @@
         .note-box h5 {
 
             font-size: 16px;
+
             font-weight: 700;
-            color: var(--red-dark);
+
+            color: var(--navy-main);
 
         }
 
         .note-box h6 {
 
             font-size: 13px;
+
             font-weight: 700;
+
+            color: #334155;
 
         }
 
@@ -196,82 +255,20 @@
 
         .note-table th {
 
-            background: #ffe5e8;
+            background: #dbeafe;
+
+            color: #1e3a8a;
 
         }
 
         /* =====================================================
-                       ANIMATION
-                    ===================================================== */
-
-        @keyframes fadeUp {
-
-            from {
-
-                opacity: 0;
-                transform: translateY(20px);
-
-            }
-
-            to {
-
-                opacity: 1;
-                transform: translateY(0);
-
-            }
-
-        }
-
-        /* =====================================================
-                       MOBILE
-                    ===================================================== */
-
-        @media(max-width:768px) {
-
-            .card-header h5 {
-
-                font-size: 16px;
-
-            }
-
-            .table-rekap td,
-            .table-rekap th {
-
-                font-size: 10px;
-                padding: 4px;
-
-            }
-
-            .nama-col {
-
-                min-width: 140px;
-
-            }
-
-            .form-control,
-            .btn-primary {
-
-                height: 40px;
-                font-size: 12px;
-
-            }
-
-            .legend-item {
-
-                font-size: 10px;
-
-            }
-
-        }
-
-
-        /* =====================================================
-                   SISA CUTI BADGE
-                ===================================================== */
+           SISA CUTI
+        ===================================================== */
 
         .sisa-badge {
 
             display: inline-block;
+
             min-width: 38px;
 
             padding: 7px 12px;
@@ -279,11 +276,12 @@
             border-radius: 30px;
 
             font-size: 13px;
+
             font-weight: 700;
 
-            color: white;
+            color: #fff;
 
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .1);
 
             animation: pulse 2s infinite;
 
@@ -292,26 +290,50 @@
         .sisa-badge.success {
 
             background: linear-gradient(135deg,
-                    #28a745,
-                    #1e7e34);
+                    #1e3a8a,
+                    #2563eb);
 
         }
 
         .sisa-badge.warning {
 
             background: linear-gradient(135deg,
-                    #ffc107,
-                    #e0a800);
+                    #f59e0b,
+                    #fbbf24);
 
-            color: black;
+            color: #111827;
 
         }
 
         .sisa-badge.danger {
 
             background: linear-gradient(135deg,
-                    #dc3545,
-                    #8b1e2d);
+                    #dc2626,
+                    #ef4444);
+
+        }
+
+        /* =====================================================
+           ANIMATION
+        ===================================================== */
+
+        @keyframes fadeUp {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(20px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+
+            }
 
         }
 
@@ -332,6 +354,50 @@
             100% {
 
                 transform: scale(1);
+
+            }
+
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media(max-width:768px) {
+
+            .card-header h5 {
+
+                font-size: 16px;
+
+            }
+
+            .table-rekap td,
+            .table-rekap th {
+
+                font-size: 10px;
+
+                padding: 4px;
+
+            }
+
+            .nama-col {
+
+                min-width: 140px;
+
+            }
+
+            .form-control,
+            .btn-primary {
+
+                height: 40px;
+
+                font-size: 12px;
+
+            }
+
+            .legend-item {
+
+                font-size: 10px;
 
             }
 
@@ -757,7 +823,8 @@
 
                     <h6>
 
-                        *Cuti Dispensasi/Ibadah (CD) tidak mengurangi jatah cuti tahunan dan wajib melampirkan surat pernyataan.
+                        *Cuti Dispensasi/Ibadah (CD) tidak mengurangi jatah cuti tahunan dan wajib melampirkan surat
+                        pernyataan.
 
                     </h6>
 
