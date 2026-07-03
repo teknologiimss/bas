@@ -336,7 +336,7 @@
                 <div style="height:40px;"></div>
 
                 <b>
-                    Kepala Departemen MRO 1
+                    Kepala Departemen MRO
                 </b>
 
                 <div class="signature-box"></div>
