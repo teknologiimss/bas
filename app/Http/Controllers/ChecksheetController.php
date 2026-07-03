@@ -758,4 +758,23 @@ class ChecksheetController extends Controller
             'Catatan berhasil ditambahkan'
         );
     }
+
+    public function deleteNote($id)
+    {
+        $note = ChecksheetNote::find($id);
+
+        if (!$note) {
+            return back()->with(
+                'error',
+                'Catatan tidak ditemukan'
+            );
+        }
+
+        $note->delete();
+
+        return back()->with(
+            'success',
+            'Catatan berhasil dihapus'
+        );
+    }
 }

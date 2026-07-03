@@ -479,19 +479,33 @@
                 <div class="mt-3">
 
                     @foreach ($checksheet->notes as $note)
-                        <div class="note-item">
+                        <div class="note-item d-flex justify-content-between align-items-start">
 
-                            <div>
+                            <div class="me-2">
 
-                                {{ $note->catatan }}
+                                <div>
+                                    {{ $note->catatan }}
+                                </div>
+
+                                <small class="text-muted">
+                                    {{ $note->created_at->format('d/m/Y H:i') }}
+                                </small>
 
                             </div>
 
-                            <small class="text-muted">
+                            <form action="{{ route('checksheet.note.delete', $note->id) }}" method="POST"
+                                onsubmit="return confirm('Yakin ingin menghapus catatan ini?')">
 
-                                {{ $note->created_at->format('d/m/Y H:i') }}
+                                @csrf
+                                @method('DELETE')
 
-                            </small>
+                                <button class="btn btn-sm btn-danger">
+
+                                    <i class="fa fa-trash"></i>
+
+                                </button>
+
+                            </form>
 
                         </div>
                     @endforeach
