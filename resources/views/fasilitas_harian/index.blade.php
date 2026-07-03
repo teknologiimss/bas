@@ -15,8 +15,8 @@
         }
 
         /* ===============================
-           HEADER
-        =============================== */
+               HEADER
+            =============================== */
         .page-header {
             background: linear-gradient(135deg, #0f172a, #1e3a8a);
             color: white;
@@ -38,8 +38,8 @@
         }
 
         /* ===============================
-           CARD
-        =============================== */
+               CARD
+            =============================== */
 
         .stat-card,
         .card-table {
@@ -65,8 +65,8 @@
         }
 
         /* ===============================
-           ICON
-        =============================== */
+               ICON
+            =============================== */
 
         .stat-icon {
             width: 62px;
@@ -93,8 +93,8 @@
         }
 
         /* ===============================
-           TABLE
-        =============================== */
+               TABLE
+            =============================== */
 
         .table-responsive {
             border-radius: 15px;
@@ -122,8 +122,8 @@
         }
 
         /* ===============================
-           BUTTON
-        =============================== */
+               BUTTON
+            =============================== */
 
         .btn {
             border-radius: 10px;
@@ -207,8 +207,8 @@
         }
 
         /* ===============================
-           SEARCH
-        =============================== */
+               SEARCH
+            =============================== */
 
         .search-box {
             border-radius: 12px;
@@ -226,8 +226,8 @@
         }
 
         /* ===============================
-           PAGINATION
-        =============================== */
+               PAGINATION
+            =============================== */
 
         .pagination {
             justify-content: center;
@@ -243,8 +243,8 @@
         }
 
         /* ===============================
-           ANIMATION
-        =============================== */
+               ANIMATION
+            =============================== */
 
         @keyframes fadeDown {
             from {
@@ -271,11 +271,21 @@
         }
 
         /* ===============================
-           RESPONSIVE
-        =============================== */
+               RESPONSIVE
+            =============================== */
 
-        @media(max-width:768px) {
+        /* ===============================
+       RESPONSIVE
+    =============================== */
 
+        @media (max-width: 768px) {
+
+            .container-fluid {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            /* Header */
             .page-header {
                 padding: 18px;
                 border-radius: 15px;
@@ -286,40 +296,86 @@
             }
 
             .page-header small {
-                font-size: 11px;
+                font-size: 12px;
             }
 
+            .page-header .d-flex {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 12px;
+            }
+
+            .page-header .btn {
+                width: 100%;
+            }
+
+            /* Statistik */
             .stat-card {
                 margin-bottom: 15px;
             }
 
             .stat-icon {
-                width: 50px;
-                height: 50px;
+                width: 48px;
+                height: 48px;
                 font-size: 18px;
             }
 
-            .table-responsive {
-                font-size: 12px;
+            .stat-card h2 {
+                font-size: 24px;
             }
 
-            .table thead th,
-            .table tbody td {
-                white-space: nowrap;
+            .stat-card h5 {
+                font-size: 15px;
             }
 
-            .btn-action {
+            /* Search */
+            .input-group {
+                display: flex;
                 width: 100%;
-                margin-bottom: 6px;
             }
 
             .search-box {
-                margin-bottom: 10px;
+                flex: 1;
+                height: 40px;
             }
 
-            .input-group {
-                flex-wrap: nowrap;
+            .input-group .btn {
+                white-space: nowrap;
             }
+
+            /* Table */
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table {
+                min-width: 900px;
+            }
+
+            .table thead th {
+                white-space: nowrap;
+                font-size: 13px;
+            }
+
+            .table tbody td {
+                white-space: nowrap;
+                font-size: 13px;
+            }
+
+            /* Tombol aksi */
+            .btn-action {
+                margin: 2px;
+                padding: 5px 8px;
+                font-size: 11px;
+                width: auto;
+            }
+
+            .pagination {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
         }
     </style>
 
