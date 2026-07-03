@@ -10,7 +10,7 @@ class MasterPersonilController extends Controller
 {
     public function index()
     {
-        $data = MasterPersonil::orderBy('nama')->get();
+        $data = MasterPersonil::oldest()->get();
 
         return view(
             'mro.master_personil.index',
@@ -26,17 +26,17 @@ class MasterPersonilController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama'=>'required',
-            'nip'=>'nullable',
-            'status'=>'required',
-            'penempatan'=>'required'
+            'nama' => 'required',
+            'nip' => 'nullable',
+            'status' => 'required',
+            'penempatan' => 'required'
         ]);
 
         MasterPersonil::create($request->all());
 
         return redirect()
             ->route('master-personil.index')
-            ->with('success','Data berhasil disimpan');
+            ->with('success', 'Data berhasil disimpan');
     }
 
     public function edit($id)
@@ -49,22 +49,22 @@ class MasterPersonilController extends Controller
         );
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'nama'=>'required',
-            'nip'=>'nullable',
-            'status'=>'required',
-            'penempatan'=>'required'
+            'nama' => 'required',
+            'nip' => 'nullable',
+            'status' => 'required',
+            'penempatan' => 'required'
         ]);
 
-        $personil=MasterPersonil::findOrFail($id);
+        $personil = MasterPersonil::findOrFail($id);
 
         $personil->update($request->all());
 
         return redirect()
             ->route('master-personil.index')
-            ->with('success','Data berhasil diupdate');
+            ->with('success', 'Data berhasil diupdate');
     }
 
     public function destroy($id)
