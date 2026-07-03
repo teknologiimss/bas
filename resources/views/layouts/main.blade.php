@@ -518,6 +518,7 @@
                                         'alat.dashboard',
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
+                                        'master-personil.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -575,6 +576,7 @@
                                         'alat.dashboard',
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
+                                        'master-personil.index',
                                     ]);
                                 @endphp
 
@@ -1059,6 +1061,19 @@
                                                                 <i class="nav-icon fas fa-video"></i>
                                                                 <p>Personil MRO</p>
                                                             </a>
+                                                        </li>
+
+                                                        <li class="nav-item">
+
+                                                            <a href="{{ route('master-personil.index') }}"
+                                                                class="nav-link {{ request()->routeIs('master-personil.*') ? 'active' : '' }}">
+
+                                                                <i class="nav-icon fas fa-users"></i>
+
+                                                                <p>Data Personil MRO</p>
+
+                                                            </a>
+
                                                         </li>
 
                                                         <li class="nav-item">

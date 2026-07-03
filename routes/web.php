@@ -26,6 +26,7 @@ use App\Http\Controllers\RewindingController;
 use App\Http\Controllers\SppdController;
 use App\Http\Controllers\SuratJalanController;
 use App\Http\Controllers\WeeklyActivityController;
+use App\Http\Controllers\MRO\MasterPersonilController;
 use App\Models\Kontrak;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -619,6 +620,16 @@ Route::prefix('products')->group(function () {
         '/checksheet/note/{id}',
         [ChecksheetController::class, 'deleteNote']
     )->name('checksheet.note.delete');
+
+    // Data Personil MRO
+    Route::prefix('mro')
+        ->middleware(['auth'])
+        ->group(function () {
+            Route::resource(
+                'master-personil',
+                MasterPersonilController::class
+            );
+        });
 
     // Proyek MRO
 
