@@ -366,6 +366,31 @@
         .btn-delete-photo:hover {
             background: #b02a37;
         }
+
+
+        .note-item {
+
+            background: #f8f9fa;
+
+            border-left: 4px solid #12003f;
+
+            border-radius: 10px;
+
+            padding: 12px;
+
+            margin-top: 10px;
+
+            font-size: 13px;
+
+        }
+
+        .note-item small {
+
+            display: block;
+
+            margin-top: 5px;
+
+        }
     </style>
 
     <div class="mobile-container py-3">
@@ -414,6 +439,65 @@
                 </div>
 
             </div>
+
+        </div>
+
+
+        {{-- ========================= --}}
+        {{-- CATATAN --}}
+        {{-- ========================= --}}
+
+        <div class="progress-wrapper mb-3">
+
+            <h6 class="fw-bold mb-3">
+
+                <i class="fa fa-note-sticky"></i>
+
+                Catatan
+
+            </h6>
+
+            <form action="{{ route('checksheet.note', $checksheet->id) }}" method="POST">
+
+                @csrf
+
+                <div class="input-group">
+
+                    <textarea class="form-control" name="catatan" rows="2" placeholder="Tulis catatan..."></textarea>
+
+                    <button class="btn btn-primary">
+
+                        <i class="fa fa-plus"></i>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+            @if ($checksheet->notes->count())
+                <div class="mt-3">
+
+                    @foreach ($checksheet->notes as $note)
+                        <div class="note-item">
+
+                            <div>
+
+                                {{ $note->catatan }}
+
+                            </div>
+
+                            <small class="text-muted">
+
+                                {{ $note->created_at->format('d/m/Y H:i') }}
+
+                            </small>
+
+                        </div>
+                    @endforeach
+
+                </div>
+            @endif
 
         </div>
 

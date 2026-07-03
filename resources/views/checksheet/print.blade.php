@@ -306,7 +306,19 @@
 
                 Catatan :
 
-                <br><br><br><br>
+                @if ($checksheet->notes->count())
+
+                    <ul style="margin:6px 0 0 18px; padding:0;">
+
+                        @foreach ($checksheet->notes as $note)
+                            <li>{{ $note->catatan }}</li>
+                        @endforeach
+
+                    </ul>
+                @else
+                    <br><br><br><br>
+
+                @endif
 
             </td>
 

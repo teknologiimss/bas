@@ -22,4 +22,11 @@ class Checksheet extends Model
     {
         return $this->hasMany(ChecksheetSection::class)->orderBy('urutan');
     }
+
+    public function notes()
+    {
+        return $this
+            ->hasMany(ChecksheetNote::class)
+            ->latest();
+    }
 }

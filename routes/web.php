@@ -610,6 +610,11 @@ Route::prefix('products')->group(function () {
         [ChecksheetController::class, 'deletePhoto']
     )->name('checksheet.photo.delete');
 
+    Route::post(
+        '/checksheet/note/{id}',
+        [ChecksheetController::class, 'saveNote']
+    )->name('checksheet.note');
+
     // Proyek MRO
 
     Route::get('proyek', [ProyekController::class, 'index'])->name('proyek.index');

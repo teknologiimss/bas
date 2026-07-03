@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Checksheet;
 use App\Models\ChecksheetItem;
 use App\Models\ChecksheetItemDetail;
+use App\Models\ChecksheetNote;
 use App\Models\ChecksheetResult;
 use App\Models\ChecksheetResultPhoto;
 use App\Models\ChecksheetSection;
@@ -168,10 +169,14 @@ class ChecksheetController extends Controller
     public function mobile($id)
     {
         $checksheet = Checksheet::with([
+            'notes',
             'sections.items.details.result'
         ])->findOrFail($id);
 
-        return view('checksheet.mobile', compact('checksheet'));
+        return view(
+            'checksheet.mobile',
+            compact('checksheet')
+        );
     }
 
     // =========================
@@ -671,6 +676,7 @@ class ChecksheetController extends Controller
         // ])->findOrFail($id);
 
         $checksheet = Checksheet::with([
+            'notes',
             'sections.items.details.result.photos'
         ])->findOrFail($id);
 
@@ -687,6 +693,7 @@ class ChecksheetController extends Controller
         // ])->findOrFail($id);
 
         $checksheet = Checksheet::with([
+            'notes',
             'sections.items.details.result.photos'
         ])->findOrFail($id);
 
@@ -732,6 +739,23 @@ class ChecksheetController extends Controller
         return back()->with(
             'success',
             'Foto berhasil dihapus'
+        );
+    }
+
+    public function saveNote(Request $request, $id)
+    {
+        $request->validate([
+            'catatan' => 'required'
+        ]);
+
+        ChecksheetNote::create([
+            'checksheet_id' => $id,
+            'catatan' => $request->catatan
+        ]);
+
+        return back()->with(
+            'success',
+            'Catatan berhasil ditambahkan'
         );
     }
 }
