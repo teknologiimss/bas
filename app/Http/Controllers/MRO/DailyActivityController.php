@@ -5,6 +5,7 @@ namespace App\Http\Controllers\MRO;
 use App\Http\Controllers\Controller;
 use App\Models\DailyActivity;
 use App\Models\DailyActivityAttachment;
+use App\Models\MasterPersonil;
 use App\Models\Monitoring;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,16 @@ class DailyActivityController extends Controller
     public function create()
     {
         $monitoring = Monitoring::orderBy('po_nota_dinas')->get();
-        return view('mro.daily_activity.create', compact('monitoring'));
+
+        $personils = MasterPersonil::orderBy('nama')->get();
+
+        return view(
+            'mro.daily_activity.create',
+            compact(
+                'monitoring',
+                'personils'
+            )
+        );
     }
 
     public function store(Request $request)
@@ -78,10 +88,16 @@ class DailyActivityController extends Controller
 
         $monitoring = Monitoring::orderBy('po_nota_dinas')->get();
 
-        return view('mro.daily_activity.edit', compact(
-            'daily',
-            'monitoring'
-        ));
+        $personils = MasterPersonil::orderBy('nama')->get();
+
+        return view(
+            'mro.daily_activity.edit',
+            compact(
+                'daily',
+                'monitoring',
+                'personils'
+            )
+        );
     }
 
     public function update(Request $request, $id)

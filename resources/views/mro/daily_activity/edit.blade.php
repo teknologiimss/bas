@@ -96,8 +96,23 @@
                         @foreach ($daily->personil ?? [] as $nama)
                             <div class="input-group mb-2">
 
-                                <input type="text" name="personil[]" class="form-control" value="{{ $nama }}"
-                                    required>
+                                <select name="personil[]" class="form-control" required>
+
+                                    <option value="">-- Pilih Personil --</option>
+
+                                    @foreach ($personils as $p)
+                                        <option value="{{ $p->nama }}" {{ $nama == $p->nama ? 'selected' : '' }}>
+
+                                            {{ $p->nama }}
+
+                                            @if ($p->jabatan)
+                                                - {{ $p->jabatan }}
+                                            @endif
+
+                                        </option>
+                                    @endforeach
+
+                                </select>
 
                                 <div class="input-group-append">
 
@@ -238,12 +253,28 @@
                 personilWrapper.insertAdjacentHTML('beforeend', `
             <div class="input-group mb-2">
 
-                <input
-                    type="text"
+                <select
                     name="personil[]"
                     class="form-control"
-                    placeholder="Nama Personil"
                     required>
+
+                    <option value="">-- Pilih Personil --</option>
+
+                    @foreach ($personils as $p)
+
+                        <option value="{{ $p->nama }}">
+
+                            {{ $p->nama }}
+
+                            @if ($p->jabatan)
+                            - {{ $p->jabatan }}
+                            @endif
+
+                        </option>
+
+                    @endforeach
+
+                </select>
 
                 <div class="input-group-append">
 

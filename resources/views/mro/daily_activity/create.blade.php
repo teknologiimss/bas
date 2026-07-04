@@ -82,8 +82,23 @@
 
                         <div class="input-group mb-2">
 
-                            <input type="text" name="personil[]" class="form-control"
-                                placeholder="Masukkan Nama Personil" required>
+                            <select name="personil[]" class="form-control" required>
+
+                                <option value="">-- Pilih Personil --</option>
+
+                                @foreach ($personils as $p)
+                                    <option value="{{ $p->nama }}">
+
+                                        {{ $p->nama }}
+
+                                        @if ($p->jabatan)
+                                            - {{ $p->jabatan }}
+                                        @endif
+
+                                    </option>
+                                @endforeach
+
+                            </select>
 
                             <div class="input-group-append">
 
@@ -156,29 +171,44 @@
             document.getElementById('btnTambahPersonil').addEventListener('click', function() {
 
                 let html = `
-            <div class="input-group mb-2">
+                    <div class="input-group mb-2">
 
-                <input
-                    type="text"
-                    name="personil[]"
-                    class="form-control"
-                    placeholder="Masukkan Nama Personil"
-                    required>
+                        <select
+                            name="personil[]"
+                            class="form-control"
+                            required>
 
-                <div class="input-group-append">
+                            <option value="">-- Pilih Personil --</option>
 
-                    <button
-                        type="button"
-                        class="btn btn-danger btnHapusPersonil">
+                            @foreach ($personils as $p)
 
-                        <i class="fa fa-minus"></i>
+                                <option value="{{ $p->nama }}">
 
-                    </button>
+                                    {{ $p->nama }}
+                                    @if ($p->jabatan)
+                                    - {{ $p->jabatan }}
+                                    @endif
 
-                </div>
+                                </option>
 
-            </div>
-        `;
+                            @endforeach
+
+                        </select>
+
+                        <div class="input-group-append">
+
+                            <button
+                                type="button"
+                                class="btn btn-danger btnHapusPersonil">
+
+                                <i class="fa fa-minus"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+                `;
 
                 wrapper.insertAdjacentHTML('beforeend', html);
 
