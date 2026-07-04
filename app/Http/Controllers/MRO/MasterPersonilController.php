@@ -29,7 +29,11 @@ class MasterPersonilController extends Controller
             'nama' => 'required',
             'nip' => 'nullable',
             'status' => 'required',
-            'penempatan' => 'required'
+            'penempatan' => 'required',
+            'jabatan' => 'nullable',
+            'jobdesk' => 'nullable',
+            'spesialisasi' => 'nullable',
+            'catatan' => 'nullable',
         ]);
 
         MasterPersonil::create($request->all());
@@ -55,7 +59,11 @@ class MasterPersonilController extends Controller
             'nama' => 'required',
             'nip' => 'nullable',
             'status' => 'required',
-            'penempatan' => 'required'
+            'penempatan' => 'required',
+            'jabatan' => 'nullable',
+            'jobdesk' => 'nullable',
+            'spesialisasi' => 'nullable',
+            'catatan' => 'nullable',
         ]);
 
         $personil = MasterPersonil::findOrFail($id);

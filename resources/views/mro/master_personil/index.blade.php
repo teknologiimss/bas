@@ -67,20 +67,17 @@
             font-weight: 600;
         }
 
-        .badge-tetap {
+        .badge-organik {
             background: #d8f7e4;
             color: #198754;
         }
 
-        .badge-kontrak {
+        .badge-pkwt {
             background: #fff3cd;
-            color: #856404;
+            color: #ed0303;
         }
 
-        .badge-outsourcing {
-            background: #ffe2e5;
-            color: #dc3545;
-        }
+        
 
         .btn-action {
             width: 34px;
@@ -170,7 +167,15 @@
 
                                 <th>NIP</th>
 
+                                <th>Jabatan</th>
+
                                 <th>Status</th>
+
+                                <th>Jobdesc</th>
+
+                                <th>Spesialisasi / Basic</th>
+
+                                <th>Catatan</th>
 
                                 <th>Penempatan</th>
 
@@ -207,29 +212,30 @@
 
                                     </td>
 
+                                    <td>{{ $row->jabatan }}</td>
+
                                     <td>
 
-                                        @if ($row->status == 'Tetap')
-                                            <span class="badge badge-status badge-tetap">
+                                        @if ($row->status == 'Organik')
+                                            <span class="badge badge-status badge-organik">
 
                                                 {{ $row->status }}
 
                                             </span>
-                                        @elseif($row->status == 'Kontrak')
-                                            <span class="badge badge-status badge-kontrak">
+                                        @elseif($row->status == 'PKWT')
+                                            <span class="badge badge-status badge-pkwt">
 
                                                 {{ $row->status }}
 
                                             </span>
-                                        @else
-                                            <span class="badge badge-status badge-outsourcing">
-
-                                                {{ $row->status }}
-
-                                            </span>
+                                        
                                         @endif
 
                                     </td>
+
+                                    <td>{!! nl2br(e($row->jobdesk)) !!}</td>
+                                    <td>{{ $row->spesialisasi }}</td>
+                                    <td>{!! nl2br(e($row->catatan)) !!}</td>
 
                                     <td>
 
@@ -269,7 +275,7 @@
 
                                 <tr>
 
-                                    <td colspan="6" class="text-center text-muted py-5">
+                                    <td colspan="10" class="text-center text-muted py-5">
 
                                         <i class="fa fa-users fa-3x mb-3"></i>
 

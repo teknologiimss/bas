@@ -10,6 +10,10 @@ class MasterPersonil extends Model
         'nama',
         'nip',
         'status',
-        'penempatan'
+        'penempatan',
+        'jabatan',
+        'jobdesk',
+        'spesialisasi',
+        'catatan'
     ];
 }

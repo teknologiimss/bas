@@ -158,7 +158,7 @@
 
                                 </label>
 
-                                <input type="text" name="nama" value="{{ $personil->nama }}" class="form-control"
+                                <input type="text" name="nama" autocomplete="off" value="{{ $personil->nama }}" class="form-control"
                                     required>
 
                             </div>
@@ -177,9 +177,18 @@
 
                                 </label>
 
-                                <input type="text" name="nip" value="{{ $personil->nip }}" class="form-control">
+                                <input type="text" autocomplete="off" name="nip" value="{{ $personil->nip }}" class="form-control">
 
                             </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Jabatan</label>
+
+                            <input type="text" autocomplete="off" name="jabatan" value="{{ $personil->jabatan }}" class="form-control">
 
                         </div>
 
@@ -197,21 +206,45 @@
 
                                 <select name="status" class="form-control">
 
-                                    <option {{ $personil->status == 'Tetap' ? 'selected' : '' }}>
-                                        Tetap
+                                    <option {{ $personil->status == 'Organik' ? 'selected' : '' }}>
+                                        Organik
                                     </option>
 
-                                    <option {{ $personil->status == 'Kontrak' ? 'selected' : '' }}>
-                                        Kontrak
+                                    <option {{ $personil->status == 'PKWT' ? 'selected' : '' }}>
+                                        PKWT
                                     </option>
 
-                                    <option {{ $personil->status == 'Outsourcing' ? 'selected' : '' }}>
-                                        Outsourcing
-                                    </option>
+                                    
 
                                 </select>
 
                             </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>Jobdesk</label>
+
+                            <textarea name="jobdesk" autocomplete="off" rows="4" class="form-control">{{ $personil->jobdesk }}</textarea>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Spesialisasi</label>
+
+                            <input type="text" autocomplete="off" name="spesialisasi" value="{{ $personil->spesialisasi }}"
+                                class="form-control">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>Catatan</label>
+
+                            <textarea name="catatan" autocomplete="off" rows="3" class="form-control">{{ $personil->catatan }}</textarea>
 
                         </div>
 
@@ -227,7 +260,7 @@
 
                                 </label>
 
-                                <input type="text" name="penempatan" value="{{ $personil->penempatan }}"
+                                <input type="text" autocomplete="off" name="penempatan" value="{{ $personil->penempatan }}"
                                     class="form-control" required>
 
                             </div>

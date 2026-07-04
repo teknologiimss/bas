@@ -168,7 +168,7 @@
 
                         </label>
 
-                        <input type="text" name="nama" class="form-control" placeholder="Masukkan nama personil"
+                        <input type="text" name="nama" class="form-control" autocomplete="off" placeholder="Masukkan nama personil"
                             required>
 
                     </div>
@@ -181,7 +181,15 @@
 
                         </label>
 
-                        <input type="text" name="nip" class="form-control" placeholder="Masukkan NIP">
+                        <input type="text" name="nip" autocomplete="off" class="form-control" placeholder="Masukkan NIP">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Jabatan</label>
+
+                        <input type="text" name="jabatan" autocomplete="off" class="form-control" placeholder="Contoh : Kadiv, Kadep ,Staf">
 
                     </div>
 
@@ -195,27 +203,53 @@
 
                         <select name="status" class="form-control">
 
-                            <option value="Tetap">
+                            <option value="Organik">
 
-                                Tetap
-
-                            </option>
-
-                            <option value="Kontrak">
-
-                                Kontrak
+                                Organik
 
                             </option>
 
-                            <option value="Outsourcing">
+                            <option value="PKWT">
 
-                                Outsourcing
+                                PKWT
 
                             </option>
+
+
 
                         </select>
 
                     </div>
+
+
+                    <div class="form-group">
+
+                        <label>Jobdesk</label>
+
+                        <textarea name="jobdesk" autocomplete="off" class="form-control" rows="4" placeholder="Masukkan Jobdesk"></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Spesialisasi</label>
+
+                        <input type="text" autocomplete="off" name="spesialisasi" class="form-control"
+                            placeholder="Contoh : IT,Elektikal, Sipil">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Catatan</label>
+
+                        <textarea name="catatan" autocomplete="off" class="form-control" rows="3" placeholder="Catatan tambahan"></textarea>
+
+                    </div>
+
+
 
                     <div class="form-group">
 
@@ -225,9 +259,18 @@
 
                         </label>
 
-                        <input type="text" name="penempatan" class="form-control" placeholder="Contoh : MRO 1" required>
+                        <input type="text" name="penempatan" autocomplete="off" class="form-control" placeholder="Contoh : MRO 1" required>
 
                     </div>
+
+
+
+
+
+
+
+
+
 
                 </div>
 
