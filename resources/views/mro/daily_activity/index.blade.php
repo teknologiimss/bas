@@ -157,7 +157,11 @@
                                 </td>
 
                                 <td>
-                                    {{ $d->kegiatan }}
+                                    @foreach (preg_split("/\r\n|\n|\r/", trim($d->kegiatan)) as $item)
+                                        @if (trim($item) != '')
+                                            <div>{{ trim($item) }}</div>
+                                        @endif
+                                    @endforeach
                                 </td>
 
                                 <td class="text-center">
@@ -185,9 +189,11 @@
                                 </td>
 
                                 <td>
-
-                                    {!! nl2br(e($d->keterangan)) !!}
-
+                                    @foreach (preg_split("/\r\n|\n|\r/", trim($d->keterangan)) as $item)
+                                        @if (trim($item) != '')
+                                            <div>{{ trim($item) }}</div>
+                                        @endif
+                                    @endforeach
                                 </td>
 
                                 <td>
@@ -232,7 +238,8 @@
 
                                 <td class="text-center">
 
-                                    <a href="{{ route('mro.daily-activity.edit', $d->id) }}" class="btn btn-warning btn-sm">
+                                    <a href="{{ route('mro.daily-activity.edit', $d->id) }}"
+                                        class="btn btn-warning btn-sm">
 
                                         <i class="fa fa-edit"></i>
 

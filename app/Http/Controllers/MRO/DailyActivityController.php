@@ -51,10 +51,8 @@ class DailyActivityController extends Controller
             $baris = preg_split("/\r\n|\n|\r/", trim($request->keterangan));
 
             $keterangan = collect($baris)
+                ->map(fn($item) => trim($item))
                 ->filter()
-                ->map(function ($item) {
-                    return '- ' . ltrim(trim($item), '- ');
-                })
                 ->implode(PHP_EOL);
         }
 
@@ -118,10 +116,8 @@ class DailyActivityController extends Controller
             $baris = preg_split("/\r\n|\n|\r/", trim($request->keterangan));
 
             $keterangan = collect($baris)
+                ->map(fn($item) => trim($item))
                 ->filter()
-                ->map(function ($item) {
-                    return '- ' . ltrim(trim($item), '- ');
-                })
                 ->implode(PHP_EOL);
         }
 
