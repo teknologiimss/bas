@@ -123,7 +123,6 @@
         .no-border {
             border: none;
         }
-        
     </style>
 </head>
 
@@ -132,8 +131,7 @@
         <table class="header-table" style="width: 100%; border:1px solid black;">
             <tr>
                 <td align="center" style="width:33%; border:1px solid black;">
-                    <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
-                        alt="Logo" class="logo" width="250" />
+                    <img src="{{ asset('img/ptimst.png') }}" alt="Logo" class="logo" width="120">
                 </td>
                 <td align="center" style="vertical-align: top; width:33%; border:1px solid black;">
                     <br><br>
@@ -266,7 +264,8 @@
         <table class="w-100">
 
             <tr>
-                <td class="text-center" style="text-align: center"><b style="font-size: 12px">PLT. KEPALA DIVISI TEKNIK &
+                <td class="text-center" style="text-align: center"><b style="font-size: 12px">PLT. KEPALA DIVISI TEKNIK
+                        &
                         LOGISTIK</b></td>
             </tr>
             <tr>

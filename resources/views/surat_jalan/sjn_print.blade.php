@@ -84,7 +84,7 @@
             height: 50px;
             text-align: left;
             font-size: 11px;
-            border-top: 3px solid red;
+            border-top: 3px solid rgb(0, 0, 0);
             padding-top: 10px;
         }
         
@@ -95,7 +95,7 @@
 
 <body onload="window.print()">
     @php
-        $path = public_path('img/imss-remove.png');
+        $path = public_path('img/ptimst.png');
     @endphp
 
     {{-- <body> --}}
@@ -264,13 +264,13 @@
             <td colspan="3"style="font-size: 11px">1. {{ __($suratJalan->note) }}</td>
         </tr>
         <tr>
-            <td colspan="3"style="font-size: 11px">2. <b>Lembar Warna PUTIH & KUNING di kembalikan di PT IMSS,
+            <td colspan="3"style="font-size: 11px">2. <b>Lembar Warna PUTIH & KUNING di kembalikan di PT IMST,
                     Madiun</b></td>
         </tr>
         
     </table>
     <footer>
-        <b>Kantor Pusat&nbsp;&nbsp;&nbsp;&nbsp;: Jl. Salak No 99 Madiun,&nbsp; Telp. (08351)&nbsp;454094,&nbsp; email&nbsp;: imsservice14@gmail.com</b>
+        <p>Jl. Ring Road Barat, Ngegong, Mangunharjo, Kota Madiun - 63125 |&nbsp; Telp. (0351)&nbsp;2810737 | Website&nbsp;: imst.co.id | Email&nbsp;: corporate@imst.co.id</p>
     </footer>
 </body>
 
