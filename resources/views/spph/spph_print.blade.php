@@ -34,8 +34,8 @@
         }
 
         .logo {
-            width: 150px;
-            height: auto;
+            width: 85px;
+            height: 75px;
             margin-right: 10px;
         }
 
@@ -105,6 +105,7 @@
         .page-break {
             page-break-after: always;
         }
+
         table.table th,
         table.table td {
             font-size: 10px;
@@ -119,15 +120,14 @@
             <table style="width: 100%">
                 <tr>
                     <td style="width: 10%">
-                        <img src="https://inkamultisolusi.co.id/api_cms/public/uploads/editor/20220511071342_LSnL6WiOy67Xd9mKGDaG.png"
-                            alt="Logo IMSS" class="logo">
+                        <img src="{{ asset('img/ptimst.png') }}" alt="Logo IMSS" class="logo">
                     </td>
                     <td style="width: 75%">
-                        <h2>PT INKA MULTI SOLUSI SERVICE</h2>
+                        <h2>PT INKA MULTI SOLUSI TRADING</h2>
                         <p style="margin: 0;">
-                            <b>SERVICE - MAINTENANCE - LOGISTICS - GENERAL CONTRACTOR</b>
+                            {{-- <b>SERVICE - MAINTENANCE - LOGISTICS - GENERAL CONTRACTOR</b> --}}
                         </p>
-                        <p style="margin: 0;">Jl. Salak No. 59 Madiun - 63131</p>
+                        <p style="margin: 0;">Jl. Ring Road Barat, Ngegong, Mangunharjo, Kota Madiun - 63125</p>
                     </td>
                 </tr>
             </table>
@@ -135,11 +135,10 @@
         <div class="line"></div>
 
         <div style="position: fixed; bottom: 10; width: 91%; text-align: left; right: 4%">
-            <div style="border-bottom: 3px solid red; padding-top: 5px;">
-                <b style="font-size: 11px">PT INKA MULTI SOLUSI SERVICE</b>
+            <div style="border-bottom: 3px solid rgb(0, 0, 0); padding-top: 5px;">
+                <b style="font-size: 11px">PT INKA MULTI SOLUSI TRADING</b>
                 <div style="font-size: 9px; margin-top: 2px;">
-                    Kantor Pusat : Jl. Salak No.59 Madiun, Telp (0351) 454094, Website : www.imsservice.co.id, Email :
-                    imss.log@gmail.com
+                    Jl. Ring Road Barat, Ngegong, Mangunharjo, Kota Madiun - 63125 |&nbsp; Telp. (0351)&nbsp;2810737 | Website&nbsp;: imst.co.id | Email&nbsp;: corporate@imst.co.id
                 </div>
             </div>
 
@@ -230,7 +229,7 @@
                                 $data = $spph->keterangan_spph ?? '';
                                 $items = explode("\n", $data);
                             @endphp
-                
+
                             <table style="width: 100%; border-collapse: collapse;">
                                 @foreach ($items as $item)
                                     @php
@@ -251,7 +250,8 @@
                                             <td style="width: 2%; vertical-align: top; white-space: nowrap;">:</td>
                                             <td style="width: 70%;">{{ $value }}</td>
                                         @else
-                                            <td colspan="3" style="width: 92%; vertical-align: top;">{{ $value }}</td>
+                                            <td colspan="3" style="width: 92%; vertical-align: top;">
+                                                {{ $value }}</td>
                                         @endif
                                     </tr>
                                 @endforeach
@@ -265,35 +265,37 @@
 
             <div style="margin-top: 1rem; page-break-inside: avoid; break-inside: avoid; display: table; width: 100%;">
 
-    <div style="margin-top: 1rem; page-break-inside: avoid; break-inside: avoid; display: table; width: 100%;">
+                <div
+                    style="margin-top: 1rem; page-break-inside: avoid; break-inside: avoid; display: table; width: 100%;">
 
-    <!-- Blok tanda tangan di kanan halaman, lebih kecil -->
-    <div style="margin-left: auto; margin-right: 0; width: 40%; margin-top: 5%; page-break-inside: avoid; break-inside: avoid; display: table;">
+                    <!-- Blok tanda tangan di kanan halaman, lebih kecil -->
+                    <div
+                        style="margin-left: auto; margin-right: 0; width: 40%; margin-top: 5%; page-break-inside: avoid; break-inside: avoid; display: table;">
 
-        <!-- Teks di dalam tabel tetap rata tengah -->
-        <table style="width: 100%; text-align: center; page-break-inside: avoid; break-inside: avoid;">
-            <tr>
-                <td><b>PT INKA MULTI SOLUSI SERVICE</b></td>
-            </tr>
-            <tr>
-                <td><b>KEPALA DEPARTEMEN LOGISTIK</b></td>
-            </tr>
-            <tr>
-                <td style="height: 70px;"></td>
-            </tr>
-            <tr>
-                <td>
-                    <b style="text-decoration: underline;">RUDY SUSANTO</b>
-                </td>
-            </tr>
-        </table>
+                        <!-- Teks di dalam tabel tetap rata tengah -->
+                        <table style="width: 100%; text-align: center; page-break-inside: avoid; break-inside: avoid;">
+                            <tr>
+                                <td><b>PT INKA MULTI SOLUSI TRADING</b></td>
+                            </tr>
+                            <tr>
+                                <td><b>KEPALA DEPARTEMEN LOGISTIK</b></td>
+                            </tr>
+                            <tr>
+                                <td style="height: 70px;"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b style="text-decoration: underline;">RUDY SUSANTO</b>
+                                </td>
+                            </tr>
+                        </table>
 
-    </div>
+                    </div>
 
-</div>
+                </div>
 
 
-</div>
+            </div>
 
 
             @if ($count > 1 && $loop->iteration < $count)
