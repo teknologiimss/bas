@@ -88,7 +88,7 @@ class MasterPersonilController extends Controller
 
     public function print()
     {
-        $data = MasterPersonil::orderBy('nama')->get();
+        $data = MasterPersonil::oldest()->get();
 
         $pdf = Pdf::loadView(
             'mro.master_personil.print',
