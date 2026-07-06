@@ -5,155 +5,218 @@
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
     <style>
-/* =====================================================
-   🔴 GLOBAL COLOR TOKEN
-   ===================================================== */
-:root {
-    --maroon-main: #dc3545;
-    --maroon-hover: #8f2735;
-    --maroon-dark: #5a1620;
-    --maroon-soft: #f6dde1;
-    --maroon-border: #e4b9c0;
-}
+        /* =====================================================
+       🔵 GLOBAL COLOR TOKEN (NAVY BLUE)
+    ===================================================== */
+        :root {
+            --navy-main: #1E3A5F;
+            --navy-hover: #2F5D8A;
+            --navy-dark: #0F223A;
+            --navy-soft: #EEF4FB;
+            --navy-border: #C9D8EA;
+        }
 
-/* =====================================================
-   🔘 ALL BUTTON (FORCE OVERRIDE)
-   ===================================================== */
-button,
-.btn,
-a.btn,
-input[type="button"],
-input[type="submit"] {
-    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover)) !important;
-    color: #fff !important;
-    border: none !important;
-    border-radius: 10px !important;
-    font-weight: 600;
-    letter-spacing: .3px;
-    position: relative;
-    overflow: hidden;
-    transition: all .25s ease !important;
-}
+        /* =====================================================
+       🔘 ALL BUTTON (FORCE OVERRIDE)
+    ===================================================== */
+        button,
+        .btn,
+        a.btn,
+        input[type="button"],
+        input[type="submit"] {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover)) !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 10px !important;
+            font-weight: 600;
+            letter-spacing: .3px;
+            position: relative;
+            overflow: hidden;
+            transition: all .25s ease !important;
+            box-shadow: 0 6px 18px rgba(15, 34, 58, .25);
+        }
 
-/* Semua varian bootstrap */
-.btn-primary,
-.btn-secondary,
-.btn-success,
-.btn-danger,
-.btn-info,
-.btn-warning,
-.btn-default {
-    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover)) !important;
-    color: #fff !important;
-}
+        /* Semua varian bootstrap */
+        .btn-primary,
+        .btn-secondary,
+        .btn-success,
+        .btn-danger,
+        .btn-info,
+        .btn-warning,
+        .btn-default {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover)) !important;
+            color: #fff !important;
+        }
 
-/* Hover */
-button:hover,
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 24px rgba(122,31,43,.45);
-}
+        /* Hover */
+        button:hover,
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(15, 34, 58, .35);
+            background: linear-gradient(135deg, var(--navy-hover), var(--navy-main)) !important;
+        }
 
-/* Active */
-button:active,
-.btn:active {
-    transform: scale(.94);
-}
+        /* Active */
+        button:active,
+        .btn:active {
+            transform: scale(.95);
+        }
 
-/* Ripple click */
-button::after,
-.btn::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, rgba(255,255,255,.35) 10%, transparent 11%);
-    opacity: 0;
-}
-button:active::after,
-.btn:active::after {
-    opacity: 1;
-}
+        /* Ripple */
+        button::after,
+        .btn::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, .35) 10%, transparent 11%);
+            opacity: 0;
+        }
 
-/* =====================================================
-   📊 ALL TABLE (GLOBAL SEMUA HALAMAN)
-   ===================================================== */
-table {
-    border-collapse: separate !important;
-    border-spacing: 0;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 12px 30px rgba(122,31,43,.18);
-}
+        button:active::after,
+        .btn:active::after {
+            opacity: 1;
+        }
 
-/* Header table */
-table thead th {
-    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover)) !important;
-    color: #fff !important;
-    text-align: center;
-    font-weight: 700;
-}
+        /* =====================================================
+       📊 ALL TABLE
+    ===================================================== */
 
-/* Body row base */
-table tbody tr {
-    background-color: #fbf1f3 !important;
-    transition: all .3s ease;
-}
+        table {
+            border-collapse: separate !important;
+            border-spacing: 0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(15, 34, 58, .15);
+        }
 
-/* Zebra */
-table tbody tr:nth-child(even) {
-    background-color: #f7e6e9 !important;
-}
+        /* Header */
+        table thead th {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover)) !important;
+            color: #fff !important;
+            text-align: center;
+            font-weight: 700;
+            border: none !important;
+        }
 
-/* Hover row */
-table tbody tr:hover {
-    background: linear-gradient(135deg, var(--maroon-soft), #fdecef) !important;
-    transform: translateY(-4px) scale(1.01);
-    box-shadow: 0 10px 24px rgba(122,31,43,.28);
-}
+        /* Body */
+        table tbody tr {
+            background: var(--navy-soft) !important;
+            transition: .3s;
+        }
 
-/* Cell */
-table td {
-    border-bottom: 1px solid var(--maroon-border) !important;
-    vertical-align: middle;
-}
+        /* Zebra */
+        table tbody tr:nth-child(even) {
+            background: #E3EDF8 !important;
+        }
 
-/* Text hidup pas hover */
-table tbody tr:hover td {
-    color: var(--maroon-dark);
-    font-weight: 600;
-}
+        /* Hover */
+        table tbody tr:hover {
+            background: linear-gradient(135deg, #F7FBFF, #DCEAF8) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(15, 34, 58, .18);
+        }
 
-/* =====================================================
-   📦 CARD & MODAL HEADER
-   ===================================================== */
-.card-header,
-.modal-header {
-    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover)) !important;
-    color: #fff !important;
-}
+        /* Cell */
+        table td {
+            border-bottom: 1px solid var(--navy-border) !important;
+            vertical-align: middle;
+        }
 
-.modal-header .close span {
-    color: #fff !important;
-}
+        /* Hover Text */
+        table tbody tr:hover td {
+            color: var(--navy-dark);
+            font-weight: 600;
+        }
 
-/* =====================================================
-   🎞 TABLE ROW ANIMATION (LOAD)
-   ===================================================== */
-@keyframes tableFadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        /* =====================================================
+       📦 CARD
+    ===================================================== */
 
-table tbody tr {
-    animation: tableFadeUp .45s ease both;
-}
-</style>
+        .card {
+            border: none;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(15, 34, 58, .15);
+        }
+
+        .card-header,
+        .modal-header {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover)) !important;
+            color: #fff !important;
+        }
+
+        .card-body {
+            background: #fff;
+        }
+
+        /* =====================================================
+       🪟 MODAL
+    ===================================================== */
+
+        .modal-content {
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 20px 45px rgba(15, 34, 58, .20);
+        }
+
+        .modal-header .close span {
+            color: #fff !important;
+        }
+
+        /* =====================================================
+       📝 FORM
+    ===================================================== */
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid var(--navy-border);
+            transition: .25s;
+        }
+
+        .form-control:focus {
+            border-color: var(--navy-main);
+            box-shadow: 0 0 0 .2rem rgba(30, 58, 95, .15);
+        }
+
+        /* =====================================================
+       📄 PAGINATION
+    ===================================================== */
+
+        .page-item.active .page-link {
+            background: var(--navy-main);
+            border-color: var(--navy-main);
+        }
+
+        .page-link {
+            color: var(--navy-main);
+        }
+
+        .page-link:hover {
+            color: #fff;
+            background: var(--navy-hover);
+            border-color: var(--navy-hover);
+        }
+
+        /* =====================================================
+       🎞 ANIMATION
+    ===================================================== */
+
+        @keyframes tableFadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        table tbody tr {
+            animation: tableFadeUp .45s ease both;
+        }
+    </style>
 
 @endsection
 @section('content')
