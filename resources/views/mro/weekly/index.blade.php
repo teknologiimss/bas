@@ -127,9 +127,19 @@
                                 $ket = $d->keterangan ?? '-';
                             @endphp
 
+                            @php
+                                $listKegiatan = preg_split('/\r\n|\r|\n/', trim($d->kegiatan));
+                            @endphp
+
                             <div style="margin-bottom:12px;">
 
-                                <strong>{{ $d->kegiatan }}</strong><br>
+                                <strong>Kegiatan :</strong><br>
+
+                                @foreach ($listKegiatan as $item)
+                                    @if (trim($item) != '')
+                                        <div>{{ $item }}</div>
+                                    @endif
+                                @endforeach
 
                                 <small>
                                     {{ date('d-m-Y', strtotime($d->tanggal)) }} |
@@ -141,12 +151,9 @@
                                     @endif
                                 </small>
 
-                                {{-- KETERANGAN --}}
-                                {{-- KETERANGAN --}}
                                 <div style="margin-top:5px;">
 
                                     @php
-                                        // kalau keterangan ada beberapa baris dipisah newline
                                         $listKet = preg_split('/\r\n|\r|\n/', trim($ket));
                                     @endphp
 
