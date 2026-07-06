@@ -1070,7 +1070,7 @@
 
                                                                 <i class="nav-icon fas fa-users"></i>
 
-                                                                <p>Data Personil MRO</p>
+                                                                <p>Jobdesc Personil MRO</p>
 
                                                             </a>
 
