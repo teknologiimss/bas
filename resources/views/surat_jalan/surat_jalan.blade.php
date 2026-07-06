@@ -1,153 +1,157 @@
 @extends('layouts.main')
 @section('title', __('Surat Jalan'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <style>
-/* =====================================================
-   🔴 MAROON SYSTEM (GLOBAL OVERRIDE)
-   ===================================================== */
-:root {
-    --maroon-main: #dc3545;
-    --maroon-dark: #5a1620;
-    --maroon-hover: #8f2735;
-    --maroon-soft: #f3d9dd;
-    --maroon-border: #e1b6bd;
-}
+        /* =====================================================
+       🔵 NAVY BLUE SYSTEM (GLOBAL OVERRIDE)
+       ===================================================== */
+        :root {
+            --navy-main: #1E3A5F;
+            --navy-dark: #0D2340;
+            --navy-hover: #2F5D8A;
+            --navy-soft: #EEF4FB;
+            --navy-border: #C8D7EA;
+        }
 
-/* =====================================================
-   🔘 SEMUA BUTTON TANPA KECUALI
-   ===================================================== */
-button,
-.btn,
-input[type="button"],
-input[type="submit"],
-a.btn {
-    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover)) !important;
-    color: #fff !important;
-    border: none !important;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease,
-        background .25s ease;
-}
+        /* =====================================================
+       🔘 SEMUA BUTTON TANPA KECUALI
+       ===================================================== */
+        button,
+        .btn,
+        input[type="button"],
+        input[type="submit"],
+        a.btn {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover)) !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease,
+                background .25s ease;
+        }
 
-/* Override semua varian bootstrap */
-.btn-primary,
-.btn-success,
-.btn-danger,
-.btn-info,
-.btn-warning,
-.btn-secondary,
-.btn-default {
-    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover)) !important;
-    color: #fff !important;
-}
+        /* Override semua varian bootstrap */
+        .btn-primary,
+        .btn-success,
+        .btn-danger,
+        .btn-info,
+        .btn-warning,
+        .btn-secondary,
+        .btn-default {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover)) !important;
+            color: #fff !important;
+        }
 
-/* =====================================================
-   ✨ GERAK HOVER
-   ===================================================== */
-button:hover,
-.btn:hover,
-a.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 22px rgba(122,31,43,.45);
-}
+        /* =====================================================
+       ✨ GERAK HOVER
+       ===================================================== */
+        button:hover,
+        .btn:hover,
+        a.btn:hover {
+            background: linear-gradient(135deg, var(--navy-hover), var(--navy-main)) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(13, 35, 64, .35);
+        }
 
-/* =====================================================
-   👇 GERAK KLIK
-   ===================================================== */
-button:active,
-.btn:active {
-    transform: scale(.95);
-}
+        /* =====================================================
+       👇 GERAK KLIK
+       ===================================================== */
+        button:active,
+        .btn:active {
+            transform: scale(.95);
+        }
 
-/* =====================================================
-   💥 RIPPLE
-   ===================================================== */
-button::after,
-.btn::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, rgba(255,255,255,.35) 10%, transparent 11%);
-    opacity: 0;
-    transition: opacity .3s ease;
-}
+        /* =====================================================
+       💥 RIPPLE
+       ===================================================== */
+        button::after,
+        .btn::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, .35) 10%, transparent 11%);
+            opacity: 0;
+            transition: opacity .3s ease;
+        }
 
-button:active::after,
-.btn:active::after {
-    opacity: 1;
-}
+        button:active::after,
+        .btn:active::after {
+            opacity: 1;
+        }
 
-/* =====================================================
-   📊 TABLE MAROON
-   ===================================================== */
-#table {
-    background: linear-gradient(180deg, #fff, #faf2f4);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 14px 35px rgba(122,31,43,.18);
-}
+        /* =====================================================
+       📊 TABLE NAVY
+       ===================================================== */
+        #table {
+            background: linear-gradient(180deg, #ffffff, #F5F9FD);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 14px 35px rgba(13, 35, 64, .15);
+        }
 
-/* Header */
-#table thead th {
-    background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
-    color: #fff;
-}
+        /* Header */
+        #table thead th {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            color: #fff;
+            border: none;
+        }
 
-/* Row base */
-#table tbody tr {
-    background-color: #fbf1f3;
-    transition:
-        background-color .35s ease,
-        transform .3s ease,
-        box-shadow .3s ease;
-}
+        /* Row base */
+        #table tbody tr {
+            background-color: var(--navy-soft);
+            transition:
+                background-color .35s ease,
+                transform .3s ease,
+                box-shadow .3s ease;
+        }
 
-#table tbody tr:nth-child(even) {
-    background-color: #f7e6e9;
-}
+        /* Zebra */
+        #table tbody tr:nth-child(even) {
+            background-color: #E2ECF8;
+        }
 
-/* Hover row */
-#table tbody tr:hover {
-    background: linear-gradient(135deg, var(--maroon-soft), #fbeaed);
-    transform: translateY(-4px) scale(1.01);
-    box-shadow: 0 10px 24px rgba(122,31,43,.28);
-}
+        /* Hover row */
+        #table tbody tr:hover {
+            background: linear-gradient(135deg, #F8FBFF, #DCEAF7);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 10px 24px rgba(13, 35, 64, .18);
+        }
 
-/* Cell */
-#table td {
-    border-bottom: 1px solid var(--maroon-border);
-}
+        /* Cell */
+        #table td {
+            border-bottom: 1px solid var(--navy-border);
+        }
 
-/* =====================================================
-   🎞 ANIMASI LOAD
-   ===================================================== */
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(14px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        /* =====================================================
+       🎞 ANIMASI LOAD
+       ===================================================== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
 
-#table tbody tr {
-    animation: fadeUp .45s ease both;
-}
-</style>
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #table tbody tr {
+            animation: fadeUp .45s ease both;
+        }
+    </style>
 
 @endsection
 @section('content')
@@ -450,7 +454,7 @@ button:active::after,
                                             <td>:</td>
                                             <td><span id="tgl_surat"></span></td>
                                         </tr>
-                                        
+
                                         <tr>
                                             <td><b>Produk</b></td>
                                         </tr>
@@ -1353,7 +1357,7 @@ button:active::after,
                                 '<i class="fas fa-trash"></i>' +
                                 '</button>';
 
-                           
+
 
 
                             $('#table-sjn').append('<tr><td>' + (key + 1) + '</td><td>' +
@@ -1440,7 +1444,7 @@ button:active::after,
                                             '<i class="fas fa-trash"></i>' +
                                             '</button>';
 
-                                       
+
 
 
                                         $('#table-sjn').append('<tr><td>' + (key + 1) +
