@@ -1,148 +1,380 @@
 @extends('layouts.main')
 @section('title', __('Product Categories'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 @endsection
 @section('content')
+
+    <style>
+        :root {
+            --navy-main: #163A6B;
+            --navy-dark: #0B2343;
+            --navy-hover: #24528F;
+            --navy-soft: #EEF4FB;
+            --navy-border: #C9D8EC;
+            --navy-text: #17375E;
+        }
+
+        /* =========================
+       CARD
+    ========================= */
+        .card {
+            border: none;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 40, 90, .12);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* =========================
+       BUTTON
+    ========================= */
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: .25s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #198754, #157347);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #b02a37);
+        }
+
+        .btn-default {
+            background: #f8f9fa;
+            color: #444;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(22, 58, 107, .25);
+        }
+
+        /* tombol kecil */
+
+        .btn-xs {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            margin: 2px;
+        }
+
+        /* =========================
+       SEARCH
+    ========================= */
+
+        .input-group .form-control {
+            border-radius: 8px 0 0 8px;
+            border: 1px solid #ced4da;
+        }
+
+        .input-group-append .btn {
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* =========================
+       TABLE
+    ========================= */
+
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            color: #fff;
+            border: none;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background: #f8fbff;
+        }
+
+        .table-hover tbody tr:hover {
+            background: #e8f1fb;
+            transition: .2s;
+        }
+
+        /* =========================
+       MODAL
+    ========================= */
+
+        .modal-content {
+            border: none;
+            border-radius: 14px;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            color: white;
+            border: none;
+        }
+
+        .modal-header .close {
+            color: white;
+            opacity: 1;
+        }
+
+        .modal-footer {
+            border-top: none;
+        }
+
+        /* =========================
+       INPUT
+    ========================= */
+
+        .form-control {
+            border-radius: 10px;
+        }
+
+        .form-control:focus {
+            border-color: var(--navy-main);
+            box-shadow: 0 0 0 .2rem rgba(22, 58, 107, .18);
+        }
+
+        /* =========================
+       PAGINATION
+    ========================= */
+
+        .page-item.active .page-link {
+            background: var(--navy-main);
+            border-color: var(--navy-main);
+        }
+
+        .page-link {
+            color: var(--navy-main);
+        }
+
+        .page-link:hover {
+            color: #fff;
+            background: var(--navy-hover);
+        }
+
+        /* =========================
+       RESPONSIVE
+    ========================= */
+
+        @media(max-width:768px) {
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            .table {
+                font-size: 13px;
+            }
+
+            .btn-xs {
+                width: 32px;
+                height: 32px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+        }
+    </style>
+
     <div class="content-header">
         <div class="container-fluid">
-        <div class="row mb-2">
-        </div>
+            <div class="row mb-2">
+            </div>
         </div>
     </div>
     <section class="content">
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-header">
-                @if(Auth::user()->role == 0 || Auth::user()->role == 4)
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-category" onclick="addCategory()"><i class="fas fa-plus"></i> Add New Category</button>
-                @endif
-                <div class="card-tools">
-                    <form>
-                        <div class="input-group input-group">
-                            <input type="text" class="form-control" name="q" placeholder="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    @if (Auth::user()->role == 0 || Auth::user()->role == 4)
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-category"
+                            onclick="addCategory()"><i class="fas fa-plus"></i> Add New Category</button>
+                    @endif
+                    <div class="card-tools">
+                        <form>
+                            <div class="input-group input-group">
+                                <input type="text" class="form-control" name="q" placeholder="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="card-body">
-                <table id="table" class="table table-sm table-bordered table-hover table-striped">
-                <thead>
-                    <tr class="text-center">
-                        <th>No.</th>
-                        <th>{{ __('Category Name') }}</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                @if(count($categories) > 0)
-                    @foreach($categories as $key => $d)
-                    @php
-                        $data = ["category_id" => $d->category_id, "category_name" => $d->category_name];
-                    @endphp
-                    <tr>
-                        <td class="text-center">{{ $categories->firstItem() + $key }}</td>
-                        <td>{{ $data['category_name'] }}</td>
-                        <td class="text-center">
-                            <button title="Lihat Produk Untuk Kategori Ini" type="button" class="btn btn-primary btn-xs" onclick="window.location.href='/products?category={{ $d->category_id }}'"><i class="fas fa-external-link-alt"></i></button> 
-                            @if(Auth::user()->role == 0 || Auth::user()->role == 4 )
-                            <button title="Edit Shelf" type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#add-category" onclick="editCategory({{ json_encode($data) }})"><i class="fas fa-edit"></i></button> 
-                            <button title="Hapus Produk" type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete-category" onclick="deleteCategory({{ json_encode($data) }})"><i class="fas fa-trash"></i></button>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                @else
-                    <tr class="text-center">
-                        <td colspan="3">{{ __('No data.') }}</td>
-                    </tr>
-                @endif
-                </tbody>
-                </table>
-            </div>
-        </div>
-        <div>
-        {{ $categories->links("pagination::bootstrap-4") }}
-        </div>
-    </div>
-    @if(Auth::user()->role == 0 || Auth::user()->role == 4)
-    <div class="modal fade" id="add-category">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 id="modal-title" class="modal-title">{{ __('Add New Category') }}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form role="form" id="save" action="{{ route('products.categories.save') }}" method="post">
-                        @csrf
-                        <input type="hidden" id="category_id" name="category_id">
-                        <div class="form-group row">
-                            <label for="category_name" class="col-sm-4 col-form-label">{{ __('Category Name') }}</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="category_name" name="category_name">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
-                    <button id="button-save" type="button" class="btn btn-primary" onclick="$('#save').submit();">{{ __('Add') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="delete-category">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 id="modal-title" class="modal-title">{{ __('Delete Category') }}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form role="form" id="delete" action="{{ route('products.categories.delete') }}" method="post">
-                        @csrf
-                        @method('delete')
-                        <input type="hidden" id="delete_id" name="delete_id">
-                    </form>
-                    <div>
-                        <p>Anda yakin ingin menghapus kategori <span id="delete_name" class="font-weight-bold"></span>?</p>
+                        </form>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Batal') }}</button>
-                    <button id="button-save" type="button" class="btn btn-danger" onclick="$('#delete').submit();">{{ __('Ya, hapus') }}</button>
+                <div class="card-body">
+                    <table id="table" class="table table-sm table-bordered table-hover table-striped">
+                        <thead>
+                            <tr class="text-center">
+                                <th>No.</th>
+                                <th>{{ __('Category Name') }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (count($categories) > 0)
+                                @foreach ($categories as $key => $d)
+                                    @php
+                                        $data = [
+                                            'category_id' => $d->category_id,
+                                            'category_name' => $d->category_name,
+                                        ];
+                                    @endphp
+                                    <tr>
+                                        <td class="text-center">{{ $categories->firstItem() + $key }}</td>
+                                        <td>{{ $data['category_name'] }}</td>
+                                        <td class="text-center">
+                                            <button title="Lihat Produk Untuk Kategori Ini" type="button"
+                                                class="btn btn-primary btn-xs"
+                                                onclick="window.location.href='/products?category={{ $d->category_id }}'"><i
+                                                    class="fas fa-external-link-alt"></i></button>
+                                            @if (Auth::user()->role == 0 || Auth::user()->role == 4)
+                                                <button title="Edit Shelf" type="button" class="btn btn-success btn-xs"
+                                                    data-toggle="modal" data-target="#add-category"
+                                                    onclick="editCategory({{ json_encode($data) }})"><i
+                                                        class="fas fa-edit"></i></button>
+                                                <button title="Hapus Produk" type="button" class="btn btn-danger btn-xs"
+                                                    data-toggle="modal" data-target="#delete-category"
+                                                    onclick="deleteCategory({{ json_encode($data) }})"><i
+                                                        class="fas fa-trash"></i></button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr class="text-center">
+                                    <td colspan="3">{{ __('No data.') }}</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            <div>
+                {{ $categories->links('pagination::bootstrap-4') }}
+            </div>
         </div>
-    </div>
-    @endif
-</section>
+        @if (Auth::user()->role == 0 || Auth::user()->role == 4)
+            <div class="modal fade" id="add-category">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 id="modal-title" class="modal-title">{{ __('Add New Category') }}</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="save" action="{{ route('products.categories.save') }}"
+                                method="post">
+                                @csrf
+                                <input type="hidden" id="category_id" name="category_id">
+                                <div class="form-group row">
+                                    <label for="category_name"
+                                        class="col-sm-4 col-form-label">{{ __('Category Name') }}</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="category_name" name="category_name">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{{ __('Cancel') }}</button>
+                            <button id="button-save" type="button" class="btn btn-primary"
+                                onclick="$('#save').submit();">{{ __('Add') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="delete-category">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 id="modal-title" class="modal-title">{{ __('Delete Category') }}</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" id="delete" action="{{ route('products.categories.delete') }}"
+                                method="post">
+                                @csrf
+                                @method('delete')
+                                <input type="hidden" id="delete_id" name="delete_id">
+                            </form>
+                            <div>
+                                <p>Anda yakin ingin menghapus kategori <span id="delete_name"
+                                        class="font-weight-bold"></span>?</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{{ __('Batal') }}</button>
+                            <button id="button-save" type="button" class="btn btn-danger"
+                                onclick="$('#delete').submit();">{{ __('Ya, hapus') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </section>
 @endsection
 @section('custom-js')
     <script>
-        function resetForm(){
+        function resetForm() {
             $('#save').trigger("reset");
             $('#category_id').val('');
         }
 
-        function addCategory(){
+        function addCategory() {
             resetForm();
             $('#modal-title').text("Add New Category");
             $('#button-save').text("Add");
         }
 
-        function editCategory(data){
+        function editCategory(data) {
             resetForm();
             $('#modal-title').text("Edit Category");
             $('#button-save').text("Simpan");
@@ -150,19 +382,25 @@
             $('#category_name').val(data.category_name);
         }
 
-        function deleteCategory(data){
+        function deleteCategory(data) {
             $('#delete_id').val(data.category_id);
             $('#delete_name').text(data.category_name);
         }
     </script>
     <script src="/plugins/toastr/toastr.min.js"></script>
-    @if(Session::has('success'))
-        <script>toastr.success('{!! Session::get("success") !!}');</script>
+    @if (Session::has('success'))
+        <script>
+            toastr.success('{!! Session::get('success') !!}');
+        </script>
     @endif
-    @if(Session::has('error'))
-        <script>toastr.error('{!! Session::get("error") !!}');</script>
+    @if (Session::has('error'))
+        <script>
+            toastr.error('{!! Session::get('error') !!}');
+        </script>
     @endif
-    @if(!empty($errors->all()))
-        <script>toastr.error('{!! implode("", $errors->all("<li>:message</li>")) !!}');</script>
+    @if (!empty($errors->all()))
+        <script>
+            toastr.error('{!! implode('', $errors->all('<li>:message</li>')) !!}');
+        </script>
     @endif
 @endsection

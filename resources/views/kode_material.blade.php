@@ -1,12 +1,242 @@
 @extends('layouts.main')
 @section('title', __('Kode Material'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endsection
 @section('content')
+
+    <style>
+        /* ==========================================
+           NAVY BLUE MODERN THEME
+        ========================================== */
+
+        :root {
+            --navy-main: #163A6B;
+            --navy-hover: #24528F;
+            --navy-dark: #0B2343;
+            --navy-soft: #EEF5FC;
+            --navy-border: #D4E2F3;
+            --navy-text: #17375E;
+        }
+
+        /* ==========================================
+           CARD
+        ========================================== */
+
+        .card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 28px rgba(22, 58, 107, .15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 18px 20px;
+        }
+
+        /* ==========================================
+           BUTTON
+        ========================================== */
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: .25s;
+            min-height: 42px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+        }
+
+        .btn-outline-primary {
+            border: 2px solid #fff;
+            color: #fff;
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: #fff;
+            color: var(--navy-main);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(22, 58, 107, .30);
+        }
+
+        .btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        /* ==========================================
+           TABLE
+        ========================================== */
+
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, .06);
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            color: #fff;
+            border: none;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+        }
+
+        .table-striped tbody tr:nth-child(odd) {
+            background: #f8fbff;
+        }
+
+        .table-hover tbody tr:hover {
+            background: #eaf2fc;
+            transition: .25s;
+        }
+
+        /* ==========================================
+           DATATABLE
+        ========================================== */
+
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 10px;
+            border: 1px solid #ced4da;
+            padding: 6px 10px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border-radius: 10px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: var(--navy-main) !important;
+            color: #fff !important;
+            border: none !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: var(--navy-hover) !important;
+            color: #fff !important;
+        }
+
+        /* ==========================================
+           MODAL
+        ========================================== */
+
+        .modal-content {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            color: #fff;
+            border: none;
+        }
+
+        .modal-header .close {
+            color: #fff;
+            opacity: 1;
+        }
+
+        .modal-footer {
+            border-top: none;
+        }
+
+        /* ==========================================
+           INPUT
+        ========================================== */
+
+        .form-control,
+        .select2-selection {
+            border-radius: 10px !important;
+        }
+
+        .form-control:focus {
+            border-color: var(--navy-main);
+            box-shadow: 0 0 0 .2rem rgba(22, 58, 107, .15);
+        }
+
+        /* ==========================================
+           SCROLLBAR
+        ========================================== */
+
+        .table-responsive::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: var(--navy-main);
+            border-radius: 20px;
+        }
+
+        /* ==========================================
+           PAGINATION
+        ========================================== */
+
+        .page-item.active .page-link {
+            background: var(--navy-main);
+            border-color: var(--navy-main);
+        }
+
+        .page-link {
+            color: var(--navy-main);
+        }
+
+        .page-link:hover {
+            background: var(--navy-hover);
+            color: #fff;
+        }
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media(max-width:768px) {
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            .table {
+                font-size: 13px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+        }
+    </style>
+
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -17,8 +247,13 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-                    <button id="btn-inka" class="btn btn-outline-primary" onclick="getData('inka')">INKA</button>
-                    <button id="btn-imss" class="btn btn-outline-primary" onclick="getData('imss')">IMSS</button>
+                    <button id="btn-inka" class="btn btn-primary">
+                        <i class="fas fa-industry mr-1"></i> INKA
+                    </button>
+
+                    <button id="btn-imss" class="btn btn-outline-primary">
+                        <i class="fas fa-cogs mr-1"></i> IMSS
+                    </button>
                     {{-- <div class="card-tools">
                         <form>
                             <div class="input-group input-group">

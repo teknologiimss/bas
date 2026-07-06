@@ -67,23 +67,23 @@
 
     <style>
         /* =====================================================
-           🔴 MODERN MAROON UI – TABLE + SORT + BUTTON
-           ===================================================== */
+       🔵 MODERN NAVY UI – TABLE + SORT + BUTTON
+       ===================================================== */
 
         /* ===== ROOT WARNA ===== */
         :root {
-            --maroon-main: #dc3545;
-            --maroon-dark: #5a1620;
-            --maroon-hover: #8f2735;
-            --maroon-soft: #f4e6e8;
-            --maroon-border: #e3c2c7;
-            --maroon-muted: #b88a92;
-            --maroon-text: #3a0f15;
+            --navy-main: #0d47a1;
+            --navy-dark: #082b63;
+            --navy-hover: #1565c0;
+            --navy-soft: #edf4ff;
+            --navy-border: #bfd4f3;
+            --navy-muted: #7da3d8;
+            --navy-text: #16325c;
         }
 
         /* =====================================================
-           🪟 MODAL
-           ===================================================== */
+       🪟 MODAL
+       ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -94,35 +94,35 @@
         }
 
         /* =====================================================
-           📊 TABLE HEADER
-           ===================================================== */
+       📊 TABLE HEADER
+       ===================================================== */
         #table th {
             position: relative;
             cursor: pointer;
             user-select: none;
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
             color: #fff;
             padding: 12px 36px 12px 12px;
             text-align: center;
             font-weight: 600;
-            transition: all .3s ease;
+            transition: .3s;
         }
 
         /* Hover header */
         #table th:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(122, 31, 43, .35);
+            box-shadow: 0 6px 14px rgba(13, 71, 161, .35);
         }
 
         /* Active sort */
         #table th.active-sort {
-            box-shadow: inset 0 -4px 0 var(--maroon-dark);
+            box-shadow: inset 0 -4px 0 var(--navy-dark);
             animation: headerGlow 1.5s infinite alternate;
         }
 
         /* =====================================================
-           🔼🔽 SORT BUTTON
-           ===================================================== */
+       🔼🔽 SORT BUTTON
+       ===================================================== */
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -137,8 +137,8 @@
 
         .sort-buttons span {
             cursor: pointer;
-            color: var(--maroon-muted);
-            transition: color .2s ease, transform .15s ease;
+            color: var(--navy-muted);
+            transition: .2s;
         }
 
         .sort-buttons span:hover {
@@ -148,18 +148,18 @@
 
         .sort-buttons span.active {
             color: #fff;
-            background: var(--maroon-dark);
+            background: var(--navy-dark);
             border-radius: 50%;
             padding: 2px;
             animation: arrowPulse 1.2s infinite;
         }
 
         /* =====================================================
-           🔘 BUTTON – MAROON + GERAK
-           ===================================================== */
+       🔘 BUTTON NAVY
+       ===================================================== */
         button,
         .btn {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -169,24 +169,22 @@
             position: relative;
             overflow: hidden;
             transition:
-                transform .25s ease,
-                box-shadow .25s ease;
+                transform .25s,
+                box-shadow .25s;
         }
 
-        /* Hover – naik */
         button:hover,
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 22px rgba(122, 31, 43, .45);
+            box-shadow: 0 10px 22px rgba(13, 71, 161, .45);
         }
 
-        /* Active – klik */
         button:active,
         .btn:active {
             transform: scale(.95);
         }
 
-        /* Ripple effect */
+        /* Ripple */
         button::after,
         .btn::after {
             content: "";
@@ -194,7 +192,7 @@
             inset: 0;
             background: radial-gradient(circle, rgba(255, 255, 255, .35) 10%, transparent 11%);
             opacity: 0;
-            transition: opacity .3s ease;
+            transition: .3s;
         }
 
         button:active::after,
@@ -203,40 +201,64 @@
         }
 
         /* =====================================================
-           🌊 ANIMATIONS
-           ===================================================== */
+       🌊 ANIMATION
+       ===================================================== */
         @keyframes arrowPulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
+                box-shadow: 0 0 0 0 rgba(13, 71, 161, .55);
             }
 
             70% {
-                box-shadow: 0 0 0 8px rgba(122, 31, 43, 0);
+                box-shadow: 0 0 0 8px rgba(13, 71, 161, 0);
             }
 
             100% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
+                box-shadow: 0 0 0 0 rgba(13, 71, 161, 0);
             }
         }
 
         @keyframes headerGlow {
             from {
-                box-shadow: inset 0 -4px 0 var(--maroon-dark);
+                box-shadow: inset 0 -4px 0 var(--navy-dark);
             }
 
             to {
                 box-shadow:
-                    inset 0 -4px 0 var(--maroon-dark),
-                    0 0 14px rgba(122, 31, 43, .4);
+                    inset 0 -4px 0 var(--navy-dark),
+                    0 0 14px rgba(13, 71, 161, .45);
             }
         }
 
+        /* =====================================================
+       📋 TABLE BODY
+       ===================================================== */
+        #table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(13, 71, 161, .15);
+        }
+
+        #table tbody tr {
+            transition: .25s;
+        }
+
+        #table tbody tr:nth-child(even) {
+            background: #f7fbff;
+        }
+
+        #table tbody tr:hover {
+            background: var(--navy-soft);
+            transform: translateY(-2px);
+        }
+
+        #table td {
+            border-bottom: 1px solid var(--navy-border);
+        }
 
         /* =====================================================
-       🔥 RAPIIKAN BUTTON
-    ===================================================== */
+       🔥 BUTTON RAPIIH
+       ===================================================== */
 
-        /* Area header */
         .card-header {
             display: flex;
             justify-content: space-between;
@@ -245,7 +267,6 @@
             gap: 12px;
         }
 
-        /* Semua button konsisten */
         .btn,
         button {
             display: inline-flex;
@@ -260,7 +281,6 @@
             white-space: nowrap;
         }
 
-        /* Button kecil aksi tabel */
         .btn-xs {
             width: 34px;
             height: 34px;
@@ -268,27 +288,22 @@
             border-radius: 8px;
         }
 
-        /* Area tombol aksi tabel */
         td.text-center .btn {
             margin: 2px;
         }
 
-        /* Filter button sejajar */
         .row.mb-3 {
             align-items: end;
         }
 
-        /* Clear filter button */
         #clear-filter {
             width: 100%;
         }
 
-        /* Tombol hapus dipilih */
         #delete-selected {
             margin-top: 12px;
         }
 
-        /* Footer modal */
         .modal-footer {
             display: flex;
             justify-content: space-between;
@@ -296,26 +311,38 @@
             gap: 10px;
         }
 
-        /* Button dalam modal */
         .modal-footer .btn {
             min-width: 130px;
         }
 
-        /* Tombol tambah item/detail */
         #button-tambah-detail,
         #button-tambah-produk,
         #btn-save-then-add {
             min-width: 180px;
         }
 
-        /* Tombol cetak */
         #button-cetak-po,
         #button-cetak-nego {
             margin-bottom: 15px;
         }
 
-        /* Responsive mobile */
-        @media (max-width: 768px) {
+        /* =====================================================
+       🪟 MODAL HEADER
+       ===================================================== */
+        .modal-header,
+        .card-header {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            color: #fff;
+        }
+
+        .modal-title {
+            font-weight: 700;
+        }
+
+        /* =====================================================
+       📱 RESPONSIVE
+       ===================================================== */
+        @media(max-width:768px) {
 
             .card-header {
                 flex-direction: column;
@@ -336,6 +363,12 @@
 
             td.text-center .btn {
                 margin-bottom: 5px;
+            }
+
+            #table th,
+            #table td {
+                font-size: 12px;
+                white-space: nowrap;
             }
         }
     </style>
@@ -774,7 +807,7 @@
                                 <div id="form" class="card">
                                     <div class="card-body">
                                         <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                    onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                         <button id="btn-save-then-add" type="button" class="btn btn-primary mb-3">Tambah
                                             Pilihan</button>
 
@@ -2426,20 +2459,20 @@
     @if (Session::has('success'))
         <script>
             toastr.success('{!! Session::get('
-                                success ') !!}');
+                                            success ') !!}');
         </script>
     @endif
     @if (Session::has('error'))
         <script>
             toastr.error('{!! Session::get('
-                                error ') !!}');
+                                            error ') !!}');
         </script>
     @endif
     @if (!empty($errors->all()))
         <script>
             toastr.error('{!! implode(
                 '
-                                    ',
+                                                ',
                 $errors->all(' < li >: message < /li>'),
             ) !!}');
         </script>

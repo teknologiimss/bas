@@ -2,85 +2,26 @@
 @section('title', __('NEGO Dalam Negeri'))
 @section('custom-css')
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
-    {{-- <style>
-        /* Important part */
-        .modal-dialog {
-            overflow-y: initial !important
-        }
-
-        .modal-body {
-            max-height: calc(100vh - 200px);
-            overflow-y: auto;
-        }
-        /* 🌈 Gaya header File Explorer */
-        #table th {
-            position: relative;
-            cursor: pointer;
-            user-select: none;
-            background-color: #f8f9fa;
-            transition: background-color 0.2s ease;
-            padding-right: 30px;
-            text-align: center;
-        }
-
-        #table th:hover {
-            background-color: #e9ecef;
-        }
-
-        #table th.active-sort {
-            background-color: #dbeafe;
-            color: #0d6efd;
-            font-weight: 600;
-        }
-
-        /* 🔼🔽 Tombol panah permanen */
-        .sort-buttons {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            line-height: 10px;
-            font-size: 10px;
-        }
-
-        .sort-buttons span {
-            cursor: pointer;
-            color: #9ca3af;
-            transition: color 0.2s ease, transform 0.1s ease;
-        }
-
-        .sort-buttons span:hover {
-            color: #0d6efd;
-            transform: scale(1.2);
-        }
-
-        .sort-buttons span.active {
-            color: #0d6efd;
-            font-weight: bold;
-        }
-    </style> --}}
 
     <style>
         /* =====================================================
-           🔴 MAROON MODERN UI – TABLE + BUTTON (GERAK)
-           ===================================================== */
+       🔵 NAVY MODERN UI – TABLE + BUTTON (GERAK)
+       ===================================================== */
 
         /* ===== ROOT WARNA ===== */
         :root {
-            --maroon-main: #dc3545;
-            --maroon-dark: #5a1620;
-            --maroon-hover: #8f2735;
-            --maroon-soft: #f4e6e8;
-            --maroon-border: #e3c2c7;
-            --maroon-muted: #b88a92;
-            --maroon-text: #3a0f15;
+            --navy-main: #1e3a5f;
+            --navy-dark: #10253f;
+            --navy-hover: #2c5282;
+            --navy-soft: #edf3fb;
+            --navy-border: #c8d7ea;
+            --navy-muted: #7b95b5;
+            --navy-text: #10253f;
         }
 
         /* =====================================================
-           🪟 MODAL
-           ===================================================== */
+       🪟 MODAL
+       ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -91,13 +32,13 @@
         }
 
         /* =====================================================
-           📊 TABLE HEADER
-           ===================================================== */
+       📊 TABLE HEADER
+       ===================================================== */
         #table th {
             position: relative;
             cursor: pointer;
             user-select: none;
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
             color: #fff;
             padding: 12px 36px 12px 12px;
             text-align: center;
@@ -107,17 +48,17 @@
 
         #table th:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(122, 31, 43, .35);
+            box-shadow: 0 6px 14px rgba(16, 37, 63, .35);
         }
 
         #table th.active-sort {
-            box-shadow: inset 0 -4px 0 var(--maroon-dark);
+            box-shadow: inset 0 -4px 0 var(--navy-dark);
             animation: glowHeader 1.5s infinite alternate;
         }
 
         /* =====================================================
-           🔼🔽 SORT BUTTON
-           ===================================================== */
+       🔼🔽 SORT BUTTON
+       ===================================================== */
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -131,7 +72,7 @@
 
         .sort-buttons span {
             cursor: pointer;
-            color: var(--maroon-muted);
+            color: var(--navy-muted);
             transition: all .2s ease;
         }
 
@@ -142,18 +83,18 @@
 
         .sort-buttons span.active {
             color: #fff;
-            background: var(--maroon-dark);
+            background: var(--navy-dark);
             border-radius: 50%;
             padding: 2px;
             animation: pulseArrow 1.2s infinite;
         }
 
         /* =====================================================
-           🔘 BUTTON – MAROON + GERAK
-           ===================================================== */
+       🔘 BUTTON – NAVY
+       ===================================================== */
         button,
         .btn {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -164,20 +105,17 @@
             overflow: hidden;
         }
 
-        /* Hover – naik + glow */
         button:hover,
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 22px rgba(122, 31, 43, .45);
+            box-shadow: 0 10px 22px rgba(16, 37, 63, .45);
         }
 
-        /* Active – klik berasa */
         button:active,
         .btn:active {
             transform: scale(.95);
         }
 
-        /* Ripple effect */
         button::after,
         .btn::after {
             content: "";
@@ -194,38 +132,36 @@
         }
 
         /* =====================================================
-           🌊 ANIMATIONS
-           ===================================================== */
+       🌊 ANIMATIONS
+       ===================================================== */
         @keyframes pulseArrow {
             0% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
+                box-shadow: 0 0 0 0 rgba(16, 37, 63, .6);
             }
 
             70% {
-                box-shadow: 0 0 0 8px rgba(122, 31, 43, 0);
+                box-shadow: 0 0 0 8px rgba(16, 37, 63, 0);
             }
 
             100% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
+                box-shadow: 0 0 0 0 rgba(16, 37, 63, 0);
             }
         }
 
         @keyframes glowHeader {
             from {
-                box-shadow: inset 0 -4px 0 var(--maroon-dark);
+                box-shadow: inset 0 -4px 0 var(--navy-dark);
             }
 
             to {
-                box-shadow: inset 0 -4px 0 var(--maroon-dark),
-                    0 0 12px rgba(122, 31, 43, .4);
+                box-shadow: inset 0 -4px 0 var(--navy-dark),
+                    0 0 12px rgba(16, 37, 63, .4);
             }
         }
 
         /* =====================================================
-    🔘 BUTTON RAPIIIII + SEJAJAR
-    ===================================================== */
-
-        /* area tombol dalam card-header */
+       🔘 BUTTON RAPIIIII + SEJAJAR
+       ===================================================== */
         .card-header {
             display: flex;
             flex-wrap: wrap;
@@ -233,7 +169,6 @@
             gap: 12px;
         }
 
-        /* tombol umum */
         button,
         .btn {
             display: inline-flex;
@@ -250,17 +185,14 @@
             font-weight: 600;
             font-size: 14px;
             line-height: 1;
-
             white-space: nowrap;
         }
 
-        /* icon di button */
         .btn i,
         button i {
             font-size: 13px;
         }
 
-        /* tombol kecil pada aksi tabel */
         .btn-xs {
             width: 36px;
             height: 36px;
@@ -274,20 +206,17 @@
             margin: 2px;
         }
 
-        /* area aksi tabel */
         td.text-center .btn {
             vertical-align: middle;
         }
 
-        /* tombol aksi agar sejajar */
         td.text-center {
             white-space: nowrap;
         }
 
         /* =====================================================
-    📊 TABLE RAPIIIII
-    ===================================================== */
-
+       📊 TABLE
+       ===================================================== */
         #table {
             width: 100%;
             border-collapse: separate;
@@ -299,27 +228,32 @@
             vertical-align: middle !important;
         }
 
-        /* header */
         #table thead th {
             text-align: center;
             font-size: 14px;
         }
 
-        /* isi tabel */
         #table tbody td {
             font-size: 13px;
             padding: 10px;
         }
 
-        /* hover row */
+        #table tbody tr {
+            background: #fff;
+            transition: all .3s ease;
+        }
+
+        #table tbody tr:nth-child(even) {
+            background: #f6f9fd;
+        }
+
         #table tbody tr:hover td {
-            background: #fff5f6;
+            background: var(--navy-soft);
         }
 
         /* =====================================================
-    📦 FILTER AREA
-    ===================================================== */
-
+       📦 FILTER AREA
+       ===================================================== */
         .row.mb-3 {
             align-items: end;
         }
@@ -329,12 +263,10 @@
         }
 
         /* =====================================================
-    📱 RESPONSIVE MOBILE
-    ===================================================== */
+       📱 RESPONSIVE
+       ===================================================== */
+        @media (max-width:768px) {
 
-        @media (max-width: 768px) {
-
-            /* tombol atas */
             .card-header {
                 flex-direction: column;
                 align-items: stretch;
@@ -344,26 +276,22 @@
                 width: 100%;
             }
 
-            /* filter */
             .row.mb-3 .col-md-4 {
                 margin-bottom: 12px;
             }
 
-            /* tabel */
             #table th,
             #table td {
                 font-size: 12px;
                 padding: 8px;
             }
 
-            /* tombol aksi */
             .btn-xs {
                 width: 32px;
                 height: 32px;
                 margin: 1px;
             }
 
-            /* modal */
             .modal-dialog {
                 margin: 10px;
             }
@@ -372,7 +300,6 @@
                 border-radius: 14px;
             }
 
-            /* footer modal */
             .modal-footer {
                 gap: 10px;
             }
@@ -383,9 +310,8 @@
         }
 
         /* =====================================================
-    ✨ NAV TAB RAPIIIII
-    ===================================================== */
-
+       ✨ NAV TAB
+       ===================================================== */
         .nav-tabs {
             gap: 6px;
             border-bottom: none;
@@ -395,20 +321,19 @@
             border-radius: 10px 10px 0 0;
             padding: 10px 18px;
             font-weight: 600;
-            color: var(--maroon-main);
-            border: 1px solid #eee;
+            color: var(--navy-main);
+            border: 1px solid #d9e3ef;
         }
 
         .nav-tabs .nav-link.active {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
-            color: white !important;
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            color: #fff !important;
             border-color: transparent;
         }
 
         /* =====================================================
-    🪟 MODAL RAPIIIII
-    ===================================================== */
-
+       🪟 MODAL
+       ===================================================== */
         .modal-content {
             border-radius: 16px;
             overflow: hidden;
@@ -416,8 +341,8 @@
         }
 
         .modal-header {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
-            color: white;
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            color: #fff;
         }
 
         .modal-title {
@@ -429,13 +354,17 @@
         }
 
         /* =====================================================
-    🧾 INPUT RAPIIIII
-    ===================================================== */
-
+       🧾 INPUT
+       ===================================================== */
         .form-control {
             height: 42px;
             border-radius: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #cfdceb;
+        }
+
+        .form-control:focus {
+            border-color: var(--navy-main);
+            box-shadow: 0 0 0 .2rem rgba(30, 58, 95, .2);
         }
 
         textarea.form-control {
@@ -444,7 +373,7 @@
 
         .form-group label {
             font-weight: 600;
-            color: #444;
+            color: var(--navy-text);
         }
     </style>
 
@@ -899,7 +828,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                            onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 

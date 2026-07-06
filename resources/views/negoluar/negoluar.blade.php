@@ -2,85 +2,26 @@
 @section('title', __('NEGO Luar Negeri'))
 @section('custom-css')
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
-    {{-- <style>
-        /* Important part */
-        .modal-dialog {
-            overflow-y: initial !important
-        }
-
-        .modal-body {
-            max-height: calc(100vh - 200px);
-            overflow-y: auto;
-        }
-        /* 🌈 Gaya header File Explorer */
-        #table th {
-            position: relative;
-            cursor: pointer;
-            user-select: none;
-            background-color: #f8f9fa;
-            transition: background-color 0.2s ease;
-            padding-right: 30px;
-            text-align: center;
-        }
-
-        #table th:hover {
-            background-color: #e9ecef;
-        }
-
-        #table th.active-sort {
-            background-color: #dbeafe;
-            color: #0d6efd;
-            font-weight: 600;
-        }
-
-        /* 🔼🔽 Tombol panah permanen */
-        .sort-buttons {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            line-height: 10px;
-            font-size: 10px;
-        }
-
-        .sort-buttons span {
-            cursor: pointer;
-            color: #9ca3af;
-            transition: color 0.2s ease, transform 0.1s ease;
-        }
-
-        .sort-buttons span:hover {
-            color: #0d6efd;
-            transform: scale(1.2);
-        }
-
-        .sort-buttons span.active {
-            color: #0d6efd;
-            font-weight: bold;
-        }
-    </style> --}}
 
     <style>
         /* =====================================================
-           🔴 MAROON MODERN UI – TABLE + BUTTON (GERAK)
-           ===================================================== */
+       🔵 NAVY MODERN UI – TABLE + BUTTON (GERAK)
+       ===================================================== */
 
         /* ===== ROOT WARNA ===== */
         :root {
-            --maroon-main: #dc3545;
-            --maroon-dark: #5a1620;
-            --maroon-hover: #8f2735;
-            --maroon-soft: #f4e6e8;
-            --maroon-border: #e3c2c7;
-            --maroon-muted: #b88a92;
-            --maroon-text: #3a0f15;
+            --navy-main: #163a63;
+            --navy-dark: #0b2442;
+            --navy-hover: #24558c;
+            --navy-soft: #eef4fb;
+            --navy-border: #c8d6e8;
+            --navy-muted: #8ca6c6;
+            --navy-text: #10253f;
         }
 
         /* =====================================================
-           🪟 MODAL
-           ===================================================== */
+       🪟 MODAL
+       ===================================================== */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -91,13 +32,13 @@
         }
 
         /* =====================================================
-           📊 TABLE HEADER
-           ===================================================== */
+       📊 TABLE HEADER
+       ===================================================== */
         #table th {
             position: relative;
             cursor: pointer;
             user-select: none;
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
             color: #fff;
             padding: 12px 36px 12px 12px;
             text-align: center;
@@ -107,17 +48,17 @@
 
         #table th:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(122, 31, 43, .35);
+            box-shadow: 0 6px 14px rgba(11, 36, 66, .35);
         }
 
         #table th.active-sort {
-            box-shadow: inset 0 -4px 0 var(--maroon-dark);
+            box-shadow: inset 0 -4px 0 var(--navy-dark);
             animation: glowHeader 1.5s infinite alternate;
         }
 
         /* =====================================================
-           🔼🔽 SORT BUTTON
-           ===================================================== */
+       🔼🔽 SORT BUTTON
+       ===================================================== */
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -131,7 +72,7 @@
 
         .sort-buttons span {
             cursor: pointer;
-            color: var(--maroon-muted);
+            color: var(--navy-muted);
             transition: all .2s ease;
         }
 
@@ -142,18 +83,18 @@
 
         .sort-buttons span.active {
             color: #fff;
-            background: var(--maroon-dark);
+            background: var(--navy-dark);
             border-radius: 50%;
             padding: 2px;
             animation: pulseArrow 1.2s infinite;
         }
 
         /* =====================================================
-           🔘 BUTTON – MAROON + GERAK
-           ===================================================== */
+       🔘 BUTTON – NAVY
+       ===================================================== */
         button,
         .btn {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -164,20 +105,20 @@
             overflow: hidden;
         }
 
-        /* Hover – naik + glow */
+        /* Hover */
         button:hover,
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 22px rgba(122, 31, 43, .45);
+            box-shadow: 0 10px 22px rgba(11, 36, 66, .45);
         }
 
-        /* Active – klik berasa */
+        /* Active */
         button:active,
         .btn:active {
             transform: scale(.95);
         }
 
-        /* Ripple effect */
+        /* Ripple */
         button::after,
         .btn::after {
             content: "";
@@ -194,38 +135,37 @@
         }
 
         /* =====================================================
-           🌊 ANIMATIONS
-           ===================================================== */
+       🌊 ANIMATIONS
+       ===================================================== */
         @keyframes pulseArrow {
             0% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, .6);
+                box-shadow: 0 0 0 0 rgba(11, 36, 66, .6);
             }
 
             70% {
-                box-shadow: 0 0 0 8px rgba(122, 31, 43, 0);
+                box-shadow: 0 0 0 8px rgba(11, 36, 66, 0);
             }
 
             100% {
-                box-shadow: 0 0 0 0 rgba(122, 31, 43, 0);
+                box-shadow: 0 0 0 0 rgba(11, 36, 66, 0);
             }
         }
 
         @keyframes glowHeader {
             from {
-                box-shadow: inset 0 -4px 0 var(--maroon-dark);
+                box-shadow: inset 0 -4px 0 var(--navy-dark);
             }
 
             to {
-                box-shadow: inset 0 -4px 0 var(--maroon-dark),
-                    0 0 12px rgba(122, 31, 43, .4);
+                box-shadow: inset 0 -4px 0 var(--navy-dark),
+                    0 0 12px rgba(11, 36, 66, .4);
             }
         }
 
         /* =====================================================
        🔘 RAPIIKAN SEMUA BUTTON
-    ===================================================== */
+       ===================================================== */
 
-        /* AREA HEADER BUTTON */
         .card-header {
             display: flex;
             align-items: center;
@@ -234,7 +174,6 @@
             gap: 12px;
         }
 
-        /* BUTTON GLOBAL */
         .btn,
         button {
             display: inline-flex;
@@ -250,7 +189,6 @@
             transition: all .25s ease;
         }
 
-        /* BUTTON KECIL DALAM TABLE */
         .btn-xs {
             width: 36px;
             height: 36px;
@@ -262,28 +200,23 @@
             margin: 2px;
         }
 
-        /* AREA AKSI TABLE */
         td.text-center .btn {
             vertical-align: middle;
         }
 
-        /* BUTTON AKSI DALAM TABLE */
         td.text-center {
             vertical-align: middle !important;
         }
 
-        /* BUTTON FILTER */
         #clear-filter {
             margin-top: 31px !important;
             width: 100%;
         }
 
-        /* DELETE BUTTON */
         #delete-selected {
             margin-top: 14px;
         }
 
-        /* MODAL FOOTER */
         .modal-footer {
             gap: 10px;
             flex-wrap: wrap;
@@ -293,14 +226,15 @@
             min-width: 130px;
         }
 
-        /* BUTTON CETAK & TAMBAH PRODUK */
         #button-cetak-nego,
         #button-tambah-produk,
         #btn-save-then-add {
             margin-bottom: 12px;
         }
 
-        /* TAB MENU */
+        /* =====================================================
+       📑 NAV TAB
+       ===================================================== */
         .nav-tabs {
             gap: 8px;
             border-bottom: none;
@@ -311,20 +245,20 @@
             font-weight: 600;
             padding: 10px 18px;
             transition: all .25s ease;
+            color: var(--navy-main);
         }
 
         .nav-tabs .nav-link.active {
-            background: linear-gradient(135deg, var(--maroon-main), var(--maroon-hover));
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
             color: #fff !important;
             border: none;
         }
 
         /* =====================================================
        📱 RESPONSIVE MOBILE
-    ===================================================== */
-        @media (max-width: 768px) {
+       ===================================================== */
+        @media (max-width:768px) {
 
-            /* HEADER BUTTON */
             .card-header {
                 flex-direction: column;
                 align-items: stretch;
@@ -334,7 +268,6 @@
                 width: 100%;
             }
 
-            /* FILTER */
             .row.mb-3>.col-md-4 {
                 margin-bottom: 12px;
             }
@@ -343,7 +276,6 @@
                 margin-top: 0 !important;
             }
 
-            /* BUTTON MODAL */
             .modal-footer {
                 flex-direction: column;
             }
@@ -352,21 +284,18 @@
                 width: 100%;
             }
 
-            /* BUTTON TABLE */
             .btn-xs {
                 width: 34px;
                 height: 34px;
                 font-size: 12px;
             }
 
-            /* TABLE */
             #table th,
             #table td {
                 white-space: nowrap;
                 font-size: 12px;
             }
 
-            /* CETAK & TAMBAH */
             #button-cetak-nego,
             #button-tambah-produk,
             #btn-save-then-add {
@@ -870,7 +799,7 @@
                                     <div id="form" class="card">
                                         <div class="card-body">
                                             <!-- <button type="button" class="btn btn-primary mb-3"
-                                                                        onclick="addToDetails()"></i>Tambah Pilihan</button> -->
+                                                                            onclick="addToDetails()"></i>Tambah Pilihan</button> -->
                                             <button id="btn-save-then-add" type="button"
                                                 class="btn btn-primary mb-3">Tambah Pilihan</button>
 
@@ -2226,7 +2155,7 @@
                     if (data.negoluar.details.length > 0) {
                         $('#table-nego').empty();
                         $('#negoluar_id').val(data.negoluar
-                        .id); // Pastikan #negoluar_id selalu diisi ulang setelah update
+                            .id); // Pastikan #negoluar_id selalu diisi ulang setelah update
                         $.each(data.negoluar.details, function(key, value) {
                             var id = value.id;
                             var id_negoluar = value.id_negoluar;

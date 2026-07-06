@@ -1,12 +1,255 @@
 @extends('layouts.main')
 @section('title', __('Vendor'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endsection
 @section('content')
+
+    <style>
+        /* =====================================================
+       🔵 NAVY MODERN THEME
+    ===================================================== */
+
+        :root {
+            --navy-main: #0f4c81;
+            --navy-dark: #082b52;
+            --navy-hover: #1565a9;
+            --navy-soft: #eef5fb;
+            --navy-border: #cfddeb;
+            --navy-light: #f8fbff;
+            --navy-text: #0d2c4d;
+        }
+
+        /* =====================================================
+       CARD
+    ===================================================== */
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(13, 44, 77, .12);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-dark));
+            color: #fff;
+            border: none;
+            padding: 15px 20px;
+        }
+
+        /* =====================================================
+       BUTTON
+    ===================================================== */
+
+        .btn {
+            border: none !important;
+            border-radius: 10px !important;
+            font-weight: 600;
+            transition: .25s;
+        }
+
+        .btn-primary,
+        .btn-success,
+        .btn-danger,
+        .btn-info,
+        .btn-secondary,
+        .btn-warning {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover)) !important;
+            color: #fff !important;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(15, 76, 129, .35);
+        }
+
+        .btn:active {
+            transform: scale(.96);
+        }
+
+        /* =====================================================
+       SEARCH
+    ===================================================== */
+
+        .input-group .form-control {
+            border-radius: 10px 0 0 10px;
+            border: 1px solid #d6e4f2;
+        }
+
+        .input-group-append .btn {
+            border-radius: 0 10px 10px 0 !important;
+        }
+
+        /* =====================================================
+       TABLE
+    ===================================================== */
+
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-dark));
+            color: #fff;
+            border: none;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table tbody tr {
+            transition: .25s;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background: #f7fbff;
+        }
+
+        .table tbody tr:hover {
+            background: var(--navy-soft);
+            transform: scale(1.003);
+            box-shadow: 0 6px 18px rgba(15, 76, 129, .12);
+        }
+
+        .table td {
+            vertical-align: middle !important;
+        }
+
+        /* =====================================================
+       MODAL
+    ===================================================== */
+
+        .modal-content {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-dark));
+            color: #fff;
+            border: none;
+        }
+
+        .modal-header .close span {
+            color: white;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #edf3f9;
+        }
+
+        /* =====================================================
+       FORM
+    ===================================================== */
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #d7e5f2;
+            transition: .25s;
+        }
+
+        .form-control:focus {
+            border-color: var(--navy-main);
+            box-shadow: 0 0 0 .15rem rgba(15, 76, 129, .2);
+        }
+
+        /* =====================================================
+       CHECKBOX
+    ===================================================== */
+
+        input[type=checkbox] {
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+            accent-color: var(--navy-main);
+        }
+
+        /* =====================================================
+       PAGINATION
+    ===================================================== */
+
+        .pagination .page-link {
+            color: var(--navy-main);
+            border-radius: 8px;
+            margin: 2px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            border-color: var(--navy-main);
+            color: #fff;
+        }
+
+        /* =====================================================
+       TOASTR
+    ===================================================== */
+
+        .toast-success {
+            background: #0f4c81 !important;
+        }
+
+        /* =====================================================
+       ACTION BUTTON
+    ===================================================== */
+
+        .btn-xs {
+            width: 36px;
+            height: 36px;
+            padding: 0 !important;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px !important;
+        }
+
+        /* =====================================================
+       DELETE BUTTON
+    ===================================================== */
+
+        #delete-selected {
+            margin-top: 15px;
+        }
+
+        /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+        @media(max-width:768px) {
+
+            .card-header {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .card-tools {
+                width: 100%;
+            }
+
+            .card-tools form {
+                width: 100%;
+            }
+
+            .card-tools .input-group {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .table {
+                font-size: 13px;
+            }
+
+        }
+    </style>
+
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -65,7 +308,7 @@
                                         @endphp
                                         <tr>
                                             <td class="text-center"><input type="checkbox" name="hapus[]"
-                                                value="{{ $d->id }}"></td>
+                                                    value="{{ $d->id }}"></td>
                                             <td class="text-center">{{ $data['no'] }}</td>
                                             <td class="text-center">{{ $data['nama'] }}</td>
                                             <td class="text-center">{{ $data['alamat'] }}</td>
@@ -79,7 +322,7 @@
                                                     data-toggle="modal" data-target="#add-vendor"
                                                     onclick="editVendor({{ json_encode($data) }})"><i
                                                         class="fas fa-edit"></i></button>
-                                                        @if (Auth::user()->role == 0 || Auth::user()->role == 4)
+                                                @if (Auth::user()->role == 0 || Auth::user()->role == 4)
                                                     <button title="Hapus Produk" type="button"
                                                         class="btn btn-danger btn-xs" data-toggle="modal"
                                                         data-target="#delete-product"
@@ -152,8 +395,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="cp"
-                                    class="col-sm-4 col-form-label">{{ __('Contact Person') }}</label>
+                                <label for="cp" class="col-sm-4 col-form-label">{{ __('Contact Person') }}</label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control" id="cp" name="cp" rows="4"
                                         placeholder="contoh penulisan Wajib koma (,): Messi,Ronaldo"></textarea>
@@ -285,7 +527,7 @@
             $('#fax').val(data.fax);
             $('#email').val(data.email);
             $('#cp').val(data.cp);
-            
+
         }
 
         function deleteVendor(data) {

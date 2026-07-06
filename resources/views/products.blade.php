@@ -1,12 +1,300 @@
 @extends('layouts.main')
 @section('title', __('Products'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endsection
 @section('content')
+
+    <style>
+        /* =====================================================
+       🔵 NAVY MODERN THEME
+    ===================================================== */
+
+        :root {
+            --navy-main: #0B4F8C;
+            --navy-hover: #1565C0;
+            --navy-dark: #072F5F;
+            --navy-soft: #F1F7FD;
+            --navy-border: #D7E6F5;
+            --navy-text: #103B66;
+        }
+
+        /* =====================================================
+       BODY
+    ===================================================== */
+
+        .content-wrapper {
+            background: #f4f8fc;
+        }
+
+        /* =====================================================
+       CARD
+    ===================================================== */
+
+        .card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(7, 47, 95, .12);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-dark));
+            color: #fff;
+            border: none;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* =====================================================
+       BUTTON
+    ===================================================== */
+
+        .btn {
+            border: none !important;
+            border-radius: 10px !important;
+            font-weight: 600;
+            transition: .25s;
+        }
+
+        .btn-primary,
+        .btn-success,
+        .btn-danger,
+        .btn-info,
+        .btn-warning,
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover)) !important;
+            color: #fff !important;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(11, 79, 140, .30);
+        }
+
+        .btn:active {
+            transform: scale(.96);
+        }
+
+        .btn-xs {
+            width: 36px;
+            height: 36px;
+            padding: 0 !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* =====================================================
+       SEARCH
+    ===================================================== */
+
+        .input-group .form-control {
+            border-radius: 10px 0 0 10px;
+            border: 1px solid var(--navy-border);
+        }
+
+        .input-group-append .btn {
+            border-radius: 0 10px 10px 0 !important;
+        }
+
+        /* =====================================================
+       SELECT2
+    ===================================================== */
+
+        .select2-container--bootstrap4 .select2-selection {
+            border-radius: 10px !important;
+            border: 1px solid var(--navy-border) !important;
+        }
+
+        .select2-container--bootstrap4.select2-container--focus .select2-selection {
+            border-color: var(--navy-main) !important;
+            box-shadow: 0 0 0 .15rem rgba(11, 79, 140, .18) !important;
+        }
+
+        /* =====================================================
+       TABLE
+    ===================================================== */
+
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-dark));
+            color: #fff;
+            border: none;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table tbody tr {
+            transition: .25s;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background: #f8fbff;
+        }
+
+        .table tbody tr:hover {
+            background: var(--navy-soft);
+            transform: scale(1.003);
+            box-shadow: 0 5px 15px rgba(11, 79, 140, .10);
+        }
+
+        .table td {
+            vertical-align: middle !important;
+        }
+
+        /* =====================================================
+       BADGE STOCK
+    ===================================================== */
+
+        .badge.bg-warning {
+            background: #ff9800 !important;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 20px;
+        }
+
+        /* =====================================================
+       FORM
+    ===================================================== */
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid var(--navy-border);
+        }
+
+        .form-control:focus {
+            border-color: var(--navy-main);
+            box-shadow: 0 0 0 .15rem rgba(11, 79, 140, .18);
+        }
+
+        /* =====================================================
+       MODAL
+    ===================================================== */
+
+        .modal-content {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-dark));
+            color: white;
+            border: none;
+        }
+
+        .modal-header .close span {
+            color: white;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #eef4fb;
+        }
+
+        /* =====================================================
+       BARCODE
+    ===================================================== */
+
+        #barcode,
+        #barcode_preview {
+            max-width: 100%;
+            padding: 10px;
+            background: white;
+            border: 1px solid var(--navy-border);
+            border-radius: 10px;
+        }
+
+        /* =====================================================
+       PAGINATION
+    ===================================================== */
+
+        .pagination {
+            margin-top: 15px;
+        }
+
+        .page-link {
+            color: var(--navy-main);
+            border-radius: 8px !important;
+            margin: 2px;
+        }
+
+        .page-item.active .page-link {
+            background: linear-gradient(135deg, var(--navy-main), var(--navy-hover));
+            border-color: var(--navy-main);
+        }
+
+        /* =====================================================
+       TOASTR
+    ===================================================== */
+
+        .toast-success {
+            background: #0B4F8C !important;
+        }
+
+        .toast-error {
+            background: #d32f2f !important;
+        }
+
+        /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+        @media(max-width:768px) {
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-header .btn {
+                width: 100%;
+            }
+
+            .card-tools {
+                width: 100%;
+            }
+
+            .card-tools form {
+                width: 100%;
+            }
+
+            .card-tools .input-group {
+                width: 100%;
+            }
+
+            .table {
+                font-size: 13px;
+            }
+
+            .btn-xs {
+                width: 32px;
+                height: 32px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+
+        }
+    </style>
+
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">

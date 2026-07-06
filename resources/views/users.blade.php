@@ -1,10 +1,202 @@
 @extends('layouts.main')
 @section('title', __('Users'))
 @section('custom-css')
-<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 @endsection
 @section('content')
+
+    <style>
+        /* ======================================================
+       NAVY BLUE THEME
+    ====================================================== */
+        :root {
+            --navy: #0F172A;
+            --navy2: #1E3A8A;
+            --navy3: #2563EB;
+            --navy-soft: #EFF6FF;
+            --border: #CBD5E1;
+        }
+
+        /* ================= CARD ================= */
+
+        .card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, .08);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--navy), var(--navy2));
+            color: #fff;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+        }
+
+        .card-body {
+            background: #fff;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .btn {
+            border-radius: 10px;
+            transition: .3s;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--navy), var(--navy2));
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--navy2), var(--navy3));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, .35);
+        }
+
+        .btn-success {
+            background: #2563EB;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: #1D4ED8;
+        }
+
+        .btn-danger {
+            background: #DC2626;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background: #B91C1C;
+        }
+
+        .btn-default {
+            background: #E5E7EB;
+            color: #374151;
+            border: none;
+        }
+
+        .btn-default:hover {
+            background: #D1D5DB;
+        }
+
+        /* Tombol kecil */
+
+        .btn-xs {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            border-radius: 10px;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--navy), var(--navy2));
+            color: #fff;
+            text-align: center;
+            border: none;
+            padding: 14px;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+        }
+
+        .table tbody tr {
+            transition: .25s;
+        }
+
+        .table tbody tr:hover {
+            background: var(--navy-soft);
+            transform: scale(1.002);
+        }
+
+        /* ================= FORM ================= */
+
+        .form-control,
+        .select2-container--default .select2-selection--single {
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .form-control:focus {
+            border-color: var(--navy3);
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .2);
+        }
+
+        .select2-container--default .select2-selection--single {
+            height: 38px;
+            padding: 5px 10px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
+
+        /* ================= MODAL ================= */
+
+        .modal-content {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .15);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--navy), var(--navy2));
+            color: white;
+            border: none;
+        }
+
+        .modal-header .close {
+            color: #fff;
+            opacity: 1;
+        }
+
+        .modal-footer {
+            background: #F8FAFC;
+            border: none;
+        }
+
+        /* ================= PAGINATION ================= */
+
+        .page-item.active .page-link {
+            background: var(--navy);
+            border-color: var(--navy);
+        }
+
+        .page-link {
+            color: var(--navy2);
+        }
+
+        .page-link:hover {
+            background: var(--navy2);
+            color: white;
+        }
+
+        /* ================= ANIMATION ================= */
+
+        .btn,
+        .card,
+        .table tbody tr {
+            transition: all .3s ease;
+        }
+    </style>
+
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -90,7 +282,8 @@
                                                 onclick="editUser({{ json_encode($data) }})"><i
                                                     class="fas fa-edit"></i></button> <button title="Hapus User"
                                                 type="button" class="btn btn-danger btn-xs" data-toggle="modal"
-                                                data-target="#delete-user" onclick="deleteUser({{ json_encode($data) }})"><i
+                                                data-target="#delete-user"
+                                                onclick="deleteUser({{ json_encode($data) }})"><i
                                                     class="fas fa-trash"></i></button></td>
                                     </tr>
                                 @endforeach
@@ -145,7 +338,7 @@
                                     <input type="email" class="form-control" id="email" name="email">
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row">
                                 <label for="role" class="col-sm-4 col-form-label">Role</label>
                                 <div class="col-sm-8">
