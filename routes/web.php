@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MRO\DailyActivityController;
+use App\Http\Controllers\MRO\MasterPersonilController;
 use App\Http\Controllers\AlatAngkutController;
 use App\Http\Controllers\AlatAngkutDetailController;
 use App\Http\Controllers\AssetController;
@@ -26,7 +27,6 @@ use App\Http\Controllers\RewindingController;
 use App\Http\Controllers\SppdController;
 use App\Http\Controllers\SuratJalanController;
 use App\Http\Controllers\WeeklyActivityController;
-use App\Http\Controllers\MRO\MasterPersonilController;
 use App\Models\Kontrak;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -630,6 +630,11 @@ Route::prefix('products')->group(function () {
                 MasterPersonilController::class
             );
         });
+
+    Route::get(
+        '/master-personil/print',
+        [MasterPersonilController::class, 'print']
+    )->name('master-personil.print');
 
     // Proyek MRO
 

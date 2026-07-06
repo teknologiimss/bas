@@ -77,7 +77,7 @@
             color: #ed0303;
         }
 
-        
+
 
         .btn-action {
             width: 34px;
@@ -132,20 +132,21 @@
                 <div class="d-flex justify-content-between align-items-center header-flex">
 
                     <h3>
-
                         <i class="fas fa-users mr-2"></i>
-
                         Master Personil MRO
-
                     </h3>
 
-                    <a href="{{ route('master-personil.create') }}" class="btn btn-add">
+                    <div>
+                        <a href="{{ route('master-personil.print') }}" target="_blank" class="btn btn-danger mr-2">
+                            <i class="fas fa-file-pdf"></i>
+                            Export PDF
+                        </a>
 
-                        <i class="fa fa-plus"></i>
-
-                        Tambah Personil
-
-                    </a>
+                        <a href="{{ route('master-personil.create') }}" class="btn btn-add">
+                            <i class="fa fa-plus"></i>
+                            Tambah Personil
+                        </a>
+                    </div>
 
                 </div>
 
@@ -228,7 +229,6 @@
                                                 {{ $row->status }}
 
                                             </span>
-                                        
                                         @endif
 
                                     </td>

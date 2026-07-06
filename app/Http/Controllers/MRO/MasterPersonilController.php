@@ -4,6 +4,7 @@ namespace App\Http\Controllers\MRO;
 
 use App\Http\Controllers\Controller;
 use App\Models\MasterPersonil;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class MasterPersonilController extends Controller
@@ -83,5 +84,17 @@ class MasterPersonilController extends Controller
             'success',
             'Data berhasil dihapus'
         );
+    }
+
+    public function print()
+    {
+        $data = MasterPersonil::orderBy('nama')->get();
+
+        $pdf = Pdf::loadView(
+            'mro.master_personil.print',
+            compact('data')
+        )->setPaper('a4', 'landscape');
+
+        return $pdf->stream('Master_Personil_MRO.pdf');
     }
 }
