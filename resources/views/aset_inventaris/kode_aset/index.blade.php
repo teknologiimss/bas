@@ -6,19 +6,19 @@
 
     <style>
         /* ===============================
-               🎨 ROOT COLOR
-            ================================ */
+                   🎨 ROOT COLOR
+                ================================ */
         :root {
-            --maroon: #dc3545;
-            --maroon-dark: #5c0017;
-            --maroon-light: #a8324a;
-            --maroon-soft: #f5e6ea;
-            --shadow-maroon: rgba(128, 0, 32, 0.35);
+            --maroon: #1f4e79;
+            --maroon-dark: #102a43;
+            --maroon-light: #4f7cac;
+            --maroon-soft: #edf4fc;
+            --shadow-maroon: rgba(16, 42, 67, .35);
         }
 
         /* ===============================
-               🪟 MODAL SCROLL
-            ================================ */
+                   🪟 MODAL SCROLL
+                ================================ */
         .modal-dialog {
             overflow-y: initial !important;
         }
@@ -29,8 +29,8 @@
         }
 
         /* ===============================
-               🔘 BUTTON (ALL WAJIB MAROON)
-            ================================ */
+                   🔘 BUTTON (ALL WAJIB MAROON)
+                ================================ */
         .btn,
         .btn-primary,
         .btn-success,
@@ -63,8 +63,8 @@
         }
 
         /* ===============================
-               🔍 INPUT & SEARCH
-            ================================ */
+                   🔍 INPUT & SEARCH
+                ================================ */
         .form-control {
             border-radius: 6px;
             border: 1px solid var(--maroon);
@@ -77,8 +77,8 @@
         }
 
         /* ===============================
-               📊 TABLE GLOBAL
-            ================================ */
+                   📊 TABLE GLOBAL
+                ================================ */
         #table {
             border-collapse: separate;
             border-spacing: 0;
@@ -125,8 +125,8 @@
         }
 
         /* ===============================
-               🔼 SORT BUTTONS
-            ================================ */
+                   🔼 SORT BUTTONS
+                ================================ */
         .sort-buttons {
             position: absolute;
             right: 8px;
@@ -154,16 +154,16 @@
         }
 
         /* ===============================
-               ☑️ CHECKBOX
-            ================================ */
+                   ☑️ CHECKBOX
+                ================================ */
         input[type="checkbox"] {
             accent-color: var(--maroon);
             transform: scale(1.1);
         }
 
         /* ===============================
-               📄 PAGINATION
-            ================================ */
+                   📄 PAGINATION
+                ================================ */
         .page-item.active .page-link {
             background-color: var(--maroon);
             border-color: var(--maroon);
@@ -181,8 +181,8 @@
         }
 
         /* ===============================
-               🪟 MODAL
-            ================================ */
+                   🪟 MODAL
+                ================================ */
         .modal-content {
             border-radius: 10px;
             box-shadow: 0 10px 30px var(--shadow-maroon);
@@ -198,16 +198,16 @@
         }
 
         /* ===============================
-               🧠 CARD
-            ================================ */
+                   🧠 CARD
+                ================================ */
         .card {
             border-radius: 10px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         /* ===============================
-               💥 ANIMATION ENTRY (BONUS)
-            ================================ */
+                   💥 ANIMATION ENTRY (BONUS)
+                ================================ */
         @keyframes fadeSlideUp {
             from {
                 opacity: 0;
@@ -227,8 +227,8 @@
         }
 
         /* =========================================
-           RESPONSIVE MOBILE
-        ========================================= */
+               RESPONSIVE MOBILE
+            ========================================= */
         @media (max-width: 768px) {
 
             /* CARD */
@@ -423,8 +423,8 @@
         }
 
         /* =========================================
-       FIX TABLE MOBILE AGAR TIDAK OVERFLOW
-    ========================================= */
+           FIX TABLE MOBILE AGAR TIDAK OVERFLOW
+        ========================================= */
 
         .table-responsive {
             width: 100%;

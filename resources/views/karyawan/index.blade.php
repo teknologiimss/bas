@@ -6,14 +6,14 @@
 
     <style>
         /* =====================================================
-           🎨 ROOT COLOR
+           🎨 ROOT COLOR (NAVY BLUE)
         ===================================================== */
         :root {
-            --maroon: #dc3545;
-            --maroon-dark: #5a0b14;
-            --maroon-light: #a83240;
-            --maroon-soft: #f6d6db;
-            --maroon-border: #e6b2bb;
+            --maroon: #1E3A5F;
+            --maroon-dark: #0D2340;
+            --maroon-light: #3E6A9E;
+            --maroon-soft: #EEF4FB;
+            --maroon-border: #C8D7EA;
         }
 
         /* =====================================================
@@ -25,6 +25,7 @@
 
         body {
             overflow-x: hidden;
+            background: #f5f7fb;
         }
 
         .container-fluid,
@@ -42,7 +43,7 @@
         .card {
             border-radius: 14px;
             border: none;
-            box-shadow: 0 12px 30px rgba(122, 15, 27, 0.25);
+            box-shadow: 0 12px 30px rgba(13, 35, 64, .18);
             animation: fadeUp .5s ease;
             overflow: hidden;
         }
@@ -66,7 +67,7 @@
         }
 
         /* =====================================================
-           🔘 BUTTON – SEMUA MAROON
+           🔘 BUTTON
         ===================================================== */
         .btn,
         button {
@@ -77,10 +78,9 @@
             border-radius: 10px;
             font-weight: 600;
             transition: all .25s ease;
-            box-shadow: 0 6px 16px rgba(122, 15, 27, 0.35);
+            box-shadow: 0 6px 16px rgba(13, 35, 64, .28);
         }
 
-        /* override semua bootstrap */
         .btn-primary,
         .btn-success,
         .btn-danger,
@@ -91,21 +91,18 @@
             background: linear-gradient(135deg, var(--maroon), var(--maroon-dark)) !important;
         }
 
-        /* hover */
         .btn:hover,
         button:hover {
             background: linear-gradient(135deg, var(--maroon-light), var(--maroon)) !important;
             transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 14px 30px rgba(122, 15, 27, 0.55);
+            box-shadow: 0 14px 30px rgba(13, 35, 64, .35);
         }
 
-        /* klik */
         .btn:active,
         button:active {
-            transform: scale(0.95);
+            transform: scale(.95);
         }
 
-        /* icon animation */
         .btn i {
             transition: transform .25s ease;
         }
@@ -114,7 +111,6 @@
             transform: scale(1.2) rotate(-5deg);
         }
 
-        /* button kecil */
         .btn-xs {
             padding: 6px 10px !important;
             font-size: 12px !important;
@@ -127,7 +123,7 @@
         }
 
         /* =====================================================
-           📊 TABLE – RESPONSIVE HP
+           📊 TABLE
         ===================================================== */
         .table-responsive {
             width: 100%;
@@ -140,14 +136,12 @@
         .table {
             width: 100%;
             min-width: 900px;
-            /* supaya desktop tetap rapi */
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 12px 30px rgba(122, 15, 27, 0.25);
+            box-shadow: 0 12px 30px rgba(13, 35, 64, .18);
             margin-bottom: 0;
         }
 
-        /* header */
         .table thead th {
             background: linear-gradient(135deg, var(--maroon), var(--maroon-light));
             color: #fff;
@@ -157,25 +151,21 @@
             vertical-align: middle;
         }
 
-        /* body row */
         .table tbody tr {
             background: var(--maroon-soft);
             transition: all .3s ease;
         }
 
-        /* zebra */
         .table tbody tr:nth-child(even) {
-            background: #f2c7cf;
+            background: #E2ECF8;
         }
 
-        /* hover row */
         .table tbody tr:hover {
-            background: linear-gradient(135deg, #fbe2e6, var(--maroon-soft));
+            background: linear-gradient(135deg, #F8FBFF, #DCE8F7);
             transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 10px 24px rgba(122, 15, 27, 0.35);
+            box-shadow: 0 10px 24px rgba(13, 35, 64, .18);
         }
 
-        /* cell */
         .table td {
             border-color: var(--maroon-border);
             vertical-align: middle;
@@ -193,6 +183,7 @@
             border-radius: 16px;
             animation: zoomIn .4s ease;
             overflow: hidden;
+            box-shadow: 0 16px 40px rgba(13, 35, 64, .25);
         }
 
         .modal-header {
@@ -206,22 +197,23 @@
         }
 
         /* =====================================================
-           🧾 INPUT / FORM
+           🧾 INPUT
         ===================================================== */
         .form-control {
             border-radius: 10px;
             transition: all .25s ease;
+            border: 1px solid var(--maroon-border);
         }
 
         .form-control:focus {
-            border-color: var(--maroon);
-            box-shadow: 0 0 0 3px rgba(122, 15, 27, 0.25);
+            border-color: var(--maroon-light);
+            box-shadow: 0 0 0 3px rgba(62, 106, 158, .20);
         }
 
         /* =====================================================
            📱 MOBILE RESPONSIVE
         ===================================================== */
-        @media (max-width: 768px) {
+        @media (max-width:768px) {
 
             body {
                 font-size: 13px;
@@ -255,7 +247,6 @@
                 width: 100%;
             }
 
-            /* tombol mobile kecil & sama */
             .btn {
                 font-size: 12px !important;
                 padding: 7px 10px !important;
@@ -270,7 +261,6 @@
                 margin: 2px !important;
             }
 
-            /* tabel mobile */
             #table,
             .table {
                 min-width: 850px;
@@ -282,7 +272,6 @@
                 padding: 8px;
             }
 
-            /* modal */
             .modal-dialog {
                 margin: 10px auto;
                 max-width: 98%;
@@ -292,7 +281,6 @@
                 padding: 12px;
             }
 
-            /* form */
             .form-group.row {
                 display: block;
                 margin-bottom: 12px;
@@ -313,7 +301,6 @@
                 font-size: 13px;
             }
 
-            /* footer modal */
             .modal-footer {
                 flex-direction: column;
                 gap: 10px;
@@ -326,7 +313,7 @@
         }
 
         /* =====================================================
-           ✨ ANIMATIONS
+           ✨ ANIMATION
         ===================================================== */
         @keyframes fadeUp {
             from {
