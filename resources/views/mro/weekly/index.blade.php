@@ -214,7 +214,7 @@
                                 <tr>
                                     <td>{{ date('d-m-Y', strtotime($d->tanggal)) }}</td>
                                     <td>{{ optional($d->monitoring)->nama_pekerjaan }}</td>
-                                    <td>{{ $d->kegiatan }}</td>
+                                    <td>{!! nl2br(e($d->kegiatan)) !!}</td>
                                     <td>{{ strtolower(trim($d->status)) }}</td>
                                 </tr>
                             @endforeach
@@ -252,8 +252,8 @@
                                     <tr>
                                         <td>{{ date('d-m-Y', strtotime($d->tanggal)) }}</td>
                                         <td>{{ optional($d->monitoring)->nama_pekerjaan }}</td>
-                                        <td>{{ $d->kegiatan }}</td>
-                                        <td>{{ $d->keterangan }}</td>
+                                        <td>{!! nl2br(e($d->kegiatan)) !!}</td>
+                                        <td>{!! nl2br(e($d->keterangan)) !!}</td>
                                     </tr>
                                 @endif
                             @endforeach
@@ -291,8 +291,8 @@
                                     <tr>
                                         <td>{{ date('d-m-Y', strtotime($d->tanggal)) }}</td>
                                         <td>{{ optional($d->monitoring)->nama_pekerjaan }}</td>
-                                        <td>{{ $d->kegiatan }}</td>
-                                        <td>{{ $d->keterangan }}</td>
+                                        <td>{!! nl2br(e($d->kegiatan)) !!}</td>
+                                        <td>{!! nl2br(e($d->keterangan)) !!}</td>
                                     </tr>
                                 @endif
                             @endforeach

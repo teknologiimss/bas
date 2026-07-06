@@ -38,7 +38,7 @@
 
                         <label>Kegiatan</label>
 
-                        <textarea name="kegiatan" class="form-control" rows="3" required></textarea>
+                        <textarea name="kegiatan" autocomplete="off" class="form-control" rows="3" required></textarea>
 
                     </div>
 
@@ -70,7 +70,7 @@
 
                         <label>Keterangan</label>
 
-                        <textarea name="keterangan" class="form-control" rows="3"></textarea>
+                        <textarea name="keterangan" autocomplete="off" class="form-control" rows="3"></textarea>
 
                     </div>
 

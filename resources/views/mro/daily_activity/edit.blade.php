@@ -40,7 +40,7 @@
 
                         <label>Kegiatan</label>
 
-                        <textarea name="kegiatan" class="form-control" rows="3" required>{{ $daily->kegiatan }}</textarea>
+                        <textarea name="kegiatan" autocomplete="off" class="form-control" rows="3" required>{{ $daily->kegiatan }}</textarea>
 
                     </div>
 
@@ -81,7 +81,7 @@
 
                         <label>Keterangan</label>
 
-                        <textarea name="keterangan" class="form-control" rows="3">{{ $daily->keterangan }}</textarea>
+                        <textarea name="keterangan" autocomplete="off" class="form-control" rows="3">{{ $daily->keterangan }}</textarea>
 
                     </div>
 
