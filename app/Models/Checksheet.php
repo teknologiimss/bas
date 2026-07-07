@@ -14,7 +14,8 @@ class Checksheet extends Model
         'unit',
         'no_lambung',
         'tanggal',
-        'jenis_perawatan'
+        'jenis_perawatan',
+        'hasil'
     ];
 
     // relasi ke section

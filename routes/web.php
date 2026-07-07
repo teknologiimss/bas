@@ -621,6 +621,9 @@ Route::prefix('products')->group(function () {
         [ChecksheetController::class, 'deleteNote']
     )->name('checksheet.note.delete');
 
+    Route::post('/checksheet/{id}/hasil', [ChecksheetController::class, 'saveHasil'])
+    ->name('checksheet.hasil');
+
     // Data Personil MRO
     Route::prefix('mro')
         ->middleware(['auth'])

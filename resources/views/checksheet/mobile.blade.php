@@ -443,6 +443,49 @@
         </div>
 
 
+        {{-- Hasil SO/TSO --}}
+        <div class="progress-wrapper mb-3">
+
+            <h6 class="fw-bold mb-3">
+                <i class="fa fa-circle-check"></i>
+                Hasil Pemeriksaan
+            </h6>
+
+            <form action="{{ route('checksheet.hasil', $checksheet->id) }}" method="POST">
+
+                @csrf
+
+                <div class="input-group">
+
+                    <select class="form-select" name="hasil">
+
+                        <option value="">-- Pilih Hasil --</option>
+
+                        <option value="SO" {{ $checksheet->hasil == 'SO' ? 'selected' : '' }}>
+                            SO
+                        </option>
+
+                        <option value="SO DENGAN CATATAN" {{ $checksheet->hasil == 'SO DENGAN CATATAN' ? 'selected' : '' }}>
+                            SO DENGAN CATATAN
+                        </option>
+
+                        <option value="TSO" {{ $checksheet->hasil == 'TSO' ? 'selected' : '' }}>
+                            TSO
+                        </option>
+
+                    </select>
+
+                    <button class="btn btn-success">
+                        <i class="fa fa-save"></i>
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
         {{-- ========================= --}}
         {{-- CATATAN --}}
         {{-- ========================= --}}

@@ -777,4 +777,22 @@ class ChecksheetController extends Controller
             'Catatan berhasil dihapus'
         );
     }
+
+    public function saveHasil(Request $request, $id)
+    {
+        $request->validate([
+            'hasil' => 'required|in:SO,SO DENGAN CATATAN,TSO'
+        ]);
+
+        $checksheet = Checksheet::findOrFail($id);
+
+        $checksheet->update([
+            'hasil' => $request->hasil
+        ]);
+
+        return back()->with(
+            'success',
+            'Hasil pemeriksaan berhasil disimpan.'
+        );
+    }
 }

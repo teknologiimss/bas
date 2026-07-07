@@ -68,7 +68,7 @@
         }
 
         .section-row td {
-            background: #d9a3a3;
+            background: #a7a3d9;
             font-weight: bold;
         }
 
@@ -298,9 +298,53 @@
 
                 Berdasarkan hasil perawatan, unit dinyatakan :
 
-                <b>
-                    SO / SO DENGAN CATATAN / TSO
-                </b>
+                {{-- Hasil Pemeriksaan --}}
+                @php
+                    $hasil = $checksheet->hasil;
+                @endphp
+
+                
+
+                <span
+                    style="
+        display:inline;
+        font-size:10px;
+        padding:1px 5px;
+        border:{{ $hasil == 'SO' ? '1px solid #000' : 'none' }};
+        border-radius:50%;
+        font-weight:bold;
+    ">
+                    SO
+                </span>
+
+                <span style="font-size:10px;"> / </span>
+
+                <span
+                    style="
+        display:inline;
+        font-size:10px;
+        padding:1px 5px;
+        border:{{ $hasil == 'SO DENGAN CATATAN' ? '1px solid #000' : 'none' }};
+        border-radius:50%;
+        font-weight:bold;
+    ">
+                    SO DENGAN CATATAN
+                </span>
+
+                <span style="font-size:10px;"> / </span>
+
+                <span
+                    style="
+        display:inline;
+        font-size:10px;
+        padding:1px 5px;
+        border:{{ $hasil == 'TSO' ? '1px solid #000' : 'none' }};
+        border-radius:50%;
+        font-weight:bold;
+    ">
+                    TSO
+                </span>
+                {{-- End Hasil Pemeriksaan --}}
 
                 <br><br>
 
