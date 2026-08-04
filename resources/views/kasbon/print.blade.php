@@ -247,10 +247,10 @@
             <td class="text-right font-bold" style="background-color: #f9f9f9;">Rp
                 {{ number_format($selisih, 0, ',', '.') }}</td>
         </tr>
-        <tr>
+        {{-- <tr>
             <td class="font-bold">Persentase Sisa Kasbon</td>
             <td class="text-right font-bold">{{ number_format($persen, 2) }}%</td>
-        </tr>
+        </tr> --}}
     </table>
 
     <!-- ================= BLOK TANDA TANGAN (SEBELAH KANAN) ================= -->
