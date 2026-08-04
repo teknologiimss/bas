@@ -519,6 +519,7 @@
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
                                         'master-personil.index',
+                                        'kasbon.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -577,6 +578,7 @@
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
                                         'master-personil.index',
+                                        'kasbon.index',
                                     ]);
                                 @endphp
 
@@ -1439,6 +1441,15 @@
                                                                 class="nav-link {{ Route::current()->getName() == 'sppd.index' ? 'active' : '' }}">
                                                                 <i class="nav-icon far fa-file-archive"></i>
                                                                 <p>Arsip SPPD MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        <!-- Kasbon Menu -->
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('kasbon.index') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'kasbon.index' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-wallet"></i>
+                                                                <p>Kasbon MRO</p>
                                                             </a>
                                                         </li>
 

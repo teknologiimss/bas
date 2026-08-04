@@ -13,6 +13,7 @@ use App\Http\Controllers\CutiTahunanController;
 use App\Http\Controllers\DetailsjnController;
 use App\Http\Controllers\FasilitasHarianController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\KasbonController;
 use App\Http\Controllers\KontrakController;
 use App\Http\Controllers\Lp3mController;
 use App\Http\Controllers\MonitoringController;
@@ -622,7 +623,7 @@ Route::prefix('products')->group(function () {
     )->name('checksheet.note.delete');
 
     Route::post('/checksheet/{id}/hasil', [ChecksheetController::class, 'saveHasil'])
-    ->name('checksheet.hasil');
+        ->name('checksheet.hasil');
 
     // Data Personil MRO
     Route::prefix('mro')
@@ -935,6 +936,23 @@ Route::prefix('products')->group(function () {
 
     Route::get('/mro/weekly-activity/export-excel', [WeeklyActivityController::class, 'exportExcel'])
         ->name('mro.weekly.export');
+
+    // Arsip KASBON MRO
+
+    Route::prefix('kasbon')->name('kasbon.')->group(function () {
+        Route::get('/', [KasbonController::class, 'index'])->name('index');
+        Route::post('/folder', [KasbonController::class, 'storeFolder'])->name('folder.store');
+        Route::put('/folder/{id}', [KasbonController::class, 'updateFolder'])->name('folder.update');
+        Route::delete('/folder/{id}', [KasbonController::class, 'destroyFolder'])->name('folder.destroy');
+
+        Route::get('/{id}', [KasbonController::class, 'show'])->name('show');
+        Route::post('/{id}/item', [KasbonController::class, 'storeItem'])->name('item.store');
+        Route::delete('/item/{id}', [KasbonController::class, 'destroyItem'])->name('item.destroy');
+        Route::put('/item/{id}', [KasbonController::class, 'updateItem'])->name('item.update');
+        Route::delete('/item/{id}/document', [KasbonController::class, 'destroyDocument'])->name('item.destroyDoc');
+        // Route Print PDF
+        Route::get('/{id}/print-pdf', [KasbonController::class, 'printPdf'])->name('printPdf');
+    });
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
