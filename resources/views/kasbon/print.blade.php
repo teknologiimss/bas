@@ -184,7 +184,7 @@
 
     <!-- ================= LOGO DIPOSISIKAN DI SINI (AKAN OTOMATIS MUNCUL DI SETIAP HALAMAN) ================= -->
     <div class="page-header-logo">
-        <img src="{{ public_path('img/imst.png') }}" alt="Logo Perusahaan">
+        <img src="{{ public_path('img/IMST.png') }}" alt="Logo Perusahaan">
     </div>
 
     <!-- ================= LAPORAN UTAMA (TANPA FOTO) ================= -->
