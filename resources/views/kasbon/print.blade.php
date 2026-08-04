@@ -285,7 +285,7 @@
         <div class="page-break"></div>
 
         <div class="header">
-            <h2>LAMPIRAN BUKTI DOKUMEN / NOTA</h2>
+            <h2>LAMPIRAN DOKUMENTASI</h2>
             <p>Proyek: {{ $folder->judul }} ({{ $folder->po_nota_dinas }})</p>
         </div>
 
