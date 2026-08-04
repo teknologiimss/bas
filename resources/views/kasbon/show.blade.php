@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
     <style>
         /* Theme Variables & Base Styles */
