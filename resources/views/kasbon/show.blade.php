@@ -545,40 +545,55 @@
     @endforeach
 
     <!-- SortableJS CDN & Initialization -->
+    <!-- SortableJS CDN & Initialization -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var el = document.getElementById('sortable-table');
             if (el) {
-                var sortable = Sortable.create(el, {
+                Sortable.create(el, {
                     handle: '.drag-handle',
                     animation: 150,
                     ghostClass: 'sortable-ghost',
                     onEnd: function() {
-                        // Memperbarui penomoran (No) pada tabel secara dinamis setelah digeser
-                        var rows = el.querySelectorAll('tr');
-                        var orderIds = [];
+                        // Update penomoran kolom 'No' secara visual
+                        var rows = el.querySelectorAll('tr[data-id]');
+                        var orderData = [];
+
                         rows.forEach(function(row, index) {
+                            // Update angka di kolom 'No'
                             var numCell = row.querySelector('.row-number');
                             if (numCell) {
                                 numCell.textContent = index + 1;
                             }
+
+                            // Buat struktur payload array { id: x, position: y }
                             if (row.dataset.id) {
-                                orderIds.push(row.dataset.id);
+                                orderData.push({
+                                    id: parseInt(row.dataset.id),
+                                    position: index + 1
+                                });
                             }
                         });
 
-                        // Opsional: Kirim Ajax ke Laravel untuk menyimpan urutan di database
-                        /*
+                        // Kirim Ajax ke Laravel untuk menyimpan urutan baru ke database
                         fetch("{{ route('kasbon.item.reorder') }}", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                            },
-                            body: JSON.stringify({ order: orderIds })
-                        });
-                        */
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                },
+                                body: JSON.stringify({
+                                    order: orderData
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.success) {
+                                    alert('Gagal memperbarui urutan.');
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
                     }
                 });
             }
