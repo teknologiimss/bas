@@ -169,6 +169,21 @@
                 transform: translateY(0);
             }
         }
+
+        /* Styling tambahan untuk Drag & Drop */
+        .drag-handle {
+            cursor: grab;
+            color: #94a3b8;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .sortable-ghost {
+            opacity: 0.4;
+            background-color: #f1f5f9 !important;
+        }
     </style>
 
     <div class="content-header fade-in-up">
@@ -233,10 +248,10 @@
                 </div>
 
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover table-striped text-nowrap mb-0" id="sortable-table">
+                    <table class="table table-hover table-striped text-nowrap mb-0">
                         <thead style="background-color: #f8fafc; color: #334155;">
                             <tr>
-                                <th style="width: 40px;" class="text-center"></th>
+                                <th style="width: 30px;"></th>
                                 <th style="width: 50px;" class="text-center">No</th>
                                 <th>Deskripsi</th>
                                 <th>Tanggal</th>
@@ -247,11 +262,11 @@
                                 <th style="width: 120px;" class="text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="sortable-tbody">
+                        <tbody id="sortable-table">
                             @forelse($folder->items as $index => $item)
                                 <tr data-id="{{ $item->id }}">
-                                    <td class="text-center align-middle drag-handle" style="cursor: grab;">
-                                        <i class="fas fa-grip-vertical text-muted"></i>
+                                    <td class="text-center align-middle drag-handle" title="Geser posisi">
+                                        <i class="fas fa-grip-vertical"></i>
                                     </td>
                                     <td class="text-center font-weight-bold row-number">{{ $index + 1 }}</td>
                                     <td style="max-width: 250px; white-space: normal;">{{ $item->deskripsi }}</td>
@@ -268,19 +283,48 @@
                                         Rp {{ number_format($item->uang_keluar, 0, ',', '.') }}
                                     </td>
                                     <td>
-                                        @if ($item->dokumen)
-                                            <a href="{{ asset('storage/' . $item->dokumen) }}" target="_blank"
-                                                class="btn btn-sm btn-outline-info">
-                                                <i class="fas fa-file-alt mr-1"></i>Lihat
-                                            </a>
-                                        @else
-                                            <span class="text-muted small">-</span>
-                                        @endif
+                                        <div class="d-flex flex-column gap-1 align-items-start">
+                                            @if ($item->dokumen && count((array) $item->dokumen) > 0)
+                                                <div class="d-flex flex-wrap gap-1 align-items-center mb-1">
+                                                    @foreach ((array) $item->dokumen as $docIndex => $docPath)
+                                                        <div class="btn-group mb-1 mr-1" role="group">
+                                                            <a href="{{ asset('img/' . $docPath) }}" target="_blank"
+                                                                class="btn btn-xs btn-outline-info"
+                                                                title="Lihat Dokumen {{ $docIndex + 1 }}">
+                                                                <i class="fas fa-file-alt"></i> Doc {{ $docIndex + 1 }}
+                                                            </a>
+                                                            <button type="button" class="btn btn-xs btn-outline-danger"
+                                                                onclick="if(confirm('Yakin ingin menghapus dokumen ini?')) document.getElementById('delete-doc-{{ $item->id }}-{{ $docIndex }}').submit();"
+                                                                title="Hapus Dokumen">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+
+                                            <!-- Tombol Tambah Lampiran Langsung -->
+                                            <button type="button" class="btn btn-xs btn-outline-primary shadow-sm"
+                                                data-toggle="modal" data-target="#modalUploadDoc{{ $item->id }}"
+                                                title="Tambah Lampiran Baru">
+                                                <i class="fas fa-paperclip mr-1"></i> Tambah Lampiran
+                                            </button>
+                                        </div>
                                     </td>
                                     <td style="max-width: 200px; white-space: normal;">{{ $item->keterangan ?? '-' }}</td>
                                     <td class="text-center">
-                                        <a href="#" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-sm btn-outline-warning mr-1 shadow-sm"
+                                                data-toggle="modal" data-target="#modalEditItem{{ $item->id }}"
+                                                title="Edit Transaksi">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger shadow-sm"
+                                                onclick="if(confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) document.getElementById('delete-item-{{ $item->id }}').submit();"
+                                                title="Hapus Transaksi">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
@@ -481,32 +525,18 @@
                                     <label class="font-weight-bold">Dokumen Ter-upload Saat Ini:</label>
                                     <ul class="list-group">
                                         @foreach ((array) $item->dokumen as $docIndex => $docPath)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-2"
-                                                style="border-radius: 6px;">
-                                                <a href="{{ asset('img/' . $docPath) }}" target="_blank"
-                                                    class="text-primary">
-                                                    <i class="fas fa-file-alt mr-1"></i> Dokumen {{ $docIndex + 1 }}
-                                                </a>
-                                                <button type="button" class="btn btn-sm btn-outline-danger border-0"
-                                                    onclick="if(confirm('Yakin ingin menghapus dokumen ini?')) document.getElementById('delete-doc-{{ $item->id }}-{{ $docIndex }}').submit();">
-                                                    <i class="fas fa-trash"></i> Hapus
-                                                </button>
+                                            <li
+                                                class="list-group-item d-flex justify-content-between align-items-center p-2">
+                                                <span>{{ $docPath }}</span>
                                             </li>
                                         @endforeach
                                     </ul>
                                 </div>
                             @endif
-
-                            <div class="form-group">
-                                <label class="font-weight-bold">Keterangan</label>
-                                <textarea name="keterangan" autocomplete="off" class="form-control" rows="2" style="border-radius: 8px;">{{ $item->keterangan }}</textarea>
-                            </div>
                         </div>
                         <div class="modal-footer bg-light">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                style="border-radius: 6px;">Batal</button>
-                            <button type="submit" class="btn btn-warning font-weight-bold text-dark"
-                                style="border-radius: 6px;">Update Transaksi</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-navy-primary px-4">Simpan Perubahan</button>
                         </div>
                     </form>
                 </div>
@@ -514,121 +544,44 @@
         </div>
     @endforeach
 
-    <!-- MODAL TAMBAH ITEM -->
-    <div class="modal fade" id="modalTambahItem" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
-                <div class="modal-header navy-header">
-                    <h5 class="modal-title font-weight-bold text-white"><i
-                            class="fas fa-plus-circle mr-2 text-info"></i>Tambah Transaksi Kasbon</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="{{ route('kasbon.item.store', $folder->id) }}" method="POST"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-body p-4">
-                        <div class="form-group">
-                            <label class="font-weight-bold">Deskripsi Transaksi <span class="text-danger">*</span></label>
-                            <textarea name="deskripsi" class="form-control" rows="2" placeholder="Masukkan deskripsi transaksi..."
-                                required style="border-radius: 8px;"></textarea>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4 col-12 form-group">
-                                <label class="font-weight-bold">Tanggal <span class="text-danger">*</span></label>
-                                <input type="date" name="tanggal" class="form-control" required
-                                    style="border-radius: 8px;">
-                            </div>
-                            <div class="col-md-4 col-12 form-group">
-                                <label class="font-weight-bold">Uang Masuk (Rp)</label>
-                                <input type="number" name="uang_masuk" class="form-control" placeholder="0"
-                                    value="0" min="0" style="border-radius: 8px;">
-                            </div>
-                            <div class="col-md-4 col-12 form-group">
-                                <label class="font-weight-bold">Uang Keluar (Rp)</label>
-                                <input type="number" name="uang_keluar" class="form-control" placeholder="0"
-                                    value="0" min="0" style="border-radius: 8px;">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="font-weight-bold">Upload Dokumen</label>
-                            <input type="file" name="dokumen[]" class="form-control-file p-1 border rounded" multiple
-                                style="border-radius: 8px;">
-                            <small class="form-text text-muted">Gunakan tombol Shift/Ctrl saat memilih untuk mengunggah
-                                beberapa dokumen sekaligus.</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="font-weight-bold">Keterangan</label>
-                            <textarea name="keterangan" autocomplete="off" class="form-control" rows="2"
-                                placeholder="Catatan tambahan (opsional)" style="border-radius: 8px;"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                            style="border-radius: 6px;">Batal</button>
-                        <button type="submit" class="btn btn-navy-primary px-4">Simpan Transaksi</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- CDN SortableJS -->
+    <!-- SortableJS CDN & Initialization -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-
-    <!-- Script Drag & Drop dan Update AJAX -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tbody = document.getElementById('sortable-tbody');
-            if (!tbody) return;
-
-            Sortable.create(tbody, {
-                handle: '.drag-handle', // Drag hanya berlaku jika memegang icon grip
-                animation: 150,
-                ghostClass: 'table-active', // Efek warna highlight saat baris ditarik
-                onEnd: function() {
-                    const rows = tbody.querySelectorAll('tr[data-id]');
-                    const orderData = [];
-
-                    // Update penomoran angka 'No' di tabel secara real-time
-                    rows.forEach((row, index) => {
-                        const numberCell = row.querySelector('.row-number');
-                        if (numberCell) {
-                            numberCell.textContent = index + 1;
-                        }
-
-                        // Masukkan data ID dan posisi baru ke array
-                        orderData.push({
-                            id: row.getAttribute('data-id'),
-                            position: index + 1
+        document.addEventListener("DOMContentLoaded", function() {
+            var el = document.getElementById('sortable-table');
+            if (el) {
+                var sortable = Sortable.create(el, {
+                    handle: '.drag-handle',
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    onEnd: function() {
+                        // Memperbarui penomoran (No) pada tabel secara dinamis setelah digeser
+                        var rows = el.querySelectorAll('tr');
+                        var orderIds = [];
+                        rows.forEach(function(row, index) {
+                            var numCell = row.querySelector('.row-number');
+                            if (numCell) {
+                                numCell.textContent = index + 1;
+                            }
+                            if (row.dataset.id) {
+                                orderIds.push(row.dataset.id);
+                            }
                         });
-                    });
 
-                    // Kirim urutan baru ke backend Laravel via Fetch API
-                    fetch("{{ route('kasbon.item.reorder') }}", {
+                        // Opsional: Kirim Ajax ke Laravel untuk menyimpan urutan di database
+                        /*
+                        fetch("{{ route('kasbon.item.reorder') }}", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
                             },
-                            body: JSON.stringify({
-                                order: orderData
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (!data.success) {
-                                alert('Gagal menyimpan urutan data.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Terjadi kesalahan jaringan.');
+                            body: JSON.stringify({ order: orderIds })
                         });
-                }
-            });
+                        */
+                    }
+                });
+            }
         });
     </script>
 @endsection
