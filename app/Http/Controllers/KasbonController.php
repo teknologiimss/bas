@@ -77,7 +77,11 @@ class KasbonController extends Controller
     {
         /** @var \App\Models\KasbonFolder $folder */
         $folder = KasbonFolder::findOrFail($id);
-        $folder->load('items');
+        
+        // Memuat item yang sudah diurutkan berdasarkan kolom position
+        $folder->load(['items' => function ($query) {
+            $query->orderBy('position', 'asc');
+        }]);
 
         $totalMasuk = $folder->items->sum('uang_masuk');
         $totalKeluar = $folder->items->sum('uang_keluar');
@@ -111,6 +115,9 @@ class KasbonController extends Controller
             }
         }
 
+        // Ambil nilai position tertinggi agar item baru ditaruh di urutan paling bawah
+        $maxPosition = KasbonItem::where('kasbon_folder_id', $folderId)->max('position') ?? 0;
+
         KasbonItem::create([
             'kasbon_folder_id' => $folderId,
             'deskripsi' => $request->deskripsi,
@@ -119,6 +126,7 @@ class KasbonController extends Controller
             'uang_keluar' => $request->uang_keluar ?? 0,
             'dokumen' => $dokumenNames,  // Menyimpan array nama file
             'keterangan' => $request->keterangan,
+            'position' => $maxPosition + 1,
         ]);
 
         return redirect()->back()->with('success', 'Transaksi berhasil ditambahkan!');
@@ -211,11 +219,36 @@ class KasbonController extends Controller
         return redirect()->back()->with('error', 'Dokumen tidak ditemukan.');
     }
 
+    // 8. Reorder Item (AJAX Drag and Drop)
+    public function reorderItems(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*.id' => 'required|exists:kasbon_items,id',
+            'order.*.position' => 'required|integer',
+        ]);
+
+        foreach ($request->order as $itemData) {
+            KasbonItem::where('id', $itemData['id'])->update([
+                'position' => $itemData['position']
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Urutan transaksi berhasil diperbarui.'
+        ]);
+    }
+
     public function printPdf($id)
     {
         /** @var \App\Models\KasbonFolder $folder */
         $folder = KasbonFolder::findOrFail($id);
-        $folder->load('items');
+        
+        // Memuat item yang sudah diurutkan berdasarkan kolom position untuk PDF
+        $folder->load(['items' => function ($query) {
+            $query->orderBy('position', 'asc');
+        }]);
 
         $totalMasuk = $folder->items->sum('uang_masuk');
         $totalKeluar = $folder->items->sum('uang_keluar');

@@ -233,9 +233,10 @@
                 </div>
 
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover table-striped text-nowrap mb-0">
+                    <table class="table table-hover table-striped text-nowrap mb-0" id="sortable-table">
                         <thead style="background-color: #f8fafc; color: #334155;">
                             <tr>
+                                <th style="width: 40px;" class="text-center"></th>
                                 <th style="width: 50px;" class="text-center">No</th>
                                 <th>Deskripsi</th>
                                 <th>Tanggal</th>
@@ -246,10 +247,13 @@
                                 <th style="width: 120px;" class="text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="sortable-tbody">
                             @forelse($folder->items as $index => $item)
-                                <tr>
-                                    <td class="text-center font-weight-bold">{{ $index + 1 }}</td>
+                                <tr data-id="{{ $item->id }}">
+                                    <td class="text-center align-middle drag-handle" style="cursor: grab;">
+                                        <i class="fas fa-grip-vertical text-muted"></i>
+                                    </td>
+                                    <td class="text-center font-weight-bold row-number">{{ $index + 1 }}</td>
                                     <td style="max-width: 250px; white-space: normal;">{{ $item->deskripsi }}</td>
                                     <td>
                                         <span class="badge bg-light text-dark border">
@@ -264,53 +268,24 @@
                                         Rp {{ number_format($item->uang_keluar, 0, ',', '.') }}
                                     </td>
                                     <td>
-                                        <div class="d-flex flex-column gap-1 align-items-start">
-                                            @if ($item->dokumen && count((array) $item->dokumen) > 0)
-                                                <div class="d-flex flex-wrap gap-1 align-items-center mb-1">
-                                                    @foreach ((array) $item->dokumen as $docIndex => $docPath)
-                                                        <div class="btn-group mb-1 mr-1" role="group">
-                                                            <a href="{{ asset('img/' . $docPath) }}" target="_blank"
-                                                                class="btn btn-xs btn-outline-info"
-                                                                title="Lihat Dokumen {{ $docIndex + 1 }}">
-                                                                <i class="fas fa-file-alt"></i> Doc {{ $docIndex + 1 }}
-                                                            </a>
-                                                            <button type="button" class="btn btn-xs btn-outline-danger"
-                                                                onclick="if(confirm('Yakin ingin menghapus dokumen ini?')) document.getElementById('delete-doc-{{ $item->id }}-{{ $docIndex }}').submit();"
-                                                                title="Hapus Dokumen">
-                                                                <i class="fas fa-times"></i>
-                                                            </button>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            @endif
-
-                                            <!-- Tombol Tambah Lampiran Langsung -->
-                                            <button type="button" class="btn btn-xs btn-outline-primary shadow-sm"
-                                                data-toggle="modal" data-target="#modalUploadDoc{{ $item->id }}"
-                                                title="Tambah Lampiran Baru">
-                                                <i class="fas fa-paperclip mr-1"></i> Tambah Lampiran
-                                            </button>
-                                        </div>
+                                        @if ($item->dokumen)
+                                            <a href="{{ asset('storage/' . $item->dokumen) }}" target="_blank"
+                                                class="btn btn-sm btn-outline-info">
+                                                <i class="fas fa-file-alt mr-1"></i>Lihat
+                                            </a>
+                                        @else
+                                            <span class="text-muted small">-</span>
+                                        @endif
                                     </td>
                                     <td style="max-width: 200px; white-space: normal;">{{ $item->keterangan ?? '-' }}</td>
                                     <td class="text-center">
-                                        <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-sm btn-outline-warning mr-1 shadow-sm"
-                                                data-toggle="modal" data-target="#modalEditItem{{ $item->id }}"
-                                                title="Edit Transaksi">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger shadow-sm"
-                                                onclick="if(confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) document.getElementById('delete-item-{{ $item->id }}').submit();"
-                                                title="Hapus Transaksi">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
+                                        <a href="#" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center py-5 text-muted">
+                                    <td colspan="9" class="text-center py-5 text-muted">
                                         <i class="fas fa-folder-open fa-2x mb-2 d-block text-secondary"></i>
                                         Belum ada rincian transaksi di dalam kasbon ini.
                                     </td>
@@ -599,4 +574,61 @@
             </div>
         </div>
     </div>
+
+    <!-- CDN SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+    <!-- Script Drag & Drop dan Update AJAX -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tbody = document.getElementById('sortable-tbody');
+            if (!tbody) return;
+
+            Sortable.create(tbody, {
+                handle: '.drag-handle', // Drag hanya berlaku jika memegang icon grip
+                animation: 150,
+                ghostClass: 'table-active', // Efek warna highlight saat baris ditarik
+                onEnd: function() {
+                    const rows = tbody.querySelectorAll('tr[data-id]');
+                    const orderData = [];
+
+                    // Update penomoran angka 'No' di tabel secara real-time
+                    rows.forEach((row, index) => {
+                        const numberCell = row.querySelector('.row-number');
+                        if (numberCell) {
+                            numberCell.textContent = index + 1;
+                        }
+
+                        // Masukkan data ID dan posisi baru ke array
+                        orderData.push({
+                            id: row.getAttribute('data-id'),
+                            position: index + 1
+                        });
+                    });
+
+                    // Kirim urutan baru ke backend Laravel via Fetch API
+                    fetch("{{ route('kasbon.item.reorder') }}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify({
+                                order: orderData
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.success) {
+                                alert('Gagal menyimpan urutan data.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Terjadi kesalahan jaringan.');
+                        });
+                }
+            });
+        });
+    </script>
 @endsection

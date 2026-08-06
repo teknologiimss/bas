@@ -947,9 +947,14 @@ Route::prefix('products')->group(function () {
 
         Route::get('/{id}', [KasbonController::class, 'show'])->name('show');
         Route::post('/{id}/item', [KasbonController::class, 'storeItem'])->name('item.store');
+
+        // ROUTE REORDER DIPERBAIKI (hapus '/kasbon' pada URL & 'kasbon.' pada name)
+        Route::post('/item/reorder', [KasbonController::class, 'reorderItems'])->name('item.reorder');
+
         Route::delete('/item/{id}', [KasbonController::class, 'destroyItem'])->name('item.destroy');
         Route::put('/item/{id}', [KasbonController::class, 'updateItem'])->name('item.update');
         Route::delete('/item/{id}/document', [KasbonController::class, 'destroyDocument'])->name('item.destroyDoc');
+
         // Route Print PDF
         Route::get('/{id}/print-pdf', [KasbonController::class, 'printPdf'])->name('printPdf');
     });
