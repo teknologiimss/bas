@@ -533,6 +533,12 @@
                                     </ul>
                                 </div>
                             @endif
+
+                            <div class="form-group">
+                                <label class="font-weight-bold">Keterangan</label>
+                                <input type="text" name="keterangan" class="form-control" style="border-radius: 8px;"
+                                    value="{{ $item->keterangan }}">
+                            </div>
                         </div>
                         <div class="modal-footer bg-light">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -543,6 +549,69 @@
             </div>
         </div>
     @endforeach
+
+    <!-- MODAL TAMBAH ITEM/TRANSAKSI BARU -->
+    <div class="modal fade" id="modalTambahItem" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+                <div class="modal-header navy-header">
+                    <h5 class="modal-title font-weight-bold text-white">
+                        <i class="fas fa-plus-circle mr-2 text-info"></i>Tambah Transaksi / Dokumen
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="{{ route('kasbon.item.store', $folder->id) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body p-4 text-left">
+                        <div class="form-group">
+                            <label class="font-weight-bold text-dark">Deskripsi Transaksi <span
+                                    class="text-danger">*</span></label>
+                            <textarea name="deskripsi" class="form-control" rows="2"
+                                placeholder="Masukkan rincian kebutuhan / transaksi..." required style="border-radius: 8px;"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-12 form-group">
+                                <label class="font-weight-bold text-dark">Tanggal <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" name="tanggal" class="form-control" style="border-radius: 8px;"
+                                    value="{{ date('Y-m-d') }}" required>
+                            </div>
+                            <div class="col-md-4 col-12 form-group">
+                                <label class="font-weight-bold text-dark">Uang Masuk (Rp)</label>
+                                <input type="number" name="uang_masuk" class="form-control" placeholder="0"
+                                    style="border-radius: 8px;" value="0" min="0">
+                            </div>
+                            <div class="col-md-4 col-12 form-group">
+                                <label class="font-weight-bold text-dark">Uang Keluar (Rp)</label>
+                                <input type="number" name="uang_keluar" class="form-control" placeholder="0"
+                                    style="border-radius: 8px;" value="0" min="0">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="font-weight-bold text-dark">Lampiran Dokumen / Nota</label>
+                            <input type="file" name="dokumen[]" class="form-control-file p-2 border rounded" multiple
+                                style="border-radius: 8px;">
+                            <small class="form-text text-muted mt-1">Bisa memilih lebih dari 1 file gambar/PDF.</small>
+                        </div>
+
+                        <div class="form-group mb-0">
+                            <label class="font-weight-bold text-dark">Keterangan Tambahan</label>
+                            <input type="text" name="keterangan" class="form-control"
+                                placeholder="Opsional (misal: Kwitansi terlampir)" style="border-radius: 8px;">
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            style="border-radius: 6px;">Batal</button>
+                        <button type="submit" class="btn btn-navy-primary px-4">Simpan Transaksi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- SortableJS CDN & Initialization -->
     <!-- SortableJS CDN & Initialization -->
