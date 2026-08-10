@@ -279,8 +279,8 @@
                     @php
                         $subtotalMasuk = $items->sum('uang_masuk');
                         $subtotalKeluar = $items->sum('uang_keluar');
-                        // Total per item deskripsi (akumulasi total transaksi untuk deskripsi tersebut)
-                        $subtotalTotal = $subtotalMasuk + $subtotalKeluar;
+                        // Total khusus pengeluaran (uang keluar) saja per deskripsi item
+                        $subtotalTotal = $subtotalKeluar;
 
                         $grandGroupMasuk += $subtotalMasuk;
                         $grandGroupKeluar += $subtotalKeluar;
