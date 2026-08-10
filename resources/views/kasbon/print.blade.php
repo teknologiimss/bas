@@ -220,7 +220,7 @@
     </table>
 
     <!-- ================= RIWAYAT TRANSAKSI RINCI ================= -->
-    <div class="section-title">A. Riwayat Transaksi Rinci</div>
+    <div class="section-title">A. Riwayat Transaksi Rincian</div>
     <table class="table-data">
         <thead>
             <tr>
@@ -265,7 +265,7 @@
                     <th style="width: 45%;">Deskripsi Item</th>
                     <th style="width: 16%;">Uang Masuk</th>
                     <th style="width: 16%;">Uang Keluar</th>
-                    <th style="width: 18%;">Total</th>
+                    <th style="width: 18%;">Total Uang Keluar</th>
                 </tr>
             </thead>
             <tbody>
