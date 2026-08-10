@@ -22,8 +22,8 @@
         "milon/barcode": "^8.0",
         "pusher/pusher-php-server": "^7.2",
         "setasign/fpdf": "^1.8",
-        "setasign/fpdi": "^2.6",
-        "webklex/laravel-imap": "^6.2"
+        "setasign/fpdi": "^2.6"
+        
     },
     "require-dev": {
         "facade/ignition": "^2.5",
