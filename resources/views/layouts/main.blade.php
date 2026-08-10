@@ -1453,15 +1453,6 @@
                                                             </a>
                                                         </li>
 
-                                                        <!-- Menu Email Baru -->
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('email.index') }}"
-                                                                class="nav-link {{ Str::startsWith(Route::current()->getName(), 'email.') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-envelope"></i>
-                                                                <p>Email MRO</p>
-                                                            </a>
-                                                        </li>
-
                                                         {{-- Cuti --}}
                                                         <li
                                                             class="nav-item has-treeview {{ request()->routeIs('cuti.*') ? 'menu-open' : '' }}">
@@ -2269,8 +2260,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="row">
-                            <form id="cetak-pr" method="GET" action="{{ route('cetak_pr') }}"
-                                target="_blank">
+                            <form id="cetak-pr" method="GET" action="{{ route('cetak_pr') }}" target="_blank">
                                 <input type="hidden" name="id" id="id">
                             </form>
                             <div class="col-12" id="container-form">

@@ -11,7 +11,6 @@ use App\Http\Controllers\ChecksheetController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\CutiTahunanController;
 use App\Http\Controllers\DetailsjnController;
-use App\Http\Controllers\EmailController;
 use App\Http\Controllers\FasilitasHarianController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KasbonController;
@@ -959,10 +958,6 @@ Route::prefix('products')->group(function () {
         // Route Print PDF
         Route::get('/{id}/print-pdf', [KasbonController::class, 'printPdf'])->name('printPdf');
     });
-
-    Route::get('/email', [EmailController::class, 'index'])->name('email.index');
-    Route::get('/email/sync', [EmailController::class, 'sync'])->name('email.sync');
-    Route::get('/email/{id}', [EmailController::class, 'show'])->name('email.show');
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
