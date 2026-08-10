@@ -64,6 +64,16 @@
             font-size: 10pt;
         }
 
+        .section-title {
+            font-weight: bold;
+            font-size: 10pt;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            border-left: 3px solid #333;
+            padding-left: 8px;
+        }
+
         .table-data {
             width: 100%;
             border-collapse: collapse;
@@ -81,6 +91,11 @@
         .table-data th {
             background-color: #f2f2f2;
             text-align: center;
+            font-weight: bold;
+        }
+
+        .table-data tfoot td {
+            background-color: #eaeaea;
             font-weight: bold;
         }
 
@@ -103,7 +118,7 @@
         }
 
         .summary-box td {
-            padding: 5px 10px;
+            padding: 6px 10px;
             border: 1px solid #ccc;
             font-size: 9pt;
         }
@@ -187,7 +202,7 @@
         <img src="{{ public_path('img/IMST.png') }}" alt="Logo Perusahaan">
     </div>
 
-    <!-- ================= LAPORAN UTAMA (TANPA FOTO) ================= -->
+    <!-- ================= LAPORAN UTAMA ================= -->
     <div class="header">
         <h2>LAPORAN RINCIAN KASBON</h2>
         {{-- <p>Tanggal Cetak: {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p> --}}
@@ -204,15 +219,17 @@
         </tr>
     </table>
 
+    <!-- ================= RIWAYAT TRANSAKSI RINCI ================= -->
+    <div class="section-title">A. Riwayat Transaksi Rinci</div>
     <table class="table-data">
         <thead>
             <tr>
                 <th style="width: 5%;">No</th>
-                <th style="width: 15%;">Tanggal</th>
+                <th style="width: 12%;">Tanggal</th>
                 <th style="width: 33%;">Deskripsi</th>
                 <th style="width: 17%;">Uang Masuk</th>
                 <th style="width: 17%;">Uang Keluar</th>
-                <th style="width: 13%;">Keterangan</th>
+                <th style="width: 16%;">Keterangan</th>
             </tr>
         </thead>
         <tbody>
@@ -233,6 +250,64 @@
         </tbody>
     </table>
 
+    <!-- ================= RINCIAN PENGELOMPOKAN PER ITEM DESKRIPSI ================= -->
+    @php
+        // Mengelompokkan item berdasarkan nama deskripsi
+        $groupedItems = $folder->items->groupBy('deskripsi');
+    @endphp
+
+    @if ($groupedItems->count() > 0)
+        <div class="section-title">B. Rincian Pengelompokan Per Deskripsi Item</div>
+        <table class="table-data">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">No</th>
+                    <th style="width: 45%;">Deskripsi Item</th>
+                    <th style="width: 16%;">Uang Masuk</th>
+                    <th style="width: 16%;">Uang Keluar</th>
+                    <th style="width: 18%;">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $noGroup = 1;
+                    $grandGroupMasuk = 0;
+                    $grandGroupKeluar = 0;
+                    $grandGroupTotal = 0;
+                @endphp
+                @foreach ($groupedItems as $deskripsi => $items)
+                    @php
+                        $subtotalMasuk = $items->sum('uang_masuk');
+                        $subtotalKeluar = $items->sum('uang_keluar');
+                        // Total per item deskripsi (akumulasi total transaksi untuk deskripsi tersebut)
+                        $subtotalTotal = $subtotalMasuk + $subtotalKeluar;
+
+                        $grandGroupMasuk += $subtotalMasuk;
+                        $grandGroupKeluar += $subtotalKeluar;
+                        $grandGroupTotal += $subtotalTotal;
+                    @endphp
+                    <tr>
+                        <td class="text-center">{{ $noGroup++ }}</td>
+                        <td>{{ $deskripsi }}</td>
+                        <td class="text-right">Rp {{ number_format($subtotalMasuk, 0, ',', '.') }}</td>
+                        <td class="text-right">Rp {{ number_format($subtotalKeluar, 0, ',', '.') }}</td>
+                        <td class="text-right">Rp {{ number_format($subtotalTotal, 0, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" class="text-center font-bold">TOTAL KESELURUHAN</td>
+                    <td class="text-right font-bold">Rp {{ number_format($grandGroupMasuk, 0, ',', '.') }}</td>
+                    <td class="text-right font-bold">Rp {{ number_format($grandGroupKeluar, 0, ',', '.') }}</td>
+                    <td class="text-right font-bold">Rp {{ number_format($grandGroupTotal, 0, ',', '.') }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    @endif
+
+    <!-- ================= RINGKASAN TOTAL KASBON ================= -->
+    <div class="section-title">C. Ringkasan Akhir Kasbon</div>
     <table class="summary-box">
         <tr>
             <td style="width: 60%;" class="font-bold">Total Uang Masuk</td>
@@ -247,10 +322,6 @@
             <td class="text-right font-bold" style="background-color: #f9f9f9;">Rp
                 {{ number_format($selisih, 0, ',', '.') }}</td>
         </tr>
-        {{-- <tr>
-            <td class="font-bold">Persentase Sisa Kasbon</td>
-            <td class="text-right font-bold">{{ number_format($persen, 2) }}%</td>
-        </tr> --}}
     </table>
 
     <!-- ================= BLOK TANDA TANGAN (SEBELAH KANAN) ================= -->
