@@ -578,7 +578,7 @@
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
                                         'master-personil.index',
-                                        'kasbon.index',
+                                        'kasbon.index',  
                                     ]);
                                 @endphp
 
@@ -1056,7 +1056,7 @@
                                                     {{-- ADMIN & MRO FULL ACCESS --}}
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
                                                         {{-- Personil MRO --}}
-
+                                                        
                                                         <li class="nav-item">
                                                             <a href="{{ route('mro.profil') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'mro.profil' ? 'active' : '' }}">
@@ -1452,6 +1452,8 @@
                                                                 <p>Kasbon MRO</p>
                                                             </a>
                                                         </li>
+
+                                                        
 
                                                         {{-- Cuti --}}
                                                         <li
@@ -2260,7 +2262,8 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="row">
-                            <form id="cetak-pr" method="GET" action="{{ route('cetak_pr') }}" target="_blank">
+                            <form id="cetak-pr" method="GET" action="{{ route('cetak_pr') }}"
+                                target="_blank">
                                 <input type="hidden" name="id" id="id">
                             </form>
                             <div class="col-12" id="container-form">
