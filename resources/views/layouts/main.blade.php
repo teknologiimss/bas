@@ -513,7 +513,6 @@
                                         'asset-maintenance.index',
                                         'assets.index',
                                         'rewinding.dashboard',
-                                        'lp3m.dashboard',
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
                                         'master-personil.index',
@@ -570,7 +569,6 @@
                                         'asset-maintenance.index',
                                         'assets.index',
                                         'rewinding.dashboard',
-                                        'lp3m.dashboard',
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
                                         'master-personil.index',
@@ -1112,18 +1110,7 @@
 
                                                                 
 
-                                                                <li class="nav-item">
-
-                                                                    <a href="{{ route('lp3m.dashboard') }}"
-                                                                        class="nav-link {{ Route::currentRouteName() == 'lp3m.dashboard' ? 'active' : '' }}">
-
-                                                                        <i class="far fa-circle nav-icon"></i>
-
-                                                                        <p>Dashboard SPR</p>
-
-                                                                    </a>
-
-                                                                </li>
+                                                                
 
                                                                 <li class="nav-item">
 

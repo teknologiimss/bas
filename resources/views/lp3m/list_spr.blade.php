@@ -210,7 +210,7 @@
 
             <div class="card-body">
 
-                <a href="{{ route('lp3m.dashboard') }}" class="btn btn-secondary btn-back mb-3">
+                <a href="{{ route('lp3m.index') }}" class="btn btn-secondary btn-back mb-3">
                     ⬅ Kembali Dashboard
                 </a>
 

@@ -30,10 +30,26 @@ class Lp3mController extends Controller
         }
 
         $data = $query->oldest()->paginate(10);
-
         $data->appends($request->all());
 
-        return view('lp3m.index', compact('data'));
+        // --- DATA DASHBOARD ---
+        $total = Lp3m::count();
+        $open = Lp3m::where('status', 'OPEN')->count();
+        $closed = Lp3m::where('status', 'CLOSED')->count();
+        $progress = $total > 0 ? round(($closed / $total) * 100, 2) : 0;
+
+        $openData = Lp3m::where('status', 'OPEN')
+            ->latest()
+            ->get();
+
+        return view('lp3m.index', compact(
+            'data',
+            'total',
+            'open',
+            'closed',
+            'progress',
+            'openData'
+        ));
     }
 
     public function create()
