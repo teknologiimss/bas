@@ -517,6 +517,7 @@
                                         'master-personil.index',
                                         'kasbon.index',
                                         'menu.personil',
+                                        'aktivitas-personil.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -573,6 +574,7 @@
                                         'master-personil.index',
                                         'kasbon.index',
                                         'menu.personil',
+                                        'aktivitas-personil.index',
                                     ]);
                                 @endphp
 
@@ -1072,7 +1074,7 @@
 
                                                         </li> --}}
 
-                                                        
+
                                                         {{-- Data Personil MRO --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('menu.personil') }}"
@@ -1082,7 +1084,7 @@
                                                             </a>
                                                         </li>
 
-                                                        <li class="nav-item">
+                                                        {{-- <li class="nav-item">
                                                             <a href="{{ route('mro.daily-activity.index') }}"
                                                                 class="nav-link {{ request()->routeIs('mro.daily-activity.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-calendar-check"></i>
@@ -1095,6 +1097,15 @@
                                                                 class="nav-link {{ request()->routeIs('mro.weekly-activity') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
                                                                 <p>Weekly Activity</p>
+                                                            </a>
+                                                        </li> --}}
+
+                                                        {{-- Aktivitas Personil --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('aktivitas-personil.index') }}"
+                                                                class="nav-link {{ request()->routeIs('aktivitas-personil.*') || request()->routeIs('mro.daily-activity.*') || request()->routeIs('mro.weekly-activity*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-tasks"></i>
+                                                                <p>Aktivitas Personil</p>
                                                             </a>
                                                         </li>
 
