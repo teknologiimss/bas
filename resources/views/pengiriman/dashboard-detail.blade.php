@@ -100,7 +100,7 @@
 
             <div class="card-body">
 
-                <a href="{{ route('pengiriman.dashboard') }}" class="btn btn-secondary mb-3">
+                <a href="{{ route('pengiriman.index') }}" class="btn btn-secondary mb-3">
                     ← Kembali Dashboard
                 </a>
 

@@ -512,7 +512,6 @@
                                         'fasilitas-harian.index',
                                         'asset-maintenance.index',
                                         'assets.index',
-                                        'pengiriman.dashboard',
                                         'rewinding.dashboard',
                                         'lp3m.dashboard',
                                         'alat.dashboard',
@@ -571,7 +570,6 @@
                                         'fasilitas-harian.index',
                                         'asset-maintenance.index',
                                         'assets.index',
-                                        'pengiriman.dashboard',
                                         'rewinding.dashboard',
                                         'lp3m.dashboard',
                                         'alat.dashboard',
@@ -1112,18 +1110,7 @@
 
                                                             <ul class="nav nav-treeview">
 
-                                                                <li class="nav-item">
-
-                                                                    <a href="{{ route('pengiriman.dashboard') }}"
-                                                                        class="nav-link {{ Route::currentRouteName() == 'pengiriman.dashboard' ? 'active' : '' }}">
-
-                                                                        <i class="far fa-circle nav-icon"></i>
-
-                                                                        <p>Dashboard Pengiriman</p>
-
-                                                                    </a>
-
-                                                                </li>
+                                                                
 
                                                                 <li class="nav-item">
 
