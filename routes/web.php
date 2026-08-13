@@ -974,9 +974,10 @@ Route::prefix('products')->group(function () {
     Route::get('/pekerjaan', function () {
         return view('menusidebar.menu-sidebar-pekerjaan');  // Menampilkan file view landing page pekerjaan
     })->name('pekerjaan.index');
-    Route::get('/monitoring', function () {
+    // GANTI nama route ini menjadi 'monitoring.menu' agar tidak bentrok
+    Route::get('/monitoring-menu', function () {
         return view('menusidebar.menu-sidebar-monitoring');
-    })->name('monitoring.index');
+    })->name('monitoring.menu');
     Route::get('/administrasi-keuangan', function () {
         return view('menusidebar.menu-sidebar-administrasikeuangan');
     })->name('keuangan.index');

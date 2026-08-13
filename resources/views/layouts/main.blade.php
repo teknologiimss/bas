@@ -519,7 +519,7 @@
                                         'menu.personil',
                                         'aktivitas-personil.index',
                                         'pekerjaan.index',
-                                        'monitoring.index',
+                                        'monitoring.menu',
                                         'keuangan.index',
                                         'cuti.menu',
                                     ]);
@@ -580,7 +580,7 @@
                                         'menu.personil',
                                         'aktivitas-personil.index',
                                         'pekerjaan.index',
-                                        'monitoring.index',
+                                        'monitoring.menu',
                                         'keuangan.index',
                                         'cuti.menu',
                                     ]);
@@ -1156,7 +1156,7 @@
 
                                                         {{-- Monitoring --}}
                                                         <li class="nav-item">
-                                                            <a href="{{ route('monitoring.index') }}"
+                                                            <a href="{{ route('monitoring.menu') }}"
                                                                 class="nav-link {{ request()->routeIs('monitoring.*', 'pengiriman.*', 'alat.*', 'fasilitas-harian.*', 'assets.*', 'asset-maintenance.*', 'checksheet.*', 'lp3m.*', 'rewinding.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
                                                                 <p>Monitoring</p>
