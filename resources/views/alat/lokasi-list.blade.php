@@ -331,7 +331,7 @@
 
                 <div class="d-flex justify-content-between flex-wrap mb-3">
 
-                    <a href="{{ route('alat.dashboard') }}" class="btn btn-secondary btn-back">
+                    <a href="{{ route('alat.index') }}" class="btn btn-secondary btn-back">
 
                         <i class="fas fa-arrow-left"></i>
                         Kembali Dashboard
