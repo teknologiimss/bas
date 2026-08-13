@@ -518,6 +518,7 @@
                                         'kasbon.index',
                                         'menu.personil',
                                         'aktivitas-personil.index',
+                                        'pekerjaan.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -575,6 +576,7 @@
                                         'kasbon.index',
                                         'menu.personil',
                                         'aktivitas-personil.index',
+                                        'pekerjaan.index',
                                     ]);
                                 @endphp
 
@@ -1122,7 +1124,7 @@
                                                             </a>
                                                         </li>
 
-                                                        <li class="nav-item">
+                                                        {{-- <li class="nav-item">
                                                             <a href="{{ route('proyek.index') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'proyek.index' ? 'active' : '' }}">
                                                                 <i class="fas fa-chart-bar nav-icon"></i>
@@ -1135,6 +1137,14 @@
                                                                 class="nav-link {{ Route::current()->getName() == 'mro.progress' ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
                                                                 <p>Progress MRO</p>
+                                                            </a>
+                                                        </li> --}}
+
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('pekerjaan.index') }}"
+                                                                class="nav-link {{ request()->routeIs('pekerjaan.*') || request()->routeIs('proyek.*') || request()->routeIs('mro.progress*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-briefcase"></i>
+                                                                <p>Pekerjaan Jono</p>
                                                             </a>
                                                         </li>
 
