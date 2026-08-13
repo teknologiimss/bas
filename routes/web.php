@@ -960,8 +960,13 @@ Route::prefix('products')->group(function () {
         Route::get('/{id}/print-pdf', [KasbonController::class, 'printPdf'])->name('printPdf');
     });
 
+    // Memo MRO
     Route::post('/monitoring/{monitoringId}/memo', [MemoController::class, 'store'])->name('memo.store');
     Route::put('/memo/{id}', [MemoController::class, 'update'])->name('memo.update');
+
+    Route::get('/menu-datapersonil', function () {
+        return view('menusidebar.menu-sidebar-datapersonil');  // Gunakan format folder.nama-file
+    })->name('menu.personil');
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store

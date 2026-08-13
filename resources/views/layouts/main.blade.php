@@ -516,6 +516,7 @@
                                         'mro.weekly-activity',
                                         'master-personil.index',
                                         'kasbon.index',
+                                        'menu.personil',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -570,7 +571,8 @@
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
                                         'master-personil.index',
-                                        'kasbon.index',  
+                                        'kasbon.index',
+                                        'menu.personil',
                                     ]);
                                 @endphp
 
@@ -1048,8 +1050,8 @@
                                                     {{-- ADMIN & MRO FULL ACCESS --}}
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
                                                         {{-- Personil MRO --}}
-                                                        
-                                                        <li class="nav-item">
+
+                                                        {{-- <li class="nav-item">
                                                             <a href="{{ route('mro.profil') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'mro.profil' ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-video"></i>
@@ -1068,6 +1070,16 @@
 
                                                             </a>
 
+                                                        </li> --}}
+
+                                                        
+                                                        {{-- Data Personil MRO --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('menu.personil') }}"
+                                                                class="nav-link {{ request()->routeIs('menu.personil') || request()->routeIs('mro.profil') || request()->routeIs('master-personil.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-users"></i>
+                                                                <p>Data Personil MRO</p>
+                                                            </a>
                                                         </li>
 
                                                         <li class="nav-item">
@@ -1086,7 +1098,7 @@
                                                             </a>
                                                         </li>
 
-                                                        
+
 
 
 
@@ -1369,7 +1381,7 @@
                                                             </a>
                                                         </li>
 
-                                                        
+
 
                                                         {{-- Cuti --}}
                                                         <li
@@ -2178,8 +2190,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="row">
-                            <form id="cetak-pr" method="GET" action="{{ route('cetak_pr') }}"
-                                target="_blank">
+                            <form id="cetak-pr" method="GET" action="{{ route('cetak_pr') }}" target="_blank">
                                 <input type="hidden" name="id" id="id">
                             </form>
                             <div class="col-12" id="container-form">
