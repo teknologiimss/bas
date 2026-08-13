@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Memo;
 use App\Models\Monitoring;
 use App\Models\MonitoringDocument;
 use App\Models\Proyek;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use ZipArchive;
 
 class MonitoringController extends Controller
@@ -25,46 +27,43 @@ class MonitoringController extends Controller
 
     // Klik PO/Nodin Spesifik ke Halaman Monitoring
     public function index(Request $request, $proyek_id)
-{
-    $proyek = Proyek::findOrFail($proyek_id);
+    {
+        $proyek = Proyek::findOrFail($proyek_id);
 
-    $query = Monitoring::with('documents', 'folders.documents')
-        ->where('proyek_id', $proyek_id);
+        $query = Monitoring::with('documents', 'folders.documents')
+            ->where('proyek_id', $proyek_id);
 
-    // 🔍 Filter PO / Nota Dinas
-    if ($request->filled('po')) {
-        $query->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
+        // 🔍 Filter PO / Nota Dinas
+        if ($request->filled('po')) {
+            $query->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
+        }
+
+        // 🔍 Filter Nama Pekerjaan
+        if ($request->filled('pekerjaan')) {
+            $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
+        }
+
+        $monitorings = $query->latest()->get();
+
+        return view('monitoring.index', compact('proyek', 'monitorings'));
     }
 
-    // 🔍 Filter Nama Pekerjaan
-    if ($request->filled('pekerjaan')) {
-        $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
+    public function resumeProgress(Request $request)
+    {
+        $query = Monitoring::query();
+
+        if ($request->filled('po')) {
+            $query->where('po_nota_dinas', 'like', '%' . $request->po . '%');
+        }
+
+        if ($request->filled('pekerjaan')) {
+            $query->where('nama_pekerjaan', 'like', '%' . $request->pekerjaan . '%');
+        }
+
+        $monitorings = $query->paginate(10)->withQueryString();
+
+        return view('mro.resume_progress', compact('monitorings'));
     }
-
-    $monitorings = $query->latest()->get();
-
-    return view('monitoring.index', compact('proyek', 'monitorings'));
-}
-
-
-
-public function resumeProgress(Request $request)
-{
-    $query = Monitoring::query();
-
-    if ($request->filled('po')) {
-        $query->where('po_nota_dinas', 'like', '%' . $request->po . '%');
-    }
-
-    if ($request->filled('pekerjaan')) {
-        $query->where('nama_pekerjaan', 'like', '%' . $request->pekerjaan . '%');
-    }
-
-    $monitorings = $query->paginate(10)->withQueryString();
-
-    return view('mro.resume_progress', compact('monitorings'));
-}
-
 
     public function store(Request $request, $proyek_id)
     {
@@ -229,31 +228,83 @@ public function resumeProgress(Request $request)
         return redirect()->back()->with('success', 'Monitoring berhasil dihapus');
     }
 
+    // public function destroyDocument($id)
+    // {
+    //     $document = MonitoringDocument::findOrFail($id);
+
+    //     // Hitung Ulang Progress persen
+    //     $monitoring = $document->monitoring;
+
+    //     // Hapus file fisik
+    //     $filePath = public_path($document->file_path);
+    //     if (file_exists($filePath)) {
+    //         unlink($filePath);
+    //     }
+
+    //     // Hapus record database
+    //     $document->delete();
+
+    //     // 🔥 HITUNG ULANG PROGRESS persen
+    //     $monitoring->progress = $monitoring->calculateProgress();
+    //     $monitoring->save();
+
+    //     // Kembalikan response JSON
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Dokumen berhasil dihapus'
+    //     ]);
+    // }
+
     public function destroyDocument($id)
     {
-        $document = MonitoringDocument::findOrFail($id);
+        DB::beginTransaction();
 
-        // Hitung Ulang Progress persen
-        $monitoring = $document->monitoring;
+        try {
+            $document = MonitoringDocument::findOrFail($id);
+            $monitoring = $document->monitoring;
 
-        // Hapus file fisik
-        $filePath = public_path($document->file_path);
-        if (file_exists($filePath)) {
-            unlink($filePath);
+            // 1. HAPUS MEMO DENGAN 2 KONDISI:
+            // - Berdasarkan ID Dokumen (monitoring_document_id)
+            // - ATAU berdasarkan kesamaan file PDF (pdf_path == file_path) untuk data lama
+            Memo::where('monitoring_document_id', $document->id)
+                ->orWhere('pdf_path', $document->file_path)
+                ->delete();
+
+            // 2. Hapus file fisik dari public/documents
+            if ($document->file_path) {
+                $filePath = public_path($document->file_path);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+
+            // 3. Hapus record dokumen
+            $document->delete();
+
+            // 4. Hitung ulang progress
+            $newProgress = 0;
+            if ($monitoring) {
+                $newProgress = $monitoring->calculateProgress();
+                $monitoring->progress = $newProgress;
+                $monitoring->save();
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success'  => true,
+                'message'  => 'Dokumen dan Memo terkait berhasil dihapus dari database',
+                'progress' => $newProgress
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus data: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Hapus record database
-        $document->delete();
-
-        // 🔥 HITUNG ULANG PROGRESS persen
-        $monitoring->progress = $monitoring->calculateProgress();
-        $monitoring->save();
-
-        // Kembalikan response JSON
-        return response()->json([
-            'success' => true,
-            'message' => 'Dokumen berhasil dihapus'
-        ]);
     }
 
     // public function updateDocument(Request $request, $id)

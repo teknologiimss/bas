@@ -16,6 +16,7 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KasbonController;
 use App\Http\Controllers\KontrakController;
 use App\Http\Controllers\Lp3mController;
+use App\Http\Controllers\MemoController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\MroController;
 use App\Http\Controllers\NotificationController;
@@ -958,6 +959,9 @@ Route::prefix('products')->group(function () {
         // Route Print PDF
         Route::get('/{id}/print-pdf', [KasbonController::class, 'printPdf'])->name('printPdf');
     });
+
+    Route::post('/monitoring/{monitoringId}/memo', [MemoController::class, 'store'])->name('memo.store');
+    Route::put('/memo/{id}', [MemoController::class, 'update'])->name('memo.update');
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store

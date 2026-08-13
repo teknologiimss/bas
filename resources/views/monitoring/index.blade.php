@@ -963,6 +963,11 @@
 
                     {{-- button edit dan delete --}}
                     <div class="d-flex align-items-center gap-2">
+                        <!-- Tombol Buat Memo -->
+                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3" data-bs-toggle="modal"
+                            data-bs-target="#modalCreateMemo{{ $m->id }}" title="Buat Memo">
+                            📝 Buat Memo
+                        </button>
                         <!-- Edit -->
                         <button class="action-btn text-primary" data-bs-toggle="modal"
                             data-bs-target="#modalEdit{{ $m->id }}" title="Edit">
@@ -1172,6 +1177,173 @@
                         <div class="modal-footer">
                             <button class="btn btn-success">Simpan</button>
                             <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- MODAL BUAT MEMO -->
+            <div class="modal fade" id="modalCreateMemo{{ $m->id }}" tabindex="-1">
+                <div class="modal-dialog modal-xl">
+                    <!-- 🎯 TAMBAHKAN enctype="multipart/form-data" -->
+                    <form class="modal-content" action="{{ route('memo.store', $m->id) }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title">📝 Buat Memo Baru - PO {{ $m->po_nota_dinas }}</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body" style="background: #f8f9fa;">
+                            <!-- Header Memo -->
+                            <div class="card p-3 mb-3 border-0 shadow-sm">
+                                <h6 class="fw-bold text-primary mb-3">Header Memo</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label small fw-bold">Tanggal</label>
+                                        <input type="date" name="tanggal" value="{{ date('Y-m-d') }}"
+                                            class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-bold">Nomor Memo</label>
+                                        <input type="text" name="nomor_memo" class="form-control form-control-sm"
+                                            placeholder="010/M/340/2026" required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-label small fw-bold">Hal / Perihal</label>
+                                        <input type="text" name="hal" class="form-control form-control-sm"
+                                            placeholder="Pengajuan Sewa Transportasi KRL..." required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold">Dari</label>
+                                        <input type="text" name="dari" value="Kepala Divisi Wilayah II"
+                                            class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold">Kepada Yth.</label>
+                                        <input type="text" name="kepada" value="Kepala Divisi Logistik"
+                                            class="form-control form-control-sm" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Isi Suratan / Paragraf -->
+                            <div class="card p-3 mb-3 border-0 shadow-sm">
+                                <h6 class="fw-bold text-primary mb-3">Isi Suratan / Paragraf</h6>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">1. Paragraf Pembuka / Dasar Surat</label>
+                                    <textarea name="pembuka" class="form-control form-control-sm" rows="3"
+                                        placeholder="Berdasarkan :&#10;a. Kontrak Nomor {{ $m->po_nota_dinas }}...&#10;b. Surat PT INKA..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">2. Paragraf Utama</label>
+                                    <textarea name="isi_utama" class="form-control form-control-sm" rows="2"
+                                        placeholder="Sehubungan dengan point 1 di atas dapat kami sampaikan..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Opsi Gunakan Tabel -->
+                            <div class="card p-3 mb-3 border-0 shadow-sm">
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input toggle-table-switch" type="checkbox" name="has_table"
+                                        value="1" id="switchTable{{ $m->id }}"
+                                        data-target="#tableSection{{ $m->id }}" checked>
+                                    <label class="form-check-label fw-bold text-primary"
+                                        for="switchTable{{ $m->id }}">Sertakan Tabel Rincian Barang / Jasa</label>
+                                </div>
+
+                                <div id="tableSection{{ $m->id }}">
+                                    <table class="table table-bordered table-sm mt-2 align-middle"
+                                        id="tableItem{{ $m->id }}">
+                                        <thead class="table-light">
+                                            <tr class="text-center small">
+                                                <th width="20%">Uraian Barang</th>
+                                                <th width="35%">Spesifikasi</th>
+                                                <th width="10%">Qty</th>
+                                                <th width="10%">Sat</th>
+                                                <th width="20%">Ket</th>
+                                                <th width="5%">#</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" name="uraian_barang[]"
+                                                        class="form-control form-control-sm" placeholder="Jasa Tenaga">
+                                                </td>
+                                                <td>
+                                                    <textarea name="spesifikasi[]" class="form-control form-control-sm" rows="1"></textarea>
+                                                </td>
+                                                <td><input type="text" name="qty[]"
+                                                        class="form-control form-control-sm text-center"></td>
+                                                <td><input type="text" name="satuan[]"
+                                                        class="form-control form-control-sm text-center"></td>
+                                                <td><input type="text" name="keterangan_item[]"
+                                                        class="form-control form-control-sm"></td>
+                                                <td><button type="button"
+                                                        class="btn btn-sm btn-danger btn-remove-row">×</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-sm btn-outline-success btn-add-row"
+                                        data-target="#tableItem{{ $m->id }}">+ Tambah Baris Tabel</button>
+                                </div>
+                            </div>
+
+                            <!-- Catatan, Penutup & Tanda Tangan -->
+                            <div class="card p-3 mb-3 border-0 shadow-sm">
+                                <h6 class="fw-bold text-primary mb-3">Catatan, Penutup & Tanda Tangan</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold">Note / Catatan Khusus (Opsional)</label>
+                                        <textarea name="catatan_note" class="form-control form-control-sm" rows="2"
+                                            placeholder="Note: Mohon segera ditindaklanjuti..."></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold">3. Paragraf Penutup</label>
+                                        <textarea name="penutup" class="form-control form-control-sm" rows="2"
+                                            placeholder="Demikian memo pengajuan ini kami sampaikan..."></textarea>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-bold">Jabatan Penandatangan</label>
+                                        <input type="text" name="jabatan_penandatangan"
+                                            value="Kepala Divisi Wilayah II" class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-bold">Nama Penandatangan</label>
+                                        <input type="text" name="nama_penandatangan" value="SUGIYATNO"
+                                            class="form-control form-control-sm" required>
+                                    </div>
+                                    <!-- 🎯 UPLOAD TANDA TANGAN -->
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-bold">Upload Tanda Tangan (PNG/JPG)</label>
+                                        <input type="file" name="ttd_image" class="form-control form-control-sm"
+                                            accept="image/png, image/jpeg, image/jpg">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 🎯 SECTION LAMPIRAN DOKUMEN / GAMBAR -->
+                            <div class="card p-3 mb-3 border-0 shadow-sm">
+                                <h6 class="fw-bold text-primary mb-3">Lampiran Dokumen / Gambar (Opsional)</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold">Judul / Keterangan Lampiran</label>
+                                        <input type="text" name="judul_lampiran" class="form-control form-control-sm"
+                                            placeholder="Contoh: Lampiran Foto Kondisi Lapangan">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold">Upload File Lampiran (Gambar/PDF)</label>
+                                        <input type="file" name="file_lampiran" class="form-control form-control-sm"
+                                            accept="image/*,application/pdf">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">💾 Generate Memo & Simpan Ke PO</button>
                         </div>
                     </form>
                 </div>
@@ -1665,39 +1837,109 @@
             });
 
             // ====== Tombol Hapus Dokumen ======
+            // document.addEventListener("click", async function(e) {
+            //     if (e.target.classList.contains("btn-delete-doc")) {
+            //         e.preventDefault();
+            //         const btn = e.target;
+            //         const docId = btn.dataset.id;
+            //         const url = btn.dataset.url;
+            //         const parent = btn.closest(".doc-item");
+
+            //         if (!confirm("Yakin ingin menghapus dokumen ini?")) return;
+
+            //         btn.innerHTML = "🗑️ Menghapus...";
+            //         btn.disabled = true;
+
+            //         try {
+            //             const response = await fetch(url, {
+            //                 method: "DELETE",
+            //                 headers: {
+            //                     "X-CSRF-TOKEN": document.querySelector(
+            //                         'meta[name="csrf-token"]').content
+            //                 }
+            //             });
+
+            //             if (response.ok) {
+            //                 parent.classList.add("animate__fadeOutDown");
+            //                 setTimeout(() => parent.remove(), 400);
+            //             } else {
+            //                 throw new Error("Gagal menghapus dokumen");
+            //             }
+            //         } catch (err) {
+            //             alert("❌ Gagal menghapus dokumen.");
+            //             btn.innerHTML = "🗑️ Hapus";
+            //             btn.disabled = false;
+            //         }
+            //     }
+            // });
+
+
+
+            // ====== Tombol Hapus Dokumen ======
             document.addEventListener("click", async function(e) {
-                if (e.target.classList.contains("btn-delete-doc")) {
-                    e.preventDefault();
-                    const btn = e.target;
-                    const docId = btn.dataset.id;
-                    const url = btn.dataset.url;
-                    const parent = btn.closest(".doc-item");
+                const btn = e.target.closest(".btn-delete-doc");
+                if (!btn) return;
 
-                    if (!confirm("Yakin ingin menghapus dokumen ini?")) return;
+                e.preventDefault();
 
-                    btn.innerHTML = "🗑️ Menghapus...";
-                    btn.disabled = true;
+                const url = btn.dataset.url;
+                const parent = btn.closest(".doc-item");
 
-                    try {
-                        const response = await fetch(url, {
-                            method: "DELETE",
-                            headers: {
-                                "X-CSRF-TOKEN": document.querySelector(
-                                    'meta[name="csrf-token"]').content
-                            }
-                        });
+                if (!confirm("Yakin ingin menghapus dokumen ini?")) return;
 
-                        if (response.ok) {
-                            parent.classList.add("animate__fadeOutDown");
-                            setTimeout(() => parent.remove(), 400);
-                        } else {
-                            throw new Error("Gagal menghapus dokumen");
+                const originalText = btn.innerHTML;
+                btn.innerHTML = "🗑️ Menghapus...";
+                btn.disabled = true;
+
+                try {
+                    const response = await fetch(url, {
+                        method: "DELETE",
+                        headers: {
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                                .content,
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
                         }
-                    } catch (err) {
-                        alert("❌ Gagal menghapus dokumen.");
-                        btn.innerHTML = "🗑️ Hapus";
-                        btn.disabled = false;
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        // Hapus elemen dari DOM
+                        if (parent) {
+                            parent.classList.add("animate__fadeOutDown");
+                            setTimeout(() => {
+                                parent.remove();
+
+                                const container = document.querySelector(".doc-list-container");
+                                if (container && container.querySelectorAll(".doc-item")
+                                    .length === 0) {
+                                    container.innerHTML =
+                                        '<p class="text-muted">Belum ada dokumen.</p>';
+                                }
+                            }, 400);
+                        }
+
+                        // Update Progress Bar
+                        if (result.progress !== undefined) {
+                            const progressBar = document.querySelector("#progress-bar");
+                            const progressText = document.querySelector("#progress-text");
+
+                            if (progressBar) {
+                                progressBar.style.width = `${result.progress}%`;
+                                progressBar.setAttribute("aria-valuenow", result.progress);
+                            }
+                            if (progressText) {
+                                progressText.innerText = `${result.progress}%`;
+                            }
+                        }
+                    } else {
+                        throw new Error(result.message || "Gagal menghapus dokumen");
                     }
+                } catch (err) {
+                    alert("❌ Gagal menghapus dokumen: " + err.message);
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
                 }
             });
         });
@@ -1757,6 +1999,40 @@
                     setTimeout(() => filterSection.classList.add("d-none"), 400);
                     toggleBtn.innerHTML = "🔍 Lihat Filter";
                 }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Toggle tampil/sembunyikan area tabel memo
+            $(document).on('change', '.toggle-table-switch', function() {
+                let target = $(this).data('target');
+                if ($(this).is(':checked')) {
+                    $(target).slideDown();
+                } else {
+                    $(target).slideUp();
+                }
+            });
+
+            // Tambah Baris Tabel
+            $(document).on('click', '.btn-add-row', function() {
+                let table = $($(this).data('target')).find('tbody');
+                let newRow = `
+            <tr>
+                <td><input type="text" name="uraian_barang[]" class="form-control form-control-sm"></td>
+                <td><textarea name="spesifikasi[]" class="form-control form-control-sm" rows="1"></textarea></td>
+                <td><input type="text" name="qty[]" class="form-control form-control-sm text-center"></td>
+                <td><input type="text" name="satuan[]" class="form-control form-control-sm text-center"></td>
+                <td><input type="text" name="keterangan_item[]" class="form-control form-control-sm"></td>
+                <td><button type="button" class="btn btn-sm btn-danger btn-remove-row">×</button></td>
+            </tr>`;
+                table.append(newRow);
+            });
+
+            // Hapus Baris Tabel
+            $(document).on('click', '.btn-remove-row', function() {
+                $(this).closest('tr').remove();
             });
         });
     </script>

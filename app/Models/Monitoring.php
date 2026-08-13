@@ -28,9 +28,25 @@ class Monitoring extends Model
         return $this->belongsTo(Proyek::class);
     }
 
+    // public function documents()
+    // {
+    //     return $this->hasMany(MonitoringDocument::class);
+    // }
+
+    // Tambahkan relasi ini di Monitoring.php
+public function memo()
+{
+    return $this->hasOne(Memo::class, 'monitoring_id');
+}
+
+    public function memos()
+    {
+        return $this->hasMany(Memo::class, 'monitoring_id');
+    }
+
     public function documents()
     {
-        return $this->hasMany(MonitoringDocument::class);
+        return $this->hasMany(MonitoringDocument::class, 'monitoring_id');  // sesuaikan nama model dokumen Anda
     }
 
     /**
