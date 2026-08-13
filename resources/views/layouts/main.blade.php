@@ -519,6 +519,7 @@
                                         'menu.personil',
                                         'aktivitas-personil.index',
                                         'pekerjaan.index',
+                                        'monitoring.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -577,6 +578,7 @@
                                         'menu.personil',
                                         'aktivitas-personil.index',
                                         'pekerjaan.index',
+                                        'monitoring.index',
                                     ]);
                                 @endphp
 
@@ -1148,6 +1150,15 @@
                                                             </a>
                                                         </li>
 
+                                                        {{-- Monitoring --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('monitoring.index') }}"
+                                                                class="nav-link {{ request()->routeIs('monitoring.*', 'pengiriman.*', 'alat.*', 'fasilitas-harian.*', 'assets.*', 'asset-maintenance.*', 'checksheet.*', 'lp3m.*', 'rewinding.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-chart-line"></i>
+                                                                <p>Monitoring</p>
+                                                            </a>
+                                                        </li>
+
 
                                                         <li class="nav-item">
                                                             <a href="{{ route('mro.riwayat') }}"
@@ -1158,7 +1169,7 @@
                                                         </li>
 
                                                         {{-- Monitoring --}}
-                                                        <li
+                                                        {{-- <li
                                                             class="nav-item {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.index', 'rewinding.index', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*', 'lp3m.index') ? 'menu-open' : '' }}">
                                                             <a href="#"
                                                                 class="nav-link {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.index', 'rewinding.index', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*', 'lp3m.index') ? 'active' : '' }}">
@@ -1170,7 +1181,7 @@
                                                             </a>
 
                                                             <ul class="nav nav-treeview">
-                                                                {{-- Monitoring Pengiriman --}}
+                                                                
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('pengiriman.index') }}"
                                                                         class="nav-link {{ request()->routeIs('pengiriman.index') ? 'active' : '' }}">
@@ -1179,7 +1190,7 @@
                                                                     </a>
                                                                 </li>
 
-                                                                {{-- Monitoring Alat Angkat-angkut --}}
+                                                                
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('alat.index') }}"
                                                                         class="nav-link {{ request()->routeIs('alat.index') ? 'active' : '' }}">
@@ -1188,7 +1199,7 @@
                                                                     </a>
                                                                 </li>
 
-                                                                {{-- Checksheet Harian Fasilitas --}}
+                                                                
                                                                 <li class="nav-item">
 
                                                                     <a href="{{ route('fasilitas-harian.index') }}"
@@ -1204,7 +1215,7 @@
 
                                                                 </li>
 
-                                                                {{-- Monitoring Preventive Maintenance --}}
+                                                                
                                                                 <li
                                                                     class="nav-item has-treeview
                                                                     {{ request()->routeIs('assets.*') ||
@@ -1232,7 +1243,7 @@
 
                                                                     <ul class="nav nav-treeview">
 
-                                                                        {{-- Matrix Asset --}}
+                                                                        
                                                                         <li
                                                                             class="nav-item has-treeview
                                                                             {{ request()->routeIs('assets.*') || request()->routeIs('asset-maintenance.*') ? 'menu-open' : '' }}">
@@ -1287,7 +1298,7 @@
 
                                                                         </li>
 
-                                                                        {{-- Checksheet --}}
+                                                                        
                                                                         <li class="nav-item">
 
                                                                             <a href="{{ route('checksheet.index') }}"
@@ -1306,7 +1317,7 @@
 
                                                                 </li>
 
-                                                                {{-- Monitroing SPR --}}
+                                                                
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('lp3m.index') }}"
                                                                         class="nav-link {{ request()->routeIs('lp3m.index') ? 'active' : '' }}">
@@ -1315,7 +1326,7 @@
                                                                     </a>
                                                                 </li>
 
-                                                                {{-- Monitoring Rewinding --}}
+                                                                
                                                                 <li class="nav-item">
                                                                     <a href="{{ route('rewinding.index') }}"
                                                                         class="nav-link {{ request()->routeIs('rewinding.index') ? 'active' : '' }}">
@@ -1325,7 +1336,7 @@
                                                                 </li>
 
                                                             </ul>
-                                                        </li>
+                                                        </li> --}}
 
                                                         {{-- End Monitoring --}}
 

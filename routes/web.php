@@ -974,6 +974,9 @@ Route::prefix('products')->group(function () {
     Route::get('/pekerjaan', function () {
         return view('menusidebar.menu-sidebar-pekerjaan');  // Menampilkan file view landing page pekerjaan
     })->name('pekerjaan.index');
+    Route::get('/monitoring', function () {
+        return view('menusidebar.menu-sidebar-monitoring');
+    })->name('monitoring.index');
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
