@@ -512,7 +512,6 @@
                                         'fasilitas-harian.index',
                                         'asset-maintenance.index',
                                         'assets.index',
-                                        'rewinding.dashboard',
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
                                         'master-personil.index',
@@ -568,7 +567,6 @@
                                         'fasilitas-harian.index',
                                         'asset-maintenance.index',
                                         'assets.index',
-                                        'rewinding.dashboard',
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
                                         'master-personil.index',
@@ -1088,48 +1086,7 @@
                                                             </a>
                                                         </li>
 
-                                                        {{-- Dashboard --}}
-                                                        <li
-                                                            class="nav-item has-treeview {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') || Route::is('lp3m.dashboard*') || Route::is('alat.dashboard*') ? 'menu-open' : '' }}">
-
-                                                            <a href="#"
-                                                                class="nav-link {{ Route::is('pengiriman.dashboard*') || Route::is('rewinding.dashboard*') || Route::is('lp3m.dashboard*') || Route::is('alat.dashboard*') ? 'active' : '' }}">
-
-                                                                <i class="nav-icon fas fa-tachometer-alt"></i>
-
-                                                                <p>
-                                                                    Dashboard
-                                                                    <i class="right fas fa-angle-left"></i>
-                                                                </p>
-
-                                                            </a>
-
-                                                            <ul class="nav nav-treeview">
-
-                                                                
-
-                                                                
-
-                                                                
-
-                                                                <li class="nav-item">
-
-                                                                    <a href="{{ route('rewinding.dashboard') }}"
-                                                                        class="nav-link {{ Route::currentRouteName() == 'rewinding.dashboard' ? 'active' : '' }}">
-
-                                                                        <i class="far fa-circle nav-icon"></i>
-
-                                                                        <p>Dashboard Rewinding</p>
-
-                                                                    </a>
-
-                                                                </li>
-
-
-
-                                                            </ul>
-
-                                                        </li>
+                                                        
 
 
 

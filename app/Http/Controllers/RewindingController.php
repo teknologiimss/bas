@@ -649,7 +649,8 @@ class RewindingController extends Controller
         $status = $request->status;
 
         $data = Rewinding::with('folder')
-            ->when($status, function ($q) use ($status) {
+            // Jalankan filter HANYA JIKA status diisi DAN nilainya bukan 'all'
+            ->when($status && $status !== 'all', function ($q) use ($status) {
                 $q->where('status', $status);
             })
             ->latest()

@@ -56,6 +56,24 @@
             box-shadow: 0 8px 20px rgba(11, 31, 58, 0.35);
         }
 
+        /* DASHBOARD BUTTON */
+        .btn-dashboard {
+            background: linear-gradient(135deg, #1e3c72, #2a5298) !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 10px !important;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-dashboard:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(30, 60, 114, 0.35);
+            color: #ffffff !important;
+        }
+
         /* LIGHT BUTTON */
         .btn-light {
             border-radius: 10px;
@@ -166,6 +184,106 @@
             transform: scale(1.05);
         }
 
+        /* DASHBOARD STYLES INSIDE MODAL */
+        .dashboard-header-modal {
+            background: linear-gradient(135deg, #0b1f3a, #163a6b);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(11, 31, 58, .18);
+        }
+
+        .dashboard-header-modal h4 {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .dashboard-header-modal p {
+            margin: 5px 0 0;
+            opacity: .9;
+        }
+
+        .stat-card-modal {
+            background: white;
+            border: 1px solid #e6eef8;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(11, 31, 58, .08);
+            transition: .3s;
+            height: 100%;
+            display: block;
+            text-decoration: none !important;
+            cursor: pointer;
+        }
+
+        .stat-card-modal:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(11, 31, 58, .15);
+        }
+
+        .stat-value-modal {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #163a6b;
+        }
+
+        .stat-title-modal {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .text-blue-custom {
+            color: #2563eb !important;
+        }
+
+        .card-dash {
+            border: 1px solid #e6eef8;
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(11, 31, 58, .08);
+            overflow: hidden;
+        }
+
+        .card-dash-header {
+            background: #163a6b;
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 12px 20px;
+        }
+
+        .scroll-table-modal {
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .scroll-table-modal::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-table-modal::-webkit-scrollbar-thumb {
+            background: #163a6b;
+            border-radius: 10px;
+        }
+
+        .table-dash thead th {
+            background: #163a6b !important;
+            color: white !important;
+            border-color: #163a6b !important;
+        }
+
+        .table-dash td,
+        .table-dash th {
+            vertical-align: middle;
+            font-size: 13px;
+        }
+
+        .table-dash tbody tr:hover {
+            background: #eef4ff;
+        }
+
         /* ANIMATION */
         @keyframes fadeUp {
             from {
@@ -221,9 +339,14 @@
                 align-items: stretch !important;
             }
 
-            .d-flex.justify-content-between.mb-3 .btn {
+            .header-buttons {
+                flex-direction: column;
                 width: 100%;
-                margin: 0 !important;
+            }
+
+            .header-buttons .btn {
+                width: 100%;
+                margin: 5px 0 !important;
                 height: 42px;
                 font-size: 14px;
             }
@@ -325,10 +448,19 @@
         }
     </style>
 
+    <!-- AREA TOMBOL ATAS -->
     <div class="d-flex justify-content-between mb-3">
-        <button class="btn btn-success" data-toggle="modal" data-target="#modalCreate" style="margin: 10px;">
-            + Buat Data Baru
-        </button>
+        <div class="d-flex gap-2 header-buttons">
+            <button class="btn btn-success" data-toggle="modal" data-target="#modalCreate" style="margin: 10px 5px 10px 10px;">
+                + Buat Data Baru
+            </button>
+
+            <!-- TOMBOL LIHAT DASHBOARD LENGKAP -->
+            <button type="button" class="btn btn-dashboard" data-toggle="modal" data-target="#modalDashboard"
+                style="margin: 10px 10px 10px 5px;">
+                <i class="fas fa-chart-pie"></i> Lihat Dashboard
+            </button>
+        </div>
     </div>
 
     <!-- MODERN SEARCH -->
@@ -351,13 +483,9 @@
             <div class="d-flex justify-content-between align-items-center border p-3 mb-2 rounded">
 
                 <div>
-
                     <h5>
-
                         {{ $folder->nama_folder }}
-
                     </h5>
-
                 </div>
 
                 <div class="action-buttons">
@@ -401,30 +529,24 @@
                         @method('PUT')
 
                         <div class="modal-header">
-                            <h5>Edit Folder</h5>
+                            <h5 class="text-white m-0">Edit Folder</h5>
+                            <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                         </div>
 
                         <div class="modal-body">
-
                             <label>Nama Folder</label>
-
                             <input type="text" name="nama_folder" class="form-control" value="{{ $folder->nama_folder }}"
                                 required>
-
                         </div>
 
                         <div class="modal-footer">
-
                             <button class="btn btn-success">
                                 Simpan
                             </button>
 
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
-
                                 Batal
-
                             </button>
-
                         </div>
 
                     </form>
@@ -443,7 +565,8 @@
             <form class="modal-content" action="{{ route('rewinding.folder.store') }}" method="POST">
                 @csrf
                 <div class="modal-header">
-                    <h5>Buat Proyek Baru</h5>
+                    <h5 class="text-white m-0">Buat Proyek Baru</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <label>Nama Proyek *</label>
@@ -456,5 +579,216 @@
             </form>
         </div>
     </div>
+
+    <!-- MODAL DASHBOARD LENGKAP -->
+    @php
+        $dashTotal = \App\Models\Rewinding::count();
+        $dashOpen = \App\Models\Rewinding::where('status', 'Open')->count();
+        $dashClosed = \App\Models\Rewinding::where('status', 'Closed')->count();
+        $dashProgress = $dashTotal > 0 ? round(($dashClosed / $dashTotal) * 100, 2) : 0;
+        $dashOpenData = \App\Models\Rewinding::where('status', 'Open')->orderBy('tanggal_sjn_keluar')->get();
+    @endphp
+
+    <div class="modal fade" id="modalDashboard" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="text-white m-0"><i class="fas fa-chart-line mr-2"></i> Dashboard Monitoring Rewinding</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4" style="background: #f4f7fb;">
+
+                    {{-- HEADER DASHBOARD --}}
+                    <div class="dashboard-header-modal">
+                        <h4>📊 Dashboard Monitoring Rewinding</h4>
+                        <p>Monitoring Data Rewinding</p>
+                    </div>
+
+                    {{-- KPI CARDS WITH LINK INTEGRATION --}}
+                    <div class="row">
+
+                        {{-- Total --}}
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="{{ route('rewinding.list', ['status' => 'all']) }}" class="stat-card-modal">
+                                <i class="fas fa-sync-alt fa-2x text-blue-custom mb-2"></i>
+                                <div class="stat-value-modal text-blue-custom">{{ $dashTotal }}</div>
+                                <div class="stat-title-modal">Total Rewinding</div>
+                            </a>
+                        </div>
+
+                        {{-- Open --}}
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="{{ route('rewinding.list', ['status' => 'Open']) }}" class="stat-card-modal">
+                                <i class="fas fa-folder-open fa-2x text-blue-custom mb-2"></i>
+                                <div class="stat-value-modal text-blue-custom">{{ $dashOpen }}</div>
+                                <div class="stat-title-modal">Open</div>
+                            </a>
+                        </div>
+
+                        {{-- Closed --}}
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="{{ route('rewinding.list', ['status' => 'Closed']) }}" class="stat-card-modal">
+                                <i class="fas fa-check-circle fa-2x text-blue-custom mb-2"></i>
+                                <div class="stat-value-modal text-blue-custom">{{ $dashClosed }}</div>
+                                <div class="stat-title-modal">Closed</div>
+                            </a>
+                        </div>
+
+                        {{-- Progress --}}
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="stat-card-modal" style="cursor: default;">
+                                <i class="fas fa-chart-pie fa-2x text-blue-custom mb-2"></i>
+                                <div class="stat-value-modal text-blue-custom">{{ $dashProgress }}%</div>
+                                <div class="stat-title-modal">Completion</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {{-- CHART + TABLE OPEN --}}
+                    <div class="row mt-2">
+
+                        {{-- CHART DOUGHNUT --}}
+                        <div class="col-md-4 mb-3">
+                            <div class="card-dash bg-white">
+                                <div class="card-dash-header">
+                                    Status Rewinding
+                                </div>
+                                <div class="card-body text-center">
+                                    <div style="max-width:240px; margin:auto;">
+                                        <canvas id="modalStatusChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- TABLE OPEN --}}
+                        <div class="col-md-8 mb-3">
+                            <div class="card-dash bg-white">
+                                <div class="card-dash-header d-flex justify-content-between align-items-center">
+                                    <span>Data Rewinding Open</span>
+                                    <span class="badge badge-light">
+                                        {{ $dashOpenData->count() }} Data
+                                    </span>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="scroll-table-modal">
+                                        <table class="table table-bordered table-hover mb-0 table-dash">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>No SJN</th>
+                                                    <th>Tgl Keluar</th>
+                                                    <th>Tgl Masuk</th>
+                                                    <th>Deskripsi</th>
+                                                    <th>No SPPJP</th>
+                                                    <th>Status</th>
+                                                    <th>Durasi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($dashOpenData as $item)
+                                                    @php
+                                                        $durasi = 0;
+                                                        if ($item->tanggal_sjn_keluar) {
+                                                            $tglKeluar = \Carbon\Carbon::parse(
+                                                                $item->tanggal_sjn_keluar,
+                                                            );
+                                                            if ($item->tanggal_sjn_masuk) {
+                                                                $tglMasuk = \Carbon\Carbon::parse(
+                                                                    $item->tanggal_sjn_masuk,
+                                                                );
+                                                                $durasi = $tglKeluar->diffInDays($tglMasuk);
+                                                            } else {
+                                                                $durasi = $tglKeluar->diffInDays(now());
+                                                            }
+                                                        }
+                                                    @endphp
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $item->no_sjn }}</td>
+                                                        <td>
+                                                            {{ $item->tanggal_sjn_keluar ? \Carbon\Carbon::parse($item->tanggal_sjn_keluar)->format('d-m-Y') : '-' }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $item->tanggal_sjn_masuk ? \Carbon\Carbon::parse($item->tanggal_sjn_masuk)->format('d-m-Y') : '-' }}
+                                                        </td>
+                                                        <td>{{ $item->deskripsi }}</td>
+                                                        <td>{{ $item->no_sppjp }}</td>
+                                                        <td>
+                                                            @if ($item->status == 'Closed')
+                                                                <span class="badge badge-success">Closed</span>
+                                                            @else
+                                                                <span class="badge badge-warning">Open</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if ($item->status == 'Closed')
+                                                                <span class="badge badge-success">{{ $durasi }}
+                                                                    Hari</span>
+                                                            @else
+                                                                <span
+                                                                    class="badge {{ $durasi > 14 ? 'badge-danger' : 'badge-warning' }}">
+                                                                    {{ $durasi }} Hari
+                                                                </span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">
+                                                            Tidak ada data open
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- CHART SCRIPT --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const statusCtx = document.getElementById('modalStatusChart');
+            if (statusCtx) {
+                new Chart(statusCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Open', 'Closed'],
+                        datasets: [{
+                            data: [
+                                {{ $dashOpen }},
+                                {{ $dashClosed }}
+                            ],
+                            backgroundColor: ['#ffc107', '#28a745']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 
 @endsection

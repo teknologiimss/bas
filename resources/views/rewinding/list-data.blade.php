@@ -10,8 +10,8 @@
         }
 
         /* =========================
-           CARD
-        ========================= */
+               CARD
+            ========================= */
         .modern-card {
             border: 1px solid #e6eef8;
             border-radius: 18px;
@@ -22,8 +22,8 @@
         }
 
         /* =========================
-           HEADER
-        ========================= */
+               HEADER
+            ========================= */
         .modern-header {
             background: linear-gradient(135deg, #0b1f3a, #163a6b);
             color: white;
@@ -36,8 +36,8 @@
         }
 
         /* =========================
-           BUTTON BACK
-        ========================= */
+               BUTTON BACK
+            ========================= */
         .btn-back {
             background: white;
             color: #163a6b;
@@ -56,8 +56,8 @@
         }
 
         /* =========================
-           TABLE
-        ========================= */
+               TABLE
+            ========================= */
         .modern-table {
             width: 100%;
             margin: 0;
@@ -87,8 +87,8 @@
         }
 
         /* =========================
-           BADGE
-        ========================= */
+               BADGE
+            ========================= */
         .badge-open {
             background: #2563eb;
             color: white;
@@ -108,8 +108,8 @@
         }
 
         /* =========================
-           TABLE RESPONSIVE
-        ========================= */
+               TABLE RESPONSIVE
+            ========================= */
         .table-responsive-custom {
             overflow-x: auto;
         }
@@ -124,8 +124,8 @@
         }
 
         /* =========================
-           PAGINATION
-        ========================= */
+               PAGINATION
+            ========================= */
         .pagination .page-link {
             color: #163a6b;
             border-radius: 8px;
@@ -143,8 +143,8 @@
         }
 
         /* =========================
-           ANIMATION
-        ========================= */
+               ANIMATION
+            ========================= */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -158,8 +158,8 @@
         }
 
         /* =========================
-           MOBILE
-        ========================= */
+               MOBILE
+            ========================= */
         @media(max-width:768px) {
 
             .modern-header {
@@ -191,7 +191,7 @@
                     @endif
                 </div>
 
-                <a href="{{ route('rewinding.dashboard') }}" class="btn-back">
+                <a href="{{ route('rewinding.index') }}" class="btn-back">
                     ⬅ Dashboard
                 </a>
 
