@@ -520,6 +520,7 @@
                                         'aktivitas-personil.index',
                                         'pekerjaan.index',
                                         'monitoring.index',
+                                        'keuangan.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -579,6 +580,7 @@
                                         'aktivitas-personil.index',
                                         'pekerjaan.index',
                                         'monitoring.index',
+                                        'keuangan.index',
                                     ]);
                                 @endphp
 
@@ -1396,7 +1398,7 @@
                                                         </li>
 
                                                         {{-- SPPD --}}
-                                                        <li class="nav-item">
+                                                        {{-- <li class="nav-item">
                                                             <a href="{{ route('sppd.index') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'sppd.index' ? 'active' : '' }}">
                                                                 <i class="nav-icon far fa-file-archive"></i>
@@ -1410,6 +1412,16 @@
                                                                 class="nav-link {{ Route::current()->getName() == 'kasbon.index' ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-wallet"></i>
                                                                 <p>Kasbon MRO</p>
+                                                            </a>
+                                                        </li> --}}
+
+
+                                                        {{-- Administrasi Keuangan --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('keuangan.index') }}"
+                                                                class="nav-link {{ request()->routeIs('keuangan.*', 'sppd.*', 'kasbon.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                                                <p>Administrasi Keuangan</p>
                                                             </a>
                                                         </li>
 
