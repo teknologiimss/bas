@@ -109,8 +109,12 @@ class PurchaseRequestController extends Controller
             // WILAYAH 2
             $requests->whereRaw('LOWER(purchase_request.no_pr) LIKE ?', ['%wil2%']);
         } elseif ($user->role == 14) {
-            // MRO
-            $requests->whereRaw('LOWER(purchase_request.no_pr) LIKE ?', ['%mro%']);
+            // MRO & MEMO
+            $requests->where(function ($q) {
+                $q
+                    ->whereRaw('LOWER(purchase_request.no_pr) LIKE ?', ['%mro%'])
+                    ->orWhereRaw('LOWER(purchase_request.no_pr) LIKE ?', ['%/m/%']);
+            });
         } elseif ($user->role == 0) {
             // ADMIN → tampil semua
         } else {
