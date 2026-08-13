@@ -1144,7 +1144,7 @@
                                                             <a href="{{ route('pekerjaan.index') }}"
                                                                 class="nav-link {{ request()->routeIs('pekerjaan.*') || request()->routeIs('proyek.*') || request()->routeIs('mro.progress*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-briefcase"></i>
-                                                                <p>Pekerjaan Jono</p>
+                                                                <p>Pekerjaan</p>
                                                             </a>
                                                         </li>
 
