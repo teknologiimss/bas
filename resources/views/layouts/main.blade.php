@@ -521,6 +521,7 @@
                                         'pekerjaan.index',
                                         'monitoring.index',
                                         'keuangan.index',
+                                        'cuti.menu',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -581,6 +582,7 @@
                                         'pekerjaan.index',
                                         'monitoring.index',
                                         'keuangan.index',
+                                        'cuti.menu',
                                     ]);
                                 @endphp
 
@@ -1428,7 +1430,7 @@
 
 
                                                         {{-- Cuti --}}
-                                                        <li
+                                                        {{-- <li
                                                             class="nav-item has-treeview {{ request()->routeIs('cuti.*') ? 'menu-open' : '' }}">
                                                             <a href="#"
                                                                 class="nav-link {{ request()->routeIs('cuti.*') ? 'active' : '' }}">
@@ -1466,6 +1468,15 @@
                                                                 </li>
 
                                                             </ul>
+                                                        </li> --}}
+
+                                                        {{-- Cuti --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('cuti.menu') }}"
+                                                                class="nav-link {{ request()->routeIs('cuti.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-calendar-check"></i>
+                                                                <p>Cuti</p>
+                                                            </a>
                                                         </li>
                                                     @endif
 
