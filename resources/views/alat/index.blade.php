@@ -25,16 +25,26 @@
             animation: fadeUp .5s ease;
         }
 
+        .card-header-navy {
+            background: #163a6b;
+            color: white;
+            font-weight: bold;
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+            padding: 15px 20px;
+        }
+
         /* ITEM ROW */
-        .border {
+        .border-custom {
             border: none !important;
             border-left: 5px solid #0d3b66 !important;
             border-radius: 14px !important;
             background: #fff;
             transition: .3s;
+            box-shadow: 0 4px 12px rgba(13, 42, 84, .05);
         }
 
-        .border:hover {
+        .border-custom:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 22px rgba(13, 42, 84, .15);
         }
@@ -58,6 +68,21 @@
             background: linear-gradient(135deg, #0a2f55, #2d5ea6) !important;
             transform: translateY(-2px);
             box-shadow: 0 10px 18px rgba(13, 59, 102, .25);
+        }
+
+        /* DASHBOARD BUTTON */
+        .btn-info-dashboard {
+            background: linear-gradient(135deg, #17a2b8, #117a8b) !important;
+            border: none !important;
+            color: #fff !important;
+            border-radius: 10px !important;
+            transition: .25s;
+        }
+
+        .btn-info-dashboard:hover {
+            background: linear-gradient(135deg, #138496, #0b515d) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 18px rgba(23, 162, 184, .25);
         }
 
         /* MONITOR BUTTON */
@@ -89,6 +114,34 @@
             box-shadow: 0 10px 20px rgba(214, 48, 49, .25);
         }
 
+        /* STAT CARDS IN DASHBOARD */
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(11, 31, 58, .08);
+            transition: .3s;
+            height: 100%;
+            border: 1px solid #e6eef8;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(11, 31, 58, .15);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #163a6b;
+        }
+
+        .stat-title {
+            color: #5b6b82;
+            font-size: 13px;
+        }
+
         /* MODAL */
         .modal-content {
             border: none;
@@ -113,6 +166,22 @@
         .form-control:focus {
             border-color: #0d3b66;
             box-shadow: 0 0 0 .2rem rgba(13, 59, 102, .15);
+        }
+
+        /* TABLE */
+        .table th {
+            background: #163a6b;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .table td {
+            white-space: nowrap;
+            color: #1f2d3d;
+        }
+
+        .table-hover tbody tr:hover {
+            background: #eef4ff;
         }
 
         /* PAGINATION */
@@ -183,7 +252,6 @@
             background: linear-gradient(135deg, #0a2f55, #2d5ea6);
         }
 
-        /* BUTTON */
         button,
         a {
             transition: .25s;
@@ -194,7 +262,6 @@
             transform: scale(.97);
         }
 
-        /* ANIMATION */
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -231,18 +298,15 @@
             }
         }
 
-        /* =========================
-           RESPONSIVE MOBILE
-        ========================= */
-
+        /* RESPONSIVE MOBILE */
         @media (max-width:768px) {
-
             .card {
                 padding: 15px !important;
             }
 
             .d-flex.justify-content-between.mb-3 {
                 flex-direction: column;
+                gap: 10px;
             }
 
             .d-flex.justify-content-between.mb-3 .btn {
@@ -270,32 +334,32 @@
                 padding: 10px 15px;
             }
 
-            .border.p-3 {
+            .border-custom {
                 flex-direction: column !important;
                 align-items: flex-start !important;
                 gap: 14px;
                 padding: 15px !important;
             }
 
-            .border h5 {
+            .border-custom h5 {
                 font-size: 16px;
                 margin-bottom: 0;
                 word-break: break-word;
             }
 
-            .border>div:last-child {
+            .border-custom>div:last-child {
                 width: 100%;
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
             }
 
-            .border .btn,
-            .border form {
+            .border-custom .btn,
+            .border-custom form {
                 width: 100%;
             }
 
-            .border .btn {
+            .border-custom .btn {
                 height: 38px;
                 font-size: 12px;
                 display: flex;
@@ -328,13 +392,23 @@
                 font-size: 12px;
                 padding: 6px 10px;
             }
+
+            .stat-value {
+                font-size: 24px;
+            }
         }
     </style>
 
+    <!-- ACTION BUTTONS -->
     <div class="d-flex justify-content-between mb-3">
-        <button class="btn btn-success" data-toggle="modal" data-target="#modalCreate" style="margin: 10px;">
-            + Tambah Data
-        </button>
+        <div>
+            <button class="btn btn-success mr-2" data-toggle="modal" data-target="#modalCreate">
+                + Tambah Data
+            </button>
+            <button class="btn btn-info-dashboard" data-toggle="modal" data-target="#modalDashboard">
+                📊 Lihat Dashboard
+            </button>
+        </div>
     </div>
 
     <!-- MODERN SEARCH -->
@@ -354,7 +428,7 @@
         <h5 class="mb-3">Daftar Data Alat Angkat - Angkut MRO</h5>
 
         @foreach ($data as $p)
-            <div class="d-flex justify-content-between align-items-center border p-3 mb-2 rounded">
+            <div class="d-flex justify-content-between align-items-center border-custom p-3 mb-2">
                 <div>
                     <h5 class="mb-1">{{ $p->nama_proyek }}</h5>
                 </div>
@@ -370,7 +444,7 @@
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger" onclick="return confirm('Hapus proyek ini?')">
-                            🗑️Delete
+                            🗑️ Delete
                         </button>
                     </form>
                 </div>
@@ -382,7 +456,8 @@
                     <form class="modal-content" action="{{ route('alat.update', $p->id) }}" method="POST">
                         @csrf
                         <div class="modal-header">
-                            <h5>Edit Proyek</h5>
+                            <h5 class="text-white mb-0">Edit Proyek</h5>
+                            <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
                             <label>Nama Proyek *</label>
@@ -391,7 +466,7 @@
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-success">Submit</button>
-                            <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -409,7 +484,8 @@
             <form class="modal-content" action="{{ route('alat.store') }}" method="POST">
                 @csrf
                 <div class="modal-header">
-                    <h5>Buat Proyek Baru</h5>
+                    <h5 class="text-white mb-0">Buat Proyek Baru</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <label>Nama Proyek *</label>
@@ -422,5 +498,138 @@
             </form>
         </div>
     </div>
+
+    <!-- MODAL DASHBOARD FULL-SCREEN -->
+    <div class="modal fade" id="modalDashboard" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content" style="background: #f4f7fb;">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white">
+                        <i class="fas fa-truck mr-2"></i> Dashboard Monitoring Alat Angkat-Angkut
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- STAT CARDS -->
+                    <div class="row mb-4">
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="{{ route('alat.list') }}" style="text-decoration:none;color:inherit">
+                                <div class="stat-card">
+                                    <i class="fas fa-truck fa-2x text-danger mb-2"></i>
+                                    <div class="stat-value text-danger">{{ $totalUnit }}</div>
+                                    <div class="stat-title">Total Unit</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="{{ route('alat.list', ['aset' => 'IMSS']) }}"
+                                style="text-decoration:none;color:inherit">
+                                <div class="stat-card">
+                                    <i class="fas fa-industry fa-2x text-success mb-2"></i>
+                                    <div class="stat-value text-success">{{ $imss }}</div>
+                                    <div class="stat-title">IMSS</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="{{ route('alat.list', ['aset' => 'NON']) }}"
+                                style="text-decoration:none;color:inherit">
+                                <div class="stat-card">
+                                    <i class="fas fa-warehouse fa-2x text-warning mb-2"></i>
+                                    <div class="stat-value text-warning">{{ $nonImss }}</div>
+                                    <div class="stat-title">Non IMSS</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="{{ route('alat.lokasi.list') }}" style="text-decoration:none;color:inherit">
+                                <div class="stat-card">
+                                    <i class="fas fa-map-marker-alt fa-2x text-info mb-2"></i>
+                                    <div class="stat-value text-info">{{ $totalLokasi }}</div>
+                                    <div class="stat-title">Total Lokasi</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- CHARTS & SUMMARY TABLE -->
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-header-navy">Jumlah Aset</div>
+                                <div class="card-body d-flex align-items-center justify-content-center">
+                                    <div style="width: 100%; max-width: 280px;">
+                                        <canvas id="statusChartModal"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            <div class="card h-100">
+                                <div class="card-header-navy">Ringkasan Unit</div>
+                                <div class="card-body p-0">
+                                    <div style="max-height: 380px; overflow-y: auto;">
+                                        <table class="table table-bordered table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Unit</th>
+                                                    <th>Total</th>
+                                                    <th>IMSS</th>
+                                                    <th>Non IMSS</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($unitSummary as $unit => $item)
+                                                    <tr>
+                                                        <td><strong>{{ $unit }}</strong></td>
+                                                        <td><span class="badge badge-success">{{ $item['total'] }}</span>
+                                                        </td>
+                                                        <td><span class="badge badge-danger">{{ $item['imss'] }}</span>
+                                                        </td>
+                                                        <td><span
+                                                                class="badge badge-warning">{{ $item['non_imss'] }}</span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctx = document.getElementById('statusChartModal').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['IMSS', 'Non IMSS'],
+                    datasets: [{
+                        data: [
+                            {{ $statusChart['imss'] }},
+                            {{ $statusChart['non'] }}
+                        ],
+                        backgroundColor: ['#dc3545', '#ffd43b']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+        });
+    </script>
 
 @endsection

@@ -245,7 +245,7 @@
 
                 </span>
 
-                <a href="{{ route('alat.dashboard') }}" class="btn btn-light btn-back">
+                <a href="{{ route('alat.index') }}" class="btn btn-light btn-back">
 
                     <i class="fas fa-arrow-left"></i>
                     Dashboard

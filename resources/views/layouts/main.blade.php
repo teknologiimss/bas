@@ -514,7 +514,6 @@
                                         'assets.index',
                                         'rewinding.dashboard',
                                         'lp3m.dashboard',
-                                        'alat.dashboard',
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
                                         'master-personil.index',
@@ -572,7 +571,6 @@
                                         'assets.index',
                                         'rewinding.dashboard',
                                         'lp3m.dashboard',
-                                        'alat.dashboard',
                                         'mro.daily-activity.index',
                                         'mro.weekly-activity',
                                         'master-personil.index',
@@ -1112,20 +1110,7 @@
 
                                                                 
 
-                                                                <li class="nav-item">
-
-                                                                    <a href="{{ route('alat.dashboard') }}"
-                                                                        class="nav-link {{ Route::currentRouteName() == 'alat.dashboard' ? 'active' : '' }}">
-
-                                                                        <i class="far fa-circle nav-icon"></i>
-
-                                                                        <p>
-                                                                            Dashboard Alat Angkat-Angkut
-                                                                        </p>
-
-                                                                    </a>
-
-                                                                </li>
+                                                                
 
                                                                 <li class="nav-item">
 

@@ -10,11 +10,63 @@ class AlatAngkutController extends Controller
 {
     public function index(Request $request)
     {
+        // 1. Data utama untuk daftar proyek
         $data = AlatAngkut::when($request->search, function ($q) use ($request) {
             $q->where('nama_proyek', 'like', '%' . $request->search . '%');
         })->latest()->paginate(10);
 
-        return view('alat.index', compact('data'));
+        // 2. Data statistik untuk Modal Dashboard
+        $detail = AlatAngkutDetail::all();
+        $totalUnit = $detail->count();
+
+        $imss = $detail->filter(function ($item) {
+            return str_contains(
+                strtoupper($item->aset ?? ''),
+                'IMSS'
+            );
+        })->count();
+
+        $nonImss = $totalUnit - $imss;
+
+        $totalLokasi = $detail
+            ->pluck('lokasi')
+            ->filter()
+            ->unique()
+            ->count();
+
+        $statusChart = [
+            'imss' => $imss,
+            'non' => $nonImss
+        ];
+
+        $unitSummary = AlatAngkutDetail::all()
+            ->groupBy('unit')
+            ->map(function ($items) {
+                $imssCount = $items->filter(function ($item) {
+                    return str_contains(
+                        strtoupper($item->aset ?? ''),
+                        'IMSS'
+                    );
+                })->count();
+
+                $nonImssCount = $items->count() - $imssCount;
+
+                return [
+                    'total' => $items->count(),
+                    'imss' => $imssCount,
+                    'non_imss' => $nonImssCount
+                ];
+            });
+
+        return view('alat.index', compact(
+            'data',
+            'totalUnit',
+            'imss',
+            'nonImss',
+            'totalLokasi',
+            'statusChart',
+            'unitSummary'
+        ));
     }
 
     public function store(Request $request)
@@ -70,7 +122,6 @@ class AlatAngkutController extends Controller
         // 🔥 SUMMARY FINAL
         // =========================
         $summary = $detail->groupBy('unit')->map(function ($items) {
-            // helper biar rapi
             $buildGroup = function ($collection) {
                 $lokasi = $collection->pluck('lokasi')->filter()->unique()->values();
                 $lambung = $collection->pluck('no_lambung')->filter()->unique()->values();
@@ -84,12 +135,12 @@ class AlatAngkutController extends Controller
 
             // 🔴 IMSS
             $imss = $items->filter(function ($item) {
-                return str_contains(strtoupper($item->aset), 'IMSS');
+                return str_contains(strtoupper($item->aset ?? ''), 'IMSS');
             });
 
             // 🟢 NON IMSS
             $non = $items->reject(function ($item) {
-                return str_contains(strtoupper($item->aset), 'IMSS');
+                return str_contains(strtoupper($item->aset ?? ''), 'IMSS');
             });
 
             // 📍 lokasi → semua lambung
@@ -138,22 +189,22 @@ class AlatAngkutController extends Controller
             'non' => $nonImss
         ];
 
-        $unitSummary = AlatAngkutDetail::get()
+        $unitSummary = AlatAngkutDetail::all()
             ->groupBy('unit')
             ->map(function ($items) {
-                $imss = $items->filter(function ($item) {
+                $imssCount = $items->filter(function ($item) {
                     return str_contains(
-                        strtoupper($item->aset),
+                        strtoupper($item->aset ?? ''),
                         'IMSS'
                     );
                 })->count();
 
-                $nonImss = $items->count() - $imss;
+                $nonImssCount = $items->count() - $imssCount;
 
                 return [
                     'total' => $items->count(),
-                    'imss' => $imss,
-                    'non_imss' => $nonImss
+                    'imss' => $imssCount,
+                    'non_imss' => $nonImssCount
                 ];
             });
 
@@ -165,7 +216,7 @@ class AlatAngkutController extends Controller
                 'nonImss',
                 'totalLokasi',
                 'statusChart',
-                'unitSummary',
+                'unitSummary'
             )
         );
     }
