@@ -522,6 +522,7 @@
                                         'monitoring.menu',
                                         'keuangan.index',
                                         'cuti.menu',
+                                        'gudang.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -583,6 +584,7 @@
                                         'monitoring.menu',
                                         'keuangan.index',
                                         'cuti.menu',
+                                        'gudang.index',
                                     ]);
                                 @endphp
 
@@ -1367,7 +1369,7 @@
                                                         </li> --}}
 
                                                         {{-- Gudang --}}
-                                                        <li
+                                                        {{-- <li
                                                             class="nav-item {{ request()->routeIs('mro', 'mro.stock.log') ? 'menu-open' : '' }}">
                                                             <a href="#"
                                                                 class="nav-link {{ request()->routeIs('mro', 'mro.stock.log') ? 'active' : '' }}">
@@ -1397,6 +1399,15 @@
                                                                 </li>
 
                                                             </ul>
+                                                        </li> --}}
+
+                                                        {{-- Gudang --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('gudang.index') }}"
+                                                                class="nav-link {{ request()->routeIs('gudang*', 'mro', 'mro.stock.log') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-warehouse"></i>
+                                                                <p>Gudang</p>
+                                                            </a>
                                                         </li>
 
                                                         {{-- SPPD --}}
