@@ -17,6 +17,7 @@ use App\Http\Controllers\KasbonController;
 use App\Http\Controllers\KontrakController;
 use App\Http\Controllers\Lp3mController;
 use App\Http\Controllers\MemoController;
+use App\Http\Controllers\Monitoring5RController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\MroController;
 use App\Http\Controllers\NotificationController;
@@ -988,6 +989,27 @@ Route::prefix('products')->group(function () {
     Route::get('/gudang', function () {
         return view('menusidebar.menu-sidebar-gudang');
     })->name('gudang.index');
+
+    // Monitoring 5R & Scrap
+    Route::prefix('monitoring-5r')->name('monitoring_5r.')->group(function () {
+        Route::get('/', [Monitoring5RController::class, 'index'])->name('index');
+        Route::post('/folder/store', [Monitoring5RController::class, 'storeFolder'])->name('folder.store');
+        Route::put('/folder/{id}', [Monitoring5RController::class, 'updateFolder'])->name('folder.update');
+        Route::delete('/folder/{id}', [Monitoring5RController::class, 'destroyFolder'])->name('folder.destroy');
+
+        Route::get('/monitor/{folder_id}', [Monitoring5RController::class, 'monitor'])->name('monitor');
+        Route::post('/monitor/{folder_id}/store', [Monitoring5RController::class, 'storeItem'])->name('item.store');
+
+        // ROUTE UPDATE & DELETE ITEM (Disesuaikan)
+        Route::put('/item/{id}/update', [Monitoring5RController::class, 'updateItem'])->name('item.update_item');
+        Route::delete('/item/{id}', [Monitoring5RController::class, 'deleteItem'])->name('item.delete');
+
+        Route::post('/monitor/bulk-delete', [Monitoring5RController::class, 'bulkDelete'])->name('item.bulk_delete');
+
+        Route::get('/detail/{id}', [Monitoring5RController::class, 'detailMonitor'])->name('detail');
+        Route::put('/detail/{id}/update', [Monitoring5RController::class, 'updateDetail'])->name('detail.update');
+        Route::delete('/lampiran/{id}', [Monitoring5RController::class, 'deleteLampiran'])->name('lampiran.delete');
+    });
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store

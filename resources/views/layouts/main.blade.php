@@ -523,6 +523,7 @@
                                         'keuangan.index',
                                         'cuti.menu',
                                         'gudang.index',
+                                        'monitoring_5r.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -585,6 +586,7 @@
                                         'keuangan.index',
                                         'cuti.menu',
                                         'gudang.index',
+                                        'monitoring_5r.index',
                                     ]);
                                 @endphp
 
@@ -1159,7 +1161,7 @@
                                                         {{-- Monitoring --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('monitoring.menu') }}"
-                                                                class="nav-link {{ request()->routeIs('monitoring.*', 'pengiriman.*', 'alat.*', 'fasilitas-harian.*', 'assets.*', 'asset-maintenance.*', 'checksheet.*', 'lp3m.*', 'rewinding.*') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('monitoring.*', 'pengiriman.*', 'alat.*', 'fasilitas-harian.*', 'assets.*', 'asset-maintenance.*', 'checksheet.*', 'lp3m.*', 'rewinding.*', 'monitoring_5r.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
                                                                 <p>Monitoring</p>
                                                             </a>
