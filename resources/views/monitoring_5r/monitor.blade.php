@@ -319,11 +319,11 @@
                     <div class="modal-body p-4">
                         <div class="form-group mb-3">
                             <label class="font-weight-bold small">Deskripsi Pekerjaan</label>
-                            <textarea name="deskripsi_pekerjaan" class="form-control" rows="2" required></textarea>
+                            <textarea name="deskripsi_pekerjaan" autocomplete="off" class="form-control" rows="2" required></textarea>
                         </div>
                         <div class="form-group mb-3">
                             <label class="font-weight-bold small">Nomor Kontrak</label>
-                            <input type="text" name="nomor_kontrak" class="form-control" required>
+                            <input type="text" autocomplete="off" name="nomor_kontrak" class="form-control" required>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -337,7 +337,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label class="font-weight-bold small">Keterangan</label>
-                            <textarea name="keterangan" class="form-control" rows="2"></textarea>
+                            <textarea name="keterangan" autocomplete="off" class="form-control" rows="2"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
@@ -367,11 +367,11 @@
                     <div class="modal-body p-4">
                         <div class="form-group mb-3">
                             <label class="font-weight-bold small">Deskripsi Pekerjaan</label>
-                            <textarea name="deskripsi_pekerjaan" id="edit_deskripsi" class="form-control" rows="2" required></textarea>
+                            <textarea name="deskripsi_pekerjaan" autocomplete="off" id="edit_deskripsi" class="form-control" rows="2" required></textarea>
                         </div>
                         <div class="form-group mb-3">
                             <label class="font-weight-bold small">Nomor Kontrak</label>
-                            <input type="text" name="nomor_kontrak" id="edit_nomor" class="form-control" required>
+                            <input type="text" autocomplete="off" name="nomor_kontrak" id="edit_nomor" class="form-control" required>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -385,7 +385,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label class="font-weight-bold small">Keterangan</label>
-                            <textarea name="keterangan" id="edit_keterangan" class="form-control" rows="2"></textarea>
+                            <textarea name="keterangan" autocomplete="off" id="edit_keterangan" class="form-control" rows="2"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer bg-light">

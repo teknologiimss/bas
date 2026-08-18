@@ -320,13 +320,13 @@
                                     <div class="modal-body p-3">
                                         <div class="form-group mb-2">
                                             <label class="font-weight-bold small text-muted mb-1">Tahun</label>
-                                            <input type="text" name="tahun" class="form-control form-control-sm"
+                                            <input type="text" autocomplete="off" name="tahun" class="form-control form-control-sm"
                                                 value="{{ $folder->tahun }}" required>
                                         </div>
                                         <div class="form-group mb-2">
                                             <label class="font-weight-bold small text-muted mb-1">Nama Folder /
                                                 Proyek</label>
-                                            <input type="text" name="nama_folder" class="form-control form-control-sm"
+                                            <input type="text" autocomplete="off" name="nama_folder" class="form-control form-control-sm"
                                                 value="{{ $folder->nama_folder }}" required>
                                         </div>
                                     </div>
@@ -367,13 +367,13 @@
                     <div class="modal-body p-3">
                         <div class="form-group mb-2">
                             <label class="font-weight-bold small text-muted mb-1">Tahun</label>
-                            <input type="text" name="tahun" class="form-control form-control-sm" required
+                            <input type="text" autocomplete="off" name="tahun" class="form-control form-control-sm" required
                                 placeholder="Contoh: 2026">
                         </div>
                         <div class="form-group mb-2">
                             <label class="font-weight-bold small text-muted mb-1">Nama Folder / Proyek</label>
-                            <input type="text" name="nama_folder" class="form-control form-control-sm" required
-                                placeholder="Contoh: Monitoring 5R Bengkel Utama">
+                            <input type="text" autocomplete="off" name="nama_folder" class="form-control form-control-sm" required
+                                placeholder="Contoh: Monitoring 5R PT.INKA">
                         </div>
                     </div>
                     <div class="modal-footer bg-light py-2 px-3">

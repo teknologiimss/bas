@@ -101,7 +101,7 @@
                             @for ($i = 1; $i <= 12; $i++)
                                 @php $c = $checksheets[$i] ?? null; @endphp
                                 <td>
-                                    <input type="text" name="keterangan[{{ $i }}]" value="{{ $c ? $c->keterangan : '' }}" placeholder="Isi keterangan...">
+                                    <input type="text" autocomplete="off" name="keterangan[{{ $i }}]" value="{{ $c ? $c->keterangan : '' }}" placeholder="Isi keterangan...">
                                 </td>
                             @endfor
                         </tr>
