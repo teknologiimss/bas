@@ -189,6 +189,26 @@
                     </div>
                 </div>
 
+
+                {{-- 10. Monitoring FCU --}}
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                    <div class="card h-100 shadow-sm hover-shadow border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="icon-wrapper bg-info-soft mb-3 mx-auto">
+                                <i class="fas fa-fan fa-3x text-info"></i>
+                            </div>
+                            <h5 class="font-weight-bold">Monitoring FCU</h5>
+                            <p class="text-muted small">Kelola pemeliharaan berkala dan inspeksi unit Fan Coil Unit (FCU).
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-4 text-center">
+                            <a href="{{ route('fcu.index') }}" class="btn btn-outline-info btn-block rounded-pill">
+                                Buka Menu <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>

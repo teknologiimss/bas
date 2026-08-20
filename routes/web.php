@@ -12,6 +12,7 @@ use App\Http\Controllers\CutiController;
 use App\Http\Controllers\CutiTahunanController;
 use App\Http\Controllers\DetailsjnController;
 use App\Http\Controllers\FasilitasHarianController;
+use App\Http\Controllers\FcuMonitoringController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KasbonController;
 use App\Http\Controllers\KontrakController;
@@ -1009,6 +1010,30 @@ Route::prefix('products')->group(function () {
         Route::get('/detail/{id}', [Monitoring5RController::class, 'detailMonitor'])->name('detail');
         Route::put('/detail/{id}/update', [Monitoring5RController::class, 'updateDetail'])->name('detail.update');
         Route::delete('/lampiran/{id}', [Monitoring5RController::class, 'deleteLampiran'])->name('lampiran.delete');
+    });
+
+    // AC Graha menu FCU
+    Route::prefix('fcu-monitoring')->name('fcu.')->group(function () {
+        Route::get('/', [FcuMonitoringController::class, 'index'])->name('index');
+        Route::get('/create', [FcuMonitoringController::class, 'create'])->name('create');
+        Route::post('/store', [FcuMonitoringController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [FcuMonitoringController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [FcuMonitoringController::class, 'update'])->name('update');
+        Route::delete('/{id}', [FcuMonitoringController::class, 'destroy'])->name('destroy');
+
+        // Route Mobile View Checksheet FCU
+        Route::get('/{id}/mobile', [FcuMonitoringController::class, 'mobile'])->name('mobile');
+        Route::post('/mobile/save', [FcuMonitoringController::class, 'saveMobile'])->name('mobile.save');
+        Route::post('/{id}/hasil', [FcuMonitoringController::class, 'saveHasil'])->name('hasil');
+        Route::post('/{id}/note', [FcuMonitoringController::class, 'saveNote'])->name('note');
+        Route::delete('/note/{id}', [FcuMonitoringController::class, 'deleteNote'])->name('note.delete');
+        Route::get('/photo/delete/{id}', [FcuMonitoringController::class, 'deletePhoto'])->name('photo.delete');
+
+        // Tambahkan di dalam Route group 'fcu.'
+        Route::get('/{id}', [FcuMonitoringController::class, 'show'])->name('show');
+        Route::get('/{id}/print', [FcuMonitoringController::class, 'print'])->name('print');
+
+        Route::post('/{id}/copy', [FcuMonitoringController::class, 'copy'])->name('copy');
     });
 
     // BA JUSTIFIKASI
