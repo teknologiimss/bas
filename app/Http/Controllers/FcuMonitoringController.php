@@ -476,4 +476,27 @@ class FcuMonitoringController extends Controller
 
         return redirect()->back()->with('success', 'Dokumen lampiran berhasil dihapus.');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids', []);
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'Tidak ada data yang dipilih untuk dihapus.');
+        }
+
+        // Ambil data yang akan dihapus untuk menghapus lampiran file jika ada
+        $items = FcuMonitoring::whereIn('id', $ids)->get();
+
+        foreach ($items as $item) {
+            if (!empty($item->file_dokumen) && Storage::disk('public')->exists($item->file_dokumen)) {
+                Storage::disk('public')->delete($item->file_dokumen);
+            }
+        }
+
+        // Hapus data dari database
+        FcuMonitoring::whereIn('id', $ids)->delete();
+
+        return redirect()->route('fcu.index')->with('success', count($ids) . ' data monitoring berhasil dihapus.');
+    }
 }

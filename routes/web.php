@@ -1015,6 +1015,9 @@ Route::prefix('products')->group(function () {
     // AC Graha menu FCU
     Route::prefix('fcu-monitoring')->name('fcu.')->group(function () {
         Route::get('/', [FcuMonitoringController::class, 'index'])->name('index');
+        // ➕ ROUTE HAPUS BANYAK DATA SEKALIGUS
+        Route::delete('/bulk-delete', [FcuMonitoringController::class, 'bulkDelete'])->name('bulk-delete');
+        
         Route::get('/create', [FcuMonitoringController::class, 'create'])->name('create');
         Route::post('/store', [FcuMonitoringController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [FcuMonitoringController::class, 'edit'])->name('edit');
