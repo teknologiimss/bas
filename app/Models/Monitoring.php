@@ -130,6 +130,7 @@ public function memo()
         if ($docs->contains(fn($d) =>
                 str_contains($d, 'po') ||
                 str_contains($d, 'nota dinas') ||
+                str_contains($d, 'so') ||
                 str_contains($d, 'purchase order'))) {
             $progress += 30;
         }
@@ -145,6 +146,7 @@ public function memo()
         if ($docs->contains(fn($d) =>
                 str_contains($d, 'purchase request') ||
                 str_contains($d, 'pr') ||
+                str_contains($d, 'memo') ||
                 str_contains($d, 'spp'))) {
             $progress += 10;
         }
