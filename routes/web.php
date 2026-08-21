@@ -1034,6 +1034,10 @@ Route::prefix('products')->group(function () {
         Route::get('/{id}/print', [FcuMonitoringController::class, 'print'])->name('print');
 
         Route::post('/{id}/copy', [FcuMonitoringController::class, 'copy'])->name('copy');
+
+        // ➕ ROUTE BARU UNTUK UPLOAD DOKUMEN
+        Route::post('/{id}/upload', [FcuMonitoringController::class, 'upload'])->name('upload');
+        Route::delete('/{id}/delete-document', [FcuMonitoringController::class, 'deleteDocument'])->name('delete-document');
     });
 
     // BA JUSTIFIKASI

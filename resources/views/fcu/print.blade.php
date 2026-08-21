@@ -265,18 +265,24 @@
             {{-- ========================================================= --}}
             @php
                 $units = [
-                    'fcu1' => $checksheets[0]['no_fcu'] ?? 'FCU-01',
-                    'fcu2' => $checksheets[1]['no_fcu'] ?? 'FCU-02',
+                    'fcu1' => [
+                        'no_fcu' => $checksheets[0]['no_fcu'] ?? ($fcu->no_fcu ?? 'FCU-01'),
+                        'tanggal' => $fcu->tanggal,
+                    ],
+                    'fcu2' => [
+                        'no_fcu' => $checksheets[1]['no_fcu'] ?? ($fcu->no_fcu_2 ?? 'FCU-02'),
+                        'tanggal' => $fcu->tanggal_2 ?? $fcu->tanggal,
+                    ],
                 ];
             @endphp
 
-            @foreach ($units as $unitKey => $unitNo)
+            @foreach ($units as $unitKey => $unitData)
                 {{-- Sub Header Per Unit FCU --}}
                 <table class="table-sub-header">
                     <tr>
                         <td width="60%">TANGGAL PERAWATAN :
-                            {{ \Carbon\Carbon::parse($fcu->tanggal)->format('d/m/Y') }}</td>
-                        <td width="40%" style="text-align: right;">No FCU: {{ $unitNo }}</td>
+                            {{ \Carbon\Carbon::parse($unitData['tanggal'])->format('d/m/Y') }}</td>
+                        <td width="40%" style="text-align: right;">No FCU: {{ $unitData['no_fcu'] }}</td>
                     </tr>
                 </table>
 

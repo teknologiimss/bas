@@ -13,6 +13,7 @@ use App\Models\FcuUnscheduledForm;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class FcuMonitoringController extends Controller
 {
@@ -108,6 +109,72 @@ class FcuMonitoringController extends Controller
         return view('fcu.edit', compact('fcu'));
     }
 
+    // public function update(Request $request, $id)
+    // {
+    //     DB::transaction(function () use ($request, $id) {
+    //         $fcu = FcuMonitoring::findOrFail($id);
+    //         $fcu->update([
+    //             'judul' => $request->judul,
+    //             'jenis_perawatan' => $request->jenis_perawatan,
+    //             'tanggal' => $request->tanggal,
+    //             'no_fcu' => $request->no_fcu,
+    //             'tanggal_2' => $request->tanggal_2 ?? $request->tanggal,
+    //             'no_fcu_2' => $request->no_fcu_2,
+    //         ]);
+
+    //         if ($request->jenis_perawatan === 'Unscheduled') {
+    //             FcuUnscheduledForm::updateOrCreate(
+    //                 ['fcu_monitoring_id' => $fcu->id],
+    //                 [
+    //                     'no_fcu' => $request->unscheduled_no_fcu ?? $request->no_fcu,  // <--- Ditambahkan
+    //                     'tanggal' => $request->unscheduled_tanggal,
+    //                     'jenis_kerusakan' => $request->unscheduled_jenis_kerusakan,
+    //                     'tindak_lanjut' => $request->unscheduled_tindak_lanjut,
+    //                     'status' => $request->unscheduled_status,
+    //                     'personil' => $request->unscheduled_personil,
+    //                 ]
+    //             );
+    //         } else {
+    //             FcuUnscheduledForm::where('fcu_monitoring_id', $fcu->id)->delete();
+    //         }
+
+    //         // Re-insert Struktur Items/Details
+    //         FcuSection::where('fcu_monitoring_id', $fcu->id)->delete();
+
+    //         if ($request->has('sections')) {
+    //             foreach ($request->sections as $secData) {
+    //                 $section = FcuSection::create([
+    //                     'fcu_monitoring_id' => $fcu->id,
+    //                     'kode' => $secData['kode'] ?? null,
+    //                     'nama_section' => $secData['nama'],
+    //                 ]);
+
+    //                 if (isset($secData['items'])) {
+    //                     foreach ($secData['items'] as $itemData) {
+    //                         $item = FcuItem::create([
+    //                             'fcu_section_id' => $section->id,
+    //                             'nomor' => $itemData['nomor'] ?? null,
+    //                             'uraian' => $itemData['uraian'],
+    //                         ]);
+
+    //                         if (isset($itemData['details'])) {
+    //                             foreach ($itemData['details'] as $detData) {
+    //                                 FcuDetail::create([
+    //                                     'fcu_item_id' => $item->id,
+    //                                     'aktivitas' => $detData['aktivitas'] ?? null,
+    //                                     'standar' => $detData['standar'] ?? null,
+    //                                 ]);
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     });
+
+    //     return redirect()->route('fcu.index')->with('success', 'Monitoring FCU berhasil diupdate!');
+    // }
+
     public function update(Request $request, $id)
     {
         DB::transaction(function () use ($request, $id) {
@@ -121,11 +188,12 @@ class FcuMonitoringController extends Controller
                 'no_fcu_2' => $request->no_fcu_2,
             ]);
 
+            // 1. Handle Unscheduled
             if ($request->jenis_perawatan === 'Unscheduled') {
                 FcuUnscheduledForm::updateOrCreate(
                     ['fcu_monitoring_id' => $fcu->id],
                     [
-                        'no_fcu' => $request->unscheduled_no_fcu ?? $request->no_fcu,  // <--- Ditambahkan
+                        'no_fcu' => $request->unscheduled_no_fcu ?? $request->no_fcu,
                         'tanggal' => $request->unscheduled_tanggal,
                         'jenis_kerusakan' => $request->unscheduled_jenis_kerusakan,
                         'tindak_lanjut' => $request->unscheduled_tindak_lanjut,
@@ -137,37 +205,73 @@ class FcuMonitoringController extends Controller
                 FcuUnscheduledForm::where('fcu_monitoring_id', $fcu->id)->delete();
             }
 
-            // Re-insert Struktur Items/Details
-            FcuSection::where('fcu_monitoring_id', $fcu->id)->delete();
-
+            // 2. Sync / Update Struktur Sections, Items, dan Details (Tanpa Hapus Total)
             if ($request->has('sections')) {
+                $keepSectionIds = [];
+                $keepItemIds = [];
+                $keepDetailIds = [];
+
                 foreach ($request->sections as $secData) {
-                    $section = FcuSection::create([
-                        'fcu_monitoring_id' => $fcu->id,
-                        'kode' => $secData['kode'] ?? null,
-                        'nama_section' => $secData['nama'],
-                    ]);
+                    // Update atau buat Section baru
+                    $section = FcuSection::updateOrCreate(
+                        [
+                            'id' => $secData['id'] ?? null,
+                            'fcu_monitoring_id' => $fcu->id,
+                        ],
+                        [
+                            'kode' => $secData['kode'] ?? null,
+                            'nama_section' => $secData['nama'],
+                        ]
+                    );
+                    $keepSectionIds[] = $section->id;
 
                     if (isset($secData['items'])) {
                         foreach ($secData['items'] as $itemData) {
-                            $item = FcuItem::create([
-                                'fcu_section_id' => $section->id,
-                                'nomor' => $itemData['nomor'] ?? null,
-                                'uraian' => $itemData['uraian'],
-                            ]);
+                            // Update atau buat Item baru
+                            $item = FcuItem::updateOrCreate(
+                                [
+                                    'id' => $itemData['id'] ?? null,
+                                    'fcu_section_id' => $section->id,
+                                ],
+                                [
+                                    'nomor' => $itemData['nomor'] ?? null,
+                                    'uraian' => $itemData['uraian'],
+                                ]
+                            );
+                            $keepItemIds[] = $item->id;
 
                             if (isset($itemData['details'])) {
                                 foreach ($itemData['details'] as $detData) {
-                                    FcuDetail::create([
-                                        'fcu_item_id' => $item->id,
-                                        'aktivitas' => $detData['aktivitas'] ?? null,
-                                        'standar' => $detData['standar'] ?? null,
-                                    ]);
+                                    // Update atau buat Detail baru (preservasi ID agar FcuResult aman)
+                                    $detail = FcuDetail::updateOrCreate(
+                                        [
+                                            'id' => $detData['id'] ?? null,
+                                            'fcu_item_id' => $item->id,
+                                        ],
+                                        [
+                                            'aktivitas' => $detData['aktivitas'] ?? null,
+                                            'standar' => $detData['standar'] ?? null,
+                                        ]
+                                    );
+                                    $keepDetailIds[] = $detail->id;
                                 }
                             }
                         }
                     }
                 }
+
+                // Hapus hanya elemen yang secara eksplisit dibuang oleh user dari form edit
+                FcuDetail::whereIn('fcu_item_id', function ($q) use ($fcu) {
+                    $q->select('id')->from('fcu_items')->whereIn('fcu_section_id', function ($q2) use ($fcu) {
+                        $q2->select('id')->from('fcu_sections')->where('fcu_monitoring_id', $fcu->id);
+                    });
+                })->whereNotIn('id', $keepDetailIds)->delete();
+
+                FcuItem::whereIn('fcu_section_id', function ($q) use ($fcu) {
+                    $q->select('id')->from('fcu_sections')->where('fcu_monitoring_id', $fcu->id);
+                })->whereNotIn('id', $keepItemIds)->delete();
+
+                FcuSection::where('fcu_monitoring_id', $fcu->id)->whereNotIn('id', $keepSectionIds)->delete();
             }
         });
 
@@ -328,5 +432,48 @@ class FcuMonitoringController extends Controller
         });
 
         return redirect()->route('fcu.index')->with('success', 'Format Monitoring FCU berhasil diduplikasi!');
+    }
+
+    public function upload(Request $request, $id)
+    {
+        $request->validate([
+            'file_dokumen' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',  // Maks 5MB
+        ]);
+
+        $fcu = FcuMonitoring::findOrFail($id);
+
+        if ($request->hasFile('file_dokumen')) {
+            // Hapus file lama jika ada di disk 'public'
+            if ($fcu->file_dokumen && Storage::disk('public')->exists($fcu->file_dokumen)) {
+                Storage::disk('public')->delete($fcu->file_dokumen);
+            }
+
+            // Tersimpan di: storage/app/public/dokumen_fcu
+            // Terhubung ke: public/storage/dokumen_fcu (setelah artisan storage:link)
+            $path = $request->file('file_dokumen')->store('dokumen_fcu', 'public');
+
+            // Menyimpan string path relatif, contoh: "dokumen_fcu/abc12345.pdf"
+            $fcu->file_dokumen = $path;
+            $fcu->save();
+        }
+
+        return redirect()->back()->with('success', 'Dokumen berhasil diunggah!');
+    }
+
+    public function deleteDocument($id)
+    {
+        $fcu = FcuMonitoring::findOrFail($id);
+
+        // Hapus file fisik dari storage jika ada
+        if ($fcu->file_dokumen && Storage::disk('public')->exists($fcu->file_dokumen)) {
+            Storage::disk('public')->delete($fcu->file_dokumen);
+        }
+
+        // Reset kolom file_dokumen pada database
+        $fcu->update([
+            'file_dokumen' => null
+        ]);
+
+        return redirect()->back()->with('success', 'Dokumen lampiran berhasil dihapus.');
     }
 }

@@ -61,8 +61,8 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="fw-bold">Judul Monitoring</label>
-                        <input type="text" name="judul" class="form-control"
-                            placeholder="Contoh: Maintenance FCU Lantai 2" required>
+                        <input type="text" autocomplete="off" name="judul" class="form-control"
+                            placeholder="Contoh: Cheksheet Perawatan FCU" required>
                     </div>
 
                     <div class="col-md-6 mb-3">
@@ -84,7 +84,8 @@
                             <h6 class="fw-bold text-primary">UNIT FCU 1 (Atas)</h6>
                             <div class="mb-2">
                                 <label class="fw-bold">No. FCU Pertama</label>
-                                <input type="text" name="no_fcu" id="no_fcu_input" class="form-control" placeholder="Contoh: FCU-01A">
+                                <input type="text" autocomplete="off" name="no_fcu" id="no_fcu_input" class="form-control"
+                                    placeholder="Contoh: FCU-01A">
                             </div>
                             <div>
                                 <label class="fw-bold">Tanggal Perawatan</label>
@@ -98,7 +99,7 @@
                             <h6 class="fw-bold text-primary">UNIT FCU 2 (Bawah)</h6>
                             <div class="mb-2">
                                 <label class="fw-bold">No. FCU Kedua</label>
-                                <input type="text" name="no_fcu_2" class="form-control"
+                                <input type="text" autocomplete="off" name="no_fcu_2" class="form-control"
                                     placeholder="Contoh: FCU-01B (Opsional)">
                             </div>
                             <div>
@@ -115,7 +116,8 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="fw-bold">No. Form FCU Unscheduled</label>
-                            <input type="text" name="unscheduled_no_fcu" class="form-control" placeholder="Contoh: FCU-UNSCH-001">
+                            <input type="text" autocomplete="off" name="unscheduled_no_fcu" class="form-control"
+                                placeholder="Contoh: FCU-UNSCH-001">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="fw-bold">Tanggal Perbaikan</label>
@@ -123,7 +125,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="fw-bold">Personil / Teknisi</label>
-                            <input type="text" name="unscheduled_personil" class="form-control"
+                            <input type="text" autocomplete="off" name="unscheduled_personil" class="form-control"
                                 placeholder="Nama Personil">
                         </div>
                         <div class="col-md-4 mb-3">
@@ -183,8 +185,8 @@
             let html = `
             <div class="card section-card p-3 mb-4">
                 <div class="row mb-3">
-                    <div class="col-md-2"><input type="text" name="sections[${sectionIndex}][kode]" class="form-control" placeholder="I / II"></div>
-                    <div class="col-md-9"><input type="text" name="sections[${sectionIndex}][nama]" class="form-control" placeholder="Sub Judul FCU" required></div>
+                    <div class="col-md-2"><input type="text" autocomplete="off" name="sections[${sectionIndex}][kode]" class="form-control" placeholder="I / II"></div>
+                    <div class="col-md-9"><input type="text" autocomplete="off" name="sections[${sectionIndex}][nama]" class="form-control" placeholder="Sub Judul FCU" required></div>
                     <div class="col-md-1"><button type="button" class="btn btn-danger" onclick="this.closest('.section-card').remove()">✖</button></div>
                 </div>
                 <div id="items-${sectionIndex}"></div>
@@ -200,8 +202,8 @@
             let html = `
             <div class="item-row p-3 mb-3">
                 <div class="row mb-3">
-                    <div class="col-md-2"><input type="text" name="sections[${sIndex}][items][${iIndex}][nomor]" class="form-control" placeholder="a / b"></div>
-                    <div class="col-md-9"><input type="text" name="sections[${sIndex}][items][${iIndex}][uraian]" class="form-control" placeholder="Uraian Pekerjaan" required></div>
+                    <div class="col-md-2"><input type="text" autocomplete="off" name="sections[${sIndex}][items][${iIndex}][nomor]" class="form-control" placeholder="a / b"></div>
+                    <div class="col-md-9"><input type="text" autocomplete="off" name="sections[${sIndex}][items][${iIndex}][uraian]" class="form-control" placeholder="Uraian Pekerjaan" required></div>
                     <div class="col-md-1"><button type="button" class="btn btn-danger" onclick="this.closest('.item-row').remove()">✖</button></div>
                 </div>
                 <div id="details-${sIndex}-${iIndex}"></div>
@@ -217,8 +219,8 @@
             let dIndex = detailIndexes[key];
             let html = `
             <div class="row mb-2 detail-row">
-                <div class="col-md-5"><input type="text" name="sections[${sIndex}][items][${iIndex}][details][${dIndex}][aktivitas]" class="form-control" placeholder="Aktivitas Pekerjaan"></div>
-                <div class="col-md-5"><input type="text" name="sections[${sIndex}][items][${iIndex}][details][${dIndex}][standar]" class="form-control" placeholder="Standar"></div>
+                <div class="col-md-5"><input type="text" autocomplete="off" name="sections[${sIndex}][items][${iIndex}][details][${dIndex}][aktivitas]" class="form-control" placeholder="Aktivitas Pekerjaan"></div>
+                <div class="col-md-5"><input type="text" autocomplete="off" name="sections[${sIndex}][items][${iIndex}][details][${dIndex}][standar]" class="form-control" placeholder="Standar"></div>
                 <div class="col-md-2"><button type="button" class="btn btn-danger" onclick="this.closest('.detail-row').remove()">✖</button></div>
             </div>`;
             document.getElementById(`details-${sIndex}-${iIndex}`).insertAdjacentHTML('beforeend', html);

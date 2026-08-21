@@ -67,47 +67,85 @@
         }
 
         .action-group {
-            display: flex;
-            gap: 6px;
-            justify-content: center;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
+            gap: 6px;
             flex-wrap: nowrap;
+            white-space: nowrap;
         }
 
         .btn-action {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 10px;
             border: none;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: white !important;
             text-decoration: none;
-            transition: opacity 0.2s;
+            transition: all 0.2s ease-in-out;
+            font-size: 14px;
+            line-height: 1;
+            box-sizing: border-box;
+            cursor: pointer;
+            position: relative;
+            z-index: 5;
         }
 
         .btn-action:hover {
-            color: white;
             opacity: 0.85;
+            transform: translateY(-1px);
         }
 
         .btn-mobile-modern {
-            border-radius: 12px;
-            padding: 8px 12px;
-            font-size: 13px;
+            height: 36px;
+            border-radius: 10px;
+            padding: 0 12px;
+            font-size: 12px;
             font-weight: 600;
-            display: flex;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             border: none;
             background: linear-gradient(135deg, #2563eb, #1e40af);
-            color: white;
+            color: white !important;
             text-decoration: none;
+            white-space: nowrap;
+            line-height: 1;
+            box-sizing: border-box;
         }
 
-        .btn-mobile-modern:hover {
-            color: white;
+        .btn-mobile-disabled {
+            height: 36px;
+            border-radius: 10px;
+            padding: 0 12px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            background: #94a3b8;
+            color: #ffffff !important;
+            cursor: not-allowed;
+            opacity: 0.65;
+            pointer-events: none;
+            white-space: nowrap;
+            line-height: 1;
+            box-sizing: border-box;
+        }
+
+        .bg-purple {
+            background-color: #8b5cf6;
+        }
+
+        .bg-teal {
+            background-color: #0d9488;
         }
     </style>
 
@@ -174,12 +212,10 @@
                                 <td>
                                     <div class="d-flex gap-1 flex-wrap">
                                         @if ($d->jenis_perawatan === 'Unscheduled')
-                                            {{-- Mengambil No FCU dari relasi unscheduledForm --}}
                                             <span class="badge-modern">
                                                 {{ $d->unscheduledForm->no_fcu ?? ($d->no_fcu ?? '-') }}
                                             </span>
                                         @else
-                                            {{-- Untuk perawatan terjadwal (P1, P3, P6, P12) --}}
                                             @if (!empty($d->no_fcu_1))
                                                 <span class="badge-modern">{{ $d->no_fcu_1 }}</span>
                                             @elseif(!empty($d->no_fcu))
@@ -200,22 +236,42 @@
                                         {{ $d->kesimpulan ?? 'Belum Diisi' }}
                                     </span>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <div class="action-group">
-                                        {{-- Tombol Isi Checksheet --}}
-                                        <a href="{{ route('fcu.mobile', $d->id) }}" class="btn-mobile-modern"
-                                            title="Isi Checksheet">
-                                            <i class="fa fa-circle-check"></i> Checksheet
-                                        </a>
+                                        {{-- 1. Checksheet --}}
+                                        @if ($d->jenis_perawatan === 'Unscheduled')
+                                            <button type="button" class="btn-mobile-disabled"
+                                                title="Checksheet tidak tersedia untuk Unscheduled" disabled>
+                                                <i class="fa fa-circle-check"></i> Checksheet
+                                            </button>
+                                        @else
+                                            <a href="{{ route('fcu.mobile', $d->id) }}" class="btn-mobile-modern"
+                                                title="Isi Checksheet">
+                                                <i class="fa fa-circle-check"></i> Checksheet
+                                            </a>
+                                        @endif
 
-                                        {{-- Tombol Show (Detail) --}}
+                                        {{-- 2. Lihat Detail --}}
                                         <a href="{{ route('fcu.show', $d->id) }}" class="btn-action bg-info"
                                             title="Lihat Detail">
                                             <i class="fa fa-eye"></i>
                                         </a>
 
-                                        {{-- Tombol Copy (Duplikat Format) --}}
-                                        <form action="{{ route('fcu.copy', $d->id) }}" method="POST" class="d-inline">
+                                        {{-- 3. Edit --}}
+                                        <a href="{{ route('fcu.edit', $d->id) }}" class="btn-action bg-primary"
+                                            title="Edit">
+                                            <i class="fa fa-pen"></i>
+                                        </a>
+
+                                        {{-- 4. Cetak PDF --}}
+                                        <a href="{{ route('fcu.print', $d->id) }}" target="_blank"
+                                            class="btn-action bg-secondary" title="Cetak / PDF">
+                                            <i class="fa fa-print"></i>
+                                        </a>
+
+                                        {{-- 5. Copy Format --}}
+                                        <form action="{{ route('fcu.copy', $d->id) }}" method="POST"
+                                            class="d-inline m-0 p-0">
                                             @csrf
                                             <button type="submit"
                                                 onclick="return confirm('Duplikat format monitoring ini?')"
@@ -224,20 +280,34 @@
                                             </button>
                                         </form>
 
-                                        {{-- Tombol Print (Cetak/PDF) --}}
-                                        <a href="{{ route('fcu.print', $d->id) }}" target="_blank"
-                                            class="btn-action bg-secondary" title="Cetak / PDF">
-                                            <i class="fa fa-print"></i>
-                                        </a>
+                                        {{-- 6. Upload Dokumen --}}
+                                        <button type="button" class="btn-action bg-purple"
+                                            onclick="openUploadModal(
+                                                '{{ route('fcu.upload', $d->id) }}', 
+                                                '{{ $d->file_dokumen ? asset('storage/' . $d->file_dokumen) : '' }}',
+                                                '{{ route('fcu.delete-document', $d->id) }}'
+                                            )"
+                                            title="Upload Dokumen">
+                                            <i class="fa fa-upload"></i>
+                                        </button>
 
-                                        {{-- Tombol Edit --}}
-                                        <a href="{{ route('fcu.edit', $d->id) }}" class="btn-action bg-primary"
-                                            title="Edit">
-                                            <i class="fa fa-pen"></i>
-                                        </a>
+                                        {{-- 7. Lihat File Dokumen --}}
+                                        @if (!empty($d->file_dokumen))
+                                            <a href="{{ asset('storage/' . $d->file_dokumen) }}" target="_blank"
+                                                class="btn-action bg-teal" title="Lihat File Dokumen">
+                                                <i class="fa fa-file-pdf"></i>
+                                            </a>
+                                        @else
+                                            <button type="button" class="btn-action bg-secondary"
+                                                style="opacity: 0.5; cursor: not-allowed;" title="File belum diupload"
+                                                disabled>
+                                                <i class="fa fa-file-pdf"></i>
+                                            </button>
+                                        @endif
 
-                                        {{-- Tombol Hapus --}}
-                                        <form action="{{ route('fcu.destroy', $d->id) }}" method="POST" class="d-inline">
+                                        {{-- 8. Hapus Data --}}
+                                        <form action="{{ route('fcu.destroy', $d->id) }}" method="POST"
+                                            class="d-inline m-0 p-0">
                                             @csrf @method('DELETE')
                                             <button type="submit" onclick="return confirm('Hapus data monitoring ini?')"
                                                 class="btn-action bg-danger" title="Hapus">
@@ -257,4 +327,144 @@
             </div>
         </div>
     </div>
+
+    {{-- MODAL UPLOAD GLOBAL (PERBAIKAN: STRUKTUR FORM MANDIRI) --}}
+    <div class="modal fade" id="globalUploadModal" tabindex="-1" aria-labelledby="globalUploadModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="globalUploadModalLabel">Upload Dokumen FCU</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
+                        aria-label="Close" onclick="closeUploadModal()"></button>
+                </div>
+
+                {{-- FORM 1: UPLOAD DOKUMEN (POST) --}}
+                <form id="globalUploadForm" action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body text-start">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Pilih Dokumen (PDF, JPG, PNG)</label>
+                            <input type="file" name="file_dokumen" class="form-control" accept=".pdf,.jpg,.jpeg,.png"
+                                required>
+                            <small class="text-muted mt-1 d-block">Maksimal ukuran file: 5MB.</small>
+                        </div>
+
+                        {{-- CONTAINER INFORMASI FILE EXISTING --}}
+                        <div id="fileExistingAlert" class="alert alert-info mb-0 d-none">
+                            <i class="fa fa-info-circle me-1"></i> File saat ini:
+                            <a href="#" id="fileExistingUrl" target="_blank"
+                                class="fw-bold text-decoration-underline">
+                                Lihat File
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
+                {{-- FORM 2: HAPUS DOKUMEN (DELETE) - BERDIRI SENDIRI DI LUAR FORM UPLOAD --}}
+                <form id="deleteDocumentForm" action="" method="POST" class="d-none">
+                    @csrf
+                    @method('DELETE')
+                </form>
+
+                {{-- FOOTER MODAL --}}
+                <div class="modal-footer justify-content-between">
+                    <div>
+                        {{-- Tombol ini mengirimkan #deleteDocumentForm via atribut form="" --}}
+                        <button type="submit" id="btnDeleteDocument" form="deleteDocumentForm"
+                            class="btn btn-outline-danger d-none"
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus lampiran dokumen ini?')">
+                            <i class="fa fa-trash me-1"></i> Hapus Lampiran
+                        </button>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal"
+                            onclick="closeUploadModal()">Batal</button>
+                        {{-- Tombol ini mengirimkan #globalUploadForm via atribut form="" --}}
+                        <button type="submit" form="globalUploadForm" class="btn btn-primary">
+                            <i class="fa fa-upload me-1"></i> Simpan File
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- SCRIPT JAVASCRIPT --}}
+    <script>
+        function openUploadModal(uploadUrl, fileUrl, deleteUrl) {
+            // Reset form upload utama
+            const form = document.getElementById('globalUploadForm');
+            form.action = uploadUrl;
+            const fileInput = form.querySelector('input[type="file"]');
+            if (fileInput) fileInput.value = '';
+
+            // Dapatkan referensi elemen
+            const fileAlert = document.getElementById('fileExistingAlert');
+            const fileLink = document.getElementById('fileExistingUrl');
+            const deleteForm = document.getElementById('deleteDocumentForm');
+            const deleteBtn = document.getElementById('btnDeleteDocument');
+
+            // Cek jika data sudah memiliki file lampiran
+            if (fileUrl && fileUrl.trim() !== '') {
+                fileLink.href = fileUrl;
+                fileAlert.classList.remove('d-none');
+
+                // Atur action rute DELETE dan tampilkan tombol hapus
+                if (deleteForm && deleteUrl) {
+                    deleteForm.action = deleteUrl;
+                }
+                if (deleteBtn) {
+                    deleteBtn.classList.remove('d-none');
+                }
+            } else {
+                fileAlert.classList.add('d-none');
+                if (deleteForm) {
+                    deleteForm.action = '';
+                }
+                if (deleteBtn) {
+                    deleteBtn.classList.add('d-none');
+                }
+            }
+
+            // Buka Modal (Kompatibel dengan Bootstrap 4/5 dan jQuery)
+            var modalElem = document.getElementById('globalUploadModal');
+
+            if (window.jQuery && typeof $(modalElem).modal === 'function') {
+                $(modalElem).modal('show');
+            } else if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                var myModal = bootstrap.Modal.getOrCreateInstance(modalElem);
+                myModal.show();
+            } else {
+                modalElem.classList.add('show');
+                modalElem.style.display = 'block';
+                document.body.classList.add('modal-open');
+
+                if (!document.querySelector('.modal-backdrop')) {
+                    var backdrop = document.createElement('div');
+                    backdrop.className = 'modal-backdrop fade show';
+                    backdrop.id = 'customModalBackdrop';
+                    document.body.appendChild(backdrop);
+                }
+            }
+        }
+
+        function closeUploadModal() {
+            var modalElem = document.getElementById('globalUploadModal');
+
+            if (window.jQuery && typeof $(modalElem).modal === 'function') {
+                $(modalElem).modal('hide');
+            } else if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                var myModal = bootstrap.Modal.getInstance(modalElem);
+                if (myModal) myModal.hide();
+            } else {
+                modalElem.classList.remove('show');
+                modalElem.style.display = 'none';
+                document.body.classList.remove('modal-open');
+
+                var backdrop = document.getElementById('customModalBackdrop') || document.querySelector('.modal-backdrop');
+                if (backdrop) backdrop.remove();
+            }
+        }
+    </script>
 @endsection
