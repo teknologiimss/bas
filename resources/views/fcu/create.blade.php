@@ -58,38 +58,6 @@
             @csrf
 
             <div class="card main-card p-4 mb-4">
-                {{-- <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="fw-bold">Judul</label>
-                        <input type="text" name="judul" class="form-control"
-                            placeholder="Contoh: Maintenance FCU Lantai 2" required>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="fw-bold">Jenis Perawatan</label>
-                        <select name="jenis_perawatan" id="jenis_perawatan" class="form-select"
-                            onchange="toggleUnscheduledForm()" required>
-                            <option value="">-- Pilih Jenis --</option>
-                            <option value="P1">P1</option>
-                            <option value="P3">P3</option>
-                            <option value="P6">P6</option>
-                            <option value="P12">P12</option>
-                            <option value="Unscheduled">Unscheduled</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="fw-bold">Tanggal Perawatan</label>
-                        <input type="date" name="tanggal" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="fw-bold">No. FCU</label>
-                        <input type="text" name="no_fcu" class="form-control" placeholder="Contoh: FCU-01" required>
-                    </div>
-                </div> --}}
-
-                <!-- Gantilah div class="row" di main-card create.blade.php menjadi seperti ini -->
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="fw-bold">Judul Monitoring</label>
@@ -110,24 +78,22 @@
                         </select>
                     </div>
 
-                    <!-- SISI FCU PERTAMA (ATAS) -->
-                    <div class="col-md-6 mb-3">
+                    <!-- SISI SCHEDULED REGULAR (Tampil untuk pilihan non-Unscheduled) -->
+                    <div class="col-md-6 mb-3 scheduled-group">
                         <div class="p-3 bg-light rounded border">
                             <h6 class="fw-bold text-primary">UNIT FCU 1 (Atas)</h6>
                             <div class="mb-2">
                                 <label class="fw-bold">No. FCU Pertama</label>
-                                <input type="text" name="no_fcu" class="form-control" placeholder="Contoh: FCU-01A"
-                                    required>
+                                <input type="text" name="no_fcu" id="no_fcu_input" class="form-control" placeholder="Contoh: FCU-01A">
                             </div>
                             <div>
                                 <label class="fw-bold">Tanggal Perawatan</label>
-                                <input type="date" name="tanggal" class="form-control" required>
+                                <input type="date" name="tanggal" id="tanggal_input" class="form-control">
                             </div>
                         </div>
                     </div>
 
-                    <!-- SISI FCU KEDUA (BAWAH) -->
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3 scheduled-group">
                         <div class="p-3 bg-light rounded border">
                             <h6 class="fw-bold text-primary">UNIT FCU 2 (Bawah)</h6>
                             <div class="mb-2">
@@ -143,16 +109,20 @@
                     </div>
                 </div>
 
-                {{-- Form Unscheduled (Muncul jika pilih Unscheduled) --}}
+                {{-- Form khusus Unscheduled --}}
                 <div id="unscheduled_box" class="p-3 bg-light rounded-3 mt-3 border" style="display: none;">
-                    <h5 class="fw-bold text-danger mb-3">⚠️ Form Unscheduled</h5>
+                    <h5 class="fw-bold text-danger mb-3">⚠️ Form Unscheduled Maintenance</h5>
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label class="fw-bold">Tanggal</label>
+                            <label class="fw-bold">No. Form FCU Unscheduled</label>
+                            <input type="text" name="unscheduled_no_fcu" class="form-control" placeholder="Contoh: FCU-UNSCH-001">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="fw-bold">Tanggal Perbaikan</label>
                             <input type="date" name="unscheduled_tanggal" class="form-control">
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="fw-bold">Personil</label>
+                            <label class="fw-bold">Personil / Teknisi</label>
                             <input type="text" name="unscheduled_personil" class="form-control"
                                 placeholder="Nama Personil">
                         </div>
@@ -163,11 +133,11 @@
                                 <option value="NOK">NOK</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="fw-bold">Jenis Kerusakan</label>
                             <textarea name="unscheduled_jenis_kerusakan" class="form-control" rows="2" placeholder="Uraian kerusakan"></textarea>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="fw-bold">Tindak Lanjut</label>
                             <textarea name="unscheduled_tindak_lanjut" class="form-control" rows="2" placeholder="Uraian tindak lanjut"></textarea>
                         </div>
@@ -188,7 +158,20 @@
     <script>
         function toggleUnscheduledForm() {
             let val = document.getElementById('jenis_perawatan').value;
-            document.getElementById('unscheduled_box').style.display = (val === 'Unscheduled') ? 'block' : 'none';
+            let unscheduledBox = document.getElementById('unscheduled_box');
+            let scheduledInputs = document.querySelectorAll('.scheduled-group');
+
+            if (val === 'Unscheduled') {
+                unscheduledBox.style.display = 'block';
+                scheduledInputs.forEach(el => el.style.display = 'none');
+                document.getElementById('no_fcu_input').removeAttribute('required');
+                document.getElementById('tanggal_input').removeAttribute('required');
+            } else {
+                unscheduledBox.style.display = 'none';
+                scheduledInputs.forEach(el => el.style.display = 'block');
+                document.getElementById('no_fcu_input').setAttribute('required', 'required');
+                document.getElementById('tanggal_input').setAttribute('required', 'required');
+            }
         }
 
         let sectionIndex = 0;

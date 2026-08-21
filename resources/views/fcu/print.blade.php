@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Checksheet FCU - {{ $fcu->no_fcu }}</title>
+    <title>Checksheet FCU -
+        {{ $fcu->jenis_perawatan === 'Unscheduled' ? optional($fcu->unscheduledForm)->no_fcu : $fcu->no_fcu }}</title>
     <style>
         @page {
             size: A4 portrait;
@@ -23,7 +24,7 @@
             padding: 0;
         }
 
-        /* Header Layout Utama */
+        /* Header Utama */
         .table-header {
             width: 100%;
             border-collapse: collapse;
@@ -57,25 +58,57 @@
         .code-cell {
             width: 15%;
             text-align: center;
-            font-size: 16pt;
+            font-size: 14pt;
             font-weight: bold;
         }
 
-        /* Info Section (Tanggal & No FCU) */
-        .table-info {
+        /* Header Tanggal & No FCU */
+        .table-sub-header {
             width: 100%;
             border-collapse: collapse;
-            border-bottom: 1.5px solid #000;
             border-top: 1.5px solid #000;
+            border-bottom: 1px solid #000;
             font-weight: bold;
             font-size: 8.5pt;
         }
 
-        .table-info td {
+        .table-sub-header td {
             padding: 4px 8px;
         }
 
-        /* Main Form Table */
+        /* Info Unscheduled */
+        .table-info-unscheduled {
+            width: 100%;
+            border-collapse: collapse;
+            font-weight: bold;
+            font-size: 8.5pt;
+        }
+
+        .table-info-unscheduled td {
+            border: 1px solid #000;
+            padding: 5px 8px;
+        }
+
+        .table-unscheduled-detail {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-unscheduled-detail td,
+        .table-unscheduled-detail th {
+            border: 1px solid #000;
+            padding: 6px 8px;
+            font-size: 8.5pt;
+            vertical-align: top;
+        }
+
+        .table-unscheduled-detail th {
+            text-align: left;
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+
+        /* Main Data Table untuk P (Single Unit Column Style) */
         .table-data {
             width: 100%;
             border-collapse: collapse;
@@ -102,7 +135,7 @@
             font-weight: bold;
         }
 
-        /* Kesimpulan & Catatan Section */
+        /* Kesimpulan & Signature */
         .section-kesimpulan {
             border-top: 1.5px solid #000;
             padding: 6px 8px;
@@ -110,7 +143,6 @@
             line-height: 1.3;
         }
 
-        /* Signature Section */
         .table-ttd {
             width: 100%;
             border-collapse: collapse;
@@ -119,7 +151,7 @@
         }
 
         .table-ttd td {
-            width: 33.33%;
+            width: 50%;
             text-align: center;
             vertical-align: top;
             font-size: 7.5pt;
@@ -135,11 +167,11 @@
             font-family: 'DejaVu Sans', sans-serif;
         }
 
-        /* CSS Lampiran Foto */
         .page-break {
             page-break-before: always;
         }
 
+        /* Lampiran */
         .attachment-header {
             font-weight: bold;
             font-size: 11pt;
@@ -189,7 +221,7 @@
                     <img src="{{ public_path('img/IMST.png') }}" class="logo-img" alt="INKA Logo">
                 </td>
                 <td class="title-cell">
-                    {{ strtoupper($fcu->judul ?? ($fcu->nama_fcu ?? $fcu->nama)) }}
+                    {{ strtoupper($fcu->judul ?? ($fcu->nama_fcu ?? 'CHECKSHEET PERAWATAN FCU')) }}
                 </td>
                 <td class="code-cell">
                     {{ $fcu->jenis_perawatan }}
@@ -197,85 +229,114 @@
             </tr>
         </table>
 
-        {{-- LOOPING CHECKSHEET (FCU 1 & FCU 2) --}}
-        @foreach ($checksheets as $blockIndex => $blockData)
-            {{-- Tanggal & No FCU --}}
-            <table class="table-info" style="{{ $blockIndex > 0 ? 'border-top: 1.5px solid #000;' : '' }}">
+        @if ($fcu->jenis_perawatan === 'Unscheduled')
+            {{-- ========================================================= --}}
+            {{-- 1. TAMPILAN UNSCHEDULED (Form Kerusakan Tanpa Tabel Work)  --}}
+            {{-- ========================================================= --}}
+            @php $uForm = $fcu->unscheduledForm; @endphp
+
+            <table class="table-info-unscheduled">
                 <tr>
-                    <td width="60%">TANGGAL PERAWATAN :
-                        {{ \Carbon\Carbon::parse($blockData['tanggal'])->format('d/m/Y') }}</td>
-                    <td width="40%">No FCU: {{ $blockData['no_fcu'] }}</td>
+                    <td width="50%">TANGGAL :
+                        {{ \Carbon\Carbon::parse($uForm->tanggal ?? $fcu->tanggal)->format('d/m/Y') }}</td>
+                    <td width="50%">FORM NO. FCU : {{ $uForm->no_fcu ?? $fcu->no_fcu }}</td>
                 </tr>
             </table>
 
-            {{-- Tabel Items Checksheet --}}
-            <table class="table-data">
-                <thead>
+            <table class="table-unscheduled-detail">
+                <tr>
+                    <th width="20%">Personil / Teknisi</th>
+                    <td width="30%">{{ $uForm->personil ?? '-' }}</td>
+                    <th width="20%">Status Akhir</th>
+                    <td width="30%"><b>{{ $uForm->status ?? '-' }}</b></td>
+                </tr>
+                <tr>
+                    <th>Jenis Kerusakan</th>
+                    <td colspan="3" style="height: 60px;">{{ $uForm->jenis_kerusakan ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Tindak Lanjut</th>
+                    <td colspan="3" style="height: 100px;">{{ $uForm->tindak_lanjut ?? '-' }}</td>
+                </tr>
+            </table>
+        @else
+            {{-- ========================================================= --}}
+            {{-- 2. TAMPILAN SCHEDULED (P1, P3, P6, P12) - STACKED PER FCU  --}}
+            {{-- ========================================================= --}}
+            @php
+                $units = [
+                    'fcu1' => $checksheets[0]['no_fcu'] ?? 'FCU-01',
+                    'fcu2' => $checksheets[1]['no_fcu'] ?? 'FCU-02',
+                ];
+            @endphp
+
+            @foreach ($units as $unitKey => $unitNo)
+                {{-- Sub Header Per Unit FCU --}}
+                <table class="table-sub-header">
                     <tr>
-                        <th width="5%" rowspan="2">No.</th>
-                        <th width="25%" rowspan="2">Uraian pekerjaan</th>
-                        <th width="40%" rowspan="2">Aktivitas Pekerjaan</th>
-                        <th width="20%" rowspan="2">Standar</th>
-                        <th width="10%" colspan="2">Status</th>
+                        <td width="60%">TANGGAL PERAWATAN :
+                            {{ \Carbon\Carbon::parse($fcu->tanggal)->format('d/m/Y') }}</td>
+                        <td width="40%" style="text-align: right;">No FCU: {{ $unitNo }}</td>
                     </tr>
-                    <tr>
-                        <th width="5%">OK</th>
-                        <th width="5%">NOK</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($fcu->sections as $sec)
-                        {{-- Menampilkan Header Section --}}
-                        @if (!empty($sec->nama_section))
-                            <tr style="background-color: #e6e6e6; font-weight: bold;">
-                                <td class="text-center">{{ $sec->kode }}</td>
-                                <td colspan="5" style="padding: 3px 5px;">{{ $sec->nama_section }}</td>
-                            </tr>
-                        @endif
+                </table>
 
-                        @foreach ($sec->items as $item)
-                            @php $detailCount = count($item->details); @endphp
-                            @foreach ($item->details as $index => $det)
-                                <tr>
-                                    @if ($index === 0)
-                                        <td class="text-center" rowspan="{{ $detailCount }}">{{ $item->nomor }}</td>
-                                        <td class="text-bold" rowspan="{{ $detailCount }}">{{ $item->uraian }}</td>
-                                    @endif
-
-                                    <td>{{ $det->aktivitas }}</td>
-                                    <td>{{ $det->standar }}</td>
-
-                                    {{-- Penentuan Centang Berdasarkan Unit (fcu1 / fcu2) --}}
-                                    @php
-                                        $unitKey = $blockIndex == 0 ? 'fcu1' : 'fcu2';
-                                        $res = $det->results ? $det->results->where('unit', $unitKey)->first() : null;
-                                        $status = $res ? $res->status : null;
-                                    @endphp
-
-                                    <td class="text-center checkmark">
-                                        {!! $status == 'OK' || $status == 'SO' ? '&#10003;' : '' !!}
-                                    </td>
-                                    <td class="text-center checkmark">
-                                        {!! $status == 'NOK' || $status == 'TSO' ? '&#10003;' : '' !!}
-                                    </td>
+                <table class="table-data">
+                    <thead>
+                        <tr>
+                            <th width="5%" rowspan="2">No.</th>
+                            <th width="25%" rowspan="2">Uraian pekerjaan</th>
+                            <th width="45%" rowspan="2">Aktivitas Pekerjaan</th>
+                            <th width="15%" rowspan="2">Standar</th>
+                            <th width="10%" colspan="2">Status</th>
+                        </tr>
+                        <tr>
+                            <th width="5%">OK</th>
+                            <th width="5%">NOK</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($fcu->sections as $sec)
+                            @if (!empty($sec->nama_section))
+                                <tr style="background-color: #e6e6e6; font-weight: bold;">
+                                    <td class="text-center">{{ $sec->kode }}</td>
+                                    <td colspan="5" style="padding: 3px 5px;">{{ $sec->nama_section }}</td>
                                 </tr>
+                            @endif
+
+                            @foreach ($sec->items as $item)
+                                @php $detailCount = count($item->details); @endphp
+                                @foreach ($item->details as $index => $det)
+                                    <tr>
+                                        @if ($index === 0)
+                                            <td class="text-center" rowspan="{{ $detailCount }}">{{ $item->nomor }}
+                                            </td>
+                                            <td class="text-bold" rowspan="{{ $detailCount }}">{{ $item->uraian }}
+                                            </td>
+                                        @endif
+
+                                        <td>{{ $det->aktivitas }}</td>
+                                        <td>{{ $det->standar }}</td>
+
+                                        {{-- Fetch Result berdasarkan unit (fcu1 / fcu2) --}}
+                                        @php
+                                            $res = $det->results
+                                                ? $det->results->where('unit', $unitKey)->first()
+                                                : null;
+                                            $status = $res ? $res->status : null;
+                                        @endphp
+                                        <td class="text-center checkmark">
+                                            {!! $status == 'OK' || $status == 'SO' ? '&#10003;' : '' !!}
+                                        </td>
+                                        <td class="text-center checkmark">
+                                            {!! $status == 'NOK' || $status == 'TSO' ? '&#10003;' : '' !!}
+                                        </td>
+                                    </tr>
+                                @endforeach
                             @endforeach
                         @endforeach
-                    @endforeach
-                </tbody>
-            </table>
-        @endforeach
-
-        {{-- Form Unscheduled (Jika ada) --}}
-        @if ($fcu->jenis_perawatan === 'Unscheduled' && $fcu->unscheduledForm)
-            <div style="border-top: 1.5px solid #000; padding: 4px 8px; font-size: 8pt;">
-                <b>FORM UNSCHEDULED MAINTENANCE</b><br>
-                <span>
-                    Kerusakan: {{ $fcu->unscheduledForm->jenis_kerusakan }} |
-                    Tindak Lanjut: {{ $fcu->unscheduledForm->tindak_lanjut }} |
-                    Status: <b>{{ $fcu->unscheduledForm->status }}</b>
-                </span>
-            </div>
+                    </tbody>
+                </table>
+            @endforeach
         @endif
 
         {{-- Kesimpulan & Catatan --}}
@@ -299,6 +360,7 @@
             @forelse ($fcu->notes as $note)
                 {{ $note->catatan }}
             @empty
+                -
             @endforelse
         </div>
 
@@ -332,7 +394,7 @@
                                 foreach ($res->photos as $p) {
                                     $photos->push([
                                         'file' => $p->foto,
-                                        'unit' => strtoupper($res->unit),
+                                        'unit' => strtoupper($res->unit ?? '-'),
                                         'aktivitas' => $det->aktivitas,
                                         'keterangan' => $res->keterangan,
                                     ]);

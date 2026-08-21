@@ -173,15 +173,22 @@
                                 <td><strong>{{ $d->judul }}</strong></td>
                                 <td>
                                     <div class="d-flex gap-1 flex-wrap">
-                                        {{-- Menampilkan inputan No. FCU Pertama & Kedua secara dinamis --}}
-                                        @if (!empty($d->no_fcu_1))
-                                            <span class="badge-modern">{{ $d->no_fcu_1 }}</span>
-                                        @elseif(!empty($d->no_fcu))
-                                            <span class="badge-modern">{{ $d->no_fcu }}</span>
-                                        @endif
+                                        @if ($d->jenis_perawatan === 'Unscheduled')
+                                            {{-- Mengambil No FCU dari relasi unscheduledForm --}}
+                                            <span class="badge-modern">
+                                                {{ $d->unscheduledForm->no_fcu ?? ($d->no_fcu ?? '-') }}
+                                            </span>
+                                        @else
+                                            {{-- Untuk perawatan terjadwal (P1, P3, P6, P12) --}}
+                                            @if (!empty($d->no_fcu_1))
+                                                <span class="badge-modern">{{ $d->no_fcu_1 }}</span>
+                                            @elseif(!empty($d->no_fcu))
+                                                <span class="badge-modern">{{ $d->no_fcu }}</span>
+                                            @endif
 
-                                        @if (!empty($d->no_fcu_2))
-                                            <span class="badge-modern">{{ $d->no_fcu_2 }}</span>
+                                            @if (!empty($d->no_fcu_2))
+                                                <span class="badge-modern">{{ $d->no_fcu_2 }}</span>
+                                            @endif
                                         @endif
                                     </div>
                                 </td>

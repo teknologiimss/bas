@@ -1,6 +1,5 @@
 <?php
 
-// app/Http/Controllers/FcuMonitoringController.php
 namespace App\Http\Controllers;
 
 use App\Models\FcuDetail;
@@ -19,10 +18,17 @@ class FcuMonitoringController extends Controller
 {
     public function index(Request $request)
     {
-        $query = FcuMonitoring::query();
+        // Tambahkan with('unscheduledForm')
+        $query = FcuMonitoring::with('unscheduledForm');
 
         if ($request->filled('no_fcu')) {
-            $query->where('no_fcu', 'like', '%' . $request->no_fcu . '%');
+            $query->where(function ($q) use ($request) {
+                $q
+                    ->where('no_fcu', 'like', '%' . $request->no_fcu . '%')
+                    ->orWhereHas('unscheduledForm', function ($subQuery) use ($request) {
+                        $subQuery->where('no_fcu', 'like', '%' . $request->no_fcu . '%');
+                    });
+            });
         }
 
         if ($request->filled('jenis_perawatan')) {
@@ -38,61 +44,6 @@ class FcuMonitoringController extends Controller
         return view('fcu.create');
     }
 
-    // public function store(Request $request)
-    // {
-    //     DB::transaction(function () use ($request) {
-    //         $fcu = FcuMonitoring::create([
-    //             'judul' => $request->judul,
-    //             'jenis_perawatan' => $request->jenis_perawatan,
-    //             'tanggal' => $request->tanggal,
-    //             'no_fcu' => $request->no_fcu,
-    //         ]);
-
-    //         if ($request->jenis_perawatan === 'Unscheduled') {
-    //             FcuUnscheduledForm::create([
-    //                 'fcu_monitoring_id' => $fcu->id,
-    //                 'tanggal' => $request->unscheduled_tanggal,
-    //                 'jenis_kerusakan' => $request->unscheduled_jenis_kerusakan,
-    //                 'tindak_lanjut' => $request->unscheduled_tindak_lanjut,
-    //                 'status' => $request->unscheduled_status,
-    //                 'personil' => $request->unscheduled_personil,
-    //             ]);
-    //         }
-
-    //         if ($request->has('sections')) {
-    //             foreach ($request->sections as $secData) {
-    //                 $section = FcuSection::create([
-    //                     'fcu_monitoring_id' => $fcu->id,
-    //                     'kode' => $secData['kode'] ?? null,
-    //                     'nama_section' => $secData['nama'],
-    //                 ]);
-
-    //                 if (isset($secData['items'])) {
-    //                     foreach ($secData['items'] as $itemData) {
-    //                         $item = FcuItem::create([
-    //                             'fcu_section_id' => $section->id,
-    //                             'nomor' => $itemData['nomor'] ?? null,
-    //                             'uraian' => $itemData['uraian'],
-    //                         ]);
-
-    //                         if (isset($itemData['details'])) {
-    //                             foreach ($itemData['details'] as $detData) {
-    //                                 FcuDetail::create([
-    //                                     'fcu_item_id' => $item->id,
-    //                                     'aktivitas' => $detData['aktivitas'] ?? null,
-    //                                     'standar' => $detData['standar'] ?? null,
-    //                                 ]);
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
-
-    //     return redirect()->route('fcu.index')->with('success', 'Monitoring FCU berhasil dibuat!');
-    // }
-
     public function store(Request $request)
     {
         DB::transaction(function () use ($request) {
@@ -101,13 +52,14 @@ class FcuMonitoringController extends Controller
                 'jenis_perawatan' => $request->jenis_perawatan,
                 'tanggal' => $request->tanggal,
                 'no_fcu' => $request->no_fcu,
-                'tanggal_2' => $request->tanggal_2 ?? $request->tanggal,  // Default samakan jika tidak diisi
+                'tanggal_2' => $request->tanggal_2 ?? $request->tanggal,
                 'no_fcu_2' => $request->no_fcu_2,
             ]);
 
             if ($request->jenis_perawatan === 'Unscheduled') {
                 FcuUnscheduledForm::create([
                     'fcu_monitoring_id' => $fcu->id,
+                    'no_fcu' => $request->unscheduled_no_fcu ?? $request->no_fcu,  // <--- Ditambahkan
                     'tanggal' => $request->unscheduled_tanggal,
                     'jenis_kerusakan' => $request->unscheduled_jenis_kerusakan,
                     'tindak_lanjut' => $request->unscheduled_tindak_lanjut,
@@ -156,69 +108,6 @@ class FcuMonitoringController extends Controller
         return view('fcu.edit', compact('fcu'));
     }
 
-    // public function update(Request $request, $id)
-    // {
-    //     DB::transaction(function () use ($request, $id) {
-    //         $fcu = FcuMonitoring::findOrFail($id);
-    //         $fcu->update([
-    //             'judul' => $request->judul,
-    //             'jenis_perawatan' => $request->jenis_perawatan,
-    //             'tanggal' => $request->tanggal,
-    //             'no_fcu' => $request->no_fcu,
-    //         ]);
-
-    //         if ($request->jenis_perawatan === 'Unscheduled') {
-    //             FcuUnscheduledForm::updateOrCreate(
-    //                 ['fcu_monitoring_id' => $fcu->id],
-    //                 [
-    //                     'tanggal' => $request->unscheduled_tanggal,
-    //                     'jenis_kerusakan' => $request->unscheduled_jenis_kerusakan,
-    //                     'tindak_lanjut' => $request->unscheduled_tindak_lanjut,
-    //                     'status' => $request->unscheduled_status,
-    //                     'personil' => $request->unscheduled_personil,
-    //                 ]
-    //             );
-    //         } else {
-    //             FcuUnscheduledForm::where('fcu_monitoring_id', $fcu->id)->delete();
-    //         }
-
-    //         // Hapus struktur lama dan re-insert
-    //         FcuSection::where('fcu_monitoring_id', $fcu->id)->delete();
-
-    //         if ($request->has('sections')) {
-    //             foreach ($request->sections as $secData) {
-    //                 $section = FcuSection::create([
-    //                     'fcu_monitoring_id' => $fcu->id,
-    //                     'kode' => $secData['kode'] ?? null,
-    //                     'nama_section' => $secData['nama'],
-    //                 ]);
-
-    //                 if (isset($secData['items'])) {
-    //                     foreach ($secData['items'] as $itemData) {
-    //                         $item = FcuItem::create([
-    //                             'fcu_section_id' => $section->id,
-    //                             'nomor' => $itemData['nomor'] ?? null,
-    //                             'uraian' => $itemData['uraian'],
-    //                         ]);
-
-    //                         if (isset($itemData['details'])) {
-    //                             foreach ($itemData['details'] as $detData) {
-    //                                 FcuDetail::create([
-    //                                     'fcu_item_id' => $item->id,
-    //                                     'aktivitas' => $detData['aktivitas'] ?? null,
-    //                                     'standar' => $detData['standar'] ?? null,
-    //                                 ]);
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
-
-    //     return redirect()->route('fcu.index')->with('success', 'Monitoring FCU berhasil diupdate!');
-    // }
-
     public function update(Request $request, $id)
     {
         DB::transaction(function () use ($request, $id) {
@@ -236,6 +125,7 @@ class FcuMonitoringController extends Controller
                 FcuUnscheduledForm::updateOrCreate(
                     ['fcu_monitoring_id' => $fcu->id],
                     [
+                        'no_fcu' => $request->unscheduled_no_fcu ?? $request->no_fcu,  // <--- Ditambahkan
                         'tanggal' => $request->unscheduled_tanggal,
                         'jenis_kerusakan' => $request->unscheduled_jenis_kerusakan,
                         'tindak_lanjut' => $request->unscheduled_tindak_lanjut,
@@ -296,37 +186,6 @@ class FcuMonitoringController extends Controller
         return view('fcu.mobile', compact('fcu'));
     }
 
-    // public function saveMobile(Request $request)
-    // {
-    //     DB::transaction(function () use ($request) {
-    //         if ($request->has('details')) {
-    //             foreach ($request->details as $detailId => $data) {
-    //                 $result = FcuResult::updateOrCreate(
-    //                     ['fcu_detail_id' => $detailId],
-    //                     [
-    //                         'status' => $data['status'] ?? null,
-    //                         'keterangan' => $data['keterangan'] ?? null,
-    //                     ]
-    //                 );
-
-    //                 if (isset($data['photos'])) {
-    //                     foreach ($data['photos'] as $photoFile) {
-    //                         $filename = time() . '_' . uniqid() . '.' . $photoFile->getClientOriginalExtension();
-    //                         $photoFile->move(public_path('uploads/fcu'), $filename);
-
-    //                         FcuResultPhoto::create([
-    //                             'fcu_result_id' => $result->id,
-    //                             'foto' => $filename,
-    //                         ]);
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
-
-    //     return redirect()->back()->with('success', 'Checksheet FCU berhasil disimpan!');
-    // }
-
     public function saveMobile(Request $request)
     {
         $detailsData = $request->input('details', []);
@@ -337,11 +196,10 @@ class FcuMonitoringController extends Controller
                     continue;
                 }
 
-                // Simpan atau update ke model FcuResult
                 $result = FcuResult::updateOrCreate(
                     [
                         'fcu_detail_id' => $detailId,
-                        'unit' => $unitKey,  // Mengidentifikasi 'fcu1' atau 'fcu2'
+                        'unit' => $unitKey,
                     ],
                     [
                         'status' => $data['status'],
@@ -349,7 +207,6 @@ class FcuMonitoringController extends Controller
                     ]
                 );
 
-                // Proses upload foto menggunakan model FcuResultPhoto
                 if ($request->hasFile("details.{$unitKey}.{$detailId}.photos")) {
                     foreach ($request->file("details.{$unitKey}.{$detailId}.photos") as $file) {
                         $filename = time() . '_' . $file->getClientOriginalName();
@@ -397,8 +254,6 @@ class FcuMonitoringController extends Controller
         return redirect()->back()->with('success', 'Foto dihapus!');
     }
 
-    // Tambahkan di App/Http/Controllers/FcuMonitoringController.php
-
     public function show($id)
     {
         $fcu = FcuMonitoring::with(['sections.items.details.result.photos', 'unscheduledForm', 'notes'])->findOrFail($id);
@@ -407,9 +262,13 @@ class FcuMonitoringController extends Controller
 
     public function print($id)
     {
-        $fcu = FcuMonitoring::with(['sections.items.details.result.photos', 'unscheduledForm', 'notes'])->findOrFail($id);
+        // Tambahkan 'sections.items.details.results.photos' untuk memuat relasi results
+        $fcu = FcuMonitoring::with([
+            'sections.items.details.results.photos',
+            'unscheduledForm',
+            'notes'
+        ])->findOrFail($id);
 
-        // Menyusun array berisi 2 FCU untuk dipetakan dalam 1 halaman PDF
         $checksheets = [
             [
                 'no_fcu' => $fcu->no_fcu,
@@ -430,32 +289,25 @@ class FcuMonitoringController extends Controller
     public function copy($id)
     {
         DB::transaction(function () use ($id) {
-            // 1. Load data lama beserta relasi strukturnya
             $source = FcuMonitoring::with(['sections.items.details', 'unscheduledForm'])->findOrFail($id);
 
-            // 2. Replikasi data utama FcuMonitoring
             $newFcu = $source->replicate();
-
             $newFcu->judul = $source->judul;
-
-            // Diisi string kosong agar tidak memicu error NOT NULL
             $newFcu->no_fcu = '';
             $newFcu->no_fcu_2 = '';
-
             $newFcu->tanggal = now()->format('Y-m-d');
             $newFcu->tanggal_2 = now()->format('Y-m-d');
             $newFcu->kesimpulan = null;
             $newFcu->save();
 
-            // 3. Replikasi Unscheduled Form jika tipe perawatan Unscheduled
             if ($source->jenis_perawatan === 'Unscheduled' && $source->unscheduledForm) {
                 $newUnscheduled = $source->unscheduledForm->replicate();
                 $newUnscheduled->fcu_monitoring_id = $newFcu->id;
+                $newUnscheduled->no_fcu = '';  // Reset nilai no_fcu pada bentuk yang diduplikasi
                 $newUnscheduled->tanggal = now()->format('Y-m-d');
                 $newUnscheduled->save();
             }
 
-            // 4. Replikasi Struktur Section -> Item -> Detail
             foreach ($source->sections as $section) {
                 $newSection = $section->replicate();
                 $newSection->fcu_monitoring_id = $newFcu->id;
@@ -467,7 +319,6 @@ class FcuMonitoringController extends Controller
                     $newItem->save();
 
                     foreach ($item->details as $detail) {
-                        // Replikasi detail tanpa menyentuh kolom 'hasil' / 'keterangan' / 'foto'
                         $newDetail = $detail->replicate();
                         $newDetail->fcu_item_id = $newItem->id;
                         $newDetail->save();
