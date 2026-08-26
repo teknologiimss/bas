@@ -8,6 +8,7 @@ use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetMaintenanceController;
 use App\Http\Controllers\BpmController;
 use App\Http\Controllers\ChecksheetController;
+use App\Http\Controllers\ChillerController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\CutiTahunanController;
 use App\Http\Controllers\DetailsjnController;
@@ -1017,7 +1018,7 @@ Route::prefix('products')->group(function () {
         Route::get('/', [FcuMonitoringController::class, 'index'])->name('index');
         // ➕ ROUTE HAPUS BANYAK DATA SEKALIGUS
         Route::delete('/bulk-delete', [FcuMonitoringController::class, 'bulkDelete'])->name('bulk-delete');
-        
+
         Route::get('/create', [FcuMonitoringController::class, 'create'])->name('create');
         Route::post('/store', [FcuMonitoringController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [FcuMonitoringController::class, 'edit'])->name('edit');
@@ -1041,6 +1042,28 @@ Route::prefix('products')->group(function () {
         // ➕ ROUTE BARU UNTUK UPLOAD DOKUMEN
         Route::post('/{id}/upload', [FcuMonitoringController::class, 'upload'])->name('upload');
         Route::delete('/{id}/delete-document', [FcuMonitoringController::class, 'deleteDocument'])->name('delete-document');
+    });
+
+    // AC Graha Chiller
+    Route::prefix('chiller')->name('chiller.')->group(function () {
+        Route::get('/', [ChillerController::class, 'index'])->name('index');
+        Route::get('/create', [ChillerController::class, 'create'])->name('create');
+        Route::post('/store', [ChillerController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [ChillerController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [ChillerController::class, 'update'])->name('update');
+        Route::get('/{id}/show', [ChillerController::class, 'show'])->name('show');
+        Route::delete('/{id}', [ChillerController::class, 'destroy'])->name('destroy');
+
+        // Mobile Inspection & Print
+        Route::get('/{id}/mobile', [ChillerController::class, 'mobile'])->name('mobile');
+        Route::post('/{id}/mobile-save', [ChillerController::class, 'saveMobile'])->name('mobile.save');
+        Route::get('/{id}/print', [ChillerController::class, 'print'])->name('print');
+        Route::get('/photo/{id}/delete', [ChillerController::class, 'deletePhoto'])->name('photo.delete');
+
+        Route::post('/{id}/upload-dokumen', [ChillerController::class, 'uploadDokumen'])->name('upload.dokumen');
+        Route::delete('/{id}/delete-dokumen', [ChillerController::class, 'deleteDokumen'])->name('delete.dokumen');
+
+        Route::post('/{id}/duplicate', [ChillerController::class, 'duplicate'])->name('duplicate');
     });
 
     // BA JUSTIFIKASI

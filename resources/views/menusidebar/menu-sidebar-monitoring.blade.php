@@ -209,6 +209,27 @@
                     </div>
                 </div>
 
+                {{-- 11. Monitoring Chiller --}}
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                    <div class="card h-100 shadow-sm hover-shadow border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="icon-wrapper bg-primary-soft mb-3 mx-auto">
+                                <i class="fas fa-snowflake fa-3x text-primary"></i>
+                            </div>
+                            <h5 class="font-weight-bold">Monitoring Chiller</h5>
+                            <p class="text-muted small">Kelola pemeliharaan berkala dan inspeksi unit Chiller AC secara
+                                rinci.
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-4 text-center">
+                            <a href="{{ route('chiller.index') }}"
+                                class="btn btn-outline-primary btn-block rounded-pill">
+                                Buka Menu <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
