@@ -56,6 +56,10 @@
             box-shadow: none !important;
         }
 
+        textarea.form-control {
+            height: auto;
+        }
+
         .form-control:focus,
         .form-select:focus {
             border-color: var(--accent);
@@ -91,6 +95,26 @@
                             placeholder="Contoh: Checksheet Maintenance Chiller" required>
                     </div>
                     <div class="col-md-4 mb-3">
+                        <label class="fw-bold mb-1">Jenis Perawatan</label>
+                        <select name="jenis_perawatan" id="jenis_perawatan" class="form-select" onchange="toggleFormType()"
+                            required>
+                            <option value="" disabled selected>-- Pilih Jenis --</option>
+                            <option value="P1">P1</option>
+                            <option value="P3">P3</option>
+                            <option value="P6">P6</option>
+                            <option value="P12">P12</option>
+                            <option value="Unscheduled">Unscheduled</option>
+                        </select>
+                    </div>
+
+                    {{-- Form Field Khusus Unscheduled --}}
+                    <div class="col-md-4 mb-3 unscheduled-field" style="display: none;">
+                        <label class="fw-bold mb-1">No. Form Unscheduled Chiller</label>
+                        <input type="text" name="no_form_unscheduled" class="form-control"
+                            placeholder="Contoh: UNS-CH-2026-001">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
                         <label class="fw-bold mb-1">No Chiller</label>
                         <input type="text" name="no_chiller" class="form-control" placeholder="Contoh: CHILLER-01"
                             required>
@@ -104,34 +128,48 @@
                         <input type="text" name="lokasi" class="form-control" placeholder="Contoh: Gedung A Lt. 2">
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="fw-bold mb-1">Tanggal Pelaksanaan</label>
+                        <label class="fw-bold mb-1">Tanggal</label>
                         <input type="date" name="tanggal_pelaksanaan" class="form-control" required>
                     </div>
-                    <div class="col-md-4 mb-3">
+
+                    {{-- Field Khusus Scheduled --}}
+                    <div class="col-md-4 mb-3 scheduled-field">
                         <label class="fw-bold mb-1">Durasi Pekerjaan</label>
                         <input type="text" name="durasi_pekerjaan" class="form-control"
                             placeholder="Contoh: 2 Jam / 1 Hari">
                     </div>
+
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold mb-1">Personil</label>
                         <input type="text" name="personil" class="form-control"
                             placeholder="Contoh: Teknisi A, Teknisi B">
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label class="fw-bold mb-1">Jenis Perawatan</label>
-                        <select name="jenis_perawatan" class="form-select" required>
-                            <option value="" disabled selected>-- Pilih Jenis --</option>
-                            <option value="P1">P1</option>
-                            <option value="P3">P3</option>
-                            <option value="P6">P6</option>
-                            <option value="P12">P12</option>
+
+                    {{-- Field Khusus Unscheduled Status --}}
+                    <div class="col-md-4 mb-3 unscheduled-field" style="display: none;">
+                        <label class="fw-bold mb-1">Status OK / NOK</label>
+                        <select name="status_kondisi" class="form-select">
+                            <option value="" disabled selected>-- Pilih Status --</option>
+                            <option value="OK">OK</option>
+                            <option value="NOK">NOK</option>
                         </select>
+                    </div>
+
+                    {{-- Field Khusus Unscheduled Kerusakan & Tindak Lanjut --}}
+                    <div class="col-md-6 mb-3 unscheduled-field" style="display: none;">
+                        <label class="fw-bold mb-1">Jenis Kerusakan</label>
+                        <textarea name="jenis_kerusakan" class="form-control" rows="3"
+                            placeholder="Jelaskan jenis kerusakan yang terjadi..."></textarea>
+                    </div>
+                    <div class="col-md-6 mb-3 unscheduled-field" style="display: none;">
+                        <label class="fw-bold mb-1">Tindak Lanjut</label>
+                        <textarea name="tindak_lanjut" class="form-control" rows="3" placeholder="Jelaskan tindak lanjut perbaikan..."></textarea>
                     </div>
                 </div>
             </div>
 
-            {{-- DAFTAR ITEM PEKERJAAN --}}
-            <div class="main-card mb-4">
+            {{-- DAFTAR ITEM PEKERJAAN (Hanya untuk Scheduled Maintenance) --}}
+            <div class="main-card mb-4 scheduled-field" id="scheduled-container">
                 <h5 class="fw-bold text-primary mb-3">🛠️ Uraian & Aktivitas Pekerjaan</h5>
 
                 <div id="items-container"></div>
@@ -151,6 +189,20 @@
         let itemIndex = 0;
         let detailIndexes = {};
 
+        function toggleFormType() {
+            let jenis = document.getElementById('jenis_perawatan').value;
+            let unscheduledFields = document.querySelectorAll('.unscheduled-field');
+            let scheduledFields = document.querySelectorAll('.scheduled-field');
+
+            if (jenis === 'Unscheduled') {
+                unscheduledFields.forEach(el => el.style.display = 'block');
+                scheduledFields.forEach(el => el.style.display = 'none');
+            } else {
+                unscheduledFields.forEach(el => el.style.display = 'none');
+                scheduledFields.forEach(el => el.style.display = 'block');
+            }
+        }
+
         function addItem() {
             let sIndex = itemIndex;
             detailIndexes[sIndex] = 0;
@@ -164,7 +216,7 @@
                     </div>
                     <div class="col-md-9 mb-2">
                         <label class="fw-bold small text-muted">Uraian Pekerjaan Utama</label>
-                        <input type="text" name="items[${sIndex}][uraian_pekerjaan]" class="form-control" placeholder="Contoh: CHILLER UNIT / SISTEM KELISTRIKAN" required>
+                        <input type="text" name="items[${sIndex}][uraian_pekerjaan]" class="form-control" placeholder="Contoh: CHILLER UNIT / SISTEM KELISTRIKAN">
                     </div>
                     <div class="col-md-1 mb-2 text-end">
                         <label class="d-block">&nbsp;</label>
@@ -196,7 +248,7 @@
             let html = `
             <div class="row align-items-center detail-row">
                 <div class="col-md-6 mb-1">
-                    <input type="text" name="items[${sIndex}][details][${dIndex}][aktivitas_pekerjaan]" class="form-control" placeholder="Uraian Aktivitas (Contoh: Cek Kondisi Kompresor)" required>
+                    <input type="text" name="items[${sIndex}][details][${dIndex}][aktivitas_pekerjaan]" class="form-control" placeholder="Uraian Aktivitas (Contoh: Cek Kondisi Kompresor)">
                 </div>
                 <div class="col-md-5 mb-1">
                     <input type="text" name="items[${sIndex}][details][${dIndex}][standar]" class="form-control" placeholder="Standar (Contoh: Normal / Baik)">
@@ -221,6 +273,9 @@
             btn.closest('.detail-row').remove();
         }
 
-        addItem();
+        document.addEventListener('DOMContentLoaded', function() {
+            addItem();
+            toggleFormType();
+        });
     </script>
 @endsection

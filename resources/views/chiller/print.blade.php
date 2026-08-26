@@ -46,7 +46,7 @@
         }
 
         .jenis-box {
-            font-size: 26px;
+            font-size: {{ $chiller->jenis_perawatan == 'Unscheduled' ? '14px' : '26px' }};
             font-weight: bold;
         }
 
@@ -121,6 +121,9 @@
             </td>
             <td width="60%" class="text-center">
                 <div style="font-size: 16px; font-weight: bold;">{{ strtoupper($chiller->judul) }}</div>
+                @if ($chiller->jenis_perawatan == 'Unscheduled' && $chiller->no_form_unscheduled)
+                    <div style="font-size: 11px; margin-top: 4px;">NO. FORM: {{ $chiller->no_form_unscheduled }}</div>
+                @endif
             </td>
             <td width="15%" class="text-center jenis-box">
                 {{ $chiller->jenis_perawatan }}
@@ -131,98 +134,138 @@
     {{-- METADATA UNIT --}}
     <table style="border-top: none;">
         <tr class="text-bold text-center">
-            <td width="33%">NO ASET : {{ $chiller->no_aset ?? '0' }}</td>
-            <td width="33%">LOKASI : {{ $chiller->lokasi ?? '0' }}</td>
-            <td width="34%">NO CHILLER : {{ $chiller->no_chiller }}</td>
+            <td width="33%">NO ASET : {{ $chiller->no_aset ?? '-' }}</td>
+            <td width="33%">LOKASI : {{ $chiller->lokasi ?? '-' }}</td>
+            <td width="34%">NO CHILLER : {{ $chiller->no_chiller ?? '-' }}</td>
         </tr>
     </table>
 
-    {{-- TABEL PEKERJAAN --}}
-    <table style="border-top: none;">
-        <thead>
-            <tr style="background: #f2f2f2;">
-                <th width="5%" rowspan="2">No.</th>
-                <th width="30%" rowspan="2">Uraian Pekerjaan</th>
-                <th width="35%" rowspan="2">Aktivitas Pekerjaan</th>
-                <th width="20%" rowspan="2">Standar</th>
-                <th width="10%" colspan="2">Status</th>
+    @if ($chiller->jenis_perawatan == 'Unscheduled')
+        {{-- ================= FORM KHUSUS UNSCHEDULED ================= --}}
+        <table style="border-top: none;">
+            <tr>
+                <td width="30%" class="text-bold">STATUS KONDISI</td>
+                <td width="70%">
+                    <span class="symbol">{{ $chiller->status_kondisi == 'OK' ? '[ ✓ ] OK' : '[  ] OK' }}</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="symbol">{{ $chiller->status_kondisi == 'NOK' ? '[ ✓ ] NOK' : '[  ] NOK' }}</span>
+                </td>
             </tr>
-            <tr style="background: #f2f2f2;">
-                <th width="5%">OK</th>
-                <th width="5%">NOK</th>
+            <tr>
+                <td class="text-bold" style="vertical-align: top; padding-top: 8px;">JENIS KERUSAKAN</td>
+                <td style="min-height: 80px; vertical-align: top; padding-top: 8px;">
+                    {!! nl2br(e($chiller->jenis_kerusakan ?? '-')) !!}
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @php
-                $groupedItems = $chiller->items->groupBy('uraian_pekerjaan');
-            @endphp
+            <tr>
+                <td class="text-bold" style="vertical-align: top; padding-top: 8px;">TINDAK LANJUT PERBAIKAN</td>
+                <td style="min-height: 100px; vertical-align: top; padding-top: 8px;">
+                    {!! nl2br(e($chiller->tindak_lanjut ?? '-')) !!}
+                </td>
+            </tr>
+        </table>
 
-            @foreach ($groupedItems as $uraian => $group)
+        {{-- TANGGAL & PERSONIL (UNSCHEDULED) --}}
+        <table style="border-top: none;">
+            <tr>
+                <td width="30%" class="text-bold">TANGGAL PELAKSANAAN</td>
+                <td width="70%">
+                    {{ $chiller->tanggal_pelaksanaan ? \Carbon\Carbon::parse($chiller->tanggal_pelaksanaan)->isoFormat('D MMMM Y') : '-' }}
+                </td>
+            </tr>
+            <tr>
+                <td class="text-bold">JUMLAH PERSONIL</td>
+                <td>{{ $chiller->personil ?? '-' }}</td>
+            </tr>
+        </table>
+    @else
+        {{-- ================= FORM SCHEDULED (P1, P3, P6, P12) ================= --}}
+        <table style="border-top: none;">
+            <thead>
+                <tr style="background: #f2f2f2;">
+                    <th width="5%" rowspan="2">No.</th>
+                    <th width="30%" rowspan="2">Uraian Pekerjaan</th>
+                    <th width="35%" rowspan="2">Aktivitas Pekerjaan</th>
+                    <th width="20%" rowspan="2">Standar</th>
+                    <th width="10%" colspan="2">Status</th>
+                </tr>
+                <tr style="background: #f2f2f2;">
+                    <th width="5%">OK</th>
+                    <th width="5%">NOK</th>
+                </tr>
+            </thead>
+            <tbody>
                 @php
-                    $rowCount = $group->count();
-                    $firstItem = $group->first();
+                    $groupedItems = $chiller->items->groupBy('uraian_pekerjaan');
                 @endphp
 
-                @foreach ($group as $index => $item)
-                    <tr>
-                        @if ($index === 0)
-                            <td class="text-center" rowspan="{{ $rowCount }}">{{ $firstItem->nomor }}</td>
-                            <td class="text-bold" rowspan="{{ $rowCount }}">{{ $uraian }}</td>
-                        @endif
+                @foreach ($groupedItems as $uraian => $group)
+                    @php
+                        $rowCount = $group->count();
+                        $firstItem = $group->first();
+                    @endphp
 
-                        <td>{{ $item->aktivitas_pekerjaan }}</td>
-                        <td>{{ $item->standar }}</td>
-                        <td class="text-center symbol">{{ $item->status == 'OK' ? '✓' : '' }}</td>
-                        <td class="text-center symbol">{{ $item->status == 'NOK' ? '✓' : '' }}</td>
-                    </tr>
+                    @foreach ($group as $index => $item)
+                        <tr>
+                            @if ($index === 0)
+                                <td class="text-center" rowspan="{{ $rowCount }}">{{ $firstItem->nomor }}</td>
+                                <td class="text-bold" rowspan="{{ $rowCount }}">{{ $uraian }}</td>
+                            @endif
+
+                            <td>{{ $item->aktivitas_pekerjaan }}</td>
+                            <td>{{ $item->standar }}</td>
+                            <td class="text-center symbol">{{ $item->status == 'OK' ? '✓' : '' }}</td>
+                            <td class="text-center symbol">{{ $item->status == 'NOK' ? '✓' : '' }}</td>
+                        </tr>
+                    @endforeach
                 @endforeach
-            @endforeach
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    {{-- KESIMPULAN & CATATAN --}}
-    <table style="border-top: none;">
-        <tr>
-            <td style="padding: 8px;">
-                <div><b>Kesimpulan :</b></div>
-                <div>
-                    Berdasarkan hasil perawatan, maka Chiller dinyatakan :
-                    <span
-                        style="{{ $chiller->kesimpulan == 'SO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO</span>
-                    /
-                    <span
-                        style="{{ $chiller->kesimpulan == 'SO DENGAN CATATAN' ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO
-                        dengan catatan</span>
-                    /
-                    <span
-                        style="{{ $chiller->kesimpulan == 'TSO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">TSO</span>
-                    <i>( Pilih salah satu )</i>
-                </div>
-                <div style="margin-top: 8px;"><b>Catatan:</b></div>
-                <div style="min-height: 40px;">{{ $chiller->catatan ?? '-' }}</div>
-            </td>
-        </tr>
-    </table>
+        {{-- KESIMPULAN & CATATAN --}}
+        <table style="border-top: none;">
+            <tr>
+                <td style="padding: 8px;">
+                    <div><b>Kesimpulan :</b></div>
+                    <div>
+                        Berdasarkan hasil perawatan, maka Chiller dinyatakan :
+                        <span
+                            style="{{ $chiller->kesimpulan == 'SO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO</span>
+                        /
+                        <span
+                            style="{{ $chiller->kesimpulan == 'SO DENGAN CATATAN' ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO
+                            dengan catatan</span>
+                        /
+                        <span
+                            style="{{ $chiller->kesimpulan == 'TSO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">TSO</span>
+                        <i>( Pilih salah satu )</i>
+                    </div>
+                    <div style="margin-top: 8px;"><b>Catatan:</b></div>
+                    <div style="min-height: 40px;">{{ $chiller->catatan ?? '-' }}</div>
+                </td>
+            </tr>
+        </table>
 
-    {{-- TANGGAL & DURASI --}}
-    <table style="border-top: none;">
-        <tr>
-            <td width="30%" class="text-bold">TANGGAL PELAKSANAAN</td>
-            <td width="70%">
-                {{ $chiller->tanggal_pelaksanaan ? \Carbon\Carbon::parse($chiller->tanggal_pelaksanaan)->isoFormat('D MMMM Y') : '-' }}
-            </td>
-        </tr>
-        <tr>
-            <td class="text-bold">DURASI PEKERJAAN</td>
-            <td>{{ $chiller->durasi_pekerjaan ?? '-' }}</td>
-        </tr>
-        <tr>
-            <td class="text-bold">JUMLAH PERSONIL</td>
-            <td>{{ $chiller->personil ?? '-' }}</td>
-        </tr>
-    </table>
+        {{-- TANGGAL & DURASI --}}
+        <table style="border-top: none;">
+            <tr>
+                <td width="30%" class="text-bold">TANGGAL PELAKSANAAN</td>
+                <td width="70%">
+                    {{ $chiller->tanggal_pelaksanaan ? \Carbon\Carbon::parse($chiller->tanggal_pelaksanaan)->isoFormat('D MMMM Y') : '-' }}
+                </td>
+            </tr>
+            <tr>
+                <td class="text-bold">DURASI PEKERJAAN</td>
+                <td>{{ $chiller->durasi_pekerjaan ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td class="text-bold">JUMLAH PERSONIL</td>
+                <td>{{ $chiller->personil ?? '-' }}</td>
+            </tr>
+        </table>
+    @endif
 
-    {{-- TANDA TANGAN --}}
+    {{-- TANDA TANGAN (TAMPIL DI KEDUA JENIS) --}}
     <table style="border-top: none;">
         <tr class="text-center signature-title">
             <td width="50%">MENGETAHUI,<br>KEPALA DEPARTEMEN MRO</td>

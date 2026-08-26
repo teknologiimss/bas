@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
 @section('content')
-    {{-- Script Bootstrap 5 untuk fungsionalitas Modal & Alert --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
@@ -35,6 +34,14 @@
             font-weight: 600;
         }
 
+        .badge-unscheduled {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+
         .action-group {
             display: inline-flex;
             align-items: center;
@@ -59,7 +66,6 @@
     </style>
 
     <div class="container py-4">
-        {{-- Flash Message dengan ID success-alert --}}
         @if (session('success'))
             <div id="success-alert" class="alert alert-success alert-dismissible fade show rounded-3 mb-3" role="alert">
                 <i class="fa fa-check-circle me-1"></i> {{ session('success') }}
@@ -121,8 +127,18 @@
                         @forelse($data as $i => $d)
                             <tr>
                                 <td class="text-center">{{ $i + 1 }}</td>
-                                <td><strong>{{ $d->judul }}</strong></td>
-                                <td><span class="badge-jenis">{{ $d->jenis_perawatan }}</span></td>
+                                <td>
+                                    <strong>{{ $d->judul }}</strong>
+                                    @if ($d->jenis_perawatan == 'Unscheduled' && $d->no_form_unscheduled)
+                                        <br><small class="text-muted">Form: {{ $d->no_form_unscheduled }}</small>
+                                    @endif
+                                </td>
+                                <td>
+                                    <span
+                                        class="{{ $d->jenis_perawatan == 'Unscheduled' ? 'badge-unscheduled' : 'badge-jenis' }}">
+                                        {{ $d->jenis_perawatan }}
+                                    </span>
+                                </td>
                                 <td>{{ $d->no_chiller ?? '-' }}</td>
                                 <td>{{ $d->no_aset ?? '-' }}</td>
                                 <td>{{ $d->lokasi ?? '-' }}</td>
@@ -158,10 +174,12 @@
                                 {{-- KOLOM AKSI --}}
                                 <td class="text-center">
                                     <div class="action-group">
-                                        <a href="{{ route('chiller.mobile', $d->id) }}" class="btn btn-success"
-                                            title="Isi Checksheet">
-                                            <i class="fa fa-mobile-screen me-1"></i> Isi
-                                        </a>
+                                        @if ($d->jenis_perawatan != 'Unscheduled')
+                                            <a href="{{ route('chiller.mobile', $d->id) }}" class="btn btn-success"
+                                                title="Isi Checksheet">
+                                                <i class="fa fa-mobile-screen me-1"></i> Isi
+                                            </a>
+                                        @endif
                                         <a href="{{ route('chiller.show', $d->id) }}" class="btn btn-info text-white"
                                             title="Detail">
                                             <i class="fa fa-eye"></i>
@@ -171,12 +189,16 @@
                                             <i class="fa fa-pen"></i>
                                         </a>
 
-                                        <form action="{{ route('chiller.duplicate', $d->id) }}" method="POST" onsubmit="return confirm('Duplikasi format checksheet ini?')">
-                                            @csrf
-                                            <button type="submit" class="btn btn-dark" title="Duplikasi Format">
-                                                <i class="fa fa-clone"></i>
-                                            </button>
-                                        </form>
+                                        @if ($d->jenis_perawatan != 'Unscheduled')
+                                            <form action="{{ route('chiller.duplicate', $d->id) }}" method="POST"
+                                                onsubmit="return confirm('Duplikasi format checksheet ini?')">
+                                                @csrf
+                                                <button type="submit" class="btn btn-dark" title="Duplikasi Format">
+                                                    <i class="fa fa-clone"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+
                                         <a href="{{ route('chiller.print', $d->id) }}" target="_blank"
                                             class="btn btn-secondary" title="Cetak">
                                             <i class="fa fa-print"></i>
@@ -245,7 +267,6 @@
         @endif
     @endforeach
 
-    {{-- Script untuk auto-hide alert --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const alertElement = document.getElementById('success-alert');
@@ -253,7 +274,7 @@
                 setTimeout(function() {
                     const bsAlert = new bootstrap.Alert(alertElement);
                     bsAlert.close();
-                }, 3000); // Durasi tampil: 3000ms (3 detik)
+                }, 3000);
             }
         });
     </script>

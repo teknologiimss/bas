@@ -39,18 +39,29 @@ class ChillerController extends Controller
             'jenis_perawatan' => 'required',
         ]);
 
-        $chiller = Chiller::create([
+        $chillerData = [
             'judul' => $request->judul,
             'jenis_perawatan' => $request->jenis_perawatan,
             'no_aset' => $request->no_aset,
             'lokasi' => $request->lokasi,
             'no_chiller' => $request->no_chiller,
             'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
-            'durasi_pekerjaan' => $request->durasi_pekerjaan,
             'personil' => $request->personil,
-        ]);
+        ];
 
-        if ($request->has('items')) {
+        if ($request->jenis_perawatan === 'Unscheduled') {
+            $chillerData['no_form_unscheduled'] = $request->no_form_unscheduled;
+            $chillerData['status_kondisi'] = $request->status_kondisi;
+            $chillerData['jenis_kerusakan'] = $request->jenis_kerusakan;
+            $chillerData['tindak_lanjut'] = $request->tindak_lanjut;
+        } else {
+            $chillerData['durasi_pekerjaan'] = $request->durasi_pekerjaan;
+        }
+
+        $chiller = Chiller::create($chillerData);
+
+        // Hanya simpan item jika jenis perawatan BUKAN Unscheduled
+        if ($request->jenis_perawatan !== 'Unscheduled' && $request->has('items')) {
             foreach ($request->items as $item) {
                 if (!empty($item['uraian_pekerjaan']) && isset($item['details'])) {
                     foreach ($item['details'] as $detail) {
@@ -79,115 +90,95 @@ class ChillerController extends Controller
 
     public function edit($id)
     {
-        // Cukup load relasi 'items'
         $checksheet = Chiller::with('items')->findOrFail($id);
         return view('chiller.edit', compact('checksheet'));
     }
-
-    // public function update(Request $request, $id)
-    // {
-    //     $chiller = Chiller::findOrFail($id);
-
-    //     // 1. Update Header
-    //     $chiller->update([
-    //         'judul' => $request->judul,
-    //         'jenis_perawatan' => $request->jenis_perawatan,
-    //         'no_aset' => $request->no_aset,
-    //         'lokasi' => $request->lokasi,
-    //         'no_chiller' => $request->no_chiller,
-    //         'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
-    //         'durasi_pekerjaan' => $request->durasi_pekerjaan,
-    //         'personil' => $request->personil,
-    //     ]);
-
-    //     // 2. Hapus item lama dan simpan item baru
-    //     $chiller->items()->delete();
-
-    //     if ($request->has('items')) {
-    //         foreach ($request->items as $item) {
-    //             if (!empty($item['uraian_pekerjaan']) && isset($item['details'])) {
-    //                 foreach ($item['details'] as $detail) {
-    //                     if (!empty($detail['aktivitas_pekerjaan'])) {
-    //                         ChillerItem::create([
-    //                             'chiller_id' => $chiller->id,
-    //                             'nomor' => $item['nomor'] ?? null,
-    //                             'uraian_pekerjaan' => $item['uraian_pekerjaan'],
-    //                             'aktivitas_pekerjaan' => $detail['aktivitas_pekerjaan'],
-    //                             'standar' => $detail['standar'] ?? '',
-    //                         ]);
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     return redirect()->route('chiller.index')->with('success', 'Checksheet Berhasil Diperbarui!');
-    // }
 
     public function update(Request $request, $id)
     {
         $chiller = Chiller::findOrFail($id);
 
-        // 1. Update Header
-        $chiller->update([
+        $chillerData = [
             'judul' => $request->judul,
             'jenis_perawatan' => $request->jenis_perawatan,
             'no_aset' => $request->no_aset,
             'lokasi' => $request->lokasi,
             'no_chiller' => $request->no_chiller,
             'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
-            'durasi_pekerjaan' => $request->durasi_pekerjaan,
             'personil' => $request->personil,
-        ]);
+        ];
 
-        // 2. Kumpulkan semua ID detail yang dikirim dari form
-        $submittedDetailIds = [];
+        if ($request->jenis_perawatan === 'Unscheduled') {
+            $chillerData['no_form_unscheduled'] = $request->no_form_unscheduled;
+            $chillerData['status_kondisi'] = $request->status_kondisi;
+            $chillerData['jenis_kerusakan'] = $request->jenis_kerusakan;
+            $chillerData['tindak_lanjut'] = $request->tindak_lanjut;
+            $chillerData['durasi_pekerjaan'] = null;
 
-        if ($request->has('items')) {
-            foreach ($request->items as $item) {
-                if (!empty($item['uraian_pekerjaan']) && isset($item['details'])) {
-                    foreach ($item['details'] as $detail) {
-                        if (!empty($detail['aktivitas_pekerjaan'])) {
-                            // Cek apakah item detail sudah ada sebelumnya
-                            if (!empty($detail['id'])) {
-                                $chillerItem = ChillerItem::find($detail['id']);
-                                if ($chillerItem) {
-                                    $chillerItem->update([
+            // Hapus semua item lama beserta foto terkait jika diubah ke Unscheduled
+            foreach ($chiller->items as $deletedItem) {
+                foreach ($deletedItem->photos as $photo) {
+                    if (file_exists(public_path('uploads/chiller/' . $photo->foto))) {
+                        unlink(public_path('uploads/chiller/' . $photo->foto));
+                    }
+                    $photo->delete();
+                }
+                $deletedItem->delete();
+            }
+        } else {
+            $chillerData['durasi_pekerjaan'] = $request->durasi_pekerjaan;
+            $chillerData['no_form_unscheduled'] = null;
+            $chillerData['status_kondisi'] = null;
+            $chillerData['jenis_kerusakan'] = null;
+            $chillerData['tindak_lanjut'] = null;
+
+            $submittedDetailIds = [];
+
+            if ($request->has('items')) {
+                foreach ($request->items as $item) {
+                    if (!empty($item['uraian_pekerjaan']) && isset($item['details'])) {
+                        foreach ($item['details'] as $detail) {
+                            if (!empty($detail['aktivitas_pekerjaan'])) {
+                                if (!empty($detail['id'])) {
+                                    $chillerItem = ChillerItem::find($detail['id']);
+                                    if ($chillerItem) {
+                                        $chillerItem->update([
+                                            'nomor' => $item['nomor'] ?? null,
+                                            'uraian_pekerjaan' => $item['uraian_pekerjaan'],
+                                            'aktivitas_pekerjaan' => $detail['aktivitas_pekerjaan'],
+                                            'standar' => $detail['standar'] ?? '',
+                                        ]);
+                                        $submittedDetailIds[] = $chillerItem->id;
+                                    }
+                                } else {
+                                    $newItem = ChillerItem::create([
+                                        'chiller_id' => $chiller->id,
                                         'nomor' => $item['nomor'] ?? null,
                                         'uraian_pekerjaan' => $item['uraian_pekerjaan'],
                                         'aktivitas_pekerjaan' => $detail['aktivitas_pekerjaan'],
                                         'standar' => $detail['standar'] ?? '',
                                     ]);
-                                    $submittedDetailIds[] = $chillerItem->id;
+                                    $submittedDetailIds[] = $newItem->id;
                                 }
-                            } else {
-                                // Jika item detail baru ditambahkan dari halaman edit
-                                $newItem = ChillerItem::create([
-                                    'chiller_id' => $chiller->id,
-                                    'nomor' => $item['nomor'] ?? null,
-                                    'uraian_pekerjaan' => $item['uraian_pekerjaan'],
-                                    'aktivitas_pekerjaan' => $detail['aktivitas_pekerjaan'],
-                                    'standar' => $detail['standar'] ?? '',
-                                ]);
-                                $submittedDetailIds[] = $newItem->id;
                             }
                         }
                     }
                 }
             }
+
+            $itemsToDelete = $chiller->items()->whereNotIn('id', $submittedDetailIds)->get();
+            foreach ($itemsToDelete as $deletedItem) {
+                foreach ($deletedItem->photos as $photo) {
+                    if (file_exists(public_path('uploads/chiller/' . $photo->foto))) {
+                        unlink(public_path('uploads/chiller/' . $photo->foto));
+                    }
+                    $photo->delete();
+                }
+                $deletedItem->delete();
+            }
         }
 
-        // 3. Hapus item lama yang sengaja dibuang/dihapus oleh user di form edit beserta fotonya
-        $itemsToDelete = $chiller->items()->whereNotIn('id', $submittedDetailIds)->get();
-        foreach ($itemsToDelete as $deletedItem) {
-            foreach ($deletedItem->photos as $photo) {
-                if (file_exists(public_path('uploads/chiller/' . $photo->foto))) {
-                    unlink(public_path('uploads/chiller/' . $photo->foto));
-                }
-                $photo->delete();
-            }
-            $deletedItem->delete();
-        }
+        $chiller->update($chillerData);
 
         return redirect()->route('chiller.index')->with('success', 'Checksheet Berhasil Diperbarui!');
     }
@@ -243,7 +234,6 @@ class ChillerController extends Controller
         return $pdf->stream('Checksheet_Chiller_' . $chiller->no_chiller . '.pdf');
     }
 
-    // --- FITUR BARU: UPLOAD DOKUMEN DARI INDEX ---
     public function uploadDokumen(Request $request, $id)
     {
         $request->validate([
@@ -263,7 +253,6 @@ class ChillerController extends Controller
         return redirect()->back()->with('success', 'Dokumen lampiran berhasil diupload!');
     }
 
-    // --- FITUR BARU: HAPUS DOKUMEN LAMPIRAN ---
     public function deleteDokumen($id)
     {
         $chiller = Chiller::findOrFail($id);
@@ -278,18 +267,10 @@ class ChillerController extends Controller
         return redirect()->back()->with('success', 'Dokumen lampiran berhasil dihapus!');
     }
 
-    // public function destroy($id)
-    // {
-    //     $chiller = Chiller::findOrFail($id);
-    //     $chiller->delete();
-    //     return redirect()->route('chiller.index')->with('success', 'Data Berhasil Dihapus!');
-    // }
-
     public function destroy($id)
     {
         $chiller = Chiller::findOrFail($id);
 
-        // Hapus file dokumen dari storage jika ada
         if ($chiller->dokumen && Storage::disk('public')->exists($chiller->dokumen)) {
             Storage::disk('public')->delete($chiller->dokumen);
         }
@@ -310,22 +291,19 @@ class ChillerController extends Controller
 
     public function duplicate($id)
     {
-        // 1. Cari data chiller beserta item pendukungnya
         $original = Chiller::with('items')->findOrFail($id);
 
-        // 2. Duplikasi data header (tanpa embel-embel Copy)
         $newChiller = Chiller::create([
             'judul' => $original->judul,
             'jenis_perawatan' => $original->jenis_perawatan,
-            'no_aset' => null,  // Kosong
-            'no_chiller' => null,  // Kosong
-            'lokasi' => null,  // Kosong
-            'tanggal_pelaksanaan' => null,  // Kosong
-            'durasi_pekerjaan' => null,  // Kosong
-            'personil' => null,  // Kosong
+            'no_aset' => null,
+            'no_chiller' => null,
+            'lokasi' => null,
+            'tanggal_pelaksanaan' => null,
+            'durasi_pekerjaan' => null,
+            'personil' => null,
         ]);
 
-        // 3. Duplikasi semua item / uraian & aktivitas pekerjaan
         foreach ($original->items as $item) {
             ChillerItem::create([
                 'chiller_id' => $newChiller->id,
