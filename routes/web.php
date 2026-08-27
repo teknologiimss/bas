@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PompaController;
 use App\Http\Controllers\MRO\DailyActivityController;
 use App\Http\Controllers\MRO\MasterPersonilController;
 use App\Http\Controllers\AlatAngkutController;
@@ -1064,6 +1065,28 @@ Route::prefix('products')->group(function () {
         Route::delete('/{id}/delete-dokumen', [ChillerController::class, 'deleteDokumen'])->name('delete.dokumen');
 
         Route::post('/{id}/duplicate', [ChillerController::class, 'duplicate'])->name('duplicate');
+    });
+
+    // AC Graha Pompa
+    Route::prefix('pompa')->name('pompa.')->group(function () {
+        Route::get('/', [PompaController::class, 'index'])->name('index');
+        Route::get('/create', [PompaController::class, 'create'])->name('create');
+        Route::post('/store', [PompaController::class, 'store'])->name('store');
+        Route::get('/{id}', [PompaController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [PompaController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [PompaController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PompaController::class, 'destroy'])->name('destroy');
+
+        // Inspeksi Mobile & Foto
+        Route::get('/{id}/mobile', [PompaController::class, 'mobile'])->name('mobile');
+        Route::post('/{id}/mobile/save', [PompaController::class, 'saveMobile'])->name('mobile.save');
+        Route::get('/photo/{id}/delete', [PompaController::class, 'deletePhoto'])->name('photo.delete');
+
+        // Fitur Tambahan (Dokumen Lampiran, Cetak PDF, Duplikasi Form)
+        Route::post('/{id}/duplicate', [PompaController::class, 'duplicate'])->name('duplicate');
+        Route::post('/{id}/upload-dokumen', [PompaController::class, 'uploadDokumen'])->name('upload.dokumen');
+        Route::delete('/{id}/delete-dokumen', [PompaController::class, 'deleteDokumen'])->name('delete.dokumen');
+        Route::get('/{id}/print', [PompaController::class, 'printPdf'])->name('print');
     });
 
     // BA JUSTIFIKASI

@@ -230,6 +230,26 @@
                     </div>
                 </div>
 
+                {{-- 12.Monitoring Pompa --}}
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                    <div class="card h-100 shadow-sm hover-shadow border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="icon-wrapper bg-primary-soft mb-3 mx-auto">
+                                <!-- Ganti fa-gears dengan fa-cogs -->
+                                <i class="fas fa-cogs fa-3x text-primary"></i>
+                            </div>
+                            <h5 class="font-weight-bold">Monitoring Pompa</h5>
+                            <p class="text-muted small">Kelola pemeliharaan berkala dan inspeksi unit Pompa secara rinci.
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-4 text-center">
+                            <a href="{{ route('pompa.index') }}" class="btn btn-outline-primary btn-block rounded-pill">
+                                Buka Menu <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
