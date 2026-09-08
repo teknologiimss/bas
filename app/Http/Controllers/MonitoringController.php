@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 use ZipArchive;
 
 class MonitoringController extends Controller
@@ -485,8 +486,14 @@ class MonitoringController extends Controller
 
     public function print()
     {
-        $monitorings = Monitoring::all();  // TANPA paginate
+        // Ambil semua data beserta relasi dokumennya
+        $monitorings = Monitoring::with('documents')->get();
 
-        return view('mro.progress.print', compact('monitorings'));
+        // Load view khusus PDF dan atur orientasi Landscape (agar muat tabel lebar)
+        $pdf = Pdf::loadView('mro.progress.print_pdf', compact('monitorings'))
+                  ->setPaper('a4', 'landscape');
+
+        // Download/Stream file PDF
+        return $pdf->stream('Progress_MRO_' . date('Ymd_His') . '.pdf');
     }
 }
