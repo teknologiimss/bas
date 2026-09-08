@@ -685,6 +685,8 @@ Route::prefix('products')->group(function () {
     Route::get('/mro-progress', [MonitoringController::class, 'resumeProgress'])
         ->name('mro.progress.index');
 
+    Route::post('/monitoring/document/reorder', [MonitoringController::class, 'reorderDocuments'])->name('monitoring.document.reorder');
+
     // Profil MRO
     Route::get('/mro/profil', function () {
         return view('mro.profil');

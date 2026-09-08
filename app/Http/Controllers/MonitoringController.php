@@ -6,6 +6,7 @@ use App\Models\Memo;
 use App\Models\Monitoring;
 use App\Models\MonitoringDocument;
 use App\Models\Proyek;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Barryvdh\DomPDF\Facade\Pdf;
 use ZipArchive;
 
 class MonitoringController extends Controller
@@ -491,9 +491,26 @@ class MonitoringController extends Controller
 
         // Load view khusus PDF dan atur orientasi Landscape (agar muat tabel lebar)
         $pdf = Pdf::loadView('mro.progress.print_pdf', compact('monitorings'))
-                  ->setPaper('a4', 'landscape');
+            ->setPaper('a4', 'landscape');
 
         // Download/Stream file PDF
         return $pdf->stream('Progress_MRO_' . date('Ymd_His') . '.pdf');
+    }
+
+    public function reorderDocuments(Request $request)
+    {
+        $order = $request->input('order');
+
+        if ($order) {
+            foreach ($order as $item) {
+                // Asumsi tabel dokumen memiliki kolom 'position' atau 'sort_order'
+                MonitoringDocument::where('id', $item['id'])->update([
+                    'position' => $item['position']
+                ]);
+            }
+            return response()->json(['success' => true, 'message' => 'Urutan berhasil diperbarui!']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Data urutan tidak valid.'], 400);
     }
 }

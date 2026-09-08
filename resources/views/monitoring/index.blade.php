@@ -146,9 +146,11 @@
         0% {
             box-shadow: 0 0 0 0 rgba(15, 0, 74, 0.25);
         }
+
         70% {
             box-shadow: 0 0 0 8px rgba(15, 0, 74, 0.25);
         }
+
         100% {
             box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
         }
@@ -215,6 +217,7 @@
             opacity: 0;
             transform: translateY(20px) scale(0.98);
         }
+
         to {
             opacity: 1;
             transform: translateY(0) scale(1);
@@ -660,6 +663,23 @@
             flex: 1;
             height: 38px;
         }
+
+
+        /* Custom Drag & Drop Styles untuk Dokumen */
+        .drag-handle {
+            cursor: grab;
+            padding: 10px;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .sortable-ghost-doc {
+            opacity: 0.4;
+            background-color: #f0ebff !important;
+            border: 2px dashed #14003f !important;
+        }
     }
 </style>
 
@@ -737,7 +757,8 @@
                             <div class="info-item nama-pekerjaan-wrapper">
                                 <span>📌 Nama Pekerjaan</span>
                                 <div class="nama-pekerjaan-content">
-                                    <div class="nama-text short-text nama-pekerjaan-filter" id="namaText{{ $m->id }}">
+                                    <div class="nama-text short-text nama-pekerjaan-filter"
+                                        id="namaText{{ $m->id }}">
                                         {{ $m->nama_pekerjaan }}
                                     </div>
                                 </div>
@@ -807,7 +828,7 @@
                     </div>
                 </div>
 
-                @if ($m->documents->count())
+                {{-- @if ($m->documents->count())
                     <div class="mt-4 document-section" data-monitor-id="{{ $m->id }}">
                         <div class="dokumen-header">
                             <div class="dokumen-title">
@@ -880,6 +901,93 @@
                             @endforeach
                         </ul>
                     </div>
+                @endif --}}
+
+                @if ($m->documents->count())
+                    <div class="mt-4 document-section" data-monitor-id="{{ $m->id }}">
+                        <div class="dokumen-header">
+                            <div class="dokumen-title">
+                                <div class="icon-box">📁</div>
+                                <span>Dokumen Terkait</span>
+                            </div>
+
+                            <button class="btn-dokumen toggle-docs-btn" type="button">
+                                <span>👁️ Lihat Dokumen</span>
+                                <i class="arrow">→</i>
+                            </button>
+                        </div>
+
+                        <!-- Tambahkan ID unik per monitoring dan beri class sortable-docs-list -->
+                        <ul id="sortable-docs-{{ $m->id }}"
+                            class="list-unstyled transition document-list sortable-docs-list mt-2" style="display: none;">
+                            @foreach ($m->documents as $index => $doc)
+                                <li id="doc-{{ $doc->id }}" data-id="{{ $doc->id }}"
+                                    class="doc-item card shadow-sm border-0 mb-3 p-3 position-relative animate__animated animate__fadeInUp">
+
+                                    <div class="row g-3 align-items-center">
+                                        <!-- Drag Handle Icon -->
+                                        <div class="col-auto text-center drag-handle pe-0" style="cursor: grab;"
+                                            title="Geser untuk mengubah urutan">
+                                            <i class="fa fa-grip-vertical text-secondary fa-lg"></i>
+                                        </div>
+
+                                        <div class="col-md-5">
+                                            <label class="small fw-semibold mb-1">Nama Dokumen</label>
+                                            <input type="text" class="form-control form-control-sm doc-name"
+                                                value="{{ $doc->nama_dokumen }}" data-id="{{ $doc->id }}"
+                                                placeholder="Nama dokumen...">
+
+                                            <a href="{{ asset($doc->file_path) }}" target="_blank"
+                                                id="file-link-{{ $doc->id }}"
+                                                class="small text-primary d-inline-block mt-2">
+                                                📄 Lihat File
+                                            </a>
+
+                                            <input type="file" class="form-control form-control-sm mt-2 doc-file"
+                                                data-id="{{ $doc->id }}">
+                                        </div>
+
+                                        <div class="col">
+                                            <label class="small fw-semibold mb-1">Status Dokumen</label>
+                                            <select class="form-select form-select-sm doc-status"
+                                                data-id="{{ $doc->id }}">
+                                                <option value="-" {{ $doc->status == '-' ? 'selected' : '' }}>-
+                                                </option>
+                                                <option value="Nok" {{ $doc->status == 'Nok' ? 'selected' : '' }}>🔴
+                                                    NOK</option>
+                                                <option value="Closed" {{ $doc->status == 'Closed' ? 'selected' : '' }}>🟢
+                                                    OK</option>
+                                            </select>
+
+                                            <div
+                                                class="closed-extra mt-2 transition {{ $doc->status == 'Closed' ? '' : 'd-none' }}">
+                                                <div class="alert alert-success py-2 px-3 small mb-2">
+                                                    ✅ Dokumen Closed
+                                                </div>
+                                                <input type="date"
+                                                    class="form-control form-control-sm mb-2 doc-closed-date"
+                                                    value="{{ $doc->tanggal_closed }}">
+                                                <textarea class="form-control form-control-sm doc-closed-note" placeholder="Keterangan Closed">{{ $doc->keterangan_closed }}</textarea>
+                                            </div>
+
+                                            <div class="mt-3 d-flex gap-2">
+                                                <button class="btn btn-success btn-sm px-3 btn-update-doc"
+                                                    data-id="{{ $doc->id }}"
+                                                    data-url="{{ route('monitoring.document.update', $doc->id) }}">
+                                                    💾 Simpan
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm px-3 btn-delete-doc"
+                                                    data-id="{{ $doc->id }}"
+                                                    data-url="{{ route('monitoring.document.destroy', $doc->id) }}">
+                                                    🗑️ Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @endif
             </div>
 
@@ -925,8 +1033,10 @@
                                     <label>Status *</label>
                                     <select name="status" class="form-control">
                                         <option value="Open" {{ $m->status == 'Open' ? 'selected' : '' }}>Open</option>
-                                        <option value="Closed" {{ $m->status == 'Closed' ? 'selected' : '' }}>Closed</option>
-                                        <option value="On Hold" {{ $m->status == 'On Hold' ? 'selected' : '' }}>On Hold</option>
+                                        <option value="Closed" {{ $m->status == 'Closed' ? 'selected' : '' }}>Closed
+                                        </option>
+                                        <option value="On Hold" {{ $m->status == 'On Hold' ? 'selected' : '' }}>On Hold
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="col-md-8">
@@ -1196,6 +1306,52 @@
     {{-- JS JS SCRIPT --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SortableJS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Inisialisasi Sortable untuk semua list dokumen terkait
+            $('.sortable-docs-list').each(function() {
+                var containerEl = this;
+                Sortable.create(containerEl, {
+                    handle: '.drag-handle',
+                    animation: 150,
+                    ghostClass: 'sortable-ghost-doc',
+                    onEnd: function() {
+                        var orderData = [];
+                        var rows = $(containerEl).find('li[data-id]');
+
+                        rows.each(function(index, row) {
+                            orderData.push({
+                                id: $(row).data('id'),
+                                position: index + 1
+                            });
+                        });
+
+                        // Kirim urutan baru ke backend Laravel via AJAX
+                        fetch("{{ route('monitoring.document.reorder') }}", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                },
+                                body: JSON.stringify({
+                                    order: orderData
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.success) {
+                                    alert('❌ Gagal mengubah urutan dokumen.');
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
+                });
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -1215,7 +1371,7 @@
                 let container = $(this).closest('.row');
                 let value = $(this).val();
                 let extraDiv = container.find('.closed-extra');
-                
+
                 if (value === 'Closed') {
                     extraDiv.removeClass('d-none');
                 } else {

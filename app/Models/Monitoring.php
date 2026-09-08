@@ -34,19 +34,27 @@ class Monitoring extends Model
     // }
 
     // Tambahkan relasi ini di Monitoring.php
-public function memo()
-{
-    return $this->hasOne(Memo::class, 'monitoring_id');
-}
+
+    public function memo()
+    {
+        return $this->hasOne(Memo::class, 'monitoring_id');
+    }
 
     public function memos()
     {
         return $this->hasMany(Memo::class, 'monitoring_id');
     }
 
+    // public function documents()
+    // {
+    //     return $this->hasMany(MonitoringDocument::class, 'monitoring_id');  // sesuaikan nama model dokumen Anda
+    // }
+
+    // Pada Model Monitoring.php
+
     public function documents()
     {
-        return $this->hasMany(MonitoringDocument::class, 'monitoring_id');  // sesuaikan nama model dokumen Anda
+        return $this->hasMany(MonitoringDocument::class)->orderBy('position', 'asc');
     }
 
     /**
