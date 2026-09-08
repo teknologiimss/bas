@@ -166,7 +166,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($monitorings->reverse() as $index => $m)
+            @forelse ($monitorings->sortByDesc('created_at') as $m)
                 @php
                     $statusClass = match ($m->status) {
                         'Open' => 'badge-warning',
