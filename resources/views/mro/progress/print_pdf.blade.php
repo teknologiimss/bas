@@ -166,7 +166,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($monitorings as $index => $m)
+            @forelse ($monitorings->reverse() as $index => $m)
                 @php
                     $statusClass = match ($m->status) {
                         'Open' => 'badge-warning',
@@ -190,7 +190,7 @@
                     }
                 @endphp
                 <tr>
-                    <td class="text-center">{{ $index + 1 }}</td>
+                    <td class="text-center">{{ $loop->iteration }}</td>
                     <td class="font-bold">{{ $m->po_nota_dinas }}</td>
                     <td>{{ $m->nama_pekerjaan }}</td>
                     <td class="text-center">
