@@ -57,7 +57,7 @@ class ChecksheetController extends Controller
         // GET DATA
         // =========================
         $data = $query
-            ->oldest()
+            ->latest()
             ->get();
 
         return view(
