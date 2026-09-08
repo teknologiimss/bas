@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\PompaController;
 use App\Http\Controllers\MRO\DailyActivityController;
 use App\Http\Controllers\MRO\MasterPersonilController;
 use App\Http\Controllers\AlatAngkutController;
@@ -10,6 +9,7 @@ use App\Http\Controllers\AssetMaintenanceController;
 use App\Http\Controllers\BpmController;
 use App\Http\Controllers\ChecksheetController;
 use App\Http\Controllers\ChillerController;
+use App\Http\Controllers\ConsumableController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\CutiTahunanController;
 use App\Http\Controllers\DetailsjnController;
@@ -26,6 +26,7 @@ use App\Http\Controllers\MroController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\PerencanaanController;
+use App\Http\Controllers\PompaController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\PurchaseRequestSppjpController;
@@ -1087,6 +1088,20 @@ Route::prefix('products')->group(function () {
         Route::post('/{id}/upload-dokumen', [PompaController::class, 'uploadDokumen'])->name('upload.dokumen');
         Route::delete('/{id}/delete-dokumen', [PompaController::class, 'deleteDokumen'])->name('delete.dokumen');
         Route::get('/{id}/print', [PompaController::class, 'printPdf'])->name('print');
+    });
+
+    // Perencanaan Consumable
+    Route::prefix('perencanaan-consumable')->name('consumable.')->group(function () {
+        Route::get('/', [ConsumableController::class, 'index'])->name('index');
+        Route::post('/folder', [ConsumableController::class, 'storeFolder'])->name('folder.store');
+        Route::put('/folder/{id}', [ConsumableController::class, 'updateFolder'])->name('folder.update');
+        Route::delete('/folder/{id}', [ConsumableController::class, 'destroyFolder'])->name('folder.destroy');
+
+        Route::get('/{id}/monitor', [ConsumableController::class, 'monitor'])->name('monitor');
+        Route::post('/{folderId}/item', [ConsumableController::class, 'storeItem'])->name('item.store');
+        Route::put('/item/{id}', [ConsumableController::class, 'updateItem'])->name('item.update');
+        Route::delete('/item/{id}', [ConsumableController::class, 'destroyItem'])->name('item.destroy');
+        Route::get('/{id}/print', [ConsumableController::class, 'print'])->name('print');
     });
 
     // BA JUSTIFIKASI

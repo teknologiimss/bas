@@ -5,121 +5,6 @@
 
 @section('content')
 
-    {{-- <style>
-        /* ================= GLOBAL ================= */
-        body {
-            background-color: #f5f6f8;
-        }
-
-        h3 {
-            color: #dc3545;
-            letter-spacing: 0.5px;
-        }
-
-        /* ================= CARD ================= */
-        .card {
-            border: none;
-            border-radius: 12px;
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        /* ================= TABLE ================= */
-        table {
-            font-size: 13px;
-        }
-
-        thead.thead-dark th {
-            background-color: #dc3545 !important;
-            color: #fff !important;
-            border: none;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        tbody tr {
-            transition: background 0.2s ease;
-        }
-
-        tbody tr:hover {
-            background-color: #fff0f0;
-        }
-
-        /* ================= BADGE ================= */
-        .badge {
-            padding: 6px 10px;
-            font-size: 11px;
-            border-radius: 20px;
-            letter-spacing: 0.3px;
-        }
-
-        .badge-warning {
-            background-color: #ffccd2;
-            color: #721c24;
-        }
-
-        .badge-success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .badge-danger {
-            background-color: #dc3545;
-            color: #fff;
-        }
-
-        /* ================= PROGRESS ================= */
-        .progress {
-            background-color: #f1f1f1;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            font-size: 11px;
-            font-weight: 600;
-            transition: width 0.6s ease;
-        }
-
-        /* ================= LINK ================= */
-        a.text-primary {
-            color: #dc3545 !important;
-        }
-
-        a.text-primary:hover {
-            text-decoration: underline;
-        }
-
-        /* ================= BUTTON ================= */
-        .btn-primary {
-            background-color: #dc3545;
-            border-color: #dc3545;
-            border-radius: 20px;
-            padding: 6px 16px;
-            font-weight: 600;
-        }
-
-        .btn-primary:hover {
-            background-color: #bd2130;
-            border-color: #bd2130;
-        }
-
-        /* ================= PRINT ================= */
-        @media print {
-            body {
-                background-color: #fff !important;
-            }
-
-            thead.thead-dark th {
-                background-color: #dc3545 !important;
-                color: #fff !important;
-            }
-        }
-    </style> --}}
-
     <style>
         /* ================= ROOT COLOR ================= */
         :root {
@@ -158,7 +43,6 @@
         }
 
         /* ================= TABLE ================= */
-
         .table {
             border-radius: 12px;
             overflow: hidden;
@@ -170,9 +54,7 @@
         }
 
         thead.thead-dark th {
-            background: linear-gradient(135deg,
-                    var(--navy),
-                    var(--blue)) !important;
+            background: linear-gradient(135deg, var(--navy), var(--blue)) !important;
             color: white;
             border: none;
             letter-spacing: .5px;
@@ -188,7 +70,6 @@
         }
 
         /* ================= LINK ================= */
-
         a.text-primary {
             color: var(--blue) !important;
             font-weight: 600;
@@ -201,7 +82,6 @@
         }
 
         /* ================= BADGE ================= */
-
         .badge {
             border-radius: 30px;
             padding: 7px 12px;
@@ -238,7 +118,6 @@
         }
 
         /* ================= PROGRESS ================= */
-
         .progress {
             height: 18px;
             border-radius: 30px;
@@ -254,156 +133,96 @@
         }
 
         /* ================= BUTTON ================= */
-
         .btn-primary {
-
-            background: linear-gradient(135deg,
-                    var(--blue),
-                    var(--navy));
-
+            background: linear-gradient(135deg, var(--blue), var(--navy));
             border: none;
             border-radius: 30px;
             font-weight: 600;
             padding: 8px 18px;
-
             box-shadow: 0 6px 16px rgba(37, 99, 235, .25);
-
             transition: .25s;
         }
 
         .btn-primary:hover {
-
             transform: translateY(-2px);
-
-            background: linear-gradient(135deg,
-                    var(--navy),
-                    var(--blue));
-
+            background: linear-gradient(135deg, var(--navy), var(--blue));
             box-shadow: 0 10px 24px rgba(37, 99, 235, .35);
-
         }
 
         .btn-secondary {
-
             border-radius: 30px;
-
         }
 
         /* ================= INPUT ================= */
-
         .form-control {
-
             border-radius: 12px;
             border: 1px solid var(--border);
             transition: .25s;
-
         }
 
         .form-control:focus {
-
             border-color: var(--blue);
-
             box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .18);
-
             transform: scale(1.01);
-
         }
 
         /* ================= FILTER CARD ================= */
-
         .card .card-body {
-
             padding: 1.5rem;
-
         }
 
         /* ================= TABLE CARD ================= */
-
         .table-responsive {
-
             border-radius: 12px;
-
         }
 
         /* ================= NOTE ================= */
-
         h6.text-danger {
-
             color: var(--navy) !important;
-
             font-weight: 700;
-
         }
 
         /* ================= PAGINATION ================= */
-
         .pagination .page-link {
-
             color: var(--blue);
-
             border-radius: 8px;
-
             margin: 0 2px;
-
         }
 
         .pagination .page-item.active .page-link {
-
             background: linear-gradient(135deg, var(--blue), var(--navy));
-
             border: none;
-
         }
 
         /* ================= SCROLL ================= */
-
         ::-webkit-scrollbar {
-
             width: 8px;
-
         }
 
         ::-webkit-scrollbar-thumb {
-
             background: linear-gradient(var(--blue), var(--navy));
-
             border-radius: 10px;
-
         }
 
         /* ================= ANIMATION ================= */
-
         @keyframes fadeDown {
-
             from {
-
                 opacity: 0;
-
                 transform: translateY(-10px);
-
             }
 
             to {
-
                 opacity: 1;
-
                 transform: translateY(0);
-
             }
-
         }
 
         @keyframes progressGrow {
-
             from {
-
                 width: 0;
-
             }
-
         }
     </style>
-
 
     <div class="container-fluid mt-4">
 
@@ -413,9 +232,8 @@
 
             {{-- TOMBOL PRINT --}}
             <a href="{{ route('mro.progress.print') }}" target="_blank" class="btn btn-primary no-print">
-                🖨 Print Semua
+                🖨️ Print Semua
             </a>
-
         </div>
 
         {{-- FLASH MESSAGE --}}
@@ -430,7 +248,6 @@
             <div class="card-body">
                 <form method="GET" action="{{ route('mro.progress.index') }}">
                     <div class="form-row">
-
                         <div class="col-md-4 mb-2">
                             <input type="text" name="po" class="form-control" placeholder="Cari PO / Nota Dinas"
                                 value="{{ request('po') }}">
@@ -447,16 +264,13 @@
                             </button>
 
                             <a href="{{ route('mro.progress.index') }}" class="btn btn-secondary">
-                                ♻ Reset
+                                🔄 Reset
                             </a>
                         </div>
-
                     </div>
                 </form>
             </div>
         </div>
-
-
 
         {{-- TABLE --}}
         <div class="card shadow-sm">
@@ -465,14 +279,15 @@
                 <table class="table table-bordered table-hover table-striped">
                     <thead class="thead-dark text-center">
                         <tr>
-                            <th width="50">No</th>
+                            <th width="40">No</th>
                             <th>PO / Nota Dinas</th>
                             <th>Nama Pekerjaan</th>
                             <th>Tanggal Kontrak</th>
                             <th>Selesai Kontrak</th>
                             <th>Status</th>
-                            <th width="180">Progress</th>
+                            <th width="140">Progress</th>
                             <th>Keterangan Progress</th>
+                            <th width="260">Status Dokumen Terakhir</th>
                             <th>Notifikasi</th>
                         </tr>
                     </thead>
@@ -486,6 +301,8 @@
                                     'On Hold' => 'badge badge-danger',
                                     default => 'badge badge-secondary',
                                 };
+                                // Mengambil dokumen terakhir yang di-upload
+                                $latestDoc = $m->documents->last();
                             @endphp
 
                             <tr>
@@ -493,16 +310,7 @@
                                     {{ $monitorings->firstItem() + $index }}
                                 </td>
 
-                                {{-- Klik PO/Nodin Spesifik ke Halaman Monitoring --}}
-                                {{-- <td>
-                                    <a href="{{ route('monitoring.index', $m->proyek_id) }}?po={{ urlencode(trim($m->po_nota_dinas)) }}"
-                                        class="text-primary font-weight-bold">
-                                        {{ $m->po_nota_dinas }}
-                                    </a>
-                                </td> --}}
-
                                 <td>
-
                                     @if (Auth::user()->role == 17)
                                         <span class="font-weight-bold text-dark">
                                             {{ $m->po_nota_dinas }}
@@ -513,10 +321,7 @@
                                             {{ $m->po_nota_dinas }}
                                         </a>
                                     @endif
-
                                 </td>
-
-
 
                                 <td>{{ $m->nama_pekerjaan }}</td>
                                 <td class="text-center">
@@ -532,16 +337,6 @@
                                 </td>
 
                                 {{-- PROGRESS BAR --}}
-
-
-                                {{-- <td>
-                                    <div class="progress" style="height: 18px;">
-                                        <div class="progress-bar {{ $m->progressColor() }}"
-                                            style="width: {{ $m->progress }}%">
-                                            {{ $m->progress }}%
-                                        </div>
-                                    </div>
-                                </td> --}}
                                 <td>
                                     <div class="progress" style="height: 18px;">
                                         <div class="progress-bar"
@@ -566,6 +361,50 @@
                                     @endphp
                                 </td>
 
+                                {{-- TABEL STATUS DOKUMEN TERAKHIR --}}
+                                <td>
+                                    @if ($latestDoc)
+                                        <div class="p-2 border rounded bg-light style="font-size: 12px;">
+                                            <div
+                                                class="fw-bold text-dark mb-1 d-flex justify-content-between align-items-center">
+                                                <span>📄 <b>{{ $latestDoc->nama_dokumen }}</b></span>
+                                                @if ($latestDoc->file_path)
+                                                    <a href="{{ asset($latestDoc->file_path) }}" target="_blank"
+                                                        class="badge badge-primary">
+                                                        Lihat
+                                                    </a>
+                                                @endif
+                                            </div>
+
+                                            <div class="mb-1">
+                                                <b>Status:</b>
+                                                @if ($latestDoc->status == 'Closed')
+                                                    <span class="badge badge-success p-1">🟢 Closed / OK</span>
+                                                @elseif ($latestDoc->status == 'Nok')
+                                                    <span class="badge badge-danger p-1">🔴 NOK</span>
+                                                @else
+                                                    <span class="badge badge-secondary p-1">-</span>
+                                                @endif
+                                            </div>
+
+                                            @if ($latestDoc->tanggal_closed)
+                                                <div class="text-muted small mb-1">
+                                                    <b>Tanggal:</b>
+                                                    {{ \Carbon\Carbon::parse($latestDoc->tanggal_closed)->format('d-m-Y') }}
+                                                </div>
+                                            @endif
+
+                                            @if ($latestDoc->keterangan_closed)
+                                                <div class="text-muted small">
+                                                    <b>Ket:</b> {{ $latestDoc->keterangan_closed }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <span class="text-muted font-italic small">Belum ada dokumen</span>
+                                    @endif
+                                </td>
+
                                 <td class="text-center">
                                     @php
                                         $notif = $m->notifKontrak();
@@ -579,7 +418,7 @@
 
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center text-muted">
+                                <td colspan="10" class="text-center text-muted">
                                     Tidak ada data monitoring
                                 </td>
                             </tr>
@@ -593,7 +432,6 @@
         {{-- CATATAN PROGRESS --}}
         <div class="card mt-3">
             <div class="card-body">
-
                 <h6 class="font-weight-bold text-danger mb-3">
                     📌 Perhitungan Nilai Progress Monitoring
                 </h6>
@@ -614,7 +452,6 @@
                         = <span class="badge badge-primary">60%</span>
                     </li>
                 </ul>
-
             </div>
         </div>
 

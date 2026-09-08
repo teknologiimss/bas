@@ -9,10 +9,10 @@ use App\Models\Proyek;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
 use ZipArchive;
 
 class MonitoringController extends Controller
@@ -292,11 +292,10 @@ class MonitoringController extends Controller
             DB::commit();
 
             return response()->json([
-                'success'  => true,
-                'message'  => 'Dokumen dan Memo terkait berhasil dihapus dari database',
+                'success' => true,
+                'message' => 'Dokumen dan Memo terkait berhasil dihapus dari database',
                 'progress' => $newProgress
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -334,28 +333,91 @@ class MonitoringController extends Controller
     //     return response()->json(['success' => true, 'message' => 'Dokumen berhasil diperbarui.']);
     // }
 
+    // public function updateDocument(Request $request, $id)
+    // {
+    //     $document = MonitoringDocument::findOrFail($id);
+
+    //     if ($request->hasFile('file_dokumen')) {
+    //         // Hapus file lama
+    //         if ($document->file_path && File::exists(public_path($document->file_path))) {
+    //             File::delete(public_path($document->file_path));
+    //         }
+
+    //         // Upload file baru (PASTI UNIK)
+    //         $file = $request->file('file_dokumen');
+    //         $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+    //         $file->move(public_path('lampiran'), $filename);
+
+    //         $document->file_path = 'lampiran/' . $filename;
+    //         $document->save();
+    //     }
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'file_url' => asset($document->file_path) . '?v=' . time()
+    //     ]);
+    // }
+
     public function updateDocument(Request $request, $id)
     {
+        $request->validate([
+            'nama_dokumen' => 'nullable|string',
+            'status' => 'nullable|string',
+            'tanggal_closed' => 'nullable|date',
+            'keterangan_closed' => 'nullable|string',
+            'file_dokumen' => 'nullable|file|max:60000',
+        ]);
+
         $document = MonitoringDocument::findOrFail($id);
 
+        // 1. Update Nama & Status Dokumen
+        if ($request->has('nama_dokumen')) {
+            $document->nama_dokumen = $request->nama_dokumen;
+        }
+
+        if ($request->has('status')) {
+            $document->status = $request->status;
+
+            // Logika tanggal & keterangan jika status Closed / Nok / -
+            if ($request->status === 'Closed') {
+                $document->tanggal_closed = $request->tanggal_closed ?? now();
+                $document->keterangan_closed = $request->keterangan_closed;
+            } else {
+                $document->tanggal_closed = null;
+                $document->keterangan_closed = null;
+            }
+        }
+
+        // 2. Upload File Baru Jika Ada
         if ($request->hasFile('file_dokumen')) {
-            // Hapus file lama
+            // Hapus file lama jika ada
             if ($document->file_path && File::exists(public_path($document->file_path))) {
                 File::delete(public_path($document->file_path));
             }
 
-            // Upload file baru (PASTI UNIK)
             $file = $request->file('file_dokumen');
             $filename = uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('lampiran'), $filename);
 
             $document->file_path = 'lampiran/' . $filename;
-            $document->save();
+        }
+
+        $document->save();
+
+        // 3. Hitung Ulang Progress pada Parent Monitoring
+        $monitoring = $document->monitoring;
+        $newProgress = 0;
+        if ($monitoring) {
+            $newProgress = $monitoring->calculateProgress();
+            $monitoring->progress = $newProgress;
+            $monitoring->save();
         }
 
         return response()->json([
             'success' => true,
-            'file_url' => asset($document->file_path) . '?v=' . time()
+            'message' => 'Dokumen berhasil diperbarui',
+            'file_url' => asset($document->file_path) . '?v=' . time(),
+            'progress' => $newProgress
         ]);
     }
 
