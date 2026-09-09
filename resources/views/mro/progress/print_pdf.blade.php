@@ -227,7 +227,7 @@
                                 <div><b>Doc:</b> {{ $latestDoc->nama_dokumen }}</div>
                                 <div><b>Status:</b>
                                     @if ($latestDoc->status == 'Closed')
-                                        <span style="color: #10b981; font-weight: bold;">Closed / OK</span>
+                                        <span style="color: #10b981; font-weight: bold;">OK</span>
                                     @elseif ($latestDoc->status == 'Nok')
                                         <span style="color: #ef4444; font-weight: bold;">NOK</span>
                                     @else
