@@ -225,7 +225,7 @@ class Monitoring extends Model
         $today = Carbon::today();
         $selesai = Carbon::parse($this->tanggal_selesai_kontrak);
 
-        // STATUS CLOSED
+        // STATUS CLOSED / KONTRAK SELESAI -> BIRU
         if (strtolower($this->status) == 'closed') {
             return [
                 'text' => 'Kontrak Selesai',
@@ -233,7 +233,7 @@ class Monitoring extends Model
             ];
         }
 
-        // SUDAH LEWAT
+        // KONTRAK TELAH BERAKHIR (LEWAT TANGGAL) -> MERAH
         if ($today->gt($selesai)) {
             return [
                 'text' => 'Kontrak Telah Berakhir',
@@ -241,7 +241,7 @@ class Monitoring extends Model
             ];
         }
 
-        // H-7
+        // H-7 KONTRAK AKAN BERAKHIR -> KUNING/ORANGE
         if ($today->diffInDays($selesai, false) <= 7) {
             return [
                 'text' => 'Kontrak Akan Berakhir',
@@ -249,9 +249,9 @@ class Monitoring extends Model
             ];
         }
 
-        // NORMAL
+        // KONTRAK BERJALAN -> HIJAU
         return [
-            'text' => 'Kontrak Berjalan',
+            'text' => 'Kontrak Masih Berjalan',
             'class' => 'success'
         ];
     }

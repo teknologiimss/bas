@@ -93,28 +93,33 @@
             transform: scale(1.05);
         }
 
-        .badge-warning {
-            background: linear-gradient(135deg, #ffc107, #ff9800);
-            color: #222;
-        }
-
+        /* KONTRAK BERJALAN (HIJAU) */
         .badge-success {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
+            background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+            color: white !important;
         }
 
+        /* KONTRAK TELAH BERAKHIR (MERAH) */
         .badge-danger {
-            background: linear-gradient(135deg, #2563eb, #0f172a);
-            color: white;
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            color: white !important;
+        }
+
+        /* KONTRAK SELESAI (BIRU) */
+        .badge-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+            color: white !important;
+        }
+
+        /* AKAN BERAKHIR H-7 (KUNING / ORANGE) */
+        .badge-warning {
+            background: linear-gradient(135deg, #ffc107, #ff9800) !important;
+            color: #222 !important;
         }
 
         .badge-secondary {
             background: #64748b;
             color: white;
-        }
-
-        .badge-primary {
-            background: linear-gradient(135deg, #2563eb, #0f172a);
         }
 
         /* ================= PROGRESS ================= */
@@ -394,9 +399,15 @@
                                                 </div>
                                             @endif
 
-                                            @if ($latestDoc->keterangan_closed)
+                                            {{-- @if ($latestDoc->keterangan_closed)
                                                 <div class="text-muted small">
                                                     <b>Ket:</b> {{ $latestDoc->keterangan_closed }}
+                                                </div>
+                                            @endif --}}
+                                            @if ($latestDoc->keterangan_closed)
+                                                <div class="text-danger small font-weight-bold">
+                                                    <b>Ket:</b> <span
+                                                        style="color: #dc3545;">{{ $latestDoc->keterangan_closed }}</span>
                                                 </div>
                                             @endif
                                         </div>
