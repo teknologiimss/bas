@@ -524,6 +524,7 @@
                                         'cuti.menu',
                                         'gudang.index',
                                         'monitoring_5r.index',
+                                        'consumable.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -587,6 +588,7 @@
                                         'cuti.menu',
                                         'gudang.index',
                                         'monitoring_5r.index',
+                                        'consumable.index',
                                     ]);
                                 @endphp
 
