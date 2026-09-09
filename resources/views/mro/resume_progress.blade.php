@@ -438,12 +438,12 @@
 
                 <ul class="mb-0" style="line-height: 1.9;">
                     <li>
-                        <b>Nota Dinas / PO / Purchase Order</b>
+                        <b>Nota Dinas / SO / PO</b>
                         = <span class="badge badge-primary">30%</span>
                     </li>
 
                     <li>
-                        <b>Purchase Request / PR / SPP</b>
+                        <b>Memo</b>
                         = <span class="badge badge-primary">10%</span>
                     </li>
 
