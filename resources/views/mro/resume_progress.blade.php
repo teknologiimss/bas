@@ -384,7 +384,7 @@
                                             <div class="mb-1">
                                                 <b>Status:</b>
                                                 @if ($latestDoc->status == 'Closed')
-                                                    <span class="badge badge-success p-1">🟢 Closed / OK</span>
+                                                    <span class="badge badge-success p-1">🟢 OK</span>
                                                 @elseif ($latestDoc->status == 'Nok')
                                                     <span class="badge badge-danger p-1">🔴 NOK</span>
                                                 @else
