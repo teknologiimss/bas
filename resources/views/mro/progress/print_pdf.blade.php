@@ -239,8 +239,11 @@
                                         {{ \Carbon\Carbon::parse($latestDoc->tanggal_closed)->format('d-m-Y') }}</div>
                                 @endif
                                 @if ($latestDoc->keterangan_closed)
-                                    <div><b>Ket:</b> {{ $latestDoc->keterangan_closed }}</div>
+                                    <div style="color: #ef4444; font-weight: bold;">
+                                        <b>Ket:</b> {{ $latestDoc->keterangan_closed }}
+                                    </div>
                                 @endif
+
                             </div>
                         @else
                             <span style="color: #94a3b8; font-style: italic;">Belum ada dokumen</span>
