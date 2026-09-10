@@ -188,7 +188,7 @@ class PompaController extends Controller
     {
         $original = Pompa::with('items')->findOrFail($id);
         $newPompa = $original->replicate();
-        $newPompa->judul = $original->judul . ' (Copy)';
+        $newPompa->judul = $original->judul;
         $newPompa->created_at = now();
         $newPompa->save();
 
