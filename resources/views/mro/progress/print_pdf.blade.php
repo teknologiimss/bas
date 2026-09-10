@@ -77,14 +77,27 @@
 
         .badge-success {
             background-color: #10b981;
+            color: #fff;
         }
 
         .badge-danger {
             background-color: #ef4444;
+            color: #fff;
         }
 
         .badge-secondary {
             background-color: #64748b;
+            color: #fff;
+        }
+
+        .badge-info {
+            background-color: #0ea5e9;
+            color: #fff;
+        }
+
+        .badge-primary {
+            background-color: #3b82f6;
+            color: #fff;
         }
 
         /* Progress Bar Container */
@@ -108,17 +121,14 @@
         /* Warna Sesuai Aturan */
         .bg-danger {
             background-color: #dc3545;
-            /* Merah untuk Nota Dinas */
         }
 
         .bg-warning {
             background-color: #fd7e14;
-            /* Oranye untuk Nomor PO */
         }
 
         .bg-success {
             background-color: #198754;
-            /* Hijau untuk 100% Selesai */
         }
 
         .progress-text {
@@ -155,14 +165,15 @@
         <thead>
             <tr>
                 <th width="20">No</th>
-                <th width="110">PO / Nota Dinas</th>
+                <th width="70">PO / Nota Dinas</th>
                 <th>Nama Pekerjaan</th>
-                <th width="65">Tgl Kontrak</th>
-                <th width="65">Sls Kontrak</th>
-                <th width="50">Status</th>
-                <th width="70">Progress</th>
+                <th width="60">Tgl Kontrak</th>
+                <th width="60">Sls Kontrak</th>
+                <th width="45">Status</th>
+                <th width="65">Progress</th>
                 <th>Keterangan Progress</th>
-                <th width="160">Status Dokumen Terakhir</th>
+                <th width="140">Status Dokumen Terakhir</th>
+                <th width="65">Notif Kontrak</th>
             </tr>
         </thead>
         <tbody>
@@ -182,12 +193,15 @@
                     $poNota = strtoupper($m->po_nota_dinas ?? '');
 
                     if ($progressVal >= 100) {
-                        $progressBarClass = 'bg-success'; // Hijau jika 100% Selesai
+                        $progressBarClass = 'bg-success';
                     } elseif (str_contains($poNota, 'ND') || str_contains($poNota, 'NOTA')) {
-                        $progressBarClass = 'bg-danger'; // Merah jika Nota Dinas
+                        $progressBarClass = 'bg-danger';
                     } else {
-                        $progressBarClass = 'bg-warning'; // Oranye jika Nomor PO
+                        $progressBarClass = 'bg-warning';
                     }
+
+                    // Panggilan helper/method Notif Kontrak
+                    $notif = $m->notifKontrak();
                 @endphp
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
@@ -243,16 +257,20 @@
                                         <b>Ket:</b> {{ $latestDoc->keterangan_closed }}
                                     </div>
                                 @endif
-
                             </div>
                         @else
                             <span style="color: #94a3b8; font-style: italic;">Belum ada dokumen</span>
                         @endif
                     </td>
+                    <td class="text-center">
+                        <span class="badge badge-{{ $notif['class'] }}">
+                            {{ $notif['text'] }}
+                        </span>
+                    </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="9" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
+                    <td colspan="10" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
                 </tr>
             @endforelse
         </tbody>
