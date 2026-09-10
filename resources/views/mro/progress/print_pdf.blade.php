@@ -167,13 +167,13 @@
                 <th width="20">No</th>
                 <th width="70">PO / Nota Dinas</th>
                 <th>Nama Pekerjaan</th>
-                <th width="60">Tgl Kontrak</th>
-                <th width="60">Sls Kontrak</th>
+                <th width="60">Tanggal Kontrak</th>
+                <th width="60">Selesai Kontrak</th>
                 <th width="45">Status</th>
                 <th width="65">Progress</th>
                 <th>Keterangan Progress</th>
                 <th width="140">Status Dokumen Terakhir</th>
-                <th width="65">Notif Kontrak</th>
+                <th width="65">Status Kontrak</th>
             </tr>
         </thead>
         <tbody>
