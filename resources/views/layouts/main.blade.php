@@ -525,6 +525,9 @@
                                         'gudang.index',
                                         'monitoring_5r.index',
                                         'consumable.index',
+                                        'fcu.index',
+                                        'chiller.index',
+                                        'pompa.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -589,6 +592,9 @@
                                         'gudang.index',
                                         'monitoring_5r.index',
                                         'consumable.index',
+                                        'fcu.index',
+                                        'chiller.index',
+                                        'pompa.index',
                                     ]);
                                 @endphp
 
@@ -1050,7 +1056,7 @@
                                         @endif --}}
 
                                         {{-- MENU MRO --}}
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14 || Auth::user()->role == 17)
+                                        @if (Auth::user()->role == 0 || Auth::user()->role == 14 || Auth::user()->role == 17 || Auth::user()->role == 18)
                                             <li
                                                 class="nav-item has-treeview {{ $menuMroActive ? 'menu-open' : '' }}">
                                                 <a href="#" class="nav-link">
@@ -1065,30 +1071,6 @@
 
                                                     {{-- ADMIN & MRO FULL ACCESS --}}
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
-                                                        {{-- Personil MRO --}}
-
-                                                        {{-- <li class="nav-item">
-                                                            <a href="{{ route('mro.profil') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'mro.profil' ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-video"></i>
-                                                                <p>Personil MRO</p>
-                                                            </a>
-                                                        </li>
-
-                                                        <li class="nav-item">
-
-                                                            <a href="{{ route('master-personil.index') }}"
-                                                                class="nav-link {{ request()->routeIs('master-personil.*') ? 'active' : '' }}">
-
-                                                                <i class="nav-icon fas fa-users"></i>
-
-                                                                <p>Data Personil MRO</p>
-
-                                                            </a>
-
-                                                        </li> --}}
-
-
                                                         {{-- Data Personil MRO --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('menu.personil') }}"
@@ -1098,21 +1080,7 @@
                                                             </a>
                                                         </li>
 
-                                                        {{-- <li class="nav-item">
-                                                            <a href="{{ route('mro.daily-activity.index') }}"
-                                                                class="nav-link {{ request()->routeIs('mro.daily-activity.*') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-calendar-check"></i>
-                                                                <p>Daily Activity</p>
-                                                            </a>
-                                                        </li>
 
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('mro.weekly-activity') }}"
-                                                                class="nav-link {{ request()->routeIs('mro.weekly-activity') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-chart-line"></i>
-                                                                <p>Weekly Activity</p>
-                                                            </a>
-                                                        </li> --}}
 
                                                         {{-- Aktivitas Personil --}}
                                                         <li class="nav-item">
@@ -1123,11 +1091,7 @@
                                                             </a>
                                                         </li>
 
-
-
-
-
-
+                                                        {{-- Perencanaan Pekerjaan --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('perencanaan.proyek') }}"
                                                                 class="nav-link {{ request()->routeIs('perencanaan.*') ? 'active' : '' }}">
@@ -1136,22 +1100,7 @@
                                                             </a>
                                                         </li>
 
-                                                        {{-- <li class="nav-item">
-                                                            <a href="{{ route('proyek.index') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'proyek.index' ? 'active' : '' }}">
-                                                                <i class="fas fa-chart-bar nav-icon"></i>
-                                                                <p>Proyek MRO</p>
-                                                            </a>
-                                                        </li>
-
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('mro.progress') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'mro.progress' ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-chart-line"></i>
-                                                                <p>Progress MRO</p>
-                                                            </a>
-                                                        </li> --}}
-
+                                                        {{-- Pekerjaan --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('pekerjaan.index') }}"
                                                                 class="nav-link {{ request()->routeIs('pekerjaan.*') || request()->routeIs('proyek.*') || request()->routeIs('mro.progress*') ? 'active' : '' }}">
@@ -1163,7 +1112,7 @@
                                                         {{-- Monitoring --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('monitoring.menu') }}"
-                                                                class="nav-link {{ request()->routeIs('monitoring.*', 'pengiriman.*', 'alat.*', 'fasilitas-harian.*', 'assets.*', 'asset-maintenance.*', 'checksheet.*', 'lp3m.*', 'rewinding.*', 'monitoring_5r.*') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('monitoring.*', 'fcu.*', 'chiller.*', 'pompa.*', 'pengiriman.*', 'alat.*', 'fasilitas-harian.*', 'assets.*', 'asset-maintenance.*', 'checksheet.*', 'lp3m.*', 'rewinding.*', 'monitoring_5r.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-chart-line"></i>
                                                                 <p>Monitoring</p>
                                                             </a>
@@ -1174,11 +1123,11 @@
                                                             <a href="{{ route('consumable.index') }}"
                                                                 class="nav-link {{ request()->routeIs('consumable.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-boxes"></i>
-                                                                <p>Perencanaan Consumable</p>
+                                                                <p>Perencanaan Consumable AC Graha</p>
                                                             </a>
                                                         </li>
 
-
+                                                        {{-- Riwayat PR SPPJP --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('mro.riwayat') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'mro.riwayat' ? 'active' : '' }}">
@@ -1186,233 +1135,6 @@
                                                                 <p>Riwayat PR/SPPJP MRO</p>
                                                             </a>
                                                         </li>
-
-                                                        {{-- Monitoring --}}
-                                                        {{-- <li
-                                                            class="nav-item {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.index', 'rewinding.index', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*', 'lp3m.index') ? 'menu-open' : '' }}">
-                                                            <a href="#"
-                                                                class="nav-link {{ request()->routeIs('pengiriman.index', 'checksheet.*', 'alat.index', 'rewinding.index', 'fasilitas-harian.*', 'asset-maintenance.*', 'assets.*', 'lp3m.index') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-chart-line"></i>
-                                                                <p>
-                                                                    Monitoring
-                                                                    <i class="right fas fa-angle-left"></i>
-                                                                </p>
-                                                            </a>
-
-                                                            <ul class="nav nav-treeview">
-                                                                
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('pengiriman.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('pengiriman.index') ? 'active' : '' }}">
-                                                                        <i class="nav-icon far fa-circle"></i>
-                                                                        <p>Monitoring Pengiriman</p>
-                                                                    </a>
-                                                                </li>
-
-                                                                
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('alat.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('alat.index') ? 'active' : '' }}">
-                                                                        <i class="nav-icon far fa-circle"></i>
-                                                                        <p>Monitoring Alat Angkat-Angkut</p>
-                                                                    </a>
-                                                                </li>
-
-                                                                
-                                                                <li class="nav-item">
-
-                                                                    <a href="{{ route('fasilitas-harian.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('fasilitas-harian.*') ? 'active' : '' }}">
-
-                                                                        <i class="nav-icon far fa-circle"></i>
-
-                                                                        <p>
-                                                                            Checksheet Harian Fasilitas
-                                                                        </p>
-
-                                                                    </a>
-
-                                                                </li>
-
-                                                                
-                                                                <li
-                                                                    class="nav-item has-treeview
-                                                                    {{ request()->routeIs('assets.*') ||
-                                                                    request()->routeIs('asset-maintenance.*') ||
-                                                                    request()->routeIs('checksheet.*')
-                                                                        ? 'menu-open'
-                                                                        : '' }}">
-
-                                                                    <a href="#"
-                                                                        class="nav-link
-                                                                        {{ request()->routeIs('assets.*') ||
-                                                                        request()->routeIs('asset-maintenance.*') ||
-                                                                        request()->routeIs('checksheet.*')
-                                                                            ? 'active'
-                                                                            : '' }}">
-
-                                                                        <i class="nav-icon far fa-circle"></i>
-
-                                                                        <p>
-                                                                            Monitoring PM
-                                                                            <i class="right fas fa-angle-left"></i>
-                                                                        </p>
-
-                                                                    </a>
-
-                                                                    <ul class="nav nav-treeview">
-
-                                                                        
-                                                                        <li
-                                                                            class="nav-item has-treeview
-                                                                            {{ request()->routeIs('assets.*') || request()->routeIs('asset-maintenance.*') ? 'menu-open' : '' }}">
-
-                                                                            <a href="#"
-                                                                                class="nav-link
-                                                                                {{ request()->routeIs('assets.*') || request()->routeIs('asset-maintenance.*') ? 'active' : '' }}">
-
-                                                                                <i
-                                                                                    class="far fa-dot-circle nav-icon"></i>
-
-                                                                                <p>
-                                                                                    Matrix Asset
-                                                                                    <i
-                                                                                        class="right fas fa-angle-left"></i>
-                                                                                </p>
-
-                                                                            </a>
-
-                                                                            <ul class="nav nav-treeview">
-
-                                                                                <li class="nav-item">
-
-                                                                                    <a href="{{ route('assets.index') }}"
-                                                                                        class="nav-link {{ request()->routeIs('assets.*') ? 'active' : '' }}">
-
-                                                                                        <i
-                                                                                            class="far fa-dot-circle nav-icon"></i>
-
-                                                                                        <p>Master Matrix Perawatan Asset
-                                                                                        </p>
-
-                                                                                    </a>
-
-                                                                                </li>
-
-                                                                                <li class="nav-item">
-
-                                                                                    <a href="{{ route('asset-maintenance.index') }}"
-                                                                                        class="nav-link {{ request()->routeIs('asset-maintenance.*') ? 'active' : '' }}">
-
-                                                                                        <i
-                                                                                            class="far fa-dot-circle nav-icon"></i>
-
-                                                                                        <p>Matrix Perawatan Asset</p>
-
-                                                                                    </a>
-
-                                                                                </li>
-
-                                                                            </ul>
-
-                                                                        </li>
-
-                                                                        
-                                                                        <li class="nav-item">
-
-                                                                            <a href="{{ route('checksheet.index') }}"
-                                                                                class="nav-link {{ request()->routeIs('checksheet.*') ? 'active' : '' }}">
-
-                                                                                <i
-                                                                                    class="far fa-dot-circle nav-icon"></i>
-
-                                                                                <p>Checksheet Preventive Maintenance</p>
-
-                                                                            </a>
-
-                                                                        </li>
-
-                                                                    </ul>
-
-                                                                </li>
-
-                                                                
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('lp3m.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('lp3m.index') ? 'active' : '' }}">
-                                                                        <i class="nav-icon far fa-circle"></i>
-                                                                        <p>Monitoring SPR</p>
-                                                                    </a>
-                                                                </li>
-
-                                                                
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('rewinding.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('rewinding.index') ? 'active' : '' }}">
-                                                                        <i class="nav-icon far fa-circle"></i>
-                                                                        <p>Monitoring Rewinding</p>
-                                                                    </a>
-                                                                </li>
-
-                                                            </ul>
-                                                        </li> --}}
-
-                                                        {{-- End Monitoring --}}
-
-
-
-
-
-
-
-                                                        {{-- <li class="nav-item">
-                                                            <a href="{{ route('mro') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
-                                                                <i class="fas fa-box-open nav-icon"></i>
-                                                                <p>Stok Barang MRO</p>
-                                                            </a>
-                                                        </li>
-
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('mro.stock.log') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'mro.stock.log' ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-people-carry"></i>
-                                                                <p>Mutasi Stok MRO</p>
-                                                            </a>
-                                                        </li> --}}
-
-                                                        {{-- Gudang --}}
-                                                        {{-- <li
-                                                            class="nav-item {{ request()->routeIs('mro', 'mro.stock.log') ? 'menu-open' : '' }}">
-                                                            <a href="#"
-                                                                class="nav-link {{ request()->routeIs('mro', 'mro.stock.log') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-warehouse"></i>
-                                                                <p>
-                                                                    Gudang
-                                                                    <i class="right fas fa-angle-left"></i>
-                                                                </p>
-                                                            </a>
-
-                                                            <ul class="nav nav-treeview">
-
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('mro') }}"
-                                                                        class="nav-link {{ Route::current()->getName() == 'mro' ? 'active' : '' }}">
-                                                                        <i class="far fa-circle nav-icon"></i>
-                                                                        <p>Stok Barang MRO</p>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('mro.stock.log') }}"
-                                                                        class="nav-link {{ Route::current()->getName() == 'mro.stock.log' ? 'active' : '' }}">
-                                                                        <i class="nav-icon far fa-circle"></i>
-                                                                        <p>Mutasi Stok MRO</p>
-                                                                    </a>
-                                                                </li>
-
-                                                            </ul>
-                                                        </li> --}}
 
                                                         {{-- Gudang --}}
                                                         <li class="nav-item">
@@ -1423,24 +1145,6 @@
                                                             </a>
                                                         </li>
 
-                                                        {{-- SPPD --}}
-                                                        {{-- <li class="nav-item">
-                                                            <a href="{{ route('sppd.index') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'sppd.index' ? 'active' : '' }}">
-                                                                <i class="nav-icon far fa-file-archive"></i>
-                                                                <p>Arsip SPPD MRO</p>
-                                                            </a>
-                                                        </li>
-
-                                                        <!-- Kasbon Menu -->
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('kasbon.index') }}"
-                                                                class="nav-link {{ Route::current()->getName() == 'kasbon.index' ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-wallet"></i>
-                                                                <p>Kasbon MRO</p>
-                                                            </a>
-                                                        </li> --}}
-
 
                                                         {{-- Administrasi Keuangan --}}
                                                         <li class="nav-item">
@@ -1450,49 +1154,6 @@
                                                                 <p>Administrasi Keuangan</p>
                                                             </a>
                                                         </li>
-
-
-
-                                                        {{-- Cuti --}}
-                                                        {{-- <li
-                                                            class="nav-item has-treeview {{ request()->routeIs('cuti.*') ? 'menu-open' : '' }}">
-                                                            <a href="#"
-                                                                class="nav-link {{ request()->routeIs('cuti.*') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-calendar-check"></i>
-                                                                <p>
-                                                                    Cuti
-                                                                    <i class="right fas fa-angle-left"></i>
-                                                                </p>
-                                                            </a>
-
-                                                            <ul class="nav nav-treeview">
-
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('cuti.tahunan') }}"
-                                                                        class="nav-link {{ request()->routeIs('cuti.tahunan*') ? 'active' : '' }}">
-                                                                        <i class="far fa-circle nav-icon"></i>
-                                                                        <p>Master Cuti Tahunan</p>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('cuti.index') }}"
-                                                                        class="nav-link {{ request()->routeIs('cuti.index') || request()->routeIs('cuti.edit') ? 'active' : '' }}">
-                                                                        <i class="far fa-circle nav-icon"></i>
-                                                                        <p>Management Cuti</p>
-                                                                    </a>
-                                                                </li>
-
-                                                                <li class="nav-item">
-                                                                    <a href="{{ route('cuti.rekap') }}"
-                                                                        class="nav-link {{ request()->routeIs('cuti.rekap') ? 'active' : '' }}">
-                                                                        <i class="far fa-circle nav-icon"></i>
-                                                                        <p>Rekap Cuti Bulanan</p>
-                                                                    </a>
-                                                                </li>
-
-                                                            </ul>
-                                                        </li> --}}
 
                                                         {{-- Cuti --}}
                                                         <li class="nav-item">
@@ -1594,6 +1255,53 @@
                                                             </a>
                                                         </li>
 
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('cuti.rekap') }}"
+                                                                class="nav-link {{ Route::current()->getName() == 'cuti.rekap' ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-table"></i>
+                                                                <p>Rekap Cuti Bulanan</p>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
+                                                    {{-- Teknisi AC Graha --}}
+                                                    @if (Auth::user()->role == 18)
+                                                        {{-- Perencanaan Consumable --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('consumable.index') }}"
+                                                                class="nav-link {{ request()->routeIs('consumable.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-boxes"></i>
+                                                                <p>Perencanaan Consumable AC Graha</p>
+                                                            </a>
+                                                        </li>
+                                                        {{-- Monitoring FCU --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('fcu.index') }}"
+                                                                class="nav-link {{ request()->routeIs('fcu.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-fan"></i>
+                                                                <p>Monitoring FCU</p>
+                                                            </a>
+                                                        </li>
+
+                                                        {{-- Monitoring Chiller --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('chiller.index') }}"
+                                                                class="nav-link {{ request()->routeIs('chiller.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-snowflake"></i>
+                                                                <p>Monitoring Chiller</p>
+                                                            </a>
+                                                        </li>
+
+                                                        {{-- Monitoring Pompa --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('pompa.index') }}"
+                                                                class="nav-link {{ request()->routeIs('pompa.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-cogs"></i>
+                                                                <p>Monitoring Pompa</p>
+                                                            </a>
+                                                        </li>
+
+                                                        {{-- Sisa Cuti --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('cuti.rekap') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'cuti.rekap' ? 'active' : '' }}">
