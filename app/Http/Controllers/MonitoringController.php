@@ -79,7 +79,7 @@ class MonitoringController extends Controller
             'progress' => 'nullable|string',
             'keterangan2' => 'nullable|string',
             'nama_dokumen.*' => 'nullable|string',
-            'file_dokumen.*' => 'nullable|file|max:60000',
+            'file_dokumen.*' => 'nullable|file|max:80000',
         ]);
 
         $monitoring = Monitoring::create([
@@ -154,7 +154,7 @@ class MonitoringController extends Controller
             'progress' => 'nullable|string',
             'keterangan2' => 'nullable|string',
             'nama_dokumen.*' => 'nullable|string',
-            'file_dokumen.*' => 'nullable|file|max:60000',
+            'file_dokumen.*' => 'nullable|file|max:80000',
         ]);
 
         $monitoring->update($request->only([
@@ -366,7 +366,7 @@ class MonitoringController extends Controller
             'status' => 'nullable|string',
             'tanggal_closed' => 'nullable|date',
             'keterangan_closed' => 'nullable|string',
-            'file_dokumen' => 'nullable|file|max:60000',
+            'file_dokumen' => 'nullable|file|max:80000',
         ]);
 
         $document = MonitoringDocument::findOrFail($id);
