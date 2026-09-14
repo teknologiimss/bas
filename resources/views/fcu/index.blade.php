@@ -182,7 +182,11 @@
                 <div class="page-title">❄️ Monitoring FCU</div>
                 <p class="mb-0">Manajemen Checksheet & Perawatan Fan Coil Unit</p>
             </div>
-            <div>
+            <div class="d-flex gap-2">
+                {{-- TOMBOL DASHBOARD DITAMBAHKAN DI SINI --}}
+                <a href="{{ route('fcu.dashboard') }}" class="btn btn-warning btn-modern text-dark">
+                    <i class="fa fa-chart-pie me-1"></i> Lihat Dashboard
+                </a>
                 <a href="{{ route('fcu.create') }}" class="btn btn-light btn-modern">
                     <i class="fa fa-plus me-1"></i> Buat Monitoring FCU
                 </a>

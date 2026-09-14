@@ -55,6 +55,7 @@ class FcuMonitoringController extends Controller
                 'no_fcu' => $request->no_fcu,
                 'tanggal_2' => $request->tanggal_2 ?? $request->tanggal,
                 'no_fcu_2' => $request->no_fcu_2,
+                'kesimpulan' => $request->kesimpulan,
             ]);
 
             if ($request->jenis_perawatan === 'Unscheduled') {
@@ -186,6 +187,7 @@ class FcuMonitoringController extends Controller
                 'no_fcu' => $request->no_fcu,
                 'tanggal_2' => $request->tanggal_2 ?? $request->tanggal,
                 'no_fcu_2' => $request->no_fcu_2,
+                'kesimpulan' => $request->kesimpulan,
             ]);
 
             // 1. Handle Unscheduled
@@ -498,5 +500,39 @@ class FcuMonitoringController extends Controller
         FcuMonitoring::whereIn('id', $ids)->delete();
 
         return redirect()->route('fcu.index')->with('success', count($ids) . ' data monitoring berhasil dihapus.');
+    }
+
+    public function dashboard()
+    {
+        // Metric Cards Data
+        $totalMonitoring = FcuMonitoring::count();
+        $totalSo = FcuMonitoring::where('kesimpulan', 'SO')->count();
+        $totalSoCatatan = FcuMonitoring::whereIn('kesimpulan', ['SO DENGAN CATATAN', 'SO_NOTE'])->count();
+        $totalTso = FcuMonitoring::where('kesimpulan', 'TSO')->count();
+        $totalPending = FcuMonitoring::whereNull('kesimpulan')->orWhere('kesimpulan', '')->count();
+        $totalUnscheduled = FcuMonitoring::where('jenis_perawatan', 'Unscheduled')->count();
+
+        // Data Chart Jenis Perawatan
+        $perawatanCounts = [
+            'P1' => FcuMonitoring::where('jenis_perawatan', 'P1')->count(),
+            'P3' => FcuMonitoring::where('jenis_perawatan', 'P3')->count(),
+            'P6' => FcuMonitoring::where('jenis_perawatan', 'P6')->count(),
+            'P12' => FcuMonitoring::where('jenis_perawatan', 'P12')->count(),
+            'Unscheduled' => $totalUnscheduled,
+        ];
+
+        // Data Monitoring Terbaru
+        $latestMonitoring = FcuMonitoring::with('unscheduledForm')->latest()->take(5)->get();
+
+        return view('fcu.dashboard', compact(
+            'totalMonitoring',
+            'totalSo',
+            'totalSoCatatan',
+            'totalTso',
+            'totalPending',
+            'totalUnscheduled',
+            'perawatanCounts',
+            'latestMonitoring'
+        ));
     }
 }

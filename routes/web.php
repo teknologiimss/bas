@@ -1020,6 +1020,7 @@ Route::prefix('products')->group(function () {
     // AC Graha menu FCU
     Route::prefix('fcu-monitoring')->name('fcu.')->group(function () {
         Route::get('/', [FcuMonitoringController::class, 'index'])->name('index');
+        Route::get('/dashboard', [FcuMonitoringController::class, 'dashboard'])->name('dashboard');
         // ➕ ROUTE HAPUS BANYAK DATA SEKALIGUS
         Route::delete('/bulk-delete', [FcuMonitoringController::class, 'bulkDelete'])->name('bulk-delete');
 
@@ -1046,6 +1047,8 @@ Route::prefix('products')->group(function () {
         // ➕ ROUTE BARU UNTUK UPLOAD DOKUMEN
         Route::post('/{id}/upload', [FcuMonitoringController::class, 'upload'])->name('upload');
         Route::delete('/{id}/delete-document', [FcuMonitoringController::class, 'deleteDocument'])->name('delete-document');
+
+        
     });
 
     // AC Graha Chiller

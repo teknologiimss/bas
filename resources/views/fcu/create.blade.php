@@ -84,8 +84,8 @@
                             <h6 class="fw-bold text-primary">UNIT FCU 1 (Atas)</h6>
                             <div class="mb-2">
                                 <label class="fw-bold">No. FCU Pertama</label>
-                                <input type="text" autocomplete="off" name="no_fcu" id="no_fcu_input" class="form-control"
-                                    placeholder="Contoh: FCU-01A">
+                                <input type="text" autocomplete="off" name="no_fcu" id="no_fcu_input"
+                                    class="form-control" placeholder="Contoh: FCU-01A">
                             </div>
                             <div>
                                 <label class="fw-bold">Tanggal Perawatan</label>
@@ -135,6 +135,16 @@
                                 <option value="NOK">NOK</option>
                             </select>
                         </div>
+                        <!-- Tambahan Pilihan Kesimpulan -->
+                        <div class="col-md-4 mb-3">
+                            <label class="fw-bold">Kesimpulan</label>
+                            <select name="kesimpulan" class="form-select">
+                                <option value="">-- Pilih Kesimpulan --</option>
+                                <option value="SO">SO</option>
+                                <option value="SO DENGAN CATATAN">SO dengan Catatan</option>
+                                <option value="TSO">TSO</option>
+                            </select>
+                        </div>
                         <div class="col-md-4 mb-3">
                             <label class="fw-bold">Jenis Kerusakan</label>
                             <textarea name="unscheduled_jenis_kerusakan" class="form-control" rows="2" placeholder="Uraian kerusakan"></textarea>
@@ -150,7 +160,8 @@
             <div id="sections"></div>
 
             <div class="mb-4">
-                <button type="button" class="btn btn-primary" onclick="addSection()">➕ Tambah Sub Judul / Section</button>
+                <button type="button" class="btn btn-primary" onclick="addSection()">➕ Tambah Sub Judul /
+                    Section</button>
             </div>
 
             <button type="submit" class="btn btn-success p-3 fw-bold rounded-3">💾 Simpan Monitoring FCU</button>

@@ -142,6 +142,18 @@
                                     {{ optional($fcu->unscheduledForm)->status == 'NOK' ? 'selected' : '' }}>NOK</option>
                             </select>
                         </div>
+                        <!-- Tambahan Pilihan Kesimpulan -->
+                        <div class="col-md-4 mb-3">
+                            <label class="fw-bold">Kesimpulan</label>
+                            <select name="kesimpulan" class="form-select">
+                                <option value="">-- Pilih Kesimpulan --</option>
+                                <option value="SO" {{ $fcu->kesimpulan == 'SO' ? 'selected' : '' }}>SO</option>
+                                <option value="SO DENGAN CATATAN"
+                                    {{ in_array($fcu->kesimpulan, ['SO DENGAN CATATAN', 'SO_NOTE']) ? 'selected' : '' }}>SO
+                                    dengan Catatan</option>
+                                <option value="TSO" {{ $fcu->kesimpulan == 'TSO' ? 'selected' : '' }}>TSO</option>
+                            </select>
+                        </div>
                         <div class="col-md-4 mb-3">
                             <label class="fw-bold">Jenis Kerusakan</label>
                             <textarea name="unscheduled_jenis_kerusakan" class="form-control" rows="2">{{ optional($fcu->unscheduledForm)->jenis_kerusakan }}</textarea>
