@@ -108,7 +108,7 @@
         <tr class="text-bold">
             <td width="50%" style="border-right: none;">
                 TANGGAL PERAWATAN :
-                {{ $pompa->tanggal_pelaksanaan ? \Carbon\Carbon::parse($pompa->tanggal_pelaksanaan)->format('d/m/Y') : '-' }}
+                {{ $pompa->tanggal_pelaksanaan ? \Carbon\Carbon::parse($pompa->tanggal_pelaksanaan)->isoFormat('D MMMM YYYY') : '-' }}
             </td>
             <td width="50%" class="text-end" style="border-left: none; text-align: right;">
                 No POMPA: {{ $pompa->no_pompa ?? '-' }}
@@ -134,6 +134,15 @@
             <tr>
                 <td class="text-bold">TINDAK LANJUT PERBAIKAN</td>
                 <td>{!! nl2br(e($pompa->tindak_lanjut ?? '-')) !!}</td>
+            </tr>
+            <tr>
+                <td class="text-bold">TANGGAL PELAKSANAAN</td>
+                <td>{{ $pompa->tanggal_pelaksanaan ? \Carbon\Carbon::parse($pompa->tanggal_pelaksanaan)->isoFormat('D MMMM YYYY') : '-' }}
+                </td>
+            </tr>
+            <tr>
+                <td class="text-bold">NAMA PERSONIL</td>
+                <td>{{ $pompa->personil ?? ($pompa->nama_personil ?? ($pompa->jumlah_personil ?? '-')) }}</td>
             </tr>
         </table>
     @else
@@ -174,9 +183,23 @@
                 @endforeach
             </tbody>
         </table>
+
+        {{-- METADATA PELAKSANAAN UNTUK SCHEDULED --}}
+        <table style="border-top: none;">
+            <tr>
+                <td width="30%" class="text-bold">TANGGAL PELAKSANAAN</td>
+                <td width="70%">
+                    {{ $pompa->tanggal_pelaksanaan ? \Carbon\Carbon::parse($pompa->tanggal_pelaksanaan)->isoFormat('D MMMM YYYY') : '-' }}
+                </td>
+            </tr>
+            <tr>
+                <td class="text-bold">NAMA PERSONIL</td>
+                <td>{{ $pompa->personil ?? ($pompa->nama_personil ?? ($pompa->jumlah_personil ?? '-')) }}</td>
+            </tr>
+        </table>
     @endif
 
-    {{-- KESIMPULAN & CATATAN (DITAMPILKAN UNTUK SCHEDULED & UNSCHEDULED) --}}
+    {{-- KESIMPULAN & CATATAN --}}
     <table style="border-top: none;">
         <tr>
             <td style="padding: 6px;">
@@ -191,15 +214,15 @@
                         dengan catatan</span> /
                     <span
                         style="{{ $pompa->kesimpulan == 'TSO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">TSO</span>
-                    <br><small><i>( pilih salah satu )</i></small>
+                    <br><small><i>( Pilih salah satu )</i></small>
                 </div>
                 <div style="margin-top: 6px;"><b>Catatan:</b></div>
-                <div style="min-height: 40px;">{{ $pompa->catatan ?? '' }}</div>
+                <div style="min-height: 40px;">{{ $pompa->catatan ?? '-' }}</div>
             </td>
         </tr>
     </table>
 
-    {{-- TANDA TANGAN (TAMPIL DI KEDUA JENIS) --}}
+    {{-- TANDA TANGAN --}}
     <table style="border-top: none;">
         <tr class="text-center text-bold" style="font-size: 10px;">
             <td width="50%">MENGETAHUI,<br>KEPALA DEPARTEMEN MRO</td>
