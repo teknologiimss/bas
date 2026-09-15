@@ -91,15 +91,18 @@
 
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold mb-1">No Pompa</label>
-                        <input type="text" autocomplete="off" name="no_pompa" class="form-control" placeholder="Contoh: POMPA-01" required>
+                        <input type="text" autocomplete="off" name="no_pompa" class="form-control"
+                            placeholder="Contoh: POMPA-01" required>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold mb-1">No Aset</label>
-                        <input type="text" autocomplete="off" name="no_aset" class="form-control" placeholder="Contoh: AST-PMP-001">
+                        <input type="text" autocomplete="off" name="no_aset" class="form-control"
+                            placeholder="Contoh: AST-PMP-001">
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold mb-1">Lokasi</label>
-                        <input type="text" autocomplete="off" name="lokasi" class="form-control" placeholder="Contoh: Ruang Pompa Lt. 1">
+                        <input type="text" autocomplete="off" name="lokasi" class="form-control"
+                            placeholder="Contoh: Ruang Pompa Lt. 1">
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold mb-1">Tanggal Perawatan</label>
@@ -108,7 +111,8 @@
 
                     <div class="col-md-4 mb-3 scheduled-field">
                         <label class="fw-bold mb-1">Durasi Pekerjaan</label>
-                        <input type="text" autocomplete="off" name="durasi_pekerjaan" class="form-control" placeholder="Contoh: 2 Jam">
+                        <input type="text" autocomplete="off" name="durasi_pekerjaan" class="form-control"
+                            placeholder="Contoh: 2 Jam">
                     </div>
 
                     <div class="col-md-4 mb-3">
@@ -123,6 +127,17 @@
                             <option value="" disabled selected>-- Pilih Status --</option>
                             <option value="OK">OK</option>
                             <option value="NOK">NOK</option>
+                        </select>
+                    </div>
+
+                    {{-- Menambahkan Field Kesimpulan untuk Unscheduled --}}
+                    <div class="col-md-4 mb-3 unscheduled-field" style="display: none;">
+                        <label class="fw-bold mb-1">Kesimpulan</label>
+                        <select name="kesimpulan" class="form-select">
+                            <option value="" disabled selected>-- Pilih Kesimpulan --</option>
+                            <option value="SO">SO</option>
+                            <option value="SO DENGAN CATATAN">SO dengan Catatan</option>
+                            <option value="TSO">TSO</option>
                         </select>
                     </div>
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;  // atau namespace App\Http\Controllers; sesuaikan dengan project Anda
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pompa;
@@ -35,21 +35,36 @@ class PompaController extends Controller
 
     public function store(Request $request)
     {
-        $pompa = Pompa::create([
+        $request->validate([
+            'judul' => 'required',
+            'jenis_perawatan' => 'required',
+        ]);
+
+        $pompaData = [
             'judul' => $request->judul,
             'jenis_perawatan' => $request->jenis_perawatan,
-            'no_form_unscheduled' => $request->no_form_unscheduled,
             'no_pompa' => $request->no_pompa,
             'no_aset' => $request->no_aset,
             'lokasi' => $request->lokasi,
             'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
-            'durasi_pekerjaan' => $request->durasi_pekerjaan,
             'personil' => $request->personil,
-            'status_kondisi' => $request->status_kondisi,
-            'jenis_kerusakan' => $request->jenis_kerusakan,
-            'tindak_lanjut' => $request->tindak_lanjut,
-        ]);
+        ];
 
+        // Kondisi jika perawatan jenis Unscheduled vs Scheduled
+        if ($request->jenis_perawatan === 'Unscheduled') {
+            $pompaData['no_form_unscheduled'] = $request->no_form_unscheduled;
+            $pompaData['status_kondisi'] = $request->status_kondisi;
+            $pompaData['kesimpulan'] = $request->kesimpulan;  // <--- Menyimpan kesimpulan
+            $pompaData['jenis_kerusakan'] = $request->jenis_kerusakan;
+            $pompaData['tindak_lanjut'] = $request->tindak_lanjut;
+            $pompaData['durasi_pekerjaan'] = null;
+        } else {
+            $pompaData['durasi_pekerjaan'] = $request->durasi_pekerjaan;
+        }
+
+        $pompa = Pompa::create($pompaData);
+
+        // Hanya simpan item jika jenis perawatan BUKAN Unscheduled
         if ($request->jenis_perawatan !== 'Unscheduled' && $request->has('items')) {
             foreach ($request->items as $itemData) {
                 $nomor = $itemData['nomor'] ?? null;
@@ -87,40 +102,57 @@ class PompaController extends Controller
     public function update(Request $request, $id)
     {
         $pompa = Pompa::findOrFail($id);
-        $pompa->update([
+
+        $pompaData = [
             'judul' => $request->judul,
             'jenis_perawatan' => $request->jenis_perawatan,
-            'no_form_unscheduled' => $request->no_form_unscheduled,
             'no_pompa' => $request->no_pompa,
             'no_aset' => $request->no_aset,
             'lokasi' => $request->lokasi,
             'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
-            'durasi_pekerjaan' => $request->durasi_pekerjaan,
             'personil' => $request->personil,
-            'status_kondisi' => $request->status_kondisi,
-            'jenis_kerusakan' => $request->jenis_kerusakan,
-            'tindak_lanjut' => $request->tindak_lanjut,
-        ]);
+        ];
 
-        if ($request->jenis_perawatan !== 'Unscheduled' && $request->has('items')) {
+        if ($request->jenis_perawatan === 'Unscheduled') {
+            $pompaData['no_form_unscheduled'] = $request->no_form_unscheduled;
+            $pompaData['status_kondisi'] = $request->status_kondisi;
+            $pompaData['kesimpulan'] = $request->kesimpulan;  // <--- Menyimpan update kesimpulan
+            $pompaData['jenis_kerusakan'] = $request->jenis_kerusakan;
+            $pompaData['tindak_lanjut'] = $request->tindak_lanjut;
+            $pompaData['durasi_pekerjaan'] = null;
+
+            // Hapus item-item jika diubah menjadi Unscheduled
             $pompa->items()->delete();
-            foreach ($request->items as $itemData) {
-                $nomor = $itemData['nomor'] ?? null;
-                $uraian = $itemData['uraian_pekerjaan'];
+        } else {
+            $pompaData['durasi_pekerjaan'] = $request->durasi_pekerjaan;
+            $pompaData['no_form_unscheduled'] = null;
+            $pompaData['status_kondisi'] = null;
+            $pompaData['jenis_kerusakan'] = null;
+            $pompaData['tindak_lanjut'] = null;
 
-                if (isset($itemData['details']) && is_array($itemData['details'])) {
-                    foreach ($itemData['details'] as $detail) {
-                        PompaItem::create([
-                            'pompa_id' => $pompa->id,
-                            'nomor' => $nomor,
-                            'uraian_pekerjaan' => $uraian,
-                            'aktivitas_pekerjaan' => $detail['aktivitas_pekerjaan'] ?? null,
-                            'standar' => $detail['standar'] ?? null,
-                        ]);
+            // Simpan ulang item jika berupa Scheduled
+            if ($request->has('items')) {
+                $pompa->items()->delete();
+                foreach ($request->items as $itemData) {
+                    $nomor = $itemData['nomor'] ?? null;
+                    $uraian = $itemData['uraian_pekerjaan'];
+
+                    if (isset($itemData['details']) && is_array($itemData['details'])) {
+                        foreach ($itemData['details'] as $detail) {
+                            PompaItem::create([
+                                'pompa_id' => $pompa->id,
+                                'nomor' => $nomor,
+                                'uraian_pekerjaan' => $uraian,
+                                'aktivitas_pekerjaan' => $detail['aktivitas_pekerjaan'] ?? null,
+                                'standar' => $detail['standar'] ?? null,
+                            ]);
+                        }
                     }
                 }
             }
         }
+
+        $pompa->update($pompaData);
 
         return redirect()->route('pompa.index')->with('success', 'Checksheet Pompa berhasil diubah!');
     }
@@ -204,7 +236,7 @@ class PompaController extends Controller
 
     public function uploadDokumen(Request $request, $id)
     {
-        $request->validate(['dokumen' => 'required|file|max:10240']);
+        $request->validate(['dokumen' => 'required|file|max:60000']);
         $pompa = Pompa::findOrFail($id);
 
         if ($request->hasFile('dokumen')) {
@@ -230,5 +262,36 @@ class PompaController extends Controller
         $pompa = Pompa::with(['items.photos'])->findOrFail($id);
         $pdf = Pdf::loadView('pompa.print', compact('pompa'));
         return $pdf->stream('Checksheet_Pompa_' . $pompa->no_pompa . '.pdf');
+    }
+
+    public function dashboard()
+    {
+        $totalMonitoring = Pompa::count();
+        $totalSo = Pompa::where('kesimpulan', 'SO')->count();
+        $totalSoCatatan = Pompa::whereIn('kesimpulan', ['SO DENGAN CATATAN', 'SO_NOTE'])->count();
+        $totalTso = Pompa::where('kesimpulan', 'TSO')->count();
+        $totalUnscheduled = Pompa::where('jenis_perawatan', 'Unscheduled')->count();
+        $totalPending = Pompa::whereNull('kesimpulan')->orWhere('kesimpulan', '')->count();
+
+        $perawatanCounts = [
+            'P1' => Pompa::where('jenis_perawatan', 'P1')->count(),
+            'P3' => Pompa::where('jenis_perawatan', 'P3')->count(),
+            'P6' => Pompa::where('jenis_perawatan', 'P6')->count(),
+            'P12' => Pompa::where('jenis_perawatan', 'P12')->count(),
+            'Unscheduled' => $totalUnscheduled,
+        ];
+
+        $latestMonitoring = Pompa::latest()->take(5)->get();
+
+        return view('pompa.dashboard', compact(
+            'totalMonitoring',
+            'totalSo',
+            'totalSoCatatan',
+            'totalTso',
+            'totalUnscheduled',
+            'totalPending',
+            'perawatanCounts',
+            'latestMonitoring'
+        ));
     }
 }

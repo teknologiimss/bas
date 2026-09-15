@@ -1047,13 +1047,11 @@ Route::prefix('products')->group(function () {
         // ➕ ROUTE BARU UNTUK UPLOAD DOKUMEN
         Route::post('/{id}/upload', [FcuMonitoringController::class, 'upload'])->name('upload');
         Route::delete('/{id}/delete-document', [FcuMonitoringController::class, 'deleteDocument'])->name('delete-document');
-
-        
     });
 
     // AC Graha Chiller
     Route::prefix('chiller')->name('chiller.')->group(function () {
-        Route::get('/dashboard', [ChillerController::class, 'dashboard'])->name('dashboard'); // <-- Tambahkan rute ini
+        Route::get('/dashboard', [ChillerController::class, 'dashboard'])->name('dashboard');  // <-- Tambahkan rute ini
         Route::get('/', [ChillerController::class, 'index'])->name('index');
         Route::get('/create', [ChillerController::class, 'create'])->name('create');
         Route::post('/store', [ChillerController::class, 'store'])->name('store');
@@ -1076,6 +1074,7 @@ Route::prefix('products')->group(function () {
 
     // AC Graha Pompa
     Route::prefix('pompa')->name('pompa.')->group(function () {
+        Route::get('/dashboard', [PompaController::class, 'dashboard'])->name('dashboard');
         Route::get('/', [PompaController::class, 'index'])->name('index');
         Route::get('/create', [PompaController::class, 'create'])->name('create');
         Route::post('/store', [PompaController::class, 'store'])->name('store');

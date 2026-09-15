@@ -18,6 +18,14 @@
             color: white;
         }
 
+        .btn-modern {
+            border: none;
+            border-radius: 14px;
+            padding: 11px 18px;
+            font-weight: 600;
+            transition: .25s;
+        }
+
         .table-card {
             background: white;
             border-radius: 24px;
@@ -57,6 +65,11 @@
             padding: 0 10px;
             font-size: 0.85rem;
         }
+
+        .action-group form {
+            margin: 0;
+            display: inline-block;
+        }
     </style>
 
     <div class="container py-4">
@@ -72,9 +85,15 @@
                 <h3 class="fw-bold mb-1">⚙️ Checksheet Pompa</h3>
                 <p class="mb-0 text-white-50">Monitoring & Pemeliharaan Unit Pompa</p>
             </div>
-            <a href="{{ route('pompa.create') }}" class="btn btn-light rounded-pill px-4 font-weight-bold">
-                <i class="fa fa-plus me-1"></i> Buat Checksheet
-            </a>
+            <div class="d-flex gap-2">
+                <a href="{{ route('pompa.dashboard') }}" class="btn btn-warning btn-modern text-dark">
+                    <i class="fa fa-chart-pie me-1"></i> Lihat Dashboard
+                </a>
+                <a href="{{ route('pompa.create') }}"
+                    class="btn btn-light rounded-pill px-4 font-weight-bold d-flex align-items-center">
+                    <i class="fa fa-plus me-1"></i> Buat Checksheet
+                </a>
+            </div>
         </div>
 
         <div class="table-card mb-3">
@@ -103,13 +122,14 @@
                 <table class="table align-middle">
                     <thead class="table-dark">
                         <tr>
-                            <th class="text-center">No</th>
+                            <th class="text-center" style="width: 50px;">No</th>
                             <th>Judul</th>
                             <th>Jenis Perawatan</th>
                             <th>No Pompa</th>
                             <th>No Aset</th>
                             <th>Lokasi</th>
                             <th>Tanggal</th>
+                            <th>Kesimpulan</th>
                             <th class="text-center">Scan Checksheet</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -135,7 +155,12 @@
                                 <td>{{ $d->lokasi ?? '-' }}</td>
                                 <td>{{ $d->tanggal_pelaksanaan ? \Carbon\Carbon::parse($d->tanggal_pelaksanaan)->format('d/m/Y') : '-' }}
                                 </td>
-
+                                <td>
+                                    <span
+                                        class="badge {{ $d->kesimpulan == 'SO' ? 'bg-success' : (in_array($d->kesimpulan, ['SO DENGAN CATATAN', 'SO_NOTE']) ? 'bg-warning text-dark' : ($d->kesimpulan == 'TSO' ? 'bg-danger' : 'bg-secondary')) }}">
+                                        {{ $d->kesimpulan ?? 'Belum Diisi' }}
+                                    </span>
+                                </td>
                                 <td class="text-center">
                                     <div class="action-group">
                                         @if ($d->dokumen)
@@ -157,7 +182,6 @@
                                         @endif
                                     </div>
                                 </td>
-
                                 <td class="text-center">
                                     <div class="action-group">
                                         @if ($d->jenis_perawatan != 'Unscheduled')
@@ -193,7 +217,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="text-center py-4 text-muted">Belum ada data checksheet Pompa.
+                                <td colspan="10" class="text-center py-4 text-muted">Belum ada data checksheet Pompa.
                                 </td>
                             </tr>
                         @endforelse
@@ -234,16 +258,14 @@
         @endif
     @endforeach
 
-    <!-- Tambahkan Script Auto Dismiss Alert di bawah ini -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const alert = document.getElementById('success-alert');
             if (alert) {
                 setTimeout(function() {
-                    // Menggunakan Bootstrap Alert instance untuk menghilang dengan animasi
                     const bsAlert = new bootstrap.Alert(alert);
                     bsAlert.close();
-                }, 3000); // 3000 ms = 3 detik
+                }, 3000);
             }
         });
     </script>

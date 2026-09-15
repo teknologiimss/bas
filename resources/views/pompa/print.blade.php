@@ -117,13 +117,14 @@
     </table>
 
     @if ($pompa->jenis_perawatan == 'Unscheduled')
+        {{-- ================= FORM KHUSUS UNSCHEDULED ================= --}}
         <table style="border-top: none;">
             <tr>
                 <td width="30%" class="text-bold">STATUS KONDISI</td>
                 <td width="70%">
-                    <span class="symbol">{{ $pompa->status_kondisi == 'OK' ? '[ ✓ ] OK' : '[  ] OK' }}</span>
+                    <span class="symbol">{{ $pompa->status_kondisi == 'OK' ? '[ ✓ ] OK' : '[   ] OK' }}</span>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="symbol">{{ $pompa->status_kondisi == 'NOK' ? '[ ✓ ] NOK' : '[  ] NOK' }}</span>
+                    <span class="symbol">{{ $pompa->status_kondisi == 'NOK' ? '[ ✓ ] NOK' : '[   ] NOK' }}</span>
                 </td>
             </tr>
             <tr>
@@ -136,7 +137,7 @@
             </tr>
         </table>
     @else
-        {{-- TABEL UTAMA SESUAI FOTO DISAMPAIKAN USER --}}
+        {{-- ================= TABEL UTAMA SCHEDULED ================= --}}
         <table style="border-top: none;">
             <thead>
                 <tr style="background: #f2f2f2;">
@@ -173,53 +174,46 @@
                 @endforeach
             </tbody>
         </table>
-
-        {{-- KESIMPULAN & CATATAN SESUAI GAMBAR --}}
-        <table style="border-top: none;">
-            <tr>
-                <td style="padding: 6px;">
-                    <div><b>Kesimpulan :</b></div>
-                    <div>
-                        Berdasarkan hasil perawatan, maka Pompa dinyatakan :
-                        <span
-                            style="{{ $pompa->kesimpulan == 'SO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO</span>
-                        /
-                        <span
-                            style="{{ $pompa->kesimpulan == 'SO DENGAN CATATAN' ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO
-                            dengan catatan</span> /
-                        <span
-                            style="{{ $pompa->kesimpulan == 'TSO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">TSO</span>
-                        <br><small><i>( pilih salah satu )</i></small>
-                    </div>
-                    <div style="margin-top: 6px;"><b>Catatan:</b></div>
-                    <div style="min-height: 50px;">{{ $pompa->catatan ?? '' }}</div>
-                </td>
-            </tr>
-        </table>
     @endif
 
-    {{-- TANDA TANGAN 3 PILAR (PEMILIK ASET, KADEP PEMELIHARAAN, USER) SESUAI GAMBAR --}}
+    {{-- KESIMPULAN & CATATAN (DITAMPILKAN UNTUK SCHEDULED & UNSCHEDULED) --}}
+    <table style="border-top: none;">
+        <tr>
+            <td style="padding: 6px;">
+                <div><b>Kesimpulan :</b></div>
+                <div>
+                    Berdasarkan hasil perawatan, maka Pompa dinyatakan :
+                    <span
+                        style="{{ $pompa->kesimpulan == 'SO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO</span>
+                    /
+                    <span
+                        style="{{ in_array($pompa->kesimpulan, ['SO DENGAN CATATAN', 'SO_NOTE']) ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO
+                        dengan catatan</span> /
+                    <span
+                        style="{{ $pompa->kesimpulan == 'TSO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">TSO</span>
+                    <br><small><i>( pilih salah satu )</i></small>
+                </div>
+                <div style="margin-top: 6px;"><b>Catatan:</b></div>
+                <div style="min-height: 40px;">{{ $pompa->catatan ?? '' }}</div>
+            </td>
+        </tr>
+    </table>
+
+    {{-- TANDA TANGAN (TAMPIL DI KEDUA JENIS) --}}
     <table style="border-top: none;">
         <tr class="text-center text-bold" style="font-size: 10px;">
-            <td width="33%">KEPALA DEPARTEMEN MRO</td>
-            {{-- <td width="34%">KADEP PEMELIHARAAN</td> --}}
-            <td width="33%">PELAKSANA</td>
+            <td width="50%">MENGETAHUI,<br>KEPALA DEPARTEMEN MRO</td>
+            <td width="50%">PELAKSANA</td>
         </tr>
         <tr class="text-center">
             <td style="height: 55px;"></td>
-            {{-- <td style="height: 55px;"></td> --}}
             <td style="height: 55px;"></td>
         </tr>
         <tr class="text-center">
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </td>
-            {{-- <td>(
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                )</td> --}}
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </td>
+            <td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+            </td>
+            <td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+            </td>
         </tr>
     </table>
 
