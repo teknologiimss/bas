@@ -90,7 +90,8 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">Judul</label>
-                        <input type="text" autocomplete="off" name="judul" class="form-control" value="{{ $checksheet->judul }}" required>
+                        <input type="text" autocomplete="off" name="judul" class="form-control"
+                            value="{{ $checksheet->judul }}" required>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">Jenis Perawatan</label>
@@ -117,15 +118,18 @@
 
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">No Chiller</label>
-                        <input type="text" autocomplete="off" name="no_chiller" class="form-control" value="{{ $checksheet->no_chiller }}">
+                        <input type="text" autocomplete="off" name="no_chiller" class="form-control"
+                            value="{{ $checksheet->no_chiller }}">
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">No Aset</label>
-                        <input type="text" autocomplete="off" name="no_aset" class="form-control" value="{{ $checksheet->no_aset }}">
+                        <input type="text" autocomplete="off" name="no_aset" class="form-control"
+                            value="{{ $checksheet->no_aset }}">
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">Lokasi</label>
-                        <input type="text" autocomplete="off" name="lokasi" class="form-control" value="{{ $checksheet->lokasi }}">
+                        <input type="text" autocomplete="off" name="lokasi" class="form-control"
+                            value="{{ $checksheet->lokasi }}">
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">Tanggal Pelaksanaan</label>
@@ -143,7 +147,8 @@
 
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold">Personil</label>
-                        <input type="text" autocomplete="off" name="personil" class="form-control" value="{{ $checksheet->personil }}">
+                        <input type="text" autocomplete="off" name="personil" class="form-control"
+                            value="{{ $checksheet->personil }}">
                     </div>
 
                     {{-- Field Khusus Unscheduled Status --}}
@@ -155,6 +160,21 @@
                             <option value="OK" {{ $checksheet->status_kondisi == 'OK' ? 'selected' : '' }}>OK</option>
                             <option value="NOK" {{ $checksheet->status_kondisi == 'NOK' ? 'selected' : '' }}>NOK
                             </option>
+                        </select>
+                    </div>
+
+                    {{-- Field Khusus Unscheduled Kesimpulan --}}
+                    <div class="col-md-4 mb-3 unscheduled-field"
+                        style="display: {{ $checksheet->jenis_perawatan == 'Unscheduled' ? 'block' : 'none' }};">
+                        <label class="fw-bold">Kesimpulan</label>
+                        <select name="kesimpulan" class="form-select">
+                            <option value="" disabled {{ empty($checksheet->kesimpulan) ? 'selected' : '' }}>-- Pilih
+                                Kesimpulan --</option>
+                            <option value="SO" {{ $checksheet->kesimpulan == 'SO' ? 'selected' : '' }}>SO</option>
+                            <option value="SO DENGAN CATATAN"
+                                {{ in_array($checksheet->kesimpulan, ['SO DENGAN CATATAN', 'SO_NOTE']) ? 'selected' : '' }}>
+                                SO dengan Catatan</option>
+                            <option value="TSO" {{ $checksheet->kesimpulan == 'TSO' ? 'selected' : '' }}>TSO</option>
                         </select>
                     </div>
 
@@ -185,12 +205,14 @@
                         <div class="item-row border rounded p-3 mb-3">
                             <div class="row mb-3">
                                 <div class="col-md-2">
-                                    <input type="text" autocomplete="off" name="items[{{ $iIndex }}][nomor]" class="form-control"
-                                        value="{{ $items->first()->nomor }}" placeholder="No (a/b)">
+                                    <input type="text" autocomplete="off" name="items[{{ $iIndex }}][nomor]"
+                                        class="form-control" value="{{ $items->first()->nomor }}"
+                                        placeholder="No (a/b)">
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="text" autocomplete="off" name="items[{{ $iIndex }}][uraian_pekerjaan]"
-                                        class="form-control" value="{{ $uraian }}" placeholder="Uraian Pekerjaan">
+                                    <input type="text" autocomplete="off"
+                                        name="items[{{ $iIndex }}][uraian_pekerjaan]" class="form-control"
+                                        value="{{ $uraian }}" placeholder="Uraian Pekerjaan">
                                 </div>
                                 <div class="col-md-1">
                                     <button type="button" class="btn btn-danger w-100"

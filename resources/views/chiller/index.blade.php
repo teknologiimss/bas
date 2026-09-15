@@ -19,6 +19,14 @@
             color: white;
         }
 
+        .btn-modern {
+            border: none;
+            border-radius: 14px;
+            padding: 11px 18px;
+            font-weight: 600;
+            transition: .25s;
+        }
+
         .table-card {
             background: white;
             border-radius: 24px;
@@ -78,9 +86,15 @@
                 <h3 class="fw-bold mb-1">❄️ Checksheet Chiller AC</h3>
                 <p class="mb-0 text-white-50">Monitoring & Pemeliharaan Unit Chiller</p>
             </div>
-            <a href="{{ route('chiller.create') }}" class="btn btn-light rounded-pill px-4 font-weight-bold">
-                <i class="fa fa-plus me-1"></i> Buat Checksheet
-            </a>
+            <div class="d-flex gap-2">
+                <a href="{{ route('chiller.dashboard') }}" class="btn btn-warning btn-modern text-dark">
+                    <i class="fa fa-chart-pie me-1"></i> Lihat Dashboard
+                </a>
+                <a href="{{ route('chiller.create') }}"
+                    class="btn btn-light rounded-pill px-4 font-weight-bold d-flex align-items-center">
+                    <i class="fa fa-plus me-1"></i> Buat Checksheet
+                </a>
+            </div>
         </div>
 
         {{-- Filter --}}
@@ -119,6 +133,7 @@
                             <th>No Aset</th>
                             <th>Lokasi</th>
                             <th>Tanggal</th>
+                            <th>Kesimpulan</th>
                             <th class="text-center">Scan Checksheet</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -143,6 +158,14 @@
                                 <td>{{ $d->no_aset ?? '-' }}</td>
                                 <td>{{ $d->lokasi ?? '-' }}</td>
                                 <td>{{ $d->tanggal_pelaksanaan ? \Carbon\Carbon::parse($d->tanggal_pelaksanaan)->format('d/m/Y') : '-' }}
+                                </td>
+
+                                {{-- KOLOM KESIMPULAN --}}
+                                <td>
+                                    <span
+                                        class="badge {{ $d->kesimpulan == 'SO' ? 'bg-success' : (in_array($d->kesimpulan, ['SO DENGAN CATATAN', 'SO_NOTE']) ? 'bg-warning text-dark' : ($d->kesimpulan == 'TSO' ? 'bg-danger' : 'bg-secondary')) }}">
+                                        {{ $d->kesimpulan ?? 'Belum Diisi' }}
+                                    </span>
                                 </td>
 
                                 {{-- KOLOM DOKUMEN LAMPIRAN --}}
@@ -216,7 +239,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="text-center py-4 text-muted">Belum ada data checksheet Chiller.
+                                <td colspan="10" class="text-center py-4 text-muted">Belum ada data checksheet Chiller.
                                 </td>
                             </tr>
                         @endforelse
@@ -251,7 +274,7 @@
                                     <label class="form-label fw-bold">Pilih File (PDF, DOC, XLS, Gambar)</label>
                                     <input type="file" name="dokumen" class="form-control"
                                         accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" required>
-                                    <div class="form-text text-muted">Maksimal ukuran file: 10MB</div>
+                                    <div class="form-text text-muted">Maksimal ukuran file: 60MB</div>
                                 </div>
                             </div>
                             <div class="modal-footer">

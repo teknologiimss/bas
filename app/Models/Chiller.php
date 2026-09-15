@@ -22,6 +22,7 @@ class Chiller extends Model
         'durasi_pekerjaan',
         'personil',
         'status_kondisi',
+        'kesimpulan',
         'jenis_kerusakan',
         'tindak_lanjut',
         'kesimpulan',

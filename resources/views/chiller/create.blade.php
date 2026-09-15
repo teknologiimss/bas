@@ -116,16 +116,18 @@
 
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold mb-1">No Chiller</label>
-                        <input type="text" autocomplete="off" name="no_chiller" class="form-control" placeholder="Contoh: CHILLER-01"
-                            required>
+                        <input type="text" autocomplete="off" name="no_chiller" class="form-control"
+                            placeholder="Contoh: CHILLER-01" required>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold mb-1">No Aset</label>
-                        <input type="text" autocomplete="off" name="no_aset" class="form-control" placeholder="Contoh: AST-CH-001">
+                        <input type="text" autocomplete="off" name="no_aset" class="form-control"
+                            placeholder="Contoh: AST-CH-001">
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold mb-1">Lokasi</label>
-                        <input type="text" autocomplete="off" name="lokasi" class="form-control" placeholder="Contoh: Gedung A Lt. 2">
+                        <input type="text" autocomplete="off" name="lokasi" class="form-control"
+                            placeholder="Contoh: Gedung A Lt. 2">
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="fw-bold mb-1">Tanggal</label>
@@ -155,6 +157,17 @@
                         </select>
                     </div>
 
+                    {{-- Field Khusus Unscheduled Kesimpulan --}}
+                    <div class="col-md-4 mb-3 unscheduled-field" style="display: none;">
+                        <label class="fw-bold mb-1">Kesimpulan</label>
+                        <select name="kesimpulan" class="form-select">
+                            <option value="" disabled selected>-- Pilih Kesimpulan --</option>
+                            <option value="SO">SO</option>
+                            <option value="SO DENGAN CATATAN">SO dengan Catatan</option>
+                            <option value="TSO">TSO</option>
+                        </select>
+                    </div>
+
                     {{-- Field Khusus Unscheduled Kerusakan & Tindak Lanjut --}}
                     <div class="col-md-6 mb-3 unscheduled-field" style="display: none;">
                         <label class="fw-bold mb-1">Jenis Kerusakan</label>
@@ -163,7 +176,8 @@
                     </div>
                     <div class="col-md-6 mb-3 unscheduled-field" style="display: none;">
                         <label class="fw-bold mb-1">Tindak Lanjut</label>
-                        <textarea name="tindak_lanjut" class="form-control" rows="3" placeholder="Jelaskan tindak lanjut perbaikan..."></textarea>
+                        <textarea name="tindak_lanjut" class="form-control" rows="3"
+                            placeholder="Jelaskan tindak lanjut perbaikan..."></textarea>
                     </div>
                 </div>
             </div>

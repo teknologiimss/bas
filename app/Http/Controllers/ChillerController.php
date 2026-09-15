@@ -52,6 +52,7 @@ class ChillerController extends Controller
         if ($request->jenis_perawatan === 'Unscheduled') {
             $chillerData['no_form_unscheduled'] = $request->no_form_unscheduled;
             $chillerData['status_kondisi'] = $request->status_kondisi;
+            $chillerData['kesimpulan'] = $request->kesimpulan;
             $chillerData['jenis_kerusakan'] = $request->jenis_kerusakan;
             $chillerData['tindak_lanjut'] = $request->tindak_lanjut;
         } else {
@@ -111,6 +112,7 @@ class ChillerController extends Controller
         if ($request->jenis_perawatan === 'Unscheduled') {
             $chillerData['no_form_unscheduled'] = $request->no_form_unscheduled;
             $chillerData['status_kondisi'] = $request->status_kondisi;
+            $chillerData['kesimpulan'] = $request->kesimpulan;
             $chillerData['jenis_kerusakan'] = $request->jenis_kerusakan;
             $chillerData['tindak_lanjut'] = $request->tindak_lanjut;
             $chillerData['durasi_pekerjaan'] = null;
@@ -237,7 +239,7 @@ class ChillerController extends Controller
     public function uploadDokumen(Request $request, $id)
     {
         $request->validate([
-            'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png|max:10240',
+            'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png|max:60000',
         ]);
 
         $chiller = Chiller::findOrFail($id);
@@ -317,5 +319,36 @@ class ChillerController extends Controller
         return redirect()
             ->route('chiller.edit', $newChiller->id)
             ->with('success', 'Format berhasil diduplikasi! Silakan lengkapi data yang kosong.');
+    }
+
+    public function dashboard()
+    {
+        $totalMonitoring = Chiller::count();
+        $totalSo = Chiller::where('kesimpulan', 'SO')->count();
+        $totalSoCatatan = Chiller::whereIn('kesimpulan', ['SO DENGAN CATATAN', 'SO_NOTE'])->count();
+        $totalTso = Chiller::where('kesimpulan', 'TSO')->count();
+        $totalPending = Chiller::whereNull('kesimpulan')->orWhere('kesimpulan', '')->count();
+        $totalUnscheduled = Chiller::where('jenis_perawatan', 'Unscheduled')->count();
+
+        $perawatanCounts = [
+            'P1' => Chiller::where('jenis_perawatan', 'P1')->count(),
+            'P3' => Chiller::where('jenis_perawatan', 'P3')->count(),
+            'P6' => Chiller::where('jenis_perawatan', 'P6')->count(),
+            'P12' => Chiller::where('jenis_perawatan', 'P12')->count(),
+            'Unscheduled' => $totalUnscheduled,
+        ];
+
+        $latestMonitoring = Chiller::latest()->take(5)->get();
+
+        return view('chiller.dashboard', compact(
+            'totalMonitoring',
+            'totalSo',
+            'totalSoCatatan',
+            'totalTso',
+            'totalPending',
+            'totalUnscheduled',
+            'perawatanCounts',
+            'latestMonitoring'
+        ));
     }
 }
