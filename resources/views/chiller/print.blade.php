@@ -222,31 +222,7 @@
             </tbody>
         </table>
 
-        {{-- KESIMPULAN & CATATAN --}}
-        <table style="border-top: none;">
-            <tr>
-                <td style="padding: 8px;">
-                    <div><b>Kesimpulan :</b></div>
-                    <div>
-                        Berdasarkan hasil perawatan, maka Chiller dinyatakan :
-                        <span
-                            style="{{ $chiller->kesimpulan == 'SO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO</span>
-                        /
-                        <span
-                            style="{{ $chiller->kesimpulan == 'SO DENGAN CATATAN' ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO
-                            dengan catatan</span>
-                        /
-                        <span
-                            style="{{ $chiller->kesimpulan == 'TSO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">TSO</span>
-                        <i>( Pilih salah satu )</i>
-                    </div>
-                    <div style="margin-top: 8px;"><b>Catatan:</b></div>
-                    <div style="min-height: 40px;">{{ $chiller->catatan ?? '-' }}</div>
-                </td>
-            </tr>
-        </table>
-
-        {{-- TANGGAL & DURASI --}}
+        {{-- TANGGAL & DURASI (SCHEDULED) --}}
         <table style="border-top: none;">
             <tr>
                 <td width="30%" class="text-bold">TANGGAL PELAKSANAAN</td>
@@ -264,6 +240,30 @@
             </tr>
         </table>
     @endif
+
+    {{-- KESIMPULAN & CATATAN (DITAMPILKAN UNTUK SCHEDULED & UNSCHEDULED) --}}
+    <table style="border-top: none;">
+        <tr>
+            <td style="padding: 8px;">
+                <div><b>Kesimpulan :</b></div>
+                <div>
+                    Berdasarkan hasil perawatan, maka Chiller dinyatakan :
+                    <span
+                        style="{{ $chiller->kesimpulan == 'SO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO</span>
+                    /
+                    <span
+                        style="{{ in_array($chiller->kesimpulan, ['SO DENGAN CATATAN', 'SO_NOTE']) ? 'text-decoration: underline; font-weight: bold;' : '' }}">SO
+                        dengan catatan</span>
+                    /
+                    <span
+                        style="{{ $chiller->kesimpulan == 'TSO' ? 'text-decoration: underline; font-weight: bold;' : '' }}">TSO</span>
+                    <i>( Pilih salah satu )</i>
+                </div>
+                <div style="margin-top: 8px;"><b>Catatan:</b></div>
+                <div style="min-height: 40px;">{{ $chiller->catatan ?? '-' }}</div>
+            </td>
+        </tr>
+    </table>
 
     {{-- TANDA TANGAN (TAMPIL DI KEDUA JENIS) --}}
     <table style="border-top: none;">
