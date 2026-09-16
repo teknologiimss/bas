@@ -664,4 +664,42 @@ class RewindingController extends Controller
             )
         );
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids', []);
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'Tidak ada data yang dipilih untuk dihapus!');
+        }
+
+        $items = Rewinding::whereIn('id', $ids)->get();
+
+        foreach ($items as $item) {
+            // Hapus file lampiran SJN keluar jika ada
+            if ($item->lampiran_sjn_keluar && File::exists(public_path($item->lampiran_sjn_keluar))) {
+                File::delete(public_path($item->lampiran_sjn_keluar));
+            }
+
+            // Hapus file lampiran SJN masuk jika ada
+            if ($item->lampiran_sjn_masuk && File::exists(public_path($item->lampiran_sjn_masuk))) {
+                File::delete(public_path($item->lampiran_sjn_masuk));
+            }
+
+            // Hapus lampiran pada detail rewinding jika ada
+            if ($item->detail) {
+                foreach ($item->detail->lampirans as $lampiran) {
+                    if (File::exists(public_path($lampiran->file))) {
+                        File::delete(public_path($lampiran->file));
+                    }
+                    $lampiran->delete();
+                }
+                $item->detail->delete();
+            }
+
+            $item->delete();
+        }
+
+        return back()->with('success', count($ids) . ' data rewinding berhasil dihapus!');
+    }
 }

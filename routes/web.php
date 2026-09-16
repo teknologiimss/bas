@@ -810,6 +810,8 @@ Route::prefix('products')->group(function () {
         [RewindingController::class, 'destroy']
     )->name('rewinding.destroy');
 
+    Route::post('/rewinding/bulk-destroy', [RewindingController::class, 'bulkDestroy'])->name('rewinding.bulk-destroy');
+
     Route::post(
         '/rewinding',
         [RewindingController::class, 'store']
