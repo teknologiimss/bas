@@ -7,16 +7,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
+        :root {
+            --primary: #0f172a;
+            --primary-dark: #020617;
+            --secondary: #1e3a8a;
+            --accent: #2563eb;
+            --table-border: #cbd5e1;
+        }
+
         body {
             background: #eef4fb;
             font-family: 'Segoe UI', sans-serif;
         }
 
         .top-card {
-            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 24px;
             padding: 24px;
             color: white;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, .25);
         }
 
         .btn-modern {
@@ -32,6 +41,57 @@
             border-radius: 24px;
             padding: 20px;
             margin-top: 20px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, .08);
+        }
+
+        /* GRID TABLE */
+        .table-custom-grid {
+            margin-bottom: 0;
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--table-border);
+        }
+
+        .table-custom-grid th,
+        .table-custom-grid td {
+            vertical-align: middle !important;
+            padding: 12px 14px;
+            white-space: nowrap;
+            border: 1px solid var(--table-border);
+        }
+
+        .table-custom-grid thead th {
+            background-color: #123057;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* CHECKBOX STYLING */
+        .col-checkbox {
+            width: 50px;
+            text-align: center;
+        }
+
+        .table-custom-grid thead th.col-checkbox {
+            background-color: #0d2442;
+        }
+
+        .form-check-input {
+            width: 18px;
+            height: 18px;
+            margin: 0 auto;
+            cursor: pointer;
+            border: 1.5px solid #94a3b8;
+            border-radius: 4px;
+            display: inline-block;
+            vertical-align: middle;
+            position: static;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
         }
 
         .badge-jenis {
@@ -81,6 +141,13 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-3" role="alert">
+                <i class="fa fa-triangle-exclamation me-1"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="top-card d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
                 <h3 class="fw-bold mb-1">❄️ Checksheet Chiller AC</h3>
@@ -97,7 +164,7 @@
             </div>
         </div>
 
-        {{-- Filter --}}
+        {{-- FILTER --}}
         <div class="table-card mb-3">
             <form method="GET" action="{{ route('chiller.index') }}">
                 <div class="row g-3 align-items-end">
@@ -128,133 +195,144 @@
             </form>
         </div>
 
-        {{-- Table --}}
-        <div class="table-card">
-            <div class="table-responsive">
-                <table class="table align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th class="text-center" style="width: 50px;">No</th>
-                            <th>Judul</th>
-                            <th>Jenis Perawatan</th>
-                            <th>No Chiller</th>
-                            <th>No Aset</th>
-                            <th>Lokasi</th>
-                            <th>Tanggal</th>
-                            <th>Kesimpulan</th>
-                            <th class="text-center">Scan Checksheet</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($data as $i => $d)
+        {{-- FORM BULK DELETE & TABLE --}}
+        <form action="{{ route('chiller.bulk-destroy') }}" method="POST" id="form-bulk-delete">
+            @csrf
+            <div class="table-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-list me-2"></i>Daftar Checksheet Chiller</h5>
+                    <button type="button" class="btn btn-danger btn-modern" id="btn-delete-selected" style="display: none;"
+                        onclick="confirmBulkDelete()">
+                        <i class="fa-solid fa-trash me-1"></i> Hapus Terpilih (<span id="selected-count">0</span>)
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-custom-grid align-middle">
+                        <thead>
                             <tr>
-                                <td class="text-center">{{ $i + 1 }}</td>
-                                <td>
-                                    <strong>{{ $d->judul }}</strong>
-                                    @if ($d->jenis_perawatan == 'Unscheduled' && $d->no_form_unscheduled)
-                                        <br><small class="text-muted">Form: {{ $d->no_form_unscheduled }}</small>
-                                    @endif
-                                </td>
-                                <td>
-                                    <span
-                                        class="{{ $d->jenis_perawatan == 'Unscheduled' ? 'badge-unscheduled' : 'badge-jenis' }}">
-                                        {{ $d->jenis_perawatan }}
-                                    </span>
-                                </td>
-                                <td>{{ $d->no_chiller ?? '-' }}</td>
-                                <td>{{ $d->no_aset ?? '-' }}</td>
-                                <td>{{ $d->lokasi ?? '-' }}</td>
-                                <td>{{ $d->tanggal_pelaksanaan ? \Carbon\Carbon::parse($d->tanggal_pelaksanaan)->format('d/m/Y') : '-' }}
-                                </td>
+                                <th class="col-checkbox">
+                                    <input type="checkbox" id="select-all" class="form-check-input">
+                                </th>
+                                <th class="text-center" style="width: 50px;">NO</th>
+                                <th>JUDUL</th>
+                                <th>JENIS PERAWATAN</th>
+                                <th>NO CHILLER</th>
+                                <th>NO ASET</th>
+                                <th>LOKASI</th>
+                                <th>TANGGAL</th>
+                                <th>KESIMPULAN</th>
+                                <th class="text-center">SCAN CHECKSHEET</th>
+                                <th class="text-center">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($data as $i => $d)
+                                <tr>
+                                    <td class="col-checkbox">
+                                        <input type="checkbox" name="ids[]" value="{{ $d->id }}"
+                                            class="form-check-input check-item">
+                                    </td>
+                                    <td class="text-center fw-bold">{{ $i + 1 }}</td>
+                                    <td>
+                                        <strong>{{ $d->judul }}</strong>
+                                        @if ($d->jenis_perawatan == 'Unscheduled' && $d->no_form_unscheduled)
+                                            <br><small class="text-muted">Form: {{ $d->no_form_unscheduled }}</small>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="{{ $d->jenis_perawatan == 'Unscheduled' ? 'badge-unscheduled' : 'badge-jenis' }}">
+                                            {{ $d->jenis_perawatan }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $d->no_chiller ?? '-' }}</td>
+                                    <td>{{ $d->no_aset ?? '-' }}</td>
+                                    <td>{{ $d->lokasi ?? '-' }}</td>
+                                    <td>{{ $d->tanggal_pelaksanaan ? \Carbon\Carbon::parse($d->tanggal_pelaksanaan)->format('d/m/Y') : '-' }}
+                                    </td>
 
-                                {{-- KOLOM KESIMPULAN --}}
-                                <td>
-                                    <span
-                                        class="badge {{ $d->kesimpulan == 'SO' ? 'bg-success' : (in_array($d->kesimpulan, ['SO DENGAN CATATAN', 'SO_NOTE']) ? 'bg-warning text-dark' : ($d->kesimpulan == 'TSO' ? 'bg-danger' : 'bg-secondary')) }}">
-                                        {{ $d->kesimpulan ?? 'Belum Diisi' }}
-                                    </span>
-                                </td>
+                                    {{-- KOLOM KESIMPULAN --}}
+                                    <td>
+                                        <span
+                                            class="badge {{ $d->kesimpulan == 'SO' ? 'bg-success' : (in_array($d->kesimpulan, ['SO DENGAN CATATAN', 'SO_NOTE']) ? 'bg-warning text-dark' : ($d->kesimpulan == 'TSO' ? 'bg-danger' : 'bg-secondary')) }}">
+                                            {{ $d->kesimpulan ?? 'Belum Diisi' }}
+                                        </span>
+                                    </td>
 
-                                {{-- KOLOM DOKUMEN LAMPIRAN --}}
-                                <td class="text-center">
-                                    <div class="action-group">
-                                        @if ($d->dokumen)
-                                            <a href="{{ asset('storage/' . $d->dokumen) }}" target="_blank"
-                                                class="btn btn-outline-primary" title="Lihat Dokumen">
-                                                <i class="fa fa-file-lines me-1"></i> Lihat
-                                            </a>
+                                    {{-- KOLOM DOKUMEN LAMPIRAN --}}
+                                    <td class="text-center">
+                                        <div class="action-group">
+                                            @if ($d->dokumen)
+                                                <a href="{{ asset('storage/' . $d->dokumen) }}" target="_blank"
+                                                    class="btn btn-outline-primary" title="Lihat Dokumen">
+                                                    <i class="fa fa-file-lines me-1"></i> Lihat
+                                                </a>
 
-                                            <form action="{{ route('chiller.delete.dokumen', $d->id) }}" method="POST"
-                                                onsubmit="return confirm('Hapus dokumen lampiran ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-outline-danger" title="Hapus Dokumen">
+                                                <button type="button" class="btn btn-outline-danger"
+                                                    onclick="deleteSingleDoc('{{ route('chiller.delete.dokumen', $d->id) }}')"
+                                                    title="Hapus Dokumen">
                                                     <i class="fa fa-xmark"></i>
                                                 </button>
-                                            </form>
-                                        @else
-                                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
-                                                data-bs-target="#uploadModal{{ $d->id }}">
-                                                <i class="fa fa-paperclip me-1"></i> Upload
-                                            </button>
-                                        @endif
-                                    </div>
-                                </td>
+                                            @else
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#uploadModal{{ $d->id }}">
+                                                    <i class="fa fa-paperclip me-1"></i> Upload
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </td>
 
-                                {{-- KOLOM AKSI --}}
-                                <td class="text-center">
-                                    <div class="action-group">
-                                        @if ($d->jenis_perawatan != 'Unscheduled')
-                                            <a href="{{ route('chiller.mobile', $d->id) }}" class="btn btn-success"
-                                                title="Isi Checksheet">
-                                                <i class="fa fa-mobile-screen me-1"></i> Isi
+                                    {{-- KOLOM AKSI --}}
+                                    <td class="text-center">
+                                        <div class="action-group">
+                                            @if ($d->jenis_perawatan != 'Unscheduled')
+                                                <a href="{{ route('chiller.mobile', $d->id) }}" class="btn btn-success"
+                                                    title="Isi Checksheet">
+                                                    <i class="fa fa-mobile-screen me-1"></i> Isi
+                                                </a>
+                                            @endif
+                                            <a href="{{ route('chiller.show', $d->id) }}" class="btn btn-info text-white"
+                                                title="Detail">
+                                                <i class="fa fa-eye"></i>
                                             </a>
-                                        @endif
-                                        <a href="{{ route('chiller.show', $d->id) }}" class="btn btn-info text-white"
-                                            title="Detail">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('chiller.edit', $d->id) }}" class="btn btn-warning text-white"
-                                            title="Edit">
-                                            <i class="fa fa-pen"></i>
-                                        </a>
+                                            <a href="{{ route('chiller.edit', $d->id) }}"
+                                                class="btn btn-warning text-white" title="Edit">
+                                                <i class="fa fa-pen"></i>
+                                            </a>
 
-                                        @if ($d->jenis_perawatan != 'Unscheduled')
-                                            <form action="{{ route('chiller.duplicate', $d->id) }}" method="POST"
-                                                onsubmit="return confirm('Duplikasi format checksheet ini?')">
-                                                @csrf
-                                                <button type="submit" class="btn btn-dark" title="Duplikasi Format">
+                                            @if ($d->jenis_perawatan != 'Unscheduled')
+                                                <button type="button" class="btn btn-dark" title="Duplikasi Format"
+                                                    onclick="duplicateSingle('{{ route('chiller.duplicate', $d->id) }}')">
                                                     <i class="fa fa-clone"></i>
                                                 </button>
-                                            </form>
-                                        @endif
+                                            @endif
 
-                                        <a href="{{ route('chiller.print', $d->id) }}" target="_blank"
-                                            class="btn btn-secondary" title="Cetak">
-                                            <i class="fa fa-print"></i>
-                                        </a>
-                                        <form action="{{ route('chiller.destroy', $d->id) }}" method="POST"
-                                            onsubmit="return confirm('Hapus data ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" title="Hapus">
+                                            <a href="{{ route('chiller.print', $d->id) }}" target="_blank"
+                                                class="btn btn-secondary" title="Cetak">
+                                                <i class="fa fa-print"></i>
+                                            </a>
+
+                                            <button type="button" class="btn btn-danger" title="Hapus"
+                                                onclick="deleteSingle('{{ route('chiller.destroy', $d->id) }}')">
                                                 <i class="fa fa-trash"></i>
                                             </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="10" class="text-center py-4 text-muted">Belum ada data checksheet Chiller.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="11" class="text-center py-4 text-muted">Belum ada data checksheet
+                                        Chiller.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 
     {{-- MODAL UPLOAD DOKUMEN --}}
@@ -298,8 +376,15 @@
         @endif
     @endforeach
 
+    {{-- FORM TERSEMBUNYI UNTUK AKSI SINGLE --}}
+    <form id="form-single-action" method="POST" style="display: none;">
+        @csrf
+        <div id="form-method-container"></div>
+    </form>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Auto hide alert
             const alertElement = document.getElementById('success-alert');
             if (alertElement) {
                 setTimeout(function() {
@@ -307,6 +392,73 @@
                     bsAlert.close();
                 }, 3000);
             }
+
+            // Bulk Delete Checkbox Logic
+            const selectAll = document.getElementById('select-all');
+            const checkboxes = document.querySelectorAll('.check-item');
+            const btnDeleteSelected = document.getElementById('btn-delete-selected');
+            const selectedCount = document.getElementById('selected-count');
+
+            function updateDeleteButton() {
+                const checkedCount = document.querySelectorAll('.check-item:checked').length;
+                selectedCount.textContent = checkedCount;
+
+                if (checkedCount > 0) {
+                    btnDeleteSelected.style.display = 'inline-block';
+                } else {
+                    btnDeleteSelected.style.display = 'none';
+                }
+            }
+
+            if (selectAll) {
+                selectAll.addEventListener('change', function() {
+                    checkboxes.forEach(cb => cb.checked = this.checked);
+                    updateDeleteButton();
+                });
+            }
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    if (!this.checked && selectAll.checked) {
+                        selectAll.checked = false;
+                    }
+                    updateDeleteButton();
+                });
+            });
         });
+
+        function confirmBulkDelete() {
+            const checkedCount = document.querySelectorAll('.check-item:checked').length;
+            if (confirm(`Apakah Anda yakin ingin menghapus ${checkedCount} data checksheet yang dipilih?`)) {
+                document.getElementById('form-bulk-delete').submit();
+            }
+        }
+
+        function deleteSingle(url) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                const form = document.getElementById('form-single-action');
+                form.action = url;
+                document.getElementById('form-method-container').innerHTML = '@method('DELETE')';
+                form.submit();
+            }
+        }
+
+        function deleteSingleDoc(url) {
+            if (confirm('Hapus dokumen lampiran ini?')) {
+                const form = document.getElementById('form-single-action');
+                form.action = url;
+                document.getElementById('form-method-container').innerHTML = '@method('DELETE')';
+                form.submit();
+            }
+        }
+
+        function duplicateSingle(url) {
+            if (confirm('Duplikasi format checksheet ini?')) {
+                const form = document.getElementById('form-single-action');
+                form.action = url;
+                document.getElementById('form-method-container').innerHTML = '';
+                form.submit();
+            }
+        }
     </script>
 @endsection

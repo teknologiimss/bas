@@ -1060,6 +1060,7 @@ Route::prefix('products')->group(function () {
         Route::put('/{id}/update', [ChillerController::class, 'update'])->name('update');
         Route::get('/{id}/show', [ChillerController::class, 'show'])->name('show');
         Route::delete('/{id}', [ChillerController::class, 'destroy'])->name('destroy');
+        Route::post('/bulk-destroy', [ChillerController::class, 'bulkDestroy'])->name('bulk-destroy');
 
         // Mobile Inspection & Print
         Route::get('/{id}/mobile', [ChillerController::class, 'mobile'])->name('mobile');

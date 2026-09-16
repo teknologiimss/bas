@@ -353,4 +353,36 @@ class ChillerController extends Controller
             'latestMonitoring'
         ));
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids', []);
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'Tidak ada data yang dipilih untuk dihapus!');
+        }
+
+        $chillers = Chiller::whereIn('id', $ids)->get();
+
+        foreach ($chillers as $chiller) {
+            // Hapus berkas dokumen jika ada
+            if ($chiller->dokumen && Storage::disk('public')->exists($chiller->dokumen)) {
+                Storage::disk('public')->delete($chiller->dokumen);
+            }
+
+            // Hapus berkas foto dari chiller items
+            foreach ($chiller->items as $item) {
+                foreach ($item->photos as $photo) {
+                    if (file_exists(public_path('uploads/chiller/' . $photo->foto))) {
+                        unlink(public_path('uploads/chiller/' . $photo->foto));
+                    }
+                    $photo->delete();
+                }
+            }
+
+            $chiller->delete();
+        }
+
+        return redirect()->route('chiller.index')->with('success', count($ids) . ' data checksheet berhasil dihapus!');
+    }
 }
