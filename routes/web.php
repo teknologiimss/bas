@@ -754,6 +754,8 @@ Route::prefix('products')->group(function () {
     Route::delete('/lp3m/delete/{id}', [Lp3mController::class, 'destroy'])
         ->name('lp3m.destroy');
 
+    Route::post('/lp3m/bulk-destroy', [Lp3mController::class, 'bulkDestroy'])->name('lp3m.bulk-destroy');
+
     Route::get('/lp3m/print/{id}', [Lp3mController::class, 'print'])
         ->name('lp3m.print');
 

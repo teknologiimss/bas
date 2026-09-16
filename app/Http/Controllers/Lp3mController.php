@@ -409,4 +409,30 @@ class Lp3mController extends Controller
 
         return view('lp3m.list_spr', compact('data', 'status'));
     }
+
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids', []);
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'Tidak ada data yang dipilih untuk dihapus!');
+        }
+
+        $items = Lp3m::whereIn('id', $ids)->get();
+
+        foreach ($items as $item) {
+            // Hapus file lampiran jika ada
+            if ($item->lampiran) {
+                $filePath = public_path('lampiran/' . $item->lampiran);
+                if (File::exists($filePath)) {
+                    File::delete($filePath);
+                }
+            }
+
+            $item->delete();
+        }
+
+        return redirect()->back()->with('success', count($ids) . ' data LP3M berhasil dihapus!');
+    }
 }

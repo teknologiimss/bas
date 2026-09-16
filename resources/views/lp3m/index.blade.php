@@ -150,13 +150,29 @@
         }
 
         .table tbody td {
-            vertical-align: middle;
+            vertical-align: middle !important;
             padding: 14px;
             border-color: #edf2f7;
         }
 
         .table-hover tbody tr:hover {
             background: #f8fbff;
+        }
+
+        /* CHECKBOX STYLING FIXED */
+        .col-checkbox {
+            width: 45px !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        .table .form-check-input {
+            position: static !important;
+            margin: 0 auto !important;
+            display: block !important;
+            width: 18px !important;
+            height: 18px !important;
+            cursor: pointer;
         }
 
         /* BADGE */
@@ -306,8 +322,13 @@
                     <span class="header-title">Data Pekerjaan Perbaikan Perawatan Fasilitas</span>
                 </h5>
 
-                {{-- DUA TOMBOL DI POJOK KANAN --}}
+                {{-- TOMBOL DI POJOK KANAN --}}
                 <div class="d-flex gap-2 align-items-center ms-auto header-actions">
+                    <button type="button" class="btn btn-warning btn-sm text-white fw-bold" id="btn-delete-selected"
+                        style="display: none;" onclick="confirmBulkDelete()">
+                        <i class="fas fa-trash me-1"></i> Hapus Terpilih (<span id="selected-count">0</span>)
+                    </button>
+
                     <button class="btn btn-info btn-sm text-light fw-bold" type="button" data-bs-toggle="collapse"
                         data-bs-target="#dashboardCollapse" aria-expanded="false" id="btnToggleDashboard">
                         <i class="fas fa-chart-line me-1"></i> Lihat Dashboard
@@ -323,7 +344,6 @@
             <div class="collapse" id="dashboardCollapse">
                 <div class="card-body bg-light border-bottom p-4">
                     <div class="row">
-                        {{-- KPI STATS (Bisa Diklik Mengarah ke list_spr) --}}
                         <div class="col-md-3 mb-3">
                             <a href="{{ route('lp3m.spr.list') }}" class="stat-card">
                                 <i class="fas fa-database fa-2x text-primary mb-2"></i>
@@ -358,7 +378,6 @@
                     </div>
 
                     <div class="row mt-2">
-                        {{-- CHART --}}
                         <div class="col-md-4 mb-3">
                             <div class="card h-100 border">
                                 <div class="card-header bg-dark text-white fw-bold py-2">
@@ -372,7 +391,6 @@
                             </div>
                         </div>
 
-                        {{-- TABEL QUICK LIST OPEN --}}
                         <div class="col-md-8 mb-3">
                             <div class="card h-100 border">
                                 <div
@@ -447,142 +465,168 @@
                     </div>
                 </form>
 
-                <div class="table-responsive">
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show mb-3">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
 
-                    <table class="table table-bordered table-hover">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>No</th>
-                                <th>No. SPR</th>
-                                <th>Deskripsi</th>
-                                <th>Status</th>
-                                <th>Keterangan</th>
-                                <th>Tanggal</th>
-                                <th>Lampiran</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show mb-3">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
 
-                        <tbody>
-                            @forelse($data as $d)
+                {{-- FORM BULK DELETE --}}
+                <form action="{{ route('lp3m.bulk-destroy') }}" method="POST" id="form-bulk-delete">
+                    @csrf
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="bg-light">
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>
-                                        @if ($d->spr_no)
-                                            <span>{{ $d->spr_no }}</span>
-                                        @else
-                                            <span class="text-muted">Belum Ada</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $d->deskripsi }}</td>
-                                    <td>
-                                        @if ($d->status == 'OPEN')
-                                            <span class="badge badge-danger">OPEN</span>
-                                        @else
-                                            <span class="badge badge-success">CLOSED</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $d->keterangan }}</td>
-                                    <td>{{ date('d-m-Y H:i', strtotime($d->created_at)) }}</td>
-                                    <td style="min-width:280px">
-                                        @if ($d->lampiran)
-                                            @php
-                                                $namaFile = preg_replace('/^\d+_/', '', $d->lampiran);
-                                                $ext = strtoupper(pathinfo($d->lampiran, PATHINFO_EXTENSION));
-                                            @endphp
+                                    <th class="col-checkbox text-center">
+                                        <input type="checkbox" id="select-all" class="form-check-input">
+                                    </th>
+                                    <th class="text-center">No</th>
+                                    <th>No. SPR</th>
+                                    <th>Deskripsi</th>
+                                    <th>Status</th>
+                                    <th>Keterangan</th>
+                                    <th>Tanggal</th>
+                                    <th>Lampiran</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
 
-                                            <div class="file-card">
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                    <div class="me-2">
-                                                        <div class="file-name">
-                                                            <i class="fas fa-file-alt text-primary me-1"></i>
-                                                            {{ $namaFile }}
+                            <tbody>
+                                @forelse($data as $d)
+                                    <tr>
+                                        <td class="col-checkbox text-center">
+                                            <input type="checkbox" name="ids[]" value="{{ $d->id }}"
+                                                class="form-check-input check-item">
+                                        </td>
+                                        <td class="text-center">
+                                            {{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}
+                                        </td>
+                                        <td>
+                                            @if ($d->spr_no)
+                                                <span>{{ $d->spr_no }}</span>
+                                            @else
+                                                <span class="text-muted">Belum Ada</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $d->deskripsi }}</td>
+                                        <td>
+                                            @if ($d->status == 'OPEN')
+                                                <span class="badge badge-danger">OPEN</span>
+                                            @else
+                                                <span class="badge badge-success">CLOSED</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $d->keterangan }}</td>
+                                        <td>{{ date('d-m-Y H:i', strtotime($d->created_at)) }}</td>
+                                        <td style="min-width:280px">
+                                            @if ($d->lampiran)
+                                                @php
+                                                    $namaFile = preg_replace('/^\d+_/', '', $d->lampiran);
+                                                    $ext = strtoupper(pathinfo($d->lampiran, PATHINFO_EXTENSION));
+                                                @endphp
+
+                                                <div class="file-card">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="me-2">
+                                                            <div class="file-name">
+                                                                <i class="fas fa-file-alt text-primary me-1"></i>
+                                                                {{ $namaFile }}
+                                                            </div>
+                                                            <span
+                                                                class="badge bg-light text-dark border mt-1">{{ $ext }}</span>
                                                         </div>
-                                                        <span
-                                                            class="badge bg-light text-dark border mt-1">{{ $ext }}</span>
                                                     </div>
-                                                </div>
 
-                                                <div class="file-actions">
-                                                    <a href="{{ asset('lampiran/' . $d->lampiran) }}" target="_blank"
-                                                        class="btn btn-success btn-file">
-                                                        <i class="fas fa-eye"></i> Lihat
-                                                    </a>
+                                                    <div class="file-actions">
+                                                        <a href="{{ asset('lampiran/' . $d->lampiran) }}" target="_blank"
+                                                            class="btn btn-success btn-file">
+                                                            <i class="fas fa-eye"></i> Lihat
+                                                        </a>
 
-                                                    <form action="{{ route('lp3m.deleteLampiran', $d->id) }}"
-                                                        method="POST"
-                                                        onsubmit="return confirm('Yakin ingin menghapus lampiran ini?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-outline-danger btn-file">
+                                                        <button type="button" class="btn btn-outline-danger btn-file"
+                                                            onclick="deleteSingleLampiran('{{ route('lp3m.deleteLampiran', $d->id) }}')">
                                                             <i class="fas fa-trash"></i> Hapus
                                                         </button>
-                                                    </form>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        @else
-                                            <span class="badge bg-secondary">Tidak Ada Lampiran</span>
-                                        @endif
-                                    </td>
+                                            @else
+                                                <span class="badge bg-secondary">Tidak Ada Lampiran</span>
+                                            @endif
+                                        </td>
 
-                                    <td>
-                                        <div class="d-flex flex-wrap action-buttons">
-                                            <a href="{{ route('lp3m.form', $d->id) }}"
-                                                class="btn btn-primary btn-action">
-                                                <i class="fas fa-file-alt"></i> Form
-                                            </a>
+                                        <td>
+                                            <div class="d-flex flex-wrap action-buttons justify-content-center">
+                                                <a href="{{ route('lp3m.form', $d->id) }}"
+                                                    class="btn btn-primary btn-action">
+                                                    <i class="fas fa-file-alt"></i> Form
+                                                </a>
 
-                                            <a href="{{ route('lp3m.edit', $d->id) }}"
-                                                class="btn btn-warning btn-action">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </a>
+                                                <a href="{{ route('lp3m.edit', $d->id) }}"
+                                                    class="btn btn-warning btn-action">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
 
-                                            <a href="{{ route('lp3m.show', $d->id) }}" class="btn btn-info btn-action">
-                                                <i class="fas fa-eye"></i> Lihat
-                                            </a>
+                                                <a href="{{ route('lp3m.show', $d->id) }}"
+                                                    class="btn btn-info btn-action">
+                                                    <i class="fas fa-eye"></i> Lihat
+                                                </a>
 
-                                            <button type="button" class="btn btn-secondary btn-action btn-upload"
-                                                data-id="{{ $d->id }}" data-bs-toggle="modal"
-                                                data-bs-target="#uploadLampiranModal">
-                                                <i class="fas fa-upload"></i> Upload
-                                            </button>
+                                                <button type="button" class="btn btn-secondary btn-action btn-upload"
+                                                    data-id="{{ $d->id }}" data-bs-toggle="modal"
+                                                    data-bs-target="#uploadLampiranModal">
+                                                    <i class="fas fa-upload"></i> Upload
+                                                </button>
 
-                                            <a href="{{ route('lp3m.print', $d->id) }}" class="btn btn-dark btn-action">
-                                                <i class="fas fa-print"></i> Print
-                                            </a>
+                                                <a href="{{ route('lp3m.print', $d->id) }}"
+                                                    class="btn btn-dark btn-action">
+                                                    <i class="fas fa-print"></i> Print
+                                                </a>
 
-                                            <form action="{{ route('lp3m.destroy', $d->id) }}" method="POST"
-                                                style="display:inline-block;"
-                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-action">
+                                                <button type="button" class="btn btn-danger btn-action"
+                                                    onclick="deleteSingle('{{ route('lp3m.destroy', $d->id) }}')">
                                                     <i class="fas fa-trash"></i> Hapus
                                                 </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="8" class="text-center py-3">Tidak ada data</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="9" class="text-center py-3">Tidak ada data</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
 
-                <div class="mt-3">
-                    {{ $data->links() }}
+                {{-- Pagination --}}
+                <div class="mt-3 d-flex justify-content-between align-items-center">
+                    {{ $data->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- Form Single Delete Data --}}
+    <form id="form-single-delete" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
+
+    {{-- Form Single Delete Lampiran --}}
+    <form id="form-single-delete-lampiran" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
 
     {{-- Modal Lampiran --}}
     <div class="modal fade" id="uploadLampiranModal" tabindex="-1">
@@ -617,54 +661,117 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Set ID Lampiran Modal
-        document.querySelectorAll('.btn-upload').forEach(function(button) {
-            button.addEventListener('click', function() {
-                document.getElementById('lampiran_id').value = this.dataset.id;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Checkbox Handler untuk Bulk Delete
+            const selectAll = document.getElementById('select-all');
+            const checkboxes = document.querySelectorAll('.check-item');
+            const btnDeleteSelected = document.getElementById('btn-delete-selected');
+            const selectedCount = document.getElementById('selected-count');
+
+            function updateDeleteButton() {
+                const checkedCount = document.querySelectorAll('.check-item:checked').length;
+                selectedCount.textContent = checkedCount;
+
+                if (checkedCount > 0) {
+                    btnDeleteSelected.style.display = 'inline-block';
+                } else {
+                    btnDeleteSelected.style.display = 'none';
+                }
+            }
+
+            if (selectAll) {
+                selectAll.addEventListener('change', function() {
+                    checkboxes.forEach(cb => cb.checked = this.checked);
+                    updateDeleteButton();
+                });
+            }
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    if (!this.checked && selectAll.checked) {
+                        selectAll.checked = false;
+                    }
+                    updateDeleteButton();
+                });
             });
-        });
 
-        // Toggle Teks Tombol Dashboard
-        const dashCollapse = document.getElementById('dashboardCollapse');
-        const btnToggle = document.getElementById('btnToggleDashboard');
+            // Set ID Lampiran Modal
+            document.querySelectorAll('.btn-upload').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    document.getElementById('lampiran_id').value = this.dataset.id;
+                });
+            });
 
-        dashCollapse.addEventListener('shown.bs.collapse', function() {
-            btnToggle.innerHTML = '<i class="fas fa-eye-slash me-1"></i> Sembunyikan Dashboard';
-        });
+            // Toggle Teks Tombol Dashboard
+            const dashCollapse = document.getElementById('dashboardCollapse');
+            const btnToggle = document.getElementById('btnToggleDashboard');
 
-        dashCollapse.addEventListener('hidden.bs.collapse', function() {
-            btnToggle.innerHTML = '<i class="fas fa-chart-line me-1"></i> Lihat Dashboard';
-        });
+            if (dashCollapse && btnToggle) {
+                dashCollapse.addEventListener('shown.bs.collapse', function() {
+                    btnToggle.innerHTML = '<i class="fas fa-eye-slash me-1"></i> Sembunyikan Dashboard';
+                });
 
-        // Chart Configuration & Click Handler
-        const ctx = document.getElementById('sprChart');
-        if (ctx) {
-            const sprChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Open', 'Closed'],
-                    datasets: [{
-                        data: [{{ $open }}, {{ $closed }}],
-                        backgroundColor: ['#dc2626', '#2563eb']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
+                dashCollapse.addEventListener('hidden.bs.collapse', function() {
+                    btnToggle.innerHTML = '<i class="fas fa-chart-line me-1"></i> Lihat Dashboard';
+                });
+            }
+
+            // Chart Configuration & Click Handler
+            const ctx = document.getElementById('sprChart');
+            if (ctx) {
+                const sprChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Open', 'Closed'],
+                        datasets: [{
+                            data: [{{ $open }}, {{ $closed }}],
+                            backgroundColor: ['#dc2626', '#2563eb']
+                        }]
                     },
-                    onClick: (evt, activeElements) => {
-                        if (activeElements.length > 0) {
-                            const index = activeElements[0].index;
-                            const status = index === 0 ? 'OPEN' : 'CLOSED';
-                            window.location.href = "{{ route('lp3m.spr.list') }}?status=" + status;
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        },
+                        onClick: (evt, activeElements) => {
+                            if (activeElements.length > 0) {
+                                const index = activeElements[0].index;
+                                const status = index === 0 ? 'OPEN' : 'CLOSED';
+                                window.location.href = "{{ route('lp3m.spr.list') }}?status=" + status;
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
+        });
+
+        // Function Confirm Bulk Delete
+        function confirmBulkDelete() {
+            const checkedCount = document.querySelectorAll('.check-item:checked').length;
+            if (confirm(`Apakah Anda yakin ingin menghapus ${checkedCount} data LP3M yang dipilih?`)) {
+                document.getElementById('form-bulk-delete').submit();
+            }
+        }
+
+        // Function Single Data Delete
+        function deleteSingle(url) {
+            if (confirm('Yakin ingin menghapus data ini?')) {
+                const form = document.getElementById('form-single-delete');
+                form.action = url;
+                form.submit();
+            }
+        }
+
+        // Function Single Lampiran Delete
+        function deleteSingleLampiran(url) {
+            if (confirm('Yakin ingin menghapus lampiran ini?')) {
+                const form = document.getElementById('form-single-delete-lampiran');
+                form.action = url;
+                form.submit();
+            }
         }
     </script>
 @endsection
