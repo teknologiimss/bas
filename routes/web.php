@@ -575,6 +575,7 @@ Route::prefix('products')->group(function () {
 
     // Checksheet MRO
     Route::resource('checksheet', ChecksheetController::class);
+    Route::post('/checksheet/bulk-delete', [ChecksheetController::class, 'bulkDestroy'])->name('checksheet.bulk-destroy');
 
     // mobile
     Route::get('/mobile/checksheet/{id}', [ChecksheetController::class, 'mobile'])

@@ -16,6 +16,7 @@
             --success: #16a34a;
             --danger: #dc2626;
             --warning: #f59e0b;
+            --table-border: #cbd5e1;
         }
 
         body {
@@ -30,7 +31,6 @@
         }
 
         /* HEADER */
-
         .top-card {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 24px;
@@ -46,14 +46,12 @@
         }
 
         /* BUTTON */
-
         .btn-modern {
             border: none;
             border-radius: 14px;
             padding: 11px 18px;
             font-weight: 600;
             transition: .25s;
-            margin-left: 4px;
         }
 
         .btn-modern:hover {
@@ -62,7 +60,6 @@
         }
 
         /* TABLE CARD */
-
         .table-card {
             background: white;
             border-radius: 24px;
@@ -72,43 +69,71 @@
             animation: fadeUp .5s ease;
         }
 
-        /* TABLE */
-
-        .table {
+        /* TABLE & GRID STYLING LIKE IMAGE */
+        .table-custom-grid {
             margin-bottom: 0;
             width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--table-border);
         }
 
-        .table thead th {
-            background: #0f172a;
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: .4px;
+        .table-custom-grid th,
+        .table-custom-grid td {
+            vertical-align: middle !important;
+            padding: 12px 14px;
             white-space: nowrap;
+            border: 1px solid var(--table-border);
         }
 
-        .table tbody tr {
-            border-bottom: 1px solid #e5e7eb;
+        .table-custom-grid thead th {
+            background-color: #123057;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: none;
+            letter-spacing: .3px;
+        }
+
+        .table-custom-grid tbody tr {
             transition: .25s;
         }
 
-        .table tbody tr:hover {
+        .table-custom-grid tbody tr:hover {
             background: #eff6ff;
         }
 
-        .table tbody td {
-            border: none;
-            padding: 16px 12px;
-            vertical-align: middle;
+        .table-custom-grid tbody td {
             font-size: 14px;
-            white-space: nowrap;
+        }
+
+        /* CHECKBOX COLUMN STYLING */
+        .col-checkbox {
+            width: 50px;
+            text-align: center;
+        }
+
+        .table-custom-grid thead th.col-checkbox {
+            background-color: #0d2442;
+        }
+
+        .form-check-input {
+            width: 18px;
+            height: 18px;
+            margin: 0 auto;
+            cursor: pointer;
+            border: 1.5px solid #94a3b8;
+            border-radius: 4px;
+            display: inline-block;
+            vertical-align: middle;
+            position: static; /* Memastikan posisi tidak absolute */
+        }
+
+        .form-check-input:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
         }
 
         /* BADGE */
-
         .badge-modern {
             display: inline-flex;
             align-items: center;
@@ -136,7 +161,6 @@
         }
 
         /* ACTION GROUP & BUTTONS */
-
         .action-group {
             display: flex;
             gap: 6px;
@@ -145,15 +169,9 @@
             flex-wrap: nowrap;
         }
 
-        .form-delete-inline {
-            display: inline-block;
-            margin: 0;
-            padding: 0;
-        }
-
         .btn-action {
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 10px;
             border: none;
             display: inline-flex;
@@ -161,10 +179,9 @@
             justify-content: center;
             transition: .25s;
             color: white !important;
-            font-size: 14px;
+            font-size: 13px;
             text-decoration: none;
             cursor: pointer;
-            box-sizing: border-box;
         }
 
         .btn-action:hover {
@@ -204,12 +221,10 @@
             background: #b91c1c;
         }
 
-        /* BUTTON ISI */
-
         .btn-mobile-modern {
-            height: 36px;
+            height: 34px;
             border-radius: 10px;
-            padding: 0 14px;
+            padding: 0 12px;
             font-size: 12px;
             font-weight: 600;
             display: inline-flex;
@@ -222,7 +237,6 @@
             text-decoration: none;
             transition: .25s;
             white-space: nowrap;
-            box-sizing: border-box;
         }
 
         .btn-mobile-modern:hover {
@@ -231,7 +245,6 @@
         }
 
         /* FORM CONTROL */
-
         .form-control {
             border-radius: 12px;
             border: 2px solid #dbeafe;
@@ -250,15 +263,10 @@
             font-weight: 600;
         }
 
-        /* SEARCH BUTTON */
-
+        /* BUTTON VARIANT */
         .btn-danger {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
             border: none;
-        }
-
-        .btn-danger:hover {
-            background: #1e40af;
         }
 
         .btn-secondary {
@@ -271,7 +279,6 @@
         }
 
         /* EMPTY */
-
         .empty-box {
             text-align: center;
             padding: 55px 20px;
@@ -285,7 +292,6 @@
         }
 
         /* ANIMATION */
-
         @keyframes fadeDown {
             from {
                 opacity: 0;
@@ -311,7 +317,6 @@
         }
 
         /* MOBILE RESPONSIVE */
-
         @media(max-width:768px) {
             body {
                 font-size: 13px;
@@ -361,20 +366,30 @@
 
     <div class="container py-4">
 
+        {{-- ALERT MESSAGES --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 14px;">
+                <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 14px;">
+                <i class="fa-solid fa-triangle-exclamation me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         {{-- HEADER --}}
         <div class="top-card d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
-                <div class="page-title">
-                    📋 Data Checksheet
-                </div>
-                <p>
-                    Monitoring & Management Checksheet Perawatan Unit
-                </p>
+                <div class="page-title">📋 Data Checksheet</div>
+                <p>Monitoring & Management Checksheet Perawatan Unit</p>
             </div>
             <div>
                 <a href="{{ route('checksheet.create') }}" class="btn btn-light btn-modern">
-                    <i class="fa fa-plus me-1"></i>
-                    Buat Checksheet
+                    <i class="fa-solid fa-plus me-1"></i> Buat Checksheet
                 </a>
             </div>
         </div>
@@ -383,143 +398,201 @@
         <div class="table-card mb-3">
             <form method="GET">
                 <div class="row g-3 align-items-end">
-
-                    {{-- UNIT --}}
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">
-                            Cari Unit
-                        </label>
+                        <label class="form-label fw-bold">Cari Unit</label>
                         <input type="text" name="unit" value="{{ request('unit') }}" class="form-control"
                             placeholder="Masukkan unit" autocomplete="off">
                     </div>
 
-                    {{-- NO LAMBUNG --}}
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">
-                            Cari No Lambung
-                        </label>
+                        <label class="form-label fw-bold">Cari No Lambung</label>
                         <input type="text" name="no_lambung" value="{{ request('no_lambung') }}" class="form-control"
                             placeholder="Masukkan no lambung" autocomplete="off">
                     </div>
 
-                    {{-- BUTTON --}}
                     <div class="col-md-4 d-flex gap-2">
-                        <button class="btn btn-danger btn-modern w-100">
-                            <i class="fa fa-search me-1"></i>
-                            Cari
+                        <button class="btn btn-primary btn-modern w-100"
+                            style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
+                            <i class="fa-solid fa-search me-1"></i> Cari
                         </button>
                         <a href="{{ route('checksheet.index') }}" class="btn btn-secondary btn-modern w-100 text-center">
-                            <i class="fa fa-rotate-left me-1"></i>
-                            Reset
+                            <i class="fa-solid fa-rotate-left me-1"></i> Reset
                         </a>
                     </div>
-
                 </div>
             </form>
         </div>
 
-        {{-- TABLE --}}
-        <div class="table-card">
-            <div class="table-responsive">
-                <table class="table align-middle">
-                    <thead>
-                        <tr>
-                            <th width="50" class="text-center">No</th>
-                            <th>Judul</th>
-                            <th>Unit</th>
-                            <th>No Lambung</th>
-                            <th>Tanggal</th>
-                            <th>Jenis</th>
-                            <th class="text-center">Status Pengisian</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($data as $i => $d)
+        {{-- FORM BULK DELETE & TABLE --}}
+        <form action="{{ route('checksheet.bulk-destroy') }}" method="POST" id="form-bulk-delete">
+            @csrf
+            <div class="table-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark m-0"><i class="fa-solid fa-list me-2"></i>Daftar Checksheet</h5>
+                    <button type="button" class="btn btn-danger btn-modern" id="btn-delete-selected" style="display: none;"
+                        onclick="confirmBulkDelete()">
+                        <i class="fa-solid fa-trash me-1"></i> Hapus Terpilih (<span id="selected-count">0</span>)
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-custom-grid">
+                        <thead>
                             <tr>
-                                <td class="text-center">
-                                    <strong>{{ $i + 1 }}</strong>
-                                </td>
-                                <td>
-                                    <strong>{{ $d->judul }}</strong>
-                                </td>
-                                <td>{{ $d->unit }}</td>
-                                <td>
-                                    <span class="badge-modern">
-                                        {{ $d->no_lambung }}
-                                    </span>
-                                </td>
-                                <td>
-                                    {{ \Carbon\Carbon::parse($d->tanggal)->format('d/m/Y') }}
-                                </td>
-                                <td>{{ $d->jenis_perawatan ?? '-' }}</td>
-                                <td class="text-center">
-                                    @if ($d->is_completed)
-                                        <span class="badge-modern badge-success-custom">
-                                            <i class="fa fa-circle-check me-1"></i> Lengkap
-                                            ({{ $d->filled_details }}/{{ $d->total_details }})
+                                <th class="col-checkbox">
+                                    <input type="checkbox" id="select-all" class="form-check-input">
+                                </th>
+                                <th width="50" class="text-center">NO</th>
+                                <th>JUDUL</th>
+                                <th>UNIT</th>
+                                <th class="text-center">NO LAMBUNG</th>
+                                <th class="text-center">TANGGAL</th>
+                                <th class="text-center">JENIS</th>
+                                <th class="text-center">STATUS PENGISIAN</th>
+                                <th class="text-center">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($data as $i => $d)
+                                <tr>
+                                    <td class="col-checkbox">
+                                        <input type="checkbox" name="ids[]" value="{{ $d->id }}"
+                                            class="form-check-input check-item">
+                                    </td>
+                                    <td class="text-center fw-bold">{{ $i + 1 }}</td>
+                                    <td>
+                                        <strong class="text-dark">{{ $d->judul }}</strong>
+                                    </td>
+                                    <td>{{ $d->unit }}</td>
+                                    <td class="text-center">
+                                        <span class="badge-modern">
+                                            {{ $d->no_lambung }}
                                         </span>
-                                    @else
-                                        <span class="badge-modern badge-warning-custom">
-                                            <i class="fa fa-hourglass-half me-1"></i> Belum Lengkap
-                                            ({{ $d->filled_details }}/{{ $d->total_details }})
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="action-group">
-                                        {{-- ISI CHECKSHEET --}}
-                                        <a href="{{ route('checksheet.mobile', $d->id) }}" class="btn-mobile-modern">
-                                            <i class="fa fa-circle-check"></i>
-                                            Isi Checksheet
-                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        {{ \Carbon\Carbon::parse($d->tanggal)->format('d/m/Y') }}
+                                    </td>
+                                    <td class="text-center">{{ $d->jenis_perawatan ?? '-' }}</td>
+                                    <td class="text-center">
+                                        @if ($d->is_completed)
+                                            <span class="badge-modern badge-success-custom">
+                                                <i class="fa-solid fa-circle-check me-1"></i> Lengkap
+                                                ({{ $d->filled_details }}/{{ $d->total_details }})
+                                            </span>
+                                        @else
+                                            <span class="badge-modern badge-warning-custom">
+                                                <i class="fa-solid fa-hourglass-half me-1"></i> Belum Lengkap
+                                                ({{ $d->filled_details }}/{{ $d->total_details }})
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="action-group">
+                                            {{-- ISI CHECKSHEET --}}
+                                            <a href="{{ route('checksheet.mobile', $d->id) }}" class="btn-mobile-modern">
+                                                <i class="fa-solid fa-circle-check"></i> Isi Checksheet
+                                            </a>
 
-                                        {{-- DETAIL --}}
-                                        <a href="{{ route('checksheet.show', $d->id) }}" class="btn-action btn-view"
-                                            title="Detail">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
+                                            {{-- DETAIL --}}
+                                            <a href="{{ route('checksheet.show', $d->id) }}" class="btn-action btn-view"
+                                                title="Detail">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
 
-                                        {{-- EDIT --}}
-                                        <a href="{{ route('checksheet.edit', $d->id) }}" class="btn-action btn-edit"
-                                            title="Edit">
-                                            <i class="fa fa-pen"></i>
-                                        </a>
+                                            {{-- EDIT --}}
+                                            <a href="{{ route('checksheet.edit', $d->id) }}" class="btn-action btn-edit"
+                                                title="Edit">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
 
-                                        {{-- DUPLICATE --}}
-                                        <a href="{{ route('checksheet.duplicate', $d->id) }}" class="btn-action btn-copy"
-                                            title="Duplicate">
-                                            <i class="fa fa-copy"></i>
-                                        </a>
+                                            {{-- DUPLICATE --}}
+                                            <a href="{{ route('checksheet.duplicate', $d->id) }}"
+                                                class="btn-action btn-copy" title="Duplicate">
+                                                <i class="fa-solid fa-copy"></i>
+                                            </a>
 
-                                        {{-- DELETE --}}
-                                        <form action="{{ route('checksheet.destroy', $d->id) }}" method="POST"
-                                            class="form-delete-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Hapus checksheet ini?')"
+                                            {{-- DELETE SINGLE --}}
+                                            <button type="button"
+                                                onclick="deleteSingle('{{ route('checksheet.destroy', $d->id) }}')"
                                                 class="btn-action btn-delete" title="Delete">
-                                                <i class="fa fa-trash"></i>
+                                                <i class="fa-solid fa-trash"></i>
                                             </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="8">
-                                    <div class="empty-box">
-                                        <i class="fa fa-folder-open"></i>
-                                        <h5>Tidak ada data checksheet</h5>
-                                        <p>Silakan buat checksheet baru terlebih dahulu.</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="9">
+                                        <div class="empty-box">
+                                            <i class="fa-solid fa-folder-open"></i>
+                                            <h5>Tidak ada data checksheet</h5>
+                                            <p>Silakan buat checksheet baru terlebih dahulu.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </form>
+
+        {{-- FORM HAPUS SATUAN (HIDDEN) --}}
+        <form id="form-delete-single" action="" method="POST" style="display: none;">
+            @csrf
+            @method('DELETE')
+        </form>
 
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAll = document.getElementById('select-all');
+            const checkboxes = document.querySelectorAll('.check-item');
+            const btnDeleteSelected = document.getElementById('btn-delete-selected');
+            const selectedCount = document.getElementById('selected-count');
+
+            function updateDeleteButton() {
+                const checkedCount = document.querySelectorAll('.check-item:checked').length;
+                selectedCount.textContent = checkedCount;
+
+                if (checkedCount > 0) {
+                    btnDeleteSelected.style.display = 'inline-block';
+                } else {
+                    btnDeleteSelected.style.display = 'none';
+                }
+            }
+
+            if (selectAll) {
+                selectAll.addEventListener('change', function() {
+                    checkboxes.forEach(cb => cb.checked = this.checked);
+                    updateDeleteButton();
+                });
+            }
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    if (!this.checked && selectAll.checked) {
+                        selectAll.checked = false;
+                    }
+                    updateDeleteButton();
+                });
+            });
+        });
+
+        function confirmBulkDelete() {
+            const checkedCount = document.querySelectorAll('.check-item:checked').length;
+            if (confirm(`Apakah Anda yakin ingin menghapus ${checkedCount} checksheet yang dipilih?`)) {
+                document.getElementById('form-bulk-delete').submit();
+            }
+        }
+
+        function deleteSingle(url) {
+            if (confirm('Apakah Anda yakin ingin menghapus checksheet ini?')) {
+                const form = document.getElementById('form-delete-single');
+                form.action = url;
+                form.submit();
+            }
+        }
+    </script>
 @endsection

@@ -856,4 +856,21 @@ class ChecksheetController extends Controller
             'Hasil pemeriksaan berhasil disimpan.'
         );
     }
+
+    // =========================
+
+    // BULK DELETE (HAPUS BEBERAPA)
+    // =========================
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return back()->with('error', 'Pilih minimal satu checksheet untuk dihapus.');
+        }
+
+        Checksheet::whereIn('id', $ids)->delete();
+
+        return back()->with('success', 'Checksheet yang dipilih berhasil dihapus.');
+    }
 }
