@@ -1084,6 +1084,7 @@ Route::prefix('products')->group(function () {
         Route::get('/{id}/edit', [PompaController::class, 'edit'])->name('edit');
         Route::put('/{id}', [PompaController::class, 'update'])->name('update');
         Route::delete('/{id}', [PompaController::class, 'destroy'])->name('destroy');
+        Route::post('/bulk-destroy', [PompaController::class, 'bulkDestroy'])->name('bulk-destroy');
 
         // Inspeksi Mobile & Foto
         Route::get('/{id}/mobile', [PompaController::class, 'mobile'])->name('mobile');
