@@ -27,6 +27,45 @@ class ChecksheetController extends Controller
     //     return view('checksheet.index', compact('data'));
     // }
 
+    // public function index(Request $request)
+    // {
+    //     $query = Checksheet::query();
+
+    //     // =========================
+    //     // FILTER UNIT
+    //     // =========================
+    //     if ($request->filled('unit')) {
+    //         $query->where(
+    //             'unit',
+    //             'like',
+    //             '%' . $request->unit . '%'
+    //         );
+    //     }
+
+    //     // =========================
+    //     // FILTER NO LAMBUNG
+    //     // =========================
+    //     if ($request->filled('no_lambung')) {
+    //         $query->where(
+    //             'no_lambung',
+    //             'like',
+    //             '%' . $request->no_lambung . '%'
+    //         );
+    //     }
+
+    //     // =========================
+    //     // GET DATA
+    //     // =========================
+    //     $data = $query
+    //         ->latest()
+    //         ->get();
+
+    //     return view(
+    //         'checksheet.index',
+    //         compact('data')
+    //     );
+    // }
+
     public function index(Request $request)
     {
         $query = Checksheet::query();
@@ -57,8 +96,30 @@ class ChecksheetController extends Controller
         // GET DATA
         // =========================
         $data = $query
+            ->with(['sections.items.details.result'])
             ->latest()
             ->get();
+
+        // Hitung kelengkapan pengisian untuk tiap checksheet
+        foreach ($data as $checksheet) {
+            $totalDetails = 0;
+            $filledDetails = 0;
+
+            foreach ($checksheet->sections as $section) {
+                foreach ($section->items as $item) {
+                    foreach ($item->details as $detail) {
+                        $totalDetails++;
+                        if ($detail->result && !is_null($detail->result->status)) {
+                            $filledDetails++;
+                        }
+                    }
+                }
+            }
+
+            $checksheet->setAttribute('is_completed', ($totalDetails > 0 && $totalDetails === $filledDetails));
+            $checksheet->setAttribute('total_details', $totalDetails);
+            $checksheet->setAttribute('filled_details', $filledDetails);
+        }
 
         return view(
             'checksheet.index',
