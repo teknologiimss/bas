@@ -15,15 +15,17 @@ class ChillerController extends Controller
     {
         $query = Chiller::query();
 
-        if ($request->no_chiller) {
+        if ($request->filled('no_chiller')) {
             $query->where('no_chiller', 'like', '%' . $request->no_chiller . '%');
         }
 
-        if ($request->no_aset) {
-            $query->where('no_aset', 'like', '%' . $request->no_aset . '%');
+        // Mengganti 'no_aset' menjadi 'jenis_perawatan'
+        if ($request->filled('jenis_perawatan')) {
+            $query->where('jenis_perawatan', $request->jenis_perawatan);
         }
 
         $data = $query->latest()->get();
+
         return view('chiller.index', compact('data'));
     }
 

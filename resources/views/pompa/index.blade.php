@@ -97,21 +97,30 @@
         </div>
 
         <div class="table-card mb-3">
-            <form method="GET">
+            <form method="GET" action="{{ route('pompa.index') }}">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">No Pompa</label>
-                        <input type="text" name="no_pompa" value="{{ request('no_pompa') }}" class="form-control"
-                            placeholder="Cari No Pompa...">
+                        <input type="text" autocomplete="off" name="no_pompa" value="{{ request('no_pompa') }}"
+                            class="form-control" placeholder="Cari No Pompa...">
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">No Aset</label>
-                        <input type="text" name="no_aset" value="{{ request('no_aset') }}" class="form-control"
-                            placeholder="Cari No Aset...">
+                        <label class="form-label fw-bold">Jenis Perawatan</label>
+                        <select name="jenis_perawatan" class="form-control">
+                            <option value="">-- Semua Jenis --</option>
+                            <option value="P1" {{ request('jenis_perawatan') == 'P1' ? 'selected' : '' }}>P1</option>
+                            <option value="P3" {{ request('jenis_perawatan') == 'P3' ? 'selected' : '' }}>P3</option>
+                            <option value="P6" {{ request('jenis_perawatan') == 'P6' ? 'selected' : '' }}>P6</option>
+                            <option value="P12" {{ request('jenis_perawatan') == 'P12' ? 'selected' : '' }}>P12</option>
+                            <option value="Unscheduled"
+                                {{ request('jenis_perawatan') == 'Unscheduled' ? 'selected' : '' }}>
+                                Unscheduled</option>
+                        </select>
                     </div>
                     <div class="col-md-4 d-flex gap-2">
-                        <button class="btn btn-primary w-100"><i class="fa fa-search me-1"></i> Cari</button>
-                        <a href="{{ route('pompa.index') }}" class="btn btn-secondary"><i class="fa fa-rotate-left"></i></a>
+                        <button type="submit" class="btn btn-primary w-100"><i class="fa fa-search me-1"></i> Cari</button>
+                        <a href="{{ route('pompa.index') }}" class="btn btn-secondary"><i
+                                class="fa fa-rotate-left"></i></a>
                     </div>
                 </div>
             </form>

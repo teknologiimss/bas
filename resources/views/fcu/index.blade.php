@@ -199,7 +199,7 @@
                 <div class="row g-3 align-items-end">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">No. FCU</label>
-                        <input type="text" name="no_fcu" value="{{ request('no_fcu') }}" class="form-control"
+                        <input type="text" autocomplete="off" name="no_fcu" value="{{ request('no_fcu') }}" class="form-control"
                             placeholder="Masukkan No FCU">
                     </div>
                     <div class="col-md-4">

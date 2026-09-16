@@ -19,8 +19,10 @@ class PompaController extends Controller
         if ($request->filled('no_pompa')) {
             $query->where('no_pompa', 'like', '%' . $request->no_pompa . '%');
         }
-        if ($request->filled('no_aset')) {
-            $query->where('no_aset', 'like', '%' . $request->no_aset . '%');
+
+        // Ubah 'no_aset' menjadi 'jenis_perawatan'
+        if ($request->filled('jenis_perawatan')) {
+            $query->where('jenis_perawatan', $request->jenis_perawatan);
         }
 
         $data = $query->latest()->get();
