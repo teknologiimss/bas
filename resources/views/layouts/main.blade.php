@@ -1119,13 +1119,13 @@
                                                         </li>
 
                                                         <!-- Menu Baru: Perencanaan Consumable -->
-                                                        <li class="nav-item">
+                                                        {{-- <li class="nav-item">
                                                             <a href="{{ route('consumable.index') }}"
                                                                 class="nav-link {{ request()->routeIs('consumable.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-boxes"></i>
                                                                 <p>Perencanaan Consumable AC Graha</p>
                                                             </a>
-                                                        </li>
+                                                        </li> --}}
 
                                                         {{-- Riwayat PR SPPJP --}}
                                                         <li class="nav-item">
