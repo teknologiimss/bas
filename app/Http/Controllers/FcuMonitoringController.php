@@ -17,10 +17,36 @@ use Illuminate\Support\Facades\Storage;
 
 class FcuMonitoringController extends Controller
 {
+    // public function index(Request $request)
+    // {
+    //     // Tambahkan with('unscheduledForm')
+    //     $query = FcuMonitoring::with('unscheduledForm');
+
+    //     if ($request->filled('no_fcu')) {
+    //         $query->where(function ($q) use ($request) {
+    //             $q
+    //                 ->where('no_fcu', 'like', '%' . $request->no_fcu . '%')
+    //                 ->orWhereHas('unscheduledForm', function ($subQuery) use ($request) {
+    //                     $subQuery->where('no_fcu', 'like', '%' . $request->no_fcu . '%');
+    //                 });
+    //         });
+    //     }
+
+    //     if ($request->filled('jenis_perawatan')) {
+    //         $query->where('jenis_perawatan', $request->jenis_perawatan);
+    //     }
+
+    //     $data = $query->latest()->get();
+    //     return view('fcu.index', compact('data'));
+    // }
+
     public function index(Request $request)
     {
-        // Tambahkan with('unscheduledForm')
-        $query = FcuMonitoring::with('unscheduledForm');
+        // Load relasi unscheduledForm dan sections.items.details.results
+        $query = FcuMonitoring::with([
+            'unscheduledForm',
+            'sections.items.details.results'
+        ]);
 
         if ($request->filled('no_fcu')) {
             $query->where(function ($q) use ($request) {
@@ -37,6 +63,36 @@ class FcuMonitoringController extends Controller
         }
 
         $data = $query->latest()->get();
+
+        // Hitung status kelengkapan checksheet untuk tiap record
+        $data->transform(function ($item) {
+            if ($item->jenis_perawatan === 'Unscheduled') {
+                // Cek apakah form Unscheduled sudah diisi statusnya
+                $item->is_completed = !empty($item->unscheduledForm->status);
+            } else {
+                // Ambil semua detail ID yang dimiliki oleh FCU ini
+                $totalDetails = 0;
+                $completedDetails = 0;
+
+                foreach ($item->sections as $section) {
+                    foreach ($section->items as $fcuItem) {
+                        foreach ($fcuItem->details as $detail) {
+                            $totalDetails++;
+                            // Jika sudah ada minimal 1 record result terisi
+                            if ($detail->results->count() > 0) {
+                                $completedDetails++;
+                            }
+                        }
+                    }
+                }
+
+                // Terisi penuh jika ada detail dan seluruh detail sudah memiliki hasil
+                $item->is_completed = ($totalDetails > 0) && ($totalDetails === $completedDetails);
+            }
+
+            return $item;
+        });
+
         return view('fcu.index', compact('data'));
     }
 

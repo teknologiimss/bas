@@ -199,8 +199,8 @@
                 <div class="row g-3 align-items-end">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">No. FCU</label>
-                        <input type="text" autocomplete="off" name="no_fcu" value="{{ request('no_fcu') }}" class="form-control"
-                            placeholder="Masukkan No FCU">
+                        <input type="text" autocomplete="off" name="no_fcu" value="{{ request('no_fcu') }}"
+                            class="form-control" placeholder="Masukkan No FCU">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Jenis Perawatan</label>
@@ -251,6 +251,7 @@
                                 <th>TANGGAL</th>
                                 <th>JENIS PERAWATAN</th>
                                 <th>KESIMPULAN</th>
+                                <th>STATUS PENGISIAN</th>
                                 <th class="text-center">AKSI</th>
                             </tr>
                         </thead>
@@ -289,6 +290,17 @@
                                             class="badge {{ $d->kesimpulan == 'SO' ? 'bg-success' : ($d->kesimpulan == 'TSO' ? 'bg-danger' : 'bg-warning text-dark') }}">
                                             {{ $d->kesimpulan ?? 'Belum Diisi' }}
                                         </span>
+                                    </td>
+                                    <td>
+                                        @if ($d->is_completed)
+                                            <span class="badge bg-success">
+                                                <i class="fa fa-check-circle me-1"></i> Lengkap
+                                            </span>
+                                        @else
+                                            <span class="badge bg-secondary">
+                                                <i class="fa fa-clock me-1"></i> Belum Lengkap
+                                            </span>
+                                        @endif
                                     </td>
                                     <td class="text-center">
                                         <div class="action-group">
@@ -365,7 +377,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center py-4">Tidak ada data monitoring FCU.</td>
+                                    <td colspan="9" class="text-center py-4">Tidak ada data monitoring FCU.</td>
                                 </tr>
                             @endforelse
                         </tbody>
