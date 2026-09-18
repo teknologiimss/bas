@@ -11,6 +11,24 @@ use Illuminate\Support\Facades\Storage;
 
 class ChillerController extends Controller
 {
+    // public function index(Request $request)
+    // {
+    //     $query = Chiller::query();
+
+    //     if ($request->filled('no_chiller')) {
+    //         $query->where('no_chiller', 'like', '%' . $request->no_chiller . '%');
+    //     }
+
+    //     // Mengganti 'no_aset' menjadi 'jenis_perawatan'
+    //     if ($request->filled('jenis_perawatan')) {
+    //         $query->where('jenis_perawatan', $request->jenis_perawatan);
+    //     }
+
+    //     $data = $query->latest()->get();
+
+    //     return view('chiller.index', compact('data'));
+    // }
+
     public function index(Request $request)
     {
         $query = Chiller::query();
@@ -19,12 +37,30 @@ class ChillerController extends Controller
             $query->where('no_chiller', 'like', '%' . $request->no_chiller . '%');
         }
 
-        // Mengganti 'no_aset' menjadi 'jenis_perawatan'
         if ($request->filled('jenis_perawatan')) {
             $query->where('jenis_perawatan', $request->jenis_perawatan);
         }
 
-        $data = $query->latest()->get();
+        // Load relasi items untuk pengecekan status pengisian
+        $data = $query->with('items')->latest()->get();
+
+        // Map status kelengkapan pada setiap data
+        $data->transform(function ($chiller) {
+            if ($chiller->jenis_perawatan === 'Unscheduled') {
+                // Unscheduled terisi jika kesimpulan tidak kosong
+                $chiller->is_completed = !empty($chiller->kesimpulan);
+            } else {
+                // Perawatan Rutin (P) terisi jika kesimpulan diisi
+                // DAN semua items sudah memiliki status
+                $hasKesimpulan = !empty($chiller->kesimpulan);
+                $allItemsChecked = $chiller->items->isNotEmpty() &&
+                    $chiller->items->every(fn($item) => !empty($item->status));
+
+                $chiller->is_completed = $hasKesimpulan && $allItemsChecked;
+            }
+
+            return $chiller;
+        });
 
         return view('chiller.index', compact('data'));
     }
