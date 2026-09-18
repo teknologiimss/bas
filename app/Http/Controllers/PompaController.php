@@ -12,6 +12,24 @@ use Illuminate\Support\Facades\Storage;
 
 class PompaController extends Controller
 {
+    // public function index(Request $request)
+    // {
+    //     $query = Pompa::query();
+
+    //     if ($request->filled('no_pompa')) {
+    //         $query->where('no_pompa', 'like', '%' . $request->no_pompa . '%');
+    //     }
+
+    //     // Ubah 'no_aset' menjadi 'jenis_perawatan'
+    //     if ($request->filled('jenis_perawatan')) {
+    //         $query->where('jenis_perawatan', $request->jenis_perawatan);
+    //     }
+
+    //     $data = $query->latest()->get();
+
+    //     return view('pompa.index', compact('data'));
+    // }
+
     public function index(Request $request)
     {
         $query = Pompa::query();
@@ -20,12 +38,30 @@ class PompaController extends Controller
             $query->where('no_pompa', 'like', '%' . $request->no_pompa . '%');
         }
 
-        // Ubah 'no_aset' menjadi 'jenis_perawatan'
         if ($request->filled('jenis_perawatan')) {
             $query->where('jenis_perawatan', $request->jenis_perawatan);
         }
 
-        $data = $query->latest()->get();
+        // Eager load relasi items untuk pengecekan status terisi
+        $data = $query->with('items')->latest()->get();
+
+        // Map penanda status pengisian
+        $data->transform(function ($pompa) {
+            if ($pompa->jenis_perawatan === 'Unscheduled') {
+                // Unscheduled terisi jika kesimpulan tidak kosong
+                $pompa->is_completed = !empty($pompa->kesimpulan);
+            } else {
+                // Scheduled (P1, P3, dll) terisi jika kesimpulan ada
+                // DAN seluruh item pekerjaan memiliki status
+                $hasKesimpulan = !empty($pompa->kesimpulan);
+                $allItemsChecked = $pompa->items->isNotEmpty() &&
+                    $pompa->items->every(fn($item) => !empty($item->status));
+
+                $pompa->is_completed = $hasKesimpulan && $allItemsChecked;
+            }
+
+            return $pompa;
+        });
 
         return view('pompa.index', compact('data'));
     }

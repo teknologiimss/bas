@@ -222,6 +222,7 @@
                                 <th>LOKASI</th>
                                 <th>TANGGAL</th>
                                 <th>KESIMPULAN</th>
+                                <th class="text-center">STATUS PENGISIAN</th>
                                 <th class="text-center">SCAN CHECKSHEET</th>
                                 <th class="text-center">AKSI</th>
                             </tr>
@@ -258,6 +259,19 @@
                                             class="badge {{ $d->kesimpulan == 'SO' ? 'bg-success' : (in_array($d->kesimpulan, ['SO DENGAN CATATAN', 'SO_NOTE']) ? 'bg-warning text-dark' : ($d->kesimpulan == 'TSO' ? 'bg-danger' : 'bg-secondary')) }}">
                                             {{ $d->kesimpulan ?? 'Belum Diisi' }}
                                         </span>
+                                    </td>
+
+                                    {{-- KOLOM STATUS PENGISIAN --}}
+                                    <td class="text-center">
+                                        @if ($d->is_completed)
+                                            <span class="badge bg-success" title="Checksheet sudah terisi lengkap">
+                                                <i class="fa-solid fa-circle-check me-1"></i> Lengkap
+                                            </span>
+                                        @else
+                                            <span class="badge bg-danger" title="Checksheet belum lengkap">
+                                                <i class="fa-solid fa-circle-xmark me-1"></i> Belum Lengkap
+                                            </span>
+                                        @endif
                                     </td>
 
                                     {{-- KOLOM DOKUMEN LAMPIRAN --}}
@@ -323,7 +337,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="11" class="text-center py-4 text-muted">Belum ada data checksheet
+                                    <td colspan="12" class="text-center py-4 text-muted">Belum ada data checksheet
                                         Pompa.
                                     </td>
                                 </tr>
