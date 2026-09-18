@@ -159,6 +159,7 @@
     <div class="header">
         <h2>Laporan Progress MRO</h2>
         <p>Dicetak Pada: {{ date('d-m-Y H:i') }} WIB</p>
+        <p>B.A.S (Business Application System)</p>
     </div>
 
     <table>
