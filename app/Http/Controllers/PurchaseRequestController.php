@@ -254,7 +254,13 @@ class PurchaseRequestController extends Controller
                 'k.nomor_kontrak',
                 'k.nama_pekerjaan'
             )
-            ->whereRaw('LOWER(pr.no_pr) LIKE ?', ['%mro%']);  // hanya MRO
+            // ->whereRaw('LOWER(pr.no_pr) LIKE ?', ['%mro%']);  // hanya MRO
+            // Contoh jika ingin mengizinkan kode 'mro' DAN 'm'
+            ->where(function ($query) {
+                $query
+                    ->whereRaw('LOWER(pr.no_pr) LIKE ?', ['%mro%'])
+                    ->orWhereRaw('LOWER(pr.no_pr) LIKE ?', ['%/m/%']);
+            });
 
         // 🔍 FILTER
         if ($request->nomor_kontrak) {
