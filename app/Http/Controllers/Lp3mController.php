@@ -29,7 +29,7 @@ class Lp3mController extends Controller
             $query->whereDate('created_at', $request->tanggal);
         }
 
-        $data = $query->oldest()->paginate(10);
+        $data = $query->latest()->paginate(10);
         $data->appends($request->all());
 
         // --- DATA DASHBOARD ---
