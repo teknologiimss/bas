@@ -384,13 +384,13 @@
                                                         <div class="col-md-6 form-group">
                                                             <label class="font-weight-bold">Nama Tools <span
                                                                     class="text-danger">*</span></label>
-                                                            <input type="text" name="nama_tools"
+                                                            <input type="text" autocomplete="off" name="nama_tools"
                                                                 class="form-control rounded-lg"
                                                                 value="{{ $tool->nama_tools }}" required>
                                                         </div>
                                                         <div class="col-md-6 form-group">
                                                             <label class="font-weight-bold">Jenis</label>
-                                                            <input type="text" name="jenis"
+                                                            <input type="text" autocomplete="off" name="jenis"
                                                                 class="form-control rounded-lg"
                                                                 value="{{ $tool->jenis }}">
                                                         </div>
@@ -404,7 +404,7 @@
                                                         <div class="col-md-4 form-group">
                                                             <label class="font-weight-bold">Satuan <span
                                                                     class="text-danger">*</span></label>
-                                                            <input type="text" name="satuan"
+                                                            <input type="text" autocomplete="off" name="satuan"
                                                                 class="form-control rounded-lg"
                                                                 value="{{ $tool->satuan }}" required>
                                                         </div>
@@ -426,11 +426,11 @@
                                                         </div>
                                                         <div class="col-md-12 form-group">
                                                             <label class="font-weight-bold">Spesifikasi</label>
-                                                            <textarea name="spesifikasi" class="form-control rounded-lg" rows="2">{{ $tool->spesifikasi }}</textarea>
+                                                            <textarea name="spesifikasi" autocomplete="off" class="form-control rounded-lg" rows="2">{{ $tool->spesifikasi }}</textarea>
                                                         </div>
                                                         <div class="col-md-12 form-group">
                                                             <label class="font-weight-bold">Keterangan</label>
-                                                            <textarea name="keterangan" class="form-control rounded-lg" rows="2">{{ $tool->keterangan }}</textarea>
+                                                            <textarea name="keterangan" autocomplete="off" class="form-control rounded-lg" rows="2">{{ $tool->keterangan }}</textarea>
                                                         </div>
                                                         <div class="col-md-12 form-group mb-0">
                                                             <label class="font-weight-bold">Upload Gambar Tools
@@ -501,12 +501,12 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label class="font-weight-bold">Nama Tools <span class="text-danger">*</span></label>
-                                <input type="text" name="nama_tools" class="form-control rounded-lg"
+                                <input type="text" autocomplete="off" name="nama_tools" class="form-control rounded-lg"
                                     placeholder="Contoh: Impact Dewalt" required>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label class="font-weight-bold">Jenis</label>
-                                <input type="text" name="jenis" class="form-control rounded-lg"
+                                <input type="text" autocomplete="off" name="jenis" class="form-control rounded-lg"
                                     placeholder="Contoh: Power Tools / Hand Tools">
                             </div>
                             <div class="col-md-4 form-group">
@@ -516,7 +516,7 @@
                             </div>
                             <div class="col-md-4 form-group">
                                 <label class="font-weight-bold">Satuan <span class="text-danger">*</span></label>
-                                <input type="text" name="satuan" class="form-control rounded-lg" value="unit"
+                                <input type="text" autocomplete="off" name="satuan" class="form-control rounded-lg" value="unit"
                                     placeholder="unit / pcs" required>
                             </div>
                             <div class="col-md-4 form-group">
@@ -529,12 +529,12 @@
                             </div>
                             <div class="col-md-12 form-group">
                                 <label class="font-weight-bold">Spesifikasi</label>
-                                <textarea name="spesifikasi" class="form-control rounded-lg" rows="2"
+                                <textarea name="spesifikasi" autocomplete="off" class="form-control rounded-lg" rows="2"
                                     placeholder="Masukkan spesifikasi rinci..."></textarea>
                             </div>
                             <div class="col-md-12 form-group">
                                 <label class="font-weight-bold">Keterangan</label>
-                                <textarea name="keterangan" class="form-control rounded-lg" rows="2"
+                                <textarea name="keterangan" autocomplete="off" class="form-control rounded-lg" rows="2"
                                     placeholder="Contoh: Lokasi Palembang, untuk unloading"></textarea>
                             </div>
                             <div class="col-md-12 form-group mb-0">
