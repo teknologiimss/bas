@@ -23,6 +23,7 @@ use App\Http\Controllers\MemoController;
 use App\Http\Controllers\Monitoring5RController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\MroController;
+use App\Http\Controllers\MroToolController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\PerencanaanController;
@@ -1114,6 +1115,14 @@ Route::prefix('products')->group(function () {
         Route::put('/item/{id}', [ConsumableController::class, 'updateItem'])->name('item.update');
         Route::delete('/item/{id}', [ConsumableController::class, 'destroyItem'])->name('item.destroy');
         Route::get('/{id}/print', [ConsumableController::class, 'print'])->name('print');
+    });
+
+    // Data Tools MRO
+    Route::prefix('mro')->name('mro.')->group(function () {
+        // Route untuk update urutan posisi item (reorder)
+        Route::post('tools/reorder', [MroToolController::class, 'reorder'])->name('tools.reorder');
+        // Route Data Tools MRO
+        Route::resource('tools', MroToolController::class)->except(['create', 'edit', 'show']);
     });
 
     // BA JUSTIFIKASI

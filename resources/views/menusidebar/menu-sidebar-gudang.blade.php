@@ -55,6 +55,11 @@
             color: #e65100;
         }
 
+        .bg-green-soft {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+        }
+
         .btn-outline-custom {
             border-radius: 10px;
             font-weight: 600;
@@ -78,6 +83,16 @@
 
         .btn-orange:hover {
             background: #e65100;
+            color: #fff;
+        }
+
+        .btn-green {
+            border: 1px solid #1b5e20;
+            color: #1b5e20;
+        }
+
+        .btn-green:hover {
+            background: #1b5e20;
             color: #fff;
         }
 
@@ -113,16 +128,16 @@
     <!-- BANNER WELCOME -->
     <div class="welcome-card text-center">
         <h3 class="font-weight-bold mb-1">📦 Warehouse & Inventory MRO</h3>
-        <p class="mb-0 text-white-50">Pilih menu di bawah ini untuk mengelola stok barang atau memantau mutasi barang gudang.
+        <p class="mb-0 text-white-50">Pilih menu di bawah ini untuk mengelola stok barang, mutasi, atau peralatan tools MRO.
         </p>
     </div>
 
     <!-- GRID KARTU MENU GUDANG -->
     <div class="row row-cards">
         <!-- 1. STOK BARANG MRO -->
-        <div class="col-lg-6 col-md-6 col-12 mb-4">
-            <div class="card card-menu">
-                <div class="card-body text-center p-4">
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="card card-menu d-flex flex-column">
+                <div class="card-body text-center p-4 flex-grow-1">
                     <div class="icon-wrapper bg-blue-soft">
                         <i class="fas fa-boxes fa-2x"></i>
                     </div>
@@ -139,9 +154,9 @@
         </div>
 
         <!-- 2. MUTASI STOK MRO -->
-        <div class="col-lg-6 col-md-6 col-12 mb-4">
-            <div class="card card-menu">
-                <div class="card-body text-center p-4">
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="card card-menu d-flex flex-column">
+                <div class="card-body text-center p-4 flex-grow-1">
                     <div class="icon-wrapper bg-orange-soft">
                         <i class="fas fa-exchange-alt fa-2x"></i>
                     </div>
@@ -152,6 +167,25 @@
                 <div class="card-footer bg-transparent border-0 pb-4 text-center">
                     <a href="{{ route('mro.stock.log') }}" class="btn btn-outline-custom btn-orange btn-block">
                         Lihat Mutasi Stok <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. DATA TOOLS MRO -->
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="card card-menu d-flex flex-column">
+                <div class="card-body text-center p-4 flex-grow-1">
+                    <div class="icon-wrapper bg-green-soft">
+                        <i class="fas fa-tools fa-2x"></i>
+                    </div>
+                    <h5 class="font-weight-bold text-dark">Data Tools MRO</h5>
+                    <p class="text-muted small">Kelola ketersediaan, kondisi peralatan kerja, jenis tools, serta urutan
+                        inventaris MRO.</p>
+                </div>
+                <div class="card-footer bg-transparent border-0 pb-4 text-center">
+                    <a href="{{ route('mro.tools.index') }}" class="btn btn-outline-custom btn-green btn-block">
+                        Kelola Tools MRO <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
             </div>

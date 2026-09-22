@@ -528,6 +528,7 @@
                                         'fcu.index',
                                         'chiller.index',
                                         'pompa.index',
+                                        'mro.tools.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -595,6 +596,7 @@
                                         'fcu.index',
                                         'chiller.index',
                                         'pompa.index',
+                                        'mro.tools.index',
                                     ]);
                                 @endphp
 
@@ -1139,12 +1141,13 @@
                                                         {{-- Gudang --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('gudang.index') }}"
-                                                                class="nav-link {{ request()->routeIs('gudang*', 'mro', 'mro.stock.log') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('gudang*', 'mro', 'mro.stock.log', 'mro.tools*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-warehouse"></i>
                                                                 <p>Gudang</p>
                                                             </a>
                                                         </li>
 
+                                                        
 
                                                         {{-- Administrasi Keuangan --}}
                                                         <li class="nav-item">
