@@ -23,4 +23,11 @@ class MroTool extends Model
         'jenis',
         'gambar',
     ];
+
+    // Tambahkan di dalam kelas MroTool
+
+    public function mutations()
+    {
+        return $this->hasMany(ToolMutation::class, 'mro_tool_id');
+    }
 }

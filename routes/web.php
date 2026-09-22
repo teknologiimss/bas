@@ -34,6 +34,7 @@ use App\Http\Controllers\PurchaseRequestSppjpController;
 use App\Http\Controllers\RewindingController;
 use App\Http\Controllers\SppdController;
 use App\Http\Controllers\SuratJalanController;
+use App\Http\Controllers\ToolMutationController;
 use App\Http\Controllers\WeeklyActivityController;
 use App\Models\Kontrak;
 use Illuminate\Support\Facades\Auth;
@@ -1123,6 +1124,12 @@ Route::prefix('products')->group(function () {
         Route::post('tools/reorder', [MroToolController::class, 'reorder'])->name('tools.reorder');
         // Route Data Tools MRO
         Route::resource('tools', MroToolController::class)->except(['create', 'edit', 'show']);
+
+        // Route Mutasi Tools
+        Route::get('mutations', [ToolMutationController::class, 'index'])->name('mutations.index');
+        Route::post('mutations', [ToolMutationController::class, 'store'])->name('mutations.store');
+        Route::put('mutations/{id}/return', [ToolMutationController::class, 'returnTool'])->name('mutations.return');
+        Route::delete('mutations/{id}', [ToolMutationController::class, 'destroy'])->name('mutations.destroy');
     });
 
     // BA JUSTIFIKASI

@@ -183,7 +183,19 @@
                 <span class="text-muted" style="font-size: 1.05rem;">Kelola inventaris dan ketersediaan peralatan MRO</span>
             </div>
 
+            {{-- <div class="mt-3 mt-md-0">
+                <button type="button"
+                    class="btn btn-primary shadow-sm font-weight-bold px-4 py-2.5 rounded-lg w-100 w-md-auto"
+                    data-toggle="modal" data-target="#modalTambah"
+                    style="background-color: var(--accent-blue); border: none; font-size: 1.05rem;">
+                    <i class="fas fa-plus-circle mr-2"></i> Tambah Tools
+                </button>
+            </div> --}}
             <div class="mt-3 mt-md-0">
+                <a href="{{ route('mro.mutations.index') }}"
+                    class="btn btn-outline-primary font-weight-bold px-3 py-2.5 rounded-lg mr-2">
+                    <i class="fas fa-exchange-alt mr-1"></i> Mutasi / Peminjaman
+                </a>
                 <button type="button"
                     class="btn btn-primary shadow-sm font-weight-bold px-4 py-2.5 rounded-lg w-100 w-md-auto"
                     data-toggle="modal" data-target="#modalTambah"
