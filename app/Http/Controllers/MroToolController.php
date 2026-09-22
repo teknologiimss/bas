@@ -12,14 +12,15 @@ class MroToolController extends Controller
     {
         $query = MroTool::query();
 
-        // 1. Fitur Search (Berdasarkan Nama Tools, Jenis, atau Spesifikasi)
+        // 1. Fitur Search (Berdasarkan Nama Tools, Jenis, Spesifikasi, atau Lokasi)
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q
                     ->where('nama_tools', 'like', "%{$search}%")
                     ->orWhere('jenis', 'like', "%{$search}%")
-                    ->orWhere('spesifikasi', 'like', "%{$search}%");
+                    ->orWhere('spesifikasi', 'like', "%{$search}%")
+                    ->orWhere('lokasi', 'like', "%{$search}%");
             });
         }
 
@@ -90,6 +91,7 @@ class MroToolController extends Controller
             'qty' => 'required|integer|min:0',
             'satuan' => 'required|string|max:50',
             'kondisi' => 'required|in:Baik,Rusak,Scrap',
+            'lokasi' => 'nullable|string|max:255',  // <= Validasi Lokasi
             'keterangan' => 'nullable|string',
             'jenis' => 'nullable|string|max:100',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -120,6 +122,7 @@ class MroToolController extends Controller
             'qty' => 'required|integer|min:0',
             'satuan' => 'required|string|max:50',
             'kondisi' => 'required|in:Baik,Rusak,Scrap',
+            'lokasi' => 'nullable|string|max:255',  // <= Validasi Lokasi
             'keterangan' => 'nullable|string',
             'jenis' => 'nullable|string|max:100',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',

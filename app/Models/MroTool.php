@@ -18,6 +18,7 @@ class MroTool extends Model
         'qty',
         'satuan',
         'kondisi',
+        'lokasi',
         'keterangan',
         'jenis',
         'gambar',

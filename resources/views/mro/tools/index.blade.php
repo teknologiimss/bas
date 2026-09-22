@@ -205,7 +205,8 @@
                         <div class="col-12 col-md-5 col-lg-4 mb-2 mb-md-0">
                             <div class="input-group">
                                 <input type="text" name="search" class="form-control border-0 rounded-left"
-                                    placeholder="Cari nama tools, jenis, spesifikasi..." value="{{ request('search') }}">
+                                    placeholder="Cari nama tools, jenis, lokasi, spesifikasi..."
+                                    value="{{ request('search') }}">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary px-3 rounded-right" type="submit"
                                         style="background-color: var(--accent-blue); border: none;">
@@ -283,6 +284,7 @@
                                 <th class="text-center">QTY</th>
                                 <th class="text-center">SATUAN</th>
                                 <th class="text-center">KONDISI</th>
+                                <th>LOKASI</th> {{-- Kolom Lokasi ditambahkan di sebelah kanan Kondisi --}}
                                 <th>JENIS</th>
                                 <th>KETERANGAN</th>
                                 <th class="text-center" width="12%">AKSI</th>
@@ -304,7 +306,8 @@
                                             data-id="{{ $tool->id }}" data-nama="{{ $tool->nama_tools }}"
                                             data-spesifikasi="{{ $tool->spesifikasi ?? '-' }}"
                                             data-qty="{{ $tool->qty }}" data-satuan="{{ $tool->satuan }}"
-                                            data-kondisi="{{ $tool->kondisi }}" data-jenis="{{ $tool->jenis ?? '-' }}"
+                                            data-kondisi="{{ $tool->kondisi }}" data-lokasi="{{ $tool->lokasi ?? '-' }}"
+                                            data-jenis="{{ $tool->jenis ?? '-' }}"
                                             data-keterangan="{{ $tool->keterangan ?? '-' }}"
                                             data-gambar="{{ $tool->gambar ? asset('storage/' . $tool->gambar) : '' }}">
                                             {{ $tool->nama_tools }}
@@ -326,6 +329,8 @@
                                             <span class="badge badge-soft-danger px-3 py-1.5 rounded-pill">Scrap</span>
                                         @endif
                                     </td>
+                                    <td><span class="text-dark font-weight-bold">{{ $tool->lokasi ?? '-' }}</span></td>
+                                    {{-- Tampilan Lokasi --}}
                                     <td><span class="badge badge-light border text-dark p-2"
                                             style="font-size: 0.95rem;">{{ $tool->jenis ?? '-' }}</span></td>
                                     <td><span class="text-dark">{{ Str::limit($tool->keterangan ?? '-', 35) }}</span></td>
@@ -335,7 +340,8 @@
                                             data-id="{{ $tool->id }}" data-nama="{{ $tool->nama_tools }}"
                                             data-spesifikasi="{{ $tool->spesifikasi ?? '-' }}"
                                             data-qty="{{ $tool->qty }}" data-satuan="{{ $tool->satuan }}"
-                                            data-kondisi="{{ $tool->kondisi }}" data-jenis="{{ $tool->jenis ?? '-' }}"
+                                            data-kondisi="{{ $tool->kondisi }}" data-lokasi="{{ $tool->lokasi ?? '-' }}"
+                                            data-jenis="{{ $tool->jenis ?? '-' }}"
                                             data-keterangan="{{ $tool->keterangan ?? '-' }}"
                                             data-gambar="{{ $tool->gambar ? asset('storage/' . $tool->gambar) : '' }}"
                                             title="Detail">
@@ -394,21 +400,21 @@
                                                                 class="form-control rounded-lg"
                                                                 value="{{ $tool->jenis }}">
                                                         </div>
-                                                        <div class="col-md-4 form-group">
+                                                        <div class="col-md-3 form-group">
                                                             <label class="font-weight-bold">Qty <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="number" name="qty"
                                                                 class="form-control rounded-lg"
                                                                 value="{{ $tool->qty }}" required min="0">
                                                         </div>
-                                                        <div class="col-md-4 form-group">
+                                                        <div class="col-md-3 form-group">
                                                             <label class="font-weight-bold">Satuan <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" autocomplete="off" name="satuan"
                                                                 class="form-control rounded-lg"
                                                                 value="{{ $tool->satuan }}" required>
                                                         </div>
-                                                        <div class="col-md-4 form-group">
+                                                        <div class="col-md-3 form-group">
                                                             <label class="font-weight-bold">Kondisi <span
                                                                     class="text-danger">*</span></label>
                                                             <select name="kondisi" class="form-control rounded-lg"
@@ -423,6 +429,13 @@
                                                                     {{ $tool->kondisi == 'Scrap' ? 'selected' : '' }}>Scrap
                                                                 </option>
                                                             </select>
+                                                        </div>
+                                                        <div class="col-md-3 form-group">
+                                                            <label class="font-weight-bold">Lokasi</label>
+                                                            <input type="text" autocomplete="off" name="lokasi"
+                                                                class="form-control rounded-lg"
+                                                                value="{{ $tool->lokasi }}"
+                                                                placeholder="Contoh: Rak A-1">
                                                         </div>
                                                         <div class="col-md-12 form-group">
                                                             <label class="font-weight-bold">Spesifikasi</label>
@@ -461,7 +474,7 @@
                                 </div>
                             @empty
                                 <tr>
-                                    <td colspan="10" class="text-center text-muted py-5" style="font-size: 1.1rem;">
+                                    <td colspan="11" class="text-center text-muted py-5" style="font-size: 1.1rem;">
                                         <i class="fas fa-box-open fa-3x mb-3 text-secondary d-block"></i>
                                         Tidak ada data tools yang ditemukan.
                                     </td>
@@ -501,31 +514,36 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label class="font-weight-bold">Nama Tools <span class="text-danger">*</span></label>
-                                <input type="text" autocomplete="off" name="nama_tools" class="form-control rounded-lg"
-                                    placeholder="Contoh: Impact Dewalt" required>
+                                <input type="text" autocomplete="off" name="nama_tools"
+                                    class="form-control rounded-lg" placeholder="Contoh: Impact Dewalt" required>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label class="font-weight-bold">Jenis</label>
                                 <input type="text" autocomplete="off" name="jenis" class="form-control rounded-lg"
                                     placeholder="Contoh: Power Tools / Hand Tools">
                             </div>
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-3 form-group">
                                 <label class="font-weight-bold">Qty <span class="text-danger">*</span></label>
                                 <input type="number" name="qty" class="form-control rounded-lg" value="1"
                                     required min="0">
                             </div>
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-3 form-group">
                                 <label class="font-weight-bold">Satuan <span class="text-danger">*</span></label>
-                                <input type="text" autocomplete="off" name="satuan" class="form-control rounded-lg" value="unit"
-                                    placeholder="unit / pcs" required>
+                                <input type="text" autocomplete="off" name="satuan" class="form-control rounded-lg"
+                                    value="unit" placeholder="unit / pcs" required>
                             </div>
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-3 form-group">
                                 <label class="font-weight-bold">Kondisi <span class="text-danger">*</span></label>
                                 <select name="kondisi" class="form-control rounded-lg" required>
                                     <option value="Baik">Baik</option>
                                     <option value="Rusak">Rusak</option>
                                     <option value="Scrap">Scrap</option>
                                 </select>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label class="font-weight-bold">Lokasi</label>
+                                <input type="text" autocomplete="off" name="lokasi" class="form-control rounded-lg"
+                                    placeholder="Contoh: Palembang / Rak A-1">
                             </div>
                             <div class="col-md-12 form-group">
                                 <label class="font-weight-bold">Spesifikasi</label>
@@ -535,7 +553,7 @@
                             <div class="col-md-12 form-group">
                                 <label class="font-weight-bold">Keterangan</label>
                                 <textarea name="keterangan" autocomplete="off" class="form-control rounded-lg" rows="2"
-                                    placeholder="Contoh: Lokasi Palembang, untuk unloading"></textarea>
+                                    placeholder="Contoh: Untuk unloading"></textarea>
                             </div>
                             <div class="col-md-12 form-group mb-0">
                                 <label class="font-weight-bold">Upload Gambar Tools</label>
@@ -591,6 +609,10 @@
                                 <th class="text-muted">Kondisi</th>
                                 <td id="detailKondisi"></td>
                             </tr>
+                            <tr class="border-bottom">
+                                <th class="text-muted">Lokasi</th>
+                                <td id="detailLokasi" class="font-weight-bold text-dark"></td>
+                            </tr>
                             <tr>
                                 <th class="text-muted">Keterangan</th>
                                 <td id="detailKeterangan" class="text-dark"></td>
@@ -621,7 +643,7 @@
             $(".alert-dismissible").fadeTo(500, 0).slideUp(500, function() {
                 $(this).remove();
             });
-        }, 3000); // 3000 milidetik = 3 detik
+        }, 3000);
 
         // ==========================================
         // 2. Inisialisasi Fitur Drag & Drop Reorder
@@ -629,14 +651,13 @@
         var el = document.getElementById('sortable-table');
         if (el) {
             var sortable = Sortable.create(el, {
-                handle: '.drag-handle', // Elemen ikon drag handle
+                handle: '.drag-handle',
                 animation: 150,
                 ghostClass: 'sortable-ghost',
                 onEnd: function(evt) {
                     var order = [];
                     var startNumber = {{ $tools->firstItem() ?? 1 }};
 
-                    // Hitung ulang posisi dan nomor baris
                     $('#sortable-table tr').each(function(index) {
                         var id = $(this).data('id');
                         if (id) {
@@ -648,7 +669,6 @@
                         }
                     });
 
-                    // Kirim urutan baru via AJAX
                     $.ajax({
                         url: "{{ route('mro.tools.reorder') }}",
                         type: "POST",
@@ -657,7 +677,6 @@
                             order: order
                         },
                         success: function(response) {
-                            // Tampilkan alert reorder lalu sembunyikan otomatis setelah 3 detik
                             $('#reorderAlert')
                                 .text(response.message)
                                 .stop(true, true)
@@ -684,6 +703,7 @@
             var qty = $(this).data('qty');
             var satuan = $(this).data('satuan');
             var kondisi = $(this).data('kondisi');
+            var lokasi = $(this).data('lokasi');
             var jenis = $(this).data('jenis');
             var keterangan = $(this).data('keterangan');
             var gambar = $(this).data('gambar');
@@ -705,6 +725,7 @@
             $('#detailSpesifikasi').text(spesifikasi);
             $('#detailQtySatuan').text(qty + ' ' + satuan);
             $('#detailKondisi').html(kondisiBadge);
+            $('#detailLokasi').text(lokasi);
             $('#detailKeterangan').text(keterangan);
 
             if (gambar && gambar.trim() !== '') {
