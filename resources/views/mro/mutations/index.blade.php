@@ -39,6 +39,13 @@
             font-size: 0.95rem;
         }
 
+        .badge-soft-danger {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
         .badge-soft-navy {
             background-color: #e2e8f0;
             color: #1e293b;
@@ -190,8 +197,20 @@
                                     <td class="text-center text-muted font-weight-bold">
                                         {{ $mutations->firstItem() + $index }}</td>
                                     <td class="font-weight-bold text-dark">{{ $item->nama_peminjam }}</td>
-                                    <td class="text-primary font-weight-bold">
-                                        {{ $item->tool->nama_tools ?? 'Tools Dihapus' }}</td>
+                                    <td>
+                                        @if ($item->tool)
+                                            <a href="javascript:void(0)"
+                                                class="font-weight-bold text-primary btn-show-detail text-decoration-none"
+                                                data-nama="{{ $item->tool->nama_tools }}"
+                                                data-jenis="{{ $item->tool->jenis ?? '-' }}"
+                                                data-spesifikasi="{{ $item->tool->spesifikasi ?? '-' }}"
+                                                data-gambar="{{ $item->tool->gambar ? asset('storage/' . $item->tool->gambar) : '' }}">
+                                                {{ $item->tool->nama_tools }}
+                                            </a>
+                                        @else
+                                            <span class="text-muted font-weight-bold">Tools Dihapus</span>
+                                        @endif
+                                    </td>
                                     <td><span class="text-dark">{{ $item->tool->spesifikasi ?? '-' }}</span></td>
                                     <td class="text-center">
                                         <span class="badge badge-soft-navy px-3 py-1.5 rounded-pill">
@@ -229,7 +248,8 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="btn btn-action btn-soft-danger text-danger bg-light" title="Hapus">
+                                                class="btn btn-action btn-soft-danger text-danger bg-light"
+                                                title="Hapus">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -371,11 +391,51 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Detail Tools (Khusus Gambar, Jenis, & Spesifikasi) -->
+    <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg rounded-lg overflow-hidden">
+                <div class="modal-header bg-navy-main text-white">
+                    <h5 class="modal-title font-weight-bold" id="detailNamaTools">Detail Tools</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4 bg-light p-3 rounded-lg border">
+                        <img id="detailGambar" src="" class="img-fluid rounded shadow-sm"
+                            style="max-height: 250px; object-fit: contain; display: none;" alt="Gambar Tools">
+                        <p id="noGambarText" class="text-muted font-italic mb-0" style="display: none; font-size: 1rem;">
+                            <i class="fas fa-image-slash mr-1"></i> Tidak ada gambar tools.
+                        </p>
+                    </div>
+                    <table class="table table-borderless mb-0">
+                        <tbody>
+                            <tr class="border-bottom">
+                                <th width="35%" class="text-muted">Jenis</th>
+                                <td id="detailJenis" class="font-weight-bold text-dark"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Spesifikasi</th>
+                                <td id="detailSpesifikasi" class="text-dark"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary rounded-lg px-4 py-2" style="font-size: 1rem;"
+                        data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
+        // Auto-fill spesifikasi saat memilih tool di form tambah peminjaman
         $('#select_tool').on('change', function() {
             var selected = $(this).find(':selected');
             var spesifikasi = selected.data('spesifikasi');
@@ -388,6 +448,30 @@
                 $('#info_spesifikasi').val('');
                 $('#input_qty').removeAttr('max');
             }
+        });
+
+        // Event Handler Klik Nama Tools untuk membuka Modal Detail (Gambar, Jenis, & Spesifikasi)
+        $(document).on('click', '.btn-show-detail', function(e) {
+            e.preventDefault();
+
+            var nama = $(this).data('nama');
+            var jenis = $(this).data('jenis');
+            var spesifikasi = $(this).data('spesifikasi');
+            var gambar = $(this).data('gambar');
+
+            $('#detailNamaTools').text(nama);
+            $('#detailJenis').text(jenis);
+            $('#detailSpesifikasi').text(spesifikasi);
+
+            if (gambar && gambar.trim() !== '') {
+                $('#detailGambar').attr('src', gambar).show();
+                $('#noGambarText').hide();
+            } else {
+                $('#detailGambar').hide();
+                $('#noGambarText').show();
+            }
+
+            $('#modalDetail').modal('show');
         });
     });
 </script>

@@ -91,6 +91,23 @@
             transform: translateY(-2px);
         }
 
+        /* Header Action Buttons Styling */
+        .btn-outline-primary {
+            color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--accent-blue);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover) !important;
+            transform: translateY(-1px);
+        }
+
         /* Styling Drag Handle */
         .drag-handle {
             cursor: grab;
@@ -175,7 +192,8 @@
         @endif
 
         {{-- Header Bar --}}
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-2">
+        <div
+            class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
             <div>
                 <h3 class="font-weight-bold text-navy-dark page-header-title m-0" style="font-size: 1.75rem;">
                     <i class="fas fa-tools mr-2 text-primary"></i>Data Tools MRO
@@ -183,23 +201,19 @@
                 <span class="text-muted" style="font-size: 1.05rem;">Kelola inventaris dan ketersediaan peralatan MRO</span>
             </div>
 
-            {{-- <div class="mt-3 mt-md-0">
-                <button type="button"
-                    class="btn btn-primary shadow-sm font-weight-bold px-4 py-2.5 rounded-lg w-100 w-md-auto"
-                    data-toggle="modal" data-target="#modalTambah"
-                    style="background-color: var(--accent-blue); border: none; font-size: 1.05rem;">
-                    <i class="fas fa-plus-circle mr-2"></i> Tambah Tools
-                </button>
-            </div> --}}
-            <div class="mt-3 mt-md-0">
+            {{-- Tombol Mutasi & Tambah Tools (Posisi Kanan) --}}
+            <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center mt-3 mt-md-0 ml-md-auto"
+                style="gap: 10px;">
                 <a href="{{ route('mro.mutations.index') }}"
-                    class="btn btn-outline-primary font-weight-bold px-3 py-2.5 rounded-lg mr-2">
-                    <i class="fas fa-exchange-alt mr-1"></i> Mutasi / Peminjaman
+                    class="btn btn-outline-primary font-weight-bold px-3 py-2.5 rounded-lg d-inline-flex align-items-center justify-content-center shadow-sm"
+                    style="font-size: 1.05rem; border-width: 2px; transition: all 0.2s;">
+                    <i class="fas fa-exchange-alt mr-2"></i> Mutasi / Peminjaman
                 </a>
+
                 <button type="button"
-                    class="btn btn-primary shadow-sm font-weight-bold px-4 py-2.5 rounded-lg w-100 w-md-auto"
+                    class="btn btn-primary shadow-sm font-weight-bold px-4 py-2.5 rounded-lg d-inline-flex align-items-center justify-content-center"
                     data-toggle="modal" data-target="#modalTambah"
-                    style="background-color: var(--accent-blue); border: none; font-size: 1.05rem;">
+                    style="background-color: var(--accent-blue); border: none; font-size: 1.05rem; transition: all 0.2s;">
                     <i class="fas fa-plus-circle mr-2"></i> Tambah Tools
                 </button>
             </div>
@@ -296,7 +310,7 @@
                                 <th class="text-center">QTY</th>
                                 <th class="text-center">SATUAN</th>
                                 <th class="text-center">KONDISI</th>
-                                <th>LOKASI</th> {{-- Kolom Lokasi ditambahkan di sebelah kanan Kondisi --}}
+                                <th>LOKASI</th>
                                 <th>JENIS</th>
                                 <th>KETERANGAN</th>
                                 <th class="text-center" width="12%">AKSI</th>
@@ -342,7 +356,6 @@
                                         @endif
                                     </td>
                                     <td><span class="text-dark font-weight-bold">{{ $tool->lokasi ?? '-' }}</span></td>
-                                    {{-- Tampilan Lokasi --}}
                                     <td><span class="badge badge-light border text-dark p-2"
                                             style="font-size: 0.95rem;">{{ $tool->jenis ?? '-' }}</span></td>
                                     <td><span class="text-dark">{{ Str::limit($tool->keterangan ?? '-', 35) }}</span></td>
