@@ -13,6 +13,7 @@ use App\Http\Controllers\ConsumableController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\CutiTahunanController;
 use App\Http\Controllers\DetailsjnController;
+use App\Http\Controllers\EkspedisiDokumenController;
 use App\Http\Controllers\FasilitasHarianController;
 use App\Http\Controllers\FcuMonitoringController;
 use App\Http\Controllers\HistoryController;
@@ -1130,6 +1131,11 @@ Route::prefix('products')->group(function () {
         Route::post('mutations', [ToolMutationController::class, 'store'])->name('mutations.store');
         Route::put('mutations/{id}/return', [ToolMutationController::class, 'returnTool'])->name('mutations.return');
         Route::delete('mutations/{id}', [ToolMutationController::class, 'destroy'])->name('mutations.destroy');
+    });
+
+    // Ekspedisi Dokumen MRO
+    Route::middleware(['auth'])->group(function () {
+        Route::resource('ekspedisi', EkspedisiDokumenController::class)->only(['index', 'store', 'update', 'destroy']);
     });
 
     // BA JUSTIFIKASI

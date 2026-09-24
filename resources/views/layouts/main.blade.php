@@ -529,6 +529,7 @@
                                         'chiller.index',
                                         'pompa.index',
                                         'mro.tools.index',
+                                        'ekspedisi.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -597,6 +598,7 @@
                                         'chiller.index',
                                         'pompa.index',
                                         'mro.tools.index',
+                                        'ekspedisi.index',
                                     ]);
                                 @endphp
 
@@ -1155,6 +1157,15 @@
                                                                 class="nav-link {{ request()->routeIs('keuangan.*', 'sppd.*', 'kasbon.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-file-invoice-dollar"></i>
                                                                 <p>Administrasi Keuangan</p>
+                                                            </a>
+                                                        </li>
+
+                                                        {{-- Ekspedisi Dokumen --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('ekspedisi.index') }}"
+                                                                class="nav-link {{ request()->routeIs('ekspedisi.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-shipping-fast"></i>
+                                                                <p>Ekspedisi Dokumen</p>
                                                             </a>
                                                         </li>
 
