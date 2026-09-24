@@ -9,10 +9,39 @@ use Illuminate\Support\Facades\Storage;
 
 class EkspedisiDokumenController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dokumens = EkspedisiDokumen::with('sender')->latest()->get();
-        return view('ekspedisi.index', compact('dokumens'));
+        // Ambil parameter pencarian
+        $search = $request->input('search');
+        $tanggal = $request->input('tanggal');
+
+        // Query dasar
+        $query = EkspedisiDokumen::with('sender');
+
+        // =====================================================
+        // SEARCH DESKRIPSI
+        // =====================================================
+        if (!empty($search)) {
+            $query->where('deskripsi', 'LIKE', '%' . $search . '%');
+        }
+
+        // =====================================================
+        // FILTER TANGGAL
+        // =====================================================
+        if (!empty($tanggal)) {
+            $query->whereDate('tanggal', $tanggal);
+        }
+
+        // Ambil data terbaru
+        $dokumens = $query
+            ->latest()
+            ->get();
+
+        return view('ekspedisi.index', compact(
+            'dokumens',
+            'search',
+            'tanggal'
+        ));
     }
 
     public function store(Request $request)

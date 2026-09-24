@@ -17,8 +17,8 @@
         }
 
         /* =====================================================
-                   CARD
-                ====================================================== */
+                               CARD
+                            ====================================================== */
         .card-navy {
             background: #ffffff;
             border: none;
@@ -47,8 +47,8 @@
         }
 
         /* =====================================================
-                   BUTTON
-                ====================================================== */
+                               BUTTON
+                            ====================================================== */
         .btn-navy-primary {
             background: linear-gradient(135deg,
                     #2563eb 0%,
@@ -82,8 +82,8 @@
         }
 
         /* =====================================================
-                   TOAST ALERT
-                ====================================================== */
+                               TOAST ALERT
+                            ====================================================== */
         .toast-alert {
             position: fixed;
 
@@ -122,8 +122,8 @@
         }
 
         /* =====================================================
-                   TABLE
-                ====================================================== */
+                               TABLE
+                            ====================================================== */
 
         .custom-table-container {
             border-radius: 12px;
@@ -161,9 +161,9 @@
             border-color: var(--border-color);
 
             /*
-                     * PENTING:
-                     * Membuat teks panjang turun ke baris berikutnya.
-                     */
+                                 * PENTING:
+                                 * Membuat teks panjang turun ke baris berikutnya.
+                                 */
             white-space: normal !important;
 
             word-wrap: break-word;
@@ -184,8 +184,8 @@
         }
 
         /* =====================================================
-                   KOLOM DESKRIPSI
-                ====================================================== */
+                               KOLOM DESKRIPSI
+                            ====================================================== */
 
         .table-navy td.deskripsi-cell {
             min-width: 250px;
@@ -204,8 +204,8 @@
         }
 
         /* =====================================================
-                   KOLOM KETERANGAN
-                ====================================================== */
+                               KOLOM KETERANGAN
+                            ====================================================== */
 
         .table-navy td.keterangan-cell {
             min-width: 180px;
@@ -224,8 +224,8 @@
         }
 
         /* =====================================================
-                   KOLOM PENGIRIM
-                ====================================================== */
+                               KOLOM PENGIRIM
+                            ====================================================== */
 
         .table-navy td.sender-cell {
             min-width: 150px;
@@ -242,8 +242,8 @@
         }
 
         /* =====================================================
-                   KOLOM PENERIMA
-                ====================================================== */
+                               KOLOM PENERIMA
+                            ====================================================== */
 
         .table-navy td.penerima-cell {
             min-width: 150px;
@@ -273,8 +273,8 @@
         }
 
         /* =====================================================
-                   TANGGAL
-                ====================================================== */
+                               TANGGAL
+                            ====================================================== */
 
         .table-navy td.tanggal-cell {
             white-space: nowrap !important;
@@ -282,8 +282,8 @@
         }
 
         /* =====================================================
-                   KOLOM DOKUMEN
-                ====================================================== */
+                               KOLOM DOKUMEN
+                            ====================================================== */
 
         .table-navy td.dokumen-cell {
             min-width: 120px;
@@ -292,8 +292,8 @@
         }
 
         /* =====================================================
-                   KOLOM AKSI
-                ====================================================== */
+                               KOLOM AKSI
+                            ====================================================== */
 
         .table-navy td.aksi-cell {
             min-width: 110px;
@@ -302,8 +302,8 @@
         }
 
         /* =====================================================
-                   ACTION BUTTON
-                ====================================================== */
+                               ACTION BUTTON
+                            ====================================================== */
 
         .action-btn {
             width: 36px;
@@ -326,8 +326,8 @@
         }
 
         /* =====================================================
-                   MOBILE CARD
-                ====================================================== */
+                               MOBILE CARD
+                            ====================================================== */
 
         .mobile-card-item {
             background: #ffffff;
@@ -346,8 +346,8 @@
             transition: all 0.3s ease;
 
             /*
-                     * Pastikan teks panjang tidak keluar card
-                     */
+                                 * Pastikan teks panjang tidak keluar card
+                                 */
             word-wrap: break-word;
 
             overflow-wrap: anywhere;
@@ -373,8 +373,85 @@
         }
 
         /* =====================================================
-                   MOBILE
-                ====================================================== */
+               SEARCH / FILTER
+            ===================================================== */
+
+        .search-filter-wrapper {
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            padding: 16px;
+
+            margin-bottom: 20px;
+        }
+
+        .search-filter-wrapper label {
+            font-size: 0.8rem;
+
+            font-weight: 700;
+
+            color: #475569;
+
+            margin-bottom: 6px;
+        }
+
+        .search-filter-wrapper .form-control {
+            border-radius: 9px;
+
+            border: 1px solid #cbd5e1;
+
+            height: 42px;
+
+            transition: all 0.2s ease;
+        }
+
+        .search-filter-wrapper .form-control:focus {
+            border-color: #3b82f6;
+
+            box-shadow:
+                0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        .btn-search {
+            height: 42px;
+
+            border-radius: 9px;
+
+            padding-left: 20px;
+            padding-right: 20px;
+
+            font-weight: 600;
+        }
+
+        .btn-reset {
+            height: 42px;
+
+            border-radius: 9px;
+
+            padding-left: 18px;
+            padding-right: 18px;
+
+            font-weight: 600;
+        }
+
+        .search-result-info {
+            font-size: 0.85rem;
+
+            color: #64748b;
+
+            margin-top: 10px;
+        }
+
+        .search-result-info strong {
+            color: #1e293b;
+        }
+
+        /* =====================================================
+                               MOBILE
+                            ====================================================== */
 
         @media (max-width: 767.98px) {
 
@@ -405,11 +482,18 @@
 
                 max-width: none;
             }
+
+            .search-filter-wrapper .btn-search,
+            .search-filter-wrapper .btn-reset {
+                width: 100%;
+
+                margin-top: 5px;
+            }
         }
 
         /* =====================================================
-                   TABLET
-                ====================================================== */
+                               TABLET
+                            ====================================================== */
 
         @media (min-width: 768px) {
 
@@ -419,8 +503,8 @@
         }
 
         /* =====================================================
-                   MODAL
-                ====================================================== */
+                               MODAL
+                            ====================================================== */
 
         .modal.fade .modal-dialog {
             transform: scale(0.9);
@@ -450,8 +534,8 @@
         }
 
         /* =====================================================
-                   TEXTAREA
-                ====================================================== */
+                               TEXTAREA
+                            ====================================================== */
 
         textarea.form-control {
             resize: vertical;
@@ -460,8 +544,8 @@
         }
 
         /* =====================================================
-                   FILE BUTTON
-                ====================================================== */
+                               FILE BUTTON
+                            ====================================================== */
 
         .btn-file {
             white-space: nowrap;
@@ -561,6 +645,113 @@
                     ================================================== --}}
 
                     <div class="card-body p-3 p-md-4">
+
+                        {{-- =========================================================
+    SEARCH / FILTER
+========================================================== --}}
+
+                        <div class="search-filter-wrapper">
+
+                            <form action="{{ route('ekspedisi.index') }}" method="GET">
+
+                                <div class="row align-items-end">
+
+                                    {{-- SEARCH DESKRIPSI --}}
+                                    <div class="col-md-6 mb-3 mb-md-0">
+
+                                        <label for="search">
+                                            <i class="fas fa-search mr-1"></i>
+                                            Cari Deskripsi
+                                        </label>
+
+                                        <input type="text" name="search" id="search" class="form-control"
+                                            placeholder="Ketik deskripsi yang ingin dicari..."
+                                            value="{{ $search ?? request('search') }}">
+
+                                    </div>
+
+
+                                    {{-- FILTER TANGGAL --}}
+                                    <div class="col-md-3 mb-3 mb-md-0">
+
+                                        <label for="tanggal">
+                                            <i class="far fa-calendar-alt mr-1"></i>
+                                            Filter Tanggal
+                                        </label>
+
+                                        <input type="date" name="tanggal" id="tanggal" class="form-control"
+                                            value="{{ $tanggal ?? request('tanggal') }}">
+
+                                    </div>
+
+
+                                    {{-- BUTTON --}}
+                                    <div class="col-md-3">
+
+                                        <div class="row">
+
+                                            <div class="col-6 pr-1">
+
+                                                <button type="submit" class="btn btn-primary btn-search w-100">
+
+                                                    <i class="fas fa-search mr-1"></i>
+
+                                                    Cari
+
+                                                </button>
+
+                                            </div>
+
+
+                                            <div class="col-6 pl-1">
+
+                                                <a href="{{ route('ekspedisi.index') }}"
+                                                    class="btn btn-secondary btn-reset w-100">
+
+                                                    <i class="fas fa-sync-alt mr-1"></i>
+
+                                                    Reset
+
+                                                </a>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                {{-- INFORMASI HASIL PENCARIAN --}}
+
+                                @if (!empty($search) || !empty($tanggal))
+                                    <div class="search-result-info">
+
+                                        <i class="fas fa-info-circle mr-1"></i>
+
+                                        Menampilkan
+                                        <strong>{{ $dokumens->count() }}</strong>
+                                        data
+
+                                        @if (!empty($search))
+                                            untuk deskripsi:
+                                            <strong>"{{ $search }}"</strong>
+                                        @endif
+
+                                        @if (!empty($tanggal))
+                                            pada tanggal:
+                                            <strong>
+                                                {{ \Carbon\Carbon::parse($tanggal)->format('d-m-Y') }}
+                                            </strong>
+                                        @endif
+
+                                    </div>
+                                @endif
+
+                            </form>
+
+                        </div>
 
 
                         {{-- =================================================
