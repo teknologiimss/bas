@@ -1,5 +1,5 @@
 @extends('layouts.main') {{-- Sesuaikan dengan layout utama aplikasi Anda --}}
-
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
     {{-- CSS Custom untuk Tema Navy Modern & Responsive --}}
     <style>
