@@ -1147,7 +1147,7 @@
                                                             </a>
                                                         </li>
 
-                                                        
+
 
                                                         {{-- Administrasi Keuangan --}}
                                                         <li class="nav-item">
@@ -1255,6 +1255,15 @@
                                                                 class="nav-link {{ Route::current()->getName() == 'mro.stock.log' ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-people-carry"></i>
                                                                 <p>Mutasi Stok MRO</p>
+                                                            </a>
+                                                        </li>
+
+                                                        {{-- MENU MRO TOOLS --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('mro.tools.index') }}"
+                                                                class="nav-link {{ request()->routeIs('mro.tools.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-toolbox"></i>
+                                                                <p>Data Master Tools</p>
                                                             </a>
                                                         </li>
 
