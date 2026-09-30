@@ -3,25 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use App\Models\AssetMaintenance;
 use App\Models\Monitoring;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardMroController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch Data Monitoring Progres MRO
+        // 1. Fetch Data Monitoring Progres MRO
         $allMonitorings = Monitoring::with('documents')->get();
 
-        // 1. Kalkulasi Status Proyek
         $statusCounts = [
             'Open' => $allMonitorings->where('status', 'Open')->count(),
             'Closed' => $allMonitorings->where('status', 'Closed')->count(),
             'On Hold' => $allMonitorings->where('status', 'On Hold')->count(),
         ];
 
-        // 2. Kalkulasi Notifikasi Kontrak
+        // 2. Notifikasi Kontrak
         $notifCounts = [
             'berjalan' => 0,
             'h7' => 0,
@@ -50,38 +50,38 @@ class DashboardMroController extends Controller
             ->take(6)
             ->get();
 
-        // 4. Kalkulasi Preventive Maintenance (PM) 1 TAHUN
-        $tahun = date('Y');
+        // 4. KALKULASI PM 1 TAHUN (DENGAN TRUNCATE 1 DESIMAL)
+        $tahun = $request->get('tahun', date('Y'));
+        $totalAsset = Asset::count();
 
-        $assets = Asset::with(['maintenances' => function ($query) use ($tahun) {
-            $query->where('tahun', $tahun);
-        }])->get();
+        $totalPersen12Bulan = 0;
 
-        $monthlyProgress = [];
-
-        // Ambil nilai persen persis seperti footer di view (Bulan 1 s.d 12)
         for ($bulan = 1; $bulan <= 12; $bulan++) {
-            $totalP = 0;
-            $totalR = 0;
+            // Hitung unit unik yang punya realisasi di bulan ini
+            $realisasiUnit = AssetMaintenance::where('tahun', $tahun)
+                ->where('bulan', $bulan)
+                ->where('realisasi', true)
+                ->distinct()
+                ->count('asset_id');
 
-            foreach ($assets as $asset) {
-                $m = $asset->maintenances->where('bulan', $bulan);
-                $totalP += $m->where('planning', true)->count();
-                $totalR += $m->where('realisasi', true)->count();
-            }
+            // Potong desimal ke 1 angka di belakang koma (5.263... dipotong jadi 5.2)
+            $monthlyProgress = $totalAsset > 0
+                ? floor(($realisasiUnit / $totalAsset) * 100 * 10) / 10
+                : 0;
 
-            // Simpan persen bulanan (Bulan tanpa planning bernilai 0)
-            $monthlyProgress[$bulan] = ($totalP > 0) ? ($totalR / $totalP) * 100 : 0;
+            // Akumulasi total persen bulanan (5.2 + 0 + ... + 0 = 5.2)
+            $totalPersen12Bulan += $monthlyProgress;
         }
 
-        // JUMLAHKAN NILAI PERSEN 12 BULAN LALU BAGI 12
-        $pmYearlyPercentage = round(array_sum($monthlyProgress) / 12, 2);
+        // BAGI 12 BULAN (5.2 / 12 = 0.4333... -> dibulatkan jadi 0.43%)
+        $pmYearlyPercentage = round($totalPersen12Bulan / 12, 2);
 
         return view('dashboard.mro', compact(
             'statusCounts',
             'notifCounts',
             'monitorings',
-            'pmYearlyPercentage'
+            'pmYearlyPercentage',
+            'tahun'
         ));
     }
 }
