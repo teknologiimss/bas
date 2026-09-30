@@ -530,6 +530,7 @@
                                         'pompa.index',
                                         'mro.tools.index',
                                         'ekspedisi.index',
+                                        'dashboard.mro',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -599,6 +600,7 @@
                                         'pompa.index',
                                         'mro.tools.index',
                                         'ekspedisi.index',
+                                        'dashboard.mro',
                                     ]);
                                 @endphp
 
@@ -1075,6 +1077,14 @@
 
                                                     {{-- ADMIN & MRO FULL ACCESS --}}
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                                                        {{-- MENU DASHBOARD MRO --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('dashboard.mro') }}"
+                                                                class="nav-link {{ request()->routeIs('dashboard.mro') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-chart-pie"></i>
+                                                                <p>Dashboard MRO</p>
+                                                            </a>
+                                                        </li>
                                                         {{-- Data Personil MRO --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('menu.personil') }}"

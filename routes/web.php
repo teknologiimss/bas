@@ -12,6 +12,7 @@ use App\Http\Controllers\ChillerController;
 use App\Http\Controllers\ConsumableController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\CutiTahunanController;
+use App\Http\Controllers\DashboardMroController;
 use App\Http\Controllers\DetailsjnController;
 use App\Http\Controllers\EkspedisiDokumenController;
 use App\Http\Controllers\FasilitasHarianController;
@@ -1137,6 +1138,9 @@ Route::prefix('products')->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::resource('ekspedisi', EkspedisiDokumenController::class)->only(['index', 'store', 'update', 'destroy']);
     });
+
+    // Tambahkan kode ini di dalam web.php
+    Route::get('/dashboard-mro', [DashboardMroController::class, 'index'])->name('dashboard.mro');
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
