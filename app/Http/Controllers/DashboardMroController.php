@@ -12,7 +12,7 @@ class DashboardMroController extends Controller
 {
     public function index(Request $request)
     {
-        // 1. Fetch Data Monitoring Progres MRO
+        // 1. Fetch Data Monitoring Progres MRO (Semua data)
         $allMonitorings = Monitoring::with('documents')->get();
 
         $statusCounts = [
@@ -44,36 +44,31 @@ class DashboardMroController extends Controller
             }
         }
 
-        // 3. Tabel Ringkasan Progres MRO
+        // 3. Tabel Ringkasan Progres MRO (Tampilkan SEMUA data)
         $monitorings = Monitoring::with('documents')
             ->latest()
-            ->take(6)
             ->get();
 
-        // 4. KALKULASI PM 1 TAHUN (DENGAN TRUNCATE 1 DESIMAL)
+        // 4. KALKULASI PM 1 TAHUN
         $tahun = $request->get('tahun', date('Y'));
         $totalAsset = Asset::count();
 
         $totalPersen12Bulan = 0;
 
         for ($bulan = 1; $bulan <= 12; $bulan++) {
-            // Hitung unit unik yang punya realisasi di bulan ini
             $realisasiUnit = AssetMaintenance::where('tahun', $tahun)
                 ->where('bulan', $bulan)
                 ->where('realisasi', true)
                 ->distinct()
                 ->count('asset_id');
 
-            // Potong desimal ke 1 angka di belakang koma (5.263... dipotong jadi 5.2)
             $monthlyProgress = $totalAsset > 0
                 ? floor(($realisasiUnit / $totalAsset) * 100 * 10) / 10
                 : 0;
 
-            // Akumulasi total persen bulanan (5.2 + 0 + ... + 0 = 5.2)
             $totalPersen12Bulan += $monthlyProgress;
         }
 
-        // BAGI 12 BULAN (5.2 / 12 = 0.4333... -> dibulatkan jadi 0.43%)
         $pmYearlyPercentage = round($totalPersen12Bulan / 12, 2);
 
         return view('dashboard.mro', compact(
