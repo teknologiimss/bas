@@ -10,7 +10,7 @@
             --primary-light: #1e3a8a;
             --secondary: #2563eb;
             --bg: #eef4fb;
-            --border: #dbe7f5;
+            --border: #cbd5e1;
 
             --planning: #3b82f6;
             --realisasi: #10b981;
@@ -20,10 +20,7 @@
             background: var(--bg);
         }
 
-        /* ===========================
-            CARD
-        ============================ */
-
+        /* CARD STYLING */
         .card-matrix {
             border: none;
             border-radius: 22px;
@@ -39,14 +36,15 @@
 
         .card-header-red h4 {
             font-weight: 700;
+            font-size: 1.5rem;
             letter-spacing: .5px;
         }
 
-        /* BUTTON */
-
+        /* BUTTONS & SELECT */
         .header-action .btn {
             border-radius: 12px;
             font-weight: 600;
+            font-size: 14px;
             transition: .3s;
         }
 
@@ -72,12 +70,10 @@
             border: none;
             min-width: 120px;
             font-weight: 600;
+            font-size: 14px;
         }
 
-        /* ===========================
-            SUMMARY CARD
-        ============================ */
-
+        /* SUMMARY CARDS */
         .card-body>.row .card {
             border: none;
             border-radius: 18px;
@@ -89,24 +85,29 @@
             transform: translateY(-3px);
         }
 
+        .card-body>.row small {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
         .card-body>.row h3 {
             color: var(--primary);
             font-weight: 700;
+            font-size: 2rem;
         }
 
-        /* ===========================
-            TABLE
-        ============================ */
-
+        /* TABLE WRAPPER & FREEZE STYLING */
         .matrix-wrapper {
             overflow: auto;
             max-height: 80vh;
             border: 1px solid var(--border);
-            border-radius: 18px;
+            border-radius: 8px;
+            background: #ffffff;
         }
 
         .matrix-wrapper::-webkit-scrollbar {
             height: 10px;
+            width: 10px;
         }
 
         .matrix-wrapper::-webkit-scrollbar-track {
@@ -118,600 +119,407 @@
             border-radius: 20px;
         }
 
-        .matrix-wrapper::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
-
         .matrix-table {
-            min-width: 5000px;
+            min-width: 5800px;
             margin-bottom: 0;
             border-collapse: separate;
             border-spacing: 0;
+            font-size: 13px;
         }
 
         .matrix-table th,
         .matrix-table td {
-            border: 1px solid var(--border) !important;
-        }
-
-        /* ===========================
-            HEADER TABLE
-        ============================ */
-
-        .matrix-table thead th {
-            position: sticky;
-            top: 0;
-            z-index: 30;
+            border: 1px solid #cbd5e1 !important;
             text-align: center;
             vertical-align: middle;
-            white-space: nowrap;
-            font-size: 11px;
-            font-weight: 700;
+            padding: 6px 4px;
         }
 
-        .month-header {
-            background: linear-gradient(180deg, var(--primary), var(--primary-light)) !important;
-            color: white !important;
+        /* HEADER STICKY & MONTH COLORS */
+        .matrix-table thead th {
+            position: sticky;
+            z-index: 30;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .matrix-table thead tr:nth-child(1) th {
+            top: 0;
+            font-size: 13px;
+        }
+
+        .matrix-table thead tr:nth-child(2) th {
+            top: 36px;
+        }
+
+        .matrix-table thead tr:nth-child(3) th {
+            top: 66px;
+            border-bottom: 3px solid #0f172a !important;
+        }
+
+        .month-header-even {
+            background: #0f172a !important;
+            color: #ffffff !important;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #ffffff !important;
+            border-right: 2px solid #ffffff !important;
+        }
+
+        .month-header-odd {
+            background: #1e3a8a !important;
+            color: #ffffff !important;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #ffffff !important;
+            border-right: 2px solid #ffffff !important;
         }
 
         .week-header {
-            background: #dbeafe !important;
-            color: #1e3a8a !important;
+            background: #f1f5f9 !important;
+            color: #0f172a !important;
             font-weight: 700;
+            font-size: 12px;
         }
 
-        /* ===========================
-            STICKY COLUMN
-        ============================ */
+        /* PEMBATAS ANTAR BULAN */
+        .month-divider-right {
+            border-right: 3px solid #0f172a !important;
+        }
 
-        .sticky-1,
-        .sticky-2,
-        .sticky-3,
-        .sticky-4 {
+        /* STICKY COLUMNS (FREEZE PANES) */
+        .sticky-col {
             position: sticky;
             z-index: 25;
-            font-weight: 600;
-            border-right: 2px solid var(--primary-light) !important;
-            box-shadow: 3px 0 8px rgba(15, 23, 42, .08);
+            background: #ffffff;
+            font-size: 13px;
         }
 
         .sticky-1 {
-            left: 0;
-            min-width: 70px;
-            background: #eff6ff;
+            left: 0px;
+            width: 55px;
+            min-width: 55px;
         }
 
         .sticky-2 {
-            left: 70px;
-            min-width: 180px;
-            background: white;
+            left: 55px;
+            width: 160px;
+            min-width: 160px;
+            text-align: left !important;
+            padding-left: 10px !important;
+            /* STYLE KHUSUS ISI UNIT */
+            font-weight: 700;
+            color: #0f172a;
         }
 
         .sticky-3 {
-            left: 250px;
-            min-width: 150px;
-            background: #eff6ff;
+            left: 215px;
+            width: 120px;
+            min-width: 120px;
+            /* STYLE KHUSUS ISI NO LAMBUNG */
+            font-weight: 700;
+            color: #dc2626;
         }
 
         .sticky-4 {
-            left: 400px;
-            min-width: 200px;
-            background: white;
+            left: 335px;
+            width: 140px;
+            min-width: 140px;
+            text-align: left !important;
+            padding-left: 10px !important;
+            border-right: 3px solid #0f172a !important;
+            /* STYLE KHUSUS ISI LOKASI */
+            font-weight: 700;
+            color: #0f172a;
         }
 
-        thead .sticky-1,
-        thead .sticky-2,
-        thead .sticky-3,
-        thead .sticky-4 {
-            background: linear-gradient(180deg, var(--primary), var(--primary-light)) !important;
-            color: white !important;
-            z-index: 50;
+        thead .sticky-col {
+            background: #0f172a !important;
+            color: #ffffff !important;
+            z-index: 50 !important;
+            font-weight: 700 !important;
         }
 
-        /* ===========================
-            ROW
-        ============================ */
-
-        .asset-row:nth-child(even) {
-            background: #f8fbff;
+        /* ROW & CELL STYLING */
+        .asset-row:nth-child(even) td {
+            background: #f8fafc;
         }
 
-        .asset-row:hover {
-            background: #e8f2ff !important;
+        .asset-row:nth-child(odd) td {
+            background: #ffffff;
         }
 
-        /* ===========================
-            CELL
-        ============================ */
+        .asset-row:hover td {
+            background: #e2e8f0 !important;
+        }
 
         .matrix-cell {
             width: 24px;
             min-width: 24px;
-            height: 24px;
+            height: 28px;
             cursor: pointer;
-            transition: .25s;
+            transition: .2s;
+            padding: 0 !important;
         }
 
         .matrix-cell:hover {
-            transform: scale(1.18);
-            box-shadow: 0 0 10px rgba(37, 99, 235, .45);
+            opacity: 0.8;
+            transform: scale(1.1);
             position: relative;
             z-index: 10;
         }
 
-        /* STATUS */
-
         .planning {
-            background: var(--planning);
+            background: var(--planning) !important;
         }
 
         .realisasi {
-            background: var(--realisasi);
+            background: var(--realisasi) !important;
         }
-
-        /* ===========================
-            LEGEND
-        ============================ */
 
         .legend-box {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             display: inline-block;
-            border-radius: 5px;
+            border-radius: 4px;
+            vertical-align: middle;
         }
 
-        /* ===========================
-            FOOTER
-        ============================ */
-
+        /* FOOTER PROGRESS */
         tfoot td {
-            background: #f8fbff;
+            position: sticky;
+            bottom: 0;
+            background: #f1f5f9;
             font-weight: 600;
+            font-size: 13px;
+            z-index: 20;
+            border-top: 3px solid #0f172a !important;
         }
 
         .progress {
-            height: 28px;
-            border-radius: 20px;
-            background: #dbeafe;
+            height: 24px;
+            border-radius: 12px;
+            background: #e2e8f0;
         }
 
         .progress-bar {
             font-weight: 700;
+            font-size: 12px;
+            line-height: 24px;
             background: linear-gradient(90deg, #10b981, #22c55e) !important;
         }
 
-        /* ===========================
-            MOBILE
-        ============================ */
-
+        /* RESPONSIVE */
         @media(max-width:768px) {
-
-            .card-header-red .d-flex {
-                flex-direction: column;
-                align-items: stretch !important;
-                gap: 12px;
-            }
-
-            .header-action {
-                display: flex !important;
-                flex-direction: column;
-                gap: 10px;
-                width: 100%;
-            }
-
-            .header-action .btn {
-                width: 100%;
-            }
-
-            .card-header-red select {
-                width: 100%;
-            }
-
-            .row.mb-4>div {
-                margin-bottom: 12px;
-            }
-
-            .matrix-wrapper {
-                overflow: auto;
-                max-height: 70vh;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .matrix-table {
-                min-width: 2200px;
-                font-size: 10px;
-            }
-
-            .matrix-table th,
-            .matrix-table td {
-                padding: 3px;
-            }
-
-            .sticky-1,
-            .sticky-2,
-            .sticky-3,
-            .sticky-4 {
+            .sticky-col {
                 position: static !important;
-                left: auto !important;
-                box-shadow: none !important;
             }
 
-            thead .sticky-1,
-            thead .sticky-2,
-            thead .sticky-3,
-            thead .sticky-4 {
-                position: sticky;
+            thead .sticky-col {
+                position: sticky !important;
                 top: 0;
-                z-index: 50;
-            }
-
-            .matrix-cell {
-                width: 18px;
-                min-width: 18px;
-                height: 18px;
-            }
-
-            .month-header {
-                font-size: 9px !important;
-            }
-
-            .week-header {
-                font-size: 8px !important;
             }
         }
     </style>
 
     <div class="container-fluid mt-3">
-
         <div class="card card-matrix">
-
             <div class="card-header card-header-red">
-
-                {{-- <div class="d-flex justify-content-between align-items-center"> --}}
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-
                     <div>
-
                         <h4 class="mb-2">
-
                             <i class="fas fa-calendar-check"></i>
                             MATRIX PERAWATAN ASSET
-
                         </h4>
-
-                        {{-- <div class="header-action">
-
-                            <a href="{{ route('assets.index') }}" class="btn btn-light">
-
-                                <i class="fas fa-database"></i>
-                                Master Asset
-
-                            </a>
-
-                            <a href="{{ route('assets.create') }}" class="btn btn-warning">
-
-                                <i class="fas fa-plus"></i>
-                                Tambah Asset
-
-                            </a>
-
-                        </div> --}}
-
                         <div class="header-action d-flex flex-column flex-md-row">
-
                             <a href="{{ route('assets.index') }}" class="btn btn-light mr-md-2 mb-2 mb-md-0">
-                                <i class="fas fa-database"></i>
-                                Master Asset
+                                <i class="fas fa-database"></i> Master Asset
                             </a>
-
                             <a href="{{ route('assets.create') }}" class="btn btn-warning">
-                                <i class="fas fa-plus"></i>
-                                Tambah Asset
+                                <i class="fas fa-plus"></i> Tambah Asset
                             </a>
-
                         </div>
-
                     </div>
-
                     <div>
-
                         <select class="form-control" onchange="window.location='?tahun='+this.value">
-
                             @for ($i = 2024; $i <= 2035; $i++)
                                 <option value="{{ $i }}" {{ $tahun == $i ? 'selected' : '' }}>
-
                                     {{ $i }}
-
                                 </option>
                             @endfor
-
                         </select>
-
                     </div>
-
                 </div>
-
             </div>
 
             <div class="card-body">
-
                 {{-- SUMMARY --}}
-
                 <div class="row mb-4">
-
                     <div class="col-md-3">
-
                         <div class="card border-0 shadow-sm">
-
                             <div class="card-body">
-
                                 <small>Total Asset</small>
-
-                                <h3 class="text-danger">
-
-                                    {{ $totalAsset }}
-
-                                </h3>
-
+                                <h3 class="text-danger">{{ $totalAsset }}</h3>
                             </div>
-
                         </div>
-
                     </div>
-
                     <div class="col-md-3">
-
                         <div class="card border-0 shadow-sm">
-
                             <div class="card-body">
-
                                 <small>Tahun</small>
-
-                                <h3 class="text-primary">
-
-                                    {{ $tahun }}
-
-                                </h3>
-
+                                <h3 class="text-primary">{{ $tahun }}</h3>
                             </div>
-
                         </div>
-
                     </div>
-
                     <div class="col-md-6">
-
                         <div class="card border-0 shadow-sm">
-
-                            <div class="card-body">
-
-                                <span class="legend-box" style="background:#42a5f5"></span>
-
-                                Planning
-
-                                &nbsp;&nbsp;&nbsp;
-
-                                <span class="legend-box" style="background:#00c853"></span>
-
-                                Realisasi
-
+                            <div class="card-body d-flex align-items-center h-100">
+                                <div style="font-size: 14px; font-weight: 600;">
+                                    <span class="legend-box mr-1" style="background:#3b82f6"></span> Planning
+                                    &nbsp;&nbsp;&nbsp;
+                                    <span class="legend-box mr-1" style="background:#10b981"></span> Realisasi
+                                </div>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
 
                 @php
-
-                    $bulanNama = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGS', 'SEP', 'OKT', 'NOV', 'DES'];
-
+                    $bulanNama = [
+                        'JANUARI',
+                        'FEBRUARI',
+                        'MARET',
+                        'APRIL',
+                        'MEI',
+                        'JUNI',
+                        'JULI',
+                        'AGUSTUS',
+                        'SEPTEMBER',
+                        'OKTOBER',
+                        'NOVEMBER',
+                        'DESEMBER',
+                    ];
                 @endphp
 
                 <div class="matrix-wrapper">
-
                     <table class="table table-bordered matrix-table">
-
                         <thead>
-
                             <tr>
+                                <th rowspan="3" class="sticky-col sticky-1">NO</th>
+                                <th rowspan="3" class="sticky-col sticky-2">UNIT</th>
+                                <th rowspan="3" class="sticky-col sticky-3">NO LAMBUNG</th>
+                                <th rowspan="3" class="sticky-col sticky-4">LOKASI</th>
 
-                                <th rowspan="3" class="sticky-1">NO</th>
-                                <th rowspan="3" class="sticky-2">UNIT</th>
-                                <th rowspan="3" class="sticky-3">NO LAMBUNG</th>
-                                <th rowspan="3" class="sticky-4">LOKASI</th>
-
-                                @foreach ($bulanNama as $bulan)
-                                    <th colspan="10" class="month-header">
-
+                                @foreach ($bulanNama as $index => $bulan)
+                                    <th colspan="10"
+                                        class="{{ $index % 2 == 0 ? 'month-header-even' : 'month-header-odd' }} month-divider-right">
                                         {{ $bulan }}
-
                                     </th>
                                 @endforeach
-
                             </tr>
-
                             <tr>
-
                                 @for ($bulan = 1; $bulan <= 12; $bulan++)
                                     @for ($minggu = 1; $minggu <= 5; $minggu++)
-                                        <th colspan="2" class="week-header">
-
+                                        <th colspan="2"
+                                            class="week-header {{ $minggu == 5 ? 'month-divider-right' : '' }}">
                                             M{{ $minggu }}
-
                                         </th>
                                     @endfor
                                 @endfor
-
                             </tr>
-
                             <tr>
-
                                 @for ($bulan = 1; $bulan <= 12; $bulan++)
                                     @for ($minggu = 1; $minggu <= 5; $minggu++)
-                                        <th>P</th>
-                                        <th>R</th>
+                                        <th style="background:#f8fafc; font-size:11px;">P</th>
+                                        <th style="background:#f8fafc; font-size:11px;"
+                                            class="{{ $minggu == 5 ? 'month-divider-right' : '' }}">R</th>
                                     @endfor
                                 @endfor
-
                             </tr>
-
                         </thead>
 
                         <tbody>
-
                             @foreach ($assets as $asset)
                                 <tr class="asset-row">
-
-                                    <td class="sticky-1">
-                                        {{ $loop->iteration }}
-                                    </td>
-
-                                    <td class="sticky-2">
-                                        {{ $asset->unit }}
-                                    </td>
-
-                                    <td class="sticky-3">
-                                        {{ $asset->no_lambung }}
-                                    </td>
-
-                                    <td class="sticky-4">
-                                        {{ $asset->lokasi }}
-                                    </td>
+                                    <td class="sticky-col sticky-1">{{ $loop->iteration }}</td>
+                                    <td class="sticky-col sticky-2">{{ $asset->unit }}</td>
+                                    <td class="sticky-col sticky-3">{{ $asset->no_lambung }}</td>
+                                    <td class="sticky-col sticky-4">{{ $asset->lokasi }}</td>
 
                                     @for ($bulan = 1; $bulan <= 12; $bulan++)
                                         @for ($minggu = 1; $minggu <= 5; $minggu++)
                                             @php
-
                                                 $item = $asset->maintenances
                                                     ->where('bulan', $bulan)
                                                     ->where('minggu', $minggu)
                                                     ->first();
-
                                             @endphp
 
                                             {{-- Planning --}}
-
                                             <td class="matrix-cell {{ $item && $item->planning ? 'planning' : '' }}"
                                                 data-type="planning" data-asset="{{ $asset->id }}"
                                                 data-bulan="{{ $bulan }}" data-minggu="{{ $minggu }}">
                                             </td>
 
                                             {{-- Realisasi --}}
-
-                                            <td class="matrix-cell {{ $item && $item->realisasi ? 'realisasi' : '' }}"
+                                            <td class="matrix-cell {{ $item && $item->realisasi ? 'realisasi' : '' }} {{ $minggu == 5 ? 'month-divider-right' : '' }}"
                                                 data-type="realisasi" data-asset="{{ $asset->id }}"
                                                 data-bulan="{{ $bulan }}" data-minggu="{{ $minggu }}">
                                             </td>
                                         @endfor
                                     @endfor
-
                                 </tr>
                             @endforeach
-
                         </tbody>
 
                         <tfoot>
-
                             <tr>
-
-                                <td colspan="4">
-
-                                    <b>Progress Realisasi</b>
-
+                                <td colspan="4" class="sticky-col sticky-1 text-center font-weight-bold"
+                                    style="z-index:30;">
+                                    PROGRESS (%)
                                 </td>
-
                                 @for ($bulan = 1; $bulan <= 12; $bulan++)
-                                    <td colspan="10">
-
+                                    <td colspan="10" class="month-divider-right">
                                         <div class="progress">
-
                                             <div class="progress-bar bg-success"
-                                                style="width:
-                                            {{ $monthlyProgress[$bulan] }}%">
-
+                                                style="width: {{ $monthlyProgress[$bulan] }}%">
                                                 {{ $monthlyProgress[$bulan] }}%
-
                                             </div>
-
                                         </div>
-
                                     </td>
                                 @endfor
-
                             </tr>
-
                         </tfoot>
-
                     </table>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
     <script>
-        $(document).on(
-            'click',
-            '.matrix-cell',
-            function() {
+        $(document).on('click', '.matrix-cell', function() {
+            let cell = $(this);
 
-                let cell = $(this);
-
-                $.ajax({
-
-                    url: "{{ route('asset-maintenance.mark') }}",
-
-                    type: 'POST',
-
-                    data: {
-
-                        _token: "{{ csrf_token() }}",
-
-                        asset_id: cell.data('asset'),
-
-                        tahun: "{{ $tahun }}",
-
-                        bulan: cell.data('bulan'),
-
-                        minggu: cell.data('minggu'),
-
-                        type: cell.data('type')
-
-                    },
-
-                    beforeSend: function() {
-
-                        cell.css(
-                            'opacity',
-                            '0.5'
-                        );
-
-                    },
-
-                    success: function(response) {
-
-                        location.reload();
-
-                    },
-
-                    error: function() {
-
-                        alert(
-                            'Gagal menyimpan data'
-                        );
-
-                    }
-
-                });
-
+            $.ajax({
+                url: "{{ route('asset-maintenance.mark') }}",
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    asset_id: cell.data('asset'),
+                    tahun: "{{ $tahun }}",
+                    bulan: cell.data('bulan'),
+                    minggu: cell.data('minggu'),
+                    type: cell.data('type')
+                },
+                beforeSend: function() {
+                    cell.css('opacity', '0.5');
+                },
+                success: function(response) {
+                    location.reload();
+                },
+                error: function() {
+                    alert('Gagal menyimpan data');
+                }
             });
+        });
     </script>
-
 @endsection
