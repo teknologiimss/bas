@@ -170,8 +170,8 @@
                 <th>Nama Pekerjaan</th>
                 <th width="60">Tanggal Kontrak</th>
                 <th width="60">Selesai Kontrak</th>
-                <th width="45">Status</th>
-                <th width="65">Progress</th>
+                {{-- <th width="45">Status</th> --}}
+                {{-- <th width="65">Progress</th> --}}
                 <th>Keterangan Progress</th>
                 <th width="140">Status Dokumen Terakhir</th>
                 <th width="65">Status Kontrak</th>
@@ -214,7 +214,7 @@
                     <td class="text-center">
                         {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                     </td>
-                    <td class="text-center">
+                    {{-- <td class="text-center">
                         <span class="badge {{ $statusClass }}">{{ $m->status }}</span>
                     </td>
                     <td>
@@ -223,7 +223,7 @@
                             </div>
                             <div class="progress-text">{{ $m->progress }}%</div>
                         </div>
-                    </td>
+                    </td> --}}
                     <td>
                         @php
                             $text = trim($m->keterangan2 ?? '-');
