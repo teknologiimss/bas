@@ -125,7 +125,7 @@
             border-radius: 4px;
             display: inline-block;
             vertical-align: middle;
-            position: static; /* Memastikan posisi tidak absolute */
+            position: static;
         }
 
         .form-check-input:checked {
@@ -291,6 +291,96 @@
             margin-bottom: 15px;
         }
 
+        /* NOTIFICATION / TOAST STYLING */
+        .toast-container-custom {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 420px;
+            width: calc(100% - 48px);
+            pointer-events: none;
+        }
+
+        .custom-alert {
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.08);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s ease;
+        }
+
+        .custom-alert-success {
+            border-left: 5px solid #16a34a;
+        }
+
+        .custom-alert-danger {
+            border-left: 5px solid #dc2626;
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .toast-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .custom-alert-success .toast-icon {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .custom-alert-danger .toast-icon {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .toast-text {
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .btn-toast-close {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 8px;
+            transition: .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-toast-close:hover {
+            color: #475569;
+            background: #f1f5f9;
+        }
+
         /* ANIMATION */
         @keyframes fadeDown {
             from {
@@ -314,6 +404,24 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        .fade-out-toast {
+            opacity: 0 !important;
+            transform: translateX(50px) scale(0.9) !important;
+            margin-top: -60px !important;
         }
 
         /* MOBILE RESPONSIVE */
@@ -361,25 +469,51 @@
                 overflow-x: auto;
                 border-radius: 14px;
             }
+
+            .toast-container-custom {
+                top: 16px;
+                right: 16px;
+                width: calc(100% - 32px);
+            }
         }
     </style>
 
-    <div class="container py-4">
-
-        {{-- ALERT MESSAGES --}}
+    {{-- ALERT MESSAGES CONTAINER --}}
+    <div class="toast-container-custom">
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 14px;">
-                <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="custom-alert custom-alert-success auto-dismiss-alert" role="alert">
+                <div class="toast-content">
+                    <div class="toast-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="toast-text">
+                        {{ session('success') }}
+                    </div>
+                </div>
+                <button type="button" class="btn-toast-close" onclick="closeToast(this.parentElement)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
         @endif
 
         @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 14px;">
-                <i class="fa-solid fa-triangle-exclamation me-2"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="custom-alert custom-alert-danger auto-dismiss-alert" role="alert">
+                <div class="toast-content">
+                    <div class="toast-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="toast-text">
+                        {{ session('error') }}
+                    </div>
+                </div>
+                <button type="button" class="btn-toast-close" onclick="closeToast(this.parentElement)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
         @endif
+    </div>
+
+    <div class="container py-4">
 
         {{-- HEADER --}}
         <div class="top-card d-flex justify-content-between align-items-center flex-wrap gap-3">
@@ -453,7 +587,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($data as $i => $d)
+                            @forelse($data as $i =>$d)
                                 <tr>
                                     <td class="col-checkbox">
                                         <input type="checkbox" name="ids[]" value="{{ $d->id }}"
@@ -547,6 +681,19 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // ==========================================
+            // AUTO DISMISS NOTIFICATION (3 DETIK)
+            // ==========================================
+            const alerts = document.querySelectorAll('.auto-dismiss-alert');
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    closeToast(alert);
+                }, 3000);
+            });
+
+            // ==========================================
+            // BULK DELETE CHECKBOX MANAGEMENT
+            // ==========================================
             const selectAll = document.getElementById('select-all');
             const checkboxes = document.querySelectorAll('.check-item');
             const btnDeleteSelected = document.getElementById('btn-delete-selected');
@@ -579,6 +726,15 @@
                 });
             });
         });
+
+        // Function untuk menutup toast secara manual / otomatis
+        function closeToast(element) {
+            if (!element) return;
+            element.classList.add('fade-out-toast');
+            setTimeout(function() {
+                element.remove();
+            }, 300);
+        }
 
         function confirmBulkDelete() {
             const checkedCount = document.querySelectorAll('.check-item:checked').length;
