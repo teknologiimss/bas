@@ -26,11 +26,37 @@
             box-shadow: 0 12px 30px rgba(15, 23, 42, .1);
         }
 
+        /* Styling Metric KPI Cards */
+        .kpi-card {
+            border: none;
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, .05);
+            transition: all .25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, .09);
+        }
+
+        .kpi-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
         /* Chart Canvas Size Optimization */
         .chart-container-large {
             position: relative;
             margin: auto;
-            height: 300px;
+            height: 280px;
             width: 100%;
         }
 
@@ -49,7 +75,6 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* Custom Scrollbar */
         .table-scroll-container::-webkit-scrollbar {
             width: 6px;
         }
@@ -98,11 +123,80 @@
             </span>
         </div>
 
-        {{-- BARIS 1: DUA PIE CHART (DIPERBESAR & PROPOSIONAL) --}}
+        {{-- BARIS METRIC CARDS / SUMMARY KPI --}}
+        <div class="row mb-4">
+
+            {{-- KPI 1: TOTAL PEKERJAAN / KONTRAK MRO --}}
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="card kpi-card p-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small font-weight-bold text-uppercase">Total Pekerjaan MRO</span>
+                            <h3 class="font-weight-bold text-dark mt-1 mb-0">{{ $totalKontrak }}</h3>
+                            <small class="text-muted">Total Kontrak Terdaftar</small>
+                        </div>
+                        <div class="kpi-icon-wrapper bg-primary text-white">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- KPI 2: TOTAL PEKERJAAN SELESAI --}}
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="card kpi-card p-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small font-weight-bold text-uppercase">Pekerjaan Selesai</span>
+                            <h3 class="font-weight-bold text-success mt-1 mb-0">{{ $totalSelesai }}</h3>
+                            <small class="text-muted">Status Closed</small>
+                        </div>
+                        <div class="kpi-icon-wrapper bg-success text-white">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- KPI 3: KONTRAK KRITIS / DALAM PERHATIAN --}}
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="card kpi-card p-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small font-weight-bold text-uppercase">Kontrak Kritis</span>
+                            <h3 class="font-weight-bold text-danger mt-1 mb-0">{{ $kontrakKritis }}</h3>
+                            <small class="text-muted">H-7 & Telah Berakhir</small>
+                        </div>
+                        <div class="kpi-icon-wrapper bg-danger text-white">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- KPI 4: RATA-RATA PROGRESS PEKERJAAN MRO --}}
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="card kpi-card p-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small font-weight-bold text-uppercase">Rata-rata Progress</span>
+                            <h3 class="font-weight-bold text-info mt-1 mb-0">{{ $avgProgressPekerjaan }}%</h3>
+                            <small class="text-muted">Capaian Progres MRO</small>
+                        </div>
+                        <div class="kpi-icon-wrapper bg-info text-white">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {{-- BARIS 1: TIGA CHART BERSISIAN --}}
         <div class="row mb-4">
 
             {{-- 1. PIE CHART STATUS PROYEK --}}
-            <div class="col-lg-5 col-md-12 mb-3">
+            <div class="col-lg-4 col-md-12 mb-3">
                 <div class="card card-dashboard h-100 p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="font-weight-bold text-dark mb-0">
@@ -116,7 +210,7 @@
             </div>
 
             {{-- 2. PIE CHART NOTIFIKASI KONTRAK --}}
-            <div class="col-lg-7 col-md-12 mb-3">
+            <div class="col-lg-4 col-md-12 mb-3">
                 <div class="card card-dashboard h-100 p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="font-weight-bold text-dark mb-0">
@@ -129,12 +223,26 @@
                 </div>
             </div>
 
+            {{-- 3. STACKED BAR CHART JATUH TEMPO KONTRAK --}}
+            <div class="col-lg-4 col-md-12 mb-3">
+                <div class="card card-dashboard h-100 p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="font-weight-bold text-dark mb-0">
+                            <i class="fas fa-calendar-alt mr-2 text-info"></i>Jatuh Tempo Kontrak ({{ $tahun }})
+                        </h6>
+                    </div>
+                    <div class="chart-container-large">
+                        <canvas id="jatuhTempoChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         {{-- BARIS 2: TABEL PROGRES & GAUGE PREVENTIVE MAINTENANCE --}}
         <div class="row">
 
-            {{-- 3. TABEL DAFTAR PROGRES MRO (BISA DI-SCROLL) --}}
+            {{-- TABEL DAFTAR PROGRES MRO --}}
             <div class="col-lg-8 mb-3">
                 <div class="card card-dashboard h-100 p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -150,7 +258,6 @@
                         </a>
                     </div>
 
-                    {{-- Kontainer Scroll --}}
                     <div class="table-scroll-container">
                         <table class="table table-hover table-striped table-dashboard mb-0">
                             <thead class="text-center">
@@ -208,7 +315,7 @@
                 </div>
             </div>
 
-            {{-- 4. PREVENTIVE MAINTENANCE (PM) GAUGE CHART --}}
+            {{-- GAUGE CHART PREVENTIVE MAINTENANCE --}}
             <div class="col-lg-4 mb-3">
                 <div class="card card-dashboard h-100 p-4 text-center d-flex flex-column justify-content-between">
                     <div>
@@ -270,9 +377,9 @@
                         legend: {
                             position: 'bottom',
                             labels: {
-                                padding: 20,
+                                padding: 15,
                                 font: {
-                                    size: 12,
+                                    size: 11,
                                     weight: '500'
                                 }
                             }
@@ -285,7 +392,7 @@
             new Chart(document.getElementById('notifikasiChart'), {
                 type: 'doughnut',
                 data: {
-                    labels: ['Kontrak Berjalan', 'Akan Berakhir (H-7)', 'Telah Berakhir', 'Selesai'],
+                    labels: ['Berjalan', 'H-7', 'Telah Berakhir', 'Selesai'],
                     datasets: [{
                         data: [
                             {{ $notifCounts['berjalan'] }},
@@ -305,9 +412,9 @@
                         legend: {
                             position: 'bottom',
                             labels: {
-                                padding: 20,
+                                padding: 15,
                                 font: {
-                                    size: 12,
+                                    size: 11,
                                     weight: '500'
                                 }
                             }
@@ -316,7 +423,61 @@
                 }
             });
 
-            // 3. Gauge Chart PM 1 Tahun
+            // 3. Stacked Bar Chart Monitoring Jatuh Tempo Kontrak
+            new Chart(document.getElementById('jatuhTempoChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov',
+                        'Des'
+                    ],
+                    datasets: [{
+                            label: 'Selesai',
+                            data: @json(array_values($dueDateSelesai)),
+                            backgroundColor: '#22c55e',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Belum Selesai',
+                            data: @json(array_values($dueDateBelumSelesai)),
+                            backgroundColor: '#ef4444',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 11,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 4. Gauge Chart PM 1 Tahun
             const pmValue = {{ $pmYearlyPercentage }};
             new Chart(document.getElementById('pmGaugeChart'), {
                 type: 'doughnut',

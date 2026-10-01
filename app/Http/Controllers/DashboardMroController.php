@@ -12,7 +12,7 @@ class DashboardMroController extends Controller
 {
     public function index(Request $request)
     {
-        // 1. Fetch Data Monitoring Progres MRO (Semua data)
+        // 1. Fetch Data Monitoring Progres MRO
         $allMonitorings = Monitoring::with('documents')->get();
 
         $statusCounts = [
@@ -44,15 +44,49 @@ class DashboardMroController extends Controller
             }
         }
 
-        // 3. Tabel Ringkasan Progres MRO (Tampilkan SEMUA data)
+        // 3. METRIK CARD SUMMARY KPI
+        $totalKontrak = $allMonitorings->count();
+        $totalSelesai = $statusCounts['Closed'];
+        $kontrakKritis = $notifCounts['h7'] + $notifCounts['berakhir'];
+
+        // Kalkulasi Rata-rata Progress Pekerjaan MRO
+        $totalProgressSum = 0;
+        foreach ($allMonitorings as $m) {
+            // Mengambil persentase dari method/properti progress model jika ada,
+            // atau menghitung rasio dokumen terisi
+            $totalProgressSum += $m->progress_percentage ?? ($m->status === 'Closed' ? 100 : 0);
+        }
+        $avgProgressPekerjaan = $totalKontrak > 0
+            ? round($totalProgressSum / $totalKontrak, 1)
+            : 0;
+
+        // 4. Kalkulasi Data Jatuh Tempo Kontrak per Bulan (Stacked Bar)
+        $tahun = $request->get('tahun', date('Y'));
+
+        $dueDateSelesai = array_fill(1, 12, 0);  // Selesai / Closed
+        $dueDateBelumSelesai = array_fill(1, 12, 0);  // Belum Selesai (Open/On Hold/Lainnya)
+
+        foreach ($allMonitorings as $m) {
+            if (!empty($m->tanggal_selesai_kontrak)) {
+                $date = Carbon::parse($m->tanggal_selesai_kontrak);
+                if ($date->year == $tahun) {
+                    $month = $date->month;
+                    if ($m->status === 'Closed') {
+                        $dueDateSelesai[$month]++;
+                    } else {
+                        $dueDateBelumSelesai[$month]++;
+                    }
+                }
+            }
+        }
+
+        // 5. Tabel Ringkasan Progres MRO
         $monitorings = Monitoring::with('documents')
             ->latest()
             ->get();
 
-        // 4. KALKULASI PM 1 TAHUN
-        $tahun = $request->get('tahun', date('Y'));
+        // 6. KALKULASI PM 1 TAHUN
         $totalAsset = Asset::count();
-
         $totalPersen12Bulan = 0;
 
         for ($bulan = 1; $bulan <= 12; $bulan++) {
@@ -74,6 +108,12 @@ class DashboardMroController extends Controller
         return view('dashboard.mro', compact(
             'statusCounts',
             'notifCounts',
+            'totalKontrak',
+            'totalSelesai',
+            'kontrakKritis',
+            'avgProgressPekerjaan',
+            'dueDateSelesai',
+            'dueDateBelumSelesai',
             'monitorings',
             'pmYearlyPercentage',
             'tahun'
