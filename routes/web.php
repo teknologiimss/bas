@@ -1009,6 +1009,14 @@ Route::prefix('products')->group(function () {
         return view('menusidebar.menu-sidebar-gudang');
     })->name('gudang.index');
 
+    Route::get('/wilayah1-menu', function () {
+        return view('menusidebar.menu-sidebar-wilayah1');
+    })->name('wilayah1.index');
+
+    Route::get('/wilayah2-menu', function () {
+        return view('menusidebar.menu-sidebar-wilayah2');
+    })->name('wilayah2.index');
+
     // Monitoring 5R & Scrap
     Route::prefix('monitoring-5r')->name('monitoring_5r.')->group(function () {
         Route::get('/', [Monitoring5RController::class, 'index'])->name('index');
@@ -1185,7 +1193,7 @@ Route::prefix('products')->group(function () {
         // Taruh route spesifik SEBELUM route wildcard /{proyek_id} agar tidak bertabrakan
         Route::get('/resume-progress', [MonitoringWil2Controller::class, 'resumeProgress'])->name('resume_progress');
         Route::get('/print', [MonitoringWil2Controller::class, 'print'])->name('print');
-        
+
         Route::get('/{proyek_id}', [MonitoringWil2Controller::class, 'index'])->name('index');
         Route::post('/store/{proyek_id}', [MonitoringWil2Controller::class, 'store'])->name('store');
         Route::post('/update/{id}', [MonitoringWil2Controller::class, 'update'])->name('update');

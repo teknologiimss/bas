@@ -531,6 +531,8 @@
                                         'mro.tools.index',
                                         'ekspedisi.index',
                                         'dashboard.mro',
+                                        'wilayah1.index',
+                                        'wilayah2.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -540,6 +542,8 @@
                                         'purchase_request.index',
                                         'product.trackingwil',
                                         'bpm.index',
+                                        'wilayah1.index',
+                                        'wilayah2.index',
                                     ]);
                                     $menuLogistikActive = in_array(Route::currentRouteName(), [
                                         'spph.index',
@@ -684,50 +688,30 @@
                                                             <p>{{ __('BPM') }}</p>
                                                         </a>
                                                     </li>
-                                                    {{-- MENU PROYEK WILAYAH 1 (Role 2 & Admin/Role 0/8/9/14) --}}
-                                                    @if (in_array(Auth::user()->role, [0, 2, 8, 9, 14]))
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('proyekwil1.index') }}"
-                                                                class="nav-link {{ request()->routeIs('proyekwil1.*') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-building"></i>
-                                                                <p>Proyek Wilayah 1</p>
-                                                            </a>
-                                                        </li>
-                                                    @endif
 
-                                                    {{-- MENU PROYEK WILAYAH 2 (Role 3 & Admin/Role 0/8/9/14) --}}
-                                                    @if (in_array(Auth::user()->role, [0, 3, 8, 9, 14]))
-                                                        <li class="nav-item">
-                                                            <a href="{{ route('proyekwil2.index') }}"
-                                                                class="nav-link {{ request()->routeIs('proyekwil2.*') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-city"></i>
-                                                                <p>Proyek Wilayah 2</p>
-                                                            </a>
-                                                        </li>
-                                                    @endif
-
-
-                                                    {{-- MENU PROGRESS WILAYAH 1 (Role 2 & Admin/Role 0/8/9/14/17) --}}
+                                                    {{-- MENU WILAYAH 1 (Role 2 & Admin/Role 0/8/9/14/17) --}}
                                                     @if (in_array(Auth::user()->role, [0, 2, 8, 9, 14, 17]))
                                                         <li class="nav-item">
-                                                            <a href="{{ route('monitoringwil1.resume_progress') }}"
-                                                                class="nav-link {{ request()->routeIs('monitoringwil1.resume_progress') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-tasks"></i>
-                                                                <p>Progress Wilayah 1</p>
+                                                            <a href="{{ route('wilayah1.index') }}"
+                                                                class="nav-link {{ request()->routeIs('wilayah1.*') || request()->routeIs('proyekwil1.*') || request()->routeIs('monitoringwil1.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-building"></i>
+                                                                <p>Pekerjaan Wilayah 1</p>
                                                             </a>
                                                         </li>
                                                     @endif
 
-                                                    {{-- MENU PROGRESS WILAYAH 2 (Role 3 & Admin/Role 0/8/9/14/17) --}}
+                                                    {{-- MENU WILAYAH 2 (Role 3 & Admin/Role 0/8/9/14/17) --}}
                                                     @if (in_array(Auth::user()->role, [0, 3, 8, 9, 14, 17]))
                                                         <li class="nav-item">
-                                                            <a href="{{ route('monitoringwil2.resume_progress') }}"
-                                                                class="nav-link {{ request()->routeIs('monitoringwil2.resume_progress') ? 'active' : '' }}">
-                                                                <i class="nav-icon fas fa-chart-line"></i>
-                                                                <p>Progress Wilayah 2</p>
+                                                            <a href="{{ route('wilayah2.index') }}"
+                                                                class="nav-link {{ request()->routeIs('wilayah2.*') || request()->routeIs('proyekwil2.*') || request()->routeIs('monitoringwil2.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-city"></i>
+                                                                <p>Pekerjaan Wilayah 2</p>
                                                             </a>
                                                         </li>
                                                     @endif
+
+
                                                 </ul>
                                             </li>
                                         @endif
