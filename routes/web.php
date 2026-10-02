@@ -14,6 +14,7 @@ use App\Http\Controllers\CutiController;
 use App\Http\Controllers\CutiTahunanController;
 use App\Http\Controllers\DashboardMroController;
 use App\Http\Controllers\DetailsjnController;
+use App\Http\Controllers\DivisiWilayahProgressController;
 use App\Http\Controllers\EkspedisiDokumenController;
 use App\Http\Controllers\FasilitasHarianController;
 use App\Http\Controllers\FcuMonitoringController;
@@ -1168,7 +1169,6 @@ Route::prefix('products')->group(function () {
     Route::delete('/proyek-wil2/delete/{id}', [ProyekWil2Controller::class, 'destroy'])->name('proyekwil2.delete');
 
     // Monitoring Wil1 dan Wil2
-    // Route::middleware(['auth'])->group(function () {
     // --- ROUTE MONITORING WILAYAH 1 ---
     Route::prefix('monitoringwil1')->name('monitoringwil1.')->group(function () {
         // Taruh route spesifik SEBELUM route wildcard /{proyek_id} agar tidak bertabrakan
@@ -1206,7 +1206,24 @@ Route::prefix('products')->group(function () {
         Route::delete('/document/destroy/{id}', [MonitoringWil2Controller::class, 'destroyDocument'])->name('document.destroy');
         Route::post('/document/reorder', [MonitoringWil2Controller::class, 'reorderDocuments'])->name('document.reorder');
     });
-    // });
+
+    /*
+     * |--------------------------------------------------------------------------
+     * | PROGRESS DIVISI WILAYAH
+     * |--------------------------------------------------------------------------
+     */
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get(
+            '/progress-divisi-wilayah',
+            [DivisiWilayahProgressController::class, 'index']
+        )->name('divisi.wilayah.progress');
+
+        Route::get(
+            '/progress-divisi-wilayah/print',
+            [DivisiWilayahProgressController::class, 'print']
+        )->name('divisi.wilayah.progress.print');
+    });
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store

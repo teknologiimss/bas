@@ -533,6 +533,7 @@
                                         'dashboard.mro',
                                         'wilayah1.index',
                                         'wilayah2.index',
+                                        'divisi.wilayah.progress',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -544,6 +545,7 @@
                                         'bpm.index',
                                         'wilayah1.index',
                                         'wilayah2.index',
+                                        'divisi.wilayah.progress',
                                     ]);
                                     $menuLogistikActive = in_array(Route::currentRouteName(), [
                                         'spph.index',
@@ -605,6 +607,7 @@
                                         'mro.tools.index',
                                         'ekspedisi.index',
                                         'dashboard.mro',
+                                        'divisi.wilayah.progress',
                                     ]);
                                 @endphp
 
@@ -688,6 +691,22 @@
                                                             <p>{{ __('BPM') }}</p>
                                                         </a>
                                                     </li>
+
+                                                    {{-- PROGRESS DIVISI WILAYAH --}}
+                                                    @if (in_array(Auth::user()->role, [0, 2, 3, 8, 9, 14, 17, 18]))
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('divisi.wilayah.progress') }}"
+                                                                class="nav-link {{ request()->routeIs('divisi.wilayah.progress*') ? 'active' : '' }}">
+
+                                                                <i class="nav-icon fas fa-chart-line"></i>
+
+                                                                <p>
+                                                                    Progress Divisi Wilayah
+                                                                </p>
+
+                                                            </a>
+                                                        </li>
+                                                    @endif
 
                                                     {{-- MENU WILAYAH 1 (Role 2 & Admin/Role 0/8/9/14/17) --}}
                                                     @if (in_array(Auth::user()->role, [0, 2, 8, 9, 14, 17]))
@@ -1106,6 +1125,7 @@
 
                                                     {{-- ADMIN & MRO FULL ACCESS --}}
                                                     @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+
                                                         {{-- MENU DASHBOARD MRO --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('dashboard.mro') }}"
@@ -1114,6 +1134,25 @@
                                                                 <p>Dashboard MRO</p>
                                                             </a>
                                                         </li>
+
+                                                        {{-- PROGRESS DIVISI WILAYAH --}}
+                                                        @if (in_array(Auth::user()->role, [0, 14, 17, 18]))
+                                                            <li class="nav-item">
+
+                                                                <a href="{{ route('divisi.wilayah.progress') }}"
+                                                                    class="nav-link {{ request()->routeIs('divisi.wilayah.progress*') ? 'active' : '' }}">
+
+                                                                    <i class="nav-icon fas fa-chart-line"></i>
+
+                                                                    <p>
+                                                                        Progress Divisi Wilayah
+                                                                    </p>
+
+                                                                </a>
+
+                                                            </li>
+                                                        @endif
+
                                                         {{-- Data Personil MRO --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('menu.personil') }}"
