@@ -63,7 +63,6 @@ class DashboardMroController extends Controller
             if (!empty($m->tanggal_selesai_kontrak)) {
                 $date = Carbon::parse($m->tanggal_selesai_kontrak);
                 if ($date->year == $tahun) {
-                    // Konversi Bulan (1-12) ke Indeks Array (0-11)
                     $monthIndex = $date->month - 1;
 
                     if ($m->status === 'Closed') {

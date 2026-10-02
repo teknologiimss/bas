@@ -52,7 +52,7 @@
         .chart-container-compact {
             position: relative;
             margin: auto;
-            height: 160px;
+            height: 180px;
             width: 100%;
         }
 
@@ -223,7 +223,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($monitorings as $m)
+                                @forelse ($monitorings as$m)
                                     @php
                                         $latestDoc = $m->documents->last();
                                     @endphp
@@ -326,18 +326,23 @@
 
     </div>
 
-    {{-- SCRIPT CHART JS & AUTO SCROLL --}}
+    {{-- SCRIPT CHART JS, DATALABELS PLUGIN & AUTO SCROLL --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{-- Library Plugin DataLabels untuk Menampilkan Indikator Angka Langsung di Chart --}}
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+
+            // Register ChartDataLabels Plugin untuk Chart.js v3+
+            Chart.register(ChartDataLabels);
 
             // ==========================================
             // AUTO SCROLL TABEL DAFTAR PROGRES PEKERJAAN
             // ==========================================
             const tableContainer = document.getElementById('autoScrollTableContainer');
             if (tableContainer) {
-                let scrollSpeed = 1; // Kecepatan scroll (pixel per frame)
+                let scrollSpeed = 1;
                 let scrollInterval = null;
                 let isHovered = false;
 
@@ -346,34 +351,24 @@
 
                     scrollInterval = setInterval(function() {
                         if (!isHovered) {
-                            // Cek apakah scroll sudah mencapai paling bawah
                             if (tableContainer.scrollTop + tableContainer.clientHeight >= tableContainer
                                 .scrollHeight - 1) {
-                                // Kembali ke paling atas dengan mulus saat mencapai ujung bawah
                                 tableContainer.scrollTop = 0;
                             } else {
                                 tableContainer.scrollTop += scrollSpeed;
                             }
                         }
-                    }, 30); // Berjalan setiap 30 milidetik (~33fps)
+                    }, 30);
                 }
 
-                function stopAutoScroll() {
-                    clearInterval(scrollInterval);
-                    scrollInterval = null;
-                }
-
-                // Hentikan autoscroll ketika kursor di atas tabel agar user bisa membaca/scroll manual
                 tableContainer.addEventListener('mouseenter', function() {
                     isHovered = true;
                 });
 
-                // Lanjutkan autoscroll ketika kursor meninggalkan tabel
                 tableContainer.addEventListener('mouseleave', function() {
                     isHovered = false;
                 });
 
-                // Mulai autoscroll
                 startAutoScroll();
             }
 
@@ -428,33 +423,43 @@
                                     weight: '500'
                                 }
                             }
+                        },
+                        // Matikan datalabels pada bar chart agar tidak menumpuk/kotor
+                        datalabels: {
+                            display: false
                         }
                     }
                 }
             });
 
             // ==========================================
-            // 2. Chart Notifikasi Kontrak (Doughnut)
+            // 2. Chart Notifikasi Kontrak (Doughnut) dengan Indikator Angka
             // ==========================================
+            const notifData = [
+                {{ $notifCounts['berjalan'] ?? 0 }},
+                {{ $notifCounts['h7'] ?? 0 }},
+                {{ $notifCounts['berakhir'] ?? 0 }},
+                {{ $notifCounts['selesai'] ?? 0 }}
+            ];
+            const notifLabels = ['Berjalan', 'H-7', 'Telah Berakhir', 'Selesai'];
+
             new Chart(document.getElementById('notifikasiChart'), {
                 type: 'doughnut',
                 data: {
-                    labels: ['Berjalan', 'H-7', 'Telah Berakhir', 'Selesai'],
+                    labels: notifLabels,
                     datasets: [{
-                        data: [
-                            {{ $notifCounts['berjalan'] ?? 0 }},
-                            {{ $notifCounts['h7'] ?? 0 }},
-                            {{ $notifCounts['berakhir'] ?? 0 }},
-                            {{ $notifCounts['selesai'] ?? 0 }}
-                        ],
+                        data: notifData,
                         backgroundColor: ['#22c55e', '#eab308', '#ef4444', '#2563eb'],
                         borderWidth: 2,
-                        hoverOffset: 4
+                        hoverOffset: 6
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: 10
+                    },
                     plugins: {
                         legend: {
                             position: 'bottom',
@@ -463,8 +468,51 @@
                                 padding: 6,
                                 font: {
                                     size: 10,
-                                    weight: '500'
+                                    weight: 'bold'
+                                },
+                                // Menambahkan angka langsung di teks Legend (contoh: Berjalan: 5)
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        return data.labels.map((label, i) => {
+                                            const value = data.datasets[0].data[i];
+                                            return {
+                                                text: `${label}: ${value}`,
+                                                fillStyle: data.datasets[0].backgroundColor[i],
+                                                strokeStyle: '#fff',
+                                                lineWidth: 1,
+                                                hidden: false,
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
                                 }
+                            }
+                        },
+                        // KONFIGURASI DATALABELS (Menampilkan angka langsung di atas segmen chart)
+                        datalabels: {
+                            display: function(context) {
+                                // Sembunyikan angka jika nilainya 0 agar chart tetap bersih
+                                return context.dataset.data[context.dataIndex] > 0;
+                            },
+                            color: '#ffffff',
+                            font: {
+                                weight: 'bold',
+                                size: 12
+                            },
+                            formatter: function(value) {
+                                return value; // Menampilkan nilai angka
+                            },
+                            backgroundColor: function(context) {
+                                return context.dataset.backgroundColor[context.dataIndex];
+                            },
+                            borderRadius: 4,
+                            padding: {
+                                top: 2,
+                                bottom: 2,
+                                left: 6,
+                                right: 6
                             }
                         }
                     }
@@ -491,7 +539,10 @@
                     plugins: {
                         tooltip: {
                             enabled: false
-                        }
+                        },
+                        datalabels: {
+                            display: false
+                        } // Sembunyikan datalabels untuk gauge chart
                     }
                 }
             });
