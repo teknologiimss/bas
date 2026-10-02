@@ -684,6 +684,50 @@
                                                             <p>{{ __('BPM') }}</p>
                                                         </a>
                                                     </li>
+                                                    {{-- MENU PROYEK WILAYAH 1 (Role 2 & Admin/Role 0/8/9/14) --}}
+                                                    @if (in_array(Auth::user()->role, [0, 2, 8, 9, 14]))
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('proyekwil1.index') }}"
+                                                                class="nav-link {{ request()->routeIs('proyekwil1.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-building"></i>
+                                                                <p>Proyek Wilayah 1</p>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
+                                                    {{-- MENU PROYEK WILAYAH 2 (Role 3 & Admin/Role 0/8/9/14) --}}
+                                                    @if (in_array(Auth::user()->role, [0, 3, 8, 9, 14]))
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('proyekwil2.index') }}"
+                                                                class="nav-link {{ request()->routeIs('proyekwil2.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-city"></i>
+                                                                <p>Proyek Wilayah 2</p>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
+
+                                                    {{-- MENU PROGRESS WILAYAH 1 (Role 2 & Admin/Role 0/8/9/14/17) --}}
+                                                    @if (in_array(Auth::user()->role, [0, 2, 8, 9, 14, 17]))
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('monitoringwil1.resume_progress') }}"
+                                                                class="nav-link {{ request()->routeIs('monitoringwil1.resume_progress') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-tasks"></i>
+                                                                <p>Progress Wilayah 1</p>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
+                                                    {{-- MENU PROGRESS WILAYAH 2 (Role 3 & Admin/Role 0/8/9/14/17) --}}
+                                                    @if (in_array(Auth::user()->role, [0, 3, 8, 9, 14, 17]))
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('monitoringwil2.resume_progress') }}"
+                                                                class="nav-link {{ request()->routeIs('monitoringwil2.resume_progress') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-chart-line"></i>
+                                                                <p>Progress Wilayah 2</p>
+                                                            </a>
+                                                        </li>
+                                                    @endif
                                                 </ul>
                                             </li>
                                         @endif
@@ -881,7 +925,8 @@
 
                                         {{-- Contoh menu role SDM --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 6)
-                                            <li class="nav-item has-treeview {{ $menuSdmActive ? 'menu-open' : '' }}">
+                                            <li
+                                                class="nav-item has-treeview {{ $menuSdmActive ? 'menu-open' : '' }}">
                                                 <a href="#" class="nav-link">
                                                     <i class="nav-icon fas fa-users-cog"></i>
                                                     <p class="">

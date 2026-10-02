@@ -13,20 +13,19 @@ class AddNamaLampiranToRewindingsTable extends Migration
      */
     public function up()
     {
-        Schema::table('rewindings', function (Blueprint $table) {
-            $table->string('nama_lampiran')->nullable();
-        });
+        if (Schema::hasTable('rewindings')) {
+            Schema::table('rewindings', function (Blueprint $table) {
+                $table->string('nama_lampiran')->nullable();
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::table('rewindings', function (Blueprint $table) {
-            //
-        });
+        if (Schema::hasTable('rewindings')) {
+            Schema::table('rewindings', function (Blueprint $table) {
+                $table->dropColumn('nama_lampiran');
+            });
+        }
     }
 }

@@ -1,0 +1,269 @@
+@extends('layouts.main')
+
+@section('title', 'Proyek Wilayah 2')
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
+
+@section('content')
+    <style>
+        /* [Gunakan CSS yang sama seperti Wilayah 1] */
+        body {
+            background: #eef3f9;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .d-flex.justify-content-between.mb-3 {
+            animation: fadeDown .5s ease;
+        }
+
+        .card {
+            border: none;
+            border-radius: 18px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .10);
+            animation: fadeUp .6s ease;
+        }
+
+        .border {
+            border: none !important;
+            border-left: 6px solid #0f172a !important;
+            border-radius: 14px !important;
+            background: #fff;
+            transition: .3s ease;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, .06);
+        }
+
+        .border:hover {
+            transform: translateY(-4px);
+            border-left-color: #2563eb !important;
+            background: #f8fbff;
+            box-shadow: 0 12px 25px rgba(15, 23, 42, .15);
+        }
+
+        h5 {
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a) !important;
+            border: none !important;
+            color: #fff;
+            border-radius: 10px !important;
+            font-weight: 600;
+            transition: .25s;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, .30);
+        }
+
+        .btn-light {
+            background: #fff;
+            border: 1px solid #1e3a8a;
+            color: #1e3a8a;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: .25s;
+        }
+
+        .btn-light:hover {
+            background: #1e3a8a;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            border-radius: 10px;
+            transition: .25s;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border-radius: 10px;
+        }
+
+        .search-wrapper-box {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
+            transition: .3s;
+        }
+
+        .search-wrapper:focus-within {
+            border-color: #2563eb;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, .20);
+            transform: translateY(-2px);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            transition: .25s;
+        }
+
+        .search-btn:hover {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+            animation: pop .3s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            border: none;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
+        }
+
+        .pagination {
+            justify-content: center;
+        }
+
+        .page-link {
+            color: #1e3a8a;
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .page-item.active .page-link {
+            background: #1e3a8a;
+            border-color: #1e3a8a;
+            color: white;
+        }
+    </style>
+
+    <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-success" data-toggle="modal" data-target="#modalCreate" style="margin: 10px;">
+            + Buat Proyek Wilayah 2 Baru
+        </button>
+    </div>
+
+    <!-- FILTER SEARCH -->
+    <div class="search-wrapper-box mb-3">
+        <form method="GET" action="{{ route('proyekwil2.index') }}">
+            <div class="search-wrapper">
+                <input type="text" name="search" class="search-input" autocomplete="off"
+                    placeholder="Cari nama proyek wilayah 2..." value="{{ request('search') }}">
+                <button class="search-btn">🔍 Cari</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- LIST PROYEK WILAYAH 2 -->
+    <div class="card p-3">
+        <h5 class="mb-3">Daftar Proyek Wilayah 2</h5>
+
+        @foreach ($proyeks as $p)
+            <div class="d-flex justify-content-between align-items-center border p-3 mb-2 rounded">
+                <div>
+                    <h5 class="mb-1">{{ $p->nama_proyek }}</h5>
+                </div>
+
+                <div>
+                    <a href="{{ route('monitoringwil2.index', $p->id) }}" class="btn btn-light">📊 Monitor</a>
+
+                    <!-- Edit -->
+                    <button class="btn btn-success" data-toggle="modal" data-target="#modalEdit{{ $p->id }}">✏️
+                        Edit</button>
+
+                    <!-- Delete -->
+                    <form action="{{ route('proyekwil2.delete', $p->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger" onclick="return confirm('Hapus proyek wilayah 2 ini?')">🗑️
+                            Delete</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Edit -->
+            <div class="modal fade" id="modalEdit{{ $p->id }}">
+                <div class="modal-dialog">
+                    <form class="modal-content" action="{{ route('proyekwil2.update', $p->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-header">
+                            <h5>Edit Proyek Wilayah 2</h5>
+                        </div>
+                        <div class="modal-body">
+                            <label>Nama Proyek *</label>
+                            <input type="text" name="nama_proyek" value="{{ $p->nama_proyek }}" class="form-control"
+                                required>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endforeach
+
+        <div class="mt-3">
+            {{ $proyeks->appends(['search' => request('search')])->links() }}
+        </div>
+    </div>
+
+    <!-- Modal Create -->
+    <div class="modal fade" id="modalCreate">
+        <div class="modal-dialog">
+            <form class="modal-content" action="{{ route('proyekwil2.store') }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5>Buat Proyek Wilayah 2 Baru</h5>
+                </div>
+                <div class="modal-body">
+                    <label>Nama Proyek *</label>
+                    <input type="text" name="nama_proyek" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection

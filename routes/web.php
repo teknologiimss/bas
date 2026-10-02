@@ -24,6 +24,8 @@ use App\Http\Controllers\Lp3mController;
 use App\Http\Controllers\MemoController;
 use App\Http\Controllers\Monitoring5RController;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\MonitoringWil1Controller;
+use App\Http\Controllers\MonitoringWil2Controller;
 use App\Http\Controllers\MroController;
 use App\Http\Controllers\MroToolController;
 use App\Http\Controllers\NotificationController;
@@ -31,6 +33,8 @@ use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\PerencanaanController;
 use App\Http\Controllers\PompaController;
 use App\Http\Controllers\ProyekController;
+use App\Http\Controllers\ProyekWil1Controller;
+use App\Http\Controllers\ProyekWil2Controller;
 use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\PurchaseRequestSppjpController;
 use App\Http\Controllers\RewindingController;
@@ -1141,6 +1145,60 @@ Route::prefix('products')->group(function () {
 
     // Tambahkan kode ini di dalam web.php
     Route::get('/dashboard-mro', [DashboardMroController::class, 'index'])->name('dashboard.mro');
+
+    // Proyek Wilayah 1&2
+    // Rute Proyek Wilayah 1
+    Route::get('/proyek-wil1', [ProyekWil1Controller::class, 'index'])->name('proyekwil1.index');
+    Route::post('/proyek-wil1/store', [ProyekWil1Controller::class, 'store'])->name('proyekwil1.store');
+    Route::put('/proyek-wil1/update/{id}', [ProyekWil1Controller::class, 'update'])->name('proyekwil1.update');
+    Route::delete('/proyek-wil1/delete/{id}', [ProyekWil1Controller::class, 'destroy'])->name('proyekwil1.delete');
+
+    // Rute Proyek Wilayah 2
+    Route::get('/proyek-wil2', [ProyekWil2Controller::class, 'index'])->name('proyekwil2.index');
+    Route::post('/proyek-wil2/store', [ProyekWil2Controller::class, 'store'])->name('proyekwil2.store');
+    Route::put('/proyek-wil2/update/{id}', [ProyekWil2Controller::class, 'update'])->name('proyekwil2.update');
+    Route::delete('/proyek-wil2/delete/{id}', [ProyekWil2Controller::class, 'destroy'])->name('proyekwil2.delete');
+
+    // Monitoring Wil1 dan Wil2
+    // Route::middleware(['auth'])->group(function () {
+    // --- ROUTE MONITORING WILAYAH 1 ---
+    Route::prefix('monitoringwil1')->name('monitoringwil1.')->group(function () {
+        // Taruh route spesifik SEBELUM route wildcard /{proyek_id} agar tidak bertabrakan
+        Route::get('/resume-progress', [MonitoringWil1Controller::class, 'resumeProgress'])->name('resume_progress');
+        Route::get('/print', [MonitoringWil1Controller::class, 'print'])->name('print');
+
+        Route::get('/{proyek_id}', [MonitoringWil1Controller::class, 'index'])->name('index');
+        Route::post('/store/{proyek_id}', [MonitoringWil1Controller::class, 'store'])->name('store');
+        Route::post('/update/{id}', [MonitoringWil1Controller::class, 'update'])->name('update');
+        Route::delete('/destroy/{id}', [MonitoringWil1Controller::class, 'destroy'])->name('destroy');
+
+        // UBAH BAGIAN INI (cukup 'export' saja):
+        Route::get('/export/{proyek}', [MonitoringWil1Controller::class, 'exportZip'])->name('export');
+
+        Route::post('/document/update/{id}', [MonitoringWil1Controller::class, 'updateDocument'])->name('document.update');
+        Route::delete('/document/destroy/{id}', [MonitoringWil1Controller::class, 'destroyDocument'])->name('document.destroy');
+        Route::post('/document/reorder', [MonitoringWil1Controller::class, 'reorderDocuments'])->name('document.reorder');
+    });
+
+    // --- ROUTE MONITORING WILAYAH 2 ---
+    Route::prefix('monitoringwil2')->name('monitoringwil2.')->group(function () {
+        // Taruh route spesifik SEBELUM route wildcard /{proyek_id} agar tidak bertabrakan
+        Route::get('/resume-progress', [MonitoringWil2Controller::class, 'resumeProgress'])->name('resume_progress');
+        Route::get('/print', [MonitoringWil2Controller::class, 'print'])->name('print');
+        
+        Route::get('/{proyek_id}', [MonitoringWil2Controller::class, 'index'])->name('index');
+        Route::post('/store/{proyek_id}', [MonitoringWil2Controller::class, 'store'])->name('store');
+        Route::post('/update/{id}', [MonitoringWil2Controller::class, 'update'])->name('update');
+        Route::delete('/destroy/{id}', [MonitoringWil2Controller::class, 'destroy'])->name('destroy');
+
+        // UBAH JUGA BAGIAN INI (cukup 'export' saja):
+        Route::get('/export/{proyek}', [MonitoringWil2Controller::class, 'export'])->name('export');
+
+        Route::post('/document/update/{id}', [MonitoringWil2Controller::class, 'updateDocument'])->name('document.update');
+        Route::delete('/document/destroy/{id}', [MonitoringWil2Controller::class, 'destroyDocument'])->name('document.destroy');
+        Route::post('/document/reorder', [MonitoringWil2Controller::class, 'reorderDocuments'])->name('document.reorder');
+    });
+    // });
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store

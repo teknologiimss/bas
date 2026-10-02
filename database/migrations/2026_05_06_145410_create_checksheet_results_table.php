@@ -13,14 +13,19 @@ class CreateChecksheetResultsTable extends Migration
      */
     public function up()
     {
-        Schema::table('checksheet_results', function (Blueprint $table) {
+        Schema::create('checksheet_results', function (Blueprint $table) {
+            $table->id();
+            
+            // Menggunakan foreignId bawaan Laravel (lebih ringkas)
+            $table->foreignId('item_id')
+                  ->constrained('checksheet_items')
+                  ->onDelete('cascade');
 
-            // buat foreign baru
-            $table->foreign('item_id')
-                ->references('id')
-                ->on('checksheet_items')
-                ->onDelete('cascade');
+            // Tambahkan kolom lain di sini jika ada, contoh:
+            // $table->string('result')->nullable();
+            // $table->text('notes')->nullable();
 
+            $table->timestamps();
         });
     }
 
