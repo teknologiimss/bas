@@ -12,14 +12,11 @@ class DashboardMroController extends Controller
 {
     public function index(Request $request)
     {
-        // 1. Fetch Data Monitoring Progres MRO (Semua Tahun / All Time)
-        $allMonitorings = Monitoring::with('documents')->get();
+        // Filter Tahun (Default tahun berjalan)
+        $tahun = $request->get('tahun', date('Y'));
 
-        $statusCounts = [
-            'Open' => $allMonitorings->where('status', 'Open')->count(),
-            'Closed' => $allMonitorings->where('status', 'Closed')->count(),
-            'On Hold' => $allMonitorings->where('status', 'On Hold')->count(),
-        ];
+        // 1. Fetch Data Monitoring Progres MRO
+        $allMonitorings = Monitoring::with('documents')->get();
 
         // 2. Notifikasi Kontrak
         $notifCounts = [
@@ -44,12 +41,9 @@ class DashboardMroController extends Controller
             }
         }
 
-        // 3. METRIK CARD SUMMARY KPI (Akumulasi Semua Tahun)
+        // 3. METRIK CARD SUMMARY KPI
         $totalKontrak = $allMonitorings->count();
-
-        // Memastikan Pekerjaan Selesai secara eksplisit menghitung seluruh status 'Closed' akumulasi semua tahun
         $totalSelesai = $allMonitorings->where('status', 'Closed')->count();
-
         $kontrakKritis = $notifCounts['h7'] + $notifCounts['berakhir'];
 
         // Kalkulasi Rata-rata Progress Pekerjaan MRO
@@ -61,21 +55,21 @@ class DashboardMroController extends Controller
             ? round($totalProgressSum / $totalKontrak, 1)
             : 0;
 
-        // 4. Kalkulasi Data Jatuh Tempo Kontrak per Bulan (Khusus Grafik - Berdasarkan Filter Tahun)
-        $tahun = $request->get('tahun', date('Y'));
-
-        $dueDateSelesai = array_fill(1, 12, 0);  // Selesai / Closed
-        $dueDateBelumSelesai = array_fill(1, 12, 0);  // Belum Selesai (Open/On Hold/Lainnya)
+        // 4. Kalkulasi Data Jatuh Tempo Kontrak per Bulan (Inisialisasi Indeks 0 - 11 untuk Jan - Des)
+        $dueDateSelesai = array_fill(0, 12, 0);  // Status Closed
+        $dueDateBelumSelesai = array_fill(0, 12, 0);  // Status Non-Closed
 
         foreach ($allMonitorings as $m) {
             if (!empty($m->tanggal_selesai_kontrak)) {
                 $date = Carbon::parse($m->tanggal_selesai_kontrak);
                 if ($date->year == $tahun) {
-                    $month = $date->month;
+                    // Konversi Bulan (1-12) ke Indeks Array (0-11)
+                    $monthIndex = $date->month - 1;
+
                     if ($m->status === 'Closed') {
-                        $dueDateSelesai[$month]++;
+                        $dueDateSelesai[$monthIndex]++;
                     } else {
-                        $dueDateBelumSelesai[$month]++;
+                        $dueDateBelumSelesai[$monthIndex]++;
                     }
                 }
             }
@@ -86,7 +80,7 @@ class DashboardMroController extends Controller
             ->latest()
             ->get();
 
-        // 6. KALKULASI PM 1 TAHUN (Khusus Grafik Gauge - Berdasarkan Filter Tahun)
+        // 6. KALKULASI PM 1 TAHUN (Khusus Gauge Chart)
         $totalAsset = Asset::count();
         $totalPersen12Bulan = 0;
 
@@ -107,7 +101,6 @@ class DashboardMroController extends Controller
         $pmYearlyPercentage = round($totalPersen12Bulan / 12, 2);
 
         return view('dashboard.mro', compact(
-            'statusCounts',
             'notifCounts',
             'totalKontrak',
             'totalSelesai',
