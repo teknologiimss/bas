@@ -500,7 +500,7 @@
 
 
                                 {{-- PO --}}
-                                <td>
+                                {{-- <td>
 
                                     @if (Auth::user()->role == 17)
                                         <span class="font-weight-bold text-dark">
@@ -533,6 +533,56 @@
                                         @endif
                                     @endif
 
+                                </td> --}}
+
+                                {{-- PO --}}
+                                <td>
+                                    @php
+                                        $userRole = Auth::user()->role;
+                                        $divisi = $m->divisi;
+                                        $po = $m->po_nota_dinas;
+                                        $proyekId = $m->proyek_id;
+
+                                        // Tentukan route berdasarkan divisi
+                                        $targetRoute = match ($divisi) {
+                                            'MRO' => route('monitoring.index', $proyekId),
+                                            'Wilayah 1' => route('monitoringwil1.index', $proyekId),
+                                            'Wilayah 2' => route('monitoringwil2.index', $proyekId),
+                                            default => null,
+                                        };
+
+                                        // Cek izin klik berdasarkan role user & divisi data
+                                        $canClick = false;
+
+                                        // Admin (0) bisa klik semua
+                                        if ($userRole == 0) {
+                                            $canClick = true;
+                                        }
+                                        // User MRO / Admin MRO (Role 14)
+                                        elseif ($userRole == 14 && $divisi === 'MRO') {
+                                            $canClick = true;
+                                        }
+                                        // User Wilayah 1 / Admin Wil1 (Role 2, 8)
+                                        elseif (in_array($userRole, [2, 8]) && $divisi === 'Wilayah 1') {
+                                            $canClick = true;
+                                        }
+                                        // User Wilayah 2 / Admin Wil2 (Role 3, 9)
+                                        elseif (in_array($userRole, [3, 9]) && $divisi === 'Wilayah 2') {
+                                            $canClick = true;
+                                        }
+                                    @endphp
+
+                                    {{-- Tampilkan Link jika diizinkan, jika tidak tampilkan Teks Biasa --}}
+                                    @if ($canClick && $targetRoute)
+                                        <a href="{{ $targetRoute }}?po={{ urlencode(trim($po)) }}"
+                                            class="text-primary font-weight-bold">
+                                            {{ $po }}
+                                        </a>
+                                    @else
+                                        <span class="font-weight-bold text-dark">
+                                            {{ $po }}
+                                        </span>
+                                    @endif
                                 </td>
 
 
