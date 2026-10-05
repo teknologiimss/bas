@@ -1177,7 +1177,7 @@ Route::prefix('products')->group(function () {
 
         Route::get('/{proyek_id}', [MonitoringWil1Controller::class, 'index'])->name('index');
         Route::post('/store/{proyek_id}', [MonitoringWil1Controller::class, 'store'])->name('store');
-        Route::post('/update/{id}', [MonitoringWil1Controller::class, 'update'])->name('update');
+        Route::put('/update/{id}', [MonitoringWil1Controller::class, 'update'])->name('update');
         Route::delete('/destroy/{id}', [MonitoringWil1Controller::class, 'destroy'])->name('destroy');
 
         // UBAH BAGIAN INI (cukup 'export' saja):
@@ -1196,7 +1196,7 @@ Route::prefix('products')->group(function () {
 
         Route::get('/{proyek_id}', [MonitoringWil2Controller::class, 'index'])->name('index');
         Route::post('/store/{proyek_id}', [MonitoringWil2Controller::class, 'store'])->name('store');
-        Route::post('/update/{id}', [MonitoringWil2Controller::class, 'update'])->name('update');
+        Route::put('/update/{id}', [MonitoringWil2Controller::class, 'update'])->name('update');
         Route::delete('/destroy/{id}', [MonitoringWil2Controller::class, 'destroy'])->name('destroy');
 
         // UBAH JUGA BAGIAN INI (cukup 'export' saja):
