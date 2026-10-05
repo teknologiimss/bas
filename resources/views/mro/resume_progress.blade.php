@@ -449,7 +449,7 @@
 
                 <ul class="mb-0" style="line-height: 1.9;">
                     <li>
-                        <b>Nota Dinas / SO / PO</b>
+                        <b>SO / PO / KO</b>
                         = <span class="badge badge-primary">30%</span>
                     </li>
 
