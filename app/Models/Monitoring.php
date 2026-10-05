@@ -71,14 +71,14 @@ class Monitoring extends Model
     /**
      * Cek Nota Dinas
      */
-    public function hasNotaDinas(): bool
-    {
-        $docs = $this->getDocumentNames();
+    // public function hasNotaDinas(): bool
+    // {
+    //     $docs = $this->getDocumentNames();
 
-        return $docs->contains(fn($d) =>
-            str_contains($d, 'nota') ||
-            str_contains($d, 'nota dinas'));
-    }
+    //     return $docs->contains(fn($d) =>
+    //         str_contains($d, 'nota') ||
+    //         str_contains($d, 'nota dinas'));
+    // }
 
     /**
      * Cek PO
@@ -108,9 +108,9 @@ class Monitoring extends Model
     public function progressColor(): string
     {
         // 1. Jika BELUM ada PO → merah (nota dinas)
-        if (!$this->hasPO()) {
-            return '#ef4444';
-        }
+        // if (!$this->hasPO()) {
+        //     return '#ef4444';
+        // }
 
         // 2. Jika SUDAH 100% → hijau
         if ($this->progress >= 100) {
@@ -137,7 +137,7 @@ class Monitoring extends Model
 
         if ($docs->contains(fn($d) =>
                 str_contains($d, 'po') ||
-                str_contains($d, 'nota dinas') ||
+                // str_contains($d, 'nota dinas') ||
                 str_contains($d, 'so') ||
                 str_contains($d, 'purchase order'))) {
             $progress += 30;
