@@ -282,12 +282,12 @@
         @endif
 
         {{-- PROSES HITUNG AKUMULASI DARI SELURUH DATA --}}
-        @php
+        {{-- @php
             $grandTotalRealisasi = 0;
             foreach ($monitorings as $item) {
                 $grandTotalRealisasi += $item->documents->where('kriteria', 'Realisasi')->sum('harga');
             }
-        @endphp
+        @endphp --}}
 
         {{-- STATISTIC CARD SUMMARY --}}
         <div class="row mb-3">
