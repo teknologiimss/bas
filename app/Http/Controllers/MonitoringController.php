@@ -27,6 +27,28 @@ class MonitoringController extends Controller
     // }
 
     // Klik PO/Nodin Spesifik ke Halaman Monitoring
+    // public function index(Request $request, $proyek_id)
+    // {
+    //     $proyek = Proyek::findOrFail($proyek_id);
+
+    //     $query = Monitoring::with('documents', 'folders.documents')
+    //         ->where('proyek_id', $proyek_id);
+
+    //     // 🔍 Filter PO / Nota Dinas
+    //     if ($request->filled('po')) {
+    //         $query->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
+    //     }
+
+    //     // 🔍 Filter Nama Pekerjaan
+    //     if ($request->filled('pekerjaan')) {
+    //         $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
+    //     }
+
+    //     $monitorings = $query->latest()->get();
+
+    //     return view('monitoring.index', compact('proyek', 'monitorings'));
+    // }
+
     public function index(Request $request, $proyek_id)
     {
         $proyek = Proyek::findOrFail($proyek_id);
@@ -44,9 +66,38 @@ class MonitoringController extends Controller
             $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
         }
 
+        // 💰 1. Total Realisasi dari dokumen yang melekat langsung di Monitoring
+        $totalDirectRealisasi = Document::where('kriteria', 'Realisasi')
+            ->whereHas('monitoring', function ($q) use ($proyek_id, $request) {
+                $q->where('proyek_id', $proyek_id);
+                if ($request->filled('po')) {
+                    $q->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
+                }
+                if ($request->filled('pekerjaan')) {
+                    $q->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
+                }
+            })
+            ->sum('harga');
+
+        // 💰 2. Total Realisasi dari dokumen yang ada di dalam Folder
+        $totalFolderRealisasi = MonitoringDocument::where('kriteria', 'Realisasi')
+            ->whereHas('folder.monitoring', function ($q) use ($proyek_id, $request) {
+                $q->where('proyek_id', $proyek_id);
+                if ($request->filled('po')) {
+                    $q->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
+                }
+                if ($request->filled('pekerjaan')) {
+                    $q->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
+                }
+            })
+            ->sum('harga');
+
+        // Total gabungan seluruhnya
+        $grandTotalRealisasi = $totalDirectRealisasi + $totalFolderRealisasi;
+
         $monitorings = $query->latest()->get();
 
-        return view('monitoring.index', compact('proyek', 'monitorings'));
+        return view('monitoring.index', compact('proyek', 'monitorings', 'grandTotalRealisasi'));
     }
 
     public function resumeProgress(Request $request)
