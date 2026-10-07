@@ -170,9 +170,9 @@
                 <th>Nama Pekerjaan</th>
                 <th width="60">Tanggal Kontrak</th>
                 <th width="60">Selesai Kontrak</th>
-                {{-- <th width="45">Status</th> --}}
-                {{-- <th width="65">Progress</th> --}}
                 <th>Keterangan Progress</th>
+                <th width="100">Realisasi Bulan Ini</th>
+                <th width="100">Total Realisasi s/d Bulan Ini</th>
                 <th width="140">Status Dokumen Terakhir</th>
                 <th width="65">Status Kontrak</th>
             </tr>
@@ -203,6 +203,39 @@
 
                     // Panggilan helper/method Notif Kontrak
                     $notif = $m->notifKontrak();
+
+                    // --- KALKULASI REALISASI ---
+                    // Total Realisasi (Seluruh dokumen bernilai Realisasi)
+                    $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
+
+                    // Filter dokumen yang memiliki harga > 0 dan kelompokkan per bulan
+                    $groupedPriceDocs = $m->documents
+                        ->filter(fn($doc) => !is_null($doc->harga) && $doc->harga > 0)
+                        ->groupBy(function ($doc) {
+                            $date = $doc->tanggal_closed ?? $doc->created_at;
+                            return \Carbon\Carbon::parse($date)->format('Y-m');
+                        })
+                        ->sortByDesc(function ($group, $key) {
+                            return $key;
+                        });
+
+                    $latestMonthGroup = $groupedPriceDocs->first();
+                    $latestPriceDoc = null;
+                    $totalHargaBulanIni = 0;
+
+                    if ($latestMonthGroup) {
+                        $latestPriceDoc = $latestMonthGroup
+                            ->sortByDesc(function ($doc) {
+                                return $doc->created_at ?? $doc->id;
+                            })
+                            ->first();
+
+                        if ($latestPriceDoc && $latestPriceDoc->kriteria == 'Realisasi') {
+                            $totalHargaBulanIni = $latestMonthGroup->where('kriteria', 'Realisasi')->sum('harga');
+                        } else {
+                            $totalHargaBulanIni = $latestPriceDoc->harga ?? 0;
+                        }
+                    }
                 @endphp
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
@@ -214,16 +247,6 @@
                     <td class="text-center">
                         {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                     </td>
-                    {{-- <td class="text-center">
-                        <span class="badge {{ $statusClass }}">{{ $m->status }}</span>
-                    </td>
-                    <td>
-                        <div class="progress">
-                            <div class="progress-bar {{ $progressBarClass }}" style="width: {{ $progressVal }}%;">
-                            </div>
-                            <div class="progress-text">{{ $m->progress }}%</div>
-                        </div>
-                    </td> --}}
                     <td>
                         @php
                             $text = trim($m->keterangan2 ?? '-');
@@ -236,6 +259,41 @@
                             }
                         @endphp
                     </td>
+
+                    {{-- REALISASI BULAN INI --}}
+                    <td class="text-center">
+                        @if ($latestPriceDoc)
+                            <div class="doc-card">
+                                <div class="font-bold">
+                                    Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }}
+                                </div>
+                                <div style="margin-top: 2px;">
+                                    @if ($latestPriceDoc->jenis_dokumen)
+                                        <span class="badge badge-secondary" style="font-size: 7px;">
+                                            {{ $latestPriceDoc->jenis_dokumen }}
+                                        </span>
+                                    @endif
+                                    @if ($latestPriceDoc->tanggal_closed)
+                                        <span class="badge badge-info" style="font-size: 7px;">
+                                            {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed)->isoFormat('MMM YYYY') }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        @else
+                            <span style="color: #94a3b8; font-style: italic;">-</span>
+                        @endif
+                    </td>
+
+                    {{-- TOTAL REALISASI S/D BULAN INI --}}
+                    <td class="text-center">
+                        <div class="doc-card">
+                            <div class="font-bold" style="color: #10b981;">
+                                Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
+                            </div>
+                        </div>
+                    </td>
+
                     <td>
                         @if ($latestDoc)
                             <div class="doc-card">
