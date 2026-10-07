@@ -293,6 +293,7 @@
                             <th width="140">Progress</th>
                             <th>Keterangan Progress</th>
                             <th width="200">Realisasi Bulan Ini</th>
+                            <th width="180">Total Realisasi s/d Bulan Ini</th>
                             <th width="260">Status Dokumen Terakhir</th>
                             <th>Notifikasi</th>
                         </tr>
@@ -308,6 +309,9 @@
                                     default => 'badge badge-secondary',
                                 };
                                 $latestDoc = $m->documents->last();
+
+                                // Total Realisasi (Seluruh dokumen bernilai Realisasi)
+                                $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
                                 
                                  // 1. Filter dokumen yang memiliki harga > 0
                                 $groupedPriceDocs = $m->documents
@@ -436,6 +440,15 @@
                                     @else
                                         <span class="text-muted font-italic small">-</span>
                                     @endif
+                                </td>
+
+                                {{-- TOTAL REALISASI S/D BULAN INI --}}
+                                <td class="text-center">
+                                    <div class="p-2 border rounded bg-white shadow-sm">
+                                        <div class="fw-bold text-success fs-6">
+                                            <b>Rp {{ number_format($totalRealisasi, 0, ',', '.') }}</b>
+                                        </div>
+                                    </div>
                                 </td>
 
                                 {{-- TABEL STATUS DOKUMEN TERAKHIR --}}
