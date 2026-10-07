@@ -292,6 +292,7 @@
                             <th>Status</th>
                             <th width="140">Progress</th>
                             <th>Keterangan Progress</th>
+                            <th width="200">Realisasi Bulan ini</th>
                             <th width="260">Status Dokumen Terakhir</th>
                             <th>Notifikasi</th>
                         </tr>
@@ -308,6 +309,42 @@
                                 };
                                 // Mengambil dokumen terakhir yang di-upload
                                 $latestDoc = $m->documents->last();
+
+                                 // 1. Filter dokumen yang memiliki harga > 0
+                                $groupedPriceDocs = $m->documents
+                                    ->filter(fn($doc) => !is_null($doc->harga) && $doc->harga > 0)
+                                    ->groupBy(function ($doc) {
+                                        $date = $doc->tanggal_closed ?? $doc->created_at;
+                                        return \Carbon\Carbon::parse($date)->format('Y-m');
+                                    })
+                                    ->sortByDesc(function ($group, $key) {
+                                        return $key; // Urutkan berdasarkan kunci bulan paling baru (YYYY-MM)
+                                    });
+
+                                // 2. Ambil grup bulan terbaru
+                                $latestMonthGroup = $groupedPriceDocs->first();
+
+                                $latestPriceDoc = null;
+                                $totalHargaBulanIni = 0;
+
+                                if ($latestMonthGroup) {
+                                    // Ambil sample dokumen terakhir di bulan tersebut untuk referensi atribut badge
+                                    $latestPriceDoc = $latestMonthGroup
+                                        ->sortByDesc(function ($doc) {
+                                            return $doc->created_at ?? $doc->id;
+                                        })
+                                        ->first();
+
+                                    // Jika kriteria dokumen terbaru adalah Realisasi, jumlahkan harga seluruh dokumen Realisasi di bulan tersebut
+                                    if ($latestPriceDoc && $latestPriceDoc->kriteria == 'Realisasi') {
+                                        $totalHargaBulanIni = $latestMonthGroup
+                                            ->where('kriteria', 'Realisasi')
+                                            ->sum('harga');
+                                    } else {
+                                        // Jika Rencana, gunakan harga dari dokumen rencana tersebut
+                                        $totalHargaBulanIni = $latestPriceDoc->harga ?? 0;
+                                    }
+                                }
                             @endphp
 
                             <tr>
@@ -364,6 +401,42 @@
                                             echo implode(', ', $lines);
                                         }
                                     @endphp
+                                </td>
+
+                                {{-- REALISASI BULAN INI --}}
+                                <td class="text-center">
+                                    @if ($latestPriceDoc)
+                                        <div class="p-2 border rounded bg-white shadow-sm">
+                                            <div class="fw-bold text-dark fs-6"> 
+                                                  <b>  Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }} </b>
+                                            </div>
+
+                                            <div
+                                                class="mt-1 d-flex justify-content-center gap-1 align-items-center flex-wrap">
+                                                {{-- @if ($latestPriceDoc->kriteria == 'Rencana')
+                                                    <span class="badge badge-primary text-white"
+                                                        style="font-size: 10px;">Rencana</span>
+                                                @elseif ($latestPriceDoc->kriteria == 'Realisasi')
+                                                    <span class="badge badge-success text-white"
+                                                        style="font-size: 10px;">Realisasi</span>
+                                                @endif --}}
+
+                                                @if ($latestPriceDoc->jenis_dokumen)
+                                                    <span class="badge badge-secondary text-white" style="font-size: 10px;">
+                                                        {{ $latestPriceDoc->jenis_dokumen }}
+                                                    </span>
+                                                @endif
+
+                                                @if ($latestPriceDoc->tanggal_closed)
+                                                    <span class="badge badge-info text-white" style="font-size: 10px;">
+                                                        {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed)->isoFormat('MMM YYYY') }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @else
+                                        <span class="text-muted font-italic small">-</span>
+                                    @endif
                                 </td>
 
                                 {{-- TABEL STATUS DOKUMEN TERAKHIR --}}
