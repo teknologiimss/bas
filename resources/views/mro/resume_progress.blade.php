@@ -42,6 +42,32 @@
             animation: fadeDown .6s ease;
         }
 
+        /* ================= SUMMARY STAT CARD ================= */
+        .stat-card {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #fff;
+            border-radius: 14px;
+            padding: 18px 24px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, .15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-card .stat-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #4ade80;
+        }
+
         /* ================= TABLE ================= */
         .table {
             border-radius: 12px;
@@ -58,6 +84,13 @@
             color: white;
             border: none;
             letter-spacing: .5px;
+        }
+
+        tfoot.tfoot-summary th {
+            background: #f1f5f9;
+            color: var(--navy);
+            border-top: 2px solid #cbd5e1;
+            font-size: 0.95rem;
         }
 
         tbody tr {
@@ -248,6 +281,30 @@
             </div>
         @endif
 
+        {{-- PROSES HITUNG AKUMULASI DARI SELURUH DATA --}}
+        @php
+            $grandTotalRealisasi = 0;
+            foreach ($monitorings as $item) {
+                $grandTotalRealisasi += $item->documents->where('kriteria', 'Realisasi')->sum('harga');
+            }
+        @endphp
+
+        {{-- STATISTIC CARD SUMMARY --}}
+        <div class="row mb-3">
+            <div class="col-md-6 col-lg-4">
+                <div class="stat-card">
+                    <div>
+                        <div class="stat-title">TOTAL AKUMULASI REALISASI</div>
+                        <div class="stat-value">Rp {{ number_format($grandTotalRealisasi, 0, ',', '.') }}</div>
+                    </div>
+                    <div class="p-3 bg-white bg-opacity-10 rounded-circle text-center"
+                        style="width: 50px; height: 50px; line-height: 20px;">
+                        💰
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- FILTER --}}
         <div class="card mb-3 no-print">
             <div class="card-body">
@@ -314,7 +371,7 @@
                                 // Total Realisasi (Seluruh dokumen bernilai Realisasi)
                                 $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
 
-                                 // 1. Filter dokumen yang memiliki harga > 0
+                                // 1. Filter dokumen yang memiliki harga > 0
                                 $groupedPriceDocs = $m->documents
                                     ->filter(fn($doc) => !is_null($doc->harga) && $doc->harga > 0)
                                     ->groupBy(function ($doc) {
@@ -411,20 +468,12 @@
                                 <td class="text-center">
                                     @if ($latestPriceDoc)
                                         <div class="p-2 border rounded bg-white shadow-sm">
-                                            <div class="fw-bold text-dark fs-6"> 
-                                                  <b>  Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }} </b>
+                                            <div class="fw-bold text-dark fs-6">
+                                                <b> Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }} </b>
                                             </div>
 
                                             <div
                                                 class="mt-1 d-flex justify-content-center gap-1 align-items-center flex-wrap">
-                                                {{-- @if ($latestPriceDoc->kriteria == 'Rencana')
-                                                    <span class="badge badge-primary text-white"
-                                                        style="font-size: 10px;">Rencana</span>
-                                                @elseif ($latestPriceDoc->kriteria == 'Realisasi')
-                                                    <span class="badge badge-success text-white"
-                                                        style="font-size: 10px;">Realisasi</span>
-                                                @endif --}}
-
                                                 @if ($latestPriceDoc->jenis_dokumen)
                                                     <span class="badge badge-secondary text-white" style="font-size: 10px;">
                                                         {{ $latestPriceDoc->jenis_dokumen }}
@@ -485,11 +534,6 @@
                                                 </div>
                                             @endif
 
-                                            {{-- @if ($latestDoc->keterangan_closed)
-                                                <div class="text-muted small">
-                                                    <b>Ket:</b> {{ $latestDoc->keterangan_closed }}
-                                                </div>
-                                            @endif --}}
                                             @if ($latestDoc->keterangan_closed)
                                                 <div class="text-danger small font-weight-bold">
                                                     <b>Ket:</b> <span
@@ -515,12 +559,29 @@
 
                         @empty
                             <tr>
-                                <td colspan="10" class="text-center text-muted">
+                                <td colspan="12" class="text-center text-muted">
                                     Tidak ada data monitoring
                                 </td>
                             </tr>
                         @endforelse
                     </tbody>
+
+                    {{-- FOOTER TABLE SUMMARY --}}
+                    @if ($monitorings->count() > 0)
+                        <tfoot class="tfoot-summary">
+                            <tr>
+                                <th colspan="9" class="text-right font-weight-bold py-3 pr-3">
+                                    TOTAL KESELURUHAN REALISASI :
+                                </th>
+                                <th class="text-center py-3">
+                                    <span class="badge badge-success px-3 py-2" style="font-size: 13px;">
+                                        Rp {{ number_format($grandTotalRealisasi, 0, ',', '.') }}
+                                    </span>
+                                </th>
+                                <th colspan="2"></th>
+                            </tr>
+                        </tfoot>
+                    @endif
                 </table>
 
             </div>
