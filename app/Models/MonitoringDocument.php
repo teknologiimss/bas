@@ -8,11 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class MonitoringDocument extends Model
 {
     use HasFactory;
+
     protected $table = 'monitoring_documents';
+
     protected $fillable = [
         'monitoring_id',
         'nama_dokumen',
-        'file_path'
+        'jenis_dokumen',
+        'harga',
+        'kriteria',
+        'file_path',
+        'status',
+        'tanggal_closed',
+        'keterangan_closed',
+        'position'
     ];
 
     public function monitoring()

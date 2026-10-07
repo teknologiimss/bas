@@ -12,8 +12,16 @@ class MonitoringWil1Document extends Model
     protected $table = 'monitoringwil1_documents';
 
     protected $fillable = [
-        'monitoringwil1_id', 'position', 'nama_dokumen', 'file_path',
-        'status', 'tanggal_closed', 'keterangan_closed'
+        'monitoringwil1_id',
+        'position',
+        'nama_dokumen',
+        'file_path',
+        'status',
+        'tanggal_closed',
+        'keterangan_closed',
+        'jenis_dokumen',
+        'harga',
+        'kriteria',
     ];
 
     public function monitoring()

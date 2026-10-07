@@ -68,9 +68,7 @@ class Monitoring extends Model
             ->map(fn($d) => strtolower($d));
     }
 
-    /**
-     * Cek Nota Dinas
-     */
+    /** Cek Nota Dinas */
     // public function hasNotaDinas(): bool
     // {
     //     $docs = $this->getDocumentNames();
@@ -339,5 +337,15 @@ class Monitoring extends Model
         }
 
         return null;
+    }
+
+    public function getTotalRencanaAttribute()
+    {
+        return $this->documents()->where('kriteria', 'Rencana')->sum('harga');
+    }
+
+    public function getTotalRealisasiAttribute()
+    {
+        return $this->documents()->where('kriteria', 'Realisasi')->sum('harga');
     }
 }

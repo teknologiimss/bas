@@ -625,6 +625,81 @@
                     </div>
                 </div>
 
+
+                <!-- ========================================== -->
+                <!-- RINGKASAN TOTAL HARGA (RENCANA VS REALISASI) -->
+                <!-- ========================================== -->
+                @php
+                    $totalRencana = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+                    $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
+                    $selisih = $totalRealisasi - $totalRencana;
+                @endphp
+
+                <div class="row g-3 mb-4">
+                    <!-- Card Total Rencana -->
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 bg-white"
+                            style="border-left: 5px solid #0d6efd !important;">
+                            <div class="card-body p-3 d-flex align-items-center">
+                                <div class="rounded-circle p-3 me-3 bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px; flex-shrink: 0;">
+                                    <i class="fa fa-calculator fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="text-muted small fw-semibold text-uppercase d-block"
+                                        style="font-size: 0.75rem; letter-spacing: 0.5px;"><b>Total Rencana SO/PO</b></span>
+                                    <div
+                                        class="badge bg-primary text-white fs-6 fw-bold mt-1 px-3 py-2 rounded-pill shadow-sm">
+                                        Rp {{ number_format($totalRencana, 0, ',', '.') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Total Realisasi -->
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 bg-white"
+                            style="border-left: 5px solid #198754 !important;">
+                            <div class="card-body p-3 d-flex align-items-center">
+                                <div class="rounded-circle p-3 me-3 bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px; flex-shrink: 0;">
+                                    <i class="fa fa-file-invoice-dollar fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="text-muted small fw-semibold text-uppercase d-block"
+                                        style="font-size: 0.75rem; letter-spacing: 0.5px;"><b>Total Realisasi</b></span>
+                                    <div
+                                        class="badge bg-success text-white fs-6 fw-bold mt-1 px-3 py-2 rounded-pill shadow-sm">
+                                        Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Selisih (Deviasi) -->
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 bg-white"
+                            style="border-left: 5px solid {{ $selisih < 0 ? '#dc3545' : '#0dcaf0' }} !important;">
+                            <div class="card-body p-3 d-flex align-items-center">
+                                <div class="rounded-circle p-3 me-3 {{ $selisih < 0 ? 'bg-danger bg-opacity-10 text-danger' : 'bg-info bg-opacity-10 text-info' }} d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px; flex-shrink: 0;">
+                                    <i class="fa {{ $selisih < 0 ? 'fa-arrow-down' : 'fa-check-circle' }} fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="text-muted small fw-semibold text-uppercase d-block"
+                                        style="font-size: 0.75rem; letter-spacing: 0.5px;"><b>Selisih</b></span>
+                                    <div
+                                        class="badge {{ $selisih < 0 ? 'bg-danger' : 'bg-info' }} text-white fs-6 fw-bold mt-1 px-3 py-2 rounded-pill shadow-sm">
+                                        Rp {{ number_format($selisih, 0, ',', '.') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 @if ($m->documents->count())
                     <div class="mt-4 document-section" data-monitor-id="{{ $m->id }}">
                         <div class="dokumen-header">
@@ -667,7 +742,8 @@
                                                 data-id="{{ $doc->id }}">
                                         </div>
 
-                                        <div class="col">
+                                        {{-- Status Dokumen --}}
+                                        {{-- <div class="col">
                                             <label class="small fw-semibold mb-1">Status Dokumen</label>
                                             <select class="form-select form-select-sm doc-status"
                                                 data-id="{{ $doc->id }}">
@@ -702,7 +778,105 @@
                                                     🗑️ Hapus
                                                 </button>
                                             </div>
+                                        </div> --}}
+
+                                        <div class="col">
+                                            <label class="small fw-semibold mb-1">Status Dokumen</label>
+                                            <select class="form-select form-select-sm doc-status"
+                                                data-id="{{ $doc->id }}">
+                                                <option value="-" {{ $doc->status == '-' ? 'selected' : '' }}>-
+                                                </option>
+                                                <option value="Nok" {{ $doc->status == 'Nok' ? 'selected' : '' }}>🔴
+                                                    NOK</option>
+                                                <option value="Closed" {{ $doc->status == 'Closed' ? 'selected' : '' }}>🟢
+                                                    OK</option>
+                                            </select>
+
+                                            <!-- Form Tambahan Tampil Hanya Jika Status Closed -->
+                                            <div
+                                                class="closed-extra mt-2 transition {{ $doc->status == 'Closed' ? '' : 'd-none' }}">
+                                                <div class="alert alert-success py-2 px-3 small mb-2">
+                                                    ✅ Dokumen Closed / OK
+                                                </div>
+
+                                                <div class="row g-2 mb-2">
+                                                    <!-- Input Jenis Dokumen -->
+                                                    <div class="col-md-4">
+                                                        <label class="small text-muted mb-1">Jenis Dokumen</label>
+                                                        <select class="form-select form-select-sm doc-jenis">
+                                                            <option value="">-- Pilih Jenis --</option>
+                                                            <option value="BAKP"
+                                                                {{ $doc->jenis_dokumen == 'BAKP' ? 'selected' : '' }}>BAKP
+                                                            </option>
+                                                            <option value="BAPP"
+                                                                {{ $doc->jenis_dokumen == 'BAPP' ? 'selected' : '' }}>BAPP
+                                                            </option>
+                                                            <option value="BAST"
+                                                                {{ $doc->jenis_dokumen == 'BAST' ? 'selected' : '' }}>BAST
+                                                            </option>
+                                                            <option value="BAC"
+                                                                {{ $doc->jenis_dokumen == 'BAC' ? 'selected' : '' }}>BAC
+                                                            </option>
+                                                            <option value="Laporan"
+                                                                {{ $doc->jenis_dokumen == 'Laporan' ? 'selected' : '' }}>
+                                                                Laporan</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <!-- Input Harga -->
+                                                    <div class="col-md-4">
+                                                        <label class="small text-muted mb-1">Harga (Rp)</label>
+                                                        <input type="number" step="0.01"
+                                                            class="form-control form-control-sm doc-harga"
+                                                            value="{{ $doc->harga }}" placeholder="0">
+                                                    </div>
+
+                                                    <!-- Input Kriteria -->
+                                                    <div class="col-md-4">
+                                                        <label class="small text-muted mb-1">Kriteria</label>
+                                                        <select class="form-select form-select-sm doc-kriteria">
+                                                            <option value="">-- Pilih Kriteria --</option>
+                                                            <option value="Rencana"
+                                                                {{ $doc->kriteria == 'Rencana' ? 'selected' : '' }}>Rencana
+                                                            </option>
+                                                            <option value="Realisasi"
+                                                                {{ $doc->kriteria == 'Realisasi' ? 'selected' : '' }}>
+                                                                Realisasi</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Input Tanggal Closed -->
+                                                <div class="mb-2">
+                                                    <label class="small text-muted mb-1">Tanggal Closed</label>
+                                                    <input type="date"
+                                                        class="form-control form-control-sm doc-closed-date"
+                                                        value="{{ $doc->tanggal_closed }}">
+                                                </div>
+
+                                                <!-- Input Keterangan Closed -->
+                                                <div class="mb-2">
+                                                    <textarea class="form-control form-control-sm doc-closed-note" placeholder="Keterangan Closed">{{ $doc->keterangan_closed }}</textarea>
+                                                </div>
+                                            </div>
+
+                                            <!-- Tombol Aksi -->
+                                            <div class="mt-3 d-flex gap-2">
+                                                <button class="btn btn-success btn-sm px-3 btn-update-doc"
+                                                    data-id="{{ $doc->id }}"
+                                                    data-url="{{ route('monitoringwil1.document.update', $doc->id) }}">
+                                                    💾 Simpan
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm px-3 btn-delete-doc"
+                                                    data-id="{{ $doc->id }}"
+                                                    data-url="{{ route('monitoringwil1.document.destroy', $doc->id) }}">
+                                                    🗑️ Hapus
+                                                </button>
+                                            </div>
                                         </div>
+
+
+
                                     </div>
                                 </li>
                             @endforeach
@@ -1042,7 +1216,7 @@
                             .then(res => res.json())
                             .then(data => {
                                 if (!data.success) alert(
-                                '❌ Gagal mengubah urutan dokumen.');
+                                    '❌ Gagal mengubah urutan dokumen.');
                             });
                     }
                 });
@@ -1065,21 +1239,67 @@
                 }
             });
 
+            // $(document).on('click', '.btn-update-doc', function() {
+            //     let btn = $(this);
+            //     let id = btn.data('id');
+            //     let url = btn.data('url');
+            //     let container = $('#doc-' + id);
+
+            //     let formData = new FormData();
+            //     formData.append('_token', '{{ csrf_token() }}');
+            //     formData.append('nama_dokumen', container.find('.doc-name').val());
+            //     formData.append('status', container.find('.doc-status').val());
+            //     formData.append('tanggal_closed', container.find('.doc-closed-date').val() || '');
+            //     formData.append('keterangan_closed', container.find('.doc-closed-note').val() || '');
+
+            //     let file = container.find('.doc-file')[0].files[0];
+            //     if (file) formData.append('file_dokumen', file);
+
+            //     $.ajax({
+            //         url: url,
+            //         type: 'POST',
+            //         data: formData,
+            //         processData: false,
+            //         contentType: false,
+            //         success: function(res) {
+            //             if (res.success) {
+            //                 alert('✅ ' + res.message);
+            //                 if (res.file_url) $('#file-link-' + id).attr('href', res.file_url);
+            //             } else alert('❌ Gagal memperbarui dokumen.');
+            //         }
+            //     });
+            // });
+
+            // === UPDATE DOKUMEN (AJAX) ===
             $(document).on('click', '.btn-update-doc', function() {
-                let btn = $(this);
-                let id = btn.data('id');
-                let url = btn.data('url');
+                let button = $(this);
+                let id = button.data('id');
+                let url = button.data('url');
+                let token = '{{ csrf_token() }}';
+
                 let container = $('#doc-' + id);
+                let nama_dokumen = container.find('.doc-name').val();
+                let status = container.find('.doc-status').val();
+                let jenis_dokumen = container.find('.doc-jenis').val();
+                let harga = container.find('.doc-harga').val();
+                let kriteria = container.find('.doc-kriteria').val();
+                let tanggal_closed = container.find('.doc-closed-date').val();
+                let keterangan_closed = container.find('.doc-closed-note').val();
+                let file_dokumen = container.find('.doc-file')[0].files[0];
 
                 let formData = new FormData();
-                formData.append('_token', '{{ csrf_token() }}');
-                formData.append('nama_dokumen', container.find('.doc-name').val());
-                formData.append('status', container.find('.doc-status').val());
-                formData.append('tanggal_closed', container.find('.doc-closed-date').val() || '');
-                formData.append('keterangan_closed', container.find('.doc-closed-note').val() || '');
+                formData.append('_token', token);
+                formData.append('nama_dokumen', nama_dokumen);
+                formData.append('status', status);
+                formData.append('jenis_dokumen', jenis_dokumen ? jenis_dokumen : '');
+                formData.append('harga', harga ? harga : '');
+                formData.append('kriteria', kriteria ? kriteria : '');
+                formData.append('tanggal_closed', tanggal_closed ? tanggal_closed : '');
+                formData.append('keterangan_closed', keterangan_closed ? keterangan_closed : '');
 
-                let file = container.find('.doc-file')[0].files[0];
-                if (file) formData.append('file_dokumen', file);
+                if (file_dokumen) {
+                    formData.append('file_dokumen', file_dokumen);
+                }
 
                 $.ajax({
                     url: url,
@@ -1087,11 +1307,22 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function(res) {
-                        if (res.success) {
-                            alert('✅ ' + res.message);
-                            if (res.file_url) $('#file-link-' + id).attr('href', res.file_url);
-                        } else alert('❌ Gagal memperbarui dokumen.');
+                    success: function(response) {
+                        if (response.success) {
+                            alert('✅ ' + response.message);
+                            if (response.file_url) {
+                                let link = $('#file-link-' + id);
+                                if (link.length) {
+                                    link.attr('href', response.file_url);
+                                }
+                            }
+                        } else {
+                            alert('❌ Gagal memperbarui dokumen.');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        alert('Terjadi kesalahan saat memperbarui dokumen.');
                     }
                 });
             });
