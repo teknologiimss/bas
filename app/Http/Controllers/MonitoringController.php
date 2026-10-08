@@ -66,55 +66,67 @@ class MonitoringController extends Controller
             $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
         }
 
-        // 💰 1. Total Realisasi dari dokumen yang melekat langsung di Monitoring
-        $totalDirectRealisasi = Document::where('kriteria', 'Realisasi')
-            ->whereHas('monitoring', function ($q) use ($proyek_id, $request) {
-                $q->where('proyek_id', $proyek_id);
-                if ($request->filled('po')) {
-                    $q->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
-                }
-                if ($request->filled('pekerjaan')) {
-                    $q->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
-                }
+        // 💰 HITUNG TOTAL REALISASI DARI SELURUH DATA (SEBELUM PAGINATE)
+        $grandTotalRealisasi = (clone $query)
+            ->whereHas('documents', function ($q) {
+                $q->where('kriteria', 'Realisasi');
             })
-            ->sum('harga');
+            ->get()
+            ->sum(function ($monitoring) {
+                return $monitoring->documents->where('kriteria', 'Realisasi')->sum('harga');
+            });
 
-        // 💰 2. Total Realisasi dari dokumen yang ada di dalam Folder
-        $totalFolderRealisasi = MonitoringDocument::where('kriteria', 'Realisasi')
-            ->whereHas('folder.monitoring', function ($q) use ($proyek_id, $request) {
-                $q->where('proyek_id', $proyek_id);
-                if ($request->filled('po')) {
-                    $q->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
-                }
-                if ($request->filled('pekerjaan')) {
-                    $q->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
-                }
-            })
-            ->sum('harga');
-
-        // Total gabungan seluruhnya
-        $grandTotalRealisasi = $totalDirectRealisasi + $totalFolderRealisasi;
-
-        $monitorings = $query->latest()->get();
+        // Baru jalankan pagination / get data untuk tabel
+        $monitorings = $query->latest()->paginate(10);  // atau ->get() jika pagination diatur via controller lain
 
         return view('monitoring.index', compact('proyek', 'monitorings', 'grandTotalRealisasi'));
     }
 
+    // public function resumeProgress(Request $request)
+    // {
+    //     $query = Monitoring::query();
+
+    //     if ($request->filled('po')) {
+    //         $query->where('po_nota_dinas', 'like', '%' . $request->po . '%');
+    //     }
+
+    //     if ($request->filled('pekerjaan')) {
+    //         $query->where('nama_pekerjaan', 'like', '%' . $request->pekerjaan . '%');
+    //     }
+
+    //     $monitorings = $query->paginate(10)->withQueryString();
+
+    //     return view('mro.resume_progress', compact('monitorings'));
+    // }
+
     public function resumeProgress(Request $request)
     {
-        $query = Monitoring::query();
+        // Eager load relasi documents agar perhitungan & Blade view efisien
+        $query = Monitoring::with('documents');
 
         if ($request->filled('po')) {
-            $query->where('po_nota_dinas', 'like', '%' . $request->po . '%');
+            $query->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
         }
 
         if ($request->filled('pekerjaan')) {
-            $query->where('nama_pekerjaan', 'like', '%' . $request->pekerjaan . '%');
+            $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
         }
 
+        // 💰 1. HITUNG GRAND TOTAL REALISASI UNTUK SELURUH DATA (SEBELUM PAGINATION)
+        $grandTotalRealisasi = (clone $query)
+            ->whereHas('documents', function ($q) {
+                $q->where('kriteria', 'Realisasi');
+            })
+            ->get()
+            ->sum(function ($monitoring) {
+                return $monitoring->documents->where('kriteria', 'Realisasi')->sum('harga');
+            });
+
+        // 📄 2. AMBIL DATA PAGINATION DENGAN FILTER YANG TETAP TERJAGA DENGAN denganQueryString()
         $monitorings = $query->paginate(10)->withQueryString();
 
-        return view('mro.resume_progress', compact('monitorings'));
+        // 📥 3. PASSED $grandTotalRealisasi KE VIEW
+        return view('mro.resume_progress', compact('monitorings', 'grandTotalRealisasi'));
     }
 
     public function store(Request $request, $proyek_id)
