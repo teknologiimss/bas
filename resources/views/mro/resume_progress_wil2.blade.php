@@ -42,10 +42,10 @@
             animation: fadeDown .6s ease;
         }
 
-        /* ================= TABLE ================= */
+        /* ================= TABLE & STICKY HEADER ================= */
         .table {
             border-radius: 12px;
-            overflow: hidden;
+            /* Jangan tambahkan overflow: hidden di sini agar sticky header berfungsi */
         }
 
         .table td,
@@ -53,11 +53,19 @@
             vertical-align: middle;
         }
 
+        /* FREEZE HEADER (STICKY TH) */
         thead.thead-dark th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--navy) !important;
+            /* Background solid agar konten di bawahnya tidak berbayang saat scroll */
             background: linear-gradient(135deg, var(--navy), var(--blue)) !important;
             color: white;
             border: none;
             letter-spacing: .5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /* Efek bayangan tipis di bawah header */
         }
 
         tbody tr {
@@ -179,6 +187,9 @@
         /* ================= TABLE CARD ================= */
         .table-responsive {
             border-radius: 12px;
+            max-height: 80vh;
+            /* Membatasi tinggi kontainer tabel agar scroll internal aktif jika berada di dalam card */
+            overflow-y: auto;
         }
 
         /* ================= NOTE ================= */
@@ -202,6 +213,7 @@
         /* ================= SCROLL ================= */
         ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
 
         ::-webkit-scrollbar-thumb {
