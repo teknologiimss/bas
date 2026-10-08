@@ -42,10 +42,18 @@
             animation: fadeDown .6s ease;
         }
 
-        /* ================= TABLE ================= */
+        /* ================= TABLE & FREEZE HEADER ================= */
+        .table-responsive {
+            border-radius: 12px;
+            max-height: 70vh;
+            /* Membatasi tinggi tabel agar scroll internal aktif */
+            overflow-y: auto;
+        }
+
         .table {
             border-radius: 12px;
-            overflow: hidden;
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
         .table td,
@@ -53,11 +61,17 @@
             vertical-align: middle;
         }
 
+        /* Menerapkan CSS Sticky untuk Freeze Header */
         thead.thead-dark th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
             background: linear-gradient(135deg, var(--navy), var(--blue)) !important;
             color: white;
             border: none;
             letter-spacing: .5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /* Bayangan tipis di bawah header */
         }
 
         tbody tr {
@@ -176,11 +190,6 @@
             padding: 1.5rem;
         }
 
-        /* ================= TABLE CARD ================= */
-        .table-responsive {
-            border-radius: 12px;
-        }
-
         /* ================= NOTE ================= */
         h6.text-danger {
             color: var(--navy) !important;
@@ -202,6 +211,7 @@
         /* ================= SCROLL ================= */
         ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -279,9 +289,9 @@
 
         {{-- TABLE --}}
         <div class="card shadow-sm">
-            <div class="card-body table-responsive">
+            <div class="card-body p-0 table-responsive">
 
-                <table class="table table-bordered table-hover table-striped">
+                <table class="table table-bordered table-hover table-striped mb-0">
                     <thead class="thead-dark text-center">
                         <tr>
                             <th width="40">No</th>
@@ -302,59 +312,6 @@
 
                     <tbody>
                         @forelse ($monitorings as $index => $m)
-                            {{-- @php
-                                $statusClass = match ($m->status) {
-                                    'Open' => 'badge badge-warning',
-                                    'Closed' => 'badge badge-success',
-                                    'On Hold' => 'badge badge-danger',
-                                    default => 'badge badge-secondary',
-                                };
-                                // Mengambil dokumen terakhir yang di-upload
-                                $latestDoc = $m->documents->last();
-
-                                // Total Nilai Kontrak (Seluruh dokumen berkriteria Rencana)
-                                $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-
-                                // Total Realisasi (Seluruh dokumen bernilai Realisasi)
-                                $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
-
-                                // 1. Filter dokumen yang memiliki harga > 0
-                                $groupedPriceDocs = $m->documents
-                                    ->filter(fn($doc) => !is_null($doc->harga) && $doc->harga > 0)
-                                    ->groupBy(function ($doc) {
-                                        $date = $doc->tanggal_closed ?? $doc->created_at;
-                                        return \Carbon\Carbon::parse($date)->format('Y-m');
-                                    })
-                                    ->sortByDesc(function ($group, $key) {
-                                        return $key; // Urutkan berdasarkan kunci bulan paling baru (YYYY-MM)
-                                    });
-
-                                // 2. Ambil grup bulan terbaru
-                                $latestMonthGroup = $groupedPriceDocs->first();
-
-                                $latestPriceDoc = null;
-                                $totalHargaBulanIni = 0;
-
-                                if ($latestMonthGroup) {
-                                    // Ambil sample dokumen terakhir di bulan tersebut untuk referensi atribut badge
-                                    $latestPriceDoc = $latestMonthGroup
-                                        ->sortByDesc(function ($doc) {
-                                            return $doc->created_at ?? $doc->id;
-                                        })
-                                        ->first();
-
-                                    // Jika kriteria dokumen terbaru adalah Realisasi, jumlahkan harga seluruh dokumen Realisasi di bulan tersebut
-                                    if ($latestPriceDoc && $latestPriceDoc->kriteria == 'Realisasi') {
-                                        $totalHargaBulanIni = $latestMonthGroup
-                                            ->where('kriteria', 'Realisasi')
-                                            ->sum('harga');
-                                    } else {
-                                        // Jika Rencana, gunakan harga dari dokumen rencana tersebut
-                                        $totalHargaBulanIni = $latestPriceDoc->harga ?? 0;
-                                    }
-                                }
-                            @endphp --}}
-
                             @php
                                 $statusClass = match ($m->status) {
                                     'Open' => 'badge badge-warning',
@@ -472,7 +429,6 @@
                                     @endphp
                                 </td>
 
-                                
                                 {{-- REALISASI BULAN INI --}}
                                 <td class="text-center">
                                     @if ($latestPriceDoc && $totalHargaBulanIni > 0)
