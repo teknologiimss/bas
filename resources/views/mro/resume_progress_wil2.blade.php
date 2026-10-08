@@ -33,41 +33,6 @@
             box-shadow: 0 16px 36px rgba(15, 23, 42, .12);
         }
 
-        /* ================= SUMMARY CARD ================= */
-        .summary-card {
-            background: #f0fdf4;
-            border-left: 5px solid #22c55e;
-            border-radius: 14px;
-            padding: 1.25rem 1.5rem;
-            box-shadow: 0 6px 20px rgba(34, 197, 94, .08);
-        }
-
-        .summary-card .summary-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: #15803d;
-            letter-spacing: .5px;
-            text-transform: uppercase;
-        }
-
-        .summary-card .summary-value {
-            font-size: 26px;
-            font-weight: 800;
-            color: #15803d;
-            margin-top: 4px;
-        }
-
-        .summary-icon {
-            width: 48px;
-            height: 48px;
-            background: #dcfce7;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
-
         /* ================= HEADER ================= */
         h3 {
             background: linear-gradient(90deg, var(--navy), var(--blue));
@@ -102,11 +67,6 @@
         tbody tr:hover {
             background: #f8fbff;
             transform: scale(1.003);
-        }
-
-        .grand-total-row {
-            background-color: #f1f5f9 !important;
-            font-weight: bold;
         }
 
         /* ================= LINK ================= */
@@ -281,28 +241,6 @@
             </a>
         </div>
 
-        {{-- CARD AKUMULASI REALISASI --}}
-        @php
-            $grandTotalAkumulasi =
-                $totalAkumulasiSemua ??
-                $monitorings->sum(function ($m) {
-                    return $m->documents->where('kriteria', 'Realisasi')->sum('harga');
-                });
-        @endphp
-        <div class="row mb-3 no-print">
-            <div class="col-md-4">
-                <div class="summary-card d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="summary-title">TOTAL AKUMULASI REALISASI</div>
-                        <div class="summary-value">Rp {{ number_format($grandTotalAkumulasi, 0, ',', '.') }}</div>
-                    </div>
-                    <div class="summary-icon">
-                        💰
-                    </div>
-                </div>
-            </div>
-        </div>
-
         {{-- FLASH MESSAGE --}}
         @if (session('success'))
             <div class="alert alert-success no-print">
@@ -351,6 +289,7 @@
                             <th>Nama Pekerjaan</th>
                             <th>Tanggal Kontrak</th>
                             <th>Selesai Kontrak</th>
+                            <th width="180">Nilai Kontrak</th>
                             <th>Status</th>
                             <th width="140">Progress</th>
                             <th>Keterangan Progress</th>
@@ -362,7 +301,6 @@
                     </thead>
 
                     <tbody>
-                        @php $pageTotalRealisasi = 0; @endphp
                         @forelse ($monitorings as $index => $m)
                             @php
                                 $statusClass = match ($m->status) {
@@ -373,9 +311,11 @@
                                 };
                                 $latestDoc = $m->documents->last();
 
+                                // Nilai Kontrak (Total Rencana)
+                                $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+
                                 // Total Realisasi (Seluruh dokumen bernilai Realisasi)
                                 $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
-                                $pageTotalRealisasi += $totalRealisasi;
 
                                 // 1. Filter dokumen yang memiliki harga > 0
                                 $groupedPriceDocs = $m->documents
@@ -439,6 +379,16 @@
                                 <td class="text-center">
                                     {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                                 </td>
+
+                                {{-- NILAI KONTRAK (TOTAL RENCANA) --}}
+                                <td class="text-center">
+                                    <div class="p-2 border rounded bg-white shadow-sm">
+                                        <div class="fw-bold text-dark fs-6">
+                                            <b>Rp {{ number_format($nilaiKontrak, 0, ',', '.') }}</b>
+                                        </div>
+                                    </div>
+                                </td>
+
                                 <td class="text-center">
                                     <span class="{{ $statusClass }}">
                                         {{ $m->status }}
@@ -565,29 +515,12 @@
 
                         @empty
                             <tr>
-                                <td colspan="12" class="text-center text-muted">
+                                <td colspan="13" class="text-center text-muted">
                                     Tidak ada data monitoring Wilayah 2
                                 </td>
                             </tr>
                         @endforelse
                     </tbody>
-
-                    {{-- FOOTER TABLE GRAND TOTAL --}}
-                    @if ($monitorings->count() > 0)
-                        <tfoot>
-                            <tr class="grand-total-row">
-                                <td colspan="9" class="text-right align-middle text-uppercase font-weight-bold">
-                                    Grand Total Realisasi (Halaman Ini):
-                                </td>
-                                <td class="text-center align-middle">
-                                    <span class="badge badge-success p-2" style="font-size: 14px; border-radius: 8px;">
-                                        Rp {{ number_format($pageTotalRealisasi, 0, ',', '.') }}
-                                    </span>
-                                </td>
-                                <td colspan="2"></td>
-                            </tr>
-                        </tfoot>
-                    @endif
                 </table>
 
             </div>

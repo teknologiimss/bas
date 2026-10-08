@@ -289,6 +289,7 @@
                             <th>Nama Pekerjaan</th>
                             <th>Tanggal Kontrak</th>
                             <th>Selesai Kontrak</th>
+                            <th width="160">Nilai Kontrak</th>
                             <th>Status</th>
                             <th width="140">Progress</th>
                             <th>Keterangan Progress</th>
@@ -311,10 +312,13 @@
                                 // Mengambil dokumen terakhir yang di-upload
                                 $latestDoc = $m->documents->last();
 
+                                // Total Nilai Kontrak (Seluruh dokumen berkriteria Rencana)
+                                $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+
                                 // Total Realisasi (Seluruh dokumen bernilai Realisasi)
                                 $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
 
-                                 // 1. Filter dokumen yang memiliki harga > 0
+                                // 1. Filter dokumen yang memiliki harga > 0
                                 $groupedPriceDocs = $m->documents
                                     ->filter(fn($doc) => !is_null($doc->harga) && $doc->harga > 0)
                                     ->groupBy(function ($doc) {
@@ -376,6 +380,16 @@
                                 <td class="text-center">
                                     {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                                 </td>
+
+                                {{-- NILAI KONTRAK (TOTAL RENCANA) --}}
+                                <td class="text-center">
+                                    <div class="p-2 border rounded bg-white shadow-sm">
+                                        <div class="fw-bold text-primary fs-6">
+                                            <b>Rp {{ number_format($totalNilaiKontrak, 0, ',', '.') }}</b>
+                                        </div>
+                                    </div>
+                                </td>
+
                                 <td class="text-center">
                                     <span class="{{ $statusClass }}">
                                         {{ $m->status }}
@@ -411,20 +425,12 @@
                                 <td class="text-center">
                                     @if ($latestPriceDoc)
                                         <div class="p-2 border rounded bg-white shadow-sm">
-                                            <div class="fw-bold text-dark fs-6"> 
-                                                  <b>  Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }} </b>
+                                            <div class="fw-bold text-dark fs-6">
+                                                <b> Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }} </b>
                                             </div>
 
                                             <div
                                                 class="mt-1 d-flex justify-content-center gap-1 align-items-center flex-wrap">
-                                                {{-- @if ($latestPriceDoc->kriteria == 'Rencana')
-                                                    <span class="badge badge-primary text-white"
-                                                        style="font-size: 10px;">Rencana</span>
-                                                @elseif ($latestPriceDoc->kriteria == 'Realisasi')
-                                                    <span class="badge badge-success text-white"
-                                                        style="font-size: 10px;">Realisasi</span>
-                                                @endif --}}
-
                                                 @if ($latestPriceDoc->jenis_dokumen)
                                                     <span class="badge badge-secondary text-white" style="font-size: 10px;">
                                                         {{ $latestPriceDoc->jenis_dokumen }}
@@ -455,7 +461,7 @@
                                 {{-- TABEL STATUS DOKUMEN TERAKHIR --}}
                                 <td>
                                     @if ($latestDoc)
-                                        <div class="p-2 border rounded bg-light style="font-size: 12px;">
+                                        <div class="p-2 border rounded bg-light" style="font-size: 12px;">
                                             <div
                                                 class="fw-bold text-dark mb-1 d-flex justify-content-between align-items-center">
                                                 <span>📄 <b>{{ $latestDoc->nama_dokumen }}</b></span>
@@ -485,11 +491,6 @@
                                                 </div>
                                             @endif
 
-                                            {{-- @if ($latestDoc->keterangan_closed)
-                                                <div class="text-muted small">
-                                                    <b>Ket:</b> {{ $latestDoc->keterangan_closed }}
-                                                </div>
-                                            @endif --}}
                                             @if ($latestDoc->keterangan_closed)
                                                 <div class="text-danger small font-weight-bold">
                                                     <b>Ket:</b> <span
@@ -515,7 +516,7 @@
 
                         @empty
                             <tr>
-                                <td colspan="10" class="text-center text-muted">
+                                <td colspan="13" class="text-center text-muted">
                                     Tidak ada data monitoring
                                 </td>
                             </tr>

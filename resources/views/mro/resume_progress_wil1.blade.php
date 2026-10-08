@@ -13,8 +13,6 @@
             --blue: #2563eb;
             --blue-soft: #eff6ff;
             --border: #bfdbfe;
-            --emerald: #059669;
-            --emerald-light: #ecfdf5;
         }
 
         body {
@@ -33,45 +31,6 @@
         .card:hover {
             transform: translateY(-4px);
             box-shadow: 0 16px 36px rgba(15, 23, 42, .12);
-        }
-
-        /* ================= SUMMARY STAT CARD ================= */
-        .summary-card {
-            background: linear-gradient(135deg, #ffffff, var(--emerald-light));
-            border-left: 5px solid var(--emerald);
-            border-radius: 12px;
-            padding: 1.25rem;
-            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .summary-card .title {
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #475569;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .summary-card .value {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--emerald);
-        }
-
-        .summary-card .icon-box {
-            width: 50px;
-            height: 50px;
-            background: rgba(5, 150, 105, 0.15);
-            color: var(--emerald);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
         }
 
         /* ================= HEADER ================= */
@@ -101,13 +60,6 @@
             letter-spacing: .5px;
         }
 
-        tfoot.tfoot-summary th {
-            background-color: #f1f5f9;
-            color: var(--navy);
-            font-size: 0.95rem;
-            border-top: 2px solid #cbd5e1;
-        }
-
         tbody tr {
             transition: .25s;
         }
@@ -134,28 +86,32 @@
             border-radius: 30px;
             padding: 7px 12px;
             font-weight: 500;
-            transition: .22s;
+            transition: .2s;
         }
 
         .badge:hover {
             transform: scale(1.05);
         }
 
+        /* KONTRAK BERJALAN (HIJAU) */
         .badge-success {
             background: linear-gradient(135deg, #22c55e, #16a34a) !important;
             color: white !important;
         }
 
+        /* KONTRAK TELAH BERAKHIR (MERAH) */
         .badge-danger {
             background: linear-gradient(135deg, #ef4444, #dc2626) !important;
             color: white !important;
         }
 
+        /* KONTRAK SELESAI (BIRU) */
         .badge-primary {
             background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
             color: white !important;
         }
 
+        /* AKAN BERAKHIR H-7 (KUNING / ORANGE) */
         .badge-warning {
             background: linear-gradient(135deg, #ffc107, #ff9800) !important;
             color: #222 !important;
@@ -275,13 +231,6 @@
 
     <div class="container-fluid mt-4">
 
-        {{-- CALCULATE TOTAL AKUMULASI DARI DATA HALAMAN INI --}}
-        @php
-            $grandTotalRealisasi = $monitorings->sum(function ($m) {
-                return $m->documents->where('kriteria', 'Realisasi')->sum('harga');
-            });
-        @endphp
-
         {{-- HEADER --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><b>Progress Wilayah 1</b></h3>
@@ -290,21 +239,6 @@
             <a href="{{ route('monitoringwil1.print') }}" target="_blank" class="btn btn-primary no-print">
                 🖨️ Print Semua
             </a>
-        </div>
-
-        {{-- SUMMARY CARD MODERN --}}
-        <div class="row mb-3">
-            <div class="col-md-5 col-lg-4">
-                <div class="summary-card">
-                    <div>
-                        <div class="title">Total Akumulasi Realisasi</div>
-                        <div class="value">Rp {{ number_format($grandTotalRealisasi, 0, ',', '.') }}</div>
-                    </div>
-                    <div class="icon-box">
-                        💰
-                    </div>
-                </div>
-            </div>
         </div>
 
         {{-- FLASH MESSAGE --}}
@@ -347,7 +281,7 @@
         <div class="card shadow-sm">
             <div class="card-body table-responsive">
 
-                <table class="table table-bordered table-hover table-striped mb-0">
+                <table class="table table-bordered table-hover table-striped">
                     <thead class="thead-dark text-center">
                         <tr>
                             <th width="40">No</th>
@@ -355,6 +289,7 @@
                             <th>Nama Pekerjaan</th>
                             <th>Tanggal Kontrak</th>
                             <th>Selesai Kontrak</th>
+                            <th width="180">Nilai Kontrak</th>
                             <th>Status</th>
                             <th width="140">Progress</th>
                             <th>Keterangan Progress</th>
@@ -377,6 +312,9 @@
 
                                 // Dokumen terakhir secara umum
                                 $latestDoc = $m->documents->last();
+
+                                // Nilai Kontrak (Seluruh dokumen bernilai Rencana)
+                                $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
 
                                 // Total Realisasi (Seluruh dokumen bernilai Realisasi)
                                 $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
@@ -443,6 +381,16 @@
                                 <td class="text-center">
                                     {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                                 </td>
+
+                                {{-- NILAI KONTRAK (TOTAL RENCANA) --}}
+                                <td class="text-center">
+                                    <div class="p-2 border rounded bg-white shadow-sm">
+                                        <div class="fw-bold text-dark fs-6">
+                                            <b>Rp {{ number_format($nilaiKontrak, 0, ',', '.') }}</b>
+                                        </div>
+                                    </div>
+                                </td>
+
                                 <td class="text-center">
                                     <span class="{{ $statusClass }}">
                                         {{ $m->status }}
@@ -575,23 +523,6 @@
                             </tr>
                         @endforelse
                     </tbody>
-
-                    {{-- FOOTER TABLE UNTUK PENJUMLAHAN --}}
-                    @if ($monitorings->count() > 0)
-                        <tfoot class="tfoot-summary">
-                            <tr>
-                                <th colspan="9" class="text-right font-weight-bold py-3">
-                                    GRAND TOTAL REALISASI (HALAMAN INI):
-                                </th>
-                                <th class="text-center py-3">
-                                    <div class="p-2 border rounded bg-success text-white shadow-sm">
-                                        <b class="fs-6">Rp {{ number_format($grandTotalRealisasi, 0, ',', '.') }}</b>
-                                    </div>
-                                </th>
-                                <th colspan="2"></th>
-                            </tr>
-                        </tfoot>
-                    @endif
                 </table>
 
             </div>
