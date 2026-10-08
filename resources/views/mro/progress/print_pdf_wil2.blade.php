@@ -5,42 +5,61 @@
     <meta charset="UTF-8">
     <title>Laporan Progress Wilayah 2</title>
     <style>
+        /* Setup Halaman Cetak/PDF A4 Landscape */
+        @page {
+            size: A4 landscape;
+            margin: 8mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            font-size: 10px;
-            color: #333;
+            font-size: 8.5px;
+            color: #1e293b;
             margin: 0;
             padding: 0;
+            background-color: #fff;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .header h2 {
             margin: 0;
             color: #0f172a;
+            font-size: 14px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .header p {
-            margin: 5px 0 0 0;
+            margin: 3px 0 0 0;
             color: #64748b;
-            font-size: 9px;
+            font-size: 8px;
         }
 
+        /* Pengaturan Tabel Presisi */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            table-layout: fixed;
+            /* Mencegah tabel melebar keluar halaman */
+            margin-bottom: 10px;
         }
 
         th,
         td {
             border: 1px solid #cbd5e1;
-            padding: 6px;
-            vertical-align: top;
+            padding: 4px 5px;
+            vertical-align: middle;
+            word-wrap: break-word;
+            /* Mencegah teks melimpah keluar sel */
+            overflow-wrap: break-word;
         }
 
         th {
@@ -48,16 +67,13 @@
             color: #ffffff;
             text-align: center;
             font-weight: bold;
-            font-size: 9px;
+            font-size: 8.5px;
             text-transform: uppercase;
+            padding: 6px 3px;
         }
 
         .text-center {
             text-align: center;
-        }
-
-        .text-right {
-            text-align: right;
         }
 
         .font-bold {
@@ -67,11 +83,13 @@
         /* Badge Status */
         .badge {
             display: inline-block;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 8px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 7.5px;
             font-weight: bold;
             color: #fff;
+            text-align: center;
+            line-height: 1.1;
         }
 
         .badge-warning {
@@ -104,56 +122,13 @@
             color: #fff;
         }
 
-        /* Progress Bar Container */
-        .progress {
-            background-color: #e2e8f0;
-            border-radius: 4px;
-            height: 14px;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Fill Warna Progress Bar */
-        .progress-bar {
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        /* Warna Sesuai Aturan */
-        .bg-danger {
-            background-color: #dc3545;
-        }
-
-        .bg-warning {
-            background-color: #fd7e14;
-        }
-
-        .bg-success {
-            background-color: #198754;
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            line-height: 14px;
-            font-size: 8px;
-            font-weight: bold;
-            color: #000;
-            z-index: 2;
-        }
-
         .doc-card {
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
-            padding: 4px;
-            border-radius: 4px;
+            padding: 3px 4px;
+            border-radius: 3px;
+            font-size: 8px;
+            line-height: 1.2;
         }
     </style>
 </head>
@@ -162,87 +137,27 @@
 
     <div class="header">
         <h2>Laporan Progress MRO Wilayah 2</h2>
-        <p>Dicetak Pada: {{ date('d-m-Y H:i') }} WIB</p>
-        <p>B.A.S (Business Application System)</p>
+        <p>Dicetak Pada: {{ date('d-m-Y H:i') }} WIB | B.A.S (Business Application System)</p>
     </div>
 
     <table>
         <thead>
             <tr>
-                <th width="20">No</th>
-                <th width="70">PO / Nota Dinas</th>
-                <th>Nama Pekerjaan</th>
-                <th width="60">Tanggal Kontrak</th>
-                <th width="60">Selesai Kontrak</th>
-                <th width="85">Nilai Kontrak</th>
-                <th>Keterangan Progress</th>
-                <th width="100">Realisasi Bulan Ini</th>
-                <th width="100">Total Realisasi s/d Bulan Ini</th>
-                <th width="140">Status Dokumen Terakhir</th>
-                <th width="65">Status Kontrak</th>
+                <th style="width: 3%;">No</th>
+                <th style="width: 12%;">PO / Nota Dinas</th>
+                <th style="width: 13%;">Nama Pekerjaan</th>
+                <th style="width: 8%;">Tgl Kontrak</th>
+                <th style="width: 8%;">Selesai Kontrak</th>
+                <th style="width: 10%;">Nilai Kontrak</th>
+                <th style="width: 10%;">Ket. Progress</th>
+                <th style="width: 11%;">Realisasi Bln Ini</th>
+                <th style="width: 11%;">Total Realisasi s/d Bln Ini</th>
+                <th style="width: 14%;">Status Dokumen Terakhir</th>
+                <th style="width: 10%;">Status Kontrak</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($monitorings->sortByDesc('created_at') as $m)
-                {{-- @php
-                    $statusClass = match ($m->status) {
-                        'Open' => 'badge-warning',
-                        'Closed' => 'badge-success',
-                        'On Hold' => 'badge-danger',
-                        default => 'badge-secondary',
-                    };
-
-                    $latestDoc = $m->documents->last();
-
-                    // Logika Penentuan Warna Progress Bar
-                    $progressVal = (float) $m->progress;
-                    $poNota = strtoupper($m->po_nota_dinas ?? '');
-
-                    if ($progressVal >= 100) {
-                        $progressBarClass = 'bg-success';
-                    } elseif (str_contains($poNota, 'ND') || str_contains($poNota, 'NOTA')) {
-                        $progressBarClass = 'bg-danger';
-                    } else {
-                        $progressBarClass = 'bg-warning';
-                    }
-
-                    // Panggilan helper/method Notif Kontrak
-                    $notif = $m->notifKontrak();
-
-                    // --- KALKULASI REALISASI ---
-                    // Total Realisasi (Seluruh dokumen bernilai Realisasi)
-                    $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
-
-                    // Filter dokumen yang memiliki harga > 0 dan kelompokkan per bulan
-                    $groupedPriceDocs = $m->documents
-                        ->filter(fn($doc) => !is_null($doc->harga) && $doc->harga > 0)
-                        ->groupBy(function ($doc) {
-                            $date = $doc->tanggal_closed ?? $doc->created_at;
-                            return \Carbon\Carbon::parse($date)->format('Y-m');
-                        })
-                        ->sortByDesc(function ($group, $key) {
-                            return $key;
-                        });
-
-                    $latestMonthGroup = $groupedPriceDocs->first();
-                    $latestPriceDoc = null;
-                    $totalHargaBulanIni = 0;
-
-                    if ($latestMonthGroup) {
-                        $latestPriceDoc = $latestMonthGroup
-                            ->sortByDesc(function ($doc) {
-                                return $doc->created_at ?? $doc->id;
-                            })
-                            ->first();
-
-                        if ($latestPriceDoc && $latestPriceDoc->kriteria == 'Realisasi') {
-                            $totalHargaBulanIni = $latestMonthGroup->where('kriteria', 'Realisasi')->sum('harga');
-                        } else {
-                            $totalHargaBulanIni = $latestPriceDoc->harga ?? 0;
-                        }
-                    }
-                @endphp --}}
-
                 @php
                     $statusClass = match ($m->status) {
                         'Open' => 'badge-warning',
@@ -269,10 +184,7 @@
                     $notif = $m->notifKontrak();
 
                     // --- KALKULASI NILAI KONTRAK & REALISASI ---
-                    // Total Nilai Kontrak (Dokumen kriteria Rencana)
                     $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-
-                    // Total Realisasi (Seluruh dokumen kriteria Realisasi)
                     $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
 
                     // Filter dokumen KHUSUS REALISASI yang memiliki harga > 0 dan kelompokkan per bulan
@@ -310,6 +222,7 @@
                     <td class="text-center">
                         {{ $m->tanggal_selesai_kontrak ? \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') : '-' }}
                     </td>
+
                     {{-- NILAI KONTRAK --}}
                     <td class="text-center">
                         <div class="doc-card">
@@ -318,6 +231,7 @@
                             </div>
                         </div>
                     </td>
+
                     <td>
                         @php
                             $text = trim($m->keterangan2 ?? '-');
@@ -340,12 +254,12 @@
                                 </div>
                                 <div style="margin-top: 2px;">
                                     @if ($latestPriceDoc->jenis_dokumen)
-                                        <span class="badge badge-secondary" style="font-size: 7px;">
+                                        <span class="badge badge-secondary" style="font-size: 6.5px;">
                                             {{ $latestPriceDoc->jenis_dokumen }}
                                         </span>
                                     @endif
                                     @if ($latestPriceDoc->tanggal_closed)
-                                        <span class="badge badge-info" style="font-size: 7px;">
+                                        <span class="badge badge-info" style="font-size: 6.5px;">
                                             {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed)->isoFormat('MMM YYYY') }}
                                         </span>
                                     @endif
@@ -365,6 +279,7 @@
                         </div>
                     </td>
 
+                    {{-- STATUS DOKUMEN TERAKHIR --}}
                     <td>
                         @if ($latestDoc)
                             <div class="doc-card">
@@ -392,6 +307,8 @@
                             <span style="color: #94a3b8; font-style: italic;">Belum ada dokumen</span>
                         @endif
                     </td>
+
+                    {{-- STATUS KONTRAK --}}
                     <td class="text-center">
                         <span class="badge badge-{{ $notif['class'] }}">
                             {{ $notif['text'] }}
