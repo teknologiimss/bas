@@ -27,28 +27,6 @@ class MonitoringController extends Controller
     // }
 
     // Klik PO/Nodin Spesifik ke Halaman Monitoring
-    // public function index(Request $request, $proyek_id)
-    // {
-    //     $proyek = Proyek::findOrFail($proyek_id);
-
-    //     $query = Monitoring::with('documents', 'folders.documents')
-    //         ->where('proyek_id', $proyek_id);
-
-    //     // 🔍 Filter PO / Nota Dinas
-    //     if ($request->filled('po')) {
-    //         $query->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
-    //     }
-
-    //     // 🔍 Filter Nama Pekerjaan
-    //     if ($request->filled('pekerjaan')) {
-    //         $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
-    //     }
-
-    //     $monitorings = $query->latest()->get();
-
-    //     return view('monitoring.index', compact('proyek', 'monitorings'));
-    // }
-
     public function index(Request $request, $proyek_id)
     {
         $proyek = Proyek::findOrFail($proyek_id);
@@ -66,67 +44,26 @@ class MonitoringController extends Controller
             $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
         }
 
-        // 💰 HITUNG TOTAL REALISASI DARI SELURUH DATA (SEBELUM PAGINATE)
-        $grandTotalRealisasi = (clone $query)
-            ->whereHas('documents', function ($q) {
-                $q->where('kriteria', 'Realisasi');
-            })
-            ->get()
-            ->sum(function ($monitoring) {
-                return $monitoring->documents->where('kriteria', 'Realisasi')->sum('harga');
-            });
+        $monitorings = $query->latest()->get();
 
-        // Baru jalankan pagination / get data untuk tabel
-        $monitorings = $query->latest()->paginate(10);  // atau ->get() jika pagination diatur via controller lain
-
-        return view('monitoring.index', compact('proyek', 'monitorings', 'grandTotalRealisasi'));
+        return view('monitoring.index', compact('proyek', 'monitorings'));
     }
-
-    // public function resumeProgress(Request $request)
-    // {
-    //     $query = Monitoring::query();
-
-    //     if ($request->filled('po')) {
-    //         $query->where('po_nota_dinas', 'like', '%' . $request->po . '%');
-    //     }
-
-    //     if ($request->filled('pekerjaan')) {
-    //         $query->where('nama_pekerjaan', 'like', '%' . $request->pekerjaan . '%');
-    //     }
-
-    //     $monitorings = $query->paginate(10)->withQueryString();
-
-    //     return view('mro.resume_progress', compact('monitorings'));
-    // }
 
     public function resumeProgress(Request $request)
     {
-        // Eager load relasi documents agar perhitungan & Blade view efisien
-        $query = Monitoring::with('documents');
+        $query = Monitoring::query();
 
         if ($request->filled('po')) {
-            $query->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
+            $query->where('po_nota_dinas', 'like', '%' . $request->po . '%');
         }
 
         if ($request->filled('pekerjaan')) {
-            $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
+            $query->where('nama_pekerjaan', 'like', '%' . $request->pekerjaan . '%');
         }
 
-        // 💰 1. HITUNG GRAND TOTAL REALISASI UNTUK SELURUH DATA (SEBELUM PAGINATION)
-        $grandTotalRealisasi = (clone $query)
-            ->whereHas('documents', function ($q) {
-                $q->where('kriteria', 'Realisasi');
-            })
-            ->get()
-            ->sum(function ($monitoring) {
-                return $monitoring->documents->where('kriteria', 'Realisasi')->sum('harga');
-            });
-
-        // 📄 2. AMBIL DATA PAGINATION DENGAN FILTER YANG TETAP TERJAGA DENGAN denganQueryString()
         $monitorings = $query->paginate(10)->withQueryString();
 
-        // 📥 3. PASSED $grandTotalRealisasi KE VIEW
-        return view('mro.resume_progress', compact('monitorings', 'grandTotalRealisasi'));
+        return view('mro.resume_progress', compact('monitorings'));
     }
 
     public function store(Request $request, $proyek_id)
