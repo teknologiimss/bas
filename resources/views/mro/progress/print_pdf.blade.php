@@ -170,6 +170,7 @@
                 <th>Nama Pekerjaan</th>
                 <th width="60">Tanggal Kontrak</th>
                 <th width="60">Selesai Kontrak</th>
+                <th width="90">Nilai Kontrak</th>
                 <th>Keterangan Progress</th>
                 <th width="100">Realisasi Bulan Ini</th>
                 <th width="100">Total Realisasi s/d Bulan Ini</th>
@@ -204,13 +205,16 @@
                     // Panggilan helper/method Notif Kontrak
                     $notif = $m->notifKontrak();
 
-                    // --- KALKULASI REALISASI ---
+                    // --- KALKULASI NILAI KONTRAK & REALISASI ---
+                    // Nilai Kontrak (Total Rencana)
+                    $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+
                     // Total Realisasi (Seluruh dokumen bernilai Realisasi)
                     $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
 
-                    // Filter dokumen yang memiliki harga > 0 dan kelompokkan per bulan
+                    // Filter dokumen yang HANYA memuat kriteria 'Realisasi' dan memilki harga > 0
                     $groupedPriceDocs = $m->documents
-                        ->filter(fn($doc) => !is_null($doc->harga) && $doc->harga > 0)
+                        ->filter(fn($doc) => $doc->kriteria == 'Realisasi' && !is_null($doc->harga) && $doc->harga > 0)
                         ->groupBy(function ($doc) {
                             $date = $doc->tanggal_closed ?? $doc->created_at;
                             return \Carbon\Carbon::parse($date)->format('Y-m');
@@ -230,11 +234,7 @@
                             })
                             ->first();
 
-                        if ($latestPriceDoc && $latestPriceDoc->kriteria == 'Realisasi') {
-                            $totalHargaBulanIni = $latestMonthGroup->where('kriteria', 'Realisasi')->sum('harga');
-                        } else {
-                            $totalHargaBulanIni = $latestPriceDoc->harga ?? 0;
-                        }
+                        $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                     }
                 @endphp
                 <tr>
@@ -247,6 +247,16 @@
                     <td class="text-center">
                         {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                     </td>
+
+                    {{-- NILAI KONTRAK (TOTAL RENCANA) --}}
+                    <td class="text-center">
+                        <div class="doc-card">
+                            <div class="font-bold">
+                                Rp {{ number_format($nilaiKontrak, 0, ',', '.') }}
+                            </div>
+                        </div>
+                    </td>
+
                     <td>
                         @php
                             $text = trim($m->keterangan2 ?? '-');
@@ -262,7 +272,7 @@
 
                     {{-- REALISASI BULAN INI --}}
                     <td class="text-center">
-                        @if ($latestPriceDoc)
+                        @if ($latestPriceDoc && $totalHargaBulanIni > 0)
                             <div class="doc-card">
                                 <div class="font-bold">
                                     Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }}
@@ -329,7 +339,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="10" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
+                    <td colspan="11" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
                 </tr>
             @endforelse
         </tbody>

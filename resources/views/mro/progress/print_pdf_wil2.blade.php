@@ -56,6 +56,10 @@
             text-align: center;
         }
 
+        .text-right {
+            text-align: right;
+        }
+
         .font-bold {
             font-weight: bold;
         }
@@ -170,6 +174,7 @@
                 <th>Nama Pekerjaan</th>
                 <th width="60">Tanggal Kontrak</th>
                 <th width="60">Selesai Kontrak</th>
+                <th width="85">Nilai Kontrak</th>
                 <th>Keterangan Progress</th>
                 <th width="100">Realisasi Bulan Ini</th>
                 <th width="100">Total Realisasi s/d Bulan Ini</th>
@@ -179,7 +184,7 @@
         </thead>
         <tbody>
             @forelse ($monitorings->sortByDesc('created_at') as $m)
-                @php
+                {{-- @php
                     $statusClass = match ($m->status) {
                         'Open' => 'badge-warning',
                         'Closed' => 'badge-success',
@@ -236,6 +241,64 @@
                             $totalHargaBulanIni = $latestPriceDoc->harga ?? 0;
                         }
                     }
+                @endphp --}}
+
+                @php
+                    $statusClass = match ($m->status) {
+                        'Open' => 'badge-warning',
+                        'Closed' => 'badge-success',
+                        'On Hold' => 'badge-danger',
+                        default => 'badge-secondary',
+                    };
+
+                    $latestDoc = $m->documents->last();
+
+                    // Logika Penentuan Warna Progress Bar
+                    $progressVal = (float) $m->progress;
+                    $poNota = strtoupper($m->po_nota_dinas ?? '');
+
+                    if ($progressVal >= 100) {
+                        $progressBarClass = 'bg-success';
+                    } elseif (str_contains($poNota, 'ND') || str_contains($poNota, 'NOTA')) {
+                        $progressBarClass = 'bg-danger';
+                    } else {
+                        $progressBarClass = 'bg-warning';
+                    }
+
+                    // Panggilan helper/method Notif Kontrak
+                    $notif = $m->notifKontrak();
+
+                    // --- KALKULASI NILAI KONTRAK & REALISASI ---
+                    // Total Nilai Kontrak (Dokumen kriteria Rencana)
+                    $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+
+                    // Total Realisasi (Seluruh dokumen kriteria Realisasi)
+                    $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
+
+                    // Filter dokumen KHUSUS REALISASI yang memiliki harga > 0 dan kelompokkan per bulan
+                    $groupedPriceDocs = $m->documents
+                        ->filter(fn($doc) => $doc->kriteria === 'Realisasi' && !is_null($doc->harga) && $doc->harga > 0)
+                        ->groupBy(function ($doc) {
+                            $date = $doc->tanggal_closed ?? $doc->created_at;
+                            return \Carbon\Carbon::parse($date)->format('Y-m');
+                        })
+                        ->sortByDesc(function ($group, $key) {
+                            return $key;
+                        });
+
+                    $latestMonthGroup = $groupedPriceDocs->first();
+                    $latestPriceDoc = null;
+                    $totalHargaBulanIni = 0;
+
+                    if ($latestMonthGroup) {
+                        $latestPriceDoc = $latestMonthGroup
+                            ->sortByDesc(function ($doc) {
+                                return $doc->created_at ?? $doc->id;
+                            })
+                            ->first();
+
+                        $totalHargaBulanIni = $latestMonthGroup->sum('harga');
+                    }
                 @endphp
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
@@ -246,6 +309,14 @@
                     </td>
                     <td class="text-center">
                         {{ $m->tanggal_selesai_kontrak ? \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') : '-' }}
+                    </td>
+                    {{-- NILAI KONTRAK --}}
+                    <td class="text-center">
+                        <div class="doc-card">
+                            <div class="font-bold">
+                                Rp {{ number_format($nilaiKontrak, 0, ',', '.') }}
+                            </div>
+                        </div>
                     </td>
                     <td>
                         @php
@@ -329,7 +400,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="10" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
+                    <td colspan="11" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
                 </tr>
             @endforelse
         </tbody>

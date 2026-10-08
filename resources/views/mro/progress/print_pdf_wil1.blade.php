@@ -170,6 +170,7 @@
                 <th>Nama Pekerjaan</th>
                 <th width="60">Tanggal Kontrak</th>
                 <th width="60">Selesai Kontrak</th>
+                <th width="90">Nilai Kontrak</th>
                 <th>Keterangan Progress</th>
                 <th width="100">Realisasi Bulan Ini</th>
                 <th width="100">Total Realisasi s/d Bulan Ini</th>
@@ -204,7 +205,10 @@
                     // Panggilan helper/method Notif Kontrak
                     $notif = $m->notifKontrak();
 
-                    // --- KALKULASI REALISASI ---
+                    // --- KALKULASI NILAI KONTRAK & REALISASI ---
+                    // Total Nilai Kontrak (Dokumen kriteria Rencana)
+                    $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+
                     // Total Realisasi (Seluruh dokumen bernilai Realisasi)
                     $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
 
@@ -247,6 +251,16 @@
                     <td class="text-center">
                         {{ $m->tanggal_selesai_kontrak ? \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') : '-' }}
                     </td>
+
+                    {{-- NILAI KONTRAK --}}
+                    <td class="text-center">
+                        <div class="doc-card">
+                            <div class="font-bold">
+                                Rp {{ number_format($nilaiKontrak, 0, ',', '.') }}
+                            </div>
+                        </div>
+                    </td>
+
                     <td>
                         @php
                             $text = trim($m->keterangan2 ?? '-');
@@ -329,7 +343,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="10" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
+                    <td colspan="11" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
                 </tr>
             @endforelse
         </tbody>
