@@ -317,9 +317,13 @@
                                 // Total Realisasi (Seluruh dokumen bernilai Realisasi)
                                 $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
 
-                                // 1. Filter dokumen yang memiliki harga > 0
+                                // 1. Filter dokumen yang HANYA memuat kriteria 'Realisasi' dan memiliki harga > 0
                                 $groupedPriceDocs = $m->documents
-                                    ->filter(fn($doc) => !is_null($doc->harga) && $doc->harga > 0)
+                                    ->filter(
+                                        fn($doc) => $doc->kriteria == 'Realisasi' &&
+                                            !is_null($doc->harga) &&
+                                            $doc->harga > 0,
+                                    )
                                     ->groupBy(function ($doc) {
                                         $date = $doc->tanggal_closed ?? $doc->created_at;
                                         return \Carbon\Carbon::parse($date)->format('Y-m');
@@ -328,29 +332,20 @@
                                         return $key; // Urutkan berdasarkan kunci bulan paling baru (YYYY-MM)
                                     });
 
-                                // 2. Ambil grup bulan terbaru
+                                // 2. Ambil grup bulan terbaru yang ada dokumen Realisasi-nya
                                 $latestMonthGroup = $groupedPriceDocs->first();
 
                                 $latestPriceDoc = null;
                                 $totalHargaBulanIni = 0;
 
                                 if ($latestMonthGroup) {
-                                    // Ambil sample dokumen terakhir di bulan tersebut untuk referensi atribut badge
                                     $latestPriceDoc = $latestMonthGroup
                                         ->sortByDesc(function ($doc) {
                                             return $doc->created_at ?? $doc->id;
                                         })
                                         ->first();
 
-                                    // Jika kriteria dokumen terbaru adalah Realisasi, jumlahkan harga seluruh dokumen Realisasi di bulan tersebut
-                                    if ($latestPriceDoc && $latestPriceDoc->kriteria == 'Realisasi') {
-                                        $totalHargaBulanIni = $latestMonthGroup
-                                            ->where('kriteria', 'Realisasi')
-                                            ->sum('harga');
-                                    } else {
-                                        // Jika Rencana, gunakan harga dari dokumen rencana tersebut
-                                        $totalHargaBulanIni = $latestPriceDoc->harga ?? 0;
-                                    }
+                                    $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                                 }
                             @endphp
 
@@ -422,7 +417,7 @@
 
                                 {{-- REALISASI BULAN INI --}}
                                 <td class="text-center">
-                                    @if ($latestPriceDoc)
+                                    @if ($latestPriceDoc && $totalHargaBulanIni > 0)
                                         <div class="p-2 border rounded bg-white shadow-sm">
                                             <div class="fw-bold text-dark fs-6">
                                                 <b> Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }} </b>
@@ -444,7 +439,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        <span class="text-muted font-italic small">-</span>
+                                        <span class="text-muted font-italic small">Rp 0</span>
                                     @endif
                                 </td>
 

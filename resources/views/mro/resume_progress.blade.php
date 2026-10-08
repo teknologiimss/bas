@@ -302,7 +302,7 @@
 
                     <tbody>
                         @forelse ($monitorings as $index => $m)
-                            @php
+                            {{-- @php
                                 $statusClass = match ($m->status) {
                                     'Open' => 'badge badge-warning',
                                     'Closed' => 'badge badge-success',
@@ -352,6 +352,57 @@
                                         // Jika Rencana, gunakan harga dari dokumen rencana tersebut
                                         $totalHargaBulanIni = $latestPriceDoc->harga ?? 0;
                                     }
+                                }
+                            @endphp --}}
+
+                            @php
+                                $statusClass = match ($m->status) {
+                                    'Open' => 'badge badge-warning',
+                                    'Closed' => 'badge badge-success',
+                                    'On Hold' => 'badge badge-danger',
+                                    default => 'badge badge-secondary',
+                                };
+
+                                // Mengambil dokumen terakhir yang di-upload
+                                $latestDoc = $m->documents->last();
+
+                                // Total Nilai Kontrak (Seluruh dokumen berkriteria Rencana)
+                                $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+
+                                // Total Realisasi (Seluruh dokumen bernilai Realisasi)
+                                $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
+
+                                // 1. Filter HANYA dokumen yang berkriteria 'Realisasi' dan memiliki harga > 0
+                                $groupedPriceDocs = $m->documents
+                                    ->filter(
+                                        fn($doc) => $doc->kriteria === 'Realisasi' &&
+                                            !is_null($doc->harga) &&
+                                            $doc->harga > 0,
+                                    )
+                                    ->groupBy(function ($doc) {
+                                        $date = $doc->tanggal_closed ?? $doc->created_at;
+                                        return \Carbon\Carbon::parse($date)->format('Y-m');
+                                    })
+                                    ->sortByDesc(function ($group, $key) {
+                                        return $key; // Urutkan berdasarkan bulan terbaru (YYYY-MM)
+                                    });
+
+                                // 2. Ambil grup bulan terbaru untuk Realisasi
+                                $latestMonthGroup = $groupedPriceDocs->first();
+
+                                $latestPriceDoc = null;
+                                $totalHargaBulanIni = 0;
+
+                                if ($latestMonthGroup) {
+                                    // Sample dokumen realisasi terakhir di bulan tersebut
+                                    $latestPriceDoc = $latestMonthGroup
+                                        ->sortByDesc(function ($doc) {
+                                            return $doc->created_at ?? $doc->id;
+                                        })
+                                        ->first();
+
+                                    // Jumlahkan harga dokumen Realisasi di bulan tersebut
+                                    $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                                 }
                             @endphp
 
@@ -421,9 +472,10 @@
                                     @endphp
                                 </td>
 
+                                
                                 {{-- REALISASI BULAN INI --}}
                                 <td class="text-center">
-                                    @if ($latestPriceDoc)
+                                    @if ($latestPriceDoc && $totalHargaBulanIni > 0)
                                         <div class="p-2 border rounded bg-white shadow-sm">
                                             <div class="fw-bold text-dark fs-6">
                                                 <b> Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }} </b>
@@ -445,7 +497,8 @@
                                             </div>
                                         </div>
                                     @else
-                                        <span class="text-muted font-italic small">-</span>
+                                        {{-- Tampilkan Rp 0 atau strip jika belum ada realisasi --}}
+                                        <span class="text-muted font-italic small">Rp 0</span>
                                     @endif
                                 </td>
 

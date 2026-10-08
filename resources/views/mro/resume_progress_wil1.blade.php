@@ -319,15 +319,19 @@
                                 // Total Realisasi (Seluruh dokumen bernilai Realisasi)
                                 $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
 
-                                // 1. Filter dokumen yang memiliki harga > 0
+                                // 1. Filter HANYA dokumen berkriteria 'Realisasi' dan memiliki harga > 0
                                 $groupedPriceDocs = $m->documents
-                                    ->filter(fn($doc) => !is_null($doc->harga) && $doc->harga > 0)
+                                    ->filter(
+                                        fn($doc) => $doc->kriteria === 'Realisasi' &&
+                                            !is_null($doc->harga) &&
+                                            $doc->harga > 0,
+                                    )
                                     ->groupBy(function ($doc) {
                                         $date = $doc->tanggal_closed ?? $doc->created_at;
                                         return \Carbon\Carbon::parse($date)->format('Y-m');
                                     })
                                     ->sortByDesc(function ($group, $key) {
-                                        return $key; // Urutkan berdasarkan kunci bulan paling baru (YYYY-MM)
+                                        return $key; // Urutkan berdasarkan bulan paling baru (YYYY-MM)
                                     });
 
                                 // 2. Ambil grup bulan terbaru
@@ -337,22 +341,15 @@
                                 $totalHargaBulanIni = 0;
 
                                 if ($latestMonthGroup) {
-                                    // Ambil sample dokumen terakhir di bulan tersebut untuk referensi atribut badge
+                                    // Ambil sample dokumen realisasi terakhir di bulan tersebut untuk referensi label
                                     $latestPriceDoc = $latestMonthGroup
                                         ->sortByDesc(function ($doc) {
                                             return $doc->created_at ?? $doc->id;
                                         })
                                         ->first();
 
-                                    // Jika kriteria dokumen terbaru adalah Realisasi, jumlahkan harga seluruh dokumen Realisasi di bulan tersebut
-                                    if ($latestPriceDoc && $latestPriceDoc->kriteria == 'Realisasi') {
-                                        $totalHargaBulanIni = $latestMonthGroup
-                                            ->where('kriteria', 'Realisasi')
-                                            ->sum('harga');
-                                    } else {
-                                        // Jika Rencana, gunakan harga dari dokumen rencana tersebut
-                                        $totalHargaBulanIni = $latestPriceDoc->harga ?? 0;
-                                    }
+                                    // Jumlahkan harga seluruh dokumen Realisasi di bulan tersebut
+                                    $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                                 }
                             @endphp
 
@@ -424,7 +421,7 @@
 
                                 {{-- REALISASI BULAN INI --}}
                                 <td class="text-center">
-                                    @if ($latestPriceDoc)
+                                    @if ($latestPriceDoc && $totalHargaBulanIni > 0)
                                         <div class="p-2 border rounded bg-white shadow-sm">
                                             <div class="fw-bold text-dark fs-6">
                                                 <b> Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }} </b>
@@ -446,7 +443,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        <span class="text-muted font-italic small">-</span>
+                                        <span class="text-muted font-italic small">Rp 0</span>
                                     @endif
                                 </td>
 
@@ -517,7 +514,7 @@
 
                         @empty
                             <tr>
-                                <td colspan="12" class="text-center text-muted">
+                                <td colspan="13" class="text-center text-muted">
                                     Tidak ada data monitoring Wilayah 1
                                 </td>
                             </tr>
