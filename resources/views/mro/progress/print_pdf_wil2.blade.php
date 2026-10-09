@@ -48,7 +48,6 @@
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            /* Mencegah tabel melebar keluar halaman */
             margin-bottom: 10px;
         }
 
@@ -58,7 +57,6 @@
             padding: 4px 5px;
             vertical-align: middle;
             word-wrap: break-word;
-            /* Mencegah teks melimpah keluar sel */
             overflow-wrap: break-word;
         }
 
@@ -148,7 +146,7 @@
                 <th style="width: 13%;">Nama Pekerjaan</th>
                 <th style="width: 8%;">Tgl Kontrak</th>
                 <th style="width: 8%;">Selesai Kontrak</th>
-                <th style="width: 10%;">Nilai Kontrak</th>
+                <th style="width: 10%;">Nilai Kontrak/SO</th>
                 <th style="width: 10%;">Ket. Progress</th>
                 <th style="width: 11%;">Realisasi Bln Ini</th>
                 <th style="width: 11%;">Total Realisasi s/d Bln Ini</th>
@@ -166,28 +164,15 @@
                         default => 'badge-secondary',
                     };
 
-                    $latestDoc = $m->documents->last();
-
-                    // Logika Penentuan Warna Progress Bar
-                    $progressVal = (float) $m->progress;
-                    $poNota = strtoupper($m->po_nota_dinas ?? '');
-
-                    if ($progressVal >= 100) {
-                        $progressBarClass = 'bg-success';
-                    } elseif (str_contains($poNota, 'ND') || str_contains($poNota, 'NOTA')) {
-                        $progressBarClass = 'bg-danger';
-                    } else {
-                        $progressBarClass = 'bg-warning';
-                    }
-
-                    // Panggilan helper/method Notif Kontrak
+                    // 1. Ambil dokumen PALING BARU berdasarkan ID
+                    $latestDoc = $m->documents->sortByDesc('id')->first();
                     $notif = $m->notifKontrak();
 
-                    // --- KALKULASI NILAI KONTRAK & REALISASI ---
+                    // 2. Kalkulasi Nilai Kontrak (Rencana) & Total Realisasi s/d Bulan Ini (Realisasi + Closed)
                     $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-                    $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
+                    $totalRealisasi = $m->documents->whereIn('kriteria', ['Realisasi', 'Closed'])->sum('harga');
 
-                    // Filter dokumen KHUSUS REALISASI yang memiliki harga > 0 dan kelompokkan per bulan
+                    // 3. Filter dokumen yang HANYA berkriteria 'Realisasi' dan bernilai > 0
                     $groupedPriceDocs = $m->documents
                         ->filter(fn($doc) => $doc->kriteria === 'Realisasi' && !is_null($doc->harga) && $doc->harga > 0)
                         ->groupBy(function ($doc) {
@@ -211,6 +196,13 @@
 
                         $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                     }
+
+                    // 4. PENYESUAIAN KRITERIA CLOSED:
+                    // Jika dokumen teratas/terakhir berkriteria 'Closed', paksa Realisasi Bulan Ini menjadi 0 / Rp.0
+                    if ($latestDoc && $latestDoc->kriteria === 'Closed') {
+                        $totalHargaBulanIni = 0;
+                        $latestPriceDoc = null;
+                    }
                 @endphp
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
@@ -223,7 +215,7 @@
                         {{ $m->tanggal_selesai_kontrak ? \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') : '-' }}
                     </td>
 
-                    {{-- NILAI KONTRAK --}}
+                    {{-- NILAI KONTRAK (TOTAL RENCANA) --}}
                     <td class="text-center">
                         <div class="doc-card">
                             <div class="font-bold">
@@ -247,7 +239,7 @@
 
                     {{-- REALISASI BULAN INI --}}
                     <td class="text-center">
-                        @if ($latestPriceDoc)
+                        @if ($latestPriceDoc && $totalHargaBulanIni > 0)
                             <div class="doc-card">
                                 <div class="font-bold">
                                     Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }}
@@ -266,14 +258,14 @@
                                 </div>
                             </div>
                         @else
-                            <span style="color: #94a3b8; font-style: italic;">-</span>
+                            <span style="color: #94a3b8; font-style: italic;">Rp.0</span>
                         @endif
                     </td>
 
                     {{-- TOTAL REALISASI S/D BULAN INI --}}
                     <td class="text-center">
                         <div class="doc-card">
-                            <div class="font-bold" style="color: #10b981;">
+                            <div class="font-bold" style="color: #059669;">
                                 Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
                             </div>
                         </div>
@@ -317,7 +309,8 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="11" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
+                    <td colspan="11" class="text-center" style="color: #64748b;">Tidak ada data monitoring Wilayah 2
+                    </td>
                 </tr>
             @endforelse
         </tbody>
