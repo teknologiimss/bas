@@ -48,7 +48,6 @@
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            /* Mencegah tabel melampaui batas halaman */
             margin-bottom: 10px;
         }
 
@@ -58,7 +57,6 @@
             padding: 4px 5px;
             vertical-align: middle;
             word-wrap: break-word;
-            /* Menggulung teks panjang ke bawah */
             overflow-wrap: break-word;
         }
 
@@ -187,22 +185,47 @@
                         $divisiClass = 'badge-wil2';
                     }
 
-                    // Dokumen Terakhir
-                    $latestDoc = $m->documents ? $m->documents->last() : null;
+                    // 1. Ambil dokumen PALING BARU berdasarkan ID
+                    $latestDoc = $m->documents ? $m->documents->sortByDesc('id')->first() : null;
 
                     // Notifikasi Status Kontrak
                     $notif = method_exists($m, 'notifKontrak') ? $m->notifKontrak() : null;
 
-                    // --- KALKULASI NILAI KONTRAK & REALISASI ---
-                    $nilaiKontrak = $m->documents ? $m->documents->where('kriteria', 'Rencana')->sum('harga') : 0;
-                    $totalRealisasi = $m->documents ? $m->documents->where('kriteria', 'Realisasi')->sum('harga') : 0;
+                    // 2. Kalkulasi Nilai Kontrak (Dokumen Rencana dengan Fallback Nilai PO/Kontrak bawaan model)
+                    $nilaiKontrakDoc = $m->documents
+                        ? $m->documents
+                            ->filter(fn($doc) => strtolower($doc->kriteria ?? '') === 'rencana')
+                            ->sum('harga')
+                        : 0;
 
-                    // Filter Dokumen Realisasi per Bulan
+                    $nilaiKontrak =
+                        $nilaiKontrakDoc > 0
+                            ? $nilaiKontrakDoc
+                            : $m->nilai_kontrak ?? ($m->nilai_po ?? ($m->nilai ?? ($m->nominal ?? 0)));
+
+                    // 3. Kalkulasi Total Realisasi s/d Bulan Ini (Mencakup 'Realisasi' & 'Closed')
+                    $totalRealisasiDoc = $m->documents
+                        ? $m->documents
+                            ->filter(function ($doc) {
+                                $kriteria = strtolower($doc->kriteria ?? '');
+                                return in_array($kriteria, ['realisasi', 'closed']) &&
+                                    !is_null($doc->harga) &&
+                                    $doc->harga > 0;
+                            })
+                            ->sum('harga')
+                        : 0;
+
+                    $totalRealisasi =
+                        $totalRealisasiDoc > 0 ? $totalRealisasiDoc : $m->total_realisasi ?? ($m->realisasi ?? 0);
+
+                    // 4. Filter dokumen yang HANYA berkriteria 'Realisasi' per bulan
                     $groupedPriceDocs = $m->documents
                         ? $m->documents
-                            ->filter(
-                                fn($doc) => $doc->kriteria === 'Realisasi' && !is_null($doc->harga) && $doc->harga > 0,
-                            )
+                            ->filter(function ($doc) {
+                                return strtolower($doc->kriteria ?? '') === 'realisasi' &&
+                                    !is_null($doc->harga) &&
+                                    $doc->harga > 0;
+                            })
                             ->groupBy(function ($doc) {
                                 $date = $doc->tanggal_closed ?? $doc->created_at;
                                 return \Carbon\Carbon::parse($date)->format('Y-m');
@@ -220,6 +243,13 @@
                             ->first();
 
                         $totalHargaBulanIni = $latestMonthGroup->sum('harga');
+                    }
+
+                    // 5. PENYESUAIAN KRITERIA CLOSED:
+                    // Jika dokumen teratas/terakhir berkriteria 'Closed', paksa Realisasi Bulan Ini menjadi Rp.0
+                    if ($latestDoc && strtolower($latestDoc->kriteria ?? '') === 'closed') {
+                        $totalHargaBulanIni = 0;
+                        $latestPriceDoc = null;
                     }
                 @endphp
                 <tr>
@@ -269,7 +299,7 @@
 
                     {{-- Realisasi Bulan Ini --}}
                     <td class="text-center">
-                        @if ($latestPriceDoc)
+                        @if ($latestPriceDoc && $totalHargaBulanIni > 0)
                             <div class="doc-card">
                                 <div class="font-bold">
                                     Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }}
@@ -280,22 +310,22 @@
                                             {{ $latestPriceDoc->jenis_dokumen }}
                                         </span>
                                     @endif
-                                    @if ($latestPriceDoc->tanggal_closed)
+                                    @if ($latestPriceDoc->tanggal_closed ?? $latestPriceDoc->created_at)
                                         <span class="badge badge-info" style="font-size: 6.5px;">
-                                            {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed)->isoFormat('MMM YYYY') }}
+                                            {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed ?? $latestPriceDoc->created_at)->isoFormat('MMM YYYY') }}
                                         </span>
                                     @endif
                                 </div>
                             </div>
                         @else
-                            <span style="color: #94a3b8; font-style: italic;">-</span>
+                            <span style="color: #94a3b8; font-style: italic;">Rp.0</span>
                         @endif
                     </td>
 
                     {{-- Total Realisasi s/d Bulan Ini --}}
                     <td class="text-center">
                         <div class="doc-card">
-                            <div class="font-bold" style="color: #10b981;">
+                            <div class="font-bold" style="color: #059669;">
                                 Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
                             </div>
                         </div>
@@ -316,9 +346,10 @@
                                         -
                                     @endif
                                 </div>
-                                @if ($latestDoc->tanggal_closed)
+                                @if ($latestDoc->tanggal_closed ?? $latestDoc->created_at)
                                     <div><b>Tgl:</b>
-                                        {{ \Carbon\Carbon::parse($latestDoc->tanggal_closed)->format('d-m-Y') }}</div>
+                                        {{ \Carbon\Carbon::parse($latestDoc->tanggal_closed ?? $latestDoc->created_at)->format('d-m-Y') }}
+                                    </div>
                                 @endif
                                 @if ($latestDoc->keterangan_closed)
                                     <div style="color: #ef4444; font-weight: bold;">
