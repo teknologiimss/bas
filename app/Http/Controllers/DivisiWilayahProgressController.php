@@ -12,7 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class DivisiWilayahProgressController extends Controller
 {
     /**
-     * Mengambil data gabungan MRO, Wilayah 1 dan Wilayah 2
+     * Mengambil data gabungan Wilayah 1, Wilayah 2, dan MRO secara berurutan
      */
     private function getCombinedMonitorings(Request $request)
     {
@@ -20,35 +20,7 @@ class DivisiWilayahProgressController extends Controller
 
         /*
          * |--------------------------------------------------------------------------
-         * | MRO
-         * |--------------------------------------------------------------------------
-         */
-        $queryMro = Monitoring::with('documents');
-
-        if ($request->filled('po')) {
-            $queryMro->where(
-                'po_nota_dinas',
-                'like',
-                '%' . trim($request->po) . '%'
-            );
-        }
-
-        if ($request->filled('pekerjaan')) {
-            $queryMro->where(
-                'nama_pekerjaan',
-                'like',
-                '%' . trim($request->pekerjaan) . '%'
-            );
-        }
-
-        foreach ($queryMro->get() as $item) {
-            $item->divisi = 'MRO';
-            $data->push($item);
-        }
-
-        /*
-         * |--------------------------------------------------------------------------
-         * | WILAYAH 1
+         * | 1. WILAYAH 1
          * |--------------------------------------------------------------------------
          */
         $queryWil1 = MonitoringWil1::with('documents');
@@ -69,14 +41,18 @@ class DivisiWilayahProgressController extends Controller
             );
         }
 
-        foreach ($queryWil1->get() as $item) {
+        $wil1Data = $queryWil1->get()->sortByDesc(function ($item) {
+            return $item->updated_at ?? $item->created_at;
+        });
+
+        foreach ($wil1Data as $item) {
             $item->divisi = 'Wilayah 1';
             $data->push($item);
         }
 
         /*
          * |--------------------------------------------------------------------------
-         * | WILAYAH 2
+         * | 2. WILAYAH 2
          * |--------------------------------------------------------------------------
          */
         $queryWil2 = MonitoringWil2::with('documents');
@@ -97,21 +73,48 @@ class DivisiWilayahProgressController extends Controller
             );
         }
 
-        foreach ($queryWil2->get() as $item) {
+        $wil2Data = $queryWil2->get()->sortByDesc(function ($item) {
+            return $item->updated_at ?? $item->created_at;
+        });
+
+        foreach ($wil2Data as $item) {
             $item->divisi = 'Wilayah 2';
             $data->push($item);
         }
 
         /*
          * |--------------------------------------------------------------------------
-         * | SORTING
+         * | 3. MRO
          * |--------------------------------------------------------------------------
          */
-        return $data
-            ->sortByDesc(function ($item) {
-                return $item->updated_at ?? $item->created_at;
-            })
-            ->values();
+        $queryMro = Monitoring::with('documents');
+
+        if ($request->filled('po')) {
+            $queryMro->where(
+                'po_nota_dinas',
+                'like',
+                '%' . trim($request->po) . '%'
+            );
+        }
+
+        if ($request->filled('pekerjaan')) {
+            $queryMro->where(
+                'nama_pekerjaan',
+                'like',
+                '%' . trim($request->pekerjaan) . '%'
+            );
+        }
+
+        $mroData = $queryMro->get()->sortByDesc(function ($item) {
+            return $item->updated_at ?? $item->created_at;
+        });
+
+        foreach ($mroData as $item) {
+            $item->divisi = 'MRO';
+            $data->push($item);
+        }
+
+        return $data->values();
     }
 
     /**

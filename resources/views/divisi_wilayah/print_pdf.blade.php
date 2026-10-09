@@ -152,7 +152,7 @@
 
     <div class="header">
         <h2>Laporan Progress Divisi Wilayah</h2>
-        <p>Rekapitulasi Progress MRO, Wilayah 1 dan Wilayah 2</p>
+        <p>Rekapitulasi Progress Wilayah 1, Wilayah 2 dan MRO</p>
         <p>Dicetak Pada: {{ date('d-m-Y H:i') }} WIB | B.A.S (Business Application System)</p>
     </div>
 
@@ -174,7 +174,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($monitorings->sortByDesc('created_at') as $m)
+            @forelse ($monitorings as $m)
                 @php
                     // Penentuan Warna Badge Divisi
                     if ($m->divisi === 'MRO') {
@@ -191,7 +191,7 @@
                     // Notifikasi Status Kontrak
                     $notif = method_exists($m, 'notifKontrak') ? $m->notifKontrak() : null;
 
-                    // 2. Kalkulasi Nilai Kontrak (Dokumen Rencana dengan Fallback Nilai PO/Kontrak bawaan model)
+                    // 2. Kalkulasi Nilai Kontrak (Rencana)
                     $nilaiKontrakDoc = $m->documents
                         ? $m->documents
                             ->filter(fn($doc) => strtolower($doc->kriteria ?? '') === 'rencana')
