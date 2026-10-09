@@ -410,7 +410,7 @@
                                 <th>Jenis Pekerjaan</th>
                                 <th width="100">Tanggal Kontrak</th>
                                 <th width="100">Selesai Kontrak</th>
-                                <th width="160">Nilai Kontrak</th>
+                                <th width="160">Nilai Kontrak/SO</th>
                                 <th width="160">Realisasi Bulan Ini</th>
                                 <th width="170">Total Realisasi s/d Bulan Ini</th>
                                 <th>Status</th>

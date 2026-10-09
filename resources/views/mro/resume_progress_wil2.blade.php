@@ -45,7 +45,6 @@
         /* ================= TABLE & STICKY HEADER ================= */
         .table {
             border-radius: 12px;
-            /* Jangan tambahkan overflow: hidden di sini agar sticky header berfungsi */
         }
 
         .table td,
@@ -59,13 +58,11 @@
             top: 0;
             z-index: 10;
             background: var(--navy) !important;
-            /* Background solid agar konten di bawahnya tidak berbayang saat scroll */
             background: linear-gradient(135deg, var(--navy), var(--blue)) !important;
             color: white;
             border: none;
             letter-spacing: .5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            /* Efek bayangan tipis di bawah header */
         }
 
         tbody tr {
@@ -188,7 +185,6 @@
         .table-responsive {
             border-radius: 12px;
             max-height: 80vh;
-            /* Membatasi tinggi kontainer tabel agar scroll internal aktif jika berada di dalam card */
             overflow-y: auto;
         }
 
@@ -301,7 +297,7 @@
                             <th>Nama Pekerjaan</th>
                             <th>Tanggal Kontrak</th>
                             <th>Selesai Kontrak</th>
-                            <th width="180">Nilai Kontrak</th>
+                            <th width="180">Nilai Kontrak/SO</th>
                             <th>Status</th>
                             <th width="140">Progress</th>
                             <th>Keterangan Progress</th>
@@ -321,43 +317,53 @@
                                     'On Hold' => 'badge badge-danger',
                                     default => 'badge badge-secondary',
                                 };
-                                $latestDoc = $m->documents->last();
 
-                                // Nilai Kontrak (Total Rencana)
-                                $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+                                // 1. Ambil dokumen PALING BARU berdasarkan ID (mencegah salah deteksi dokumen lama)
+                                $latestDoc = $m->documents->sortByDesc('id')->first();
 
-                                // Total Realisasi (Seluruh dokumen bernilai Realisasi)
-                                $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
+                                // 2. Kalkulasi Nilai Kontrak (Rencana) & Total Realisasi s/d Bulan Ini (Realisasi + Closed)
+                                $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+                                $totalRealisasi = $m->documents
+                                    ->whereIn('kriteria', ['Realisasi', 'Closed'])
+                                    ->sum('harga');
 
-                                // 1. Filter dokumen yang HANYA memuat kriteria 'Realisasi' dan memiliki harga > 0
+                                // 3. Filter dokumen yang HANYA berkriteria 'Realisasi' dan bernilai > 0
                                 $groupedPriceDocs = $m->documents
-                                    ->filter(
-                                        fn($doc) => $doc->kriteria == 'Realisasi' &&
+                                    ->filter(function ($doc) {
+                                        return $doc->kriteria === 'Realisasi' &&
                                             !is_null($doc->harga) &&
-                                            $doc->harga > 0,
-                                    )
+                                            $doc->harga > 0;
+                                    })
                                     ->groupBy(function ($doc) {
                                         $date = $doc->tanggal_closed ?? $doc->created_at;
                                         return \Carbon\Carbon::parse($date)->format('Y-m');
                                     })
                                     ->sortByDesc(function ($group, $key) {
-                                        return $key; // Urutkan berdasarkan kunci bulan paling baru (YYYY-MM)
+                                        return $key; // Urutkan berdasarkan bulan terbaru (YYYY-MM)
                                     });
 
-                                // 2. Ambil grup bulan terbaru yang ada dokumen Realisasi-nya
                                 $latestMonthGroup = $groupedPriceDocs->first();
-
                                 $latestPriceDoc = null;
                                 $totalHargaBulanIni = 0;
 
                                 if ($latestMonthGroup) {
+                                    // Ambil sampel dokumen realisasi paling akhir pada bulan tersebut
                                     $latestPriceDoc = $latestMonthGroup
                                         ->sortByDesc(function ($doc) {
                                             return $doc->created_at ?? $doc->id;
                                         })
                                         ->first();
 
+                                    // Hitung total nilai realisasi untuk bulan terbaru
                                     $totalHargaBulanIni = $latestMonthGroup->sum('harga');
+                                }
+
+                                // 4. PENYESUAIAN KRITERIA CLOSED:
+                                // Jika dokumen teratas/terakhir yang diupload berkriteria 'Closed',
+                                // paksa Realisasi Bulan Ini menjadi Rp 0.
+                                if ($latestDoc && $latestDoc->kriteria === 'Closed') {
+                                    $totalHargaBulanIni = 0;
+                                    $latestPriceDoc = null;
                                 }
                             @endphp
 
@@ -391,7 +397,7 @@
                                 <td class="text-center">
                                     <div class="p-2 border rounded bg-white shadow-sm">
                                         <div class="fw-bold text-dark fs-6">
-                                            <b>Rp {{ number_format($nilaiKontrak, 0, ',', '.') }}</b>
+                                            <b>Rp {{ number_format($totalNilaiKontrak, 0, ',', '.') }}</b>
                                         </div>
                                     </div>
                                 </td>

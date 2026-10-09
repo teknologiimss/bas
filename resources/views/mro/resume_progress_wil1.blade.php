@@ -299,7 +299,7 @@
                                 <th>Nama Pekerjaan</th>
                                 <th>Tanggal Kontrak</th>
                                 <th>Selesai Kontrak</th>
-                                <th width="180">Nilai Kontrak</th>
+                                <th width="180">Nilai Kontrak/SO</th>
                                 <th>Status</th>
                                 <th width="140">Progress</th>
                                 <th>Keterangan Progress</th>
@@ -320,46 +320,51 @@
                                         default => 'badge badge-secondary',
                                     };
 
-                                    // Dokumen terakhir secara umum
-                                    $latestDoc = $m->documents->last();
+                                    // 1. Ambil dokumen PALING BARU berdasarkan ID (mencegah salah deteksi dokumen lama)
+                                    $latestDoc = $m->documents->sortByDesc('id')->first();
 
-                                    // Nilai Kontrak (Seluruh dokumen bernilai Rencana)
-                                    $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+                                    // 2. Kalkulasi Nilai Kontrak (Rencana) & Total Realisasi s/d Bulan Ini (Realisasi + Closed)
+                                    $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+                                    $totalRealisasi = $m->documents
+                                        ->whereIn('kriteria', ['Realisasi', 'Closed'])
+                                        ->sum('harga');
 
-                                    // Total Realisasi (Seluruh dokumen bernilai Realisasi)
-                                    $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
-
-                                    // 1. Filter HANYA dokumen berkriteria 'Realisasi' dan memiliki harga > 0
+                                    // 3. Filter dokumen yang HANYA berkriteria 'Realisasi' dan bernilai > 0
                                     $groupedPriceDocs = $m->documents
-                                        ->filter(
-                                            fn($doc) => $doc->kriteria === 'Realisasi' &&
+                                        ->filter(function ($doc) {
+                                            return $doc->kriteria === 'Realisasi' &&
                                                 !is_null($doc->harga) &&
-                                                $doc->harga > 0,
-                                        )
+                                                $doc->harga > 0;
+                                        })
                                         ->groupBy(function ($doc) {
                                             $date = $doc->tanggal_closed ?? $doc->created_at;
                                             return \Carbon\Carbon::parse($date)->format('Y-m');
                                         })
                                         ->sortByDesc(function ($group, $key) {
-                                            return $key; // Urutkan berdasarkan bulan paling baru (YYYY-MM)
+                                            return $key; // Urutkan berdasarkan bulan terbaru (YYYY-MM)
                                         });
 
-                                    // 2. Ambil grup bulan terbaru
                                     $latestMonthGroup = $groupedPriceDocs->first();
-
                                     $latestPriceDoc = null;
                                     $totalHargaBulanIni = 0;
 
                                     if ($latestMonthGroup) {
-                                        // Ambil sample dokumen realisasi terakhir di bulan tersebut untuk referensi label
+                                        // Ambil sampel dokumen realisasi paling akhir pada bulan tersebut
                                         $latestPriceDoc = $latestMonthGroup
                                             ->sortByDesc(function ($doc) {
                                                 return $doc->created_at ?? $doc->id;
                                             })
                                             ->first();
 
-                                        // Jumlahkan harga seluruh dokumen Realisasi di bulan tersebut
+                                        // Hitung total nilai realisasi untuk bulan terbaru
                                         $totalHargaBulanIni = $latestMonthGroup->sum('harga');
+                                    }
+
+                                    // 4. PENYESUAIAN KRITERIA CLOSED:
+                                    // Pengecekan HANYA berlaku jika dokumen teratas/terakhir yang diupload berkriteria 'Closed'
+                                    if ($latestDoc && $latestDoc->kriteria === 'Closed') {
+                                        $totalHargaBulanIni = 0;
+                                        $latestPriceDoc = null;
                                     }
                                 @endphp
 
@@ -393,7 +398,7 @@
                                     <td class="text-center">
                                         <div class="p-2 border rounded bg-white shadow-sm">
                                             <div class="fw-bold text-dark fs-6">
-                                                <b>Rp {{ number_format($nilaiKontrak, 0, ',', '.') }}</b>
+                                                <b>Rp {{ number_format($totalNilaiKontrak, 0, ',', '.') }}</b>
                                             </div>
                                         </div>
                                     </td>
@@ -454,6 +459,7 @@
                                                 </div>
                                             </div>
                                         @else
+                                            {{-- Tampilkan Rp 0 jika kriteria Closed atau belum ada realisasi --}}
                                             <span class="text-muted font-italic small">Rp 0</span>
                                         @endif
                                     </td>

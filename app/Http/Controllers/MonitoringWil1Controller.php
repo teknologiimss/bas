@@ -130,38 +130,71 @@ class MonitoringWil1Controller extends Controller
 
     // public function updateDocument(Request $request, $id)
     // {
+    //     $request->validate([
+    //         'nama_dokumen' => 'nullable|string',
+    //         'status' => 'nullable|string',
+    //         'jenis_dokumen' => 'nullable|in:BAKP,BAPP,BAST,BAC,Laporan',
+    //         'harga' => 'nullable|numeric',
+    //         'kriteria' => 'nullable|in:Rencana,Realisasi,Closed',
+    //         'tanggal_closed' => 'nullable|date',
+    //         'keterangan_closed' => 'nullable|string',
+    //         'file_dokumen' => 'nullable|file|max:80000',
+    //     ]);
+
     //     $document = MonitoringWil1Document::findOrFail($id);
 
-    //     if ($request->has('nama_dokumen'))
+    //     // 1. Update Nama & Status Dokumen
+    //     if ($request->has('nama_dokumen')) {
     //         $document->nama_dokumen = $request->nama_dokumen;
-    //     if ($request->has('status')) {
-    //         $document->status = $request->status;
-    //         $document->tanggal_closed = ($request->status === 'Closed') ? ($request->tanggal_closed ?? now()) : null;
-    //         $document->keterangan_closed = ($request->status === 'Closed') ? $request->keterangan_closed : null;
     //     }
 
+    //     if ($request->has('status')) {
+    //         $document->status = $request->status;
+
+    //         // Logika detail jika status Closed / OK
+    //         if ($request->status === 'Closed') {
+    //             $document->jenis_dokumen = $request->jenis_dokumen;
+    //             $document->harga = $request->harga;
+    //             $document->kriteria = $request->kriteria;
+    //             $document->tanggal_closed = $request->tanggal_closed ?? now();
+    //             $document->keterangan_closed = $request->keterangan_closed;
+    //         } else {
+    //             $document->jenis_dokumen = null;
+    //             $document->harga = null;
+    //             $document->kriteria = null;
+    //             $document->tanggal_closed = null;
+    //             $document->keterangan_closed = null;
+    //         }
+    //     }
+
+    //     // 2. Upload File Baru Jika Ada
     //     if ($request->hasFile('file_dokumen')) {
+    //         // Hapus file lama jika ada
     //         if ($document->file_path && File::exists(public_path($document->file_path))) {
     //             File::delete(public_path($document->file_path));
     //         }
+
     //         $file = $request->file('file_dokumen');
-    //         $filename = time() . '_' . $file->getClientOriginalName();
+    //         $filename = uniqid() . '.' . $file->getClientOriginalExtension();
     //         $file->move(public_path('lampiran'), $filename);
+
     //         $document->file_path = 'lampiran/' . $filename;
     //     }
 
     //     $document->save();
 
+    //     // 3. Hitung Ulang Progress pada Parent Monitoring
     //     $monitoring = $document->monitoring;
-    //     $newProgress = $monitoring ? $monitoring->calculateProgress() : 0;
+    //     $newProgress = 0;
     //     if ($monitoring) {
+    //         $newProgress = $monitoring->calculateProgress();
     //         $monitoring->progress = $newProgress;
     //         $monitoring->save();
     //     }
 
     //     return response()->json([
     //         'success' => true,
-    //         'message' => 'Dokumen berhasil diubah',
+    //         'message' => 'Dokumen berhasil diperbarui',
     //         'file_url' => asset($document->file_path) . '?v=' . time(),
     //         'progress' => $newProgress
     //     ]);
@@ -174,7 +207,7 @@ class MonitoringWil1Controller extends Controller
             'status' => 'nullable|string',
             'jenis_dokumen' => 'nullable|in:BAKP,BAPP,BAST,BAC,Laporan',
             'harga' => 'nullable|numeric',
-            'kriteria' => 'nullable|in:Rencana,Realisasi',
+            'kriteria' => 'nullable|in:Rencana,Realisasi,Closed',
             'tanggal_closed' => 'nullable|date',
             'keterangan_closed' => 'nullable|string',
             'file_dokumen' => 'nullable|file|max:80000',
@@ -222,9 +255,11 @@ class MonitoringWil1Controller extends Controller
 
         $document->save();
 
-        // 3. Hitung Ulang Progress pada Parent Monitoring
-        $monitoring = $document->monitoring;
+        // 3. Hitung Ulang Progress pada Parent Monitoring Wilayah 1
+        // Menggunakan relasi 'monitoringWil1' (atau 'monitoring' sesuai yang didefinisikan di Model MonitoringWil1Document)
+        $monitoring = $document->monitoringWil1 ?? $document->monitoring;
         $newProgress = 0;
+
         if ($monitoring) {
             $newProgress = $monitoring->calculateProgress();
             $monitoring->progress = $newProgress;
@@ -234,7 +269,7 @@ class MonitoringWil1Controller extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Dokumen berhasil diperbarui',
-            'file_url' => asset($document->file_path) . '?v=' . time(),
+            'file_url' => $document->file_path ? asset($document->file_path) . '?v=' . time() : null,
             'progress' => $newProgress
         ]);
     }

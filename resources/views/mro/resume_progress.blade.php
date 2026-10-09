@@ -299,7 +299,7 @@
                             <th>Nama Pekerjaan</th>
                             <th>Tanggal Kontrak</th>
                             <th>Selesai Kontrak</th>
-                            <th width="160">Nilai Kontrak</th>
+                            <th width="160">Nilai Kontrak/SO</th>
                             <th>Status</th>
                             <th width="140">Progress</th>
                             <th>Keterangan Progress</th>
