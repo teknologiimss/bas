@@ -165,7 +165,7 @@
                 <th style="width: 12%;">Nama Pekerjaan</th>
                 <th style="width: 7%;">Tgl Kontrak</th>
                 <th style="width: 7%;">Selesai Kontrak</th>
-                <th style="width: 9%;">Nilai Kontrak</th>
+                <th style="width: 9%;">Nilai Kontrak/SO</th>
                 <th style="width: 9%;">Ket. Progress</th>
                 <th style="width: 10%;">Realisasi Bln Ini</th>
                 <th style="width: 10%;">Total Realisasi s/d Bln Ini</th>
