@@ -674,7 +674,7 @@
                                                     </li>
 
                                                     {{-- Tracking Wilayah TIDAK untuk MRO (role 14) --}}
-                                                    @if (Auth::user()->role != 14)
+                                                    {{-- @if (Auth::user()->role != 14)
                                                         <li class="nav-item">
                                                             <a href="{{ route('product.trackingwil') }}"
                                                                 class="nav-link {{ Route::current()->getName() == 'product.trackingwil' ? 'active' : '' }}">
@@ -690,7 +690,7 @@
                                                             <i class="fas fa-hand-holding nav-icon"></i>
                                                             <p>{{ __('BPM') }}</p>
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
 
                                                     {{-- PROGRESS DIVISI WILAYAH --}}
                                                     @if (in_array(Auth::user()->role, [0, 2, 3, 8, 9, 14, 17, 18]))
