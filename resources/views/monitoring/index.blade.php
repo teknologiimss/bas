@@ -1157,8 +1157,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label>Jenis Pekerjaan *</label>
-                                    <input type="text" autocomplete="off" name="jenis_pekerjaan"
-                                        value="{{ $m->jenis_pekerjaan }}" class="form-control" required>
+                                    <select name="jenis_pekerjaan" class="form-control" required>
+                                        <option value="">-- Pilih Jenis Pekerjaan --</option>
+                                        <option value="INKA" {{ $m->jenis_pekerjaan == 'INKA' ? 'selected' : '' }}>INKA
+                                        </option>
+                                        <option value="Non INKA"
+                                            {{ $m->jenis_pekerjaan == 'Non INKA' ? 'selected' : '' }}>Non INKA</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-3">
                                     <label>Tanggal Kontrak *</label>
@@ -1398,8 +1403,11 @@
                         </div>
                         <div class="col-md-6">
                             <label>Jenis Pekerjaan *</label>
-                            <input type="text" autocomplete="off" name="jenis_pekerjaan" class="form-control"
-                                required>
+                            <select name="jenis_pekerjaan" class="form-control" required>
+                                <option value="">-- Pilih Jenis Pekerjaan --</option>
+                                <option value="INKA">INKA</option>
+                                <option value="Non INKA">Non INKA</option>
+                            </select>
                         </div>
                         <div class="col-md-3">
                             <label>Tanggal Kontrak *</label>
