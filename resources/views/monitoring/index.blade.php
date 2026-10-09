@@ -828,80 +828,6 @@
                     </div>
                 </div>
 
-                {{-- @if ($m->documents->count())
-                    <div class="mt-4 document-section" data-monitor-id="{{ $m->id }}">
-                        <div class="dokumen-header">
-                            <div class="dokumen-title">
-                                <div class="icon-box">📁</div>
-                                <span>Dokumen Terkait</span>
-                            </div>
-
-                            <button class="btn-dokumen toggle-docs-btn" type="button">
-                                <span>👁️ Lihat Dokumen</span>
-                                <i class="arrow">→</i>
-                            </button>
-                        </div>
-
-                        <ul class="list-unstyled transition document-list mt-2" style="display: none;">
-                            @foreach ($m->documents as $doc)
-                                <li id="doc-{{ $doc->id }}"
-                                    class="doc-item card shadow-sm border-0 mb-3 p-3 position-relative animate__animated animate__fadeInUp">
-
-                                    <div class="row g-3 align-items-start">
-                                        <div class="col-md-6">
-                                            <label class="small fw-semibold mb-1">Nama Dokumen</label>
-                                            <input type="text" class="form-control form-control-sm doc-name"
-                                                value="{{ $doc->nama_dokumen }}" data-id="{{ $doc->id }}"
-                                                placeholder="Nama dokumen...">
-
-                                            <a href="{{ asset($doc->file_path) }}" target="_blank"
-                                                id="file-link-{{ $doc->id }}"
-                                                class="small text-primary d-inline-block mt-2">
-                                                📄 Lihat File
-                                            </a>
-
-                                            <input type="file" class="form-control form-control-sm mt-2 doc-file"
-                                                data-id="{{ $doc->id }}">
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label class="small fw-semibold mb-1">Status Dokumen</label>
-                                            <select class="form-select form-select-sm doc-status"
-                                                data-id="{{ $doc->id }}">
-                                                <option value="-" {{ $doc->status == '-' ? 'selected' : '' }}>-</option>
-                                                <option value="Nok" {{ $doc->status == 'Nok' ? 'selected' : '' }}>🔴 NOK</option>
-                                                <option value="Closed" {{ $doc->status == 'Closed' ? 'selected' : '' }}>🟢 OK</option>
-                                            </select>
-
-                                            <div class="closed-extra mt-2 transition {{ $doc->status == 'Closed' ? '' : 'd-none' }}">
-                                                <div class="alert alert-success py-2 px-3 small mb-2">
-                                                    ✅ Dokumen Closed
-                                                </div>
-                                                <input type="date"
-                                                    class="form-control form-control-sm mb-2 doc-closed-date"
-                                                    value="{{ $doc->tanggal_closed }}">
-                                                <textarea class="form-control form-control-sm doc-closed-note" placeholder="Keterangan Closed">{{ $doc->keterangan_closed }}</textarea>
-                                            </div>
-
-                                            <div class="mt-3 d-flex gap-2">
-                                                <button class="btn btn-success btn-sm px-3 btn-update-doc"
-                                                    data-id="{{ $doc->id }}"
-                                                    data-url="{{ route('monitoring.document.update', $doc->id) }}">
-                                                    💾 Simpan
-                                                </button>
-                                                <button class="btn btn-outline-danger btn-sm px-3 btn-delete-doc"
-                                                    data-id="{{ $doc->id }}"
-                                                    data-url="{{ route('monitoring.document.destroy', $doc->id) }}">
-                                                    🗑️ Hapus
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif --}}
 
 
                 <!-- ========================================== -->
@@ -1025,43 +951,6 @@
 
 
                                         {{-- Status Dokumen --}}
-                                        {{-- <div class="col">
-                                            <label class="small fw-semibold mb-1">Status Dokumen</label>
-                                            <select class="form-select form-select-sm doc-status"
-                                                data-id="{{ $doc->id }}">
-                                                <option value="-" {{ $doc->status == '-' ? 'selected' : '' }}>-
-                                                </option>
-                                                <option value="Nok" {{ $doc->status == 'Nok' ? 'selected' : '' }}>🔴
-                                                    NOK</option>
-                                                <option value="Closed" {{ $doc->status == 'Closed' ? 'selected' : '' }}>🟢
-                                                    OK</option>
-                                            </select>
-
-                                            <div
-                                                class="closed-extra mt-2 transition {{ $doc->status == 'Closed' ? '' : 'd-none' }}">
-                                                <div class="alert alert-success py-2 px-3 small mb-2">
-                                                    ✅ Dokumen Closed
-                                                </div>
-                                                <input type="date"
-                                                    class="form-control form-control-sm mb-2 doc-closed-date"
-                                                    value="{{ $doc->tanggal_closed }}">
-                                                <textarea class="form-control form-control-sm doc-closed-note" placeholder="Keterangan Closed">{{ $doc->keterangan_closed }}</textarea>
-                                            </div>
-
-                                            <div class="mt-3 d-flex gap-2">
-                                                <button class="btn btn-success btn-sm px-3 btn-update-doc"
-                                                    data-id="{{ $doc->id }}"
-                                                    data-url="{{ route('monitoring.document.update', $doc->id) }}">
-                                                    💾 Simpan
-                                                </button>
-                                                <button class="btn btn-outline-danger btn-sm px-3 btn-delete-doc"
-                                                    data-id="{{ $doc->id }}"
-                                                    data-url="{{ route('monitoring.document.destroy', $doc->id) }}">
-                                                    🗑️ Hapus
-                                                </button>
-                                            </div>
-                                        </div> --}}
-
                                         <div class="col">
                                             <label class="small fw-semibold mb-1">Status Dokumen</label>
                                             <select class="form-select form-select-sm doc-status"
@@ -1124,6 +1013,11 @@
                                                             <option value="Realisasi"
                                                                 {{ $doc->kriteria == 'Realisasi' ? 'selected' : '' }}>
                                                                 Realisasi</option>
+                                                            <!-- Tambahkan opsi Closed berikut -->
+                                                            <option value="Closed"
+                                                                {{ $doc->kriteria == 'Closed' ? 'selected' : '' }}>
+                                                                Closed
+                                                            </option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -1179,17 +1073,17 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label>PO / Nota Dinas *</label>
-                                    <input type="text" name="po_nota_dinas" value="{{ $m->po_nota_dinas }}"
+                                    <input type="text" autocomplete="off" name="po_nota_dinas" value="{{ $m->po_nota_dinas }}"
                                         class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Nama Pekerjaan *</label>
-                                    <input type="text" name="nama_pekerjaan" value="{{ $m->nama_pekerjaan }}"
+                                    <input type="text" autocomplete="off" name="nama_pekerjaan" value="{{ $m->nama_pekerjaan }}"
                                         class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Jenis Pekerjaan *</label>
-                                    <input type="text" name="jenis_pekerjaan" value="{{ $m->jenis_pekerjaan }}"
+                                    <input type="text" autocomplete="off" name="jenis_pekerjaan" value="{{ $m->jenis_pekerjaan }}"
                                         class="form-control" required>
                                 </div>
                                 <div class="col-md-3">
@@ -1214,14 +1108,14 @@
                                 </div>
                                 <div class="col-md-8">
                                     <label>Keterangan</label>
-                                    <textarea name="keterangan" class="form-control">{{ $m->keterangan }}</textarea>
+                                    <textarea name="keterangan" autocomplete="off" class="form-control">{{ $m->keterangan }}</textarea>
                                 </div>
 
                                 <div class="col-12 mt-3">
                                     <label>Tambah Dokumen Baru</label>
                                     <div id="dokumenContainerEdit{{ $m->id }}">
                                         <div class="d-flex gap-2 mb-2">
-                                            <input type="text" name="nama_dokumen[]" class="form-control"
+                                            <input type="text" autocomplete="off" name="nama_dokumen[]" class="form-control"
                                                 placeholder="Nama Dokumen">
                                             <input type="file" name="file_dokumen[]" class="form-control">
                                         </div>
@@ -1421,15 +1315,15 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label>PO / Nota Dinas *</label>
-                            <input type="text" name="po_nota_dinas" class="form-control" required>
+                            <input type="text" autocomplete="off" name="po_nota_dinas" class="form-control" required>
                         </div>
                         <div class="col-md-6">
                             <label>Nama Pekerjaan *</label>
-                            <input type="text" name="nama_pekerjaan" class="form-control" required>
+                            <input type="text" autocomplete="off" name="nama_pekerjaan" class="form-control" required>
                         </div>
                         <div class="col-md-6">
                             <label>Jenis Pekerjaan *</label>
-                            <input type="text" name="jenis_pekerjaan" class="form-control" required>
+                            <input type="text" autocomplete="off" name="jenis_pekerjaan" class="form-control" required>
                         </div>
                         <div class="col-md-3">
                             <label>Tanggal Kontrak *</label>
@@ -1449,14 +1343,14 @@
                         </div>
                         <div class="col-md-8">
                             <label>Keterangan</label>
-                            <textarea name="keterangan" class="form-control"></textarea>
+                            <textarea name="keterangan" autocomplete="off" class="form-control"></textarea>
                         </div>
 
                         <div class="col-12 mt-3">
                             <label>Upload Dokumen</label>
                             <div id="dokumenContainer">
                                 <div class="d-flex gap-2 mb-2">
-                                    <input type="text" name="nama_dokumen[]" class="form-control"
+                                    <input type="text" autocomplete="off" name="nama_dokumen[]" class="form-control"
                                         placeholder="Nama Dokumen">
                                     <input type="file" name="file_dokumen[]" class="form-control">
                                 </div>

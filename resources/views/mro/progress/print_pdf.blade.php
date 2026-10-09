@@ -48,7 +48,6 @@
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            /* Mengunci lebar kolom agar presisi */
             margin-bottom: 10px;
         }
 
@@ -58,7 +57,6 @@
             padding: 4px 5px;
             vertical-align: middle;
             word-wrap: break-word;
-            /* Mencegah teks melimpah keluar tabel */
             overflow-wrap: break-word;
         }
 
@@ -171,14 +169,13 @@
                     };
 
                     $latestDoc = $m->documents->last();
-
-                    // Panggilan helper/method Notif Kontrak
                     $notif = $m->notifKontrak();
 
                     // --- KALKULASI NILAI KONTRAK & REALISASI ---
                     $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
                     $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
 
+                    // Filter HANYA dokumen berkriteria 'Realisasi' dengan harga > 0
                     $groupedPriceDocs = $m->documents
                         ->filter(fn($doc) => $doc->kriteria == 'Realisasi' && !is_null($doc->harga) && $doc->harga > 0)
                         ->groupBy(function ($doc) {
@@ -201,6 +198,14 @@
                             ->first();
 
                         $totalHargaBulanIni = $latestMonthGroup->sum('harga');
+                    }
+
+                    // --- LOGIKA TAMBAHAN UNTUK CLOSED ---
+                    // Jika dokumen terakhir kriteria-nya 'Closed' atau status monitoring 'Closed',
+                    // paksa Realisasi Bulan Ini menjadi 0 / tidak tampil
+                    if (($latestDoc && $latestDoc->kriteria === 'Closed') || $m->status === 'Closed') {
+                        $totalHargaBulanIni = 0;
+                        $latestPriceDoc = null;
                     }
                 @endphp
                 <tr>
@@ -257,7 +262,7 @@
                                 </div>
                             </div>
                         @else
-                            <span style="color: #94a3b8; font-style: italic;">-</span>
+                            <span style="color: #94a3b8; font-style: italic;">Rp.0</span>
                         @endif
                     </td>
 

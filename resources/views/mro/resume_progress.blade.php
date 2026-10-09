@@ -312,7 +312,7 @@
 
                     <tbody>
                         @forelse ($monitorings as $index => $m)
-                            @php
+                            {{-- @php
                                 $statusClass = match ($m->status) {
                                     'Open' => 'badge badge-warning',
                                     'Closed' => 'badge badge-success',
@@ -360,6 +360,63 @@
 
                                     // Jumlahkan harga dokumen Realisasi di bulan tersebut
                                     $totalHargaBulanIni = $latestMonthGroup->sum('harga');
+                                }
+                            @endphp --}}
+
+                            @php
+                                $statusClass = match ($m->status) {
+                                    'Open' => 'badge badge-warning',
+                                    'Closed' => 'badge badge-success',
+                                    'On Hold' => 'badge badge-danger',
+                                    default => 'badge badge-secondary',
+                                };
+
+                                // Mengambil dokumen terakhir
+                                $latestDoc = $m->documents->last();
+
+                                // Total Nilai Kontrak (Rencana)
+                                $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+
+                                // Total RealisasiKeseluruhan
+                                $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
+
+                                // 1. Ambil dokumen berkriteria 'Realisasi' saja
+                                $realisasiDocs = $m->documents->filter(function ($doc) {
+                                    return $doc->kriteria === 'Realisasi' && !is_null($doc->harga);
+                                });
+
+                                // 2. Kelompokkan berdasarkan Bulan (YYYY-MM)
+                                $groupedPriceDocs = $realisasiDocs
+                                    ->groupBy(function ($doc) {
+                                        $date = $doc->tanggal_closed ?? $doc->created_at;
+                                        return \Carbon\Carbon::parse($date)->format('Y-m');
+                                    })
+                                    ->sortByDesc(function ($group, $key) {
+                                        return $key; // Urutkan bulan terbaru
+                                    });
+
+                                $latestMonthGroup = $groupedPriceDocs->first();
+                                $latestPriceDoc = null;
+                                $totalHargaBulanIni = 0;
+
+                                if ($latestMonthGroup) {
+                                    // Ambil dokumen realisasi yang paling akhir dibuat
+                                    $latestPriceDoc = $latestMonthGroup
+                                        ->sortByDesc(function ($doc) {
+                                            return $doc->created_at ?? $doc->id;
+                                        })
+                                        ->first();
+
+                                    // Hitung total harga realisasi di bulan tersebut
+                                    $totalHargaBulanIni = $latestMonthGroup->sum('harga');
+                                }
+
+                                // Pengecekan Tambahan:
+                                // Jika dokumen paling akhir dari monitoring secara keseluruhan memiliki kriteria 'Closed',
+                                // atau jika status monitoring 'Closed', paksa Realisasi Bulan Ini menjadi 0.
+                                if (($latestDoc && $latestDoc->kriteria === 'Closed') || $m->status === 'Closed') {
+                                    $totalHargaBulanIni = 0;
+                                    $latestPriceDoc = null;
                                 }
                             @endphp
 

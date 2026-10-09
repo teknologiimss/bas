@@ -312,6 +312,9 @@ class MonitoringController extends Controller
     //     $request->validate([
     //         'nama_dokumen' => 'nullable|string',
     //         'status' => 'nullable|string',
+    //         'jenis_dokumen' => 'nullable|in:BAKP,BAPP,BAST,BAC,Laporan',
+    //         'harga' => 'nullable|numeric',
+    //         'kriteria' => 'nullable|in:Rencana,Realisasi',
     //         'tanggal_closed' => 'nullable|date',
     //         'keterangan_closed' => 'nullable|string',
     //         'file_dokumen' => 'nullable|file|max:80000',
@@ -327,11 +330,17 @@ class MonitoringController extends Controller
     //     if ($request->has('status')) {
     //         $document->status = $request->status;
 
-    //         // Logika tanggal & keterangan jika status Closed / Nok / -
+    //         // Logika detail jika status Closed / OK
     //         if ($request->status === 'Closed') {
+    //             $document->jenis_dokumen = $request->jenis_dokumen;
+    //             $document->harga = $request->harga;
+    //             $document->kriteria = $request->kriteria;
     //             $document->tanggal_closed = $request->tanggal_closed ?? now();
     //             $document->keterangan_closed = $request->keterangan_closed;
     //         } else {
+    //             $document->jenis_dokumen = null;
+    //             $document->harga = null;
+    //             $document->kriteria = null;
     //             $document->tanggal_closed = null;
     //             $document->keterangan_closed = null;
     //         }
@@ -377,7 +386,7 @@ class MonitoringController extends Controller
             'status' => 'nullable|string',
             'jenis_dokumen' => 'nullable|in:BAKP,BAPP,BAST,BAC,Laporan',
             'harga' => 'nullable|numeric',
-            'kriteria' => 'nullable|in:Rencana,Realisasi',
+            'kriteria' => 'nullable|in:Rencana,Realisasi,Closed',  // Tambahkan 'Closed'
             'tanggal_closed' => 'nullable|date',
             'keterangan_closed' => 'nullable|string',
             'file_dokumen' => 'nullable|file|max:80000',
@@ -411,7 +420,6 @@ class MonitoringController extends Controller
 
         // 2. Upload File Baru Jika Ada
         if ($request->hasFile('file_dokumen')) {
-            // Hapus file lama jika ada
             if ($document->file_path && File::exists(public_path($document->file_path))) {
                 File::delete(public_path($document->file_path));
             }
