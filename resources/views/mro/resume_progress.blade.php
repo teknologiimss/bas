@@ -371,28 +371,26 @@
                                     default => 'badge badge-secondary',
                                 };
 
-                                // Mengambil dokumen terakhir
+                                // 1. Ambil dokumen terakhir dari monitoring ini
                                 $latestDoc = $m->documents->last();
 
-                                // Total Nilai Kontrak (Rencana)
+                                // 2. Kalkulasi Nilai Kontrak (Rencana) & Total Realisasi s/d Bulan Ini
                                 $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+                                $totalRealisasi = $m->documents->whereIn('kriteria', ['Realisasi', 'Closed'])->sum('harga');
 
-                                // Total RealisasiKeseluruhan
-                                $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
-
-                                // 1. Ambil dokumen berkriteria 'Realisasi' saja
-                                $realisasiDocs = $m->documents->filter(function ($doc) {
-                                    return $doc->kriteria === 'Realisasi' && !is_null($doc->harga);
-                                });
-
-                                // 2. Kelompokkan berdasarkan Bulan (YYYY-MM)
-                                $groupedPriceDocs = $realisasiDocs
+                                // 3. Filter dokumen yang HANYA berkriteria 'Realisasi' dan bernilai > 0
+                                $groupedPriceDocs = $m->documents
+                                    ->filter(function ($doc) {
+                                        return $doc->kriteria === 'Realisasi' &&
+                                            !is_null($doc->harga) &&
+                                            $doc->harga > 0;
+                                    })
                                     ->groupBy(function ($doc) {
                                         $date = $doc->tanggal_closed ?? $doc->created_at;
                                         return \Carbon\Carbon::parse($date)->format('Y-m');
                                     })
                                     ->sortByDesc(function ($group, $key) {
-                                        return $key; // Urutkan bulan terbaru
+                                        return $key; // Urutkan berdasarkan bulan terbaru (YYYY-MM)
                                     });
 
                                 $latestMonthGroup = $groupedPriceDocs->first();
@@ -400,21 +398,20 @@
                                 $totalHargaBulanIni = 0;
 
                                 if ($latestMonthGroup) {
-                                    // Ambil dokumen realisasi yang paling akhir dibuat
+                                    // Ambil sampel dokumen realisasi paling akhir pada bulan tersebut
                                     $latestPriceDoc = $latestMonthGroup
                                         ->sortByDesc(function ($doc) {
                                             return $doc->created_at ?? $doc->id;
                                         })
                                         ->first();
 
-                                    // Hitung total harga realisasi di bulan tersebut
+                                    // Hitung total nilai realisasi untuk bulan terbaru
                                     $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                                 }
 
-                                // Pengecekan Tambahan:
-                                // Jika dokumen paling akhir dari monitoring secara keseluruhan memiliki kriteria 'Closed',
-                                // atau jika status monitoring 'Closed', paksa Realisasi Bulan Ini menjadi 0.
-                                if (($latestDoc && $latestDoc->kriteria === 'Closed') || $m->status === 'Closed') {
+                                // 4. PENYESUAIAN KRITERIA CLOSED:
+                                // Pengecekan HANYA berlaku jika dokumen teratas/terakhir yang diupload berkriteria 'Closed'
+                                if ($latestDoc && $latestDoc->kriteria === 'Closed') {
                                     $totalHargaBulanIni = 0;
                                     $latestPriceDoc = null;
                                 }

@@ -173,7 +173,9 @@
 
                     // --- KALKULASI NILAI KONTRAK & REALISASI ---
                     $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-                    $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
+
+                    // TOTAL REALISASI: Menjumlahkan dokumen bertipe 'Realisasi' DAN 'Closed'
+                    $totalRealisasi = $m->documents->whereIn('kriteria', ['Realisasi', 'Closed'])->sum('harga');
 
                     // Filter HANYA dokumen berkriteria 'Realisasi' dengan harga > 0
                     $groupedPriceDocs = $m->documents
@@ -200,10 +202,9 @@
                         $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                     }
 
-                    // --- LOGIKA TAMBAHAN UNTUK CLOSED ---
-                    // Jika dokumen terakhir kriteria-nya 'Closed' atau status monitoring 'Closed',
-                    // paksa Realisasi Bulan Ini menjadi 0 / tidak tampil
-                    if (($latestDoc && $latestDoc->kriteria === 'Closed') || $m->status === 'Closed') {
+                    // --- LOGIKA UNTUK DOKUMEN BERKRITERIA CLOSED ---
+                    // Jika dokumen terakhir kriteria-nya 'Closed', paksa Realisasi Bulan Ini menjadi 0 / Rp.0
+                    if ($latestDoc && $latestDoc->kriteria === 'Closed') {
                         $totalHargaBulanIni = 0;
                         $latestPriceDoc = null;
                     }

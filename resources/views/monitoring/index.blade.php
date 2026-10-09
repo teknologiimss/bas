@@ -833,9 +833,83 @@
                 <!-- ========================================== -->
                 <!-- RINGKASAN TOTAL HARGA (RENCANA VS REALISASI) -->
                 <!-- ========================================== -->
-                @php
+                {{-- @php
                     $totalRencana = $m->documents->where('kriteria', 'Rencana')->sum('harga');
                     $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
+                    $selisih = $totalRealisasi - $totalRencana;
+                @endphp
+
+                <div class="row g-3 mb-4">
+                    <!-- Card Total Rencana -->
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 bg-white"
+                            style="border-left: 5px solid #0d6efd !important;">
+                            <div class="card-body p-3 d-flex align-items-center">
+                                <div class="rounded-circle p-3 me-3 bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px; flex-shrink: 0;">
+                                    <i class="fa fa-calculator fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="text-muted small fw-semibold text-uppercase d-block"
+                                        style="font-size: 0.75rem; letter-spacing: 0.5px;"><b>Total Rencana SO/PO</b></span>
+                                    <div
+                                        class="badge bg-primary text-white fs-6 fw-bold mt-1 px-3 py-2 rounded-pill shadow-sm">
+                                        Rp {{ number_format($totalRencana, 0, ',', '.') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Total Realisasi -->
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 bg-white"
+                            style="border-left: 5px solid #198754 !important;">
+                            <div class="card-body p-3 d-flex align-items-center">
+                                <div class="rounded-circle p-3 me-3 bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px; flex-shrink: 0;">
+                                    <i class="fa fa-file-invoice-dollar fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="text-muted small fw-semibold text-uppercase d-block"
+                                        style="font-size: 0.75rem; letter-spacing: 0.5px;"><b>Total Realisasi</b></span>
+                                    <div
+                                        class="badge bg-success text-white fs-6 fw-bold mt-1 px-3 py-2 rounded-pill shadow-sm">
+                                        Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Selisih (Deviasi) -->
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 bg-white"
+                            style="border-left: 5px solid {{ $selisih < 0 ? '#dc3545' : '#0dcaf0' }} !important;">
+                            <div class="card-body p-3 d-flex align-items-center">
+                                <div class="rounded-circle p-3 me-3 {{ $selisih < 0 ? 'bg-danger bg-opacity-10 text-danger' : 'bg-info bg-opacity-10 text-info' }} d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px; flex-shrink: 0;">
+                                    <i class="fa {{ $selisih < 0 ? 'fa-arrow-down' : 'fa-check-circle' }} fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="text-muted small fw-semibold text-uppercase d-block"
+                                        style="font-size: 0.75rem; letter-spacing: 0.5px;"><b>Selisih</b></span>
+                                    <div
+                                        class="badge {{ $selisih < 0 ? 'bg-danger' : 'bg-info' }} text-white fs-6 fw-bold mt-1 px-3 py-2 rounded-pill shadow-sm">
+                                        Rp {{ number_format($selisih, 0, ',', '.') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
+
+                @php
+                    $totalRencana = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+
+                    // Menjumlahkan harga dari dokumen berkriteria 'Realisasi' DAN 'Closed'
+                    $totalRealisasi = $m->documents->whereIn('kriteria', ['Realisasi', 'Closed'])->sum('harga');
+
                     $selisih = $totalRealisasi - $totalRencana;
                 @endphp
 
@@ -1073,18 +1147,18 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label>PO / Nota Dinas *</label>
-                                    <input type="text" autocomplete="off" name="po_nota_dinas" value="{{ $m->po_nota_dinas }}"
-                                        class="form-control" required>
+                                    <input type="text" autocomplete="off" name="po_nota_dinas"
+                                        value="{{ $m->po_nota_dinas }}" class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Nama Pekerjaan *</label>
-                                    <input type="text" autocomplete="off" name="nama_pekerjaan" value="{{ $m->nama_pekerjaan }}"
-                                        class="form-control" required>
+                                    <input type="text" autocomplete="off" name="nama_pekerjaan"
+                                        value="{{ $m->nama_pekerjaan }}" class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Jenis Pekerjaan *</label>
-                                    <input type="text" autocomplete="off" name="jenis_pekerjaan" value="{{ $m->jenis_pekerjaan }}"
-                                        class="form-control" required>
+                                    <input type="text" autocomplete="off" name="jenis_pekerjaan"
+                                        value="{{ $m->jenis_pekerjaan }}" class="form-control" required>
                                 </div>
                                 <div class="col-md-3">
                                     <label>Tanggal Kontrak *</label>
@@ -1115,8 +1189,8 @@
                                     <label>Tambah Dokumen Baru</label>
                                     <div id="dokumenContainerEdit{{ $m->id }}">
                                         <div class="d-flex gap-2 mb-2">
-                                            <input type="text" autocomplete="off" name="nama_dokumen[]" class="form-control"
-                                                placeholder="Nama Dokumen">
+                                            <input type="text" autocomplete="off" name="nama_dokumen[]"
+                                                class="form-control" placeholder="Nama Dokumen">
                                             <input type="file" name="file_dokumen[]" class="form-control">
                                         </div>
                                     </div>
@@ -1319,11 +1393,13 @@
                         </div>
                         <div class="col-md-6">
                             <label>Nama Pekerjaan *</label>
-                            <input type="text" autocomplete="off" name="nama_pekerjaan" class="form-control" required>
+                            <input type="text" autocomplete="off" name="nama_pekerjaan" class="form-control"
+                                required>
                         </div>
                         <div class="col-md-6">
                             <label>Jenis Pekerjaan *</label>
-                            <input type="text" autocomplete="off" name="jenis_pekerjaan" class="form-control" required>
+                            <input type="text" autocomplete="off" name="jenis_pekerjaan" class="form-control"
+                                required>
                         </div>
                         <div class="col-md-3">
                             <label>Tanggal Kontrak *</label>
