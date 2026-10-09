@@ -62,28 +62,24 @@
             max-height: 70vh;
             overflow-y: auto;
             position: relative;
-            /* Menjaga konteks scroll internal */
         }
 
         thead.thead-dark {
             position: sticky;
             top: 0;
             z-index: 30;
-            /* Dipastikan paling atas */
         }
 
         thead.thead-dark th {
             position: sticky;
             top: 0;
             z-index: 30;
-            /* Latar belakang solid agar teks di bawahnya 100% tertutup */
             background-color: #0f172a !important;
             background-image: linear-gradient(135deg, var(--navy), var(--blue)) !important;
             color: #ffffff !important;
             border: none;
             letter-spacing: .5px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
-            /* Bayangan pemisah header */
         }
 
         tbody tr {
@@ -333,12 +329,10 @@
         }
     </style>
 
-
     <div class="container-fluid mt-4">
 
         {{-- HEADER --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
-
             <h3>
                 <b>Progress Divisi Wilayah</b>
             </h3>
@@ -348,9 +342,7 @@
                 class="btn btn-primary no-print">
                 🖨️ Print Semua
             </a>
-
         </div>
-
 
         {{-- FLASH MESSAGE --}}
         @if (session('success'))
@@ -358,7 +350,6 @@
                 {{ session('success') }}
             </div>
         @endif
-
 
         {{-- FILTER --}}
         <div class="card mb-3 no-print">
@@ -393,7 +384,6 @@
                 </form>
             </div>
         </div>
-
 
         {{-- TABLE --}}
         <div class="card shadow-sm">
@@ -433,7 +423,7 @@
                                         default => 'badge badge-secondary',
                                     };
 
-                                    // Definisikan $divisiClass
+                                    // Class badge divisi
                                     $divisiClass = match ($m->divisi) {
                                         'MRO' => 'badge-mro',
                                         'Wilayah 1' => 'badge-wil1',
@@ -441,10 +431,10 @@
                                         default => 'badge-secondary',
                                     };
 
-                                    // Dokumen terakhir secara umum
-                                    $latestDoc = $m->documents->last();
+                                    // 1. Ambil dokumen PALING BARU berdasarkan ID
+                                    $latestDoc = $m->documents->sortByDesc('id')->first();
 
-                                    // 1. NILAI KONTRAK
+                                    // 2. NILAI KONTRAK (RENCANA)
                                     $nilaiKontrakDoc = $m->documents
                                         ->filter(fn($doc) => strtolower($doc->kriteria ?? '') === 'rencana')
                                         ->sum('harga');
@@ -454,10 +444,10 @@
                                             ? $nilaiKontrakDoc
                                             : $m->nilai_kontrak ?? ($m->nilai_po ?? ($m->nilai ?? ($m->nominal ?? 0)));
 
-                                    // 2. TOTAL REALISASI
+                                    // 3. TOTAL REALISASI (Termasuk 'Realisasi' dan 'Closed')
                                     $realisasiDocs = $m->documents->filter(function ($doc) {
                                         $kriteria = strtolower($doc->kriteria ?? '');
-                                        return ($kriteria === 'realisasi' || empty($kriteria)) &&
+                                        return in_array($kriteria, ['realisasi', 'closed']) &&
                                             !is_null($doc->harga) &&
                                             $doc->harga > 0;
                                     });
@@ -468,8 +458,13 @@
                                             ? $totalRealisasiDoc
                                             : $m->total_realisasi ?? ($m->realisasi ?? 0);
 
-                                    // 3. REALISASI BULAN INI
-                                    $groupedPriceDocs = $realisasiDocs
+                                    // 4. REALISASI BULAN INI (Hanya dokumen berkriteria 'Realisasi')
+                                    $groupedPriceDocs = $m->documents
+                                        ->filter(function ($doc) {
+                                            return strtolower($doc->kriteria ?? '') === 'realisasi' &&
+                                                !is_null($doc->harga) &&
+                                                $doc->harga > 0;
+                                        })
                                         ->groupBy(function ($doc) {
                                             $date = $doc->tanggal_closed ?? $doc->created_at;
                                             return \Carbon\Carbon::parse($date)->format('Y-m');
@@ -490,6 +485,13 @@
                                             ->first();
 
                                         $realisasiBulanIni = $latestMonthGroup->sum('harga');
+                                    }
+
+                                    // 5. PENYESUAIAN KRITERIA CLOSED:
+                                    // Jika dokumen teratas/terakhir berkriteria 'Closed', paksa Realisasi Bulan Ini menjadi Rp 0
+                                    if ($latestDoc && strtolower($latestDoc->kriteria ?? '') === 'closed') {
+                                        $realisasiBulanIni = 0;
+                                        $latestPriceDoc = null;
                                     }
                                 @endphp
 
@@ -590,11 +592,18 @@
 
                                     {{-- REALISASI BULAN INI --}}
                                     <td>
-                                        <div class="currency-box highlight-blue">
-                                            <span class="currency-symbol">Rp</span>
-                                            <span
-                                                class="currency-amount">{{ number_format((float) $realisasiBulanIni, 0, ',', '.') }}</span>
-                                        </div>
+                                        @if ($latestPriceDoc && $realisasiBulanIni > 0)
+                                            <div class="currency-box highlight-blue">
+                                                <span class="currency-symbol">Rp</span>
+                                                <span
+                                                    class="currency-amount">{{ number_format((float) $realisasiBulanIni, 0, ',', '.') }}</span>
+                                            </div>
+                                        @else
+                                            <div class="currency-box">
+                                                <span class="currency-symbol">Rp</span>
+                                                <span class="currency-amount">0</span>
+                                            </div>
+                                        @endif
                                     </td>
 
                                     {{-- TOTAL REALISASI S/D BULAN INI --}}
@@ -720,7 +729,6 @@
             </div>
         </div>
 
-
         {{-- CATATAN PROGRESS --}}
         <div class="card mt-3">
             <div class="card-body">
@@ -745,14 +753,12 @@
             </div>
         </div>
 
-
         {{-- PAGINATION --}}
         <div class="mt-3 d-flex justify-content-center no-print">
             {{ $monitorings->links('pagination::bootstrap-4') }}
         </div>
 
     </div>
-
 
     {{-- ================= JS PRINT ================= --}}
 
