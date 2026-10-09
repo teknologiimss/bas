@@ -843,7 +843,7 @@
                                                             <option value="Realisasi"
                                                                 {{ $doc->kriteria == 'Realisasi' ? 'selected' : '' }}>
                                                                 Realisasi</option>
-                                                                <!-- Tambahkan opsi Closed berikut -->
+                                                            <!-- Tambahkan opsi Closed berikut -->
                                                             <option value="Closed"
                                                                 {{ $doc->kriteria == 'Closed' ? 'selected' : '' }}>
                                                                 Closed
@@ -907,18 +907,23 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label>PO / Nota Dinas *</label>
-                                    <input type="text" autocomplete="off" name="po_nota_dinas" value="{{ $m->po_nota_dinas }}"
-                                        class="form-control" required>
+                                    <input type="text" autocomplete="off" name="po_nota_dinas"
+                                        value="{{ $m->po_nota_dinas }}" class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Nama Pekerjaan *</label>
-                                    <input type="text" autocomplete="off" name="nama_pekerjaan" value="{{ $m->nama_pekerjaan }}"
-                                        class="form-control" required>
+                                    <input type="text" autocomplete="off" name="nama_pekerjaan"
+                                        value="{{ $m->nama_pekerjaan }}" class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Jenis Pekerjaan *</label>
-                                    <input type="text" autocomplete="off" name="jenis_pekerjaan" value="{{ $m->jenis_pekerjaan }}"
-                                        class="form-control" required>
+                                    <select name="jenis_pekerjaan" class="form-control" required>
+                                        <option value="">-- Pilih Jenis Pekerjaan --</option>
+                                        <option value="INKA" {{ $m->jenis_pekerjaan == 'INKA' ? 'selected' : '' }}>INKA
+                                        </option>
+                                        <option value="Non INKA"
+                                            {{ $m->jenis_pekerjaan == 'Non INKA' ? 'selected' : '' }}>Non INKA</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-3">
                                     <label>Tanggal Kontrak *</label>
@@ -949,8 +954,8 @@
                                     <label>Tambah Dokumen Baru</label>
                                     <div id="dokumenContainerEdit{{ $m->id }}">
                                         <div class="d-flex gap-2 mb-2">
-                                            <input type="text" autocomplete="off" name="nama_dokumen[]" class="form-control"
-                                                placeholder="Nama Dokumen">
+                                            <input type="text" autocomplete="off" name="nama_dokumen[]"
+                                                class="form-control" placeholder="Nama Dokumen">
                                             <input type="file" name="file_dokumen[]" class="form-control">
                                         </div>
                                     </div>
@@ -961,7 +966,8 @@
 
                             <div class="col-md-8 mt-3">
                                 <label>Keterangan Progress</label>
-                                <textarea name="keterangan2" autocomplete="off" class="form-control" placeholder="Catatan perkembangan pekerjaan...">{{ $m->keterangan2 }}</textarea>
+                                <textarea name="keterangan2" autocomplete="off" class="form-control"
+                                    placeholder="Catatan perkembangan pekerjaan...">{{ $m->keterangan2 }}</textarea>
                             </div>
                         </div>
 
@@ -1135,11 +1141,16 @@
                         </div>
                         <div class="col-md-6">
                             <label>Nama Pekerjaan *</label>
-                            <input type="text" autocomplete="off" name="nama_pekerjaan" class="form-control" required>
+                            <input type="text" autocomplete="off" name="nama_pekerjaan" class="form-control"
+                                required>
                         </div>
                         <div class="col-md-6">
                             <label>Jenis Pekerjaan *</label>
-                            <input type="text" autocomplete="off" name="jenis_pekerjaan" class="form-control" required>
+                            <select name="jenis_pekerjaan" class="form-control" required>
+                                <option value="">-- Pilih Jenis Pekerjaan --</option>
+                                <option value="INKA">INKA</option>
+                                <option value="Non INKA">Non INKA</option>
+                            </select>
                         </div>
                         <div class="col-md-3">
                             <label>Tanggal Kontrak *</label>
