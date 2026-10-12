@@ -693,7 +693,7 @@
                                                     </li> --}}
 
                                                     {{-- PROGRESS DIVISI WILAYAH --}}
-                                                    @if (in_array(Auth::user()->role, [0, 2, 3, 8, 9, 14, 17, 18]))
+                                                    @if (in_array(Auth::user()->role, [0, 2, 3, 8, 9, 14]))
                                                         <li class="nav-item">
                                                             <a href="{{ route('divisi.wilayah.progress') }}"
                                                                 class="nav-link {{ request()->routeIs('divisi.wilayah.progress*') ? 'active' : '' }}">
@@ -708,8 +708,8 @@
                                                         </li>
                                                     @endif
 
-                                                    {{-- MENU WILAYAH 1 (Role 2 & Admin/Role 0/8/9/14/17) --}}
-                                                    @if (in_array(Auth::user()->role, [0, 2, 8, 9, 14, 17]))
+                                                    {{-- MENU WILAYAH 1 (Role 2 & Admin/Role 0/8/9) --}}
+                                                    @if (in_array(Auth::user()->role, [0, 2, 8, 9]))
                                                         <li class="nav-item">
                                                             <a href="{{ route('wilayah1.index') }}"
                                                                 class="nav-link {{ request()->routeIs('wilayah1.*') || request()->routeIs('proyekwil1.*') || request()->routeIs('monitoringwil1.*') ? 'active' : '' }}">
@@ -719,8 +719,8 @@
                                                         </li>
                                                     @endif
 
-                                                    {{-- MENU WILAYAH 2 (Role 3 & Admin/Role 0/8/9/14/17) --}}
-                                                    @if (in_array(Auth::user()->role, [0, 3, 8, 9, 14, 17]))
+                                                    {{-- MENU WILAYAH 2 (Role 3 & Admin/Role 0/8/9) --}}
+                                                    @if (in_array(Auth::user()->role, [0, 3, 8, 9]))
                                                         <li class="nav-item">
                                                             <a href="{{ route('wilayah2.index') }}"
                                                                 class="nav-link {{ request()->routeIs('wilayah2.*') || request()->routeIs('proyekwil2.*') || request()->routeIs('monitoringwil2.*') ? 'active' : '' }}">
@@ -1136,7 +1136,7 @@
                                                         </li>
 
                                                         {{-- PROGRESS DIVISI WILAYAH --}}
-                                                        @if (in_array(Auth::user()->role, [0, 14, 17, 18]))
+                                                        @if (in_array(Auth::user()->role, [0, 14]))
                                                             <li class="nav-item">
 
                                                                 <a href="{{ route('divisi.wilayah.progress') }}"
