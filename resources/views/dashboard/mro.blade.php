@@ -113,12 +113,15 @@
             </div>
             <div class="d-flex align-items-center gap-2">
                 {{-- Filter Tahun --}}
+                {{-- Filter Tahun --}}
                 <form action="{{ route('dashboard.mro') }}" method="GET" class="form-inline mr-2">
                     <select name="tahun" class="form-control form-control-sm border-secondary font-weight-bold"
                         onchange="this.form.submit()">
+                        <option value="all" {{ $tahun == 'all' ? 'selected' : '' }}>Semua Tahun</option>
                         @for ($i = date('Y'); $i >= date('Y') - 4; $i--)
-                            <option value="{{ $i }}" {{ $tahun == $i ? 'selected' : '' }}>Tahun
-                                {{ $i }}</option>
+                            <option value="{{ $i }}" {{ $tahun == $i ? 'selected' : '' }}>
+                                Tahun {{ $i }}
+                            </option>
                         @endfor
                     </select>
                 </form>

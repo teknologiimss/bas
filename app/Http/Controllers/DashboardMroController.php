@@ -12,14 +12,26 @@ class DashboardMroController extends Controller
 {
     public function index(Request $request)
     {
-        // Filter Tahun (Default tahun berjalan)
+        // Filter Tahun (Default tahun berjalan, bisa diisi 'all' atau tahun tertentu)
         $tahun = $request->get('tahun', date('Y'));
 
-        // 1. Fetch Data Monitoring Progres MRO BERDASARKAN FILTER TAHUN
-        // Sesuaikan 'tanggal_kontrak' atau 'tanggal_selesai_kontrak' dengan kolom tahun yang ingin difilter
-        $allMonitorings = Monitoring::with('documents')
-            ->whereYear('tanggal_kontrak', $tahun)
-            ->get();
+        // 1. Fetch Data Monitoring Progres MRO dengan opsi 'Semua Tahun'
+        $query = Monitoring::with('documents');
+
+        if ($tahun !== 'all') {
+            $query->where(function ($q) use ($tahun) {
+                $q
+                    ->whereYear('tanggal_kontrak', $tahun)
+                    ->orWhereYear('tanggal_selesai_kontrak', $tahun)
+                    ->orWhere(function ($sub) use ($tahun) {
+                        $sub
+                            ->whereYear('tanggal_kontrak', '<', $tahun)
+                            ->whereYear('tanggal_selesai_kontrak', '>', $tahun);
+                    });
+            });
+        }
+
+        $allMonitorings = $query->get();
 
         // 2. Notifikasi Kontrak
         $notifCounts = [
@@ -29,26 +41,10 @@ class DashboardMroController extends Controller
             'selesai' => 0,
         ];
 
-        // foreach ($allMonitorings as $m) {
-        //     $notif = $m->notifKontrak();
-        //     $text = strtolower($notif['text'] ?? '');
-
-        //     if (str_contains($text, 'h-7')) {
-        //         $notifCounts['h7']++;
-        //     } elseif (str_contains($text, 'telah berakhir')) {
-        //         $notifCounts['berakhir']++;
-        //     } elseif (str_contains($text, 'selesai')) {
-        //         $notifCounts['selesai']++;
-        //     } else {
-        //         $notifCounts['berjalan']++;
-        //     }
-        // }
-
         foreach ($allMonitorings as $m) {
             $notif = $m->notifKontrak();
             $text = strtolower($notif['text'] ?? '');
 
-            // Sesuaikan dengan teks badge yang tampil di tabel ("akan berakhir" atau "h-7")
             if (str_contains($text, 'h-7') || str_contains($text, 'akan berakhir')) {
                 $notifCounts['h7']++;
             } elseif (str_contains($text, 'telah berakhir')) {
@@ -68,7 +64,6 @@ class DashboardMroController extends Controller
         // Kalkulasi Rata-rata Progress Pekerjaan MRO
         $totalProgressSum = 0;
         foreach ($allMonitorings as $m) {
-            // Ubah 'progress_percentage' menjadi 'progress' sesuai kolom di database Anda
             $totalProgressSum += $m->progress ?? ($m->status === 'Closed' ? 100 : 0);
         }
         $avgProgressPekerjaan = $totalKontrak > 0
@@ -76,13 +71,15 @@ class DashboardMroController extends Controller
             : 0;
 
         // 4. Kalkulasi Data Jatuh Tempo Kontrak per Bulan
-        $dueDateSelesai = array_fill(0, 12, 0);  // Status Closed
-        $dueDateBelumSelesai = array_fill(0, 12, 0);  // Status Non-Closed
+        // (Jika 'all', grafik jatuh tempo bisa menampilkan total keseluruhan atau dikosongkan)
+        $dueDateSelesai = array_fill(0, 12, 0);
+        $dueDateBelumSelesai = array_fill(0, 12, 0);
 
         foreach ($allMonitorings as $m) {
             if (!empty($m->tanggal_selesai_kontrak)) {
                 $date = Carbon::parse($m->tanggal_selesai_kontrak);
-                if ($date->year == $tahun) {
+                // Jika filter 'all', hitung semua bulan dari data yang ter-fetch
+                if ($tahun === 'all' || $date->year == $tahun) {
                     $monthIndex = $date->month - 1;
 
                     if ($m->status === 'Closed') {
@@ -94,18 +91,29 @@ class DashboardMroController extends Controller
             }
         }
 
-        // 5. Tabel Ringkasan Progres MRO (Ikut difilter berdasarkan tahun yang dipilih)
-        $monitorings = Monitoring::with('documents')
-            ->whereYear('tanggal_kontrak', $tahun)
-            ->latest()
-            ->get();
+        // 5. Tabel Ringkasan Progres MRO (Mengikuti filter $tahun)
+        $tableQuery = Monitoring::with('documents');
+        if ($tahun !== 'all') {
+            $tableQuery->where(function ($q) use ($tahun) {
+                $q
+                    ->whereYear('tanggal_kontrak', $tahun)
+                    ->orWhereYear('tanggal_selesai_kontrak', $tahun)
+                    ->orWhere(function ($sub) use ($tahun) {
+                        $sub
+                            ->whereYear('tanggal_kontrak', '<', $tahun)
+                            ->whereYear('tanggal_selesai_kontrak', '>', $tahun);
+                    });
+            });
+        }
+        $monitorings = $tableQuery->latest()->get();
 
         // 6. KALKULASI PM 1 TAHUN (Khusus Gauge Chart)
         $totalAsset = Asset::count();
         $totalPersen12Bulan = 0;
 
+        $targetTahunPM = ($tahun === 'all') ? date('Y') : $tahun;
         for ($bulan = 1; $bulan <= 12; $bulan++) {
-            $realisasiUnit = AssetMaintenance::where('tahun', $tahun)
+            $realisasiUnit = AssetMaintenance::where('tahun', $targetTahunPM)
                 ->where('bulan', $bulan)
                 ->where('realisasi', true)
                 ->distinct()
