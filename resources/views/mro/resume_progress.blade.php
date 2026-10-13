@@ -297,6 +297,7 @@
                             <th width="40">No</th>
                             <th>PO / Nota Dinas</th>
                             <th>Nama Pekerjaan</th>
+                            <th>Jenis Pekerjaan</th>
                             <th>Tanggal Kontrak</th>
                             <th>Selesai Kontrak</th>
                             <th width="160">Nilai Kontrak/SO</th>
@@ -376,7 +377,9 @@
 
                                 // 2. Kalkulasi Nilai Kontrak (Rencana) & Total Realisasi s/d Bulan Ini
                                 $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-                                $totalRealisasi = $m->documents->whereIn('kriteria', ['Realisasi', 'Closed'])->sum('harga');
+                                $totalRealisasi = $m->documents
+                                    ->whereIn('kriteria', ['Realisasi', 'Closed'])
+                                    ->sum('harga');
 
                                 // 3. Filter dokumen yang HANYA berkriteria 'Realisasi' dan bernilai > 0
                                 $groupedPriceDocs = $m->documents
@@ -436,6 +439,10 @@
                                 </td>
 
                                 <td>{{ $m->nama_pekerjaan }}</td>
+                                {{-- JENIS PEKERJAAN --}}
+                                <td>
+                                    {{ $m->jenis_pekerjaan ?? '-' }}
+                                </td>
                                 <td class="text-center">
                                     {{ \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') }}
                                 </td>

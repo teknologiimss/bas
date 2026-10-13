@@ -17,7 +17,8 @@
 
         body {
             font-family: Arial, sans-serif;
-            font-size: 8.5px;
+            font-size: 8px;
+            /* Disesuaikan sedikit agar muat dengan tambahan kolom */
             color: #1e293b;
             margin: 0;
             padding: 0;
@@ -43,7 +44,7 @@
             font-size: 8px;
         }
 
-        /* Pengaturan Tabel Supaya Pas 1 Halaman */
+        /* Pengaturan Tabel Supaya Pas 1 Halaman & Tidak Terpotong */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -54,7 +55,7 @@
         th,
         td {
             border: 1px solid #cbd5e1;
-            padding: 4px 5px;
+            padding: 4px 4px;
             vertical-align: middle;
             word-wrap: break-word;
             overflow-wrap: break-word;
@@ -65,9 +66,9 @@
             color: #ffffff;
             text-align: center;
             font-weight: bold;
-            font-size: 8.5px;
+            font-size: 8px;
             text-transform: uppercase;
-            padding: 6px 3px;
+            padding: 6px 2px;
         }
 
         .text-center {
@@ -87,7 +88,7 @@
             display: inline-block;
             padding: 2px 4px;
             border-radius: 3px;
-            font-size: 7.5px;
+            font-size: 7px;
             font-weight: bold;
             color: #fff;
             text-align: center;
@@ -129,7 +130,7 @@
             border: 1px solid #e2e8f0;
             padding: 3px 4px;
             border-radius: 3px;
-            font-size: 8px;
+            font-size: 7.5px;
             line-height: 1.2;
         }
     </style>
@@ -146,15 +147,16 @@
         <thead>
             <tr>
                 <th style="width: 3%;">No</th>
-                <th style="width: 12%;">PO / Nota Dinas</th>
-                <th style="width: 13%;">Nama Pekerjaan</th>
-                <th style="width: 8%;">Tgl Kontrak</th>
-                <th style="width: 8%;">Selesai Kontrak</th>
-                <th style="width: 10%;">Nilai Kontrak/SO</th>
-                <th style="width: 10%;">Ket. Progress</th>
-                <th style="width: 11%;">Realisasi Bln Ini</th>
-                <th style="width: 11%;">Total Realisasi s/d Bln Ini</th>
-                <th style="width: 14%;">Status Dokumen Terakhir</th>
+                <th style="width: 10%;">PO / Nota Dinas</th>
+                <th style="width: 11%;">Nama Pekerjaan</th>
+                <th style="width: 10%;">Jenis Pekerjaan</th>
+                <th style="width: 7%;">Tgl Kontrak</th>
+                <th style="width: 7%;">Selesai Kontrak</th>
+                <th style="width: 9%;">Nilai Kontrak/SO</th>
+                <th style="width: 9%;">Ket. Progress</th>
+                <th style="width: 10%;">Realisasi Bln Ini</th>
+                <th style="width: 10%;">Total Realisasi s/d Bln Ini</th>
+                <th style="width: 13%;">Status Dokumen Terakhir</th>
                 <th style="width: 10%;">Status Kontrak</th>
             </tr>
         </thead>
@@ -203,7 +205,6 @@
                     }
 
                     // --- LOGIKA UNTUK DOKUMEN BERKRITERIA CLOSED ---
-                    // Jika dokumen terakhir kriteria-nya 'Closed', paksa Realisasi Bulan Ini menjadi 0 / Rp.0
                     if ($latestDoc && $latestDoc->kriteria === 'Closed') {
                         $totalHargaBulanIni = 0;
                         $latestPriceDoc = null;
@@ -213,6 +214,7 @@
                     <td class="text-center">{{ $loop->iteration }}</td>
                     <td class="font-bold">{{ $m->po_nota_dinas }}</td>
                     <td>{{ $m->nama_pekerjaan }}</td>
+                    <td>{{ $m->jenis_pekerjaan ?? '-' }}</td>
                     <td class="text-center">
                         {{ \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') }}
                     </td>
@@ -251,12 +253,12 @@
                                 </div>
                                 <div style="margin-top: 2px;">
                                     @if ($latestPriceDoc->jenis_dokumen)
-                                        <span class="badge badge-secondary" style="font-size: 6.5px;">
+                                        <span class="badge badge-secondary" style="font-size: 6px;">
                                             {{ $latestPriceDoc->jenis_dokumen }}
                                         </span>
                                     @endif
                                     @if ($latestPriceDoc->tanggal_closed)
-                                        <span class="badge badge-info" style="font-size: 6.5px;">
+                                        <span class="badge badge-info" style="font-size: 6px;">
                                             {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed)->isoFormat('MMM YYYY') }}
                                         </span>
                                     @endif
@@ -314,7 +316,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="11" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
+                    <td colspan="12" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
                 </tr>
             @endforelse
         </tbody>
