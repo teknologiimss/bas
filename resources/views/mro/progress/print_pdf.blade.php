@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <title>Laporan Progress MRO</title>
     <style>
-        /* Pengaturan Kertas Cetak A4 Landscape */
+        /* Pengaturan Kertas Cetak A4 Landscape dengan margin atas yang diperkecil */
         @page {
             size: A4 landscape;
-            margin: 8mm;
+            margin: 6mm 8mm 8mm 8mm;
         }
 
         * {
@@ -18,16 +18,29 @@
         body {
             font-family: Arial, sans-serif;
             font-size: 8px;
-            /* Disesuaikan sedikit agar muat dengan tambahan kolom */
             color: #1e293b;
             margin: 0;
             padding: 0;
             background-color: #fff;
+            position: relative;
+        }
+
+        /* Logo Absolute: Ditarik lebih tinggi ke atas */
+        .header-logo {
+            position: absolute;
+            top: -35px;
+            /* Ditarik lebih ke atas menembus margin */
+            right: 0;
+            height: 95px;
+            object-fit: contain;
+            z-index: 100;
         }
 
         .header {
             text-align: center;
             margin-bottom: 12px;
+            padding-right: 100px;
+            padding-left: 100px;
         }
 
         .header h2 {
@@ -73,10 +86,6 @@
 
         .text-center {
             text-align: center;
-        }
-
-        .text-right {
-            text-align: right;
         }
 
         .font-bold {
@@ -138,6 +147,9 @@
 
 <body>
 
+    <!-- Logo di pojok kanan atas absolute (posisi paling atas) -->
+    <img src="{{ public_path('img/IMST.png') }}" alt="Logo IMST" class="header-logo">
+
     <div class="header">
         <h2>Laporan Progress MRO</h2>
         <p>Dicetak Pada: {{ date('d-m-Y H:i') }} WIB | B.A.S (Business Application System)</p>
@@ -175,11 +187,8 @@
 
                     // --- KALKULASI NILAI KONTRAK & REALISASI ---
                     $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-
-                    // TOTAL REALISASI: Menjumlahkan dokumen bertipe 'Realisasi' DAN 'Closed'
                     $totalRealisasi = $m->documents->whereIn('kriteria', ['Realisasi', 'Closed'])->sum('harga');
 
-                    // Filter HANYA dokumen berkriteria 'Realisasi' dengan harga > 0
                     $groupedPriceDocs = $m->documents
                         ->filter(fn($doc) => $doc->kriteria == 'Realisasi' && !is_null($doc->harga) && $doc->harga > 0)
                         ->groupBy(function ($doc) {
@@ -204,7 +213,6 @@
                         $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                     }
 
-                    // --- LOGIKA UNTUK DOKUMEN BERKRITERIA CLOSED ---
                     if ($latestDoc && $latestDoc->kriteria === 'Closed') {
                         $totalHargaBulanIni = 0;
                         $latestPriceDoc = null;
