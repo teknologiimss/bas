@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <title>Laporan Progress Divisi Wilayah</title>
     <style>
-        /* Pengaturan Cetak A4 Landscape */
+        /* Pengaturan Cetak A4 Landscape dengan margin atas yang diperkecil */
         @page {
             size: A4 landscape;
-            margin: 8mm;
+            margin: 6mm 8mm 8mm 8mm;
         }
 
         * {
@@ -22,11 +22,24 @@
             margin: 0;
             padding: 0;
             background-color: #fff;
+            position: relative;
+        }
+
+        /* Logo Absolute: Sangat besar & mentok ke atas menembus margin */
+        .header-logo {
+            position: absolute;
+            top: -35px;
+            right: 0;
+            height: 95px;
+            object-fit: contain;
+            z-index: 100;
         }
 
         .header {
             text-align: center;
             margin-bottom: 12px;
+            padding-right: 100px;
+            padding-left: 100px;
         }
 
         .header h2 {
@@ -150,6 +163,9 @@
 
 <body>
 
+    <!-- Logo di pojok kanan atas absolute -->
+    <img src="{{ public_path('img/IMST.png') }}" alt="Logo IMST" class="header-logo">
+
     <div class="header">
         <h2>Laporan Progress Divisi Wilayah</h2>
         <p>Rekapitulasi Progress Wilayah 1, Wilayah 2 dan MRO</p>
@@ -161,10 +177,10 @@
             <tr>
                 <th style="width: 3%;">No</th>
                 <th style="width: 6%;">Divisi</th>
-                <th style="width: 10%;">PO / Nota Dinas</th>
+                <th style="width: 10%;">SO / PO / KO</th>
                 <th style="width: 10%;">Nama Pekerjaan</th>
                 <th style="width: 9%;">Jenis Pekerjaan</th>
-                <th style="width: 6%;">Tgl Kontrak</th>
+                <th style="width: 6%;">Tanggal Kontrak</th>
                 <th style="width: 6%;">Selesai Kontrak</th>
                 <th style="width: 8%;">Nilai Kontrak/SO</th>
                 <th style="width: 8%;">Ket. Progress</th>

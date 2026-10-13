@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <title>Laporan Progress Wilayah 2</title>
     <style>
-        /* Setup Halaman Cetak/PDF A4 Landscape */
+        /* Setup Halaman Cetak/PDF A4 Landscape dengan margin atas yang diperkecil */
         @page {
             size: A4 landscape;
-            margin: 8mm;
+            margin: 6mm 8mm 8mm 8mm;
         }
 
         * {
@@ -22,11 +22,24 @@
             margin: 0;
             padding: 0;
             background-color: #fff;
+            position: relative;
+        }
+
+        /* Logo Absolute: Sangat besar & mentok ke atas menembus margin */
+        .header-logo {
+            position: absolute;
+            top: -35px;
+            right: 0;
+            height: 95px;
+            object-fit: contain;
+            z-index: 100;
         }
 
         .header {
             text-align: center;
             margin-bottom: 12px;
+            padding-right: 100px;
+            padding-left: 100px;
         }
 
         .header h2 {
@@ -133,8 +146,11 @@
 
 <body>
 
+    <!-- Logo di pojok kanan atas absolute -->
+    <img src="{{ public_path('img/IMST.png') }}" alt="Logo IMST" class="header-logo">
+
     <div class="header">
-        <h2>Laporan Progress MRO Wilayah 2</h2>
+        <h2>Laporan Progress Wilayah 2</h2>
         <p>Dicetak Pada: {{ date('d-m-Y H:i') }} WIB | B.A.S (Business Application System)</p>
     </div>
 
@@ -142,10 +158,10 @@
         <thead>
             <tr>
                 <th style="width: 3%;">No</th>
-                <th style="width: 10%;">PO / Nota Dinas</th>
+                <th style="width: 10%;">SO / PO / KO</th>
                 <th style="width: 11%;">Nama Pekerjaan</th>
                 <th style="width: 10%;">Jenis Pekerjaan</th>
-                <th style="width: 7%;">Tgl Kontrak</th>
+                <th style="width: 7%;">Tanggal Kontrak</th>
                 <th style="width: 7%;">Selesai Kontrak</th>
                 <th style="width: 9%;">Nilai Kontrak/SO</th>
                 <th style="width: 9%;">Ket. Progress</th>

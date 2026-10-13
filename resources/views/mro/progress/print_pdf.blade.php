@@ -159,10 +159,10 @@
         <thead>
             <tr>
                 <th style="width: 3%;">No</th>
-                <th style="width: 10%;">PO / Nota Dinas</th>
+                <th style="width: 10%;">SO / PO / KO</th>
                 <th style="width: 11%;">Nama Pekerjaan</th>
                 <th style="width: 10%;">Jenis Pekerjaan</th>
-                <th style="width: 7%;">Tgl Kontrak</th>
+                <th style="width: 7%;">Tanggal Kontrak</th>
                 <th style="width: 7%;">Selesai Kontrak</th>
                 <th style="width: 9%;">Nilai Kontrak/SO</th>
                 <th style="width: 9%;">Ket. Progress</th>
