@@ -46,7 +46,6 @@
         .table-responsive {
             border-radius: 12px;
             max-height: 75vh;
-            /* Membatasi tinggi kontainer tabel agar scrollbar internal aktif */
             overflow-y: auto;
         }
 
@@ -61,7 +60,6 @@
             vertical-align: middle;
         }
 
-        /* Freeze Title Header */
         thead.thead-dark th {
             position: sticky;
             top: 0;
@@ -71,7 +69,6 @@
             border: none;
             letter-spacing: .5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            /* Efek bayangan saat discroll */
         }
 
         tbody tr {
@@ -107,25 +104,21 @@
             transform: scale(1.05);
         }
 
-        /* KONTRAK BERJALAN (HIJAU) */
         .badge-success {
             background: linear-gradient(135deg, #22c55e, #16a34a) !important;
             color: white !important;
         }
 
-        /* KONTRAK TELAH BERAKHIR (MERAH) */
         .badge-danger {
             background: linear-gradient(135deg, #ef4444, #dc2626) !important;
             color: white !important;
         }
 
-        /* KONTRAK SELESAI (BIRU) */
         .badge-primary {
             background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
             color: white !important;
         }
 
-        /* AKAN BERAKHIR H-7 (KUNING / ORANGE) */
         .badge-warning {
             background: linear-gradient(135deg, #ffc107, #ff9800) !important;
             color: #222 !important;
@@ -185,18 +178,15 @@
             transform: scale(1.01);
         }
 
-        /* ================= FILTER CARD ================= */
         .card .card-body {
             padding: 1.5rem;
         }
 
-        /* ================= NOTE ================= */
         h6.text-danger {
             color: var(--navy) !important;
             font-weight: 700;
         }
 
-        /* ================= PAGINATION ================= */
         .pagination .page-link {
             color: var(--blue);
             border-radius: 8px;
@@ -208,7 +198,6 @@
             border: none;
         }
 
-        /* ================= SCROLL ================= */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -219,7 +208,6 @@
             border-radius: 10px;
         }
 
-        /* ================= ANIMATION ================= */
         @keyframes fadeDown {
             from {
                 opacity: 0;
@@ -239,16 +227,79 @@
         }
     </style>
 
+    {{-- HITUNG AKURAT UNTUK WILAYAH 1 (GLOBAL TANPA PAGINATE) --}}
+    @php
+        $countTotal = \App\Models\MonitoringWil1::count();
+        $countInka = \App\Models\MonitoringWil1::whereRaw('LOWER(jenis_pekerjaan) = ?', ['inka'])->count();
+        $countNonInka = \App\Models\MonitoringWil1::whereRaw('LOWER(jenis_pekerjaan) != ?', ['inka'])
+            ->orWhereNull('jenis_pekerjaan')
+            ->count();
+    @endphp
+
     <div class="container-fluid mt-4">
 
         {{-- HEADER --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><b>Progress Wilayah 1</b></h3>
 
-            {{-- TOMBOL PRINT --}}
             <a href="{{ route('monitoringwil1.print') }}" target="_blank" class="btn btn-primary no-print">
                 🖨️ Print Semua
             </a>
+        </div>
+
+        {{-- KARTU RINGKASAN STATISTIK --}}
+        <div class="row mb-4 no-print">
+            <!-- Total Semua Data -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100"
+                    style="border-left: 5px solid var(--blue) !important; border-radius: 12px;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="mr-3 text-primary" style="font-size: 2rem;">📊</div>
+                        <div>
+                            <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">TOTAL SEMUA PEKERJAAN</h6>
+                            <h3 class="mb-0 font-weight-bold text-dark"
+                                style="-webkit-text-fill-color: initial; background: none;">
+                                {{ number_format($countTotal, 0, ',', '.') }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jumlah Pekerjaan INKA -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100"
+                    style="border-left: 5px solid #22c55e !important; border-radius: 12px;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="mr-3 text-success" style="font-size: 2rem;">🚂</div>
+                        <div>
+                            <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">JUMLAH PEKERJAAN INKA</h6>
+                            <h3 class="mb-0 font-weight-bold text-success"
+                                style="-webkit-text-fill-color: initial; background: none;">
+                                {{ number_format($countInka, 0, ',', '.') }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jumlah Pekerjaan Non INKA -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100"
+                    style="border-left: 5px solid #f59e0b !important; border-radius: 12px;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="mr-3 text-warning" style="font-size: 2rem;">🏢</div>
+                        <div>
+                            <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">JUMLAH PEKERJAAN NON INKA
+                            </h6>
+                            <h3 class="mb-0 font-weight-bold text-dark"
+                                style="-webkit-text-fill-color: initial; background: none;">
+                                {{ number_format($countNonInka, 0, ',', '.') }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- FLASH MESSAGE --}}
@@ -321,16 +372,13 @@
                                         default => 'badge badge-secondary',
                                     };
 
-                                    // 1. Ambil dokumen PALING BARU berdasarkan ID (mencegah salah deteksi dokumen lama)
                                     $latestDoc = $m->documents->sortByDesc('id')->first();
 
-                                    // 2. Kalkulasi Nilai Kontrak (Rencana) & Total Realisasi s/d Bulan Ini (Realisasi + Closed)
                                     $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
                                     $totalRealisasi = $m->documents
                                         ->whereIn('kriteria', ['Realisasi', 'Closed'])
                                         ->sum('harga');
 
-                                    // 3. Filter dokumen yang HANYA berkriteria 'Realisasi' dan bernilai > 0
                                     $groupedPriceDocs = $m->documents
                                         ->filter(function ($doc) {
                                             return $doc->kriteria === 'Realisasi' &&
@@ -342,7 +390,7 @@
                                             return \Carbon\Carbon::parse($date)->format('Y-m');
                                         })
                                         ->sortByDesc(function ($group, $key) {
-                                            return $key; // Urutkan berdasarkan bulan terbaru (YYYY-MM)
+                                            return $key;
                                         });
 
                                     $latestMonthGroup = $groupedPriceDocs->first();
@@ -350,19 +398,15 @@
                                     $totalHargaBulanIni = 0;
 
                                     if ($latestMonthGroup) {
-                                        // Ambil sampel dokumen realisasi paling akhir pada bulan tersebut
                                         $latestPriceDoc = $latestMonthGroup
                                             ->sortByDesc(function ($doc) {
                                                 return $doc->created_at ?? $doc->id;
                                             })
                                             ->first();
 
-                                        // Hitung total nilai realisasi untuk bulan terbaru
                                         $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                                     }
 
-                                    // 4. PENYESUAIAN KRITERIA CLOSED:
-                                    // Pengecekan HANYA berlaku jika dokumen teratas/terakhir yang diupload berkriteria 'Closed'
                                     if ($latestDoc && $latestDoc->kriteria === 'Closed') {
                                         $totalHargaBulanIni = 0;
                                         $latestPriceDoc = null;
@@ -389,7 +433,6 @@
 
                                     <td>{{ $m->nama_pekerjaan }}</td>
 
-                                    {{-- JENIS PEKERJAAN --}}
                                     <td>
                                         {{ $m->jenis_pekerjaan ?? '-' }}
                                     </td>
@@ -400,7 +443,6 @@
                                         {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                                     </td>
 
-                                    {{-- NILAI KONTRAK (TOTAL RENCANA) --}}
                                     <td class="text-center">
                                         <div class="p-2 border rounded bg-white shadow-sm">
                                             <div class="fw-bold text-dark fs-6">
@@ -415,7 +457,6 @@
                                         </span>
                                     </td>
 
-                                    {{-- PROGRESS BAR --}}
                                     <td>
                                         <div class="progress" style="height: 18px;">
                                             <div class="progress-bar"
@@ -425,7 +466,6 @@
                                         </div>
                                     </td>
 
-                                    {{-- KETERANGAN --}}
                                     <td>
                                         @php
                                             $text = trim($m->keterangan2 ?? '-');
@@ -440,7 +480,6 @@
                                         @endphp
                                     </td>
 
-                                    {{-- REALISASI BULAN INI --}}
                                     <td class="text-center">
                                         @if ($latestPriceDoc && $totalHargaBulanIni > 0)
                                             <div class="p-2 border rounded bg-white shadow-sm">
@@ -465,12 +504,10 @@
                                                 </div>
                                             </div>
                                         @else
-                                            {{-- Tampilkan Rp 0 jika kriteria Closed atau belum ada realisasi --}}
                                             <span class="text-muted font-italic small">Rp 0</span>
                                         @endif
                                     </td>
 
-                                    {{-- TOTAL REALISASI S/D BULAN INI --}}
                                     <td class="text-center">
                                         <div class="p-2 border rounded bg-white shadow-sm">
                                             <div class="fw-bold text-success fs-6">
@@ -479,7 +516,6 @@
                                         </div>
                                     </td>
 
-                                    {{-- TABEL STATUS DOKUMEN TERAKHIR --}}
                                     <td>
                                         @if ($latestDoc)
                                             <div class="p-2 border rounded bg-light" style="font-size: 12px;">
@@ -537,7 +573,7 @@
 
                             @empty
                                 <tr>
-                                    <td colspan="13" class="text-center text-muted">
+                                    <td colspan="14" class="text-center text-muted">
                                         Tidak ada data monitoring Wilayah 1
                                     </td>
                                 </tr>

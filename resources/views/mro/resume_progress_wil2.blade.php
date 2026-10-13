@@ -237,6 +237,15 @@
         }
     </style>
 
+    {{-- HITUNG AKURAT UNTUK WILAYAH 2 (GLOBAL TANPA PAGINATE) --}}
+    @php
+        $countTotal = \App\Models\MonitoringWil2::count();
+        $countInka = \App\Models\MonitoringWil2::whereRaw('LOWER(jenis_pekerjaan) = ?', ['inka'])->count();
+        $countNonInka = \App\Models\MonitoringWil2::whereRaw('LOWER(jenis_pekerjaan) != ?', ['inka'])
+            ->orWhereNull('jenis_pekerjaan')
+            ->count();
+    @endphp
+
     <div class="container-fluid mt-4">
 
         {{-- HEADER --}}
@@ -247,6 +256,61 @@
             <a href="{{ route('monitoringwil2.print') }}" target="_blank" class="btn btn-primary no-print">
                 🖨️ Print Semua
             </a>
+        </div>
+
+        {{-- KARTU RINGKASAN STATISTIK --}}
+        <div class="row mb-4 no-print">
+            <!-- Total Semua Data -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100"
+                    style="border-left: 5px solid var(--blue) !important; border-radius: 12px;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="mr-3 text-primary" style="font-size: 2rem;">📊</div>
+                        <div>
+                            <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">TOTAL SEMUA PEKERJAAN</h6>
+                            <h3 class="mb-0 font-weight-bold text-dark"
+                                style="-webkit-text-fill-color: initial; background: none;">
+                                {{ number_format($countTotal, 0, ',', '.') }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jumlah Pekerjaan INKA -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100"
+                    style="border-left: 5px solid #22c55e !important; border-radius: 12px;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="mr-3 text-success" style="font-size: 2rem;">🚂</div>
+                        <div>
+                            <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">JUMLAH PEKERJAAN INKA</h6>
+                            <h3 class="mb-0 font-weight-bold text-success"
+                                style="-webkit-text-fill-color: initial; background: none;">
+                                {{ number_format($countInka, 0, ',', '.') }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jumlah Pekerjaan Non INKA -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100"
+                    style="border-left: 5px solid #f59e0b !important; border-radius: 12px;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="mr-3 text-warning" style="font-size: 2rem;">🏢</div>
+                        <div>
+                            <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">JUMLAH PEKERJAAN NON INKA
+                            </h6>
+                            <h3 class="mb-0 font-weight-bold text-dark"
+                                style="-webkit-text-fill-color: initial; background: none;">
+                                {{ number_format($countNonInka, 0, ',', '.') }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- FLASH MESSAGE --}}
@@ -535,7 +599,7 @@
 
                         @empty
                             <tr>
-                                <td colspan="13" class="text-center text-muted">
+                                <td colspan="14" class="text-center text-muted">
                                     Tidak ada data monitoring Wilayah 2
                                 </td>
                             </tr>

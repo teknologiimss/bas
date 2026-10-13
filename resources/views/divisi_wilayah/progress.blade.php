@@ -329,6 +329,30 @@
         }
     </style>
 
+    {{-- HITUNG AKURAT GABUNGAN MRO, WILAYAH 1, DAN WILAYAH 2 (GLOBAL TANPA PAGINATE) --}}
+    @php
+        $totalMro = \App\Models\Monitoring::count();
+        $totalWil1 = \App\Models\MonitoringWil1::count();
+        $totalWil2 = \App\Models\MonitoringWil2::count();
+        $countTotal = $totalMro + $totalWil1 + $totalWil2;
+
+        $inkaMro = \App\Models\Monitoring::whereRaw('LOWER(jenis_pekerjaan) = ?', ['inka'])->count();
+        $inkaWil1 = \App\Models\MonitoringWil1::whereRaw('LOWER(jenis_pekerjaan) = ?', ['inka'])->count();
+        $inkaWil2 = \App\Models\MonitoringWil2::whereRaw('LOWER(jenis_pekerjaan) = ?', ['inka'])->count();
+        $countInka = $inkaMro + $inkaWil1 + $inkaWil2;
+
+        $nonInkaMro = \App\Models\Monitoring::whereRaw('LOWER(jenis_pekerjaan) != ?', ['inka'])
+            ->orWhereNull('jenis_pekerjaan')
+            ->count();
+        $nonInkaWil1 = \App\Models\MonitoringWil1::whereRaw('LOWER(jenis_pekerjaan) != ?', ['inka'])
+            ->orWhereNull('jenis_pekerjaan')
+            ->count();
+        $nonInkaWil2 = \App\Models\MonitoringWil2::whereRaw('LOWER(jenis_pekerjaan) != ?', ['inka'])
+            ->orWhereNull('jenis_pekerjaan')
+            ->count();
+        $countNonInka = $nonInkaMro + $nonInkaWil1 + $nonInkaWil2;
+    @endphp
+
     <div class="container-fluid mt-4">
 
         {{-- HEADER --}}
@@ -342,6 +366,61 @@
                 class="btn btn-primary no-print">
                 🖨️ Print Semua
             </a>
+        </div>
+
+        {{-- KARTU RINGKASAN STATISTIK --}}
+        <div class="row mb-4 no-print">
+            <!-- Total Semua Data -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100"
+                    style="border-left: 5px solid var(--blue) !important; border-radius: 12px;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="mr-3 text-primary" style="font-size: 2rem;">📊</div>
+                        <div>
+                            <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">TOTAL SEMUA PEKERJAAN</h6>
+                            <h3 class="mb-0 font-weight-bold text-dark"
+                                style="-webkit-text-fill-color: initial; background: none;">
+                                {{ number_format($countTotal, 0, ',', '.') }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jumlah Pekerjaan INKA -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100"
+                    style="border-left: 5px solid #22c55e !important; border-radius: 12px;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="mr-3 text-success" style="font-size: 2rem;">🚂</div>
+                        <div>
+                            <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">JUMLAH PEKERJAAN INKA</h6>
+                            <h3 class="mb-0 font-weight-bold text-success"
+                                style="-webkit-text-fill-color: initial; background: none;">
+                                {{ number_format($countInka, 0, ',', '.') }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jumlah Pekerjaan Non INKA -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100"
+                    style="border-left: 5px solid #f59e0b !important; border-radius: 12px;">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="mr-3 text-warning" style="font-size: 2rem;">🏢</div>
+                        <div>
+                            <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">JUMLAH PEKERJAAN NON INKA
+                            </h6>
+                            <h3 class="mb-0 font-weight-bold text-dark"
+                                style="-webkit-text-fill-color: initial; background: none;">
+                                {{ number_format($countNonInka, 0, ',', '.') }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- FLASH MESSAGE --}}

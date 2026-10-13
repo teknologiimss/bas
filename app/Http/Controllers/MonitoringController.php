@@ -27,6 +27,28 @@ class MonitoringController extends Controller
     // }
 
     // Klik PO/Nodin Spesifik ke Halaman Monitoring
+    // public function index(Request $request, $proyek_id)
+    // {
+    //     $proyek = Proyek::findOrFail($proyek_id);
+
+    //     $query = Monitoring::with('documents', 'folders.documents')
+    //         ->where('proyek_id', $proyek_id);
+
+    //     // 🔍 Filter PO / Nota Dinas
+    //     if ($request->filled('po')) {
+    //         $query->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
+    //     }
+
+    //     // 🔍 Filter Nama Pekerjaan
+    //     if ($request->filled('pekerjaan')) {
+    //         $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
+    //     }
+
+    //     $monitorings = $query->latest()->get();
+
+    //     return view('monitoring.index', compact('proyek', 'monitorings'));
+    // }
+
     public function index(Request $request, $proyek_id)
     {
         $proyek = Proyek::findOrFail($proyek_id);
@@ -46,8 +68,35 @@ class MonitoringController extends Controller
 
         $monitorings = $query->latest()->get();
 
-        return view('monitoring.index', compact('proyek', 'monitorings'));
+        // 👉 HITUNG STATISTIK KESELURUHAN (Tidak terpengaruh filter/pagination per proyek jika ingin global, 
+        // atau jika ingin khusus berdasarkan proyek_id tersebut, tambahkan ->where('proyek_id', $proyek_id))
+        $countTotal = Monitoring::where('proyek_id', $proyek_id)->count();
+        $countInka = Monitoring::where('proyek_id', $proyek_id)->where('jenis_pekerjaan', 'LIKE', '%INKA%')->count();
+        $countNonInka = Monitoring::where('proyek_id', $proyek_id)
+            ->where(function($q) {
+                $q->where('jenis_pekerjaan', 'NOT LIKE', '%INKA%')
+                  ->orWhereNull('jenis_pekerjaan');
+            })->count();
+
+        return view('monitoring.index', compact('proyek', 'monitorings', 'countTotal', 'countInka', 'countNonInka'));
     }
+
+    // public function resumeProgress(Request $request)
+    // {
+    //     $query = Monitoring::query();
+
+    //     if ($request->filled('po')) {
+    //         $query->where('po_nota_dinas', 'like', '%' . $request->po . '%');
+    //     }
+
+    //     if ($request->filled('pekerjaan')) {
+    //         $query->where('nama_pekerjaan', 'like', '%' . $request->pekerjaan . '%');
+    //     }
+
+    //     $monitorings = $query->paginate(10)->withQueryString();
+
+    //     return view('mro.resume_progress', compact('monitorings'));
+    // }
 
     public function resumeProgress(Request $request)
     {
@@ -63,7 +112,15 @@ class MonitoringController extends Controller
 
         $monitorings = $query->paginate(10)->withQueryString();
 
-        return view('mro.resume_progress', compact('monitorings'));
+        // 👉 Tambahkan perhitungan statistik global ini di dalam method resumeProgress
+        $countTotal = Monitoring::count();
+        $countInka = Monitoring::where('jenis_pekerjaan', 'LIKE', '%INKA%')->count();
+        $countNonInka = Monitoring::where('jenis_pekerjaan', 'NOT LIKE', '%INKA%')
+            ->orWhereNull('jenis_pekerjaan')
+            ->count();
+
+        // Pastikan variabel-variabel di bawah ini disertakan ke dalam compact()
+        return view('mro.resume_progress', compact('monitorings', 'countTotal', 'countInka', 'countNonInka'));
     }
 
     public function store(Request $request, $proyek_id)

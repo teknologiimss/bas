@@ -258,62 +258,136 @@
             </div>
         @endif
 
-        {{-- FILTER --}}
-        <div class="card mb-3 no-print">
-            <div class="card-body">
-                <form method="GET" action="{{ route('mro.progress.index') }}">
-                    <div class="form-row">
-                        <div class="col-md-4 mb-2">
-                            <input type="text" name="po" class="form-control" placeholder="Cari PO / Nota Dinas"
-                                value="{{ request('po') }}">
-                        </div>
+        {{-- 🔥 HITUNG Jumlah INKA dan Non INKA --}}
+        @php
+            // Total keseluruhan data
+            $countTotal = \App\Models\Monitoring::count();
 
-                        <div class="col-md-4 mb-2">
-                            <input type="text" name="pekerjaan" class="form-control" placeholder="Cari Nama Pekerjaan"
-                                value="{{ request('pekerjaan') }}">
-                        </div>
+            // Hitung yang secara spesifik bernilai "INKA" (atau sesuaikan dengan format data Anda)
+            $countInka = \App\Models\Monitoring::where('jenis_pekerjaan', 'INKA')->count();
 
-                        <div class="col-md-4 mb-2">
-                            <button class="btn btn-primary mr-2" type="submit">
-                                🔍 Filter
-                            </button>
+            // Hitung yang selain INKA (Non INKA, kosong, atau format lainnya)
+            $countNonInka = \App\Models\Monitoring::where('jenis_pekerjaan', '!=', 'INKA')
+                ->orWhereNull('jenis_pekerjaan')
+                ->count();
+        @endphp
 
-                            <a href="{{ route('mro.progress.index') }}" class="btn btn-secondary">
-                                🔄 Reset
-                            </a>
+        <div class="container-fluid mt-4">
+
+            {{-- KARTU RINGKASAN STATISTIK 🔥 HITUNG Jumlah INKA dan Non INKA --}}
+            <div class="row mb-4 no-print">
+                <!-- Total Semua Data -->
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100"
+                        style="border-left: 5px solid var(--blue) !important; border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="mr-3 text-primary" style="font-size: 2rem;">📊</div>
+                            <div>
+                                <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">TOTAL SEMUA PEKERJAAN
+                                </h6>
+                                <h3 class="mb-0 font-weight-bold text-dark"
+                                    style="-webkit-text-fill-color: initial; background: none;">
+                                    {{ number_format($countTotal, 0, ',', '.') }}
+                                </h3>
+                            </div>
                         </div>
                     </div>
-                </form>
+                </div>
+
+                <!-- Jumlah Pekerjaan INKA -->
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100"
+                        style="border-left: 5px solid #22c55e !important; border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="mr-3 text-success" style="font-size: 2rem;">🚂</div>
+                            <div>
+                                <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">JUMLAH PEKERJAAN INKA
+                                </h6>
+                                <h3 class="mb-0 font-weight-bold text-success"
+                                    style="-webkit-text-fill-color: initial; background: none;">
+                                    {{ number_format($countInka, 0, ',', '.') }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jumlah Pekerjaan Non INKA -->
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100"
+                        style="border-left: 5px solid #f59e0b !important; border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="mr-3 text-warning" style="font-size: 2rem;">🏢</div>
+                            <div>
+                                <h6 class="text-muted mb-1 font-weight-bold" style="font-size: 13px;">JUMLAH PEKERJAAN NON
+                                    INKA</h6>
+                                <h3 class="mb-0 font-weight-bold text-dark"
+                                    style="-webkit-text-fill-color: initial; background: none;">
+                                    {{ number_format($countNonInka, 0, ',', '.') }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+            {{-- 🔥 END HITUNG Jumlah INKA dan Non INKA --}}
 
-        {{-- TABLE --}}
-        <div class="card shadow-sm">
-            <div class="card-body p-0 table-responsive">
+            {{-- FILTER --}}
+            <div class="card mb-3 no-print">
+                <div class="card-body">
+                    <form method="GET" action="{{ route('mro.progress.index') }}">
+                        <div class="form-row">
+                            <div class="col-md-4 mb-2">
+                                <input type="text" name="po" class="form-control" placeholder="Cari PO / Nota Dinas"
+                                    value="{{ request('po') }}">
+                            </div>
 
-                <table class="table table-bordered table-hover table-striped mb-0">
-                    <thead class="thead-dark text-center">
-                        <tr>
-                            <th width="40">No</th>
-                            <th>PO / Nota Dinas</th>
-                            <th>Nama Pekerjaan</th>
-                            <th>Jenis Pekerjaan</th>
-                            <th>Tanggal Kontrak</th>
-                            <th>Selesai Kontrak</th>
-                            <th width="160">Nilai Kontrak/SO</th>
-                            <th>Status</th>
-                            <th width="140">Progress</th>
-                            <th>Keterangan Progress</th>
-                            <th width="200">Realisasi Bulan ini</th>
-                            <th width="180">Total Realisasi s/d Bulan Ini</th>
-                            <th width="260">Status Dokumen Terakhir</th>
-                            <th>Notifikasi</th>
-                        </tr>
-                    </thead>
+                            <div class="col-md-4 mb-2">
+                                <input type="text" name="pekerjaan" class="form-control"
+                                    placeholder="Cari Nama Pekerjaan" value="{{ request('pekerjaan') }}">
+                            </div>
 
-                    <tbody>
-                        @forelse ($monitorings as $index => $m)
-                            {{-- @php
+                            <div class="col-md-4 mb-2">
+                                <button class="btn btn-primary mr-2" type="submit">
+                                    🔍 Filter
+                                </button>
+
+                                <a href="{{ route('mro.progress.index') }}" class="btn btn-secondary">
+                                    🔄 Reset
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {{-- TABLE --}}
+            <div class="card shadow-sm">
+                <div class="card-body p-0 table-responsive">
+
+                    <table class="table table-bordered table-hover table-striped mb-0">
+                        <thead class="thead-dark text-center">
+                            <tr>
+                                <th width="40">No</th>
+                                <th>PO / Nota Dinas</th>
+                                <th>Nama Pekerjaan</th>
+                                <th>Jenis Pekerjaan</th>
+                                <th>Tanggal Kontrak</th>
+                                <th>Selesai Kontrak</th>
+                                <th width="160">Nilai Kontrak/SO</th>
+                                <th>Status</th>
+                                <th width="140">Progress</th>
+                                <th>Keterangan Progress</th>
+                                <th width="200">Realisasi Bulan ini</th>
+                                <th width="180">Total Realisasi s/d Bulan Ini</th>
+                                <th width="260">Status Dokumen Terakhir</th>
+                                <th>Notifikasi</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @forelse ($monitorings as $index => $m)
+                                {{-- @php
                                 $statusClass = match ($m->status) {
                                     'Open' => 'badge badge-warning',
                                     'Closed' => 'badge badge-success',
@@ -364,277 +438,278 @@
                                 }
                             @endphp --}}
 
-                            @php
-                                $statusClass = match ($m->status) {
-                                    'Open' => 'badge badge-warning',
-                                    'Closed' => 'badge badge-success',
-                                    'On Hold' => 'badge badge-danger',
-                                    default => 'badge badge-secondary',
-                                };
+                                @php
+                                    $statusClass = match ($m->status) {
+                                        'Open' => 'badge badge-warning',
+                                        'Closed' => 'badge badge-success',
+                                        'On Hold' => 'badge badge-danger',
+                                        default => 'badge badge-secondary',
+                                    };
 
-                                // 1. Ambil dokumen terakhir dari monitoring ini
-                                $latestDoc = $m->documents->last();
+                                    // 1. Ambil dokumen terakhir dari monitoring ini
+                                    $latestDoc = $m->documents->last();
 
-                                // 2. Kalkulasi Nilai Kontrak (Rencana) & Total Realisasi s/d Bulan Ini
-                                $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-                                $totalRealisasi = $m->documents
-                                    ->whereIn('kriteria', ['Realisasi', 'Closed'])
-                                    ->sum('harga');
+                                    // 2. Kalkulasi Nilai Kontrak (Rencana) & Total Realisasi s/d Bulan Ini
+                                    $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
+                                    $totalRealisasi = $m->documents
+                                        ->whereIn('kriteria', ['Realisasi', 'Closed'])
+                                        ->sum('harga');
 
-                                // 3. Filter dokumen yang HANYA berkriteria 'Realisasi' dan bernilai > 0
-                                $groupedPriceDocs = $m->documents
-                                    ->filter(function ($doc) {
-                                        return $doc->kriteria === 'Realisasi' &&
-                                            !is_null($doc->harga) &&
-                                            $doc->harga > 0;
-                                    })
-                                    ->groupBy(function ($doc) {
-                                        $date = $doc->tanggal_closed ?? $doc->created_at;
-                                        return \Carbon\Carbon::parse($date)->format('Y-m');
-                                    })
-                                    ->sortByDesc(function ($group, $key) {
-                                        return $key; // Urutkan berdasarkan bulan terbaru (YYYY-MM)
-                                    });
-
-                                $latestMonthGroup = $groupedPriceDocs->first();
-                                $latestPriceDoc = null;
-                                $totalHargaBulanIni = 0;
-
-                                if ($latestMonthGroup) {
-                                    // Ambil sampel dokumen realisasi paling akhir pada bulan tersebut
-                                    $latestPriceDoc = $latestMonthGroup
-                                        ->sortByDesc(function ($doc) {
-                                            return $doc->created_at ?? $doc->id;
+                                    // 3. Filter dokumen yang HANYA berkriteria 'Realisasi' dan bernilai > 0
+                                    $groupedPriceDocs = $m->documents
+                                        ->filter(function ($doc) {
+                                            return $doc->kriteria === 'Realisasi' &&
+                                                !is_null($doc->harga) &&
+                                                $doc->harga > 0;
                                         })
-                                        ->first();
+                                        ->groupBy(function ($doc) {
+                                            $date = $doc->tanggal_closed ?? $doc->created_at;
+                                            return \Carbon\Carbon::parse($date)->format('Y-m');
+                                        })
+                                        ->sortByDesc(function ($group, $key) {
+                                            return $key; // Urutkan berdasarkan bulan terbaru (YYYY-MM)
+                                        });
 
-                                    // Hitung total nilai realisasi untuk bulan terbaru
-                                    $totalHargaBulanIni = $latestMonthGroup->sum('harga');
-                                }
-
-                                // 4. PENYESUAIAN KRITERIA CLOSED:
-                                // Pengecekan HANYA berlaku jika dokumen teratas/terakhir yang diupload berkriteria 'Closed'
-                                if ($latestDoc && $latestDoc->kriteria === 'Closed') {
-                                    $totalHargaBulanIni = 0;
+                                    $latestMonthGroup = $groupedPriceDocs->first();
                                     $latestPriceDoc = null;
-                                }
-                            @endphp
+                                    $totalHargaBulanIni = 0;
 
-                            <tr>
-                                <td class="text-center">
-                                    {{ $monitorings->firstItem() + $index }}
-                                </td>
+                                    if ($latestMonthGroup) {
+                                        // Ambil sampel dokumen realisasi paling akhir pada bulan tersebut
+                                        $latestPriceDoc = $latestMonthGroup
+                                            ->sortByDesc(function ($doc) {
+                                                return $doc->created_at ?? $doc->id;
+                                            })
+                                            ->first();
 
-                                <td>
-                                    @if (Auth::user()->role == 17)
-                                        <span class="font-weight-bold text-dark">
-                                            {{ $m->po_nota_dinas }}
-                                        </span>
-                                    @else
-                                        <a href="{{ route('monitoring.index', $m->proyek_id) }}?po={{ urlencode(trim($m->po_nota_dinas)) }}"
-                                            class="text-primary font-weight-bold">
-                                            {{ $m->po_nota_dinas }}
-                                        </a>
-                                    @endif
-                                </td>
+                                        // Hitung total nilai realisasi untuk bulan terbaru
+                                        $totalHargaBulanIni = $latestMonthGroup->sum('harga');
+                                    }
 
-                                <td>{{ $m->nama_pekerjaan }}</td>
-                                {{-- JENIS PEKERJAAN --}}
-                                <td>
-                                    {{ $m->jenis_pekerjaan ?? '-' }}
-                                </td>
-                                <td class="text-center">
-                                    {{ \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') }}
-                                </td>
-                                <td class="text-center">
-                                    {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
-                                </td>
+                                    // 4. PENYESUAIAN KRITERIA CLOSED:
+                                    // Pengecekan HANYA berlaku jika dokumen teratas/terakhir yang diupload berkriteria 'Closed'
+                                    if ($latestDoc && $latestDoc->kriteria === 'Closed') {
+                                        $totalHargaBulanIni = 0;
+                                        $latestPriceDoc = null;
+                                    }
+                                @endphp
 
-                                {{-- NILAI KONTRAK (TOTAL RENCANA) --}}
-                                <td class="text-center">
-                                    <div class="p-2 border rounded bg-white shadow-sm">
-                                        <div class="fw-bold text-primary fs-6">
-                                            <b>Rp {{ number_format($totalNilaiKontrak, 0, ',', '.') }}</b>
-                                        </div>
-                                    </div>
-                                </td>
+                                <tr>
+                                    <td class="text-center">
+                                        {{ $monitorings->firstItem() + $index }}
+                                    </td>
 
-                                <td class="text-center">
-                                    <span class="{{ $statusClass }}">
-                                        {{ $m->status }}
-                                    </span>
-                                </td>
+                                    <td>
+                                        @if (Auth::user()->role == 17)
+                                            <span class="font-weight-bold text-dark">
+                                                {{ $m->po_nota_dinas }}
+                                            </span>
+                                        @else
+                                            <a href="{{ route('monitoring.index', $m->proyek_id) }}?po={{ urlencode(trim($m->po_nota_dinas)) }}"
+                                                class="text-primary font-weight-bold">
+                                                {{ $m->po_nota_dinas }}
+                                            </a>
+                                        @endif
+                                    </td>
 
-                                {{-- PROGRESS BAR --}}
-                                <td>
-                                    <div class="progress" style="height: 18px;">
-                                        <div class="progress-bar"
-                                            style="width: {{ $m->progress }}%; background-color: {{ $m->progressColor() }};">
-                                            {{ $m->progress }}%
-                                        </div>
-                                    </div>
-                                </td>
+                                    <td>{{ $m->nama_pekerjaan }}</td>
+                                    {{-- JENIS PEKERJAAN --}}
+                                    <td>
+                                        {{ $m->jenis_pekerjaan ?? '-' }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
+                                    </td>
 
-                                {{-- KETERANGAN --}}
-                                <td>
-                                    @php
-                                        $text = trim($m->keterangan2 ?? '-');
-
-                                        if (str_starts_with($text, '-')) {
-                                            $lines = preg_split('/\r\n|\r|\n/', $text);
-                                            echo implode('<br>', $lines);
-                                        } else {
-                                            $lines = preg_split('/\r\n|\r|\n/', $text);
-                                            echo implode(', ', $lines);
-                                        }
-                                    @endphp
-                                </td>
-
-                                {{-- REALISASI BULAN INI --}}
-                                <td class="text-center">
-                                    @if ($latestPriceDoc && $totalHargaBulanIni > 0)
+                                    {{-- NILAI KONTRAK (TOTAL RENCANA) --}}
+                                    <td class="text-center">
                                         <div class="p-2 border rounded bg-white shadow-sm">
-                                            <div class="fw-bold text-dark fs-6">
-                                                <b> Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }} </b>
-                                            </div>
-
-                                            <div
-                                                class="mt-1 d-flex justify-content-center gap-1 align-items-center flex-wrap">
-                                                @if ($latestPriceDoc->jenis_dokumen)
-                                                    <span class="badge badge-secondary text-white" style="font-size: 10px;">
-                                                        {{ $latestPriceDoc->jenis_dokumen }}
-                                                    </span>
-                                                @endif
-
-                                                @if ($latestPriceDoc->tanggal_closed)
-                                                    <span class="badge badge-info text-white" style="font-size: 10px;">
-                                                        {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed)->isoFormat('MMM YYYY') }}
-                                                    </span>
-                                                @endif
+                                            <div class="fw-bold text-primary fs-6">
+                                                <b>Rp {{ number_format($totalNilaiKontrak, 0, ',', '.') }}</b>
                                             </div>
                                         </div>
-                                    @else
-                                        {{-- Tampilkan Rp 0 atau strip jika belum ada realisasi --}}
-                                        <span class="text-muted font-italic small">Rp 0</span>
-                                    @endif
-                                </td>
+                                    </td>
 
-                                {{-- TOTAL REALISASI S/D BULAN INI --}}
-                                <td class="text-center">
-                                    <div class="p-2 border rounded bg-white shadow-sm">
-                                        <div class="fw-bold text-success fs-6">
-                                            <b>Rp {{ number_format($totalRealisasi, 0, ',', '.') }}</b>
+                                    <td class="text-center">
+                                        <span class="{{ $statusClass }}">
+                                            {{ $m->status }}
+                                        </span>
+                                    </td>
+
+                                    {{-- PROGRESS BAR --}}
+                                    <td>
+                                        <div class="progress" style="height: 18px;">
+                                            <div class="progress-bar"
+                                                style="width: {{ $m->progress }}%; background-color: {{ $m->progressColor() }};">
+                                                {{ $m->progress }}%
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
+                                    </td>
 
-                                {{-- TABEL STATUS DOKUMEN TERAKHIR --}}
-                                <td>
-                                    @if ($latestDoc)
-                                        <div class="p-2 border rounded bg-light" style="font-size: 12px;">
-                                            <div
-                                                class="fw-bold text-dark mb-1 d-flex justify-content-between align-items-center">
-                                                <span>📄 <b>{{ $latestDoc->nama_dokumen }}</b></span>
-                                                @if ($latestDoc->file_path)
-                                                    <a href="{{ asset($latestDoc->file_path) }}" target="_blank"
-                                                        class="badge badge-primary">
-                                                        Lihat
-                                                    </a>
-                                                @endif
-                                            </div>
+                                    {{-- KETERANGAN --}}
+                                    <td>
+                                        @php
+                                            $text = trim($m->keterangan2 ?? '-');
 
-                                            <div class="mb-1">
-                                                <b>Status:</b>
-                                                @if ($latestDoc->status == 'Closed')
-                                                    <span class="badge badge-success p-1">🟢 OK</span>
-                                                @elseif ($latestDoc->status == 'Nok')
-                                                    <span class="badge badge-danger p-1">🔴 NOK</span>
-                                                @else
-                                                    <span class="badge badge-secondary p-1">-</span>
-                                                @endif
-                                            </div>
+                                            if (str_starts_with($text, '-')) {
+                                                $lines = preg_split('/\r\n|\r|\n/', $text);
+                                                echo implode('<br>', $lines);
+                                            } else {
+                                                $lines = preg_split('/\r\n|\r|\n/', $text);
+                                                echo implode(', ', $lines);
+                                            }
+                                        @endphp
+                                    </td>
 
-                                            @if ($latestDoc->tanggal_closed)
-                                                <div class="text-muted small mb-1">
-                                                    <b>Tanggal:</b>
-                                                    {{ \Carbon\Carbon::parse($latestDoc->tanggal_closed)->format('d-m-Y') }}
+                                    {{-- REALISASI BULAN INI --}}
+                                    <td class="text-center">
+                                        @if ($latestPriceDoc && $totalHargaBulanIni > 0)
+                                            <div class="p-2 border rounded bg-white shadow-sm">
+                                                <div class="fw-bold text-dark fs-6">
+                                                    <b> Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }} </b>
                                                 </div>
-                                            @endif
 
-                                            @if ($latestDoc->keterangan_closed)
-                                                <div class="text-danger small font-weight-bold">
-                                                    <b>Ket:</b> <span
-                                                        style="color: #dc3545;">{{ $latestDoc->keterangan_closed }}</span>
+                                                <div
+                                                    class="mt-1 d-flex justify-content-center gap-1 align-items-center flex-wrap">
+                                                    @if ($latestPriceDoc->jenis_dokumen)
+                                                        <span class="badge badge-secondary text-white"
+                                                            style="font-size: 10px;">
+                                                            {{ $latestPriceDoc->jenis_dokumen }}
+                                                        </span>
+                                                    @endif
+
+                                                    @if ($latestPriceDoc->tanggal_closed)
+                                                        <span class="badge badge-info text-white" style="font-size: 10px;">
+                                                            {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed)->isoFormat('MMM YYYY') }}
+                                                        </span>
+                                                    @endif
                                                 </div>
-                                            @endif
+                                            </div>
+                                        @else
+                                            {{-- Tampilkan Rp 0 atau strip jika belum ada realisasi --}}
+                                            <span class="text-muted font-italic small">Rp 0</span>
+                                        @endif
+                                    </td>
+
+                                    {{-- TOTAL REALISASI S/D BULAN INI --}}
+                                    <td class="text-center">
+                                        <div class="p-2 border rounded bg-white shadow-sm">
+                                            <div class="fw-bold text-success fs-6">
+                                                <b>Rp {{ number_format($totalRealisasi, 0, ',', '.') }}</b>
+                                            </div>
                                         </div>
-                                    @else
-                                        <span class="text-muted font-italic small">Belum ada dokumen</span>
-                                    @endif
-                                </td>
+                                    </td>
 
-                                <td class="text-center">
-                                    @php
-                                        $notif = $m->notifKontrak();
-                                    @endphp
+                                    {{-- TABEL STATUS DOKUMEN TERAKHIR --}}
+                                    <td>
+                                        @if ($latestDoc)
+                                            <div class="p-2 border rounded bg-light" style="font-size: 12px;">
+                                                <div
+                                                    class="fw-bold text-dark mb-1 d-flex justify-content-between align-items-center">
+                                                    <span>📄 <b>{{ $latestDoc->nama_dokumen }}</b></span>
+                                                    @if ($latestDoc->file_path)
+                                                        <a href="{{ asset($latestDoc->file_path) }}" target="_blank"
+                                                            class="badge badge-primary">
+                                                            Lihat
+                                                        </a>
+                                                    @endif
+                                                </div>
 
-                                    <span class="badge badge-{{ $notif['class'] }}">
-                                        {{ $notif['text'] }}
-                                    </span>
-                                </td>
-                            </tr>
+                                                <div class="mb-1">
+                                                    <b>Status:</b>
+                                                    @if ($latestDoc->status == 'Closed')
+                                                        <span class="badge badge-success p-1">🟢 OK</span>
+                                                    @elseif ($latestDoc->status == 'Nok')
+                                                        <span class="badge badge-danger p-1">🔴 NOK</span>
+                                                    @else
+                                                        <span class="badge badge-secondary p-1">-</span>
+                                                    @endif
+                                                </div>
 
-                        @empty
-                            <tr>
-                                <td colspan="13" class="text-center text-muted">
-                                    Tidak ada data monitoring
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                                @if ($latestDoc->tanggal_closed)
+                                                    <div class="text-muted small mb-1">
+                                                        <b>Tanggal:</b>
+                                                        {{ \Carbon\Carbon::parse($latestDoc->tanggal_closed)->format('d-m-Y') }}
+                                                    </div>
+                                                @endif
 
+                                                @if ($latestDoc->keterangan_closed)
+                                                    <div class="text-danger small font-weight-bold">
+                                                        <b>Ket:</b> <span
+                                                            style="color: #dc3545;">{{ $latestDoc->keterangan_closed }}</span>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @else
+                                            <span class="text-muted font-italic small">Belum ada dokumen</span>
+                                        @endif
+                                    </td>
+
+                                    <td class="text-center">
+                                        @php
+                                            $notif = $m->notifKontrak();
+                                        @endphp
+
+                                        <span class="badge badge-{{ $notif['class'] }}">
+                                            {{ $notif['text'] }}
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            @empty
+                                <tr>
+                                    <td colspan="13" class="text-center text-muted">
+                                        Tidak ada data monitoring
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
-        </div>
 
-        {{-- CATATAN PROGRESS --}}
-        <div class="card mt-3">
-            <div class="card-body">
-                <h6 class="font-weight-bold text-danger mb-3">
-                    📌 Perhitungan Nilai Progress Monitoring
-                </h6>
+            {{-- CATATAN PROGRESS --}}
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6 class="font-weight-bold text-danger mb-3">
+                        📌 Perhitungan Nilai Progress Monitoring
+                    </h6>
 
-                <ul class="mb-0" style="line-height: 1.9;">
-                    <li>
-                        <b>SO / PO / KO</b>
-                        = <span class="badge badge-primary">30%</span>
-                    </li>
+                    <ul class="mb-0" style="line-height: 1.9;">
+                        <li>
+                            <b>SO / PO / KO</b>
+                            = <span class="badge badge-primary">30%</span>
+                        </li>
 
-                    <li>
-                        <b>Memo</b>
-                        = <span class="badge badge-primary">10%</span>
-                    </li>
+                        <li>
+                            <b>Memo</b>
+                            = <span class="badge badge-primary">10%</span>
+                        </li>
 
-                    <li>
-                        <b>Dokumen / Administrasi</b>
-                        = <span class="badge badge-primary">60%</span>
-                    </li>
-                </ul>
+                        <li>
+                            <b>Dokumen / Administrasi</b>
+                            = <span class="badge badge-primary">60%</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
+            {{-- PAGINATION --}}
+            <div class="mt-3 d-flex justify-content-center no-print">
+                {{ $monitorings->links('pagination::bootstrap-4') }}
+            </div>
+
         </div>
 
-        {{-- PAGINATION --}}
-        <div class="mt-3 d-flex justify-content-center no-print">
-            {{ $monitorings->links('pagination::bootstrap-4') }}
-        </div>
+        {{-- ================= JS PRINT ================= --}}
+        <script>
+            function printPage() {
+                window.print();
+            }
+        </script>
 
-    </div>
-
-    {{-- ================= JS PRINT ================= --}}
-    <script>
-        function printPage() {
-            window.print();
-        }
-    </script>
-
-@endsection
+    @endsection
