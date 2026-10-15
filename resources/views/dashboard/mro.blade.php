@@ -558,10 +558,10 @@
                 },
                 {
                     type: 'gif',
-                    src: 'https://media.giphy.com/media/qvwnbNRNoa04U/giphy.gif', // Produktivitas / Semangat
+                    src: 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif', // Produktivitas / Semangat
                     title: 'Tetap Semangat & Produktif!',
                     quote: 'Disiplin dan kerja keras hari ini adalah kunci sukses masa depan.',
-                    subtext: 'Terus berikan performa terbaik dalam setiap tugas perkeretaapian.'
+                    subtext: 'Terus berikan performa terbaik dalam setiap tugas perusahaan.'
                 },
                 {
                     type: 'gif',
