@@ -547,7 +547,7 @@
                     src: 'https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif', // Semangat Kerja / Fokus
                     title: 'Fokus & Utamakan Kualitas!',
                     quote: 'Kualitas pekerjaan adalah cerminan dari profesionalisme kita.',
-                    subtext: 'Mari pastikan setiap perawatan dan perbaikan berjalan sempurna.'
+                    subtext: 'Mari pastikan setiap pekerjaan berjalan sempurna.'
                 },
                 {
                     type: 'gif',
