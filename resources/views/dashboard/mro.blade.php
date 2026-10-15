@@ -552,7 +552,7 @@
                 {
                     type: 'gif',
                     src: 'https://media.giphy.com/media/6JvVrxP6osBdC/giphy.gif', // Teamwork / Kolaborasi
-                    title: 'Solidaritas Tim MRO',
+                    title: 'Solidaritas Tim',
                     quote: 'Kerjasama yang kuat menghasilkan pencapaian yang luar biasa.',
                     subtext: 'Saling koordinasi untuk target PT. IMST Madiun yang lebih handal.'
                 },
