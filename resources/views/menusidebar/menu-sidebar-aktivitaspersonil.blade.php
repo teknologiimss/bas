@@ -1,4 +1,5 @@
 @extends('layouts.main') {{-- Sesuaikan nama layout utama aplikasi Anda --}}
+@section('title', 'Menu Aktivitas Personil')
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
 <div class="content-header">

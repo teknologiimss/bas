@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'Data Tools MRO')
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
     <style>

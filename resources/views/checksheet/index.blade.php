@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title', 'Checksheet Preventive Maintenance')
 @section('content')
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     {{-- FONT AWESOME --}}

@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'Master Assets MRO')
 
 @section('content')
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">

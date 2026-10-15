@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title', 'Rekap Cuti Bulanan')
 @section('content')
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>
@@ -875,7 +875,7 @@
 
                                 <tr>
                                     <td>3</td>
-                                    <td>Isteri melahirkan</td>
+                                    <td>Istri melahirkan</td>
                                     <td>3 Hari</td>
                                 </tr>
 

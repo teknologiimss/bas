@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title', 'Monitoring FCU')
 @section('content')
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">

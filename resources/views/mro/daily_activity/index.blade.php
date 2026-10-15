@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'Daily Activity')
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
 

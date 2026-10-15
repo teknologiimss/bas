@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'Weekly Activity')
 
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">

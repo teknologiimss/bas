@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title', 'Management Cuti MRO')
 @section('content')
     <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
     <style>

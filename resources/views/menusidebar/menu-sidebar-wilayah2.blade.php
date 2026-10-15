@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title', 'Menu Pekerjaan Wilayah 2')
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
 @section('content')

@@ -1,4 +1,5 @@
 @extends('layouts.main') {{-- Sesuaikan dengan nama layout utama Anda (misal: layouts.main / adminlte::page) --}}
+@section('title', 'Menu Data Personil')
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 @section('content')
 <div class="content-header">
