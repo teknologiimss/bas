@@ -606,8 +606,8 @@
                 motivationIndex = (motivationIndex + 1) % motivationItems.length;
             }
 
-            // Atur kemunculan popup motivasi setiap 40 detik sekali
-            setInterval(showMotivationPopup, 40000);
+            // Atur kemunculan popup motivasi setiap 20 menit sekali (1.200.000 milidetik)
+            setInterval(showMotivationPopup, 1200000);
 
             // Tampilkan sekali setelah 10 detik halaman pertama kali dimuat
             setTimeout(showMotivationPopup, 10000);
