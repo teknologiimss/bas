@@ -103,22 +103,8 @@
         }
 
         /* ===============================
-                           FULLSCREEN TV MODE
-                        =============================== */
-        /* #dashboardFullscreen:fullscreen,
-                #dashboardFullscreen:-moz-full-screen,
-                #dashboardFullscreen:-webkit-full-screen {
-                    background: #f8fafc;
-                    padding: 20px;
-                    overflow-y: auto;
-                    width: 100vw;
-                    height: 100vh;
-                } */
-
-
-        /* ===============================
-           FULLSCREEN TV MODE (BACKGROUND PUTIH)
-        =============================== */
+                   FULLSCREEN TV MODE (BACKGROUND PUTIH)
+                   =============================== */
         html:fullscreen,
         html:-webkit-full-screen,
         html:-moz-full-screen,
@@ -139,62 +125,73 @@
         #dashboardFullscreen {
             background-color: #ffffff;
             width: 100%;
+            position: relative;
         }
 
+        /* Memastikan Modal Motivasi Muncul di Atas Saat Fullscreen */
+        #dashboardFullscreen:fullscreen #motivationModal,
+        #dashboardFullscreen:-webkit-full-screen #motivationModal,
+        #dashboardFullscreen:-moz-full-screen #motivationModal {
+            z-index: 99999 !important;
+        }
+
+        .modal-backdrop {
+            z-index: 1040 !important;
+        }
+
+        #motivationModal {
+            z-index: 1050 !important;
+        }
 
         /* ===============================
-   PERAPIHAN TOMBOL HEADER ACTION
-=============================== */
-.gap-2 {
-    gap: 0.5rem !important;
-}
+                       PERAPIHAN TOMBOL HEADER ACTION
+                       =============================== */
+        .gap-2 {
+            gap: 0.5rem !important;
+        }
 
-/* Ketinggian & Border Radius yang Seragam */
-.btn-dashboard-action,
-.form-select-dashboard,
-.badge-date-dashboard {
-    height: 38px !important;
-    border-radius: 8px !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
+        .btn-dashboard-action,
+        .form-select-dashboard,
+        .badge-date-dashboard {
+            height: 38px !important;
+            border-radius: 8px !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
 
-/* Tombol Fullscreen */
-.btn-dashboard-action {
-    padding: 0 14px;
-    border: none;
-    background-color: #2563eb;
-    color: #ffffff;
-    transition: background-color 0.2s ease;
-}
+        .btn-dashboard-action {
+            padding: 0 14px;
+            border: none;
+            background-color: #2563eb;
+            color: #ffffff;
+            transition: background-color 0.2s ease;
+        }
 
-.btn-dashboard-action:hover {
-    background-color: #1d4ed8;
-}
+        .btn-dashboard-action:hover {
+            background-color: #1d4ed8;
+        }
 
-/* Dropdown Select Tahun */
-.form-select-dashboard {
-    border: 1px solid #cbd5e1 !important;
-    background-color: #ffffff !important;
-    color: #1e293b !important;
-    padding: 0 12px !important;
-    cursor: pointer;
-}
+        .form-select-dashboard {
+            border: 1px solid #cbd5e1 !important;
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            padding: 0 12px !important;
+            cursor: pointer;
+        }
 
-.form-select-dashboard:focus {
-    border-color: #2563eb !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
-}
+        .form-select-dashboard:focus {
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+        }
 
-/* Badge Indikator Tanggal */
-.badge-date-dashboard {
-    background-color: #ffffff;
-    border: 1px solid #cbd5e1;
-    color: #1e293b;
-    padding: 0 14px;
-    white-space: nowrap;
-}
+        .badge-date-dashboard {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            padding: 0 14px;
+            white-space: nowrap;
+        }
     </style>
 
     <div class="container-fluid py-3 px-4">
@@ -231,7 +228,7 @@
             </div>
         </div>
 
-        {{-- KONTRAINER UTAMA YANG AKAN DI-FULLSCREEN --}}
+        {{-- KONTRAINER UTAMA YANG AKAN DI-FULLSCREEN (MODAL DIPINDAHKAN KE DALAM SINI) --}}
         <div id="dashboardFullscreen">
 
             {{-- METRIC CARDS / SUMMARY KPI --}}
@@ -300,7 +297,7 @@
             {{-- BARIS UTAMA --}}
             <div class="row">
 
-                {{-- SISI KIRI: TABEL DAFTAR PROGRES MRO (WITH AUTO SCROLL) --}}
+                {{-- SISI KIRI: TABEL DAFTAR PROGRES MRO --}}
                 <div class="col-lg-7 col-xl-7 mb-3">
                     <div class="card card-dashboard h-100 p-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -430,11 +427,47 @@
 
             </div>
 
-        </div>
+            {{-- MODAL POPUP MOTIVASI DIPINDAHKAN KE DALAM SINI AGAR IKUT TAMPIL SAAT FULLSCREEN --}}
+            <div class="modal fade" id="motivationModal" tabindex="-1" role="dialog" aria-hidden="true"
+                data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+                        <div class="modal-header bg-gradient text-white pb-2"
+                            style="background: linear-gradient(135deg, #0f172a, #2563eb);">
+                            <h5 class="modal-title font-weight-bold" id="motivationTitle">
+                                <i class="fas fa-fire mr-2 text-warning"></i> Semangat MRO!
+                            </h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"
+                                id="closeMotivationModal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center p-4 bg-light">
+                            <!-- Konten Media GIF/Video -->
+                            <div id="motivationMediaContainer"
+                                class="mb-3 d-flex justify-content-center align-items-center" style="min-height: 200px;">
+                                <!-- Dinamis dimasukkan oleh JS -->
+                            </div>
+                            <h5 id="motivationQuote" class="font-weight-bold text-dark mb-1">Terus Berikan yang Terbaik
+                                Hari Ini!
+                            </h5>
+                            <p id="motivationSubtext" class="text-muted small mb-0">Integritas dan Kualitas Adalah
+                                Prioritas Utama
+                                PT. IMST.</p>
+                        </div>
+                        <div class="modal-footer bg-white justify-content-center py-2">
+                            <button type="button" class="btn btn-primary btn-sm px-4 rounded-pill font-weight-bold"
+                                data-dismiss="modal" id="btnOkMotivation">Lanjut Bekerja 🚀</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div> {{-- AKHIR KONTRAINER FULLSCREEN --}}
 
     </div>
 
-    {{-- SCRIPT CHART JS, DATALABELS PLUGIN, AUTO SCROLL & FULLSCREEN --}}
+    {{-- SCRIPT CHART JS, DATALABELS PLUGIN, AUTO SCROLL, FULLSCREEN & MOTIVATION POPUP --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
@@ -505,6 +538,80 @@
 
                 startAutoScroll();
             }
+
+            // ==========================================
+            // 🚀 POPUP MOTIVASI KERJA BERGANTI-GANTI SETIAP BEBERAPA DETIK
+            // ==========================================
+            const motivationItems = [{
+                    type: 'gif',
+                    src: 'https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif', // Semangat Kerja / Fokus
+                    title: 'Fokus & Utamakan Kualitas!',
+                    quote: 'Kualitas pekerjaan adalah cerminan dari profesionalisme kita.',
+                    subtext: 'Mari pastikan setiap perawatan dan perbaikan berjalan sempurna.'
+                },
+                {
+                    type: 'gif',
+                    src: 'https://media.giphy.com/media/6JvVrxP6osBdC/giphy.gif', // Teamwork / Kolaborasi
+                    title: 'Solidaritas Tim MRO',
+                    quote: 'Kerjasama yang kuat menghasilkan pencapaian yang luar biasa.',
+                    subtext: 'Saling koordinasi untuk target PT. IMST Madiun yang lebih handal.'
+                },
+                {
+                    type: 'gif',
+                    src: 'https://media.giphy.com/media/qvwnbNRNoa04U/giphy.gif', // Produktivitas / Semangat
+                    title: 'Tetap Semangat & Produktif!',
+                    quote: 'Disiplin dan kerja keras hari ini adalah kunci sukses masa depan.',
+                    subtext: 'Terus berikan performa terbaik dalam setiap tugas perkeretaapian.'
+                },
+                {
+                    type: 'gif',
+                    src: 'https://media.giphy.com/media/g9582DNuQppxC/giphy.gif', // Sukses / Target Tercapai
+                    title: 'Kejar Target, Lampaui Batas!',
+                    quote: 'Setiap tantangan adalah peluang untuk membuktikan kemampuan terbaik kita.',
+                    subtext: 'Ayo selesaikan proyek tepat waktu!'
+                }
+            ];
+
+            let motivationIndex = 0;
+
+            function showMotivationPopup() {
+                // Jangan tampilkan jika modal sudah terbuka (biar tidak tumpuk-tumpuk)
+                if ($('#motivationModal').hasClass('show')) return;
+
+                const item = motivationItems[motivationIndex];
+
+                // Set konten modal
+                document.getElementById('motivationTitle').innerHTML =
+                    `<i class="fas fa-fire mr-2 text-warning"></i> ${item.title}`;
+                document.getElementById('motivationQuote').innerText = item.quote;
+                document.getElementById('motivationSubtext').innerText = item.subtext;
+
+                const container = document.getElementById('motivationMediaContainer');
+                if (item.type === 'gif') {
+                    container.innerHTML =
+                        `<img src="${item.src}" alt="Motivasi Kerja" class="img-fluid rounded shadow-sm" style="max-height: 220px; object-fit: cover;">`;
+                }
+
+                // Tampilkan modal menggunakan Bootstrap jQuery
+                $('#motivationModal').modal('show');
+
+                // Otomatis tutup modal setelah 7 detik agar tidak mengganggu dashboard TV mode selamanya
+                setTimeout(function() {
+                    if ($('#motivationModal').hasClass('show')) {
+                        $('#motivationModal').modal('hide');
+                    }
+                }, 15000);
+
+                // Geser ke index berikutnya secara berputar (loop)
+                motivationIndex = (motivationIndex + 1) % motivationItems.length;
+            }
+
+            // Atur kemunculan popup motivasi setiap 40 detik sekali
+            setInterval(showMotivationPopup, 40000);
+
+            // Tampilkan sekali setelah 10 detik halaman pertama kali dimuat
+            setTimeout(showMotivationPopup, 10000);
+
 
             // ==========================================
             // 1. Stacked Bar Chart Monitoring Jatuh Tempo
