@@ -151,7 +151,31 @@
             border: none;
         }
 
-        /* PERBAIKAN STYLING CHECKBOX */
+        /* STYLING NOTIFIKASI MODERN & ELEGAN */
+        .alert-modern {
+            border-radius: 14px;
+            border: none;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            padding: 15px 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.5s ease;
+        }
+
+        .alert-success-modern {
+            background: #e8f8f0;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+
+        .alert-danger-modern {
+            background: #fdf2f2;
+            color: #c53030;
+            border-left: 5px solid #e53e3e;
+        }
+
         .col-checkbox {
             width: 45px !important;
             text-align: center !important;
@@ -228,21 +252,26 @@
                 </div>
             </div>
 
+            {{-- NOTIFIKASI MODERN (AUTO CLOSE 3 DETIK) --}}
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show">
-                    <button type="button" class="close" data-dismiss="alert">
-                        <span>&times;</span>
+                <div class="alert alert-modern alert-success-modern alert-dismissible fade show auto-close-alert"
+                    role="alert">
+                    <i class="fas fa-check-circle fa-lg"></i>
+                    <div>{{ session('success') }}</div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="outline: none;">
+                        <span aria-hidden="true">&times;</span>
                     </button>
-                    {{ session('success') }}
                 </div>
             @endif
 
             @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show">
-                    <button type="button" class="close" data-dismiss="alert">
-                        <span>&times;</span>
+                <div class="alert alert-modern alert-danger-modern alert-dismissible fade show auto-close-alert"
+                    role="alert">
+                    <i class="fas fa-exclamation-circle fa-lg"></i>
+                    <div>{{ session('error') }}</div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="outline: none;">
+                        <span aria-hidden="true">&times;</span>
                     </button>
-                    {{ session('error') }}
                 </div>
             @endif
 
@@ -270,7 +299,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($data as $item)
+                            @forelse ($data as$item)
                                 <tr>
                                     <td class="col-checkbox text-center">
                                         <input type="checkbox" name="ids[]" value="{{ $item->id }}"
@@ -283,29 +312,49 @@
                                     <td>
                                         {{ $item->tanggal_sjn_keluar ? \Carbon\Carbon::parse($item->tanggal_sjn_keluar)->format('d-m-Y') : '-' }}
                                     </td>
+
+                                    <!-- LAMPIRAN KELUAR -->
                                     <td>
-                                        @if ($item->lampiran_sjn_keluar)
-                                            <a href="{{ asset($item->lampiran_sjn_keluar) }}" target="_blank"
-                                                class="btn btn-success btn-sm">
-                                                View
-                                            </a>
+                                        @php
+                                            $lampiranKeluar = $item->lampiranFiles->where('tipe', 'keluar');
+                                        @endphp
+
+                                        @if ($lampiranKeluar->count() > 0)
+                                            @foreach ($lampiranKeluar as $file)
+                                                <a href="{{ asset($file->file) }}" target="_blank"
+                                                    class="btn btn-success btn-sm mb-1 d-block text-truncate"
+                                                    style="max-width: 150px;" title="{{ $file->nama_file }}">
+                                                    <i class="fas fa-eye"></i> {{ $file->nama_file }}
+                                                </a>
+                                            @endforeach
                                         @else
                                             -
                                         @endif
                                     </td>
+
                                     <td>
                                         {{ $item->tanggal_sjn_masuk ? \Carbon\Carbon::parse($item->tanggal_sjn_masuk)->format('d-m-Y') : '-' }}
                                     </td>
+
+                                    <!-- LAMPIRAN MASUK -->
                                     <td>
-                                        @if ($item->lampiran_sjn_masuk)
-                                            <a href="{{ asset($item->lampiran_sjn_masuk) }}" target="_blank"
-                                                class="btn btn-primary btn-sm">
-                                                View
-                                            </a>
+                                        @php
+                                            $lampiranMasuk = $item->lampiranFiles->where('tipe', 'masuk');
+                                        @endphp
+
+                                        @if ($lampiranMasuk->count() > 0)
+                                            @foreach ($lampiranMasuk as $file)
+                                                <a href="{{ asset($file->file) }}" target="_blank"
+                                                    class="btn btn-primary btn-sm mb-1 d-block text-truncate"
+                                                    style="max-width: 150px;" title="{{ $file->nama_file }}">
+                                                    <i class="fas fa-eye"></i> {{ $file->nama_file }}
+                                                </a>
+                                            @endforeach
                                         @else
                                             -
                                         @endif
                                     </td>
+
                                     <td>{{ $item->deskripsi }}</td>
                                     <td>
                                         @if ($item->status == 'Open')
@@ -367,6 +416,20 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Script Auto Close Alert dalam 3 Detik dengan efek Fade Out
+            setTimeout(function() {
+                let alerts = document.querySelectorAll('.auto-close-alert');
+                alerts.forEach(function(alert) {
+                    alert.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+                    alert.style.opacity = "0";
+                    alert.style.transform = "translateY(-10px)";
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 600); // Waktu yang sama dengan transition CSS
+                });
+            }, 3000); // 3000ms = 3 Detik
+
+            // Script Checkbox & Bulk Action
             const selectAll = document.getElementById('select-all');
             const checkboxes = document.querySelectorAll('.check-item');
             const btnDeleteSelected = document.getElementById('btn-delete-selected');

@@ -28,4 +28,9 @@ class Rewinding extends Model
             'rewinding_folder_id'
         );
     }
+
+    public function lampiranFiles()
+    {
+        return $this->hasMany(RewindingLampiran::class, 'rewinding_id');
+    }
 }

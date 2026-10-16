@@ -145,9 +145,14 @@
                         <input type="date" name="tanggal_sjn_keluar" class="form-control" required>
                     </div>
 
-                    <div class="col-md-3 mb-3">
+                    {{-- <div class="col-md-3 mb-3">
                         <label>Lampiran SJN Keluar</label>
                         <input type="file" name="lampiran_sjn_keluar" class="form-control">
+                    </div> --}}
+
+                    <div class="col-md-3 mb-3">
+                        <label>Lampiran SJN Keluar (Bisa lebih dari 1)</label>
+                        <input type="file" name="lampiran_sjn_keluar[]" class="form-control" multiple>
                     </div>
 
                     <div class="col-md-3 mb-3">
@@ -155,9 +160,14 @@
                         <input type="date" name="tanggal_sjn_masuk" class="form-control">
                     </div>
 
-                    <div class="col-md-3 mb-3">
+                    {{-- <div class="col-md-3 mb-3">
                         <label>Lampiran SJN Masuk</label>
                         <input type="file" name="lampiran_sjn_masuk" class="form-control">
+                    </div> --}}
+
+                    <div class="col-md-3 mb-3">
+                        <label>Lampiran SJN Masuk (Bisa lebih dari 1)</label>
+                        <input type="file" name="lampiran_sjn_masuk[]" class="form-control" multiple>
                     </div>
 
                     <div class="col-md-12 mb-3">

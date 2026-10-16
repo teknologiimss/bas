@@ -884,6 +884,8 @@ Route::prefix('products')->group(function () {
     Route::get('/rewinding/dashboard', [RewindingController::class, 'dashboard'])
         ->name('rewinding.dashboard');
 
+    Route::delete('/rewinding/lampiran/{lampiran}', [RewindingController::class, 'hapusFileLampiran'])->name('rewinding.hapusFileLampiran');
+
     /*
      * |--------------------------------------------------------------------------
      * | CHECKSHEET HARIAN FASILITAS

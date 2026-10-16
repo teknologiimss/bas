@@ -73,7 +73,6 @@
             border-radius: 10px;
         }
 
-        /* Badge Status */
         .badge-success {
             background: #163b69 !important;
             color: #fff;
@@ -90,7 +89,6 @@
             padding: 8px 14px !important;
         }
 
-        /* BUTTON */
         .btn {
             border-radius: 10px;
             font-weight: 600;
@@ -167,7 +165,6 @@
         }
 
         @media (max-width:768px) {
-
             .card-body {
                 padding: 18px;
             }
@@ -193,12 +190,9 @@
     </style>
 
     <div class="card shadow">
-
-
         <div class="card-header bg-danger text-white">
             <h4>
-                <i class="fas fa-edit"></i>
-                Edit Data Rewinding
+                <i class="fas fa-edit"></i> Edit Data Rewinding
             </h4>
         </div>
 
@@ -210,6 +204,7 @@
                 </div>
             @endif
 
+            <!-- FORM UTAMA UPDATE -->
             <form action="{{ route('rewinding.update', $rewinding->id) }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
@@ -235,39 +230,33 @@
                             value="{{ $rewinding->tanggal_sjn_keluar }}" required>
                     </div>
 
+                    <!-- LAMPIRAN KELUAR -->
                     <div class="col-md-6 mb-3">
+                        <label>Tambah Lampiran SJN Keluar Baru</label>
+                        <input type="file" name="lampiran_sjn_keluar[]" class="form-control" multiple>
 
-                        <label>Lampiran SJN Keluar</label>
-
-                        <input type="file" name="lampiran_sjn_keluar" class="form-control">
-
-                        @if ($rewinding->lampiran_sjn_keluar)
-                            <div class="alert alert-info mt-2">
-
-                                <strong>File Saat Ini :</strong>
-
-                                <br>
-
-                                {{ $rewinding->nama_lampiran_keluar }}
-
-                            </div>
-
-                            <a href="{{ asset($rewinding->lampiran_sjn_keluar) }}" target="_blank"
-                                class="btn btn-success btn-sm">
-
-                                <i class="fas fa-eye"></i>
-                                Lihat
-
-                            </a>
-
-                            <a href="{{ asset($rewinding->lampiran_sjn_keluar) }}" download class="btn btn-primary btn-sm">
-
-                                <i class="fas fa-download"></i>
-                                Download
-
-                            </a>
-                        @endif
-
+                        <div class="mt-3">
+                            <strong>File SJN Keluar Saat Ini :</strong>
+                            @forelse($rewinding->lampiranFiles->where('tipe', 'keluar') as $item)
+                                <div class="alert alert-info mt-2 d-flex justify-content-between align-items-center py-2">
+                                    <span>{{ $item->nama_file }}</span>
+                                    <div>
+                                        <a href="{{ asset($item->file) }}" target="_blank" class="btn btn-success btn-sm">
+                                            <i class="fas fa-eye"></i> Lihat
+                                        </a>
+                                        <a href="{{ asset($item->file) }}" download class="btn btn-primary btn-sm">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="hapusFileItem({{ $item->id }})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-muted small mt-1">Belum ada lampiran keluar.</p>
+                            @endforelse
+                        </div>
                     </div>
 
                     <div class="col-md-6 mb-3">
@@ -276,39 +265,33 @@
                             value="{{ $rewinding->tanggal_sjn_masuk }}">
                     </div>
 
+                    <!-- LAMPIRAN MASUK -->
                     <div class="col-md-6 mb-3">
+                        <label>Tambah Lampiran SJN Masuk Baru</label>
+                        <input type="file" name="lampiran_sjn_masuk[]" class="form-control" multiple>
 
-                        <label>Lampiran SJN Masuk</label>
-
-                        <input type="file" name="lampiran_sjn_masuk" class="form-control">
-
-                        @if ($rewinding->lampiran_sjn_masuk)
-                            <div class="alert alert-info mt-2">
-
-                                <strong>File Saat Ini :</strong>
-
-                                <br>
-
-                                {{ $rewinding->nama_lampiran_masuk }}
-
-                            </div>
-
-                            <a href="{{ asset($rewinding->lampiran_sjn_masuk) }}" target="_blank"
-                                class="btn btn-success btn-sm">
-
-                                <i class="fas fa-eye"></i>
-                                Lihat
-
-                            </a>
-
-                            <a href="{{ asset($rewinding->lampiran_sjn_masuk) }}" download class="btn btn-primary btn-sm">
-
-                                <i class="fas fa-download"></i>
-                                Download
-
-                            </a>
-                        @endif
-
+                        <div class="mt-3">
+                            <strong>File SJN Masuk Saat Ini :</strong>
+                            @forelse($rewinding->lampiranFiles->where('tipe', 'masuk') as $item)
+                                <div class="alert alert-info mt-2 d-flex justify-content-between align-items-center py-2">
+                                    <span>{{ $item->nama_file }}</span>
+                                    <div>
+                                        <a href="{{ asset($item->file) }}" target="_blank" class="btn btn-success btn-sm">
+                                            <i class="fas fa-eye"></i> Lihat
+                                        </a>
+                                        <a href="{{ asset($item->file) }}" download class="btn btn-primary btn-sm">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="hapusFileItem({{ $item->id }})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-muted small mt-1">Belum ada lampiran masuk.</p>
+                            @endforelse
+                        </div>
                     </div>
 
                     <div class="col-md-12 mb-3">
@@ -322,86 +305,92 @@
                     </div>
 
                     <div class="col-md-12 mb-3">
-
                         <label>Status</label>
-
                         <div>
-
                             @if ($rewinding->status == 'Closed')
-                                <span class="badge badge-success p-2">
-                                    CLOSED
-                                </span>
+                                <span class="badge badge-success p-2">CLOSED</span>
                             @else
-                                <span class="badge badge-warning p-2">
-                                    OPEN
-                                </span>
+                                <span class="badge badge-warning p-2">OPEN</span>
                             @endif
-
                         </div>
-
                         <small class="text-muted">
                             Status otomatis CLOSED jika Lampiran SJN Masuk sudah diupload.
                         </small>
-
                     </div>
 
                 </div>
 
                 <button type="submit" class="btn btn-danger">
-
-                    <i class="fas fa-save"></i>
-                    Update
-
+                    <i class="fas fa-save"></i> Update
                 </button>
 
                 <a href="{{ route('rewinding.index') }}" class="btn btn-secondary">
-
                     Kembali
-
                 </a>
 
             </form>
 
             <hr>
 
-            {{-- HAPUS LAMPIRAN SJN KELUAR --}}
-            @if ($rewinding->lampiran_sjn_keluar)
+            {{-- HAPUS LAMPIRAN KELUAR PUKAL --}}
+            @if ($rewinding->lampiranFiles->where('tipe', 'keluar')->count() > 0)
                 <form action="{{ route('rewinding.hapusLampiranKeluar', $rewinding->id) }}" method="POST" class="d-inline"
-                    onsubmit="return confirm('Hapus lampiran SJN keluar?')">
-
+                    onsubmit="return confirm('Hapus semua lampiran SJN keluar?')">
                     @csrf
-
                     <button class="btn btn-danger">
-
-                        <i class="fas fa-trash"></i>
-
-                        Hapus Lampiran Keluar
-
+                        <i class="fas fa-trash"></i> Hapus Lampiran Keluar
                     </button>
-
                 </form>
             @endif
 
-            {{-- HAPUS LAMPIRAN SJN MASUK --}}
-            @if ($rewinding->lampiran_sjn_masuk)
+            {{-- HAPUS LAMPIRAN MASUK PUKAL (MENGUBAH STATUS KE OPEN) --}}
+            @if ($rewinding->lampiranFiles->where('tipe', 'masuk')->count() > 0)
                 <form action="{{ route('rewinding.hapusLampiranMasuk', $rewinding->id) }}" method="POST" class="d-inline"
-                    onsubmit="return confirm('Hapus lampiran SJN masuk?')">
-
+                    onsubmit="return confirm('Hapus semua lampiran SJN masuk? Status akan berubah menjadi Open.')">
                     @csrf
-
                     <button class="btn btn-warning">
-
-                        <i class="fas fa-trash"></i>
-
-                        Hapus Lampiran Masuk
-
+                        <i class="fas fa-trash"></i> Hapus Lampiran Masuk
                     </button>
-
                 </form>
             @endif
 
         </div>
 
     </div>
+
+    <!-- FORM TERSEMBUNYI UNTUK HAPUS SATUAN FILE SECARA AMAN -->
+    <form id="deleteSingleForm" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
+
+    <script>
+        function hapusFileItem(id) {
+            if (confirm('Hapus file ini?')) {
+                // Menggunakan fungsi route() Laravel secara langsung agar menyesuaikan sub-folder (warehouse-imss) secara otomatis
+                let url = "{{ route('rewinding.hapusFileLampiran', ':id') }}";
+                url = url.replace(':id', id);
+
+                let form = document.createElement('form');
+                form.method = 'POST';
+                form.action = url;
+
+                let csrfToken = document.createElement('input');
+                csrfToken.type = 'hidden';
+                csrfToken.name = '_token';
+                csrfToken.value = '{{ csrf_token() }}';
+                form.appendChild(csrfToken);
+
+                let methodField = document.createElement('input');
+                methodField.type = 'hidden';
+                methodField.name = '_method';
+                methodField.value = 'DELETE';
+                form.appendChild(methodField);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
 
 @endsection
