@@ -1290,7 +1290,7 @@
             //     });
             // });
 
-            // === UPDATE DOKUMEN (AJAX) ===
+            // === UPDATE DOKUMEN (AJAX DENGAN AUTO REFRESH HALAMAN) ===
             $(document).on('click', '.btn-update-doc', function() {
                 let button = $(this);
                 let id = button.data('id');
@@ -1329,24 +1329,25 @@
                     contentType: false,
                     success: function(response) {
                         if (response.success) {
-                            alert('✅ ' + response.message);
-                            if (response.file_url) {
-                                let link = $('#file-link-' + id);
-                                if (link.length) {
-                                    link.attr('href', response.file_url);
-                                }
-                            }
+                            showFloatingNotification(response.message, "success");
+
+                            // Jeda 1 detik agar notifikasi terlihat, lalu halaman auto-refresh untuk memperbarui total harga & progress
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
                         } else {
-                            alert('❌ Gagal memperbarui dokumen.');
+                            showFloatingNotification('Gagal memperbarui dokumen.', "error");
                         }
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);
-                        alert('Terjadi kesalahan saat memperbarui dokumen.');
+                        showFloatingNotification('Terjadi kesalahan saat memperbarui dokumen.',
+                            "error");
                     }
                 });
             });
 
+            // === HAPUS DOKUMEN (AJAX DENGAN AUTO REFRESH HALAMAN) ===
             $(document).on('click', '.btn-delete-doc', function() {
                 if (!confirm('Hapus dokumen ini?')) return;
                 let btn = $(this);
@@ -1361,9 +1362,20 @@
                     },
                     success: function(res) {
                         if (res.success) {
-                            $('#doc-' + id).remove();
-                            alert('✅ ' + res.message);
-                        } else alert('❌ Gagal menghapus dokumen.');
+                            showFloatingNotification(res.message, "success");
+
+                            // Jeda 1 detik lalu auto-refresh halaman
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            showFloatingNotification('Gagal menghapus dokumen.', "error");
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        showFloatingNotification('Terjadi kesalahan saat menghapus dokumen.',
+                            "error");
                     }
                 });
             });
