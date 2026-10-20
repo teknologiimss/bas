@@ -828,6 +828,10 @@
                         <b>T1 s/d T12 (Tiap T bernilai 5%)</b> =
                         <span class="badge badge-primary">60%</span>
                     </li>
+                    <li>
+                        <b>*Khusus MRO : Dokumen / Administrasi</b> =
+                        <span class="badge badge-primary">60%</span>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -691,7 +691,7 @@
                         </li>
 
                         <li>
-                            <b>T1 s/d T12 (Tiap T bernilai 5%)</b>
+                            <b>Dokumen / Administrasi</b>
                             = <span class="badge badge-primary">60%</span>
                         </li>
                     </ul>
