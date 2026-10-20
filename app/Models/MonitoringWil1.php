@@ -39,8 +39,16 @@ class MonitoringWil1 extends Model
         if ($docs->contains(fn($d) => str_contains($d, 'purchase request') || str_contains($d, 'pr') || str_contains($d, 'memo'))) {
             $progress += 10;
         }
-        if ($docs->contains(fn($d) => str_contains($d, 'dokumen') || str_contains($d, 'administrasi'))) {
-            $progress += 60;
+        // if ($docs->contains(fn($d) => str_contains($d, 'dokumen') || str_contains($d, 'administrasi'))) {
+        //     $progress += 60;
+        // }
+
+        // T1 - T12 (Masing-masing 5%, Total 60%)
+        for ($i = 1; $i <= 12; $i++) {
+            $keyword = 't' . $i;  // Menghasilkan t1, t2, ..., t12
+            if ($docs->contains(fn($d) => str_contains($d, $keyword))) {
+                $progress += 5;
+            }
         }
 
         return min($progress, 100);
