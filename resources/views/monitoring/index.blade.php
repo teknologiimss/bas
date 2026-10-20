@@ -1676,6 +1676,53 @@
                     </div>`;
                 $('#dokumenContainer').append(html);
             });
+
+            // Cek apakah ada session success/error dari Laravel
+            @if (session('success'))
+                showFloatingNotification("{{ session('success') }}", "success");
+            @endif
+
+            @if (session('error'))
+                showFloatingNotification("{{ session('error') }}", "error");
+            @endif
+
+            // Fungsi untuk menampilkan Floating Notification yang rapi di pojok kanan atas
+            function showFloatingNotification(message, type) {
+                let bgGradient = type === 'success' ?
+                    'linear-gradient(135deg, #00c853, #00a844)' :
+                    'linear-gradient(135deg, #ff1a1a, #b30000)';
+
+                let icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+                let title = type === 'success' ? 'Berhasil!' : 'Perhatian!';
+
+                let html = `
+            <div id="floating-toast" class="shadow-lg border-0 rounded-4 text-white p-3 position-fixed" 
+                 style="top: 20px; right: 20px; z-index: 99999; min-width: 320px; max-width: 400px; background: ${bgGradient}; display: none; backdrop-filter: blur(8px);">
+                <div class="d-flex align-items-center">
+                    <i class="fa ${icon} fa-lg me-3"></i>
+                    <div class="flex-grow-1">
+                        <strong class="d-block" style="font-size: 14px;">${title}</strong>
+                        <span style="font-size: 13px; opacity: 0.95;">${message}</span>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-2" onclick="$('#floating-toast').fadeOut(300, function(){ $(this).remove(); })" aria-label="Close"></button>
+                </div>
+            </div>
+        `;
+
+                // Hapus toast lama jika ada, lalu masukkan ke body paling luar
+                $('#floating-toast').remove();
+                $('body').append(html);
+
+                // Munculkan dengan animasi slide/fade
+                $('#floating-toast').fadeIn(400);
+
+                // Otomatis hilang setelah 3 detik
+                setTimeout(function() {
+                    $('#floating-toast').fadeOut(500, function() {
+                        $(this).remove();
+                    });
+                }, 3000);
+            }
         });
 
         function addDokumenEdit(id) {
