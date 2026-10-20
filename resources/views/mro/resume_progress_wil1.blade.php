@@ -603,7 +603,7 @@
                     </li>
 
                     <li>
-                        <b>Dokumen / Administrasi</b>
+                        <b>T1 - T12 (Tiap T bernilai 5%)</b>
                         = <span class="badge badge-primary">60%</span>
                     </li>
                 </ul>
