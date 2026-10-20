@@ -809,30 +809,55 @@
         </div>
 
         {{-- CATATAN PROGRESS --}}
-        <div class="card mt-3">
-            <div class="card-body">
-                <h6 class="font-weight-bold text-danger mb-3">
-                    📌 Perhitungan Nilai Progress Monitoring
-                </h6>
+        <div class="row g-3 mt-3">
+            <!-- Kolom Kiri: Wilayah 1 & 2 -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm border-0 rounded-4">
+                    <div class="card-body">
+                        <h6 class="font-weight-bold text-danger mb-3">
+                            📌 Perhitungan Nilai Progress - Wilayah 1 & 2
+                        </h6>
+                        <ul class="mb-0" style="line-height: 1.9;">
+                            <li>
+                                <b>SO / PO / KO</b> =
+                                <span class="badge bg-primary">30%</span>
+                            </li>
+                            <li>
+                                <b>Memo</b> =
+                                <span class="badge bg-primary">10%</span>
+                            </li>
+                            <li>
+                                <b>T1 s/d T12 (Tiap T bernilai 5%)</b> =
+                                <span class="badge bg-primary">60%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-                <ul class="mb-0" style="line-height: 1.9;">
-                    <li>
-                        <b>SO / PO / KO</b> =
-                        <span class="badge badge-primary">30%</span>
-                    </li>
-                    <li>
-                        <b>Memo</b> =
-                        <span class="badge badge-primary">10%</span>
-                    </li>
-                    <li>
-                        <b>T1 s/d T12 (Tiap T bernilai 5%)</b> =
-                        <span class="badge badge-primary">60%</span>
-                    </li>
-                    <li>
-                        <b>*Khusus MRO : Dokumen / Administrasi</b> =
-                        <span class="badge badge-primary">60%</span>
-                    </li>
-                </ul>
+            <!-- Kolom Kanan: MRO -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm border-0 rounded-4">
+                    <div class="card-body">
+                        <h6 class="font-weight-bold text-danger mb-3">
+                            📌 Perhitungan Nilai Progress - MRO
+                        </h6>
+                        <ul class="mb-0" style="line-height: 1.9;">
+                            <li>
+                                <b>SO / PO / KO</b> =
+                                <span class="badge bg-primary">30%</span>
+                            </li>
+                            <li>
+                                <b>Memo</b> =
+                                <span class="badge bg-primary">10%</span>
+                            </li>
+                            <li>
+                                <b>Dokumen / Administrasi</b> =
+                                <span class="badge bg-primary">60%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
