@@ -353,6 +353,7 @@
         $countNonInka = $nonInkaMro + $nonInkaWil1 + $nonInkaWil2;
     @endphp
 
+
     <div class="container-fluid mt-4">
 
         {{-- HEADER --}}
@@ -423,6 +424,217 @@
             </div>
         </div>
 
+        @php
+            // --- FUNGSIONALITAS KALKULASI TOTAL REALISASI PER DIVISI & JENIS PEKERJAAN ---
+
+            // 1. Helper function untuk menghitung Total Realisasi per Model & Jenis
+            $calcRealisasi = function ($modelClass, $isInka = true) {
+                return $modelClass
+                    ::whereHas('documents', function ($q) {
+                        $q->whereIn(\DB::raw('LOWER(kriteria)'), ['realisasi', 'closed'])
+                            ->whereNotNull('harga')
+                            ->where('harga', '>', 0);
+                    })
+                    ->get()
+                    ->sum(function ($item) use ($isInka) {
+                        $jenis = strtolower($item->jenis_pekerjaan ?? '');
+                        $match = $isInka ? $jenis === 'inka' : $jenis !== 'inka';
+                        if (!$match) {
+                            return 0;
+                        }
+
+                        $sumDocs = $item->documents
+                            ->filter(function ($d) {
+                                return in_array(strtolower($d->kriteria ?? ''), ['realisasi', 'closed']) &&
+                                    $d->harga > 0;
+                            })
+                            ->sum('harga');
+
+                        return $sumDocs > 0 ? $sumDocs : $item->total_realisasi ?? ($item->realisasi ?? 0);
+                    });
+            };
+
+            // Wilayah 1
+            $realisasiWil1Inka = $calcRealisasi(\App\Models\MonitoringWil1::class, true);
+            $realisasiWil1NonInka = $calcRealisasi(\App\Models\MonitoringWil1::class, false);
+            $totalWil1 = $realisasiWil1Inka + $realisasiWil1NonInka;
+
+            // Wilayah 2
+            $realisasiWil2Inka = $calcRealisasi(\App\Models\MonitoringWil2::class, true);
+            $realisasiWil2NonInka = $calcRealisasi(\App\Models\MonitoringWil2::class, false);
+            $totalWil2 = $realisasiWil2Inka + $realisasiWil2NonInka;
+
+            // MRO
+            $realisasiMroInka = $calcRealisasi(\App\Models\Monitoring::class, true);
+            $realisasiMroNonInka = $calcRealisasi(\App\Models\Monitoring::class, false);
+            $totalMro = $realisasiMroInka + $realisasiMroNonInka;
+
+            // Total Grand Realisasi
+            $grandTotalInka = $realisasiWil1Inka + $realisasiWil2Inka + $realisasiMroInka;
+            $grandTotalNonInka = $realisasiWil1NonInka + $realisasiWil2NonInka + $realisasiMroNonInka;
+            $grandTotalAll = $grandTotalInka + $grandTotalNonInka;
+        @endphp
+
+        <!-- ================= SECTION REALISASI S/D BULAN INI ================= -->
+        <div class="mb-4 no-print">
+            <div class="d-flex align-items-center mb-3">
+                <h5 class="font-weight-bold text-dark mb-0">
+                    💰 Realisasi Nilai Pekerjaan s/d Bulan Ini
+                </h5>
+            </div>
+
+            <!-- GRAND TOTAL HIGHLIGHT (RINGKASAN UTAMA) -->
+            <div class="row mb-3">
+                <div class="col-md-4 mb-2">
+                    <div class="card border-0 shadow-sm text-white"
+                        style="background: linear-gradient(135deg, #0f172a, #1e293b); border-radius: 12px;">
+                        <div class="card-body p-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-uppercase font-weight-bold text-light"
+                                    style="font-size: 11px; letter-spacing: 0.5px;">
+                                    TOTAL REALISASI KESELURUHAN
+                                </div>
+                                <h4 class="font-weight-bold mb-0 text-white mt-1">
+                                    Rp {{ number_format($grandTotalAll, 0, ',', '.') }}
+                                </h4>
+                            </div>
+                            <div style="font-size: 2rem; opacity: 0.8;">🌐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-2">
+                    <div class="card border-0 shadow-sm text-white"
+                        style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px;">
+                        <div class="card-body p-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-uppercase font-weight-bold text-light"
+                                    style="font-size: 11px; letter-spacing: 0.5px;">
+                                    TOTAL REALISASI (INKA)
+                                </div>
+                                <h4 class="font-weight-bold mb-0 text-white mt-1">
+                                    Rp {{ number_format($grandTotalInka, 0, ',', '.') }}
+                                </h4>
+                            </div>
+                            <div style="font-size: 2rem; opacity: 0.8;">🚂</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-2">
+                    <div class="card border-0 shadow-sm text-white"
+                        style="background: linear-gradient(135deg, #d97706, #b45309); border-radius: 12px;">
+                        <div class="card-body p-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-uppercase font-weight-bold text-light"
+                                    style="font-size: 11px; letter-spacing: 0.5px;">
+                                    TOTAL REALISASI (NON INKA)
+                                </div>
+                                <h4 class="font-weight-bold mb-0 text-white mt-1">
+                                    Rp {{ number_format($grandTotalNonInka, 0, ',', '.') }}
+                                </h4>
+                            </div>
+                            <div style="font-size: 2rem; opacity: 0.8;">🏢</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RINCIAN PER DIVISI (WILAYAH 1, WILAYAH 2, MRO) -->
+            <div class="row">
+                <!-- WILAYAH 1 -->
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100"
+                        style="border-radius: 12px; border-top: 4px solid #2563eb !important;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge badge-primary px-3 py-2" style="font-size: 13px;">🏢 Wilayah 1</span>
+                                <span class="text-muted font-weight-bold small">Total: Rp
+                                    {{ number_format($totalWil1, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="p-2 mb-2 rounded" style="background: #eff6ff;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="font-weight-bold text-secondary" style="font-size: 12px;">🚂 INKA</span>
+                                    <span class="font-weight-bold text-primary">Rp
+                                        {{ number_format($realisasiWil1Inka, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                            <div class="p-2 rounded" style="background: #fffbeb;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="font-weight-bold text-secondary" style="font-size: 12px;">🏢 NON
+                                        INKA</span>
+                                    <span class="font-weight-bold text-warning" style="color: #d97706 !important;">Rp
+                                        {{ number_format($realisasiWil1NonInka, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WILAYAH 2 -->
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100"
+                        style="border-radius: 12px; border-top: 4px solid #16a34a !important;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge badge-success px-3 py-2"
+                                    style="font-size: 13px; background: linear-gradient(135deg, #16a34a, #166534) !important;">🏙️
+                                    Wilayah 2</span>
+                                <span class="text-muted font-weight-bold small">Total: Rp
+                                    {{ number_format($totalWil2, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="p-2 mb-2 rounded" style="background: #eff6ff;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="font-weight-bold text-secondary" style="font-size: 12px;">🚂 INKA</span>
+                                    <span class="font-weight-bold text-primary">Rp
+                                        {{ number_format($realisasiWil2Inka, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                            <div class="p-2 rounded" style="background: #fffbeb;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="font-weight-bold text-secondary" style="font-size: 12px;">🏢 NON
+                                        INKA</span>
+                                    <span class="font-weight-bold text-warning" style="color: #d97706 !important;">Rp
+                                        {{ number_format($realisasiWil2NonInka, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MRO -->
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100"
+                        style="border-radius: 12px; border-top: 4px solid #b91c1c !important;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge badge-danger px-3 py-2"
+                                    style="font-size: 13px; background: linear-gradient(135deg, #b91c1c, #7f1d1d) !important;">🛠️
+                                    MRO</span>
+                                <span class="text-muted font-weight-bold small">Total: Rp
+                                    {{ number_format($totalMro, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="p-2 mb-2 rounded" style="background: #eff6ff;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="font-weight-bold text-secondary" style="font-size: 12px;">🚂 INKA</span>
+                                    <span class="font-weight-bold text-primary">Rp
+                                        {{ number_format($realisasiMroInka, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                            <div class="p-2 rounded" style="background: #fffbeb;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="font-weight-bold text-secondary" style="font-size: 12px;">🏢 NON
+                                        INKA</span>
+                                    <span class="font-weight-bold text-warning" style="color: #d97706 !important;">Rp
+                                        {{ number_format($realisasiMroNonInka, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- FLASH MESSAGE --}}
         @if (session('success'))
             <div class="alert alert-success no-print">
@@ -444,8 +656,8 @@
 
                         {{-- PEKERJAAN --}}
                         <div class="col-md-4 mb-2">
-                            <input type="text" name="pekerjaan" class="form-control" placeholder="Cari Nama Pekerjaan"
-                                value="{{ request('pekerjaan') }}">
+                            <input type="text" name="pekerjaan" class="form-control"
+                                placeholder="Cari Nama Pekerjaan" value="{{ request('pekerjaan') }}">
                         </div>
 
                         {{-- BUTTON --}}
