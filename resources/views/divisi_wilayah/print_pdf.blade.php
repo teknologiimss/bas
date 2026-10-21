@@ -93,17 +93,20 @@
             font-weight: bold;
         }
 
-        /* Badge General */
+        /* Badge General Presisi (Anti Melebihi Kolom) */
         .badge {
             display: inline-block;
+            max-width: 100%;
             padding: 2px 3px;
             border-radius: 3px;
-            font-size: 6.5px;
+            font-size: 6px;
             font-weight: bold;
             color: #fff;
             text-align: center;
-            line-height: 1;
-            white-space: nowrap;
+            line-height: 1.15;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
         }
 
         .badge-warning {
@@ -167,7 +170,7 @@
             width: 100%;
             background-color: #dbeafe;
             border-radius: 4px;
-            height: 10px;
+            height: 9px;
             position: relative;
             overflow: hidden;
             display: inline-block;
@@ -184,6 +187,12 @@
             font-weight: bold;
             margin-top: 1px;
             display: block;
+        }
+
+        /* Penyesuaian Sel Notifikasi */
+        td.col-notif {
+            padding: 2px 1px;
+            text-align: center;
         }
     </style>
 </head>
@@ -215,8 +224,8 @@
                 <th style="width: 5.5%;">Status</th>
                 <th style="width: 6.5%;">Progress</th>
                 <th style="width: 8%;">Ket. Progress</th>
-                <th style="width: 10.5%;">Status Dokumen Terakhir</th>
-                <th style="width: 7%;">Notifikasi</th>
+                <th style="width: 10%;">Status Dokumen Terakhir</th>
+                <th style="width: 7.5%;">Notifikasi</th>
             </tr>
         </thead>
         <tbody>
@@ -432,7 +441,7 @@
                     </td>
 
                     {{-- Notifikasi / Status Kontrak --}}
-                    <td class="text-center">
+                    <td class="col-notif">
                         @if ($notif)
                             <span class="badge badge-{{ $notif['class'] }}">
                                 {{ $notif['text'] }}
