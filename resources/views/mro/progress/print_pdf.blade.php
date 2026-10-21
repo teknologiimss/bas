@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <title>Laporan Progress MRO</title>
     <style>
-        /* Pengaturan Kertas Cetak A4 Landscape dengan margin atas yang diperkecil */
+        /* Pengaturan Kertas Cetak A4 Landscape dengan margin presisi */
         @page {
             size: A4 landscape;
-            margin: 6mm 8mm 8mm 8mm;
+            margin: 6mm 6mm 8mm 6mm;
         }
 
         * {
@@ -17,7 +17,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            font-size: 8px;
+            font-size: 7.5px;
             color: #1e293b;
             margin: 0;
             padding: 0;
@@ -25,28 +25,27 @@
             position: relative;
         }
 
-        /* Logo Absolute: Ditarik lebih tinggi ke atas */
+        /* Logo Absolute: Menempel di kanan atas */
         .header-logo {
             position: absolute;
-            top: -35px;
-            /* Ditarik lebih ke atas menembus margin */
+            top: -20px;
             right: 0;
-            height: 95px;
+            height: 70px;
             object-fit: contain;
             z-index: 100;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 12px;
-            padding-right: 100px;
-            padding-left: 100px;
+            margin-bottom: 10px;
+            padding-right: 80px;
+            padding-left: 80px;
         }
 
         .header h2 {
             margin: 0;
             color: #0f172a;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -54,7 +53,7 @@
         .header p {
             margin: 3px 0 0 0;
             color: #64748b;
-            font-size: 8px;
+            font-size: 7.5px;
         }
 
         /* Pengaturan Tabel Supaya Pas 1 Halaman & Tidak Terpotong */
@@ -68,10 +67,12 @@
         th,
         td {
             border: 1px solid #cbd5e1;
-            padding: 4px 4px;
+            padding: 3px 2px;
             vertical-align: middle;
             word-wrap: break-word;
             overflow-wrap: break-word;
+            word-break: break-word;
+            font-size: 7.5px;
         }
 
         th {
@@ -79,9 +80,9 @@
             color: #ffffff;
             text-align: center;
             font-weight: bold;
-            font-size: 8px;
+            font-size: 7.5px;
             text-transform: uppercase;
-            padding: 6px 2px;
+            padding: 5px 1px;
         }
 
         .text-center {
@@ -92,16 +93,20 @@
             font-weight: bold;
         }
 
-        /* Badge Status */
+        /* Badge General Presisi (Anti Melebihi Kolom) */
         .badge {
             display: inline-block;
-            padding: 2px 4px;
+            max-width: 100%;
+            padding: 2px 3px;
             border-radius: 3px;
-            font-size: 7px;
+            font-size: 6px;
             font-weight: bold;
             color: #fff;
             text-align: center;
-            line-height: 1.1;
+            line-height: 1.15;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
         }
 
         .badge-warning {
@@ -137,17 +142,47 @@
         .doc-card {
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
-            padding: 3px 4px;
+            padding: 2px 3px;
             border-radius: 3px;
-            font-size: 7.5px;
-            line-height: 1.2;
+            font-size: 7px;
+            line-height: 1.1;
+        }
+
+        /* Progress Bar Style untuk Cetak */
+        .progress-container {
+            width: 100%;
+            background-color: #dbeafe;
+            border-radius: 4px;
+            height: 9px;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            font-size: 6.5px;
+            font-weight: bold;
+            margin-top: 1px;
+            display: block;
+        }
+
+        /* Penyesuaian Sel Notifikasi */
+        td.col-notif {
+            padding: 2px 1px;
+            text-align: center;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Logo di pojok kanan atas absolute (posisi paling atas) -->
+    <!-- Logo di pojok kanan atas absolute -->
     <img src="{{ public_path('img/IMST.png') }}" alt="Logo IMST" class="header-logo">
 
     <div class="header">
@@ -158,23 +193,26 @@
     <table>
         <thead>
             <tr>
-                <th style="width: 3%;">No</th>
-                <th style="width: 10%;">SO / PO / KO</th>
-                <th style="width: 11%;">Nama Pekerjaan</th>
-                <th style="width: 10%;">Jenis Pekerjaan</th>
-                <th style="width: 7%;">Tanggal Kontrak</th>
-                <th style="width: 7%;">Selesai Kontrak</th>
-                <th style="width: 9%;">Nilai Kontrak/SO</th>
-                <th style="width: 9%;">Ket. Progress</th>
-                <th style="width: 10%;">Realisasi Bln Ini</th>
-                <th style="width: 10%;">Total Realisasi s/d Bln Ini</th>
-                <th style="width: 13%;">Status Dokumen Terakhir</th>
-                <th style="width: 10%;">Status Kontrak</th>
+                <th style="width: 2.5%;">No</th>
+                <th style="width: 9.5%;">SO / PO / KO</th>
+                <th style="width: 9.5%;">Nama Pekerjaan</th>
+                <th style="width: 6.5%;">Jenis</th>
+                <th style="width: 6%;">Tgl Kontrak</th>
+                <th style="width: 6%;">Selesai</th>
+                <th style="width: 8.5%;">Nilai Kontrak/SO</th>
+                <th style="width: 8.5%;">Realisasi Bln Ini</th>
+                <th style="width: 9%;">Total Realisasi s/d Bln Ini</th>
+                <th style="width: 5.5%;">Status</th>
+                <th style="width: 6.5%;">Progress</th>
+                <th style="width: 8.5%;">Ket. Progress</th>
+                <th style="width: 10.5%;">Status Dokumen Terakhir</th>
+                <th style="width: 7.5%;">Status Kontrak</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($monitorings->sortByDesc('created_at') as $m)
                 @php
+                    // Status Pekerjaan Warna Badge
                     $statusClass = match ($m->status) {
                         'Open' => 'badge-warning',
                         'Closed' => 'badge-success',
@@ -182,22 +220,57 @@
                         default => 'badge-secondary',
                     };
 
-                    $latestDoc = $m->documents->last();
-                    $notif = $m->notifKontrak();
+                    // Progress Calculation & Color Samakan Seperti di Blade
+                    $progressVal = is_numeric($m->progress)
+                        ? (float) $m->progress
+                        : (float) preg_replace('/[^0-9.]/', '', $m->progress ?? 0);
+                    $progressVal = max(0, min(100, $progressVal));
+
+                    $progressColor = method_exists($m, 'progressColor') ? $m->progressColor() : '#2563eb';
+
+                    // Ambil dokumen terakhir
+                    $latestDoc = $m->documents ? $m->documents->sortByDesc('id')->first() : null;
+                    $notif = method_exists($m, 'notifKontrak') ? $m->notifKontrak() : null;
 
                     // --- KALKULASI NILAI KONTRAK & REALISASI ---
-                    $nilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-                    $totalRealisasi = $m->documents->whereIn('kriteria', ['Realisasi', 'Closed'])->sum('harga');
+                    $nilaiKontrakDoc = $m->documents
+                        ? $m->documents
+                            ->filter(fn($doc) => strtolower($doc->kriteria ?? '') === 'rencana')
+                            ->sum('harga')
+                        : 0;
+
+                    $nilaiKontrak =
+                        $nilaiKontrakDoc > 0
+                            ? $nilaiKontrakDoc
+                            : $m->nilai_kontrak ?? ($m->nilai_po ?? ($m->nilai ?? ($m->nominal ?? 0)));
+
+                    $totalRealisasiDoc = $m->documents
+                        ? $m->documents
+                            ->filter(function ($doc) {
+                                $kriteria = strtolower($doc->kriteria ?? '');
+                                return in_array($kriteria, ['realisasi', 'closed']) &&
+                                    !is_null($doc->harga) &&
+                                    $doc->harga > 0;
+                            })
+                            ->sum('harga')
+                        : 0;
+
+                    $totalRealisasi =
+                        $totalRealisasiDoc > 0 ? $totalRealisasiDoc : $m->total_realisasi ?? ($m->realisasi ?? 0);
 
                     $groupedPriceDocs = $m->documents
-                        ->filter(fn($doc) => $doc->kriteria == 'Realisasi' && !is_null($doc->harga) && $doc->harga > 0)
-                        ->groupBy(function ($doc) {
-                            $date = $doc->tanggal_closed ?? $doc->created_at;
-                            return \Carbon\Carbon::parse($date)->format('Y-m');
-                        })
-                        ->sortByDesc(function ($group, $key) {
-                            return $key;
-                        });
+                        ? $m->documents
+                            ->filter(
+                                fn($doc) => strtolower($doc->kriteria ?? '') === 'realisasi' &&
+                                    !is_null($doc->harga) &&
+                                    $doc->harga > 0,
+                            )
+                            ->groupBy(function ($doc) {
+                                $date = $doc->tanggal_closed ?? $doc->created_at;
+                                return \Carbon\Carbon::parse($date)->format('Y-m');
+                            })
+                            ->sortByDesc(fn($group, $key) => $key)
+                        : collect();
 
                     $latestMonthGroup = $groupedPriceDocs->first();
                     $latestPriceDoc = null;
@@ -205,29 +278,38 @@
 
                     if ($latestMonthGroup) {
                         $latestPriceDoc = $latestMonthGroup
-                            ->sortByDesc(function ($doc) {
-                                return $doc->created_at ?? $doc->id;
-                            })
+                            ->sortByDesc(fn($doc) => $doc->created_at ?? $doc->id)
                             ->first();
 
                         $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                     }
 
-                    if ($latestDoc && $latestDoc->kriteria === 'Closed') {
+                    if ($latestDoc && strtolower($latestDoc->kriteria ?? '') === 'closed') {
                         $totalHargaBulanIni = 0;
                         $latestPriceDoc = null;
                     }
                 @endphp
                 <tr>
+                    {{-- No --}}
                     <td class="text-center">{{ $loop->iteration }}</td>
-                    <td class="font-bold">{{ $m->po_nota_dinas }}</td>
-                    <td>{{ $m->nama_pekerjaan }}</td>
+
+                    {{-- SO / PO / KO --}}
+                    <td class="font-bold">{{ $m->po_nota_dinas ?: '-' }}</td>
+
+                    {{-- Nama Pekerjaan --}}
+                    <td>{{ $m->nama_pekerjaan ?: '-' }}</td>
+
+                    {{-- Jenis Pekerjaan --}}
                     <td>{{ $m->jenis_pekerjaan ?? '-' }}</td>
+
+                    {{-- Tanggal Kontrak --}}
                     <td class="text-center">
-                        {{ \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') }}
+                        {{ $m->tanggal_kontrak ? \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') : '-' }}
                     </td>
+
+                    {{-- Selesai Kontrak --}}
                     <td class="text-center">
-                        {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
+                        {{ $m->tanggal_selesai_kontrak ? \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') : '-' }}
                     </td>
 
                     {{-- NILAI KONTRAK (TOTAL RENCANA) --}}
@@ -239,19 +321,6 @@
                         </div>
                     </td>
 
-                    <td>
-                        @php
-                            $text = trim($m->keterangan2 ?? '-');
-                            if (str_starts_with($text, '-')) {
-                                $lines = preg_split('/\r\n|\r|\n/', $text);
-                                echo implode('<br>', $lines);
-                            } else {
-                                $lines = preg_split('/\r\n|\r|\n/', $text);
-                                echo implode(', ', $lines);
-                            }
-                        @endphp
-                    </td>
-
                     {{-- REALISASI BULAN INI --}}
                     <td class="text-center">
                         @if ($latestPriceDoc && $totalHargaBulanIni > 0)
@@ -261,19 +330,19 @@
                                 </div>
                                 <div style="margin-top: 2px;">
                                     @if ($latestPriceDoc->jenis_dokumen)
-                                        <span class="badge badge-secondary" style="font-size: 6px;">
+                                        <span class="badge badge-secondary" style="font-size: 5.5px;">
                                             {{ $latestPriceDoc->jenis_dokumen }}
                                         </span>
                                     @endif
-                                    @if ($latestPriceDoc->tanggal_closed)
-                                        <span class="badge badge-info" style="font-size: 6px;">
-                                            {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed)->isoFormat('MMM YYYY') }}
+                                    @if ($latestPriceDoc->tanggal_closed ?? $latestPriceDoc->created_at)
+                                        <span class="badge badge-info" style="font-size: 5.5px;">
+                                            {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed ?? $latestPriceDoc->created_at)->isoFormat('MMM YYYY') }}
                                         </span>
                                     @endif
                                 </div>
                             </div>
                         @else
-                            <span style="color: #94a3b8; font-style: italic;">Rp.0</span>
+                            <span style="color: #94a3b8; font-style: italic;">Rp 0</span>
                         @endif
                     </td>
 
@@ -284,6 +353,32 @@
                                 Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
                             </div>
                         </div>
+                    </td>
+
+                    {{-- STATUS PEKERJAAN --}}
+                    <td class="text-center">
+                        <span class="badge {{ $statusClass }}">
+                            {{ $m->status ?? '-' }}
+                        </span>
+                    </td>
+
+                    {{-- PROGRESS --}}
+                    <td class="text-center">
+                        <div class="progress-container">
+                            <div class="progress-bar-fill"
+                                style="width: {{ $progressVal }}%; background-color: {{ $progressColor }};"></div>
+                        </div>
+                        <span class="progress-text"
+                            style="color: {{ $progressColor }};">{{ number_format($progressVal, 0) }}%</span>
+                    </td>
+
+                    {{-- KETERANGAN PROGRESS --}}
+                    <td>
+                        @php
+                            $text = trim($m->keterangan2 ?? ($m->keterangan ?? '-'));
+                            $lines = preg_split('/\r\n|\r|\n/', $text);
+                            echo str_starts_with($text, '-') ? implode('<br>', $lines) : implode(', ', $lines);
+                        @endphp
                     </td>
 
                     {{-- STATUS DOKUMEN TERAKHIR --}}
@@ -300,9 +395,10 @@
                                         -
                                     @endif
                                 </div>
-                                @if ($latestDoc->tanggal_closed)
+                                @if ($latestDoc->tanggal_closed ?? $latestDoc->created_at)
                                     <div><b>Tgl:</b>
-                                        {{ \Carbon\Carbon::parse($latestDoc->tanggal_closed)->format('d-m-Y') }}</div>
+                                        {{ \Carbon\Carbon::parse($latestDoc->tanggal_closed ?? $latestDoc->created_at)->format('d-m-Y') }}
+                                    </div>
                                 @endif
                                 @if ($latestDoc->keterangan_closed)
                                     <div style="color: #ef4444; font-weight: bold;">
@@ -315,16 +411,24 @@
                         @endif
                     </td>
 
-                    {{-- STATUS KONTRAK --}}
-                    <td class="text-center">
-                        <span class="badge badge-{{ $notif['class'] }}">
-                            {{ $notif['text'] }}
-                        </span>
-                    </td>
+                    {{-- STATUS KONTRAK / NOTIFIKASI --}}
+                    {{-- STATUS KONTRAK / NOTIFIKASI --}}
+<td class="col-notif">
+    @if ($notif)
+        <span class="badge badge-{{ $notif['class'] }}">
+            {{-- Pastikan teks menampilkan detail hari jika bernilai 'Akan Berakhir' atau gunakan langsung $notif['text'] --}}
+            {{ $notif['text'] }}
+        </span>
+    @else
+        <span class="badge badge-secondary">-</span>
+    @endif
+</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="12" class="text-center" style="color: #64748b;">Tidak ada data monitoring</td>
+                    <td colspan="14" class="text-center" style="color: #64748b;">
+                        Tidak ada data monitoring MRO
+                    </td>
                 </tr>
             @endforelse
         </tbody>

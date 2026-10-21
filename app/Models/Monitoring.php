@@ -168,7 +168,6 @@ class Monitoring extends Model
             $progress += 60;
         }
 
-
         // T1 - T12 (Masing-masing 5%, Total 60%)
         // for ($i = 1; $i <= 12; $i++) {
         //     $keyword = 't' . $i;  // Menghasilkan t1, t2, ..., t12
@@ -176,7 +175,6 @@ class Monitoring extends Model
         //         $progress += 5;
         //     }
         // }
-
 
         // if ($docs->contains(fn($d) =>
         //         str_contains($d, 'ba') ||
@@ -229,38 +227,80 @@ class Monitoring extends Model
     //     ];
     // }
 
-    public function notifKontrak()
-    {
-        $today = Carbon::today();
-        $selesai = Carbon::parse($this->tanggal_selesai_kontrak);
+    // public function notifKontrak()
+    // {
+    //     $today = Carbon::today();
+    //     $selesai = Carbon::parse($this->tanggal_selesai_kontrak);
 
-        // STATUS CLOSED / KONTRAK SELESAI -> BIRU
-        if (strtolower($this->status) == 'closed') {
+    //     // STATUS CLOSED / KONTRAK SELESAI -> BIRU
+    //     if (strtolower($this->status) == 'closed') {
+    //         return [
+    //             'text' => 'Kontrak Selesai',
+    //             'class' => 'primary'
+    //         ];
+    //     }
+
+    //     // KONTRAK TELAH BERAKHIR (LEWAT TANGGAL) -> MERAH
+    //     if ($today->gt($selesai)) {
+    //         return [
+    //             'text' => 'Kontrak Telah Berakhir',
+    //             'class' => 'danger'
+    //         ];
+    //     }
+
+    //     // H-7 KONTRAK AKAN BERAKHIR -> KUNING/ORANGE
+    //     if ($today->diffInDays($selesai, false) <= 7) {
+    //         return [
+    //             'text' => 'Kontrak Akan Berakhir',
+    //             'class' => 'warning'
+    //         ];
+    //     }
+
+    //     // KONTRAK BERJALAN -> HIJAU
+    //     return [
+    //         'text' => 'Kontrak Masih Berjalan',
+    //         'class' => 'success'
+    //     ];
+    // }
+
+    public function notifKontrak(): array
+    {
+        if (strtolower($this->status) === 'closed') {
             return [
                 'text' => 'Kontrak Selesai',
                 'class' => 'primary'
             ];
         }
 
-        // KONTRAK TELAH BERAKHIR (LEWAT TANGGAL) -> MERAH
-        if ($today->gt($selesai)) {
+        if (!$this->tanggal_selesai_kontrak) {
+            return [
+                'text' => '-',
+                'class' => 'secondary'
+            ];
+        }
+
+        $today = \Carbon\Carbon::today();
+        $endDate = \Carbon\Carbon::parse($this->tanggal_selesai_kontrak)->startOfDay();
+        $diffInDays = (int) $today->diffInDays($endDate, false);
+
+        // Jika sudah lewat tanggal selesai
+        if ($diffInDays < 0) {
             return [
                 'text' => 'Kontrak Telah Berakhir',
                 'class' => 'danger'
             ];
         }
-
-        // H-7 KONTRAK AKAN BERAKHIR -> KUNING/ORANGE
-        if ($today->diffInDays($selesai, false) <= 7) {
+        // Jika sisa hari 7 hari atau kurang menuju tenggat waktu
+        elseif ($diffInDays <= 7) {
             return [
-                'text' => 'Kontrak Akan Berakhir',
+                'text' => 'Akan Berakhir (H-' . $diffInDays . ')',
                 'class' => 'warning'
             ];
         }
 
-        // KONTRAK BERJALAN -> HIJAU
+        // Jika masih lama
         return [
-            'text' => 'Kontrak Masih Berjalan',
+            'text' => 'Kontrak Berjalan',
             'class' => 'success'
         ];
     }
