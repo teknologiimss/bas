@@ -412,17 +412,16 @@
                     </td>
 
                     {{-- STATUS KONTRAK / NOTIFIKASI --}}
-                    {{-- STATUS KONTRAK / NOTIFIKASI --}}
-<td class="col-notif">
-    @if ($notif)
-        <span class="badge badge-{{ $notif['class'] }}">
-            {{-- Pastikan teks menampilkan detail hari jika bernilai 'Akan Berakhir' atau gunakan langsung $notif['text'] --}}
-            {{ $notif['text'] }}
-        </span>
-    @else
-        <span class="badge badge-secondary">-</span>
-    @endif
-</td>
+                    <td class="col-notif">
+                        @if ($notif)
+                            <span class="badge badge-{{ $notif['class'] }}">
+                                {{-- Pastikan teks menampilkan detail hari jika bernilai 'Akan Berakhir' atau gunakan langsung $notif['text'] --}}
+                                {{ $notif['text'] }}
+                            </span>
+                        @else
+                            <span class="badge badge-secondary">-</span>
+                        @endif
+                    </td>
                 </tr>
             @empty
                 <tr>
