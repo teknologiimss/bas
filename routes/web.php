@@ -30,6 +30,7 @@ use App\Http\Controllers\MonitoringWil2Controller;
 use App\Http\Controllers\MroController;
 use App\Http\Controllers\MroToolController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PekerjaanMroController;
 use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\PerencanaanController;
 use App\Http\Controllers\PompaController;
@@ -1226,6 +1227,23 @@ Route::prefix('products')->group(function () {
             [DivisiWilayahProgressController::class, 'print']
         )->name('divisi.wilayah.progress.print');
     });
+
+    // Menu Progress Pekerjaan MRO
+    Route::prefix('pekerjaanmro')->name('pekerjaanmro.index')->group(function () {
+        Route::get('/', [PekerjaanMroController::class, 'index']);
+    });
+    Route::get('/pekerjaanmro', [PekerjaanMroController::class, 'index'])->name('pekerjaanmro.index');
+    Route::post('/pekerjaanmro/store', [PekerjaanMroController::class, 'store'])->name('pekerjaanmro.store');
+    Route::post('/pekerjaanmro/update/{id}', [PekerjaanMroController::class, 'update'])->name('pekerjaanmro.update');
+    Route::delete('/pekerjaanmro/delete/{id}', [PekerjaanMroController::class, 'destroy'])->name('pekerjaanmro.delete');
+
+    // Monitor Progres Pekerjaan MRO
+    Route::get('/pekerjaanmro/{id}/monitor', [PekerjaanMroController::class, 'monitor'])->name('pekerjaanmro.monitor');
+    Route::post('/pekerjaanmro/{id}/item/store', [PekerjaanMroController::class, 'storeItem'])->name('pekerjaanmro.item.store');
+    Route::post('/pekerjaanmro/item/update-progress', [PekerjaanMroController::class, 'updateProgress'])->name('pekerjaanmro.item.update-progress');
+    Route::post('/pekerjaanmro/item/update-progress-utama', [PekerjaanMroController::class, 'updateProgressUtama'])->name('pekerjaanmro.item.update-progress-utama');
+    Route::put('/pekerjaanmro/item/update/{id}', [PekerjaanMroController::class, 'updateItem'])->name('pekerjaanmro.item.update');
+    Route::delete('/pekerjaanmro/item/delete/{id}', [PekerjaanMroController::class, 'destroyItem'])->name('pekerjaanmro.item.delete');
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store

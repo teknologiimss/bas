@@ -534,6 +534,7 @@
                                         'wilayah1.index',
                                         'wilayah2.index',
                                         'divisi.wilayah.progress',
+                                        'pekerjaanmro.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -608,6 +609,7 @@
                                         'ekspedisi.index',
                                         'dashboard.mro',
                                         'divisi.wilayah.progress',
+                                        'pekerjaanmro.index',
                                     ]);
                                 @endphp
 
@@ -928,8 +930,7 @@
 
                                         {{-- Contoh menu role SDM --}}
                                         @if (Auth::user()->role == 0 || Auth::user()->role == 6)
-                                            <li
-                                                class="nav-item has-treeview {{ $menuSdmActive ? 'menu-open' : '' }}">
+                                            <li class="nav-item has-treeview {{ $menuSdmActive ? 'menu-open' : '' }}">
                                                 <a href="#" class="nav-link">
                                                     <i class="nav-icon fas fa-users-cog"></i>
                                                     <p class="">
@@ -1185,11 +1186,13 @@
                                                         {{-- Pekerjaan --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('pekerjaan.index') }}"
-                                                                class="nav-link {{ request()->routeIs('pekerjaan.*') || request()->routeIs('proyek.*') || request()->routeIs('mro.progress*') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('pekerjaan.*') || request()->routeIs('proyek.*') || request()->routeIs('mro.progress*') || request()->routeIs('pekerjaanmro.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-briefcase"></i>
                                                                 <p>Pekerjaan</p>
                                                             </a>
                                                         </li>
+
+                                                        
 
                                                         {{-- Monitoring --}}
                                                         <li class="nav-item">
