@@ -233,10 +233,11 @@
                 <!-- Modal Edit -->
                 <div class="modal fade" id="modalEdit{{ $p->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
+                        {{-- PERBAIKAN: Menggunakan method POST agar sesuai dengan routes/web.php --}}
                         <form class="modal-content shadow" action="{{ route('pekerjaanmro.update', $p->id) }}"
                             method="POST">
                             @csrf
-                            @method('PUT')
+                            @method('POST')
                             <div class="modal-header px-4 py-3">
                                 <h5 class="modal-title font-weight-bold">Edit Pekerjaan MRO</h5>
                                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
@@ -244,15 +245,27 @@
                                 </button>
                             </div>
                             <div class="modal-body p-4">
+                                @php
+                                    $monitoringsListEdit = \App\Models\Monitoring::all();
+                                @endphp
+                                <div class="form-group mb-3">
+                                    <label class="small font-weight-bold text-dark">No. Kontrak / SO / Nodin *</label>
+                                    <select name="no_kontrak" class="form-control edit-no-kontrak"
+                                        data-id="{{ $p->id }}" required>
+                                        <option value="">-- Pilih No. Kontrak / SO / Nodin --</option>
+                                        @foreach ($monitoringsListEdit as $mon)
+                                            <option value="{{ $mon->po_nota_dinas }}"
+                                                data-nama="{{ $mon->nama_pekerjaan }}"
+                                                {{ $p->no_kontrak == $mon->po_nota_dinas ? 'selected' : '' }}>
+                                                {{ $mon->po_nota_dinas }} - {{ $mon->nama_pekerjaan }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <div class="form-group mb-3">
                                     <label class="small font-weight-bold text-dark">Nama Proyek *</label>
-                                    <input type="text" name="nama_proyek" value="{{ $p->nama_proyek }}"
-                                        class="form-control" required>
-                                </div>
-                                <div class="form-group mb-2">
-                                    <label class="small font-weight-bold text-dark">No. Kontrak / SO / Nodin</label>
-                                    <input type="text" name="no_kontrak" value="{{ $p->no_kontrak }}"
-                                        class="form-control">
+                                    <input type="text" name="nama_proyek" id="edit_nama_proyek_{{ $p->id }}"
+                                        value="{{ $p->nama_proyek }}" class="form-control" required readonly>
                                 </div>
                             </div>
                             <div class="modal-footer bg-light px-4 py-3">
@@ -289,15 +302,24 @@
                     </button>
                 </div>
                 <div class="modal-body p-4">
+                    @php
+                        $monitoringsListCreate = \App\Models\Monitoring::all();
+                    @endphp
+                    <div class="form-group mb-3">
+                        <label class="small font-weight-bold text-dark">No. Kontrak / SO / Nodin *</label>
+                        <select name="no_kontrak" id="create_no_kontrak" class="form-control" required>
+                            <option value="">-- Pilih No. Kontrak / SO / Nodin --</option>
+                            @foreach ($monitoringsListCreate as $mon)
+                                <option value="{{ $mon->po_nota_dinas }}" data-nama="{{ $mon->nama_pekerjaan }}">
+                                    {{ $mon->po_nota_dinas }} - {{ $mon->nama_pekerjaan }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="form-group mb-3">
                         <label class="small font-weight-bold text-dark">Nama Proyek *</label>
-                        <input type="text" name="nama_proyek" class="form-control" required
-                            placeholder="Masukkan nama proyek...">
-                    </div>
-                    <div class="form-group mb-2">
-                        <label class="small font-weight-bold text-dark">No. Kontrak / SO / Nodin</label>
-                        <input type="text" name="no_kontrak" class="form-control"
-                            placeholder="Masukkan nomor kontrak...">
+                        <input type="text" name="nama_proyek" id="create_nama_proyek" class="form-control" required
+                            readonly placeholder="Otomatis terisi sesuai No. Kontrak...">
                     </div>
                 </div>
                 <div class="modal-footer bg-light px-4 py-3">
@@ -308,4 +330,35 @@
             </form>
         </div>
     </div>
+
+    {{-- Script untuk Auto Fill Nama Proyek Berdasarkan No Kontrak yang Dipilih --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Untuk Modal Create
+            const createSelect = document.getElementById('create_no_kontrak');
+            const createInput = document.getElementById('create_nama_proyek');
+
+            if (createSelect) {
+                createSelect.addEventListener('change', function() {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const namaPekerjaan = selectedOption.getAttribute('data-nama');
+                    createInput.value = namaPekerjaan ? namaPekerjaan : '';
+                });
+            }
+
+            // Untuk Modal Edit
+            const editSelects = document.querySelectorAll('.edit-no-kontrak');
+            editSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    const id = this.getAttribute('data-id');
+                    const selectedOption = this.options[this.selectedIndex];
+                    const namaPekerjaan = selectedOption.getAttribute('data-nama');
+                    const inputNama = document.getElementById('edit_nama_proyek_' + id);
+                    if (inputNama) {
+                        inputNama.value = namaPekerjaan ? namaPekerjaan : '';
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
