@@ -6,8 +6,8 @@
 @section('content')
     <style>
         /* ==========================================================
-           TEMA NAVY BLUE & MODERN STYLING
-           ========================================================== */
+                       TEMA NAVY BLUE & MODERN STYLING WITH WRAP TEXT
+                       ========================================================== */
         body {
             background-color: #f4f6f9;
         }
@@ -35,7 +35,7 @@
             background: #fff;
         }
 
-        /* Styling Kolom Sticky / Freeze (Navy & Clean) */
+        /* Styling Kolom Sticky / Freeze dengan Wrap Text pada Item Pekerjaan */
         .th-no,
         .td-no {
             position: sticky;
@@ -45,19 +45,27 @@
             z-index: 5;
         }
 
+        /* WRAP TEXT: Item Pekerjaan dibuat fleksibel turun ke bawah */
         .th-item,
         .td-item {
             position: sticky;
             left: 45px;
-            width: 180px;
-            min-width: 180px;
+            width: 200px;
+            /* Lebar ideal */
+            min-width: 200px;
             z-index: 5;
+            white-space: normal !important;
+            /* Membuat teks panjang otomatis berlipat ke bawah */
+            word-wrap: break-word;
+            word-break: break-word;
+            vertical-align: middle !important;
         }
 
         .th-satuan,
         .td-satuan {
             position: sticky;
-            left: 225px;
+            left: 245px;
+            /* 45 + 200 */
             width: 75px;
             min-width: 75px;
             z-index: 5;
@@ -66,7 +74,8 @@
         .th-vol,
         .td-vol {
             position: sticky;
-            left: 300px;
+            left: 320px;
+            /* 245 + 75 */
             width: 95px;
             min-width: 95px;
             z-index: 5;
@@ -75,7 +84,8 @@
         .th-harga,
         .td-harga {
             position: sticky;
-            left: 395px;
+            left: 415px;
+            /* 320 + 95 */
             width: 110px;
             min-width: 110px;
             z-index: 5;
@@ -84,7 +94,8 @@
         .th-jumlah,
         .td-jumlah {
             position: sticky;
-            left: 505px;
+            left: 525px;
+            /* 415 + 110 */
             width: 110px;
             min-width: 110px;
             z-index: 5;
@@ -93,7 +104,8 @@
         .th-bobot,
         .td-bobot {
             position: sticky;
-            left: 615px;
+            left: 635px;
+            /* 525 + 110 */
             width: 115px;
             min-width: 115px;
             z-index: 5;
@@ -102,7 +114,8 @@
         .th-prog,
         .td-prog {
             position: sticky;
-            left: 730px;
+            left: 750px;
+            /* 635 + 115 */
             width: 100px;
             min-width: 100px;
             z-index: 5;
@@ -271,7 +284,8 @@
                         <!-- BARIS 2: PROG MGG -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
-                                <th colspan="3" style="background-color: #243b55;">Progress Minggu {{ $w }}</th>
+                                <th colspan="3" style="background-color: #243b55;">Progress Minggu {{ $w }}
+                                </th>
                             @endfor
                         </tr>
 
@@ -312,9 +326,9 @@
                             <tr class="item-row-data" data-vol-rencana="{{ $item->vol_rencana }}">
                                 <!-- Sticky Columns 1 - 8 -->
                                 <td class="align-middle td-no">{{ $index + 1 }}</td>
-                                <td class="text-left align-middle td-item font-weight-bold text-truncate"
-                                    style="max-width: 180px;" title="{{ $item->item_pekerjaan }}">
-                                    {{ $item->item_pekerjaan }}</td>
+                                <td class="text-left align-middle td-item font-weight-bold">
+                                    {{ $item->item_pekerjaan }}
+                                </td>
                                 <td class="align-middle td-satuan">{{ $item->satuan }}</td>
                                 <td class="align-middle td-vol">{{ $item->vol_rencana }}</td>
                                 <td class="align-middle td-harga">
@@ -572,7 +586,6 @@
             if (totalRealisasi > volRencana) {
                 alert('Peringatan: Total Volume Realisasi dari semua minggu (' + totalRealisasi.toFixed(2) +
                     ') melebihi Volume Rencana (' + volRencana + ')! Masukan ditolak.');
-                // Kosongkan nilai input yang baru saja dimasukkan
                 let currentInput = form.querySelector('input[name*="[vol]"]');
                 currentInput.value = '';
                 currentInput.focus();
