@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('title', 'Monitoring Progress - ' . $proyek->nama_proyek)
+<link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
 
 @section('content')
     <style>
