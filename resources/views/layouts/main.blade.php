@@ -535,6 +535,8 @@
                                         'wilayah2.index',
                                         'divisi.wilayah.progress',
                                         'pekerjaanmro.index',
+                                        'pekerjaanwil1.index',
+                                        'pekerjaanwil2.index',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -610,6 +612,8 @@
                                         'dashboard.mro',
                                         'divisi.wilayah.progress',
                                         'pekerjaanmro.index',
+                                        'pekerjaanwil1.index',
+                                        'pekerjaanwil2.index',
                                     ]);
                                 @endphp
 
@@ -714,7 +718,7 @@
                                                     @if (in_array(Auth::user()->role, [0, 2, 8, 9]))
                                                         <li class="nav-item">
                                                             <a href="{{ route('wilayah1.index') }}"
-                                                                class="nav-link {{ request()->routeIs('wilayah1.*') || request()->routeIs('proyekwil1.*') || request()->routeIs('monitoringwil1.*') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('wilayah1.*') || request()->routeIs('proyekwil1.*') || request()->routeIs('monitoringwil1.*') || request()->routeIs('pekerjaanwil1.*') ? 'active' : ''}}">
                                                                 <i class="nav-icon fas fa-building"></i>
                                                                 <p>Pekerjaan Wilayah 1</p>
                                                             </a>
@@ -725,7 +729,7 @@
                                                     @if (in_array(Auth::user()->role, [0, 3, 8, 9]))
                                                         <li class="nav-item">
                                                             <a href="{{ route('wilayah2.index') }}"
-                                                                class="nav-link {{ request()->routeIs('wilayah2.*') || request()->routeIs('proyekwil2.*') || request()->routeIs('monitoringwil2.*') ? 'active' : '' }}">
+                                                                class="nav-link {{ request()->routeIs('wilayah2.*') || request()->routeIs('proyekwil2.*') || request()->routeIs('monitoringwil2.*') || request()->routeIs('pekerjaanwil2.*') ? 'active' : ''}}">
                                                                 <i class="nav-icon fas fa-city"></i>
                                                                 <p>Pekerjaan Wilayah 2</p>
                                                             </a>

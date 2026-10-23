@@ -16,15 +16,15 @@
 
                 <!-- Card 1: Proyek Wilayah 1 -->
                 @if (in_array(Auth::user()->role, [0, 2, 8, 9, 14]))
-                    <div class="col-md-5 col-sm-6 mb-4">
+                    <div class="col-md-4 col-sm-6 mb-4">
                         <a href="{{ route('proyekwil1.index') }}" class="text-decoration-none">
                             <div class="card card-outline card-primary h-100 shadow-sm hover-card">
                                 <div class="card-body text-center p-4">
                                     <div class="mb-3">
-                                        <i class="fas fa-chart-bar fa-4x text-primary"></i>
+                                        <i class="fas fa-chart-bar fa-3x text-primary"></i>
                                     </div>
                                     <h4 class="font-weight-bold text-dark mb-2">Proyek Wilayah 1</h4>
-                                    <p class="text-muted mb-0">
+                                    <p class="text-muted mb-0 small">
                                         Klik untuk melihat daftar dan mengelola data proyek Wilayah 1.
                                     </p>
                                 </div>
@@ -35,16 +35,35 @@
 
                 <!-- Card 2: Progress Wilayah 1 -->
                 @if (in_array(Auth::user()->role, [0, 2, 8, 9, 14, 17]))
-                    <div class="col-md-5 col-sm-6 mb-4">
+                    <div class="col-md-4 col-sm-6 mb-4">
                         <a href="{{ route('monitoringwil1.resume_progress') }}" class="text-decoration-none">
                             <div class="card card-outline card-info h-100 shadow-sm hover-card">
                                 <div class="card-body text-center p-4">
                                     <div class="mb-3">
-                                        <i class="fas fa-chart-line fa-4x text-info"></i>
+                                        <i class="fas fa-chart-line fa-3x text-info"></i>
                                     </div>
                                     <h4 class="font-weight-bold text-dark mb-2">Progress Wilayah 1</h4>
-                                    <p class="text-muted mb-0">
+                                    <p class="text-muted mb-0 small">
                                         Klik untuk memantau status dan perkembangan pekerjaan Wilayah 1.
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endif
+
+                <!-- Card 3: Pekerjaan Wilayah 1 (Menu Baru) -->
+                @if (in_array(Auth::user()->role, [0, 2, 8, 9, 14]))
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <a href="{{ route('pekerjaanwil1.index') }}" class="text-decoration-none">
+                            <div class="card card-outline card-success h-100 shadow-sm hover-card">
+                                <div class="card-body text-center p-4">
+                                    <div class="mb-3">
+                                        <i class="fas fa-briefcase fa-3x text-success"></i>
+                                    </div>
+                                    <h4 class="font-weight-bold text-dark mb-2">Pekerjaan Wilayah 1</h4>
+                                    <p class="text-muted mb-0 small">
+                                        Klik untuk mengelola data dan rincian pekerjaan Wilayah 1 secara lengkap.
                                     </p>
                                 </div>
                             </div>
@@ -59,6 +78,7 @@
     <style>
         .hover-card {
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border-radius: 12px;
         }
 
         .hover-card:hover {

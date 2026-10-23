@@ -31,6 +31,8 @@ use App\Http\Controllers\MroController;
 use App\Http\Controllers\MroToolController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PekerjaanMroController;
+use App\Http\Controllers\PekerjaanWilayah1Controller;
+use App\Http\Controllers\PekerjaanWilayah2Controller;
 use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\PerencanaanController;
 use App\Http\Controllers\PompaController;
@@ -1244,6 +1246,38 @@ Route::prefix('products')->group(function () {
     Route::post('/pekerjaanmro/item/update-progress-utama', [PekerjaanMroController::class, 'updateProgressUtama'])->name('pekerjaanmro.item.update-progress-utama');
     Route::put('/pekerjaanmro/item/update/{id}', [PekerjaanMroController::class, 'updateItem'])->name('pekerjaanmro.item.update');
     Route::delete('/pekerjaanmro/item/delete/{id}', [PekerjaanMroController::class, 'destroyItem'])->name('pekerjaanmro.item.delete');
+
+    // ROUTE PEKERJAAN WILAYAH 1
+    Route::prefix('pekerjaan-wilayah1')->group(function () {
+        Route::get('/proyek', [PekerjaanWilayah1Controller::class, 'index'])->name('pekerjaanwil1.index');
+        Route::post('/proyek/store', [PekerjaanWilayah1Controller::class, 'store'])->name('pekerjaanwil1.store');
+        Route::post('/proyek/update/{id}', [PekerjaanWilayah1Controller::class, 'update'])->name('pekerjaanwil1.update');
+        Route::delete('/proyek/delete/{id}', [PekerjaanWilayah1Controller::class, 'destroy'])->name('pekerjaanwil1.delete');
+
+        // Monitor Progres Pekerjaan Wilayah 1
+        Route::get('/proyek/{id}/monitor', [PekerjaanWilayah1Controller::class, 'monitor'])->name('pekerjaanwil1.monitor');
+        Route::post('/proyek/{id}/item/store', [PekerjaanWilayah1Controller::class, 'storeItem'])->name('pekerjaanwil1.item.store');
+        Route::post('/item/update-progress', [PekerjaanWilayah1Controller::class, 'updateProgress'])->name('pekerjaanwil1.item.update-progress');
+        Route::post('/item/update-progress-utama', [PekerjaanWilayah1Controller::class, 'updateProgressUtama'])->name('pekerjaanwil1.item.update-progress-utama');
+        Route::put('/item/update/{id}', [PekerjaanWilayah1Controller::class, 'updateItem'])->name('pekerjaanwil1.item.update');
+        Route::delete('/item/delete/{id}', [PekerjaanWilayah1Controller::class, 'destroyItem'])->name('pekerjaanwil1.item.delete');
+    });
+
+    // ROUTE PEKERJAAN WILAYAH 2
+    Route::prefix('pekerjaan-wilayah2')->group(function () {
+        Route::get('/proyek', [PekerjaanWilayah2Controller::class, 'index'])->name('pekerjaanwil2.index');
+        Route::post('/proyek/store', [PekerjaanWilayah2Controller::class, 'store'])->name('pekerjaanwil2.store');
+        Route::post('/proyek/update/{id}', [PekerjaanWilayah2Controller::class, 'update'])->name('pekerjaanwil2.update');
+        Route::delete('/proyek/delete/{id}', [PekerjaanWilayah2Controller::class, 'destroy'])->name('pekerjaanwil2.delete');
+
+        // Monitor Progres Pekerjaan Wilayah 2
+        Route::get('/proyek/{id}/monitor', [PekerjaanWilayah2Controller::class, 'monitor'])->name('pekerjaanwil2.monitor');
+        Route::post('/proyek/{id}/item/store', [PekerjaanWilayah2Controller::class, 'storeItem'])->name('pekerjaanwil2.item.store');
+        Route::post('/item/update-progress', [PekerjaanWilayah2Controller::class, 'updateProgress'])->name('pekerjaanwil2.item.update-progress');
+        Route::post('/item/update-progress-utama', [PekerjaanWilayah2Controller::class, 'updateProgressUtama'])->name('pekerjaanwil2.item.update-progress-utama');
+        Route::put('/item/update/{id}', [PekerjaanWilayah2Controller::class, 'updateItem'])->name('pekerjaanwil2.item.update');
+        Route::delete('/item/delete/{id}', [PekerjaanWilayah2Controller::class, 'destroyItem'])->name('pekerjaanwil2.item.delete');
+    });
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
