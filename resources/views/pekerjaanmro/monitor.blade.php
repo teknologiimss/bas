@@ -5,9 +5,6 @@
 
 @section('content')
     <style>
-        /* ==========================================================
-                       TEMA NAVY BLUE & MODERN STYLING WITH WRAP TEXT
-                       ========================================================== */
         body {
             background-color: #f4f6f9;
         }
@@ -19,13 +16,11 @@
             background: #ffffff;
         }
 
-        /* Header Proyek Styling */
         .proyek-header {
             border-left: 4px solid #1d3557;
             padding-left: 15px;
         }
 
-        /* Tabel & Responsive Wrapper */
         .table-responsive {
             max-height: 75vh;
             overflow-x: auto;
@@ -35,7 +30,7 @@
             background: #fff;
         }
 
-        /* Styling Kolom Sticky / Freeze dengan Wrap Text pada Item Pekerjaan */
+        /* Styling Freeze / Sticky Column */
         .th-no,
         .td-no {
             position: sticky;
@@ -45,17 +40,14 @@
             z-index: 5;
         }
 
-        /* WRAP TEXT: Item Pekerjaan dibuat fleksibel turun ke bawah */
         .th-item,
         .td-item {
             position: sticky;
             left: 45px;
             width: 200px;
-            /* Lebar ideal */
             min-width: 200px;
             z-index: 5;
             white-space: normal !important;
-            /* Membuat teks panjang otomatis berlipat ke bawah */
             word-wrap: break-word;
             word-break: break-word;
             vertical-align: middle !important;
@@ -65,7 +57,6 @@
         .td-satuan {
             position: sticky;
             left: 245px;
-            /* 45 + 200 */
             width: 75px;
             min-width: 75px;
             z-index: 5;
@@ -75,7 +66,6 @@
         .td-vol {
             position: sticky;
             left: 320px;
-            /* 245 + 75 */
             width: 95px;
             min-width: 95px;
             z-index: 5;
@@ -85,7 +75,6 @@
         .td-harga {
             position: sticky;
             left: 415px;
-            /* 320 + 95 */
             width: 110px;
             min-width: 110px;
             z-index: 5;
@@ -95,7 +84,6 @@
         .td-jumlah {
             position: sticky;
             left: 525px;
-            /* 415 + 110 */
             width: 110px;
             min-width: 110px;
             z-index: 5;
@@ -105,7 +93,6 @@
         .td-bobot {
             position: sticky;
             left: 635px;
-            /* 525 + 110 */
             width: 115px;
             min-width: 115px;
             z-index: 5;
@@ -115,14 +102,12 @@
         .td-prog {
             position: sticky;
             left: 750px;
-            /* 635 + 115 */
             width: 100px;
             min-width: 100px;
             z-index: 5;
             border-right: 3px solid #1d3557 !important;
         }
 
-        /* Background Default Sel Sticky Body */
         td.th-no,
         td.td-no,
         td.th-item,
@@ -142,7 +127,6 @@
             background-color: #ffffff;
         }
 
-        /* Striped row untuk sticky columns */
         .table-striped tbody tr:nth-of-type(odd) .td-no,
         .table-striped tbody tr:nth-of-type(odd) .td-item,
         .table-striped tbody tr:nth-of-type(odd) .td-satuan,
@@ -154,7 +138,6 @@
             background-color: #f8fafc;
         }
 
-        /* Header & Footer Nuansa Biru Navy (#1d3557 / #0b2545) */
         thead th {
             background-color: #0b2545 !important;
             color: #ffffff !important;
@@ -174,7 +157,6 @@
             border-color: #1d3557 !important;
         }
 
-        /* Styling Tombol Modern & Rapi */
         .btn {
             border-radius: 6px;
             font-weight: 500;
@@ -191,7 +173,6 @@
             border-color: #0b2545;
         }
 
-        /* Spacing tombol aksi pada baris tabel */
         .action-btn-group {
             display: flex;
             gap: 6px;
@@ -206,22 +187,6 @@
         .modal-backdrop {
             z-index: 1040 !important;
         }
-
-        /* Penyesuaian Tampilan Mobile / HP */
-        @media (max-width: 768px) {
-            h4 {
-                font-size: 1.1rem;
-            }
-
-            .card {
-                padding: 12px !important;
-            }
-
-            .btn-sm {
-                padding: 6px 12px;
-                font-size: 0.8rem;
-            }
-        }
     </style>
 
     <div class="container-fluid px-2 px-md-4 py-3">
@@ -229,7 +194,16 @@
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
                 <div class="proyek-header">
                     <h4 class="mb-1 text-dark"><strong>PROYEK:</strong> {{ $proyek->nama_proyek }}</h4>
-                    <p class="text-muted mb-0 small"><strong>NO KONTRAK/SO/NODIN:</strong> {{ $proyek->no_kontrak ?? '-' }}
+                    <p class="text-muted mb-1 small"><strong>NO KONTRAK/SO/NODIN:</strong> {{ $proyek->no_kontrak ?? '-' }}
+                    </p>
+
+                    <p class="text-dark mb-0 small">
+                        <i class="fa fa-calendar mr-1"></i> <strong>Periode Kontrak:</strong>
+                        <span
+                            class="text-primary font-weight-bold">{{ $tglMulaiKontrak ? \Carbon\Carbon::parse($tglMulaiKontrak)->format('d/m/Y') : '-' }}</span>
+                        s/d
+                        <span
+                            class="text-primary font-weight-bold">{{ $tglSelesaiKontrak ? \Carbon\Carbon::parse($tglSelesaiKontrak)->format('d/m/Y') : '-' }}</span>
                     </p>
                 </div>
                 <div class="d-flex flex-wrap gap-2">
@@ -246,8 +220,6 @@
                 $totalHargaGlobal = $proyek->items->sum(function ($item) {
                     return $item->harga_satuan ? $item->vol_rencana * $item->harga_satuan : 0;
                 });
-
-                $startOfYear = \Carbon\Carbon::create($year, 1, 1);
                 $totalItemCount = $proyek->items->count();
             @endphp
 
@@ -268,13 +240,22 @@
 
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 @php
-                                    $tglMulai = $startOfYear->copy()->addWeeks($w - 1);
-                                    $tglSelesai = $startOfYear->copy()->addWeeks($w)->subDay();
+                                    // Hitung rentang 7 harian dari tanggal awal kontrak secara akurat
+                                    $tglMulaiMgg = $startDate->copy()->addDays(($w - 1) * 7);
+                                    $tglSelesaiMgg = $startDate->copy()->addDays($w * 7 - 1);
+
+                                    // Jika tanggal selesai minggu ke-$w melebihi tanggal selesai kontrak, set tepat di tanggal selesai kontrak
+                                    if (
+                                        $tglSelesaiKontrak &&
+                                        $tglSelesaiMgg->gt(\Carbon\Carbon::parse($tglSelesaiKontrak)->startOfDay())
+                                    ) {
+                                        $tglSelesaiMgg = \Carbon\Carbon::parse($tglSelesaiKontrak)->startOfDay();
+                                    }
                                 @endphp
                                 <th colspan="3" class="text-left font-weight-normal px-3 py-2"
                                     style="font-size: 11px; background-color: #1d3557;">
-                                    Periode: {{ $tglMulai->format('d/m/Y') }}<br>
-                                    s/d: {{ $tglSelesai->format('d/m/Y') }}
+                                    Periode: {{ $tglMulaiMgg->format('d/m/Y') }}<br>
+                                    s/d: {{ $tglSelesaiMgg->format('d/m/Y') }}
                                 </th>
                             @endfor
 
@@ -324,10 +305,8 @@
                                 $smpaiMingguIniAcc = 0;
                             @endphp
                             <tr class="item-row-data" data-vol-rencana="{{ $item->vol_rencana }}">
-                                <!-- Sticky Columns 1 - 8 -->
                                 <td class="align-middle td-no">{{ $index + 1 }}</td>
-                                <td class="text-left align-middle td-item font-weight-bold">
-                                    {{ $item->item_pekerjaan }}
+                                <td class="text-left align-middle td-item font-weight-bold">{{ $item->item_pekerjaan }}
                                 </td>
                                 <td class="align-middle td-satuan">{{ $item->satuan }}</td>
                                 <td class="align-middle td-vol">{{ $item->vol_rencana }}</td>
@@ -348,7 +327,7 @@
                                     </form>
                                 </td>
 
-                                <!-- Perhitungan 3 Kolom Mingguan per Minggu -->
+                                <!-- Perhitungan Kolom Mingguan -->
                                 @for ($w = 1; $w <= $totalWeeks; $w++)
                                     @php
                                         $volRealisasi = $progressMingguanData[$w]['vol'] ?? '';
@@ -371,7 +350,6 @@
                                         }
                                     @endphp
 
-                                    <!-- 1. Vol Realisasi dengan Validasi Kumulatif -->
                                     <td class="align-middle" style="padding: 6px;">
                                         <form action="{{ route('pekerjaanmro.item.update-progress') }}" method="POST"
                                             onsubmit="return validateKumulatif(this, {{ $item->vol_rencana }})">
@@ -385,22 +363,17 @@
                                                 onchange="if(validateKumulatif(this.form, {{ $item->vol_rencana }})) { this.form.submit(); }">
                                         </form>
                                     </td>
-
-                                    <!-- 2. Progres % (Minggu Ini) -->
                                     <td class="align-middle bg-light">
-                                        {{ $progMingguIni > 0 ? number_format($progMingguIni, 2) . '%' : '-' }}
-                                    </td>
-
-                                    <!-- 3. Progres % (s/d Minggu Ini) -->
+                                        {{ $progMingguIni > 0 ? number_format($progMingguIni, 2) . '%' : '-' }}</td>
                                     <td class="align-middle bg-warning-subtle font-weight-bold">
                                         {{ $smpaiMingguIniAcc > 0 ? number_format($smpaiMingguIniAcc, 2) . '%' : '-' }}
                                     </td>
                                 @endfor
 
-                                <!-- Action Edit & Delete -->
                                 <td class="align-middle px-3 py-2">
                                     <div class="action-btn-group">
-                                        <button type="button" class="btn btn-warning btn-sm text-white px-2 py-1 shadow-sm"
+                                        <button type="button"
+                                            class="btn btn-warning btn-sm text-white px-2 py-1 shadow-sm"
                                             data-toggle="modal" data-target="#modalEditItem{{ $item->id }}"
                                             style="font-size: 11px;">
                                             <i class="fa fa-edit"></i> Edit
@@ -425,7 +398,6 @@
                         @endforelse
                     </tbody>
 
-                    <!-- FOOTER TOTAL HARGA, BOBOT & RATA-RATA (AVERAGE) PROGRESS MINGGUAN -->
                     <tfoot class="table-dark font-weight-bold">
                         <tr>
                             <td colspan="5" class="text-right th-no px-3">TOTAL HARGA & BOBOT RENCANA:</td>
@@ -441,11 +413,9 @@
                                 @endphp
                                 <td></td>
                                 <td class="text-info font-weight-bold">
-                                    {{ $avgProgMingguIni > 0 ? number_format($avgProgMingguIni, 2) . '%' : '-' }}
-                                </td>
+                                    {{ $avgProgMingguIni > 0 ? number_format($avgProgMingguIni, 2) . '%' : '-' }}</td>
                                 <td class="text-warning font-weight-bold">
-                                    {{ $avgSmpaiMingguIni > 0 ? number_format($avgSmpaiMingguIni, 2) . '%' : '-' }}
-                                </td>
+                                    {{ $avgSmpaiMingguIni > 0 ? number_format($avgSmpaiMingguIni, 2) . '%' : '-' }}</td>
                             @endfor
                             <td></td>
                         </tr>
@@ -455,7 +425,7 @@
         </div>
     </div>
 
-    <!-- ================= MODALS EDIT ITEM ================= -->
+    <!-- MODAL EDIT ITEM -->
     @foreach ($proyek->items as $item)
         <div class="modal fade" id="modalEditItem{{ $item->id }}" tabindex="-1" role="dialog"
             aria-hidden="true">
@@ -507,7 +477,7 @@
         </div>
     @endforeach
 
-    <!-- ================= MODAL TAMBAH ITEM PEKERJAAN ================= -->
+    <!-- MODAL TAMBAH ITEM -->
     <div class="modal fade" id="modalAddItem" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <form action="{{ route('pekerjaanmro.item.store', $proyek->id) }}" method="POST"
@@ -570,7 +540,6 @@
             wrapper.appendChild(newRow);
         });
 
-        // Fungsi Validasi Total Akumulasi (Kumulatif) Seluruh Minggu
         function validateKumulatif(form, volRencana) {
             let row = form.closest('tr');
             let inputs = row.querySelectorAll('.vol-realisasi-input');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Monitoring;
 use App\Models\PekerjaanMro;
 use App\Models\PekerjaanMroItem;
 use Carbon\Carbon;
@@ -26,9 +27,27 @@ class PekerjaanMroController extends Controller
         $request->validate([
             'nama_proyek' => 'required|string|max:255',
             'no_kontrak' => 'nullable|string|max:255',
+            'tanggal_kontrak' => 'nullable|date',
+            'tanggal_selesai_kontrak' => 'nullable|date',
         ]);
 
-        PekerjaanMro::create($request->all());
+        $tanggalMulai = $request->tanggal_kontrak;
+        $tanggalSelesai = $request->tanggal_selesai_kontrak;
+
+        if ((!$tanggalMulai || !$tanggalSelesai) && $request->no_kontrak) {
+            $monitoring = Monitoring::where('po_nota_dinas', $request->no_kontrak)->first();
+            if ($monitoring) {
+                $tanggalMulai = $tanggalMulai ?? $monitoring->tanggal_kontrak;
+                $tanggalSelesai = $tanggalSelesai ?? $monitoring->tanggal_selesai_kontrak;
+            }
+        }
+
+        PekerjaanMro::create([
+            'nama_proyek' => $request->nama_proyek,
+            'no_kontrak' => $request->no_kontrak,
+            'tanggal_kontrak' => $tanggalMulai,
+            'tanggal_selesai_kontrak' => $tanggalSelesai,
+        ]);
 
         return redirect()->route('pekerjaanmro.index')->with('success', 'Proyek MRO berhasil dibuat.');
     }
@@ -38,10 +57,29 @@ class PekerjaanMroController extends Controller
         $request->validate([
             'nama_proyek' => 'required|string|max:255',
             'no_kontrak' => 'nullable|string|max:255',
+            'tanggal_kontrak' => 'nullable|date',
+            'tanggal_selesai_kontrak' => 'nullable|date',
         ]);
 
         $proyek = PekerjaanMro::findOrFail($id);
-        $proyek->update($request->all());
+
+        $tanggalMulai = $request->tanggal_kontrak;
+        $tanggalSelesai = $request->tanggal_selesai_kontrak;
+
+        if ((!$tanggalMulai || !$tanggalSelesai) && $request->no_kontrak) {
+            $monitoring = Monitoring::where('po_nota_dinas', $request->no_kontrak)->first();
+            if ($monitoring) {
+                $tanggalMulai = $tanggalMulai ?? $monitoring->tanggal_kontrak;
+                $tanggalSelesai = $tanggalSelesai ?? $monitoring->tanggal_selesai_kontrak;
+            }
+        }
+
+        $proyek->update([
+            'nama_proyek' => $request->nama_proyek,
+            'no_kontrak' => $request->no_kontrak,
+            'tanggal_kontrak' => $tanggalMulai,
+            'tanggal_selesai_kontrak' => $tanggalSelesai,
+        ]);
 
         return redirect()->route('pekerjaanmro.index')->with('success', 'Proyek MRO berhasil diupdate.');
     }
@@ -58,14 +96,41 @@ class PekerjaanMroController extends Controller
     {
         $proyek = PekerjaanMro::with('items')->findOrFail($id);
 
-        // Tentukan jumlah minggu dalam tahun berjalan (misal 2026)
-        $year = Carbon::now()->year;
-        $totalWeeks = Carbon::create($year, 12, 31)->weekOfYear;
-        if ($totalWeeks == 1) {
-            $totalWeeks = 52;
-        }  // Fallback jika kalkulasi minggu edge case
+        // Ambil tanggal mulai & selesai proyek (fallback ke tabel Monitoring jika di proyek masih kosong)
+        $tglMulaiKontrak = $proyek->tanggal_kontrak;
+        $tglSelesaiKontrak = $proyek->tanggal_selesai_kontrak;
 
-        return view('pekerjaanmro.monitor', compact('proyek', 'totalWeeks', 'year'));
+        if ((!$tglMulaiKontrak || !$tglSelesaiKontrak) && $proyek->no_kontrak) {
+            $monInfo = Monitoring::where('po_nota_dinas', $proyek->no_kontrak)->first();
+            $tglMulaiKontrak = $tglMulaiKontrak ?? ($monInfo->tanggal_kontrak ?? null);
+            $tglSelesaiKontrak = $tglSelesaiKontrak ?? ($monInfo->tanggal_selesai_kontrak ?? null);
+        }
+
+        // Kalkulasi jumlah minggu presisi berdasarkan selisih tanggal
+        if ($tglMulaiKontrak && $tglSelesaiKontrak) {
+            $startDate = Carbon::parse($tglMulaiKontrak)->startOfDay();
+            $endDate = Carbon::parse($tglSelesaiKontrak)->startOfDay();
+
+            // Hitung total hari inklusif (+1 agar hari terakhir dihitung penuh)
+            $diffDays = $startDate->diffInDays($endDate) + 1;
+
+            // Konversi total hari ke minggu (dibulatkan ke atas)
+            $totalWeeks = (int) ceil($diffDays / 7);
+            if ($totalWeeks < 1) {
+                $totalWeeks = 1;
+            }
+        } else {
+            $startDate = Carbon::now()->startOfYear();
+            $totalWeeks = 52;
+        }
+
+        return view('pekerjaanmro.monitor', compact(
+            'proyek',
+            'totalWeeks',
+            'tglMulaiKontrak',
+            'tglSelesaiKontrak',
+            'startDate'
+        ));
     }
 
     public function storeItem(Request $request, $id)
@@ -76,7 +141,7 @@ class PekerjaanMroController extends Controller
             'satuan' => 'required|array',
             'vol_rencana' => 'required|array',
             'harga_satuan' => 'nullable|array',
-            'progress_utama' => 'nullable|array',  // Progress (%) manual di tabel utama
+            'progress_utama' => 'nullable|array',
         ]);
 
         $proyek = PekerjaanMro::findOrFail($id);
@@ -107,17 +172,13 @@ class PekerjaanMroController extends Controller
 
     public function updateProgress(Request $request)
     {
-        // Validasi atau pastikan item_id dikirim dari form
         $request->validate([
             'item_id' => 'required|exists:pekerjaan_mro_items,id',
         ]);
 
         $item = PekerjaanMroItem::findOrFail($request->item_id);
-
-        // Ambil data progress mingguan yang lama
         $existingProgress = $item->progress_mingguan ?? [];
 
-        // Timpa atau gabungkan dengan input baru yang dikirim dari input tabel
         if ($request->has('vol_realisasi')) {
             foreach ($request->vol_realisasi as $week => $data) {
                 $existingProgress[$week] = $data;
