@@ -549,6 +549,8 @@
                                         'wilayah1.index',
                                         'wilayah2.index',
                                         'divisi.wilayah.progress',
+                                        'pekerjaanwil1.index',
+                                        'pekerjaanwil2.index',
                                     ]);
                                     $menuLogistikActive = in_array(Route::currentRouteName(), [
                                         'spph.index',
@@ -612,8 +614,7 @@
                                         'dashboard.mro',
                                         'divisi.wilayah.progress',
                                         'pekerjaanmro.index',
-                                        'pekerjaanwil1.index',
-                                        'pekerjaanwil2.index',
+                                        
                                     ]);
                                 @endphp
 
