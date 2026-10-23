@@ -249,6 +249,9 @@
                 $totalHargaGlobal = $proyek->items->sum(function ($item) {
                     return $item->harga_satuan ? $item->vol_rencana * $item->harga_satuan : 0;
                 });
+                $hasHargaGlobal = $proyek->items->contains(function ($item) {
+                    return !empty($item->harga_satuan) && $item->harga_satuan > 0;
+                });
                 $totalItemCount = $proyek->items->count();
             @endphp
 
@@ -372,10 +375,9 @@
 
                                         $smpaiMingguIniAcc += $progMingguIni;
 
-                                        if ($totalItemCount > 0) {
-                                            $sumProgMingguIniPerMgg[$w] += $progMingguIni;
-                                            $sumSmpaiMingguIniPerMgg[$w] += $smpaiMingguIniAcc;
-                                        }
+                                        // Akumulasi nilai untuk footer
+                                        $sumProgMingguIniPerMgg[$w] += $progMingguIni;
+                                        $sumSmpaiMingguIniPerMgg[$w] += $smpaiMingguIniAcc;
                                     @endphp
 
                                     <td class="align-middle" style="padding: 6px;">
@@ -434,17 +436,23 @@
                             <td class="th-prog"></td>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 @php
-                                    $avgProgMingguIni =
-                                        $totalItemCount > 0 ? $sumProgMingguIniPerMgg[$w] / $totalItemCount : 0;
-                                    $avgSmpaiMingguIni =
-                                        $totalItemCount > 0 ? $sumSmpaiMingguIniPerMgg[$w] / $totalItemCount : 0;
+                                    // Jika ada harga diisi, hasil akhir dijumlahkan (sum). Jika tidak ada harga sama sekali, dirata-rata (average).
+                                    if ($hasHargaGlobal) {
+                                        $valProgMingguIni = $sumProgMingguIniPerMgg[$w];
+                                        $valSmpaiMingguIni = $sumSmpaiMingguIniPerMgg[$w];
+                                    } else {
+                                        $valProgMingguIni =
+                                            $totalItemCount > 0 ? $sumProgMingguIniPerMgg[$w] / $totalItemCount : 0;
+                                        $valSmpaiMingguIni =
+                                            $totalItemCount > 0 ? $sumSmpaiMingguIniPerMgg[$w] / $totalItemCount : 0;
+                                    }
                                 @endphp
                                 <td></td>
                                 <td class="text-info font-weight-bold">
-                                    {{ $avgProgMingguIni > 0 ? number_format($avgProgMingguIni, 2, ',', '.') . '%' : '-' }}
+                                    {{ $valProgMingguIni > 0 ? number_format($valProgMingguIni, 2, ',', '.') . '%' : '-' }}
                                 </td>
                                 <td class="text-warning font-weight-bold">
-                                    {{ $avgSmpaiMingguIni > 0 ? number_format($avgSmpaiMingguIni, 2, ',', '.') . '%' : '-' }}
+                                    {{ $valSmpaiMingguIni > 0 ? number_format($valSmpaiMingguIni, 2, ',', '.') . '%' : '-' }}
                                 </td>
                             @endfor
                             <td></td>
