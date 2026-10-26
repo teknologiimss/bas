@@ -202,8 +202,8 @@
                     <div class="action-group">
                         <!-- Badge Progress S/D Minggu Ini Terakhir -->
                         <div class="px-3 py-1 bg-light border rounded text-center mr-1" style="min-width: 110px;">
-                            <span class="d-block text-muted" style="font-size: 10px; font-weight: 600;">PROGRESS
-                                AKHIR</span>
+                            <span class="d-block text-muted" style="font-size: 10px; font-weight: 600;">Progress
+                                Pekerjaan</span>
                             <strong class="text-success"
                                 style="font-size: 13px;">{{ number_format($latestProgress, 2, ',', '.') }}%</strong>
                         </div>
