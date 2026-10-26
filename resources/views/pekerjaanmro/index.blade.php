@@ -11,8 +11,8 @@
 
     <style>
         /* ==========================================================
-                       TEMA NAVY BLUE, MODERN & DYNAMIC STYLING
-                       ========================================================== */
+                            TEMA NAVY BLUE, MODERN & DYNAMIC STYLING
+                            ========================================================== */
         body {
             background-color: #f4f6f9;
         }
@@ -215,6 +215,63 @@
                     $monInfo = \App\Models\Monitoring::where('po_nota_dinas', $p->no_kontrak)->first();
                     $tglMulai = $p->tanggal_kontrak ?? ($monInfo->tanggal_kontrak ?? null);
                     $tglSelesai = $p->tanggal_selesai_kontrak ?? ($monInfo->tanggal_selesai_kontrak ?? null);
+
+                    // ==========================================
+                    // PERHITUNGAN PROGRESS S/D MINGGU INI TERAKHIR
+                    // ==========================================
+                    $totalHargaGlobal = $p->items->sum(function ($item) {
+                        return $item->harga_satuan ? $item->vol_rencana * $item->harga_satuan : 0;
+                    });
+                    $hasHargaGlobal = $p->items->contains(function ($item) {
+                        return !empty($item->harga_satuan) && $item->harga_satuan > 0;
+                    });
+                    $totalItemCount = $p->items->count();
+
+                    // Hitung total minggu berdasarkan durasi kontrak (seperti pada halaman monitor)
+                    $startDateVal = $tglMulai ? \Carbon\Carbon::parse($tglMulai)->startOfDay() : now();
+                    $endDateVal = $tglSelesai ? \Carbon\Carbon::parse($tglSelesai)->startOfDay() : now();
+                    $diffDays = $startDateVal->diffInDays($endDateVal) + 1;
+                    $totalWeeksCalc = max(1, ceil($diffDays / 7));
+
+                    $sumSmpaiMingguIniPerMgg = array_fill(1, $totalWeeksCalc, 0);
+
+                    foreach ($p->items as $item) {
+                        $bobotRencana = 0;
+                        if ($totalHargaGlobal > 0) {
+                            $jumlahItem = $item->harga_satuan ? $item->vol_rencana * $item->harga_satuan : 0;
+                            $bobotRencana = ($jumlahItem / $totalHargaGlobal) * 100;
+                        }
+
+                        $progressMingguanData = $item->progress_mingguan ?? [];
+                        $smpaiMingguIniAcc = 0;
+
+                        for ($w = 1; $w <= $totalWeeksCalc; $w++) {
+                            $volRealisasi = $progressMingguanData[$w]['vol'] ?? '';
+                            $progMingguIni = 0;
+
+                            if ($item->vol_rencana > 0 && is_numeric($volRealisasi)) {
+                                if ($item->harga_satuan) {
+                                    $progMingguIni = ($bobotRencana * $volRealisasi) / $item->vol_rencana;
+                                } else {
+                                    $progMingguIni = ($volRealisasi / $item->vol_rencana) * 100;
+                                }
+                            }
+                            $smpaiMingguIniAcc += $progMingguIni;
+                            $sumSmpaiMingguIniPerMgg[$w] += $smpaiMingguIniAcc;
+                        }
+                    }
+
+                    // Ambil nilai s/d minggu ini pada minggu terakhir (atau minggu berjalan)
+                    $latestProgress = 0;
+                    if ($totalWeeksCalc > 0) {
+                        $wLast = $totalWeeksCalc;
+                        if ($hasHargaGlobal) {
+                            $latestProgress = $sumSmpaiMingguIniPerMgg[$wLast] ?? 0;
+                        } else {
+                            $latestProgress =
+                                $totalItemCount > 0 ? ($sumSmpaiMingguIniPerMgg[$wLast] ?? 0) / $totalItemCount : 0;
+                        }
+                    }
                 @endphp
 
                 <div class="proyek-item-card shadow-sm">
@@ -233,6 +290,14 @@
                     </div>
 
                     <div class="action-group">
+                        <!-- Badge Progress S/D Minggu Ini Terakhir -->
+                        <div class="px-3 py-1 bg-light border rounded text-center mr-1" style="min-width: 110px;">
+                            <span class="d-block text-muted" style="font-size: 10px; font-weight: 600;">PROGRESS
+                                AKHIR</span>
+                            <strong class="text-success"
+                                style="font-size: 13px;">{{ number_format($latestProgress, 2, ',', '.') }}%</strong>
+                        </div>
+
                         <a href="{{ route('pekerjaanmro.monitor', $p->id) }}" class="btn btn-light border">
                             <i class="fa fa-desktop text-primary mr-1"></i> Monitor
                         </a>
@@ -278,7 +343,7 @@
                                                 data-tgl-mulai="{{ $mon->tanggal_kontrak ?? '' }}"
                                                 data-tgl-selesai="{{ $mon->tanggal_selesai_kontrak ?? '' }}"
                                                 {{ $p->no_kontrak == $mon->po_nota_dinas ? 'selected' : '' }}>
-                                                {{ $mon->po_nota_dinas }} - {{ $mon->nama_pekerjaan }}
+                                                - {{ $mon->po_nota_dinas }} {{ $mon->nama_pekerjaan }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -348,7 +413,7 @@
                                 <option value="{{ $mon->po_nota_dinas }}" data-nama="{{ $mon->nama_pekerjaan }}"
                                     data-tgl-mulai="{{ $mon->tanggal_kontrak ?? '' }}"
                                     data-tgl-selesai="{{ $mon->tanggal_selesai_kontrak ?? '' }}">
-                                    {{ $mon->po_nota_dinas }} - {{ $mon->nama_pekerjaan }}
+                                    - {{ $mon->po_nota_dinas }} {{ $mon->nama_pekerjaan }}
                                 </option>
                             @endforeach
                         </select>
