@@ -21,7 +21,7 @@
                                 <div class="mb-3">
                                     <i class="fas fa-chart-bar fa-3x text-primary"></i>
                                 </div>
-                                <h4 class="font-weight-bold text-dark mb-2">Proyek MRO</h4>
+                                <h4 class="font-weight-bold text-dark mb-2">Manajemen Dokumen Proyek MRO</h4>
                                 <p class="text-muted mb-0 small">
                                     Klik untuk melihat daftar dan mengelola data proyek MRO.
                                 </p>
@@ -55,7 +55,7 @@
                                 <div class="mb-3">
                                     <i class="fas fa-briefcase fa-3x text-success"></i>
                                 </div>
-                                <h4 class="font-weight-bold text-dark mb-2">Pekerjaan MRO</h4>
+                                <h4 class="font-weight-bold text-dark mb-2">Manajemen Pekerjaan Proyek MRO</h4>
                                 <p class="text-muted mb-0 small">
                                     Klik untuk mengelola data dan rincian pekerjaan MRO secara lengkap.
                                 </p>

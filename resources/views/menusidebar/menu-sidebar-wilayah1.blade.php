@@ -23,7 +23,7 @@
                                     <div class="mb-3">
                                         <i class="fas fa-chart-bar fa-3x text-primary"></i>
                                     </div>
-                                    <h4 class="font-weight-bold text-dark mb-2">Proyek Wilayah 1</h4>
+                                    <h4 class="font-weight-bold text-dark mb-2">Manajemen Dokumen Proyek Wilayah1</h4>
                                     <p class="text-muted mb-0 small">
                                         Klik untuk melihat daftar dan mengelola data proyek Wilayah 1.
                                     </p>
@@ -42,7 +42,7 @@
                                     <div class="mb-3">
                                         <i class="fas fa-chart-line fa-3x text-info"></i>
                                     </div>
-                                    <h4 class="font-weight-bold text-dark mb-2">Progress Wilayah 1</h4>
+                                    <h4 class="font-weight-bold text-dark mb-2">Progress Wilayah1</h4>
                                     <p class="text-muted mb-0 small">
                                         Klik untuk memantau status dan perkembangan pekerjaan Wilayah 1.
                                     </p>
@@ -61,7 +61,7 @@
                                     <div class="mb-3">
                                         <i class="fas fa-briefcase fa-3x text-success"></i>
                                     </div>
-                                    <h4 class="font-weight-bold text-dark mb-2">Pekerjaan Wilayah 1</h4>
+                                    <h4 class="font-weight-bold text-dark mb-2">Manajemen Pekerjaan Proyek Wilayah1</h4>
                                     <p class="text-muted mb-0 small">
                                         Klik untuk mengelola data dan rincian pekerjaan Wilayah 1 secara lengkap.
                                     </p>
