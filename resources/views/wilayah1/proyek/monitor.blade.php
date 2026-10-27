@@ -119,6 +119,37 @@
             justify-content: center;
             align-items: center;
         }
+
+        /* Styling Tombol Atas Sesuai Keinginan */
+        .btn-custom-back {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 6px 16px;
+            transition: all 0.2s;
+        }
+
+        .btn-custom-back:hover {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .btn-custom-primary {
+            background-color: #1d3557;
+            border: 1px solid #1d3557;
+            color: #ffffff;
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 6px 16px;
+            transition: all 0.2s;
+        }
+
+        .btn-custom-primary:hover {
+            background-color: #0b2545;
+            color: #ffffff;
+        }
     </style>
 
     <div class="container-fluid px-3 px-md-4 py-4">
@@ -144,11 +175,12 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <a href="{{ route('pekerjaanwil1.index') }}"
-                        class="btn btn-outline-secondary btn-sm px-3 shadow-sm mr-2"><i class="fa fa-arrow-left mr-1"></i>
-                        Kembali</a>
-                    <button class="btn btn-primary btn-sm px-3 shadow-sm" data-toggle="modal" data-target="#modalAddItem"><i
-                            class="fa fa-plus mr-1"></i> Tambah Item Pekerjaan</button>
+                    <a href="{{ route('pekerjaanwil1.index') }}" class="btn btn-custom-back btn-sm shadow-sm mr-2">
+                        <i class="fa fa-arrow-left mr-1"></i> Kembali
+                    </a>
+                    <button class="btn btn-custom-primary btn-sm shadow-sm" data-toggle="modal" data-target="#modalAddItem">
+                        <i class="fa fa-plus mr-1"></i> Tambah Item Pekerjaan
+                    </button>
                 </div>
             </div>
 
