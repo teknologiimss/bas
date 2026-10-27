@@ -686,7 +686,7 @@
                             <tr>
                                 <th width="40">No</th>
                                 <th width="110">Divisi</th>
-                                <th>PO / Nota Dinas</th>
+                                <th>PO / SO / Kontrak</th>
                                 <th>Nama Pekerjaan</th>
                                 <th>Jenis Pekerjaan</th>
                                 <th width="100">Tanggal Kontrak</th>

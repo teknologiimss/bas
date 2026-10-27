@@ -346,7 +346,7 @@
                         <thead class="thead-dark text-center">
                             <tr>
                                 <th width="40">No</th>
-                                <th>PO / Nota Dinas</th>
+                                <th>PO / SO / Kontrak</th>
                                 <th>Nama Pekerjaan</th>
                                 <th>Jenis Pekerjaan</th>
                                 <th>Tanggal Kontrak</th>
