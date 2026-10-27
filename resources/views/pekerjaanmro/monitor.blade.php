@@ -270,7 +270,12 @@
                             <th rowspan="4" class="align-middle th-harga">HARGA SATUAN</th>
                             <th rowspan="4" class="align-middle th-jumlah">JUMLAH</th>
                             <th rowspan="4" class="align-middle th-bobot">BOBOT RENCANA (%)</th>
-                            <th rowspan="4" class="align-middle th-prog">PROGRESS (%)</th>
+                            <th rowspan="4" class="align-middle th-prog">
+                                ASUMSI PROGRESS (%)
+                                <div style="font-size: 10px; font-weight: normal; color: #cbd5e1; margin-top: 2px;">
+                                    (*jika tidak ada harga, kolom ini di isi 100%)
+                                </div>
+                            </th>
 
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 @php
