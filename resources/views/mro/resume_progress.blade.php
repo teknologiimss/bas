@@ -46,7 +46,6 @@
         .table-responsive {
             border-radius: 12px;
             max-height: 70vh;
-            /* Membatasi tinggi tabel agar scroll internal aktif */
             overflow-y: auto;
         }
 
@@ -61,7 +60,6 @@
             vertical-align: middle;
         }
 
-        /* Menerapkan CSS Sticky untuk Freeze Header */
         thead.thead-dark th {
             position: sticky;
             top: 0;
@@ -71,7 +69,6 @@
             border: none;
             letter-spacing: .5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            /* Bayangan tipis di bawah header */
         }
 
         tbody tr {
@@ -107,25 +104,21 @@
             transform: scale(1.05);
         }
 
-        /* KONTRAK BERJALAN (HIJAU) */
         .badge-success {
             background: linear-gradient(135deg, #22c55e, #16a34a) !important;
             color: white !important;
         }
 
-        /* KONTRAK TELAH BERAKHIR (MERAH) */
         .badge-danger {
             background: linear-gradient(135deg, #ef4444, #dc2626) !important;
             color: white !important;
         }
 
-        /* KONTRAK SELESAI (BIRU) */
         .badge-primary {
             background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
             color: white !important;
         }
 
-        /* AKAN BERAKHIR H-7 (KUNING / ORANGE) */
         .badge-warning {
             background: linear-gradient(135deg, #ffc107, #ff9800) !important;
             color: #222 !important;
@@ -185,18 +178,15 @@
             transform: scale(1.01);
         }
 
-        /* ================= FILTER CARD ================= */
         .card .card-body {
             padding: 1.5rem;
         }
 
-        /* ================= NOTE ================= */
         h6.text-danger {
             color: var(--navy) !important;
             font-weight: 700;
         }
 
-        /* ================= PAGINATION ================= */
         .pagination .page-link {
             color: var(--blue);
             border-radius: 8px;
@@ -208,7 +198,6 @@
             border: none;
         }
 
-        /* ================= SCROLL ================= */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -219,7 +208,6 @@
             border-radius: 10px;
         }
 
-        /* ================= ANIMATION ================= */
         @keyframes fadeDown {
             from {
                 opacity: 0;
@@ -258,15 +246,10 @@
             </div>
         @endif
 
-        {{-- 🔥 HITUNG Jumlah INKA dan Non INKA --}}
+        {{-- HITUNG Jumlah INKA dan Non INKA --}}
         @php
-            // Total keseluruhan data
             $countTotal = \App\Models\Monitoring::count();
-
-            // Hitung yang secara spesifik bernilai "INKA" (atau sesuaikan dengan format data Anda)
             $countInka = \App\Models\Monitoring::where('jenis_pekerjaan', 'INKA')->count();
-
-            // Hitung yang selain INKA (Non INKA, kosong, atau format lainnya)
             $countNonInka = \App\Models\Monitoring::where('jenis_pekerjaan', '!=', 'INKA')
                 ->orWhereNull('jenis_pekerjaan')
                 ->count();
@@ -274,9 +257,8 @@
 
         <div class="container-fluid mt-4">
 
-            {{-- KARTU RINGKASAN STATISTIK 🔥 HITUNG Jumlah INKA dan Non INKA --}}
+            {{-- KARTU RINGKASAN STATISTIK --}}
             <div class="row mb-4 no-print">
-                <!-- Total Semua Data -->
                 <div class="col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-left: 5px solid var(--blue) !important; border-radius: 12px;">
@@ -294,7 +276,6 @@
                     </div>
                 </div>
 
-                <!-- Jumlah Pekerjaan INKA -->
                 <div class="col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-left: 5px solid #22c55e !important; border-radius: 12px;">
@@ -312,7 +293,6 @@
                     </div>
                 </div>
 
-                <!-- Jumlah Pekerjaan Non INKA -->
                 <div class="col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-left: 5px solid #f59e0b !important; border-radius: 12px;">
@@ -330,7 +310,6 @@
                     </div>
                 </div>
             </div>
-            {{-- 🔥 END HITUNG Jumlah INKA dan Non INKA --}}
 
             {{-- FILTER --}}
             <div class="card mb-3 no-print">
@@ -381,63 +360,13 @@
                                 <th width="200">Realisasi Bulan ini</th>
                                 <th width="180">Total Realisasi s/d Bulan Ini</th>
                                 <th width="260">Status Dokumen Terakhir</th>
+                                <th width="180">Nilai Persentase Kontrak Total Progres</th>
                                 <th>Notifikasi</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             @forelse ($monitorings as $index => $m)
-                                {{-- @php
-                                $statusClass = match ($m->status) {
-                                    'Open' => 'badge badge-warning',
-                                    'Closed' => 'badge badge-success',
-                                    'On Hold' => 'badge badge-danger',
-                                    default => 'badge badge-secondary',
-                                };
-
-                                // Mengambil dokumen terakhir yang di-upload
-                                $latestDoc = $m->documents->last();
-
-                                // Total Nilai Kontrak (Seluruh dokumen berkriteria Rencana)
-                                $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-
-                                // Total Realisasi (Seluruh dokumen bernilai Realisasi)
-                                $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
-
-                                // 1. Filter HANYA dokumen yang berkriteria 'Realisasi' dan memiliki harga > 0
-                                $groupedPriceDocs = $m->documents
-                                    ->filter(
-                                        fn($doc) => $doc->kriteria === 'Realisasi' &&
-                                            !is_null($doc->harga) &&
-                                            $doc->harga > 0,
-                                    )
-                                    ->groupBy(function ($doc) {
-                                        $date = $doc->tanggal_closed ?? $doc->created_at;
-                                        return \Carbon\Carbon::parse($date)->format('Y-m');
-                                    })
-                                    ->sortByDesc(function ($group, $key) {
-                                        return $key; // Urutkan berdasarkan bulan terbaru (YYYY-MM)
-                                    });
-
-                                // 2. Ambil grup bulan terbaru untuk Realisasi
-                                $latestMonthGroup = $groupedPriceDocs->first();
-
-                                $latestPriceDoc = null;
-                                $totalHargaBulanIni = 0;
-
-                                if ($latestMonthGroup) {
-                                    // Sample dokumen realisasi terakhir di bulan tersebut
-                                    $latestPriceDoc = $latestMonthGroup
-                                        ->sortByDesc(function ($doc) {
-                                            return $doc->created_at ?? $doc->id;
-                                        })
-                                        ->first();
-
-                                    // Jumlahkan harga dokumen Realisasi di bulan tersebut
-                                    $totalHargaBulanIni = $latestMonthGroup->sum('harga');
-                                }
-                            @endphp --}}
-
                                 @php
                                     $statusClass = match ($m->status) {
                                         'Open' => 'badge badge-warning',
@@ -446,16 +375,13 @@
                                         default => 'badge badge-secondary',
                                     };
 
-                                    // 1. Ambil dokumen terakhir dari monitoring ini
                                     $latestDoc = $m->documents->last();
 
-                                    // 2. Kalkulasi Nilai Kontrak (Rencana) & Total Realisasi s/d Bulan Ini
                                     $totalNilaiKontrak = $m->documents->where('kriteria', 'Rencana')->sum('harga');
                                     $totalRealisasi = $m->documents
                                         ->whereIn('kriteria', ['Realisasi', 'Closed'])
                                         ->sum('harga');
 
-                                    // 3. Filter dokumen yang HANYA berkriteria 'Realisasi' dan bernilai > 0
                                     $groupedPriceDocs = $m->documents
                                         ->filter(function ($doc) {
                                             return $doc->kriteria === 'Realisasi' &&
@@ -467,7 +393,7 @@
                                             return \Carbon\Carbon::parse($date)->format('Y-m');
                                         })
                                         ->sortByDesc(function ($group, $key) {
-                                            return $key; // Urutkan berdasarkan bulan terbaru (YYYY-MM)
+                                            return $key;
                                         });
 
                                     $latestMonthGroup = $groupedPriceDocs->first();
@@ -475,22 +401,96 @@
                                     $totalHargaBulanIni = 0;
 
                                     if ($latestMonthGroup) {
-                                        // Ambil sampel dokumen realisasi paling akhir pada bulan tersebut
                                         $latestPriceDoc = $latestMonthGroup
                                             ->sortByDesc(function ($doc) {
                                                 return $doc->created_at ?? $doc->id;
                                             })
                                             ->first();
 
-                                        // Hitung total nilai realisasi untuk bulan terbaru
                                         $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                                     }
 
-                                    // 4. PENYESUAIAN KRITERIA CLOSED:
-                                    // Pengecekan HANYA berlaku jika dokumen teratas/terakhir yang diupload berkriteria 'Closed'
                                     if ($latestDoc && $latestDoc->kriteria === 'Closed') {
                                         $totalHargaBulanIni = 0;
                                         $latestPriceDoc = null;
+                                    }
+
+                                    // =========================================================================
+                                    // PENCARIAN & PERHITUNGAN PERSENTASE TOTAL PROGRESS MRO (SINKRON DENGAN LIST MRO)
+                                    // =========================================================================
+                                    $proyekMro = \App\Models\PekerjaanMro::where(
+                                        'no_kontrak',
+                                        'LIKE',
+                                        '%' . trim($m->po_nota_dinas) . '%',
+                                    )
+                                        ->where('nama_proyek', 'LIKE', '%' . trim($m->nama_pekerjaan) . '%')
+                                        ->first();
+
+                                    $persentaseTotalProgres = 0;
+
+                                    if ($proyekMro && $proyekMro->items->count() > 0) {
+                                        $tglMulaiItem = $m->tanggal_kontrak ?? null;
+                                        $tglSelesaiItem = $m->tanggal_selesai_kontrak ?? null;
+
+                                        $totalHargaGlobal = $proyekMro->items->sum(function ($item) {
+                                            return $item->harga_satuan ? $item->vol_rencana * $item->harga_satuan : 0;
+                                        });
+                                        $hasHargaGlobal = $proyekMro->items->contains(function ($item) {
+                                            return !empty($item->harga_satuan) && $item->harga_satuan > 0;
+                                        });
+                                        $totalItemCount = $proyekMro->items->count();
+
+                                        $startDateVal = $tglMulaiItem
+                                            ? \Carbon\Carbon::parse($tglMulaiItem)->startOfDay()
+                                            : now();
+                                        $endDateVal = $tglSelesaiItem
+                                            ? \Carbon\Carbon::parse($tglSelesaiItem)->startOfDay()
+                                            : now();
+                                        $diffDays = $startDateVal->diffInDays($endDateVal) + 1;
+                                        $totalWeeksCalc = max(1, ceil($diffDays / 7));
+
+                                        $sumSmpaiMingguIniPerMgg = array_fill(1, $totalWeeksCalc, 0);
+
+                                        foreach ($proyekMro->items as $item) {
+                                            $bobotRencana = 0;
+                                            if ($totalHargaGlobal > 0) {
+                                                $jumlahItem = $item->harga_satuan
+                                                    ? $item->vol_rencana * $item->harga_satuan
+                                                    : 0;
+                                                $bobotRencana = ($jumlahItem / $totalHargaGlobal) * 100;
+                                            }
+
+                                            $progressMingguanData = $item->progress_mingguan ?? [];
+                                            $smpaiMingguIniAcc = 0;
+
+                                            for ($w = 1; $w <= $totalWeeksCalc; $w++) {
+                                                $volRealisasi = $progressMingguanData[$w]['vol'] ?? '';
+                                                $progMingguIni = 0;
+
+                                                if ($item->vol_rencana > 0 && is_numeric($volRealisasi)) {
+                                                    if ($item->harga_satuan) {
+                                                        $progMingguIni =
+                                                            ($bobotRencana * $volRealisasi) / $item->vol_rencana;
+                                                    } else {
+                                                        $progMingguIni = ($volRealisasi / $item->vol_rencana) * 100;
+                                                    }
+                                                }
+                                                $smpaiMingguIniAcc += $progMingguIni;
+                                                $sumSmpaiMingguIniPerMgg[$w] += $smpaiMingguIniAcc;
+                                            }
+                                        }
+
+                                        if ($totalWeeksCalc > 0) {
+                                            $wLast = $totalWeeksCalc;
+                                            if ($hasHargaGlobal) {
+                                                $persentaseTotalProgres = $sumSmpaiMingguIniPerMgg[$wLast] ?? 0;
+                                            } else {
+                                                $persentaseTotalProgres =
+                                                    $totalItemCount > 0
+                                                        ? ($sumSmpaiMingguIniPerMgg[$wLast] ?? 0) / $totalItemCount
+                                                        : 0;
+                                            }
+                                        }
                                     }
                                 @endphp
 
@@ -513,7 +513,7 @@
                                     </td>
 
                                     <td>{{ $m->nama_pekerjaan }}</td>
-                                    {{-- JENIS PEKERJAAN --}}
+
                                     <td>
                                         {{ $m->jenis_pekerjaan ?? '-' }}
                                     </td>
@@ -524,7 +524,6 @@
                                         {{ \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') }}
                                     </td>
 
-                                    {{-- NILAI KONTRAK (TOTAL RENCANA) --}}
                                     <td class="text-center">
                                         <div class="p-2 border rounded bg-white shadow-sm">
                                             <div class="fw-bold text-primary fs-6">
@@ -539,7 +538,6 @@
                                         </span>
                                     </td>
 
-                                    {{-- PROGRESS BAR --}}
                                     <td>
                                         <div class="progress" style="height: 18px;">
                                             <div class="progress-bar"
@@ -549,7 +547,6 @@
                                         </div>
                                     </td>
 
-                                    {{-- KETERANGAN --}}
                                     <td>
                                         @php
                                             $text = trim($m->keterangan2 ?? '-');
@@ -564,7 +561,6 @@
                                         @endphp
                                     </td>
 
-                                    {{-- REALISASI BULAN INI --}}
                                     <td class="text-center">
                                         @if ($latestPriceDoc && $totalHargaBulanIni > 0)
                                             <div class="p-2 border rounded bg-white shadow-sm">
@@ -589,12 +585,10 @@
                                                 </div>
                                             </div>
                                         @else
-                                            {{-- Tampilkan Rp 0 atau strip jika belum ada realisasi --}}
                                             <span class="text-muted font-italic small">Rp 0</span>
                                         @endif
                                     </td>
 
-                                    {{-- TOTAL REALISASI S/D BULAN INI --}}
                                     <td class="text-center">
                                         <div class="p-2 border rounded bg-white shadow-sm">
                                             <div class="fw-bold text-success fs-6">
@@ -603,7 +597,6 @@
                                         </div>
                                     </td>
 
-                                    {{-- TABEL STATUS DOKUMEN TERAKHIR --}}
                                     <td>
                                         @if ($latestDoc)
                                             <div class="p-2 border rounded bg-light" style="font-size: 12px;">
@@ -648,6 +641,15 @@
                                         @endif
                                     </td>
 
+                                    {{-- KOLOM: Nilai Persentase Kontrak Total Progres --}}
+                                    <td class="text-center">
+                                        <div class="p-2 border rounded bg-white shadow-sm">
+                                            <div class="fw-bold text-info fs-6">
+                                                <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>
+                                            </div>
+                                        </div>
+                                    </td>
+
                                     <td class="text-center">
                                         @php
                                             $notif = $m->notifKontrak();
@@ -661,7 +663,7 @@
 
                             @empty
                                 <tr>
-                                    <td colspan="13" class="text-center text-muted">
+                                    <td colspan="15" class="text-center text-muted">
                                         Tidak ada data monitoring
                                     </td>
                                 </tr>
@@ -705,7 +707,6 @@
 
         </div>
 
-        {{-- ================= JS PRINT ================= --}}
         <script>
             function printPage() {
                 window.print();
