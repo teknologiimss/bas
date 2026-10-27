@@ -17,7 +17,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            font-size: 7.5px;
+            font-size: 7px;
             color: #1e293b;
             margin: 0;
             padding: 0;
@@ -72,7 +72,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
             word-break: break-word;
-            font-size: 7.5px;
+            font-size: 7px;
         }
 
         th {
@@ -80,7 +80,7 @@
             color: #ffffff;
             text-align: center;
             font-weight: bold;
-            font-size: 7.5px;
+            font-size: 7px;
             text-transform: uppercase;
             padding: 5px 1px;
         }
@@ -99,7 +99,7 @@
             max-width: 100%;
             padding: 2px 3px;
             border-radius: 3px;
-            font-size: 6px;
+            font-size: 5.5px;
             font-weight: bold;
             color: #fff;
             text-align: center;
@@ -144,7 +144,7 @@
             border: 1px solid #e2e8f0;
             padding: 2px 3px;
             border-radius: 3px;
-            font-size: 7px;
+            font-size: 6.5px;
             line-height: 1.1;
         }
 
@@ -166,7 +166,7 @@
         }
 
         .progress-text {
-            font-size: 6.5px;
+            font-size: 6px;
             font-weight: bold;
             margin-top: 1px;
             display: block;
@@ -193,20 +193,21 @@
     <table>
         <thead>
             <tr>
-                <th style="width: 2.5%;">No</th>
-                <th style="width: 9.5%;">SO / PO / KO</th>
-                <th style="width: 9.5%;">Nama Pekerjaan</th>
-                <th style="width: 6.5%;">Jenis</th>
-                <th style="width: 6%;">Tgl Kontrak</th>
-                <th style="width: 6%;">Selesai</th>
-                <th style="width: 8.5%;">Nilai Kontrak/SO</th>
-                <th style="width: 8.5%;">Realisasi Bln Ini</th>
-                <th style="width: 9%;">Total Realisasi s/d Bln Ini</th>
-                <th style="width: 5.5%;">Status</th>
-                <th style="width: 6.5%;">Progress</th>
-                <th style="width: 8.5%;">Ket. Progress</th>
-                <th style="width: 10.5%;">Status Dokumen Terakhir</th>
-                <th style="width: 7.5%;">Status Kontrak</th>
+                <th style="width: 2.2%;">No</th>
+                <th style="width: 8.5%;">SO / PO / KO</th>
+                <th style="width: 9%;">Nama Pekerjaan</th>
+                <th style="width: 5.5%;">Jenis</th>
+                <th style="width: 5%;">Tgl Kontrak</th>
+                <th style="width: 5%;">Selesai</th>
+                <th style="width: 8%;">Nilai Kontrak/SO</th>
+                <th style="width: 8%;">Realisasi Bln Ini</th>
+                <th style="width: 8.5%;">Total Realisasi s/d Bln Ini</th>
+                <th style="width: 5%;">Status</th>
+                <th style="width: 6%;">Progress</th>
+                <th style="width: 8%;">Ket. Progress</th>
+                <th style="width: 9.5%;">Status Dokumen Terakhir</th>
+                <th style="width: 6.5%;">Nilai Persentase Kontrak Total Progres (%)</th>
+                <th style="width: 6.5%;">Status Kontrak</th>
             </tr>
         </thead>
         <tbody>
@@ -287,6 +288,74 @@
                     if ($latestDoc && strtolower($latestDoc->kriteria ?? '') === 'closed') {
                         $totalHargaBulanIni = 0;
                         $latestPriceDoc = null;
+                    }
+
+                    // =========================================================================
+                    // PERHITUNGAN DINAMIS PERSENTASE TOTAL PROGRES MRO
+                    // =========================================================================
+                    $persentaseTotalProgres = 0;
+                    $proyekMro = \App\Models\PekerjaanMro::where(
+                        'no_kontrak',
+                        'LIKE',
+                        '%' . trim($m->po_nota_dinas) . '%',
+                    )
+                        ->where('nama_proyek', 'LIKE', '%' . trim($m->nama_pekerjaan) . '%')
+                        ->first();
+
+                    if ($proyekMro && $proyekMro->items->count() > 0) {
+                        $tglMulaiItem = $m->tanggal_kontrak ?? null;
+                        $tglSelesaiItem = $m->tanggal_selesai_kontrak ?? null;
+
+                        $totalHargaGlobal = $proyekMro->items->sum(function ($item) {
+                            return $item->harga_satuan ? $item->vol_rencana * $item->harga_satuan : 0;
+                        });
+                        $hasHargaGlobal = $proyekMro->items->contains(function ($item) {
+                            return !empty($item->harga_satuan) && $item->harga_satuan > 0;
+                        });
+                        $totalItemCount = $proyekMro->items->count();
+
+                        $startDateVal = $tglMulaiItem ? \Carbon\Carbon::parse($tglMulaiItem)->startOfDay() : now();
+                        $endDateVal = $tglSelesaiItem ? \Carbon\Carbon::parse($tglSelesaiItem)->startOfDay() : now();
+                        $diffDays = $startDateVal->diffInDays($endDateVal) + 1;
+                        $totalWeeksCalc = max(1, ceil($diffDays / 7));
+
+                        $sumSmpaiMingguIniPerMgg = array_fill(1, $totalWeeksCalc, 0);
+
+                        foreach ($proyekMro->items as $item) {
+                            $bobotRencana = 0;
+                            if ($totalHargaGlobal > 0) {
+                                $jumlahItem = $item->harga_satuan ? $item->vol_rencana * $item->harga_satuan : 0;
+                                $bobotRencana = ($jumlahItem / $totalHargaGlobal) * 100;
+                            }
+
+                            $progressMingguanData = $item->progress_mingguan ?? [];
+                            $smpaiMingguIniAcc = 0;
+
+                            for ($w = 1; $w <= $totalWeeksCalc; $w++) {
+                                $volRealisasi = $progressMingguanData[$w]['vol'] ?? '';
+                                $progMingguIni = 0;
+
+                                if ($item->vol_rencana > 0 && is_numeric($volRealisasi)) {
+                                    if ($item->harga_satuan) {
+                                        $progMingguIni = ($bobotRencana * $volRealisasi) / $item->vol_rencana;
+                                    } else {
+                                        $progMingguIni = ($volRealisasi / $item->vol_rencana) * 100;
+                                    }
+                                }
+                                $smpaiMingguIniAcc += $progMingguIni;
+                                $sumSmpaiMingguIniPerMgg[$w] += $smpaiMingguIniAcc;
+                            }
+                        }
+
+                        if ($totalWeeksCalc > 0) {
+                            $wLast = $totalWeeksCalc;
+                            if ($hasHargaGlobal) {
+                                $persentaseTotalProgres = $sumSmpaiMingguIniPerMgg[$wLast] ?? 0;
+                            } else {
+                                $persentaseTotalProgres =
+                                    $totalItemCount > 0 ? ($sumSmpaiMingguIniPerMgg[$wLast] ?? 0) / $totalItemCount : 0;
+                            }
+                        }
                     }
                 @endphp
                 <tr>
@@ -411,11 +480,19 @@
                         @endif
                     </td>
 
+                    {{-- KOLOM: Nilai Persentase Kontrak Total Progres --}}
+                    <td class="text-center">
+                        <div class="doc-card">
+                            <div class="font-bold" style="color: #0284c7;">
+                                {{ number_format($persentaseTotalProgres, 2, ',', '.') }}%
+                            </div>
+                        </div>
+                    </td>
+
                     {{-- STATUS KONTRAK / NOTIFIKASI --}}
                     <td class="col-notif">
                         @if ($notif)
                             <span class="badge badge-{{ $notif['class'] }}">
-                                {{-- Pastikan teks menampilkan detail hari jika bernilai 'Akan Berakhir' atau gunakan langsung $notif['text'] --}}
                                 {{ $notif['text'] }}
                             </span>
                         @else
@@ -425,7 +502,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="14" class="text-center" style="color: #64748b;">
+                    <td colspan="15" class="text-center" style="color: #64748b;">
                         Tidak ada data monitoring MRO
                     </td>
                 </tr>
