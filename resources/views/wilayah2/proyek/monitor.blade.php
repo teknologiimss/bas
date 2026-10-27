@@ -117,6 +117,7 @@
             display: flex;
             gap: 6px;
             justify-content: center;
+            align-items: center;
         }
     </style>
 
@@ -191,7 +192,7 @@
                                     {{ $tglSelesaiMgg->format('d/m/Y') }}
                                 </th>
                             @endfor
-                            <th rowspan="4" class="align-middle text-center px-3" style="width: 150px;">Aksi</th>
+                            <th rowspan="4" class="align-middle text-center px-3" style="width: 160px;">Aksi</th>
                         </tr>
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
@@ -283,15 +284,21 @@
                                 @endfor
                                 <td class="align-middle text-center">
                                     <div class="action-btn-group">
-                                        <button type="button" class="btn btn-warning text-white btn-sm" data-toggle="modal"
-                                            data-target="#modalEditItem{{ $item->id }}"><i
-                                                class="fa fa-edit"></i></button>
+                                        <button type="button"
+                                            class="btn btn-warning text-white btn-sm font-weight-bold shadow-sm d-inline-flex align-items-center justify-content-center"
+                                            data-toggle="modal" data-target="#modalEditItem{{ $item->id }}"
+                                            style="border-radius: 6px; font-size: 11px; width: 72px; height: 30px;">
+                                            <i class="fa fa-edit mr-1"></i> Edit
+                                        </button>
                                         <form action="{{ route('pekerjaanwil2.item.delete', $item->id) }}" method="POST"
-                                            class="d-inline">
+                                            class="d-inline mb-0">
                                             @csrf @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Hapus item ini?')"><i
-                                                    class="fa fa-trash"></i></button>
+                                            <button type="submit"
+                                                class="btn btn-danger btn-sm font-weight-bold shadow-sm d-inline-flex align-items-center justify-content-center"
+                                                onclick="return confirm('Hapus item ini?')"
+                                                style="border-radius: 6px; font-size: 11px; width: 72px; height: 30px;">
+                                                <i class="fa fa-trash mr-1"></i> Hapus
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
@@ -338,7 +345,7 @@
         </div>
     </div>
 
-    <!-- MODAL EDIT & TAMBAH ITEM -->
+    <!-- MODAL EDIT ITEM -->
     @foreach ($proyek->items as $item)
         <div class="modal fade" id="modalEditItem{{ $item->id }}" tabindex="-1" role="dialog"
             aria-hidden="true">
@@ -373,6 +380,7 @@
         </div>
     @endforeach
 
+    <!-- MODAL TAMBAH ITEM DENGAN FITUR HAPUS BARIS -->
     <div class="modal fade" id="modalAddItem" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <form action="{{ route('pekerjaanwil2.item.store', $proyek->id) }}" method="POST"
@@ -385,20 +393,25 @@
                 </div>
                 <div class="modal-body p-4">
                     <div id="item-wrapper">
-                        <div class="item-row border p-3 mb-3 rounded bg-light">
-                            <div class="row">
-                                <div class="col-md-4 form-group"><label class="small font-weight-bold">Item
+                        <div class="item-row border p-3 mb-3 rounded bg-light position-relative">
+                            <div class="row align-items-end">
+                                <div class="col-md-4 form-group mb-md-0"><label class="small font-weight-bold">Item
                                         Pekerjaan</label><input type="text" name="item_pekerjaan[]"
                                         class="form-control form-control-sm" required></div>
-                                <div class="col-md-2 form-group"><label
+                                <div class="col-md-2 form-group mb-md-0"><label
                                         class="small font-weight-bold">Satuan</label><input type="text"
                                         name="satuan[]" class="form-control form-control-sm" required></div>
-                                <div class="col-md-2 form-group"><label class="small font-weight-bold">Vol
+                                <div class="col-md-2 form-group mb-md-0"><label class="small font-weight-bold">Vol
                                         Rencana</label><input type="number" step="any" name="vol_rencana[]"
                                         class="form-control form-control-sm" required></div>
-                                <div class="col-md-4 form-group"><label class="small font-weight-bold">Harga
+                                <div class="col-md-3 form-group mb-md-0"><label class="small font-weight-bold">Harga
                                         Satuan</label><input type="number" step="any" name="harga_satuan[]"
                                         class="form-control form-control-sm"></div>
+                                <div class="col-md-1 text-center">
+                                    <button type="button" class="btn btn-danger btn-sm remove-row-btn"
+                                        style="height: 31px; width: 100%; display: none;"><i
+                                            class="fa fa-trash"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -418,7 +431,32 @@
             let newRow = wrapper.firstElementChild.cloneNode(true);
             newRow.querySelectorAll('input').forEach(input => input.value = '');
             wrapper.appendChild(newRow);
+            updateRemoveButtons();
         });
+
+        document.getElementById('item-wrapper').addEventListener('click', function(e) {
+            if (e.target.closest('.remove-row-btn')) {
+                let row = e.target.closest('.item-row');
+                let wrapper = document.getElementById('item-wrapper');
+                if (wrapper.children.length > 1) {
+                    row.remove();
+                    updateRemoveButtons();
+                }
+            }
+        });
+
+        function updateRemoveButtons() {
+            let wrapper = document.getElementById('item-wrapper');
+            let rows = wrapper.querySelectorAll('.item-row');
+            rows.forEach((row, index) => {
+                let btn = row.querySelector('.remove-row-btn');
+                if (rows.length > 1) {
+                    btn.style.display = 'block';
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+        }
 
         function validateKumulatif(form, volRencana) {
             let row = form.closest('tr');

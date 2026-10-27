@@ -191,11 +191,13 @@
             justify-content: center !important;
             gap: 4px !important;
             height: 32px !important;
-            padding: 4px 10px !important;
+            width: 72px !important;
+            padding: 4px 0 !important;
             font-size: 11px !important;
             line-height: 1 !important;
             border-radius: 6px !important;
             margin: 0 !important;
+            font-weight: bold !important;
         }
 
         .action-btn-group form {
@@ -290,7 +292,7 @@
                             @endfor
 
                             <th rowspan="4" class="align-middle text-center px-3"
-                                style="min-width: 150px; width: 150px;">Aksi</th>
+                                style="min-width: 160px; width: 160px;">Aksi</th>
                         </tr>
 
                         <!-- BARIS 2: PROG MGG -->
@@ -401,20 +403,23 @@
                                     </td>
                                 @endfor
 
-                                <!-- Tombol Aksi Sejajar -->
-                                <td class="align-middle px-2 py-2 text-center" style="min-width: 150px; width: 150px;">
+                                <!-- Tombol Aksi Sejajar Presisi -->
+                                <td class="align-middle px-2 py-2 text-center" style="min-width: 160px; width: 160px;">
                                     <div class="action-btn-group">
-                                        <button type="button" class="btn btn-warning text-white shadow-sm"
+                                        <button type="button"
+                                            class="btn btn-warning text-white shadow-sm font-weight-bold"
                                             data-toggle="modal" data-target="#modalEditItem{{ $item->id }}"
                                             title="Edit Item">
-                                            <i class="fa fa-edit"></i> Edit
+                                            <i class="fa fa-edit mr-1"></i> Edit
                                         </button>
-                                        <form action="{{ route('pekerjaanmro.item.delete', $item->id) }}" method="POST">
+                                        <form action="{{ route('pekerjaanmro.item.delete', $item->id) }}" method="POST"
+                                            class="d-inline mb-0">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger shadow-sm" title="Hapus Item"
+                                            <button type="submit" class="btn btn-danger shadow-sm font-weight-bold"
+                                                title="Hapus Item"
                                                 onclick="return confirm('Yakin ingin menghapus item ini?')">
-                                                <i class="fa fa-trash"></i> Hapus
+                                                <i class="fa fa-trash mr-1"></i> Hapus
                                             </button>
                                         </form>
                                     </div>
@@ -436,7 +441,6 @@
                             <td class="th-prog"></td>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 @php
-                                    // Jika ada harga diisi, hasil akhir dijumlahkan (sum). Jika tidak ada harga sama sekali, dirata-rata (average).
                                     if ($hasHargaGlobal) {
                                         $valProgMingguIni = $sumProgMingguIniPerMgg[$w];
                                         $valSmpaiMingguIni = $sumSmpaiMingguIniPerMgg[$w];
@@ -510,7 +514,7 @@
         </div>
     @endforeach
 
-    <!-- MODAL TAMBAH ITEM -->
+    <!-- MODAL TAMBAH ITEM DENGAN FITUR HAPUS BARIS -->
     <div class="modal fade" id="modalAddItem" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <form action="{{ route('pekerjaanmro.item.store', $proyek->id) }}" method="POST"
@@ -524,26 +528,32 @@
                 </div>
                 <div class="modal-body p-4">
                     <div id="item-wrapper">
-                        <div class="item-row border p-3 mb-3 rounded bg-light shadow-sm">
-                            <div class="row">
-                                <div class="col-md-4 form-group">
+                        <div class="item-row border p-3 mb-3 rounded bg-light shadow-sm position-relative">
+                            <div class="row align-items-end">
+                                <div class="col-md-4 form-group mb-md-0">
                                     <label class="small font-weight-bold text-dark">Item Pekerjaan *</label>
                                     <input type="text" name="item_pekerjaan[]" class="form-control form-control-sm"
                                         required>
                                 </div>
-                                <div class="col-md-2 form-group">
+                                <div class="col-md-2 form-group mb-md-0">
                                     <label class="small font-weight-bold text-dark">Satuan *</label>
                                     <input type="text" name="satuan[]" class="form-control form-control-sm" required>
                                 </div>
-                                <div class="col-md-2 form-group">
+                                <div class="col-md-2 form-group mb-md-0">
                                     <label class="small font-weight-bold text-dark">Vol Rencana *</label>
                                     <input type="number" step="any" name="vol_rencana[]"
                                         class="form-control form-control-sm" required>
                                 </div>
-                                <div class="col-md-4 form-group">
+                                <div class="col-md-3 form-group mb-md-0">
                                     <label class="small font-weight-bold text-dark">Harga Satuan</label>
                                     <input type="number" step="any" name="harga_satuan[]"
                                         class="form-control form-control-sm">
+                                </div>
+                                <div class="col-md-1 text-center">
+                                    <button type="button" class="btn btn-danger btn-sm remove-row-btn"
+                                        style="height: 31px; width: 100%; display: none;" title="Hapus Baris">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -566,7 +576,32 @@
             let newRow = wrapper.firstElementChild.cloneNode(true);
             newRow.querySelectorAll('input').forEach(input => input.value = '');
             wrapper.appendChild(newRow);
+            updateRemoveButtons();
         });
+
+        document.getElementById('item-wrapper').addEventListener('click', function(e) {
+            if (e.target.closest('.remove-row-btn')) {
+                let row = e.target.closest('.item-row');
+                let wrapper = document.getElementById('item-wrapper');
+                if (wrapper.children.length > 1) {
+                    row.remove();
+                    updateRemoveButtons();
+                }
+            }
+        });
+
+        function updateRemoveButtons() {
+            let wrapper = document.getElementById('item-wrapper');
+            let rows = wrapper.querySelectorAll('.item-row');
+            rows.forEach((row, index) => {
+                let btn = row.querySelector('.remove-row-btn');
+                if (rows.length > 1) {
+                    btn.style.display = 'block';
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+        }
 
         function validateKumulatif(form, volRencana) {
             let row = form.closest('tr');
