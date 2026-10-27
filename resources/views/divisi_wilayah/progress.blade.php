@@ -698,6 +698,7 @@
                                 <th width="140">Progress</th>
                                 <th>Keterangan Progress</th>
                                 <th width="260">Status Dokumen Terakhir</th>
+                                <th width="180">Nilai Persentase Kontrak Total Progres</th>
                                 <th>Notifikasi</th>
                             </tr>
                         </thead>
@@ -779,10 +780,106 @@
                                     }
 
                                     // 5. PENYESUAIAN KRITERIA CLOSED:
-                                    // Jika dokumen teratas/terakhir berkriteria 'Closed', paksa Realisasi Bulan Ini menjadi Rp 0
                                     if ($latestDoc && strtolower($latestDoc->kriteria ?? '') === 'closed') {
                                         $realisasiBulanIni = 0;
                                         $latestPriceDoc = null;
+                                    }
+
+                                    // =========================================================================
+                                    // 6. PERHITUNGAN DINAMIS PERSENTASE TOTAL PROGRES PEKERJAAN DENGAN MATCHING MODEL
+                                    // =========================================================================
+                                    $persentaseTotalProgres = 0;
+                                    $proyekModel = null;
+
+                                    if ($m->divisi === 'MRO') {
+                                        $proyekModel = \App\Models\PekerjaanMro::where(
+                                            'no_kontrak',
+                                            'LIKE',
+                                            '%' . trim($m->po_nota_dinas) . '%',
+                                        )
+                                            ->where('nama_proyek', 'LIKE', '%' . trim($m->nama_pekerjaan) . '%')
+                                            ->first();
+                                    } elseif ($m->divisi === 'Wilayah 1') {
+                                        $proyekModel = \App\Models\PekerjaanWilayah1::where(
+                                            'no_kontrak',
+                                            'LIKE',
+                                            '%' . trim($m->po_nota_dinas) . '%',
+                                        )
+                                            ->where('nama_proyek', 'LIKE', '%' . trim($m->nama_pekerjaan) . '%')
+                                            ->first();
+                                    } elseif ($m->divisi === 'Wilayah 2') {
+                                        $proyekModel = \App\Models\PekerjaanWilayah2::where(
+                                            'no_kontrak',
+                                            'LIKE',
+                                            '%' . trim($m->po_nota_dinas) . '%',
+                                        )
+                                            ->where('nama_proyek', 'LIKE', '%' . trim($m->nama_pekerjaan) . '%')
+                                            ->first();
+                                    }
+
+                                    if ($proyekModel && $proyekModel->items->count() > 0) {
+                                        $tglMulaiItem = $m->tanggal_kontrak ?? null;
+                                        $tglSelesaiItem = $m->tanggal_selesai_kontrak ?? null;
+
+                                        $totalHargaGlobal = $proyekModel->items->sum(function ($item) {
+                                            return $item->harga_satuan ? $item->vol_rencana * $item->harga_satuan : 0;
+                                        });
+                                        $hasHargaGlobal = $proyekModel->items->contains(function ($item) {
+                                            return !empty($item->harga_satuan) && $item->harga_satuan > 0;
+                                        });
+                                        $totalItemCount = $proyekModel->items->count();
+
+                                        $startDateVal = $tglMulaiItem
+                                            ? \Carbon\Carbon::parse($tglMulaiItem)->startOfDay()
+                                            : now();
+                                        $endDateVal = $tglSelesaiItem
+                                            ? \Carbon\Carbon::parse($tglSelesaiItem)->startOfDay()
+                                            : now();
+                                        $diffDays = $startDateVal->diffInDays($endDateVal) + 1;
+                                        $totalWeeksCalc = max(1, ceil($diffDays / 7));
+
+                                        $sumSmpaiMingguIniPerMgg = array_fill(1, $totalWeeksCalc, 0);
+
+                                        foreach ($proyekModel->items as $item) {
+                                            $bobotRencana = 0;
+                                            if ($totalHargaGlobal > 0) {
+                                                $jumlahItem = $item->harga_satuan
+                                                    ? $item->vol_rencana * $item->harga_satuan
+                                                    : 0;
+                                                $bobotRencana = ($jumlahItem / $totalHargaGlobal) * 100;
+                                            }
+
+                                            $progressMingguanData = $item->progress_mingguan ?? [];
+                                            $smpaiMingguIniAcc = 0;
+
+                                            for ($w = 1; $w <= $totalWeeksCalc; $w++) {
+                                                $volRealisasi = $progressMingguanData[$w]['vol'] ?? '';
+                                                $progMingguIni = 0;
+
+                                                if ($item->vol_rencana > 0 && is_numeric($volRealisasi)) {
+                                                    if ($item->harga_satuan) {
+                                                        $progMingguIni =
+                                                            ($bobotRencana * $volRealisasi) / $item->vol_rencana;
+                                                    } else {
+                                                        $progMingguIni = ($volRealisasi / $item->vol_rencana) * 100;
+                                                    }
+                                                }
+                                                $smpaiMingguIniAcc += $progMingguIni;
+                                                $sumSmpaiMingguIniPerMgg[$w] += $smpaiMingguIniAcc;
+                                            }
+                                        }
+
+                                        if ($totalWeeksCalc > 0) {
+                                            $wLast = $totalWeeksCalc;
+                                            if ($hasHargaGlobal) {
+                                                $persentaseTotalProgres = $sumSmpaiMingguIniPerMgg[$wLast] ?? 0;
+                                            } else {
+                                                $persentaseTotalProgres =
+                                                    $totalItemCount > 0
+                                                        ? ($sumSmpaiMingguIniPerMgg[$wLast] ?? 0) / $totalItemCount
+                                                        : 0;
+                                            }
+                                        }
                                     }
                                 @endphp
 
@@ -993,6 +1090,15 @@
                                         @endif
                                     </td>
 
+                                    {{-- KOLOM: Nilai Persentase Kontrak Total Progres --}}
+                                    <td class="text-center">
+                                        <div class="p-2 border rounded bg-white shadow-sm">
+                                            <div class="fw-bold text-info fs-6">
+                                                <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>
+                                            </div>
+                                        </div>
+                                    </td>
+
                                     {{-- NOTIFIKASI --}}
                                     <td class="text-center">
                                         @if (method_exists($m, 'notifKontrak'))
@@ -1008,7 +1114,7 @@
 
                             @empty
                                 <tr>
-                                    <td colspan="15" class="text-center text-muted">
+                                    <td colspan="16" class="text-center text-muted">
                                         Tidak ada data monitoring
                                     </td>
                                 </tr>
