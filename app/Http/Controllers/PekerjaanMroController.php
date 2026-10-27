@@ -92,11 +92,52 @@ class PekerjaanMroController extends Controller
         return redirect()->route('pekerjaanmro.index')->with('success', 'Proyek MRO berhasil dihapus.');
     }
 
+    // public function monitor($id)
+    // {
+    //     $proyek = PekerjaanMro::with('items')->findOrFail($id);
+
+    //     // Ambil tanggal mulai & selesai proyek (fallback ke tabel Monitoring jika di proyek masih kosong)
+    //     $tglMulaiKontrak = $proyek->tanggal_kontrak;
+    //     $tglSelesaiKontrak = $proyek->tanggal_selesai_kontrak;
+
+    //     if ((!$tglMulaiKontrak || !$tglSelesaiKontrak) && $proyek->no_kontrak) {
+    //         $monInfo = Monitoring::where('po_nota_dinas', $proyek->no_kontrak)->first();
+    //         $tglMulaiKontrak = $tglMulaiKontrak ?? ($monInfo->tanggal_kontrak ?? null);
+    //         $tglSelesaiKontrak = $tglSelesaiKontrak ?? ($monInfo->tanggal_selesai_kontrak ?? null);
+    //     }
+
+    //     // Kalkulasi jumlah minggu presisi berdasarkan selisih tanggal
+    //     if ($tglMulaiKontrak && $tglSelesaiKontrak) {
+    //         $startDate = Carbon::parse($tglMulaiKontrak)->startOfDay();
+    //         $endDate = Carbon::parse($tglSelesaiKontrak)->startOfDay();
+
+    //         // Hitung total hari inklusif (+1 agar hari terakhir dihitung penuh)
+    //         $diffDays = $startDate->diffInDays($endDate) + 1;
+
+    //         // Konversi total hari ke minggu (dibulatkan ke atas)
+    //         $totalWeeks = (int) ceil($diffDays / 7);
+    //         if ($totalWeeks < 1) {
+    //             $totalWeeks = 1;
+    //         }
+    //     } else {
+    //         $startDate = Carbon::now()->startOfYear();
+    //         $totalWeeks = 52;
+    //     }
+
+    //     return view('pekerjaanmro.monitor', compact(
+    //         'proyek',
+    //         'totalWeeks',
+    //         'tglMulaiKontrak',
+    //         'tglSelesaiKontrak',
+    //         'startDate'
+    //     ));
+    // }
+
     public function monitor($id)
     {
         $proyek = PekerjaanMro::with('items')->findOrFail($id);
 
-        // Ambil tanggal mulai & selesai proyek (fallback ke tabel Monitoring jika di proyek masih kosong)
+        // Ambil tanggal mulai & selesai proyek (fallback ke tabel Monitoring jika kosong)
         $tglMulaiKontrak = $proyek->tanggal_kontrak;
         $tglSelesaiKontrak = $proyek->tanggal_selesai_kontrak;
 
@@ -106,27 +147,40 @@ class PekerjaanMroController extends Controller
             $tglSelesaiKontrak = $tglSelesaiKontrak ?? ($monInfo->tanggal_selesai_kontrak ?? null);
         }
 
-        // Kalkulasi jumlah minggu presisi berdasarkan selisih tanggal
-        if ($tglMulaiKontrak && $tglSelesaiKontrak) {
-            $startDate = Carbon::parse($tglMulaiKontrak)->startOfDay();
-            $endDate = Carbon::parse($tglSelesaiKontrak)->startOfDay();
+        $startDate = $tglMulaiKontrak ? Carbon::parse($tglMulaiKontrak)->startOfDay() : Carbon::now()->startOfYear();
+        $endDate = $tglSelesaiKontrak ? Carbon::parse($tglSelesaiKontrak)->startOfDay() : $startDate->copy()->addMonths(6);
 
-            // Hitung total hari inklusif (+1 agar hari terakhir dihitung penuh)
-            $diffDays = $startDate->diffInDays($endDate) + 1;
+        // Generate minggu berdasarkan kalender (Minggu s/d Sabtu)
+        $weeks = [];
+        $currentStart = $startDate->copy();
 
-            // Konversi total hari ke minggu (dibulatkan ke atas)
-            $totalWeeks = (int) ceil($diffDays / 7);
-            if ($totalWeeks < 1) {
-                $totalWeeks = 1;
+        while ($currentStart->lte($endDate)) {
+            $currentEnd = $currentStart->copy();
+
+            // Cari hari Sabtu terdekat di minggu tersebut (Saturday = 6 dalam Carbon)
+            $daysToSaturday = (6 - $currentEnd->dayOfWeek + 7) % 7;
+            $currentEnd->addDays($daysToSaturday);
+
+            // Jika akhir minggu melewati batas tanggal selesai kontrak, batasi sampai tanggal selesai kontrak
+            if ($currentEnd->gt($endDate)) {
+                $currentEnd = $endDate->copy();
             }
-        } else {
-            $startDate = Carbon::now()->startOfYear();
-            $totalWeeks = 52;
+
+            $weeks[] = [
+                'start' => $currentStart->copy(),
+                'end' => $currentEnd->copy(),
+            ];
+
+            // Minggu berikutnya mulai hari Minggu (1 hari setelah Sabtu)
+            $currentStart = $currentEnd->copy()->addDay();
         }
+
+        $totalWeeks = count($weeks);
 
         return view('pekerjaanmro.monitor', compact(
             'proyek',
             'totalWeeks',
+            'weeks',
             'tglMulaiKontrak',
             'tglSelesaiKontrak',
             'startDate'

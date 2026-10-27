@@ -262,6 +262,7 @@
                     style="font-size: 12px; white-space: nowrap;">
                     <thead class="table-dark">
                         <!-- BARIS 1: PERIODE TANGGAL -->
+                        <!-- BARIS 1: PERIODE TANGGAL -->
                         <tr>
                             <th rowspan="4" class="align-middle th-no">NO</th>
                             <th rowspan="4" class="align-middle th-item">ITEM PEKERJAAN</th>
@@ -277,24 +278,17 @@
                                 </div>
                             </th>
 
-                            @for ($w = 1; $w <= $totalWeeks; $w++)
+                            @foreach ($weeks as $index => $week)
                                 @php
-                                    $tglMulaiMgg = $startDate->copy()->addDays(($w - 1) * 7);
-                                    $tglSelesaiMgg = $startDate->copy()->addDays($w * 7 - 1);
-
-                                    if (
-                                        $tglSelesaiKontrak &&
-                                        $tglSelesaiMgg->gt(\Carbon\Carbon::parse($tglSelesaiKontrak)->startOfDay())
-                                    ) {
-                                        $tglSelesaiMgg = \Carbon\Carbon::parse($tglSelesaiKontrak)->startOfDay();
-                                    }
+                                    $tglMulaiMgg = $week['start'];
+                                    $tglSelesaiMgg = $week['end'];
                                 @endphp
                                 <th colspan="3" class="text-left font-weight-normal px-3 py-2"
                                     style="font-size: 11px; background-color: #1d3557;">
                                     Periode: {{ $tglMulaiMgg->format('d/m/Y') }}<br>
                                     s/d: {{ $tglSelesaiMgg->format('d/m/Y') }}
                                 </th>
-                            @endfor
+                            @endforeach
 
                             <th rowspan="4" class="align-middle text-center px-3"
                                 style="min-width: 160px; width: 160px;">Aksi</th>
