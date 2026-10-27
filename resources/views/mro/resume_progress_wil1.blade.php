@@ -639,13 +639,25 @@
                                         @endif
                                     </td>
 
-                                    {{-- KOLOM: Nilai Persentase Kontrak Total Progres --}}
+                                    {{-- KOLOM: Nilai Persentase Kontrak Total Progres (Dapat Diklik ke Pekerjaan Wilayah 1) --}}
                                     <td class="text-center">
-                                        <div class="p-2 border rounded bg-white shadow-sm">
-                                            <div class="fw-bold text-info fs-6">
-                                                <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>
+                                        @if ($proyekWil1)
+                                            <a href="{{ route('pekerjaanwil1.index') }}?search={{ urlencode(trim($m->po_nota_dinas)) }}" 
+                                               class="text-decoration-none d-block" 
+                                               title="Klik untuk melihat Rincian Pekerjaan Wilayah 1">
+                                                <div class="p-2 border rounded bg-white shadow-sm transition-hover">
+                                                    <div class="fw-bold text-info fs-6">
+                                                        <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        @else
+                                            <div class="p-2 border rounded bg-white shadow-sm">
+                                                <div class="fw-bold text-info fs-6">
+                                                    <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </td>
 
                                     <td class="text-center">

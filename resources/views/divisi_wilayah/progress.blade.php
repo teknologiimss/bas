@@ -1090,13 +1090,34 @@
                                         @endif
                                     </td>
 
-                                    {{-- KOLOM: Nilai Persentase Kontrak Total Progres --}}
+                                    {{-- KOLOM: Nilai Persentase Kontrak Total Progres (Dinamis per Divisi) --}}
                                     <td class="text-center">
-                                        <div class="p-2 border rounded bg-white shadow-sm">
-                                            <div class="fw-bold text-info fs-6">
-                                                <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>
+                                        @php
+                                            $targetProgresRoute = match ($m->divisi) {
+                                                'MRO' => route('pekerjaanmro.index'),
+                                                'Wilayah 1' => route('pekerjaanwil1.index'),
+                                                'Wilayah 2' => route('pekerjaanwil2.index'),
+                                                default => null,
+                                            };
+                                        @endphp
+
+                                        @if ($proyekModel && $targetProgresRoute)
+                                            <a href="{{ $targetProgresRoute }}?search={{ urlencode(trim($m->po_nota_dinas)) }}" 
+                                               class="text-decoration-none d-block" 
+                                               title="Klik untuk melihat Rincian Pekerjaan {{ $m->divisi }}">
+                                                <div class="p-2 border rounded bg-white shadow-sm transition-hover">
+                                                    <div class="fw-bold text-info fs-6">
+                                                        <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        @else
+                                            <div class="p-2 border rounded bg-white shadow-sm">
+                                                <div class="fw-bold text-info fs-6">
+                                                    <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </td>
 
                                     {{-- NOTIFIKASI --}}
