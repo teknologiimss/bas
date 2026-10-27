@@ -198,6 +198,7 @@
                 <table class="table table-bordered table-striped text-center align-middle mb-0"
                     style="font-size: 12px; white-space: nowrap;">
                     <thead class="table-dark">
+                        <!-- BARIS 1: PERIODE TANGGAL -->
                         <tr>
                             <th rowspan="4" class="align-middle th-no">NO</th>
                             <th rowspan="4" class="align-middle th-item">ITEM PEKERJAAN</th>
@@ -212,37 +213,39 @@
                                     (*jika tidak ada harga, kolom ini di isi 100%)
                                 </div>
                             </th>
-                            @for ($w = 1; $w <= $totalWeeks; $w++)
+
+                            @foreach ($weeks as $week)
                                 @php
-                                    $tglMulaiMgg = $startDate->copy()->addDays(($w - 1) * 7);
-                                    $tglSelesaiMgg = $startDate->copy()->addDays($w * 7 - 1);
-                                    if (
-                                        $tglSelesaiKontrak &&
-                                        $tglSelesaiMgg->gt(\Carbon\Carbon::parse($tglSelesaiKontrak)->startOfDay())
-                                    ) {
-                                        $tglSelesaiMgg = \Carbon\Carbon::parse($tglSelesaiKontrak)->startOfDay();
-                                    }
+                                    $tglMulaiMgg = $week['start'];
+                                    $tglSelesaiMgg = $week['end'];
                                 @endphp
                                 <th colspan="3" class="text-left font-weight-normal px-3 py-2"
                                     style="font-size: 11px; background-color: #1d3557;">
-                                    Periode: {{ $tglMulaiMgg->format('d/m/Y') }}<br>s/d:
-                                    {{ $tglSelesaiMgg->format('d/m/Y') }}
+                                    Periode: {{ $tglMulaiMgg->format('d/m/Y') }}<br>
+                                    s/d: {{ $tglSelesaiMgg->format('d/m/Y') }}
                                 </th>
-                            @endfor
+                            @endforeach
+
                             <th rowspan="4" class="align-middle text-center px-3" style="width: 160px;">Aksi</th>
                         </tr>
+
+                        <!-- BARIS 2: PROG MGG -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 <th colspan="3" style="background-color: #243b55;">Progress Minggu {{ $w }}
                                 </th>
                             @endfor
                         </tr>
+
+                        <!-- BARIS 3: MINGGU INI & S/D MINGGU INI -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 <th colspan="2" style="background-color: #0b2545;">Minggu ini</th>
                                 <th style="background-color: #06182c;">s/d Minggu ini</th>
                             @endfor
                         </tr>
+
+                        <!-- BARIS 4: SUB HEADER KOLOM -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 <th style="background-color: #132d46;">Vol realisasi</th>

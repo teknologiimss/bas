@@ -114,6 +114,36 @@ class PekerjaanWilayah1Controller extends Controller
         return redirect()->route('pekerjaanwil1.index')->with('success', 'Proyek Wilayah 1 berhasil dihapus.');
     }
 
+    // public function monitor($id)
+    // {
+    //     $proyek = PekerjaanWilayah1::with('items')->findOrFail($id);
+
+    //     $tglMulaiKontrak = $proyek->tanggal_kontrak;
+    //     $tglSelesaiKontrak = $proyek->tanggal_selesai_kontrak;
+
+    //     if ($proyek->no_kontrak) {
+    //         $monInfo = MonitoringWil1::where('po_nota_dinas', $proyek->no_kontrak)->first();
+    //         if ($monInfo) {
+    //             $tglMulaiKontrak = $monInfo->tanggal_kontrak ?? $tglMulaiKontrak;
+    //             $tglSelesaiKontrak = $monInfo->tanggal_selesai_kontrak ?? $tglSelesaiKontrak;
+    //         }
+    //     }
+
+    //     if ($tglMulaiKontrak && $tglSelesaiKontrak) {
+    //         $startDate = Carbon::parse($tglMulaiKontrak)->startOfDay();
+    //         $endDate = Carbon::parse($tglSelesaiKontrak)->startOfDay();
+    //         $diffDays = $startDate->diffInDays($endDate) + 1;
+    //         $totalWeeks = (int) ceil($diffDays / 7);
+    //         if ($totalWeeks < 1)
+    //             $totalWeeks = 1;
+    //     } else {
+    //         $startDate = Carbon::now()->startOfYear();
+    //         $totalWeeks = 52;
+    //     }
+
+    //     return view('wilayah1.proyek.monitor', compact('proyek', 'totalWeeks', 'tglMulaiKontrak', 'tglSelesaiKontrak', 'startDate'));
+    // }
+
     public function monitor($id)
     {
         $proyek = PekerjaanWilayah1::with('items')->findOrFail($id);
@@ -129,19 +159,44 @@ class PekerjaanWilayah1Controller extends Controller
             }
         }
 
-        if ($tglMulaiKontrak && $tglSelesaiKontrak) {
-            $startDate = Carbon::parse($tglMulaiKontrak)->startOfDay();
-            $endDate = Carbon::parse($tglSelesaiKontrak)->startOfDay();
-            $diffDays = $startDate->diffInDays($endDate) + 1;
-            $totalWeeks = (int) ceil($diffDays / 7);
-            if ($totalWeeks < 1)
-                $totalWeeks = 1;
-        } else {
-            $startDate = Carbon::now()->startOfYear();
-            $totalWeeks = 52;
+        $startDate = $tglMulaiKontrak ? Carbon::parse($tglMulaiKontrak)->startOfDay() : Carbon::now()->startOfYear();
+        $endDate = $tglSelesaiKontrak ? Carbon::parse($tglSelesaiKontrak)->startOfDay() : $startDate->copy()->addMonths(6);
+
+        // Generate minggu berdasarkan kalender (Minggu s/d Sabtu)
+        $weeks = [];
+        $currentStart = $startDate->copy();
+
+        while ($currentStart->lte($endDate)) {
+            $currentEnd = $currentStart->copy();
+
+            // Cari hari Sabtu terdekat di minggu tersebut (Saturday = 6 dalam Carbon)
+            $daysToSaturday = (6 - $currentEnd->dayOfWeek + 7) % 7;
+            $currentEnd->addDays($daysToSaturday);
+
+            // Jika akhir minggu melewati batas tanggal selesai kontrak, batasi sampai tanggal selesai kontrak
+            if ($currentEnd->gt($endDate)) {
+                $currentEnd = $endDate->copy();
+            }
+
+            $weeks[] = [
+                'start' => $currentStart->copy(),
+                'end' => $currentEnd->copy(),
+            ];
+
+            // Minggu berikutnya mulai hari Minggu (1 hari setelah Sabtu)
+            $currentStart = $currentEnd->copy()->addDay();
         }
 
-        return view('wilayah1.proyek.monitor', compact('proyek', 'totalWeeks', 'tglMulaiKontrak', 'tglSelesaiKontrak', 'startDate'));
+        $totalWeeks = count($weeks);
+
+        return view('wilayah1.proyek.monitor', compact(
+            'proyek',
+            'totalWeeks',
+            'weeks',
+            'tglMulaiKontrak',
+            'tglSelesaiKontrak',
+            'startDate'
+        ));
     }
 
     public function storeItem(Request $request, $id)
