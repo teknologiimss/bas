@@ -11,8 +11,8 @@
 
     <style>
         /* ==========================================================
-                            TEMA NAVY BLUE, MODERN & DYNAMIC STYLING
-                            ========================================================== */
+                        TEMA NAVY BLUE, MODERN & DYNAMIC STYLING
+                        ========================================================== */
         body {
             background-color: #f4f6f9;
         }
@@ -210,7 +210,7 @@
         <div class="card p-3 p-md-4 shadow-sm">
             <h5 class="mb-3 font-weight-bold text-dark">Daftar Pekerjaan MRO</h5>
 
-            @forelse ($proyeks as $p)
+            @forelse ($proyeks as $index => $p)
                 @php
                     $monInfo = \App\Models\Monitoring::where('po_nota_dinas', $p->no_kontrak)->first();
                     $tglMulai = $p->tanggal_kontrak ?? ($monInfo->tanggal_kontrak ?? null);
@@ -275,18 +275,24 @@
                 @endphp
 
                 <div class="proyek-item-card shadow-sm">
-                    <div>
-                        <h5 class="mb-1 text-dark"><strong>{{ $p->nama_proyek }}</strong></h5>
-                        <small class="text-muted d-block">
-                            <i class="fa fa-file-text-o mr-1"></i> No. Kontrak/SO/Nodin: {{ $p->no_kontrak ?? '-' }}
-                        </small>
+                    <div class="d-flex align-items-start">
+                        <!-- Nomor Urut -->
+                        <span class="font-weight-bold text-muted mr-3 pt-1" style="min-width: 25px;">
+                            {{ $proyeks->firstItem() + $index }}.
+                        </span>
+                        <div>
+                            <h5 class="mb-1 text-dark"><strong>{{ $p->nama_proyek }}</strong></h5>
+                            <small class="text-muted d-block">
+                                <i class="fa fa-file-text-o mr-1"></i> No. Kontrak/SO/Nodin: {{ $p->no_kontrak ?? '-' }}
+                            </small>
 
-                        <small class="text-muted d-block mt-1">
-                            <i class="fa fa-calendar-o mr-1"></i> Periode Kontrak:
-                            <strong>{{ $tglMulai ? \Carbon\Carbon::parse($tglMulai)->format('d/m/Y') : '-' }}</strong>
-                            s/d
-                            <strong>{{ $tglSelesai ? \Carbon\Carbon::parse($tglSelesai)->format('d/m/Y') : '-' }}</strong>
-                        </small>
+                            <small class="text-muted d-block mt-1">
+                                <i class="fa fa-calendar-o mr-1"></i> Periode Kontrak:
+                                <strong>{{ $tglMulai ? \Carbon\Carbon::parse($tglMulai)->format('d/m/Y') : '-' }}</strong>
+                                s/d
+                                <strong>{{ $tglSelesai ? \Carbon\Carbon::parse($tglSelesai)->format('d/m/Y') : '-' }}</strong>
+                            </small>
+                        </div>
                     </div>
 
                     <div class="action-group">
