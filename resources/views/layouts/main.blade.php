@@ -667,18 +667,18 @@
                                                 <a href="#" class="nav-link">
                                                     <i class="nav-icon fas fa-map-marked-alt"></i>
                                                     <p class="">
-                                                        {{ __('Wilayah,MRO') }}
+                                                        {{ __('Wilayah') }}
                                                         <i class="right fas fa-angle-left"></i>
                                                     </p>
                                                 </a>
                                                 <ul class="nav nav-treeview pl-3">
-                                                    <li class="nav-item">
+                                                    {{-- <li class="nav-item">
                                                         <a href="{{ route('purchase_request.index') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'purchase_request.index' ? 'active' : '' }}">
                                                             <i class="fas fa-newspaper nav-icon"></i>
                                                             <p>{{ __('Purchase Request') }}</p>
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
 
                                                     {{-- Tracking Wilayah TIDAK untuk MRO (role 14) --}}
                                                     {{-- @if (Auth::user()->role != 14)
