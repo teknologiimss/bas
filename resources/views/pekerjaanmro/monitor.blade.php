@@ -2,8 +2,6 @@
 
 @section('title', 'Monitoring Progress - ' . $proyek->nama_proyek)
 <link rel="icon" href="{{ asset('img/logoimss.png') }}" type="image/png">
-<!-- Tambahkan CDN Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 @section('content')
     <style>
@@ -177,6 +175,7 @@
             border-color: #0b2545;
         }
 
+        /* Styling Khusus Tombol Aksi agar Sejajar Presisi Horizontal */
         .action-btn-group {
             display: flex !important;
             flex-direction: row !important;
@@ -199,6 +198,12 @@
             border-radius: 6px !important;
             margin: 0 !important;
             font-weight: bold !important;
+        }
+
+        .action-btn-group form {
+            display: inline-flex !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
         .modal {
@@ -256,6 +261,8 @@
                 <table class="table table-bordered table-striped text-center align-middle mb-0"
                     style="font-size: 12px; white-space: nowrap;">
                     <thead class="table-dark">
+                        <!-- BARIS 1: PERIODE TANGGAL -->
+                        <!-- BARIS 1: PERIODE TANGGAL -->
                         <tr>
                             <th rowspan="4" class="align-middle th-no">NO</th>
                             <th rowspan="4" class="align-middle th-item">ITEM PEKERJAAN</th>
@@ -286,18 +293,24 @@
                             <th rowspan="4" class="align-middle text-center px-3"
                                 style="min-width: 160px; width: 160px;">Aksi</th>
                         </tr>
+
+                        <!-- BARIS 2: PROG MGG -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 <th colspan="3" style="background-color: #243b55;">Progress Minggu {{ $w }}
                                 </th>
                             @endfor
                         </tr>
+
+                        <!-- BARIS 3: MINGGU INI & S/D MINGGU INI -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 <th colspan="2" style="background-color: #0b2545;">Minggu ini</th>
                                 <th style="background-color: #06182c;">s/d Minggu ini</th>
                             @endfor
                         </tr>
+
+                        <!-- BARIS 4: SUB HEADER KOLOM -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 <th style="background-color: #132d46;">Vol realisasi</th>
@@ -346,6 +359,7 @@
                                     </form>
                                 </td>
 
+                                <!-- Perhitungan Kolom Mingguan -->
                                 @for ($w = 1; $w <= $totalWeeks; $w++)
                                     @php
                                         $volRealisasi = $progressMingguanData[$w]['vol'] ?? '';
@@ -362,6 +376,7 @@
 
                                         $smpaiMingguIniAcc += $progMingguIni;
 
+                                        // Akumulasi nilai untuk footer
                                         $sumProgMingguIniPerMgg[$w] += $progMingguIni;
                                         $sumSmpaiMingguIniPerMgg[$w] += $smpaiMingguIniAcc;
                                     @endphp
@@ -387,6 +402,7 @@
                                     </td>
                                 @endfor
 
+                                <!-- Tombol Aksi Sejajar Presisi -->
                                 <td class="align-middle px-2 py-2 text-center" style="min-width: 160px; width: 160px;">
                                     <div class="action-btn-group">
                                         <button type="button"
@@ -447,16 +463,6 @@
                     </tfoot>
                 </table>
             </div>
-
-            <!-- CONTAINER GRAFIK KURVA S -->
-            <div class="card p-4 mt-4 shadow-sm border">
-                <h5 class="font-weight-bold text-dark mb-3"><i class="fa fa-chart-line mr-2 text-primary"></i> Grafik
-                    Kurva S (S-Curve)</h5>
-                <div style="position: relative; height: 380px; width: 100%;">
-                    <canvas id="sCurveChart"></canvas>
-                </div>
-            </div>
-
         </div>
     </div>
 
@@ -507,7 +513,7 @@
         </div>
     @endforeach
 
-    <!-- MODAL TAMBAH ITEM -->
+    <!-- MODAL TAMBAH ITEM DENGAN FITUR HAPUS BARIS -->
     <div class="modal fade" id="modalAddItem" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <form action="{{ route('pekerjaanmro.item.store', $proyek->id) }}" method="POST"
@@ -563,79 +569,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT CHART.JS & VALIDASI -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const totalWeeks = {{ $totalWeeks }};
-            let labels = [];
-            let actualData = [];
-            let planData = [];
-
-            for (let i = 1; i <= totalWeeks; i++) {
-                labels.push('Minggu ' + i);
-            }
-
-            // Memasukkan data Realisasi (Actual) kumulatif dari PHP ke JavaScript
-            @for ($w = 1; $w <= $totalWeeks; $w++)
-                @php
-                    if ($hasHargaGlobal) {
-                        $valSmpaiMingguIni = $sumSmpaiMingguIniPerMgg[$w];
-                    } else {
-                        $valSmpaiMingguIni = $totalItemCount > 0 ? $sumSmpaiMingguIniPerMgg[$w] / $totalItemCount : 0;
-                    }
-                @endphp
-                actualData.push({{ $valSmpaiMingguIni }});
-            @endfor
-
-            // Simulasi Kurva Rencana (Plan) secara merata sampai 100% di akhir minggu
-            let stepPlan = 100 / totalWeeks;
-            for (let i = 1; i <= totalWeeks; i++) {
-                let kumulatifPlan = Math.min(100, i * stepPlan);
-                planData.push(kumulatifPlan.toFixed(2));
-            }
-
-            const ctx = document.getElementById('sCurveChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Realisasi (Actual) %',
-                        data: actualData,
-                        borderColor: '#f39c12',
-                        backgroundColor: 'rgba(243, 156, 18, 0.1)',
-                        borderWidth: 3,
-                        fill: false,
-                        tension: 0.1
-                    }, {
-                        label: 'Rencana (Plan) %',
-                        data: planData,
-                        borderColor: '#1d3557',
-                        backgroundColor: 'rgba(29, 53, 87, 0.1)',
-                        borderWidth: 2,
-                        borderDash: [5, 5],
-                        fill: false,
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: {
-                                callback: function(value) {
-                                    return value + '%';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
         document.getElementById('add-more-row').addEventListener('click', function() {
             let wrapper = document.getElementById('item-wrapper');
             let newRow = wrapper.firstElementChild.cloneNode(true);
