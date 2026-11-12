@@ -365,12 +365,67 @@ class MonitoringWil1Controller extends Controller
         return view('mro.resume_progress_wil1', compact('monitorings'));
     }
 
-    public function print()
+    // public function print()
+    // {
+    //     $monitorings = MonitoringWil1::with('documents')->get();
+
+    //     $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('mro.progress.print_pdf_wil1', compact('monitorings'))
+    //         ->setPaper('a4', 'landscape');
+
+    //     return $pdf->stream('Progress_MRO_Wilayah_1_' . date('Ymd_His') . '.pdf');
+    // }
+
+    public function print(Request $request)
     {
+        // 1. Ambil data beserta relasi dokumennya
         $monitorings = MonitoringWil1::with('documents')->get();
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('mro.progress.print_pdf_wil1', compact('monitorings'))
-            ->setPaper('a4', 'landscape');
+        // 2. Kalkulasi Realisasi INKA & Non-INKA untuk Wilayah 1
+        $totalInka = 0;
+        $totalNonInka = 0;
+
+        foreach ($monitorings as $item) {
+            $jenis = strtolower(trim($item->jenis_pekerjaan ?? ''));
+            $isInka = ($jenis === 'inka' || str_contains($jenis, 'inka'));
+
+            // Hitung dari dokumen realisasi/closed yang valid
+            $sumDocs = $item->documents
+                ? $item->documents->filter(function ($doc) {
+                    $kriteria = strtolower($doc->kriteria ?? '');
+                    return in_array($kriteria, ['realisasi', 'closed']) && !is_null($doc->harga) && $doc->harga > 0;
+                })->sum('harga')
+                : 0;
+
+            $realisasiVal = $sumDocs > 0 ? $sumDocs : ($item->total_realisasi ?? ($item->realisasi ?? 0));
+
+            if ($isInka) {
+                $totalInka += $realisasiVal;
+            } else {
+                $totalNonInka += $realisasiVal;
+            }
+        }
+
+        $totalWil1 = $totalInka + $totalNonInka;
+        $realisasiWil1Inka = $totalInka;
+        $realisasiWil1NonInka = $totalNonInka;
+
+        $grandTotalAll = $totalWil1;
+        $grandTotalInka = $totalInka;
+        $grandTotalNonInka = $totalNonInka;
+
+        // 3. Load view PDF dengan membawa seluruh variabel kalkulasi
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView(
+            'mro.progress.print_pdf_wil1', 
+            compact(
+                'monitorings',
+                'grandTotalAll',
+                'grandTotalInka',
+                'grandTotalNonInka',
+                'totalWil1',
+                'realisasiWil1Inka',
+                'realisasiWil1NonInka'
+            )
+        )->setPaper('a4', 'landscape');
 
         return $pdf->stream('Progress_MRO_Wilayah_1_' . date('Ymd_His') . '.pdf');
     }
