@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Laporan Progress Divisi Wilayah</title>
     <style>
-        /* Pengaturan Cetak A4 Landscape & Margin Presisi */
         @page {
             size: A4 landscape;
             margin: 6mm 6mm 8mm 6mm;
@@ -25,7 +24,6 @@
             position: relative;
         }
 
-        /* Logo Absolute */
         .header-logo {
             position: absolute;
             top: -20px;
@@ -56,7 +54,6 @@
             font-size: 7.5px;
         }
 
-        /* Tabel Presisi Fit Page */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -93,7 +90,6 @@
             font-weight: bold;
         }
 
-        /* Badge General Presisi (Anti Melebihi Kolom) */
         .badge {
             display: inline-block;
             max-width: 100%;
@@ -104,9 +100,6 @@
             color: #fff;
             text-align: center;
             line-height: 1.15;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
         }
 
         .badge-warning {
@@ -129,17 +122,6 @@
             color: #fff;
         }
 
-        .badge-info {
-            background-color: #0ea5e9;
-            color: #fff;
-        }
-
-        .badge-primary {
-            background-color: #3b82f6;
-            color: #fff;
-        }
-
-        /* Badge Divisi */
         .badge-mro {
             background-color: #991b1b;
             color: #fff;
@@ -155,7 +137,6 @@
             color: #fff;
         }
 
-        /* Document Card */
         .doc-card {
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -165,7 +146,6 @@
             line-height: 1.1;
         }
 
-        /* Progress Bar Style untuk Cetak */
         .progress-container {
             width: 100%;
             background-color: #dbeafe;
@@ -189,17 +169,48 @@
             display: block;
         }
 
-        /* Penyesuaian Sel Notifikasi */
         td.col-notif {
             padding: 2px 1px;
             text-align: center;
+        }
+
+        /* Tabel Ringkasan */
+        .summary-section {
+            margin-top: 12px;
+            page-break-inside: avoid;
+        }
+
+        .summary-title {
+            font-size: 8.5px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .summary-table th {
+            background-color: #334155;
+            color: #ffffff;
+            font-size: 7px;
+            padding: 4px;
+            text-align: center;
+        }
+
+        .summary-table td {
+            font-size: 7px;
+            padding: 4px;
+            vertical-align: middle;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Logo di pojok kanan atas -->
     <img src="{{ public_path('img/IMST.png') }}" alt="Logo IMST" class="header-logo">
 
     <div class="header">
@@ -232,7 +243,6 @@
         <tbody>
             @forelse ($monitorings as $m)
                 @php
-                    // Penentuan Warna Badge Divisi
                     if ($m->divisi === 'MRO') {
                         $divisiClass = 'badge-mro';
                     } elseif ($m->divisi === 'Wilayah 1') {
@@ -241,7 +251,6 @@
                         $divisiClass = 'badge-wil2';
                     }
 
-                    // Status Warna Badge
                     $statusClass = match ($m->status) {
                         'Open' => 'badge-warning',
                         'Closed' => 'badge-success',
@@ -249,7 +258,6 @@
                         default => 'badge-secondary',
                     };
 
-                    // Progress Calculation & Color
                     $progressVal = is_numeric($m->progress)
                         ? (float) $m->progress
                         : (float) preg_replace('/[^0-9.]/', '', $m->progress ?? 0);
@@ -257,13 +265,9 @@
 
                     $progressColor = method_exists($m, 'progressColor') ? $m->progressColor() : '#2563eb';
 
-                    // 1. Ambil dokumen PALING BARU
                     $latestDoc = $m->documents ? $m->documents->sortByDesc('id')->first() : null;
-
-                    // Notifikasi Status Kontrak
                     $notif = method_exists($m, 'notifKontrak') ? $m->notifKontrak() : null;
 
-                    // 2. Kalkulasi Nilai Kontrak
                     $nilaiKontrakDoc = $m->documents
                         ? $m->documents
                             ->filter(fn($doc) => strtolower($doc->kriteria ?? '') === 'rencana')
@@ -275,7 +279,6 @@
                             ? $nilaiKontrakDoc
                             : $m->nilai_kontrak ?? ($m->nilai_po ?? ($m->nilai ?? ($m->nominal ?? 0)));
 
-                    // 3. Kalkulasi Total Realisasi
                     $totalRealisasiDoc = $m->documents
                         ? $m->documents
                             ->filter(function ($doc) {
@@ -290,7 +293,6 @@
                     $totalRealisasi =
                         $totalRealisasiDoc > 0 ? $totalRealisasiDoc : $m->total_realisasi ?? ($m->realisasi ?? 0);
 
-                    // 4. Filter Realisasi Bulan Ini
                     $groupedPriceDocs = $m->documents
                         ? $m->documents
                             ->filter(function ($doc) {
@@ -313,19 +315,14 @@
                         $latestPriceDoc = $latestMonthGroup
                             ->sortByDesc(fn($doc) => $doc->created_at ?? $doc->id)
                             ->first();
-
                         $totalHargaBulanIni = $latestMonthGroup->sum('harga');
                     }
 
-                    // 5. Penyesuaian Closed
                     if ($latestDoc && strtolower($latestDoc->kriteria ?? '') === 'closed') {
                         $totalHargaBulanIni = 0;
                         $latestPriceDoc = null;
                     }
 
-                    // =========================================================================
-                    // 6. PERHITUNGAN DINAMIS PERSENTASE TOTAL PROGRES BERDASARKAN DIVISI
-                    // =========================================================================
                     $persentaseTotalProgres = 0;
                     $proyekModel = null;
 
@@ -412,74 +409,42 @@
                     }
                 @endphp
                 <tr>
-                    {{-- No --}}
                     <td class="text-center">{{ $loop->iteration }}</td>
-
-                    {{-- Divisi --}}
                     <td class="text-center">
-                        <span class="badge {{ $divisiClass }}">
-                            {{ $m->divisi }}
-                        </span>
+                        <span class="badge {{ $divisiClass }}">{{ $m->divisi }}</span>
                     </td>
-
-                    {{-- PO / Nota Dinas --}}
                     <td class="font-bold">{{ $m->po_nota_dinas ?: '-' }}</td>
-
-                    {{-- Nama Pekerjaan --}}
                     <td>{{ $m->nama_pekerjaan ?: '-' }}</td>
-
-                    {{-- Jenis Pekerjaan --}}
                     <td>{{ $m->jenis_pekerjaan ?: '-' }}</td>
-
-                    {{-- Tanggal Kontrak --}}
                     <td class="text-center">
                         {{ $m->tanggal_kontrak ? \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') : '-' }}
                     </td>
-
-                    {{-- Selesai Kontrak --}}
                     <td class="text-center">
                         {{ $m->tanggal_selesai_kontrak ? \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') : '-' }}
                     </td>
-
-                    {{-- Nilai Kontrak --}}
                     <td class="text-center">
                         <div class="doc-card">
-                            <div class="font-bold">
-                                Rp {{ number_format($nilaiKontrak, 0, ',', '.') }}
-                            </div>
+                            <div class="font-bold">Rp {{ number_format($nilaiKontrak, 0, ',', '.') }}</div>
                         </div>
                     </td>
-
-                    {{-- Realisasi Bulan Ini --}}
                     <td class="text-center">
                         @if ($latestPriceDoc && $totalHargaBulanIni > 0)
                             <div class="doc-card">
-                                <div class="font-bold">
-                                    Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }}
-                                </div>
+                                <div class="font-bold">Rp {{ number_format($totalHargaBulanIni, 0, ',', '.') }}</div>
                             </div>
                         @else
                             <span style="color: #94a3b8; font-style: italic;">Rp 0</span>
                         @endif
                     </td>
-
-                    {{-- Total Realisasi s/d Bulan Ini --}}
                     <td class="text-center">
                         <div class="doc-card">
-                            <div class="font-bold" style="color: #059669;">
-                                Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
-                            </div>
+                            <div class="font-bold" style="color: #059669;">Rp
+                                {{ number_format($totalRealisasi, 0, ',', '.') }}</div>
                         </div>
                     </td>
-
-                    {{-- Status Pekerjaan --}}
                     <td class="text-center">
-                        <span class="badge {{ $statusClass }}">
-                            {{ $m->status ?? '-' }}
-                        </span>
+                        <span class="badge {{ $statusClass }}">{{ $m->status ?? '-' }}</span>
                     </td>
-
-                    {{-- Progress --}}
                     <td class="text-center">
                         <div class="progress-container">
                             <div class="progress-bar-fill"
@@ -488,8 +453,6 @@
                         <span class="progress-text"
                             style="color: {{ $progressColor }};">{{ number_format($progressVal, 0) }}%</span>
                     </td>
-
-                    {{-- Keterangan Progress --}}
                     <td>
                         @php
                             $text = trim($m->keterangan2 ?? ($m->keterangan ?? '-'));
@@ -497,8 +460,6 @@
                             echo str_starts_with($text, '-') ? implode('<br>', $lines) : implode(', ', $lines);
                         @endphp
                     </td>
-
-                    {{-- Status Dokumen Terakhir --}}
                     <td>
                         @if ($latestDoc)
                             <div class="doc-card">
@@ -519,31 +480,23 @@
                                     </div>
                                 @endif
                                 @if ($latestDoc->keterangan_closed)
-                                    <div style="color: #ef4444; font-weight: bold;">
-                                        <b>Ket:</b> {{ $latestDoc->keterangan_closed }}
-                                    </div>
+                                    <div style="color: #ef4444; font-weight: bold;"><b>Ket:</b>
+                                        {{ $latestDoc->keterangan_closed }}</div>
                                 @endif
                             </div>
                         @else
                             <span style="color: #94a3b8; font-style: italic;">Belum ada dokumen</span>
                         @endif
                     </td>
-
-                    {{-- KOLOM: Nilai Persentase Kontrak Total Progres --}}
                     <td class="text-center">
                         <div class="doc-card">
                             <div class="font-bold" style="color: #0284c7;">
-                                {{ number_format($persentaseTotalProgres, 2, ',', '.') }}%
-                            </div>
+                                {{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</div>
                         </div>
                     </td>
-
-                    {{-- Notifikasi / Status Kontrak --}}
                     <td class="col-notif">
                         @if ($notif)
-                            <span class="badge badge-{{ $notif['class'] }}">
-                                {{ $notif['text'] }}
-                            </span>
+                            <span class="badge badge-{{ $notif['class'] }}">{{ $notif['text'] }}</span>
                         @else
                             <span class="badge badge-secondary">-</span>
                         @endif
@@ -558,6 +511,47 @@
             @endforelse
         </tbody>
     </table>
+
+    <!-- ================= TABEL RINGKASAN REALISASI DI BAWAH ================= -->
+    <div class="summary-section">
+        <div class="summary-title">Ringkasan Realisasi Nilai Pekerjaan s/d Bulan Ini</div>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Kategori / Divisi</th>
+                    <th style="width: 25%;">Total Realisasi</th>
+                    <th style="width: 25%;">Realisasi INKA</th>
+                    <th style="width: 25%;">Realisasi Non INKA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-bold">Keseluruhan</td>
+                    <td class="font-bold">Rp {{ number_format($grandTotalAll ?? 0, 0, ',', '.') }}</td>
+                    <td class="font-bold">Rp {{ number_format($grandTotalInka ?? 0, 0, ',', '.') }}</td>
+                    <td class="font-bold">Rp {{ number_format($grandTotalNonInka ?? 0, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td>Wilayah 1</td>
+                    <td class="font-bold">Rp {{ number_format($totalWil1 ?? 0, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($realisasiWil1Inka ?? 0, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($realisasiWil1NonInka ?? 0, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td>Wilayah 2</td>
+                    <td class="font-bold">Rp {{ number_format($totalWil2 ?? 0, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($realisasiWil2Inka ?? 0, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($realisasiWil2NonInka ?? 0, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td>MRO</td>
+                    <td class="font-bold">Rp {{ number_format($totalMro ?? 0, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($realisasiMroInka ?? 0, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($realisasiMroNonInka ?? 0, 0, ',', '.') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 </body>
 
