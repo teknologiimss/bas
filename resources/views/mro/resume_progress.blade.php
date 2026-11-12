@@ -230,13 +230,29 @@
     <div class="container-fluid mt-4">
 
         {{-- HEADER --}}
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        {{-- <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><b>Progress MRO</b></h3>
 
-            {{-- TOMBOL PRINT --}}
+            
             <a href="{{ route('mro.progress.print') }}" target="_blank" class="btn btn-primary no-print">
                 🖨️ Print Semua
             </a>
+        </div> --}}
+
+        {{-- HEADER --}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><b>Progress MRO</b></h3>
+
+            {{-- TOMBOL EXPORT EXCEL & PRINT --}}
+            <div class="no-print">
+                <a href="{{ route('mro.progress.export_excel', request()->query()) }}" class="btn btn-success mr-2" style="border-radius: 30px; font-weight: 600;">
+                    📊 Export Excel
+                </a>
+
+                <a href="{{ route('mro.progress.print') }}" target="_blank" class="btn btn-primary">
+                    🖨️ Print Semua
+                </a>
+            </div>
         </div>
 
         {{-- FLASH MESSAGE --}}

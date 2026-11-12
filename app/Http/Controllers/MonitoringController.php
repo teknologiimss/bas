@@ -595,7 +595,7 @@ class MonitoringController extends Controller
 
         foreach ($monitorings as $item) {
             $jenis = strtolower(trim($item->jenis_pekerjaan ?? ''));
-            
+
             // Perbaikan: Pastikan kategori INKA tidak mencakup kata 'non'
             $isInka = ($jenis === 'inka' || (str_contains($jenis, 'inka') && !str_contains($jenis, 'non')));
 
@@ -657,5 +657,62 @@ class MonitoringController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => 'Data urutan tidak valid.'], 400);
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $query = Monitoring::with('documents');
+
+        if ($request->filled('po')) {
+            $query->where('po_nota_dinas', 'like', '%' . trim($request->po) . '%');
+        }
+
+        if ($request->filled('pekerjaan')) {
+            $query->where('nama_pekerjaan', 'like', '%' . trim($request->pekerjaan) . '%');
+        }
+
+        $monitorings = $query->latest()->get();
+
+        // Kalkulasi Realisasi INKA & Non-INKA untuk MRO
+        $totalInka = 0;
+        $totalNonInka = 0;
+
+        foreach ($monitorings as $item) {
+            $jenis = strtolower(trim($item->jenis_pekerjaan ?? ''));
+            $isInka = ($jenis === 'inka' || (str_contains($jenis, 'inka') && !str_contains($jenis, 'non')));
+
+            $sumDocs = $item->documents
+                ? $item->documents->filter(function ($doc) {
+                    $kriteria = strtolower($doc->kriteria ?? '');
+                    return in_array($kriteria, ['realisasi', 'closed']) && !is_null($doc->harga) && $doc->harga > 0;
+                })->sum('harga')
+                : 0;
+
+            $realisasiVal = $sumDocs > 0 ? $sumDocs : ($item->total_realisasi ?? ($item->realisasi ?? 0));
+
+            if ($isInka) {
+                $totalInka += $realisasiVal;
+            } else {
+                $totalNonInka += $realisasiVal;
+            }
+        }
+
+        $totalMro = $totalInka + $totalNonInka;
+        $realisasiMroInka = $totalInka;
+        $realisasiMroNonInka = $totalNonInka;
+
+        $filename = 'Progress_MRO_' . date('Ymd_His') . '.xls';
+
+        return response()
+            ->view('mro.progress.export_excel', compact(
+                'monitorings',
+                'totalMro',
+                'realisasiMroInka',
+                'realisasiMroNonInka'
+            ))
+            ->header('Content-Type', 'application/vnd.ms-excel; charset=utf-8')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 }
