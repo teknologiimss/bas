@@ -518,7 +518,7 @@
         <table class="summary-table">
             <thead>
                 <tr>
-                    <th style="width: 25%;">Kategori / Divisi</th>
+                    <th style="width: 25%;">Divisi Wilayah</th>
                     <th style="width: 25%;">Total Realisasi</th>
                     <th style="width: 25%;">Realisasi INKA</th>
                     <th style="width: 25%;">Realisasi Non INKA</th>

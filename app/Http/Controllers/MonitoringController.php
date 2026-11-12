@@ -68,15 +68,17 @@ class MonitoringController extends Controller
 
         $monitorings = $query->latest()->get();
 
-        // 👉 HITUNG STATISTIK KESELURUHAN (Tidak terpengaruh filter/pagination per proyek jika ingin global, 
+        // 👉 HITUNG STATISTIK KESELURUHAN (Tidak terpengaruh filter/pagination per proyek jika ingin global,
         // atau jika ingin khusus berdasarkan proyek_id tersebut, tambahkan ->where('proyek_id', $proyek_id))
         $countTotal = Monitoring::where('proyek_id', $proyek_id)->count();
         $countInka = Monitoring::where('proyek_id', $proyek_id)->where('jenis_pekerjaan', 'LIKE', '%INKA%')->count();
         $countNonInka = Monitoring::where('proyek_id', $proyek_id)
-            ->where(function($q) {
-                $q->where('jenis_pekerjaan', 'NOT LIKE', '%INKA%')
-                  ->orWhereNull('jenis_pekerjaan');
-            })->count();
+            ->where(function ($q) {
+                $q
+                    ->where('jenis_pekerjaan', 'NOT LIKE', '%INKA%')
+                    ->orWhereNull('jenis_pekerjaan');
+            })
+            ->count();
 
         return view('monitoring.index', compact('proyek', 'monitorings', 'countTotal', 'countInka', 'countNonInka'));
     }
@@ -569,14 +571,70 @@ class MonitoringController extends Controller
     //     return redirect()->back()->with('success', 'Data monitoring dihapus');
     // }
 
-    public function print()
+    // public function print()
+    // {
+    //     // Ambil semua data beserta relasi dokumennya
+    //     $monitorings = Monitoring::with('documents')->get();
+
+    //     // Load view khusus PDF dan atur orientasi Landscape (agar muat tabel lebar)
+    //     $pdf = Pdf::loadView('mro.progress.print_pdf', compact('monitorings'))
+    //         ->setPaper('a4', 'landscape');
+
+    //     // Download/Stream file PDF
+    //     return $pdf->stream('Progress_MRO_' . date('Ymd_His') . '.pdf');
+    // }
+
+    public function print(Request $request)
     {
-        // Ambil semua data beserta relasi dokumennya
+        // 1. Ambil data beserta relasi dokumennya (sesuaikan dengan filter jika ada)
         $monitorings = Monitoring::with('documents')->get();
 
-        // Load view khusus PDF dan atur orientasi Landscape (agar muat tabel lebar)
-        $pdf = Pdf::loadView('mro.progress.print_pdf', compact('monitorings'))
-            ->setPaper('a4', 'landscape');
+        // 2. Kalkulasi Realisasi INKA & Non-INKA untuk MRO
+        $totalInka = 0;
+        $totalNonInka = 0;
+
+        foreach ($monitorings as $item) {
+            $jenis = strtolower(trim($item->jenis_pekerjaan ?? ''));
+            $isInka = ($jenis === 'inka' || str_contains($jenis, 'inka'));
+
+            // Hitung dari dokumen realisasi/closed yang valid
+            $sumDocs = $item->documents
+                ? $item->documents->filter(function ($doc) {
+                    $kriteria = strtolower($doc->kriteria ?? '');
+                    return in_array($kriteria, ['realisasi', 'closed']) && !is_null($doc->harga) && $doc->harga > 0;
+                })->sum('harga')
+                : 0;
+
+            $realisasiVal = $sumDocs > 0 ? $sumDocs : ($item->total_realisasi ?? ($item->realisasi ?? 0));
+
+            if ($isInka) {
+                $totalInka += $realisasiVal;
+            } else {
+                $totalNonInka += $realisasiVal;
+            }
+        }
+
+        $totalMro = $totalInka + $totalNonInka;
+        $realisasiMroInka = $totalInka;
+        $realisasiMroNonInka = $totalNonInka;
+
+        $grandTotalAll = $totalMro;
+        $grandTotalInka = $totalInka;
+        $grandTotalNonInka = $totalNonInka;
+
+        // 3. Load view PDF dengan membawa seluruh variabel kalkulasi
+        $pdf = Pdf::loadView(
+            'mro.progress.print_pdf',
+            compact(
+                'monitorings',
+                'grandTotalAll',
+                'grandTotalInka',
+                'grandTotalNonInka',
+                'totalMro',
+                'realisasiMroInka',
+                'realisasiMroNonInka'
+            )
+        )->setPaper('a4', 'landscape');
 
         // Download/Stream file PDF
         return $pdf->stream('Progress_MRO_' . date('Ymd_His') . '.pdf');
