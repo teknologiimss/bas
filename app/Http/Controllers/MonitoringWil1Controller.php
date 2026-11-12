@@ -386,7 +386,9 @@ class MonitoringWil1Controller extends Controller
 
         foreach ($monitorings as $item) {
             $jenis = strtolower(trim($item->jenis_pekerjaan ?? ''));
-            $isInka = ($jenis === 'inka' || str_contains($jenis, 'inka'));
+            
+            // Perbaikan: Pastikan benar-benar 'inka' dan TIDAK mengandung kata 'non'
+            $isInka = ($jenis === 'inka' || (str_contains($jenis, 'inka') && !str_contains($jenis, 'non')));
 
             // Hitung dari dokumen realisasi/closed yang valid
             $sumDocs = $item->documents
