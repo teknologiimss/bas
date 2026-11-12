@@ -253,12 +253,42 @@
             $countNonInka = \App\Models\Monitoring::where('jenis_pekerjaan', '!=', 'INKA')
                 ->orWhereNull('jenis_pekerjaan')
                 ->count();
+
+            // Kalkulasi Total Realisasi MRO (INKA & NON INKA)
+            $calcRealisasiMro = function ($isInka = true) {
+                return \App\Models\Monitoring::whereHas('documents', function ($q) {
+                    $q->whereIn(\DB::raw('LOWER(kriteria)'), ['realisasi', 'closed'])
+                        ->whereNotNull('harga')
+                        ->where('harga', '>', 0);
+                })
+                    ->get()
+                    ->sum(function ($item) use ($isInka) {
+                        $jenis = strtolower($item->jenis_pekerjaan ?? '');
+                        $match = $isInka ? $jenis === 'inka' : $jenis !== 'inka';
+                        if (!$match) {
+                            return 0;
+                        }
+
+                        $sumDocs = $item->documents
+                            ->filter(function ($d) {
+                                return in_array(strtolower($d->kriteria ?? ''), ['realisasi', 'closed']) &&
+                                    $d->harga > 0;
+                            })
+                            ->sum('harga');
+
+                        return $sumDocs > 0 ? $sumDocs : $item->total_realisasi ?? ($item->realisasi ?? 0);
+                    });
+            };
+
+            $realisasiMroInka = $calcRealisasiMro(true);
+            $realisasiMroNonInka = $calcRealisasiMro(false);
+            $totalMro = $realisasiMroInka + $realisasiMroNonInka;
         @endphp
 
         <div class="container-fluid mt-4">
 
             {{-- KARTU RINGKASAN STATISTIK --}}
-            <div class="row mb-4 no-print">
+            <div class="row mb-3 no-print">
                 <div class="col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-left: 5px solid var(--blue) !important; border-radius: 12px;">
@@ -305,6 +335,39 @@
                                     style="-webkit-text-fill-color: initial; background: none;">
                                     {{ number_format($countNonInka, 0, ',', '.') }}
                                 </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- KARTU REALISASI NILAI PEKERJAAN MRO --}}
+            <div class="row mb-4 no-print">
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100"
+                        style="border-radius: 12px; border-top: 4px solid #b91c1c !important;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge badge-danger px-3 py-2"
+                                    style="font-size: 13px; background: linear-gradient(135deg, #b91c1c, #7f1d1d) !important;">🛠️
+                                    MRO</span>
+                                <span class="text-muted font-weight-bold small">Total: Rp
+                                    {{ number_format($totalMro, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="p-2 mb-2 rounded" style="background: #eff6ff;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="font-weight-bold text-secondary" style="font-size: 12px;">🚂 INKA</span>
+                                    <span class="font-weight-bold text-primary">Rp
+                                        {{ number_format($realisasiMroInka, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                            <div class="p-2 rounded" style="background: #fffbeb;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="font-weight-bold text-secondary" style="font-size: 12px;">🏢 NON
+                                        INKA</span>
+                                    <span class="font-weight-bold text-warning" style="color: #d97706 !important;">Rp
+                                        {{ number_format($realisasiMroNonInka, 0, ',', '.') }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -578,7 +641,8 @@
                                                     @endif
 
                                                     @if ($latestPriceDoc->tanggal_closed)
-                                                        <span class="badge badge-info text-white" style="font-size: 10px;">
+                                                        <span class="badge badge-info text-white"
+                                                            style="font-size: 10px;">
                                                             {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed)->isoFormat('MMM YYYY') }}
                                                         </span>
                                                     @endif
@@ -644,9 +708,9 @@
                                     {{-- KOLOM: Nilai Persentase Kontrak Total Progres (Dapat Diklik ke Pekerjaan MRO) --}}
                                     <td class="text-center">
                                         @if ($proyekMro)
-                                            <a href="{{ route('pekerjaanmro.index') }}?search={{ urlencode(trim($m->po_nota_dinas)) }}" 
-                                               class="text-decoration-none d-block" 
-                                               title="Klik untuk melihat Rincian Pekerjaan MRO">
+                                            <a href="{{ route('pekerjaanmro.index') }}?search={{ urlencode(trim($m->po_nota_dinas)) }}"
+                                                class="text-decoration-none d-block"
+                                                title="Klik untuk melihat Rincian Pekerjaan MRO">
                                                 <div class="p-2 border rounded bg-white shadow-sm transition-hover">
                                                     <div class="fw-bold text-info fs-6">
                                                         <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>

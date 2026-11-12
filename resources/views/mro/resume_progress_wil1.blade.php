@@ -234,6 +234,35 @@
         $countNonInka = \App\Models\MonitoringWil1::whereRaw('LOWER(jenis_pekerjaan) != ?', ['inka'])
             ->orWhereNull('jenis_pekerjaan')
             ->count();
+
+        // Kalkulasi Total Realisasi Wilayah 1 (INKA & NON INKA)
+        $calcRealisasiWil1 = function ($isInka = true) {
+            return \App\Models\MonitoringWil1::whereHas('documents', function ($q) {
+                $q->whereIn(\DB::raw('LOWER(kriteria)'), ['realisasi', 'closed'])
+                    ->whereNotNull('harga')
+                    ->where('harga', '>', 0);
+            })
+                ->get()
+                ->sum(function ($item) use ($isInka) {
+                    $jenis = strtolower($item->jenis_pekerjaan ?? '');
+                    $match = $isInka ? $jenis === 'inka' : $jenis !== 'inka';
+                    if (!$match) {
+                        return 0;
+                    }
+
+                    $sumDocs = $item->documents
+                        ->filter(function ($d) {
+                            return in_array(strtolower($d->kriteria ?? ''), ['realisasi', 'closed']) && $d->harga > 0;
+                        })
+                        ->sum('harga');
+
+                    return $sumDocs > 0 ? $sumDocs : $item->total_realisasi ?? ($item->realisasi ?? 0);
+                });
+        };
+
+        $realisasiWil1Inka = $calcRealisasiWil1(true);
+        $realisasiWil1NonInka = $calcRealisasiWil1(false);
+        $totalWil1 = $realisasiWil1Inka + $realisasiWil1NonInka;
     @endphp
 
     <div class="container-fluid mt-4">
@@ -248,7 +277,7 @@
         </div>
 
         {{-- KARTU RINGKASAN STATISTIK --}}
-        <div class="row mb-4 no-print">
+        <div class="row mb-3 no-print">
             <!-- Total Semua Data -->
             <div class="col-md-4 mb-3">
                 <div class="card border-0 shadow-sm h-100"
@@ -296,6 +325,37 @@
                                 style="-webkit-text-fill-color: initial; background: none;">
                                 {{ number_format($countNonInka, 0, ',', '.') }}
                             </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- KARTU REALISASI NILAI PEKERJAAN WILAYAH 1 --}}
+        <div class="row mb-4 no-print">
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100"
+                    style="border-radius: 12px; border-top: 4px solid #2563eb !important;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge badge-primary px-3 py-2" style="font-size: 13px;">🏢 Wilayah 1</span>
+                            <span class="text-muted font-weight-bold small">Total: Rp
+                                {{ number_format($totalWil1, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="p-2 mb-2 rounded" style="background: #eff6ff;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="font-weight-bold text-secondary" style="font-size: 12px;">🚂 INKA</span>
+                                <span class="font-weight-bold text-primary">Rp
+                                    {{ number_format($realisasiWil1Inka, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                        <div class="p-2 rounded" style="background: #fffbeb;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="font-weight-bold text-secondary" style="font-size: 12px;">🏢 NON
+                                    INKA</span>
+                                <span class="font-weight-bold text-warning" style="color: #d97706 !important;">Rp
+                                    {{ number_format($realisasiWil1NonInka, 0, ',', '.') }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -576,7 +636,8 @@
                                                     @endif
 
                                                     @if ($latestPriceDoc->tanggal_closed)
-                                                        <span class="badge badge-info text-white" style="font-size: 10px;">
+                                                        <span class="badge badge-info text-white"
+                                                            style="font-size: 10px;">
                                                             {{ \Carbon\Carbon::parse($latestPriceDoc->tanggal_closed)->isoFormat('MMM YYYY') }}
                                                         </span>
                                                     @endif
@@ -642,9 +703,9 @@
                                     {{-- KOLOM: Nilai Persentase Kontrak Total Progres (Dapat Diklik ke Pekerjaan Wilayah 1) --}}
                                     <td class="text-center">
                                         @if ($proyekWil1)
-                                            <a href="{{ route('pekerjaanwil1.index') }}?search={{ urlencode(trim($m->po_nota_dinas)) }}" 
-                                               class="text-decoration-none d-block" 
-                                               title="Klik untuk melihat Rincian Pekerjaan Wilayah 1">
+                                            <a href="{{ route('pekerjaanwil1.index') }}?search={{ urlencode(trim($m->po_nota_dinas)) }}"
+                                                class="text-decoration-none d-block"
+                                                title="Klik untuk melihat Rincian Pekerjaan Wilayah 1">
                                                 <div class="p-2 border rounded bg-white shadow-sm transition-hover">
                                                     <div class="fw-bold text-info fs-6">
                                                         <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>
