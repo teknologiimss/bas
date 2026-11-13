@@ -28,103 +28,119 @@
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             background: #fff;
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Styling Freeze / Sticky Column */
+        /* Default Styling Kolom (Mobile: Tidak Sticky agar tidak menumpuk) */
         .th-no,
-        .td-no {
-            position: sticky;
-            left: 0px;
-            width: 45px;
-            min-width: 45px;
-            z-index: 5;
+        .td-no,
+        .th-item,
+        .td-item,
+        .th-satuan,
+        .td-satuan,
+        .th-vol,
+        .td-vol,
+        .th-harga,
+        .td-harga,
+        .th-jumlah,
+        .td-jumlah,
+        .th-bobot,
+        .td-bobot,
+        .th-prog,
+        .td-prog {
+            background-color: #ffffff;
+            white-space: nowrap;
         }
 
-        .th-item,
         .td-item {
-            position: sticky;
-            left: 45px;
-            width: 220px;
-            min-width: 220px;
-            z-index: 5;
             white-space: normal !important;
             word-wrap: break-word;
             word-break: break-word;
-            vertical-align: middle !important;
+            min-width: 200px;
         }
 
-        .th-satuan,
-        .td-satuan {
-            position: sticky;
-            left: 265px;
-            width: 75px;
-            min-width: 75px;
-            z-index: 5;
-        }
+        /* Sticky Column HANYA AKTIF DI DESKTOP (min-width: 992px) */
+        @media (min-width: 992px) {
 
-        .th-vol,
-        .td-vol {
-            position: sticky;
-            left: 340px;
-            width: 95px;
-            min-width: 95px;
-            z-index: 5;
-        }
+            .th-no,
+            .td-no {
+                position: sticky;
+                left: 0px;
+                width: 45px;
+                min-width: 45px;
+                z-index: 5;
+            }
 
-        .th-harga,
-        .td-harga {
-            position: sticky;
-            left: 435px;
-            width: 110px;
-            min-width: 110px;
-            z-index: 5;
-        }
+            .th-item,
+            .td-item {
+                position: sticky;
+                left: 45px;
+                width: 220px;
+                min-width: 220px;
+                z-index: 5;
+                white-space: normal !important;
+            }
 
-        .th-jumlah,
-        .td-jumlah {
-            position: sticky;
-            left: 545px;
-            width: 120px;
-            min-width: 120px;
-            z-index: 5;
-        }
+            .th-satuan,
+            .td-satuan {
+                position: sticky;
+                left: 265px;
+                width: 75px;
+                min-width: 75px;
+                z-index: 5;
+            }
 
-        .th-bobot,
-        .td-bobot {
-            position: sticky;
-            left: 665px;
-            width: 115px;
-            min-width: 115px;
-            z-index: 5;
-        }
+            .th-vol,
+            .td-vol {
+                position: sticky;
+                left: 340px;
+                width: 95px;
+                min-width: 95px;
+                z-index: 5;
+            }
 
-        .th-prog,
-        .td-prog {
-            position: sticky;
-            left: 780px;
-            width: 100px;
-            min-width: 100px;
-            z-index: 5;
-            border-right: 3px solid #1d3557 !important;
-        }
+            .th-harga,
+            .td-harga {
+                position: sticky;
+                left: 435px;
+                width: 110px;
+                min-width: 110px;
+                z-index: 5;
+            }
 
-        td.th-no,
-        td.td-no,
-        td.th-item,
-        td.td-item,
-        td.th-satuan,
-        td.td-satuan,
-        td.th-vol,
-        td.td-vol,
-        td.th-harga,
-        td.td-harga,
-        td.th-jumlah,
-        td.td-jumlah,
-        td.th-bobot,
-        td.td-bobot,
-        td.th-prog,
-        td.td-prog {
-            background-color: #ffffff;
+            .th-jumlah,
+            .td-jumlah {
+                position: sticky;
+                left: 545px;
+                width: 120px;
+                min-width: 120px;
+                z-index: 5;
+            }
+
+            .th-bobot,
+            .td-bobot {
+                position: sticky;
+                left: 665px;
+                width: 115px;
+                min-width: 115px;
+                z-index: 5;
+            }
+
+            .th-prog,
+            .td-prog {
+                position: sticky;
+                left: 780px;
+                width: 100px;
+                min-width: 100px;
+                z-index: 5;
+                border-right: 3px solid #1d3557 !important;
+            }
+
+            thead th[class*="th-"],
+            tfoot td[class*="th-"],
+            tfoot td[class*="td-"] {
+                z-index: 6;
+            }
         }
 
         .table-striped tbody tr:nth-of-type(odd) .td-no,
@@ -143,14 +159,6 @@
             color: #ffffff !important;
             border-color: #1d3557 !important;
             vertical-align: middle !important;
-        }
-
-        thead th[class*="th-"],
-        tfoot td[class*="th-"],
-        tfoot td[class*="td-"] {
-            background-color: #0b2545 !important;
-            color: #fff;
-            z-index: 6;
         }
 
         tfoot.table-dark tr td {
@@ -175,7 +183,6 @@
             border-color: #0b2545;
         }
 
-        /* Styling Khusus Tombol Aksi agar Sejajar Presisi Horizontal */
         .action-btn-group {
             display: flex !important;
             flex-direction: row !important;
@@ -215,17 +222,18 @@
         }
     </style>
 
-    <div class="container-fluid px-3 px-md-4 py-4">
-        <div class="card p-4 shadow-sm">
+    <div class="container-fluid px-2 px-md-4 py-4">
+        <div class="card p-3 p-md-4 shadow-sm">
             <!-- Header Proyek -->
             <div
                 class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-3 border-bottom gap-3">
-                <div class="proyek-header">
-                    <h4 class="mb-1 text-dark font-weight-bold">PROYEK: {{ $proyek->nama_proyek }}</h4>
+                <div class="proyek-header mb-2 mb-md-0">
+                    <h4 class="mb-1 text-dark font-weight-bold" style="font-size: 1.25rem;">PROYEK:
+                        {{ $proyek->nama_proyek }}</h4>
                     <p class="text-muted mb-2 small font-weight-medium"><strong>NO KONTRAK/SO/NODIN:</strong>
                         {{ $proyek->no_kontrak ?? '-' }}</p>
 
-                    <div class="d-inline-flex align-items-center bg-light px-3 py-1.5 rounded-pill border">
+                    <div class="d-inline-flex align-items-center bg-light px-3 py-1.5 rounded-pill border flex-wrap">
                         <i class="fa fa-calendar text-primary mr-2"></i>
                         <span class="text-secondary small mr-1">Periode Kontrak:</span>
                         <strong
@@ -236,7 +244,7 @@
                     </div>
                 </div>
 
-                <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
                     <a href="{{ route('pekerjaanmro.index') }}"
                         class="btn btn-outline-secondary btn-sm px-3 shadow-sm mr-2">
                         <i class="fa fa-arrow-left mr-1"></i> Kembali
@@ -261,8 +269,6 @@
                 <table class="table table-bordered table-striped text-center align-middle mb-0"
                     style="font-size: 12px; white-space: nowrap;">
                     <thead class="table-dark">
-                        <!-- BARIS 1: PERIODE TANGGAL -->
-                        <!-- BARIS 1: PERIODE TANGGAL -->
                         <tr>
                             <th rowspan="4" class="align-middle th-no">NO</th>
                             <th rowspan="4" class="align-middle th-item">ITEM PEKERJAAN</th>
@@ -294,7 +300,6 @@
                                 style="min-width: 160px; width: 160px;">Aksi</th>
                         </tr>
 
-                        <!-- BARIS 2: PROG MGG -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 <th colspan="3" style="background-color: #243b55;">Progress Minggu {{ $w }}
@@ -302,7 +307,6 @@
                             @endfor
                         </tr>
 
-                        <!-- BARIS 3: MINGGU INI & S/D MINGGU INI -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 <th colspan="2" style="background-color: #0b2545;">Minggu ini</th>
@@ -310,7 +314,6 @@
                             @endfor
                         </tr>
 
-                        <!-- BARIS 4: SUB HEADER KOLOM -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
                                 <th style="background-color: #132d46;">Vol realisasi</th>
@@ -359,7 +362,6 @@
                                     </form>
                                 </td>
 
-                                <!-- Perhitungan Kolom Mingguan -->
                                 @for ($w = 1; $w <= $totalWeeks; $w++)
                                     @php
                                         $volRealisasi = $progressMingguanData[$w]['vol'] ?? '';
@@ -376,7 +378,6 @@
 
                                         $smpaiMingguIniAcc += $progMingguIni;
 
-                                        // Akumulasi nilai untuk footer
                                         $sumProgMingguIniPerMgg[$w] += $progMingguIni;
                                         $sumSmpaiMingguIniPerMgg[$w] += $smpaiMingguIniAcc;
                                     @endphp
@@ -402,7 +403,6 @@
                                     </td>
                                 @endfor
 
-                                <!-- Tombol Aksi Sejajar Presisi -->
                                 <td class="align-middle px-2 py-2 text-center" style="min-width: 160px; width: 160px;">
                                     <div class="action-btn-group">
                                         <button type="button"
@@ -513,7 +513,7 @@
         </div>
     @endforeach
 
-    <!-- MODAL TAMBAH ITEM DENGAN FITUR HAPUS BARIS -->
+    <!-- MODAL TAMBAH ITEM -->
     <div class="modal fade" id="modalAddItem" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <form action="{{ route('pekerjaanmro.item.store', $proyek->id) }}" method="POST"

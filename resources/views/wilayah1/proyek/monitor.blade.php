@@ -23,94 +23,136 @@
 
         .table-responsive {
             max-height: 75vh;
-            overflow: auto;
+            overflow-x: auto;
+            overflow-y: auto;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             background: #fff;
+            -webkit-overflow-scrolling: touch;
         }
 
+        /* Default Styling Kolom (Mobile: Tidak Sticky agar tidak menumpuk dan menutupi layar) */
         .th-no,
-        .td-no {
-            position: sticky;
-            left: 0px;
-            width: 45px;
-            min-width: 45px;
-            z-index: 5;
-        }
-
+        .td-no,
         .th-item,
-        .td-item {
-            position: sticky;
-            left: 45px;
-            width: 220px;
-            min-width: 220px;
-            z-index: 5;
-        }
-
+        .td-item,
         .th-satuan,
-        .td-satuan {
-            position: sticky;
-            left: 265px;
-            width: 75px;
-            min-width: 75px;
-            z-index: 5;
-        }
-
+        .td-satuan,
         .th-vol,
-        .td-vol {
-            position: sticky;
-            left: 340px;
-            width: 95px;
-            min-width: 95px;
-            z-index: 5;
-        }
-
+        .td-vol,
         .th-harga,
-        .td-harga {
-            position: sticky;
-            left: 435px;
-            width: 110px;
-            min-width: 110px;
-            z-index: 5;
-        }
-
+        .td-harga,
         .th-jumlah,
-        .td-jumlah {
-            position: sticky;
-            left: 545px;
-            width: 120px;
-            min-width: 120px;
-            z-index: 5;
-        }
-
+        .td-jumlah,
         .th-bobot,
-        .td-bobot {
-            position: sticky;
-            left: 665px;
-            width: 115px;
-            min-width: 115px;
-            z-index: 5;
-        }
-
+        .td-bobot,
         .th-prog,
         .td-prog {
-            position: sticky;
-            left: 780px;
-            width: 100px;
-            min-width: 100px;
-            z-index: 5;
-            border-right: 3px solid #1d3557 !important;
+            background-color: #ffffff;
+            white-space: nowrap;
         }
 
-        td[class*="td-"] {
-            background-color: #ffffff;
+        .td-item {
+            white-space: normal !important;
+            word-wrap: break-word;
+            word-break: break-word;
+            min-width: 200px;
+        }
+
+        /* Sticky Column HANYA AKTIF DI DESKTOP (min-width: 992px) */
+        @media (min-width: 992px) {
+
+            .th-no,
+            .td-no {
+                position: sticky;
+                left: 0px;
+                width: 45px;
+                min-width: 45px;
+                z-index: 5;
+            }
+
+            .th-item,
+            .td-item {
+                position: sticky;
+                left: 45px;
+                width: 220px;
+                min-width: 220px;
+                z-index: 5;
+                white-space: normal !important;
+            }
+
+            .th-satuan,
+            .td-satuan {
+                position: sticky;
+                left: 265px;
+                width: 75px;
+                min-width: 75px;
+                z-index: 5;
+            }
+
+            .th-vol,
+            .td-vol {
+                position: sticky;
+                left: 340px;
+                width: 95px;
+                min-width: 95px;
+                z-index: 5;
+            }
+
+            .th-harga,
+            .td-harga {
+                position: sticky;
+                left: 435px;
+                width: 110px;
+                min-width: 110px;
+                z-index: 5;
+            }
+
+            .th-jumlah,
+            .td-jumlah {
+                position: sticky;
+                left: 545px;
+                width: 120px;
+                min-width: 120px;
+                z-index: 5;
+            }
+
+            .th-bobot,
+            .td-bobot {
+                position: sticky;
+                left: 665px;
+                width: 115px;
+                min-width: 115px;
+                z-index: 5;
+            }
+
+            .th-prog,
+            .td-prog {
+                position: sticky;
+                left: 780px;
+                width: 100px;
+                min-width: 100px;
+                z-index: 5;
+                border-right: 3px solid #1d3557 !important;
+            }
+
+            thead th[class*="th-"],
+            tfoot td[class*="th-"],
+            tfoot td[class*="td-"] {
+                z-index: 6;
+            }
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) td[class*="td-"] {
+            background-color: #f8fafc;
         }
 
         thead th,
         tfoot td {
             background-color: #0b2545 !important;
             color: #fff !important;
-            z-index: 6;
+            border-color: #1d3557 !important;
+            vertical-align: middle !important;
         }
 
         .action-btn-group {
@@ -118,9 +160,10 @@
             gap: 6px;
             justify-content: center;
             align-items: center;
+            white-space: nowrap;
         }
 
-        /* Styling Tombol Atas Sesuai Keinginan */
+        /* Styling Tombol Atas */
         .btn-custom-back {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
@@ -150,31 +193,38 @@
             background-color: #0b2545;
             color: #ffffff;
         }
+
+        .modal {
+            z-index: 1050 !important;
+        }
+
+        .modal-backdrop {
+            z-index: 1040 !important;
+        }
     </style>
 
-    <div class="container-fluid px-3 px-md-4 py-4">
-        <div class="card p-4 shadow-sm">
+    <div class="container-fluid px-2 px-md-4 py-4">
+        <div class="card p-3 p-md-4 shadow-sm">
             <div
                 class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-3 border-bottom gap-3">
-                <div class="proyek-header">
-                    <h4 class="mb-1 text-dark font-weight-bold">PROYEK: {{ $proyek->nama_proyek }}</h4>
+                <div class="proyek-header mb-2 mb-md-0">
+                    <h4 class="mb-1 text-dark font-weight-bold" style="font-size: 1.25rem;">PROYEK:
+                        {{ $proyek->nama_proyek }}</h4>
                     <p class="text-muted mb-2 small font-weight-medium"><strong>NO KONTRAK/SO/NODIN:</strong>
                         {{ $proyek->no_kontrak ?? '-' }}</p>
 
                     <!-- Badge Periode Kontrak -->
-                    <div>
-                        <span class="badge badge-light border px-3 py-2 text-muted shadow-sm"
-                            style="font-size: 12px; border-radius: 20px;">
-                            <i class="fa fa-calendar text-primary mr-1"></i> Periode Kontrak:
-                            <span
-                                class="text-primary font-weight-bold">{{ $tglMulaiKontrak ? \Carbon\Carbon::parse($tglMulaiKontrak)->format('d/m/Y') : '-' }}</span>
-                            s/d
-                            <span
-                                class="text-primary font-weight-bold">{{ $tglSelesaiKontrak ? \Carbon\Carbon::parse($tglSelesaiKontrak)->format('d/m/Y') : '-' }}</span>
-                        </span>
+                    <div class="d-inline-flex align-items-center bg-light px-3 py-1.5 rounded-pill border flex-wrap">
+                        <i class="fa fa-calendar text-primary mr-2"></i>
+                        <span class="text-secondary small mr-1">Periode Kontrak:</span>
+                        <span
+                            class="text-primary font-weight-bold small">{{ $tglMulaiKontrak ? \Carbon\Carbon::parse($tglMulaiKontrak)->format('d/m/Y') : '-' }}</span>
+                        <span class="mx-1 small text-muted">s/d</span>
+                        <span
+                            class="text-primary font-weight-bold small">{{ $tglSelesaiKontrak ? \Carbon\Carbon::parse($tglSelesaiKontrak)->format('d/m/Y') : '-' }}</span>
                     </div>
                 </div>
-                <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
                     <a href="{{ route('pekerjaanwil1.index') }}" class="btn btn-custom-back btn-sm shadow-sm mr-2">
                         <i class="fa fa-arrow-left mr-1"></i> Kembali
                     </a>
@@ -220,37 +270,38 @@
                                     $tglSelesaiMgg = $week['end'];
                                 @endphp
                                 <th colspan="3" class="text-left font-weight-normal px-3 py-2"
-                                    style="font-size: 11px; background-color: #1d3557;">
+                                    style="font-size: 11px; background-color: #1d3557 !important;">
                                     Periode: {{ $tglMulaiMgg->format('d/m/Y') }}<br>
                                     s/d: {{ $tglSelesaiMgg->format('d/m/Y') }}
                                 </th>
                             @endforeach
 
-                            <th rowspan="4" class="align-middle text-center px-3" style="width: 160px;">Aksi</th>
+                            <th rowspan="4" class="align-middle text-center px-3"
+                                style="min-width: 160px; width: 160px;">Aksi</th>
                         </tr>
 
                         <!-- BARIS 2: PROG MGG -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
-                                <th colspan="3" style="background-color: #243b55;">Progress Minggu {{ $w }}
-                                </th>
+                                <th colspan="3" style="background-color: #243b55 !important;">Progress Minggu
+                                    {{ $w }}</th>
                             @endfor
                         </tr>
 
                         <!-- BARIS 3: MINGGU INI & S/D MINGGU INI -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
-                                <th colspan="2" style="background-color: #0b2545;">Minggu ini</th>
-                                <th style="background-color: #06182c;">s/d Minggu ini</th>
+                                <th colspan="2" style="background-color: #0b2545 !important;">Minggu ini</th>
+                                <th style="background-color: #06182c !important;">s/d Minggu ini</th>
                             @endfor
                         </tr>
 
                         <!-- BARIS 4: SUB HEADER KOLOM -->
                         <tr>
                             @for ($w = 1; $w <= $totalWeeks; $w++)
-                                <th style="background-color: #132d46;">Vol realisasi</th>
-                                <th style="background-color: #132d46;">Progres %</th>
-                                <th style="background-color: #0b2545;">Progres %</th>
+                                <th style="background-color: #132d46 !important;">Vol realisasi</th>
+                                <th style="background-color: #132d46 !important;">Progres %</th>
+                                <th style="background-color: #0b2545 !important;">Progres %</th>
                             @endfor
                         </tr>
                     </thead>
@@ -280,7 +331,8 @@
                                     {{ $jumlah > 0 ? number_format($jumlah, 0, ',', '.') : '-' }}</td>
                                 <td class="align-middle td-bobot">{{ number_format($bobotRencana, 4, ',', '.') }}%</td>
                                 <td class="align-middle td-prog">
-                                    <form action="{{ route('pekerjaanwil1.item.update-progress-utama') }}" method="POST">
+                                    <form action="{{ route('pekerjaanwil1.item.update-progress-utama') }}" method="POST"
+                                        class="mb-0">
                                         @csrf
                                         <input type="hidden" name="item_id" value="{{ $item->id }}">
                                         <input type="number" step="any" name="progress_utama"
@@ -304,6 +356,7 @@
                                     @endphp
                                     <td class="align-middle" style="padding: 6px;">
                                         <form action="{{ route('pekerjaanwil1.item.update-progress') }}" method="POST"
+                                            class="mb-0"
                                             onsubmit="return validateKumulatif(this, {{ $item->vol_rencana }})">
                                             @csrf
                                             <input type="hidden" name="item_id" value="{{ $item->id }}">
