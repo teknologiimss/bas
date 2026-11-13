@@ -48,6 +48,7 @@
             outline: none;
             font-size: 14px;
             color: #334155;
+            min-width: 0;
         }
 
         .search-btn {
@@ -65,7 +66,7 @@
             border-left: 5px solid #1d3557;
             border-radius: 10px;
             padding: 16px 20px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -75,6 +76,7 @@
             display: flex;
             gap: 8px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .modal-header {
@@ -93,17 +95,50 @@
         }
 
         @media (max-width: 768px) {
+            .container-fluid {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+
             .proyek-item-card {
                 flex-direction: column;
-                align-items: flex-start !important;
-                gap: 12px;
+                align-items: stretch !important;
+                gap: 14px;
+                padding: 14px;
             }
 
             .action-group {
                 width: 100%;
-                justify-content: flex-end;
+                justify-content: stretch;
                 border-top: 1px solid #f1f5f9;
-                padding-top: 10px;
+                padding-top: 12px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .action-group .progress-badge-box {
+                grid-column: span 2;
+                width: 100% !important;
+                margin-right: 0 !important;
+            }
+
+            .action-group .btn {
+                width: 100%;
+                height: 38px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .action-group form {
+                display: block;
+                width: 100%;
+                margin: 0;
+            }
+
+            .action-group form button {
+                width: 100%;
             }
         }
     </style>
@@ -189,13 +224,14 @@
                 @endphp
 
                 <div class="proyek-item-card shadow-sm">
-                    <div class="d-flex align-items-start">
+                    <div class="d-flex align-items-start pr-md-3 flex-grow-1">
                         <!-- Nomor Urut -->
                         <span class="font-weight-bold text-muted mr-3 pt-1" style="min-width: 25px;">
                             {{ $proyeks->firstItem() + $index }}.
                         </span>
                         <div>
-                            <h5 class="mb-1 text-dark"><strong>{{ $p->nama_proyek }}</strong></h5>
+                            <h5 class="mb-1 text-dark" style="font-size: 1.05rem;"><strong>{{ $p->nama_proyek }}</strong>
+                            </h5>
                             <small class="text-muted d-block"><i class="fa fa-file-text-o mr-1"></i> No. Kontrak/SO/Nodin:
                                 {{ $p->no_kontrak ?? '-' }}</small>
                             <small class="text-muted d-block mt-1">
@@ -208,7 +244,7 @@
                     </div>
                     <div class="action-group">
                         <!-- Badge Progress S/D Minggu Ini Terakhir -->
-                        <div class="px-3 py-1 bg-light border rounded text-center mr-1" style="min-width: 110px;">
+                        <div class="px-3 py-1 bg-light border rounded text-center mr-md-1 progress-badge-box">
                             <span class="d-block text-muted" style="font-size: 10px; font-weight: 600;">Progress
                                 Pekerjaan</span>
                             <strong class="text-success"
