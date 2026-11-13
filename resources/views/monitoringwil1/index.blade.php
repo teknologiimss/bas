@@ -446,11 +446,30 @@
         border: 2px dashed #14003f !important;
     }
 
+    /* =======================================================
+       HANYA BERLAKU DI LAYAR HP (MAX-WIDTH: 768PX)
+       TIDAK MENGUBAH TAMPILAN DESKTOP SAMA SEKALI
+       ======================================================= */
     @media (max-width: 768px) {
         .d-flex.justify-content-between.mb-3 {
             flex-direction: column !important;
             gap: 10px;
             align-items: stretch !important;
+        }
+
+        .d-flex.justify-content-between.mb-3 h3 {
+            margin: 10px 0 !important;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .d-flex.justify-content-between.mb-3 h3 b {
+            margin: 0 !important;
+        }
+
+        .d-flex.justify-content-between.mb-3 .btn-success {
+            width: 100%;
+            margin: 0 !important;
         }
 
         .d-flex.justify-content-between.align-items-center.mb-3 {
@@ -459,21 +478,177 @@
             align-items: stretch !important;
         }
 
+        #toggleFilterBtn,
+        .btn-outline-primary {
+            width: 100%;
+            margin: 0 !important;
+            height: 42px !important;
+            font-size: 13px;
+        }
+
+        .position-relative.border.rounded.p-3.mb-3.shadow-sm {
+            padding: 14px !important;
+        }
+
+        /* Wrapper utama card monitoring agar tombol aksi turun ke bawah di HP */
+        .position-relative.border.rounded>.d-flex.justify-content-between.align-items-center {
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+
         .modern-header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .po-badge,
+        .po-badge {
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            font-size: 12px;
+            padding: 10px;
+            border-radius: 14px;
+            word-break: break-word;
+        }
+
+        .po-badge span {
+            margin-left: 0;
+            margin-top: 4px;
+            display: inline-block;
+            max-width: 100%;
+            overflow-wrap: break-word;
+        }
+
         .jenis-badge {
             width: 100%;
             text-align: center;
+            font-size: 12px;
+        }
+
+        .info-item {
+            flex-direction: column;
+            gap: 4px;
+            padding: 10px;
+        }
+
+        .info-item span {
+            min-width: unset;
+            font-size: 12px;
+        }
+
+        .info-item b,
+        .nama-text {
+            font-size: 13px;
         }
 
         .status-badge {
             position: static;
             margin-bottom: 12px;
+            display: inline-flex;
+            font-size: 11px;
+            padding: 5px 12px;
+        }
+
+        .action-btn {
+            width: 34px;
+            height: 34px;
+            font-size: 13px;
+        }
+
+        .position-relative.border.rounded .d-flex.align-items-center.gap-2 {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            justify-content: flex-end;
+            width: 100%;
+        }
+
+        .dokumen-header {
+            flex-direction: column;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .dokumen-title {
+            justify-content: center;
+        }
+
+        .btn-dokumen {
+            width: 100%;
+            justify-content: center;
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        .doc-item {
+            padding: 12px !important;
+        }
+
+        .doc-item .row {
+            flex-direction: column;
+        }
+
+        .doc-item .drag-handle {
+            width: 100%;
+            padding: 4px 0;
+        }
+
+        .btn-update-doc,
+        .btn-delete-doc {
+            flex: 1;
+            width: 100%;
+            height: 38px;
+            font-size: 12px;
+            padding: 6px 10px !important;
+        }
+
+        .doc-item .d-flex.gap-2 {
+            flex-direction: column;
+        }
+
+        .modal-dialog {
+            margin: 10px;
+        }
+
+        .modal-body .row>div {
+            margin-bottom: 10px;
+        }
+
+        #dokumenContainerWil1 .d-flex,
+        [id^="dokumenContainerEdit"] .d-flex {
+            flex-direction: column;
+        }
+
+        .progress {
+            height: 16px !important;
+        }
+
+        .progress-bar {
+            font-size: 10px;
+        }
+
+        small,
+        .small {
+            font-size: 11px !important;
+        }
+
+        .btn {
+            font-size: 12px !important;
+            padding: 7px 10px !important;
+            border-radius: 8px !important;
+        }
+
+        .modal-footer .btn {
+            flex: 1;
+            height: 38px;
+        }
+
+        #floating-toast {
+            min-width: auto !important;
+            width: calc(100% - 30px) !important;
+            left: 15px !important;
+            right: 15px !important;
         }
     }
 </style>
@@ -486,12 +661,6 @@
             + Tambah Data Wilayah 1
         </button>
     </div>
-
-    {{-- @if (session('success'))
-        <div class="alert alert-success mx-3">{{ session('success') }}</div>
-    @endif --}}
-
-
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <button id="toggleFilterBtn" class="btn btn-outline-primary btn-sm" style="margin-left: 23px;">
@@ -607,10 +776,6 @@
                     </div>
 
                     <div class="d-flex align-items-center gap-2">
-                        {{-- <button class="btn btn-sm btn-outline-primary rounded-pill px-3" data-bs-toggle="modal"
-                            data-bs-target="#modalCreateMemo{{ $m->id }}" title="Buat Memo">
-                            📝 Buat Memo
-                        </button> --}}
                         <button class="action-btn text-primary" data-bs-toggle="modal"
                             data-bs-target="#modalEdit{{ $m->id }}" title="Edit">
                             <i class="fa fa-edit"></i>
@@ -627,13 +792,8 @@
                     </div>
                 </div>
 
-
-                <!-- ========================================== -->
-                <!-- RINGKASAN TOTAL HARGA (RENCANA VS REALISASI) -->
-                <!-- ========================================== -->
                 @php
                     $totalRencana = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-                    // Menjumlahkan harga dari dokumen berkriteria 'Realisasi' DAN 'Closed'
                     $totalRealisasi = $m->documents->whereIn('kriteria', ['Realisasi', 'Closed'])->sum('harga');
                     $selisih = $totalRealisasi - $totalRencana;
                 @endphp
@@ -746,44 +906,6 @@
                                                 data-id="{{ $doc->id }}">
                                         </div>
 
-                                        {{-- Status Dokumen --}}
-                                        {{-- <div class="col">
-                                            <label class="small fw-semibold mb-1">Status Dokumen</label>
-                                            <select class="form-select form-select-sm doc-status"
-                                                data-id="{{ $doc->id }}">
-                                                <option value="-" {{ $doc->status == '-' ? 'selected' : '' }}>-
-                                                </option>
-                                                <option value="Nok" {{ $doc->status == 'Nok' ? 'selected' : '' }}>🔴
-                                                    NOK</option>
-                                                <option value="Closed" {{ $doc->status == 'Closed' ? 'selected' : '' }}>🟢
-                                                    OK</option>
-                                            </select>
-
-                                            <div
-                                                class="closed-extra mt-2 transition {{ $doc->status == 'Closed' ? '' : 'd-none' }}">
-                                                <div class="alert alert-success py-2 px-3 small mb-2">
-                                                    ✅ Dokumen Closed
-                                                </div>
-                                                <input type="date"
-                                                    class="form-control form-control-sm mb-2 doc-closed-date"
-                                                    value="{{ $doc->tanggal_closed }}">
-                                                <textarea class="form-control form-control-sm doc-closed-note" placeholder="Keterangan Closed">{{ $doc->keterangan_closed }}</textarea>
-                                            </div>
-
-                                            <div class="mt-3 d-flex gap-2">
-                                                <button class="btn btn-success btn-sm px-3 btn-update-doc"
-                                                    data-id="{{ $doc->id }}"
-                                                    data-url="{{ route('monitoringwil1.document.update', $doc->id) }}">
-                                                    💾 Simpan
-                                                </button>
-                                                <button class="btn btn-outline-danger btn-sm px-3 btn-delete-doc"
-                                                    data-id="{{ $doc->id }}"
-                                                    data-url="{{ route('monitoringwil1.document.destroy', $doc->id) }}">
-                                                    🗑️ Hapus
-                                                </button>
-                                            </div>
-                                        </div> --}}
-
                                         <div class="col">
                                             <label class="small fw-semibold mb-1">Status Dokumen</label>
                                             <select class="form-select form-select-sm doc-status"
@@ -796,7 +918,6 @@
                                                     OK</option>
                                             </select>
 
-                                            <!-- Form Tambahan Tampil Hanya Jika Status Closed -->
                                             <div
                                                 class="closed-extra mt-2 transition {{ $doc->status == 'Closed' ? '' : 'd-none' }}">
                                                 <div class="alert alert-success py-2 px-3 small mb-2">
@@ -804,7 +925,6 @@
                                                 </div>
 
                                                 <div class="row g-2 mb-2">
-                                                    <!-- Input Jenis Dokumen -->
                                                     <div class="col-md-4">
                                                         <label class="small text-muted mb-1">Jenis Dokumen</label>
                                                         <select class="form-select form-select-sm doc-jenis">
@@ -827,7 +947,6 @@
                                                         </select>
                                                     </div>
 
-                                                    <!-- Input Harga -->
                                                     <div class="col-md-4">
                                                         <label class="small text-muted mb-1">Harga (Rp)</label>
                                                         <input type="number" step="0.01"
@@ -835,7 +954,6 @@
                                                             value="{{ $doc->harga }}" placeholder="0">
                                                     </div>
 
-                                                    <!-- Input Kriteria -->
                                                     <div class="col-md-4">
                                                         <label class="small text-muted mb-1">Kriteria</label>
                                                         <select class="form-select form-select-sm doc-kriteria">
@@ -846,7 +964,6 @@
                                                             <option value="Realisasi"
                                                                 {{ $doc->kriteria == 'Realisasi' ? 'selected' : '' }}>
                                                                 Realisasi</option>
-                                                            <!-- Tambahkan opsi Closed berikut -->
                                                             <option value="Closed"
                                                                 {{ $doc->kriteria == 'Closed' ? 'selected' : '' }}>
                                                                 Closed
@@ -855,7 +972,6 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- Input Tanggal Closed -->
                                                 <div class="mb-2">
                                                     <label class="small text-muted mb-1">Tanggal Closed</label>
                                                     <input type="date"
@@ -863,13 +979,11 @@
                                                         value="{{ $doc->tanggal_closed }}">
                                                 </div>
 
-                                                <!-- Input Keterangan Closed -->
                                                 <div class="mb-2">
                                                     <textarea class="form-control form-control-sm doc-closed-note" placeholder="Keterangan Closed">{{ $doc->keterangan_closed }}</textarea>
                                                 </div>
                                             </div>
 
-                                            <!-- Tombol Aksi -->
                                             <div class="mt-3 d-flex gap-2">
                                                 <button class="btn btn-success btn-sm px-3 btn-update-doc"
                                                     data-id="{{ $doc->id }}"
@@ -883,9 +997,6 @@
                                                 </button>
                                             </div>
                                         </div>
-
-
-
                                     </div>
                                 </li>
                             @endforeach
@@ -981,145 +1092,6 @@
                     </form>
                 </div>
             </div>
-
-            <!-- MODAL BUAT MEMO -->
-            {{-- <div class="modal fade" id="modalCreateMemo{{ $m->id }}" tabindex="-1">
-                <div class="modal-dialog modal-xl">
-                    <form class="modal-content" action="{{ route('monitoringwil1.memo.store', $m->id) }}" method="POST"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-header bg-primary text-white">
-                            <h5 class="modal-title">📝 Buat Memo Baru - Wilayah 1 (PO {{ $m->po_nota_dinas }})</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                        </div>
-
-                        <div class="modal-body" style="background: #f8f9fa;">
-                            <div class="card p-3 mb-3 border-0 shadow-sm">
-                                <h6 class="fw-bold text-primary mb-3">Header Memo</h6>
-                                <div class="row g-3">
-                                    <div class="col-md-3">
-                                        <label class="form-label small fw-bold">Tanggal</label>
-                                        <input type="date" name="tanggal" value="{{ date('Y-m-d') }}"
-                                            class="form-control form-control-sm" required>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label small fw-bold">Nomor Memo</label>
-                                        <input type="text" name="nomor_memo" class="form-control form-control-sm"
-                                            placeholder="010/M/340/2026" required>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <label class="form-label small fw-bold">Hal / Perihal</label>
-                                        <input type="text" name="hal" class="form-control form-control-sm"
-                                            placeholder="Pengajuan..." required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Dari</label>
-                                        <input type="text" name="dari" value="Kepala Divisi Wilayah I"
-                                            class="form-control form-control-sm" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Kepada Yth.</label>
-                                        <input type="text" name="kepada" value="Kepala Divisi Logistik"
-                                            class="form-control form-control-sm" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card p-3 mb-3 border-0 shadow-sm">
-                                <h6 class="fw-bold text-primary mb-3">Isi Suratan / Paragraf</h6>
-                                <div class="mb-3">
-                                    <label class="form-label small fw-bold">1. Paragraf Pembuka / Dasar Surat</label>
-                                    <textarea name="pembuka" class="form-control form-control-sm" rows="3" placeholder="Berdasarkan..."></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label small fw-bold">2. Paragraf Utama</label>
-                                    <textarea name="isi_utama" class="form-control form-control-sm" rows="2"
-                                        placeholder="Sehubungan dengan point 1 di atas..."></textarea>
-                                </div>
-                            </div>
-
-                            <div class="card p-3 mb-3 border-0 shadow-sm">
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input toggle-table-switch" type="checkbox" name="has_table"
-                                        value="1" id="switchTable{{ $m->id }}"
-                                        data-target="#tableSection{{ $m->id }}" checked>
-                                    <label class="form-check-label fw-bold text-primary"
-                                        for="switchTable{{ $m->id }}">Sertakan Tabel Rincian Barang / Jasa</label>
-                                </div>
-
-                                <div id="tableSection{{ $m->id }}">
-                                    <table class="table table-bordered table-sm mt-2 align-middle"
-                                        id="tableItem{{ $m->id }}">
-                                        <thead class="table-light">
-                                            <tr class="text-center small">
-                                                <th width="20%">Uraian Barang</th>
-                                                <th width="35%">Spesifikasi</th>
-                                                <th width="10%">Qty</th>
-                                                <th width="10%">Sat</th>
-                                                <th width="20%">Ket</th>
-                                                <th width="5%">#</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><input type="text" name="uraian_barang[]"
-                                                        class="form-control form-control-sm"></td>
-                                                <td>
-                                                    <textarea name="spesifikasi[]" class="form-control form-control-sm" rows="1"></textarea>
-                                                </td>
-                                                <td><input type="text" name="qty[]"
-                                                        class="form-control form-control-sm text-center"></td>
-                                                <td><input type="text" name="satuan[]"
-                                                        class="form-control form-control-sm text-center"></td>
-                                                <td><input type="text" name="keterangan_item[]"
-                                                        class="form-control form-control-sm"></td>
-                                                <td><button type="button"
-                                                        class="btn btn-sm btn-danger btn-remove-row">×</button></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <button type="button" class="btn btn-sm btn-outline-success btn-add-row"
-                                        data-target="#tableItem{{ $m->id }}">+ Tambah Baris Tabel</button>
-                                </div>
-                            </div>
-
-                            <div class="card p-3 mb-3 border-0 shadow-sm">
-                                <h6 class="fw-bold text-primary mb-3">Catatan, Penutup & Tanda Tangan</h6>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Note / Catatan Khusus (Opsional)</label>
-                                        <textarea name="catatan_note" class="form-control form-control-sm" rows="2"></textarea>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">3. Paragraf Penutup</label>
-                                        <textarea name="penutup" class="form-control form-control-sm" rows="2"></textarea>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label small fw-bold">Jabatan Penandatangan</label>
-                                        <input type="text" name="jabatan_penandatangan"
-                                            value="Kepala Divisi Wilayah I" class="form-control form-control-sm">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label small fw-bold">Nama Penandatangan</label>
-                                        <input type="text" name="nama_penandatangan"
-                                            class="form-control form-control-sm" required>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label small fw-bold">Upload Tanda Tangan (PNG/JPG)</label>
-                                        <input type="file" name="ttd_image" class="form-control form-control-sm"
-                                            accept="image/png, image/jpeg, image/jpg">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">💾 Generate Memo & Simpan Ke PO</button>
-                        </div>
-                    </form>
-                </div>
-            </div> --}}
         @empty
             <div class="text-center p-4">Tidak ada data untuk Wilayah 1.</div>
         @endforelse
@@ -1207,7 +1179,6 @@
 
     <script>
         $(document).ready(function() {
-            // Sortable untuk urutan dokumen
             $('.sortable-docs-list').each(function() {
                 var containerEl = this;
                 Sortable.create(containerEl, {
@@ -1251,7 +1222,7 @@
             });
 
             $(document).on('change', '.doc-status', function() {
-                let extraDiv = $(this).closest('.row').find('.closed-extra');
+                let extraDiv = $(this).closest('.row, .col').find('.closed-extra');
                 if ($(this).val() === 'Closed') {
                     extraDiv.removeClass('d-none');
                 } else {
@@ -1259,38 +1230,6 @@
                 }
             });
 
-            // $(document).on('click', '.btn-update-doc', function() {
-            //     let btn = $(this);
-            //     let id = btn.data('id');
-            //     let url = btn.data('url');
-            //     let container = $('#doc-' + id);
-
-            //     let formData = new FormData();
-            //     formData.append('_token', '{{ csrf_token() }}');
-            //     formData.append('nama_dokumen', container.find('.doc-name').val());
-            //     formData.append('status', container.find('.doc-status').val());
-            //     formData.append('tanggal_closed', container.find('.doc-closed-date').val() || '');
-            //     formData.append('keterangan_closed', container.find('.doc-closed-note').val() || '');
-
-            //     let file = container.find('.doc-file')[0].files[0];
-            //     if (file) formData.append('file_dokumen', file);
-
-            //     $.ajax({
-            //         url: url,
-            //         type: 'POST',
-            //         data: formData,
-            //         processData: false,
-            //         contentType: false,
-            //         success: function(res) {
-            //             if (res.success) {
-            //                 alert('✅ ' + res.message);
-            //                 if (res.file_url) $('#file-link-' + id).attr('href', res.file_url);
-            //             } else alert('❌ Gagal memperbarui dokumen.');
-            //         }
-            //     });
-            // });
-
-            // === UPDATE DOKUMEN (AJAX DENGAN AUTO REFRESH HALAMAN) ===
             $(document).on('click', '.btn-update-doc', function() {
                 let button = $(this);
                 let id = button.data('id');
@@ -1330,8 +1269,6 @@
                     success: function(response) {
                         if (response.success) {
                             showFloatingNotification(response.message, "success");
-
-                            // Jeda 1 detik agar notifikasi terlihat, lalu halaman auto-refresh untuk memperbarui total harga & progress
                             setTimeout(function() {
                                 location.reload();
                             }, 1000);
@@ -1347,7 +1284,6 @@
                 });
             });
 
-            // === HAPUS DOKUMEN (AJAX DENGAN AUTO REFRESH HALAMAN) ===
             $(document).on('click', '.btn-delete-doc', function() {
                 if (!confirm('Hapus dokumen ini?')) return;
                 let btn = $(this);
@@ -1363,8 +1299,6 @@
                     success: function(res) {
                         if (res.success) {
                             showFloatingNotification(res.message, "success");
-
-                            // Jeda 1 detik lalu auto-refresh halaman
                             setTimeout(function() {
                                 location.reload();
                             }, 1000);
@@ -1388,7 +1322,6 @@
                     </div>`);
             });
 
-            // Cek apakah ada session success/error dari Laravel
             @if (session('success'))
                 showFloatingNotification("{{ session('success') }}", "success");
             @endif
@@ -1397,7 +1330,6 @@
                 showFloatingNotification("{{ session('error') }}", "error");
             @endif
 
-            // Fungsi untuk menampilkan Floating Notification yang rapi di pojok kanan atas
             function showFloatingNotification(message, type) {
                 let bgGradient = type === 'success' ?
                     'linear-gradient(135deg, #00c853, #00a844)' :
@@ -1420,14 +1352,10 @@
             </div>
         `;
 
-                // Hapus toast lama jika ada, lalu masukkan ke body paling luar
                 $('#floating-toast').remove();
                 $('body').append(html);
-
-                // Munculkan dengan animasi slide/fade
                 $('#floating-toast').fadeIn(400);
 
-                // Otomatis hilang setelah 3 detik
                 setTimeout(function() {
                     $('#floating-toast').fadeOut(500, function() {
                         $(this).remove();

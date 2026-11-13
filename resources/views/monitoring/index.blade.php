@@ -498,6 +498,26 @@
         background: linear-gradient(135deg, #6c757d, #495057);
     }
 
+    /* Custom Drag & Drop Styles untuk Dokumen */
+    .drag-handle {
+        cursor: grab;
+        padding: 10px;
+    }
+
+    .drag-handle:active {
+        cursor: grabbing;
+    }
+
+    .sortable-ghost-doc {
+        opacity: 0.4;
+        background-color: #f0ebff !important;
+        border: 2px dashed #14003f !important;
+    }
+
+    /* =======================================================
+       HANYA BERLAKU DI LAYAR HP (MAX-WIDTH: 768PX)
+       TIDAK MENGUBAH TAMPILAN DESKTOP SAMA SEKALI
+       ======================================================= */
     @media (max-width: 768px) {
         .d-flex.justify-content-between.mb-3 {
             flex-direction: column !important;
@@ -507,8 +527,12 @@
 
         .d-flex.justify-content-between.mb-3 h3 {
             margin: 10px 0 !important;
-            font-size: 20px;
+            font-size: 18px;
             text-align: center;
+        }
+
+        .d-flex.justify-content-between.mb-3 h3 b {
+            margin: 0 !important;
         }
 
         .d-flex.justify-content-between.mb-3 .btn-success {
@@ -534,18 +558,35 @@
             padding: 14px !important;
         }
 
+        /* Wrapper utama card monitoring agar tombol aksi turun ke bawah di HP */
+        .position-relative.border.rounded>.d-flex.justify-content-between.align-items-center {
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+
         .modern-header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 10px;
+            gap: 8px;
         }
 
         .po-badge {
             width: 100%;
+            flex-direction: column;
             justify-content: center;
             text-align: center;
             font-size: 12px;
             padding: 10px;
+            border-radius: 14px;
+            word-break: break-word;
+        }
+
+        .po-badge span {
+            margin-left: 0;
+            margin-top: 4px;
+            display: inline-block;
+            max-width: 100%;
+            overflow-wrap: break-word;
         }
 
         .jenis-badge {
@@ -579,14 +620,21 @@
         }
 
         .action-btn {
-            width: 30px;
-            height: 30px;
+            width: 34px;
+            height: 34px;
             font-size: 13px;
         }
 
-        .d-flex.align-items-center.gap-2 {
+        .position-relative.border.rounded .d-flex.align-items-center.gap-2 {
             margin-top: 15px;
+            margin-bottom: 15px;
             justify-content: flex-end;
+            width: 100%;
+        }
+
+        .position-relative.border.rounded .d-flex.align-items-center.gap-2 .btn-outline-primary {
+            width: auto !important;
+            flex: 1;
         }
 
         .dokumen-header {
@@ -612,6 +660,11 @@
 
         .doc-item .row {
             flex-direction: column;
+        }
+
+        .doc-item .drag-handle {
+            width: 100%;
+            padding: 4px 0;
         }
 
         .btn-update-doc,
@@ -664,21 +717,18 @@
             height: 38px;
         }
 
-
-        /* Custom Drag & Drop Styles untuk Dokumen */
-        .drag-handle {
-            cursor: grab;
-            padding: 10px;
+        #tableSection1 table,
+        [id^="tableSection"] table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
         }
 
-        .drag-handle:active {
-            cursor: grabbing;
-        }
-
-        .sortable-ghost-doc {
-            opacity: 0.4;
-            background-color: #f0ebff !important;
-            border: 2px dashed #14003f !important;
+        #floating-toast {
+            min-width: auto !important;
+            width: calc(100% - 30px) !important;
+            left: 15px !important;
+            right: 15px !important;
         }
     }
 </style>
@@ -827,82 +877,6 @@
                         </form>
                     </div>
                 </div>
-
-
-
-                <!-- ========================================== -->
-                <!-- RINGKASAN TOTAL HARGA (RENCANA VS REALISASI) -->
-                <!-- ========================================== -->
-                {{-- @php
-                    $totalRencana = $m->documents->where('kriteria', 'Rencana')->sum('harga');
-                    $totalRealisasi = $m->documents->where('kriteria', 'Realisasi')->sum('harga');
-                    $selisih = $totalRealisasi - $totalRencana;
-                @endphp
-
-                <div class="row g-3 mb-4">
-                    <!-- Card Total Rencana -->
-                    <div class="col-md-4">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 bg-white"
-                            style="border-left: 5px solid #0d6efd !important;">
-                            <div class="card-body p-3 d-flex align-items-center">
-                                <div class="rounded-circle p-3 me-3 bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center"
-                                    style="width: 50px; height: 50px; flex-shrink: 0;">
-                                    <i class="fa fa-calculator fa-lg"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <span class="text-muted small fw-semibold text-uppercase d-block"
-                                        style="font-size: 0.75rem; letter-spacing: 0.5px;"><b>Total Rencana SO/PO</b></span>
-                                    <div
-                                        class="badge bg-primary text-white fs-6 fw-bold mt-1 px-3 py-2 rounded-pill shadow-sm">
-                                        Rp {{ number_format($totalRencana, 0, ',', '.') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card Total Realisasi -->
-                    <div class="col-md-4">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 bg-white"
-                            style="border-left: 5px solid #198754 !important;">
-                            <div class="card-body p-3 d-flex align-items-center">
-                                <div class="rounded-circle p-3 me-3 bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center"
-                                    style="width: 50px; height: 50px; flex-shrink: 0;">
-                                    <i class="fa fa-file-invoice-dollar fa-lg"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <span class="text-muted small fw-semibold text-uppercase d-block"
-                                        style="font-size: 0.75rem; letter-spacing: 0.5px;"><b>Total Realisasi</b></span>
-                                    <div
-                                        class="badge bg-success text-white fs-6 fw-bold mt-1 px-3 py-2 rounded-pill shadow-sm">
-                                        Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card Selisih (Deviasi) -->
-                    <div class="col-md-4">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 bg-white"
-                            style="border-left: 5px solid {{ $selisih < 0 ? '#dc3545' : '#0dcaf0' }} !important;">
-                            <div class="card-body p-3 d-flex align-items-center">
-                                <div class="rounded-circle p-3 me-3 {{ $selisih < 0 ? 'bg-danger bg-opacity-10 text-danger' : 'bg-info bg-opacity-10 text-info' }} d-flex align-items-center justify-content-center"
-                                    style="width: 50px; height: 50px; flex-shrink: 0;">
-                                    <i class="fa {{ $selisih < 0 ? 'fa-arrow-down' : 'fa-check-circle' }} fa-lg"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <span class="text-muted small fw-semibold text-uppercase d-block"
-                                        style="font-size: 0.75rem; letter-spacing: 0.5px;"><b>Selisih</b></span>
-                                    <div
-                                        class="badge {{ $selisih < 0 ? 'bg-danger' : 'bg-info' }} text-white fs-6 fw-bold mt-1 px-3 py-2 rounded-pill shadow-sm">
-                                        Rp {{ number_format($selisih, 0, ',', '.') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
 
                 @php
                     $totalRencana = $m->documents->where('kriteria', 'Rencana')->sum('harga');
@@ -1529,55 +1503,6 @@
                     extraDiv.addClass('d-none');
                 }
             });
-
-            // === UPDATE DOKUMEN (AJAX) ===
-            // $(document).on('click', '.btn-update-doc', function() {
-            //     let button = $(this);
-            //     let id = button.data('id');
-            //     let url = button.data('url');
-            //     let token = '{{ csrf_token() }}';
-
-            //     let container = $('#doc-' + id);
-            //     let nama_dokumen = container.find('.doc-name').val();
-            //     let status = container.find('.doc-status').val();
-            //     let tanggal_closed = container.find('.doc-closed-date').val();
-            //     let keterangan_closed = container.find('.doc-closed-note').val();
-            //     let file_dokumen = container.find('.doc-file')[0].files[0];
-
-            //     let formData = new FormData();
-            //     formData.append('_token', token);
-            //     formData.append('nama_dokumen', nama_dokumen);
-            //     formData.append('status', status);
-            //     formData.append('tanggal_closed', tanggal_closed ? tanggal_closed : '');
-            //     formData.append('keterangan_closed', keterangan_closed ? keterangan_closed : '');
-
-            //     if (file_dokumen) {
-            //         formData.append('file_dokumen', file_dokumen);
-            //     }
-
-            //     $.ajax({
-            //         url: url,
-            //         type: 'POST',
-            //         data: formData,
-            //         processData: false,
-            //         contentType: false,
-            //         success: function(response) {
-            //             if (response.success) {
-            //                 alert('✅ ' + response.message);
-            //                 if (response.file_url) {
-            //                     let link = $('#file-link-' + id);
-            //                     link.attr('href', response.file_url);
-            //                 }
-            //             } else {
-            //                 alert('❌ Gagal memperbarui dokumen.');
-            //             }
-            //         },
-            //         error: function(xhr) {
-            //             console.error(xhr.responseText);
-            //             alert('Terjadi kesalahan saat memperbarui dokumen.');
-            //         }
-            //     });
-            // });
 
             // === UPDATE DOKUMEN (AJAX DENGAN AUTO REFRESH HALAMAN) ===
             $(document).on('click', '.btn-update-doc', function() {
