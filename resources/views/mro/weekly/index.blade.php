@@ -70,6 +70,49 @@
                 box-shadow: none !important;
             }
         }
+
+        /* ===============================
+               RESPONSIVE LAYAR HP (MOBILE FIXES)
+               =============================== */
+        @media (max-width: 767.98px) {
+            .container-fluid {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+
+            /* Header Laporan stack di HP */
+            .d-flex.justify-content-between.align-items-center.mb-4 {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 12px;
+            }
+
+            .d-flex.justify-content-between.align-items-center.mb-4 .d-flex.gap-2 {
+                width: 100%;
+            }
+
+            .d-flex.justify-content-between.align-items-center.mb-4 .d-flex.gap-2 a,
+            .d-flex.justify-content-between.align-items-center.mb-4 .d-flex.gap-2 button {
+                flex: 1;
+                text-align: center;
+                justify-content: center;
+            }
+
+            /* Accordion button Header text wrap di HP */
+            .accordion-button .d-flex {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 6px;
+            }
+
+            .accordion-button .d-flex div:last-child {
+                align-self: flex-start;
+            }
+
+            h3.fw-bold {
+                font-size: 1.35rem;
+            }
+        }
     </style>
 
     <div class="container-fluid py-3">
@@ -333,29 +376,31 @@
                     <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-0">
-                    <table class="table table-striped table-hover mb-0">
-                        <thead class="table-light sticky-top">
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Proyek</th>
-                                <th>Kegiatan</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data as $d)
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="table-light sticky-top">
                                 <tr>
-                                    <td class="text-nowrap">{{ date('d-m-Y', strtotime($d->tanggal)) }}</td>
-                                    <td>{{ optional($d->monitoring)->nama_pekerjaan ?? 'Tanpa Proyek' }}</td>
-                                    <td>{!! nl2br(e($d->kegiatan)) !!}</td>
-                                    <td>
-                                        <span
-                                            class="badge {{ $d->status == 'open' ? 'bg-danger' : 'bg-success' }}">{{ strtoupper($d->status) }}</span>
-                                    </td>
+                                    <th>Tanggal</th>
+                                    <th>Proyek</th>
+                                    <th>Kegiatan</th>
+                                    <th>Status</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($data as $d)
+                                    <tr>
+                                        <td class="text-nowrap">{{ date('d-m-Y', strtotime($d->tanggal)) }}</td>
+                                        <td>{{ optional($d->monitoring)->nama_pekerjaan ?? 'Tanpa Proyek' }}</td>
+                                        <td>{!! nl2br(e($d->kegiatan)) !!}</td>
+                                        <td>
+                                            <span
+                                                class="badge {{ $d->status == 'open' ? 'bg-danger' : 'bg-success' }}">{{ strtoupper($d->status) }}</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -370,26 +415,28 @@
                     <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-0">
-                    <table class="table table-striped table-hover mb-0">
-                        <thead class="table-light sticky-top">
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Proyek</th>
-                                <th>Kegiatan</th>
-                                <th>Kendala / Issues</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data->where('status', 'open') as $d)
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="table-light sticky-top">
                                 <tr>
-                                    <td class="text-nowrap">{{ date('d-m-Y', strtotime($d->tanggal)) }}</td>
-                                    <td>{{ optional($d->monitoring)->nama_pekerjaan ?? 'Tanpa Proyek' }}</td>
-                                    <td>{!! nl2br(e($d->kegiatan)) !!}</td>
-                                    <td class="text-danger font-weight-bold">{!! nl2br(e($d->keterangan ?? '-')) !!}</td>
+                                    <th>Tanggal</th>
+                                    <th>Proyek</th>
+                                    <th>Kegiatan</th>
+                                    <th>Kendala / Issues</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($data->where('status', 'open') as $d)
+                                    <tr>
+                                        <td class="text-nowrap">{{ date('d-m-Y', strtotime($d->tanggal)) }}</td>
+                                        <td>{{ optional($d->monitoring)->nama_pekerjaan ?? 'Tanpa Proyek' }}</td>
+                                        <td>{!! nl2br(e($d->kegiatan)) !!}</td>
+                                        <td class="text-danger font-weight-bold">{!! nl2br(e($d->keterangan ?? '-')) !!}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -404,26 +451,28 @@
                     <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-0">
-                    <table class="table table-striped table-hover mb-0">
-                        <thead class="table-light sticky-top">
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Proyek</th>
-                                <th>Kegiatan</th>
-                                <th>Catatan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data->where('status', 'closed') as $d)
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="table-light sticky-top">
                                 <tr>
-                                    <td class="text-nowrap">{{ date('d-m-Y', strtotime($d->tanggal)) }}</td>
-                                    <td>{{ optional($d->monitoring)->nama_pekerjaan ?? 'Tanpa Proyek' }}</td>
-                                    <td>{!! nl2br(e($d->kegiatan)) !!}</td>
-                                    <td>{!! nl2br(e($d->keterangan ?? '-')) !!}</td>
+                                    <th>Tanggal</th>
+                                    <th>Proyek</th>
+                                    <th>Kegiatan</th>
+                                    <th>Catatan</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($data->where('status', 'closed') as $d)
+                                    <tr>
+                                        <td class="text-nowrap">{{ date('d-m-Y', strtotime($d->tanggal)) }}</td>
+                                        <td>{{ optional($d->monitoring)->nama_pekerjaan ?? 'Tanpa Proyek' }}</td>
+                                        <td>{!! nl2br(e($d->kegiatan)) !!}</td>
+                                        <td>{!! nl2br(e($d->keterangan ?? '-')) !!}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
