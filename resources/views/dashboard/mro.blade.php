@@ -103,8 +103,8 @@
         }
 
         /* ===============================
-                   FULLSCREEN TV MODE (BACKGROUND PUTIH)
-                   =============================== */
+                       FULLSCREEN TV MODE (BACKGROUND PUTIH)
+                       =============================== */
         html:fullscreen,
         html:-webkit-full-screen,
         html:-moz-full-screen,
@@ -144,8 +144,8 @@
         }
 
         /* ===============================
-                       PERAPIHAN TOMBOL HEADER ACTION
-                       =============================== */
+                           PERAPIHAN TOMBOL HEADER ACTION
+                           =============================== */
         .gap-2 {
             gap: 0.5rem !important;
         }
@@ -191,6 +191,73 @@
             color: #1e293b;
             padding: 0 14px;
             white-space: nowrap;
+        }
+
+        /* ===============================
+                       RESPONSIVE LAYAR HP (MOBILE FIXES)
+                       =============================== */
+        @media (max-width: 767.98px) {
+            .container-fluid {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+
+            /* Header action stack agar rapi di HP */
+            .d-flex.justify-content-between.align-items-center.mb-3 {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 10px;
+            }
+
+            .d-flex.align-items-center.gap-2 {
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 6px !important;
+            }
+
+            .btn-dashboard-action,
+            .form-select-dashboard,
+            .badge-date-dashboard {
+                height: 34px !important;
+                font-size: 12px !important;
+                padding: 0 10px !important;
+            }
+
+            /* Tombol Fullscreen disembunyikan atau disesuaikan di layar kecil jika perlu, atau dibiarkan flex */
+            #btnFullscreen {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .form-control.form-select-dashboard {
+                flex: 1;
+            }
+
+            .badge-date-dashboard {
+                flex: 1;
+                justify-content: center;
+            }
+
+            /* Bagian Notifikasi & Realisasi PM di bawah agar stack ke bawah di HP */
+            .card-dashboard .row.align-items-center .col-6 {
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+                border-right: none !important;
+                border-bottom: 1px solid #e2e8f0;
+                padding-bottom: 15px;
+                margin-bottom: 15px;
+            }
+
+            .card-dashboard .row.align-items-center .col-6:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+
+            /* Ukuran font judul card di HP */
+            h4.font-weight-bold {
+                font-size: 1.25rem;
+            }
         }
     </style>
 
@@ -314,59 +381,63 @@
                         </div>
 
                         <div class="table-scroll-container" id="autoScrollTableContainer">
-                            <table class="table table-hover table-striped table-dashboard mb-0">
-                                <thead class="text-center">
-                                    <tr>
-                                        <th>PO / Nota Dinas</th>
-                                        <th>Nama Pekerjaan</th>
-                                        <th>Tgl Kontrak</th>
-                                        <th>Selesai Kontrak</th>
-                                        <th>Dokumen Terakhir</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($monitorings as$m)
-                                        @php
-                                            $latestDoc = $m->documents->last();
-                                        @endphp
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped table-dashboard mb-0">
+                                    <thead class="text-center">
                                         <tr>
-                                            <td class="font-weight-bold text-primary">{{ $m->po_nota_dinas ?? '-' }}</td>
-                                            <td>{{ $m->nama_pekerjaan ?? '-' }}</td>
-                                            <td class="text-center">
-                                                {{ $m->tanggal_kontrak ? \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') : '-' }}
-                                            </td>
-                                            <td class="text-center">
-                                                {{ $m->tanggal_selesai_kontrak ? \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') : '-' }}
-                                            </td>
-                                            <td>
-                                                @if ($latestDoc)
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <small class="font-weight-bold text-truncate"
-                                                            style="max-width: 120px;"
-                                                            title="{{ $latestDoc->nama_dokumen }}">
-                                                            {{ $latestDoc->nama_dokumen }}
-                                                        </small>
-                                                        @if (($latestDoc->status ?? '') == 'Closed')
-                                                            <span class="badge badge-success">🟢 OK</span>
-                                                        @elseif (($latestDoc->status ?? '') == 'Nok')
-                                                            <span class="badge badge-danger">🔴 NOK</span>
-                                                        @else
-                                                            <span class="badge badge-secondary">-</span>
-                                                        @endif
-                                                    </div>
-                                                @else
-                                                    <span class="text-muted small italic">Belum Ada</span>
-                                                @endif
-                                            </td>
+                                            <th>PO / Nota Dinas</th>
+                                            <th>Nama Pekerjaan</th>
+                                            <th>Tgl Kontrak</th>
+                                            <th>Selesai Kontrak</th>
+                                            <th>Dokumen Terakhir</th>
                                         </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">Tidak ada data progres
-                                                proyek.</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($monitorings as $m)
+                                            @php
+                                                $latestDoc = $m->documents->last();
+                                            @endphp
+                                            <tr>
+                                                <td class="font-weight-bold text-primary">{{ $m->po_nota_dinas ?? '-' }}
+                                                </td>
+                                                <td>{{ $m->nama_pekerjaan ?? '-' }}</td>
+                                                <td class="text-center">
+                                                    {{ $m->tanggal_kontrak ? \Carbon\Carbon::parse($m->tanggal_kontrak)->format('d-m-Y') : '-' }}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{ $m->tanggal_selesai_kontrak ? \Carbon\Carbon::parse($m->tanggal_selesai_kontrak)->format('d-m-Y') : '-' }}
+                                                </td>
+                                                <td>
+                                                    @if ($latestDoc)
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <small class="font-weight-bold text-truncate"
+                                                                style="max-width: 120px;"
+                                                                title="{{ $latestDoc->nama_dokumen }}">
+                                                                {{ $latestDoc->nama_dokumen }}
+                                                            </small>
+                                                            @if (($latestDoc->status ?? '') == 'Closed')
+                                                                <span class="badge badge-success">OK</span>
+                                                            @elseif (($latestDoc->status ?? '') == 'Nok')
+                                                                <span class="badge badge-danger">NOK</span>
+                                                            @else
+                                                                <span class="badge badge-secondary">-</span>
+                                                            @endif
+                                                        </div>
+                                                    @else
+                                                        <span class="text-muted small italic">Belum Ada</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center text-muted py-4">Tidak ada data
+                                                    progres
+                                                    proyek.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -457,7 +528,7 @@
                         </div>
                         <div class="modal-footer bg-white justify-content-center py-2">
                             <button type="button" class="btn btn-primary btn-sm px-4 rounded-pill font-weight-bold"
-                                data-dismiss="modal" id="btnOkMotivation">Lanjut Bekerja 🚀</button>
+                                data-dismiss="modal" id="btnOkMotivation">Lanjut Bekerja</button>
                         </div>
                     </div>
                 </div>
@@ -540,32 +611,32 @@
             }
 
             // ==========================================
-            // 🚀 POPUP MOTIVASI KERJA BERGANTI-GANTI SETIAP BEBERAPA DETIK
+            // POPUP MOTIVASI KERJA BERGANTI-GANTI SETIAP BEBERAPA DETIK
             // ==========================================
             const motivationItems = [{
                     type: 'gif',
-                    src: 'https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif', // Semangat Kerja / Fokus
+                    src: 'https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif',
                     title: 'Fokus & Utamakan Kualitas!',
                     quote: 'Kualitas pekerjaan adalah cerminan dari profesionalisme kita.',
                     subtext: 'Mari pastikan setiap pekerjaan berjalan sempurna.'
                 },
                 {
                     type: 'gif',
-                    src: 'https://media.giphy.com/media/6JvVrxP6osBdC/giphy.gif', // Teamwork / Kolaborasi
+                    src: 'https://media.giphy.com/media/6JvVrxP6osBdC/giphy.gif',
                     title: 'Solidaritas Tim',
                     quote: 'Kerjasama yang kuat menghasilkan pencapaian yang luar biasa.',
                     subtext: 'Saling koordinasi untuk target PT. IMST Madiun yang lebih handal.'
                 },
                 {
                     type: 'gif',
-                    src: 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif', // Produktivitas / Semangat
+                    src: 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif',
                     title: 'Tetap Semangat & Produktif!',
                     quote: 'Disiplin dan kerja keras hari ini adalah kunci sukses masa depan.',
                     subtext: 'Terus berikan performa terbaik dalam setiap tugas perusahaan.'
                 },
                 {
                     type: 'gif',
-                    src: 'https://media.giphy.com/media/g9582DNuQppxC/giphy.gif', // Sukses / Target Tercapai
+                    src: 'https://media.giphy.com/media/g9582DNuQppxC/giphy.gif',
                     title: 'Kejar Target, Lampaui Batas!',
                     quote: 'Setiap tantangan adalah peluang untuk membuktikan kemampuan terbaik kita.',
                     subtext: 'Ayo selesaikan proyek tepat waktu!'
@@ -575,12 +646,10 @@
             let motivationIndex = 0;
 
             function showMotivationPopup() {
-                // Jangan tampilkan jika modal sudah terbuka (biar tidak tumpuk-tumpuk)
                 if ($('#motivationModal').hasClass('show')) return;
 
                 const item = motivationItems[motivationIndex];
 
-                // Set konten modal
                 document.getElementById('motivationTitle').innerHTML =
                     `<i class="fas fa-fire mr-2 text-warning"></i> ${item.title}`;
                 document.getElementById('motivationQuote').innerText = item.quote;
@@ -592,26 +661,19 @@
                         `<img src="${item.src}" alt="Motivasi Kerja" class="img-fluid rounded shadow-sm" style="max-height: 220px; object-fit: cover;">`;
                 }
 
-                // Tampilkan modal menggunakan Bootstrap jQuery
                 $('#motivationModal').modal('show');
 
-                // Otomatis tutup modal setelah 7 detik agar tidak mengganggu dashboard TV mode selamanya
                 setTimeout(function() {
                     if ($('#motivationModal').hasClass('show')) {
                         $('#motivationModal').modal('hide');
                     }
                 }, 15000);
 
-                // Geser ke index berikutnya secara berputar (loop)
                 motivationIndex = (motivationIndex + 1) % motivationItems.length;
             }
 
-            // Atur kemunculan popup motivasi setiap 20 menit sekali (1.200.000 milidetik)
             setInterval(showMotivationPopup, 1200000);
-
-            // Tampilkan sekali setelah 10 detik halaman pertama kali dimuat
             setTimeout(showMotivationPopup, 10000);
-
 
             // ==========================================
             // 1. Stacked Bar Chart Monitoring Jatuh Tempo
