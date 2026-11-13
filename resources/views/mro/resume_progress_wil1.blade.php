@@ -46,13 +46,16 @@
         .table-responsive {
             border-radius: 12px;
             max-height: 75vh;
+            overflow-x: auto;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .table {
             border-radius: 12px;
             border-collapse: separate;
             border-spacing: 0;
+            white-space: nowrap;
         }
 
         .table td,
@@ -179,7 +182,18 @@
         }
 
         .card .card-body {
-            padding: 1.5rem;
+            padding: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .card .card-body {
+                padding: 0.85rem;
+            }
+
+            .container-fluid {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
         }
 
         h6.text-danger {
@@ -265,13 +279,14 @@
         $totalWil1 = $realisasiWil1Inka + $realisasiWil1NonInka;
     @endphp
 
-    <div class="container-fluid mt-4">
+    <div class="container-fluid px-2 px-md-4 mt-3">
 
         {{-- HEADER --}}
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3><b>Progress Wilayah 1</b></h3>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
+            <h3 class="mb-0"><b>Progress Wilayah 1</b></h3>
 
-            <a href="{{ route('monitoringwil1.print') }}" target="_blank" class="btn btn-primary no-print">
+            <a href="{{ route('monitoringwil1.print') }}" target="_blank"
+                class="btn btn-primary no-print align-self-start align-self-md-auto">
                 🖨️ Print Semua
             </a>
         </div>
@@ -279,7 +294,7 @@
         {{-- KARTU RINGKASAN STATISTIK --}}
         <div class="row mb-3 no-print">
             <!-- Total Semua Data -->
-            <div class="col-md-4 mb-3">
+            <div class="col-12 col-md-4 mb-3">
                 <div class="card border-0 shadow-sm h-100"
                     style="border-left: 5px solid var(--blue) !important; border-radius: 12px;">
                     <div class="card-body d-flex align-items-center">
@@ -296,7 +311,7 @@
             </div>
 
             <!-- Jumlah Pekerjaan INKA -->
-            <div class="col-md-4 mb-3">
+            <div class="col-12 col-md-4 mb-3">
                 <div class="card border-0 shadow-sm h-100"
                     style="border-left: 5px solid #22c55e !important; border-radius: 12px;">
                     <div class="card-body d-flex align-items-center">
@@ -313,7 +328,7 @@
             </div>
 
             <!-- Jumlah Pekerjaan Non INKA -->
-            <div class="col-md-4 mb-3">
+            <div class="col-12 col-md-4 mb-3">
                 <div class="card border-0 shadow-sm h-100"
                     style="border-left: 5px solid #f59e0b !important; border-radius: 12px;">
                     <div class="card-body d-flex align-items-center">
@@ -333,7 +348,7 @@
 
         {{-- KARTU REALISASI NILAI PEKERJAAN WILAYAH 1 --}}
         <div class="row mb-4 no-print">
-            <div class="col-md-4 mb-3">
+            <div class="col-12 col-md-4 mb-3">
                 <div class="card border-0 shadow-sm h-100"
                     style="border-radius: 12px; border-top: 4px solid #2563eb !important;">
                     <div class="card-body">
@@ -374,22 +389,23 @@
             <div class="card-body">
                 <form method="GET" action="{{ route('monitoringwil1.resume_progress') }}">
                     <div class="form-row">
-                        <div class="col-md-4 mb-2">
+                        <div class="col-12 col-md-4 mb-2">
                             <input type="text" name="po" class="form-control" placeholder="Cari PO / Nota Dinas"
                                 value="{{ request('po') }}">
                         </div>
 
-                        <div class="col-md-4 mb-2">
+                        <div class="col-12 col-md-4 mb-2">
                             <input type="text" name="pekerjaan" class="form-control" placeholder="Cari Nama Pekerjaan"
                                 value="{{ request('pekerjaan') }}">
                         </div>
 
-                        <div class="col-md-4 mb-2">
-                            <button class="btn btn-primary mr-2" type="submit">
+                        <div class="col-12 col-md-4 mb-2 d-flex">
+                            <button class="btn btn-primary mr-2 flex-grow-1" type="submit">
                                 🔍 Filter
                             </button>
 
-                            <a href="{{ route('monitoringwil1.resume_progress') }}" class="btn btn-secondary">
+                            <a href="{{ route('monitoringwil1.resume_progress') }}"
+                                class="btn btn-secondary flex-grow-1 text-center">
                                 🔄 Reset
                             </a>
                         </div>
@@ -658,7 +674,8 @@
 
                                     <td>
                                         @if ($latestDoc)
-                                            <div class="p-2 border rounded bg-light" style="font-size: 12px;">
+                                            <div class="p-2 border rounded bg-light"
+                                                style="font-size: 12px; white-space: normal;">
                                                 <div
                                                     class="fw-bold text-dark mb-1 d-flex justify-content-between align-items-center">
                                                     <span>📄 <b>{{ $latestDoc->nama_dokumen }}</b></span>
@@ -752,7 +769,7 @@
                     📌 Perhitungan Nilai Progress Monitoring Wilayah 1
                 </h6>
 
-                <ul class="mb-0" style="line-height: 1.9;">
+                <ul class="mb-0 pl-3" style="line-height: 1.9;">
                     <li>
                         <b>SO / PO / KO</b>
                         = <span class="badge badge-primary">30%</span>

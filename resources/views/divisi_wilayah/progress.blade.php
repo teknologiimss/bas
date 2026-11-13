@@ -49,6 +49,7 @@
             border-collapse: separate;
             border-spacing: 0;
             width: 100%;
+            white-space: nowrap;
         }
 
         .table td,
@@ -60,8 +61,10 @@
         .table-responsive {
             border-radius: 12px;
             max-height: 70vh;
+            overflow-x: auto;
             overflow-y: auto;
             position: relative;
+            -webkit-overflow-scrolling: touch;
         }
 
         thead.thead-dark {
@@ -254,7 +257,18 @@
 
         /* ================= FILTER CARD ================= */
         .card .card-body {
-            padding: 1.5rem;
+            padding: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .card .card-body {
+                padding: 0.85rem;
+            }
+
+            .container-fluid {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
         }
 
         /* ================= NOTE ================= */
@@ -311,22 +325,6 @@
             min-width: 90px;
             text-align: center;
         }
-
-        /* ================= RESPONSIVE ================= */
-        @media (max-width: 768px) {
-            .table-responsive {
-                overflow-x: auto;
-            }
-
-            .table {
-                min-width: 1800px;
-            }
-
-            .btn-primary,
-            .btn-secondary {
-                margin-bottom: 5px;
-            }
-        }
     </style>
 
     {{-- HITUNG AKURAT GABUNGAN MRO, WILAYAH 1, DAN WILAYAH 2 (GLOBAL TANPA PAGINATE) --}}
@@ -354,17 +352,17 @@
     @endphp
 
 
-    <div class="container-fluid mt-4">
+    <div class="container-fluid px-2 px-md-4 mt-3">
 
         {{-- HEADER --}}
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
+            <h3 class="mb-0">
                 <b>Progress Divisi Wilayah</b>
             </h3>
 
             {{-- TOMBOL PRINT --}}
             <a href="{{ route('divisi.wilayah.progress.print', request()->query()) }}" target="_blank"
-                class="btn btn-primary no-print">
+                class="btn btn-primary no-print align-self-start align-self-md-auto">
                 🖨️ Print Semua
             </a>
         </div>
@@ -372,7 +370,7 @@
         {{-- KARTU RINGKASAN STATISTIK --}}
         <div class="row mb-4 no-print">
             <!-- Total Semua Data -->
-            <div class="col-md-4 mb-3">
+            <div class="col-12 col-md-4 mb-3">
                 <div class="card border-0 shadow-sm h-100"
                     style="border-left: 5px solid var(--blue) !important; border-radius: 12px;">
                     <div class="card-body d-flex align-items-center">
@@ -389,7 +387,7 @@
             </div>
 
             <!-- Jumlah Pekerjaan INKA -->
-            <div class="col-md-4 mb-3">
+            <div class="col-12 col-md-4 mb-3">
                 <div class="card border-0 shadow-sm h-100"
                     style="border-left: 5px solid #22c55e !important; border-radius: 12px;">
                     <div class="card-body d-flex align-items-center">
@@ -406,7 +404,7 @@
             </div>
 
             <!-- Jumlah Pekerjaan Non INKA -->
-            <div class="col-md-4 mb-3">
+            <div class="col-12 col-md-4 mb-3">
                 <div class="card border-0 shadow-sm h-100"
                     style="border-left: 5px solid #f59e0b !important; border-radius: 12px;">
                     <div class="card-body d-flex align-items-center">
@@ -485,7 +483,7 @@
 
             <!-- GRAND TOTAL HIGHLIGHT (RINGKASAN UTAMA) -->
             <div class="row mb-3">
-                <div class="col-md-4 mb-2">
+                <div class="col-12 col-md-4 mb-2">
                     <div class="card border-0 shadow-sm text-white"
                         style="background: linear-gradient(135deg, #0f172a, #1e293b); border-radius: 12px;">
                         <div class="card-body p-3 d-flex justify-content-between align-items-center">
@@ -503,7 +501,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-2">
+                <div class="col-12 col-md-4 mb-2">
                     <div class="card border-0 shadow-sm text-white"
                         style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px;">
                         <div class="card-body p-3 d-flex justify-content-between align-items-center">
@@ -521,7 +519,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-2">
+                <div class="col-12 col-md-4 mb-2">
                     <div class="card border-0 shadow-sm text-white"
                         style="background: linear-gradient(135deg, #d97706, #b45309); border-radius: 12px;">
                         <div class="card-body p-3 d-flex justify-content-between align-items-center">
@@ -543,7 +541,7 @@
             <!-- RINCIAN PER DIVISI (WILAYAH 1, WILAYAH 2, MRO) -->
             <div class="row">
                 <!-- WILAYAH 1 -->
-                <div class="col-md-4 mb-3">
+                <div class="col-12 col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-radius: 12px; border-top: 4px solid #2563eb !important;">
                         <div class="card-body">
@@ -572,7 +570,7 @@
                 </div>
 
                 <!-- WILAYAH 2 -->
-                <div class="col-md-4 mb-3">
+                <div class="col-12 col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-radius: 12px; border-top: 4px solid #16a34a !important;">
                         <div class="card-body">
@@ -603,7 +601,7 @@
                 </div>
 
                 <!-- MRO -->
-                <div class="col-md-4 mb-3">
+                <div class="col-12 col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-radius: 12px; border-top: 4px solid #b91c1c !important;">
                         <div class="card-body">
@@ -649,24 +647,25 @@
                     <div class="form-row">
 
                         {{-- PO --}}
-                        <div class="col-md-4 mb-2">
+                        <div class="col-12 col-md-4 mb-2">
                             <input type="text" name="po" class="form-control" placeholder="Cari PO / Nota Dinas"
                                 value="{{ request('po') }}">
                         </div>
 
                         {{-- PEKERJAAN --}}
-                        <div class="col-md-4 mb-2">
+                        <div class="col-12 col-md-4 mb-2">
                             <input type="text" name="pekerjaan" class="form-control"
                                 placeholder="Cari Nama Pekerjaan" value="{{ request('pekerjaan') }}">
                         </div>
 
                         {{-- BUTTON --}}
-                        <div class="col-md-4 mb-2">
-                            <button class="btn btn-primary mr-2" type="submit">
+                        <div class="col-12 col-md-4 mb-2 d-flex">
+                            <button class="btn btn-primary mr-2 flex-grow-1" type="submit">
                                 🔍 Filter
                             </button>
 
-                            <a href="{{ route('divisi.wilayah.progress') }}" class="btn btn-secondary">
+                            <a href="{{ route('divisi.wilayah.progress') }}"
+                                class="btn btn-secondary flex-grow-1 text-center">
                                 🔄 Reset
                             </a>
                         </div>
@@ -1046,7 +1045,8 @@
                                     {{-- STATUS DOKUMEN TERAKHIR --}}
                                     <td>
                                         @if ($latestDoc)
-                                            <div class="p-2 border rounded bg-light" style="font-size: 12px;">
+                                            <div class="p-2 border rounded bg-light"
+                                                style="font-size: 12px; white-space: normal;">
                                                 <div
                                                     class="font-weight-bold text-dark mb-1 d-flex justify-content-between align-items-center">
                                                     <span>
@@ -1102,9 +1102,9 @@
                                         @endphp
 
                                         @if ($proyekModel && $targetProgresRoute)
-                                            <a href="{{ $targetProgresRoute }}?search={{ urlencode(trim($m->po_nota_dinas)) }}" 
-                                               class="text-decoration-none d-block" 
-                                               title="Klik untuk melihat Rincian Pekerjaan {{ $m->divisi }}">
+                                            <a href="{{ $targetProgresRoute }}?search={{ urlencode(trim($m->po_nota_dinas)) }}"
+                                                class="text-decoration-none d-block"
+                                                title="Klik untuk melihat Rincian Pekerjaan {{ $m->divisi }}">
                                                 <div class="p-2 border rounded bg-white shadow-sm transition-hover">
                                                     <div class="fw-bold text-info fs-6">
                                                         <b>{{ number_format($persentaseTotalProgres, 2, ',', '.') }}%</b>
@@ -1150,13 +1150,13 @@
         {{-- CATATAN PROGRESS --}}
         <div class="row g-3 mt-3">
             <!-- Kolom Kiri: Wilayah 1 & 2 -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6 mb-3 mb-md-0">
                 <div class="card h-100 shadow-sm border-0 rounded-4">
                     <div class="card-body">
                         <h6 class="font-weight-bold text-danger mb-3">
                             📌 Perhitungan Nilai Progress - Wilayah 1 & 2
                         </h6>
-                        <ul class="mb-0" style="line-height: 1.9;">
+                        <ul class="mb-0 pl-3" style="line-height: 1.9;">
                             <li>
                                 <b>SO / PO / KO</b> =
                                 <span class="badge bg-primary">30%</span>
@@ -1175,13 +1175,13 @@
             </div>
 
             <!-- Kolom Kanan: MRO -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="card h-100 shadow-sm border-0 rounded-4">
                     <div class="card-body">
                         <h6 class="font-weight-bold text-danger mb-3">
                             📌 Perhitungan Nilai Progress - MRO
                         </h6>
-                        <ul class="mb-0" style="line-height: 1.9;">
+                        <ul class="mb-0 pl-3" style="line-height: 1.9;">
                             <li>
                                 <b>SO / PO / KO</b> =
                                 <span class="badge bg-primary">30%</span>

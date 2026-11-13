@@ -46,13 +46,16 @@
         .table-responsive {
             border-radius: 12px;
             max-height: 70vh;
+            overflow-x: auto;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .table {
             border-radius: 12px;
             border-collapse: separate;
             border-spacing: 0;
+            white-space: nowrap;
         }
 
         .table td,
@@ -179,7 +182,18 @@
         }
 
         .card .card-body {
-            padding: 1.5rem;
+            padding: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .card .card-body {
+                padding: 0.85rem;
+            }
+
+            .container-fluid {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
         }
 
         h6.text-danger {
@@ -227,29 +241,20 @@
         }
     </style>
 
-    <div class="container-fluid mt-4">
+    <div class="container-fluid px-2 px-md-4 mt-3">
 
         {{-- HEADER --}}
-        {{-- <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3><b>Progress MRO</b></h3>
-
-            
-            <a href="{{ route('mro.progress.print') }}" target="_blank" class="btn btn-primary no-print">
-                🖨️ Print Semua
-            </a>
-        </div> --}}
-
-        {{-- HEADER --}}
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3><b>Progress MRO</b></h3>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
+            <h3 class="mb-0"><b>Progress MRO</b></h3>
 
             {{-- TOMBOL EXPORT EXCEL & PRINT --}}
-            <div class="no-print">
-                <a href="{{ route('mro.progress.export_excel', request()->query()) }}" class="btn btn-success mr-2" style="border-radius: 30px; font-weight: 600;">
+            <div class="no-print d-flex flex-wrap gap-2">
+                <a href="{{ route('mro.progress.export_excel', request()->query()) }}"
+                    class="btn btn-success mr-2 mb-2 mb-md-0" style="border-radius: 30px; font-weight: 600;">
                     📊 Export Excel
                 </a>
 
-                <a href="{{ route('mro.progress.print') }}" target="_blank" class="btn btn-primary">
+                <a href="{{ route('mro.progress.print') }}" target="_blank" class="btn btn-primary mb-2 mb-md-0">
                     🖨️ Print Semua
                 </a>
             </div>
@@ -301,11 +306,11 @@
             $totalMro = $realisasiMroInka + $realisasiMroNonInka;
         @endphp
 
-        <div class="container-fluid mt-4">
+        <div class="container-fluid px-0 mt-3">
 
             {{-- KARTU RINGKASAN STATISTIK --}}
             <div class="row mb-3 no-print">
-                <div class="col-md-4 mb-3">
+                <div class="col-12 col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-left: 5px solid var(--blue) !important; border-radius: 12px;">
                         <div class="card-body d-flex align-items-center">
@@ -322,7 +327,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-3">
+                <div class="col-12 col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-left: 5px solid #22c55e !important; border-radius: 12px;">
                         <div class="card-body d-flex align-items-center">
@@ -339,7 +344,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-3">
+                <div class="col-12 col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-left: 5px solid #f59e0b !important; border-radius: 12px;">
                         <div class="card-body d-flex align-items-center">
@@ -359,7 +364,7 @@
 
             {{-- KARTU REALISASI NILAI PEKERJAAN MRO --}}
             <div class="row mb-4 no-print">
-                <div class="col-md-4 mb-3">
+                <div class="col-12 col-md-4 mb-3">
                     <div class="card border-0 shadow-sm h-100"
                         style="border-radius: 12px; border-top: 4px solid #b91c1c !important;">
                         <div class="card-body">
@@ -395,22 +400,23 @@
                 <div class="card-body">
                     <form method="GET" action="{{ route('mro.progress.index') }}">
                         <div class="form-row">
-                            <div class="col-md-4 mb-2">
+                            <div class="col-12 col-md-4 mb-2">
                                 <input type="text" name="po" class="form-control" placeholder="Cari PO / Nota Dinas"
                                     value="{{ request('po') }}">
                             </div>
 
-                            <div class="col-md-4 mb-2">
+                            <div class="col-12 col-md-4 mb-2">
                                 <input type="text" name="pekerjaan" class="form-control"
                                     placeholder="Cari Nama Pekerjaan" value="{{ request('pekerjaan') }}">
                             </div>
 
-                            <div class="col-md-4 mb-2">
-                                <button class="btn btn-primary mr-2" type="submit">
+                            <div class="col-12 col-md-4 mb-2 d-flex">
+                                <button class="btn btn-primary mr-2 flex-grow-1" type="submit">
                                     🔍 Filter
                                 </button>
 
-                                <a href="{{ route('mro.progress.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('mro.progress.index') }}"
+                                    class="btn btn-secondary flex-grow-1 text-center">
                                     🔄 Reset
                                 </a>
                             </div>
@@ -434,7 +440,7 @@
                                 <th>Selesai Kontrak</th>
                                 <th width="160">Nilai Kontrak/SO</th>
                                 <th>Status</th>
-                                <th width="140">Progress</th>
+                                <th width="160">Progress</th>
                                 <th>Keterangan Progress</th>
                                 <th width="200">Realisasi Bulan ini</th>
                                 <th width="180">Total Realisasi s/d Bulan Ini</th>
@@ -679,7 +685,8 @@
 
                                     <td>
                                         @if ($latestDoc)
-                                            <div class="p-2 border rounded bg-light" style="font-size: 12px;">
+                                            <div class="p-2 border rounded bg-light"
+                                                style="font-size: 12px; white-space: normal;">
                                                 <div
                                                     class="fw-bold text-dark mb-1 d-flex justify-content-between align-items-center">
                                                     <span>📄 <b>{{ $latestDoc->nama_dokumen }}</b></span>
@@ -773,7 +780,7 @@
                         📌 Perhitungan Nilai Progress Monitoring
                     </h6>
 
-                    <ul class="mb-0" style="line-height: 1.9;">
+                    <ul class="mb-0 pl-3" style="line-height: 1.9;">
                         <li>
                             <b>SO / PO / KO</b>
                             = <span class="badge badge-primary">30%</span>
