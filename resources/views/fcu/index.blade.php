@@ -51,6 +51,7 @@
         .table {
             margin-bottom: 0;
             vertical-align: middle;
+            width: 100%;
         }
 
         .table thead th {
@@ -61,6 +62,7 @@
             font-size: 13px;
             text-transform: uppercase;
             vertical-align: middle !important;
+            white-space: nowrap;
         }
 
         .table tbody td {
@@ -68,11 +70,15 @@
             padding: 12px 10px;
         }
 
-        /* Fix Checkbox Keluar / Lepas dari Header */
+        /* Fix Checkbox agar tidak keluar/rusak dari header */
         .checkbox-cell {
-            width: 40px;
-            text-align: center;
+            width: 45px !important;
+            min-width: 45px !important;
+            max-width: 45px !important;
+            text-align: center !important;
             vertical-align: middle !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
 
         .form-check-input {
@@ -80,7 +86,9 @@
             width: 18px;
             height: 18px;
             margin: 0 auto !important;
-            display: block;
+            display: inline-block;
+            float: none !important;
+            position: static !important;
         }
 
         .badge-modern {
@@ -172,6 +180,73 @@
 
         .bg-teal {
             background-color: #0d9488;
+        }
+
+        /* ===============================
+               RESPONSIVE LAYAR HP (MOBILE FIXES)
+               =============================== */
+        @media (max-width: 767.98px) {
+            .container {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+
+            .top-card {
+                padding: 16px;
+                border-radius: 16px;
+            }
+
+            /* Memberikan jarak antar tombol di top-card agar tidak mepet */
+            .top-card .d-flex.gap-2 {
+                width: 100%;
+                flex-direction: column;
+                gap: 10px !important;
+                /* Jarak antar tombol atas */
+            }
+
+            .top-card .d-flex.gap-2 a {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .page-title {
+                font-size: 22px;
+            }
+
+            .table-card {
+                padding: 12px;
+                border-radius: 16px;
+            }
+
+            /* Filter form full width di HP dan diberi jarak antar elemen */
+            .table-card form .col-md-4 {
+                width: 100%;
+                margin-bottom: 4px;
+            }
+
+            .table-card form .col-md-4.d-flex {
+                flex-direction: column;
+                gap: 10px !important;
+                /* Jarak antar tombol Cari & Reset */
+            }
+
+            .table-card form .col-md-4.d-flex button,
+            .table-card form .col-md-4.d-flex a {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            /* Hilangkan efek freeze / sticky pada tabel di HP agar tidak patah-patah/jelek */
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table thead th {
+                position: static !important;
+            }
         }
     </style>
 
