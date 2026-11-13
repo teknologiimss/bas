@@ -69,8 +69,12 @@
 
         /* CHECKBOX STYLING */
         .col-checkbox {
-            width: 50px;
-            text-align: center;
+            width: 45px !important;
+            min-width: 45px !important;
+            max-width: 45px !important;
+            text-align: center !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
 
         .table-custom-grid thead th.col-checkbox {
@@ -80,13 +84,14 @@
         .form-check-input {
             width: 18px;
             height: 18px;
-            margin: 0 auto;
+            margin: 0 auto !important;
             cursor: pointer;
             border: 1.5px solid #94a3b8;
             border-radius: 4px;
             display: inline-block;
             vertical-align: middle;
-            position: static;
+            position: static !important;
+            float: none !important;
         }
 
         .form-check-input:checked {
@@ -131,6 +136,65 @@
             margin: 0;
             display: inline-block;
         }
+
+        /* ===============================
+               RESPONSIVE LAYAR HP (MOBILE FIXES)
+               =============================== */
+        @media (max-width: 767.98px) {
+            .container {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+
+            .top-card {
+                padding: 16px;
+                border-radius: 16px;
+            }
+
+            .top-card .d-flex.gap-2 {
+                width: 100%;
+                flex-direction: column;
+                gap: 10px !important;
+            }
+
+            .top-card .d-flex.gap-2 a {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .table-card {
+                padding: 12px;
+                border-radius: 16px;
+            }
+
+            /* Filter form full width di HP dan diberi jarak */
+            .table-card form .col-md-4 {
+                width: 100%;
+                margin-bottom: 4px;
+            }
+
+            .table-card form .col-md-4.d-flex {
+                flex-direction: column;
+                gap: 10px !important;
+            }
+
+            .table-card form .col-md-4.d-flex button,
+            .table-card form .col-md-4.d-flex a {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table-custom-grid thead th {
+                position: static !important;
+            }
+        }
     </style>
 
     <div class="container py-4">
@@ -158,7 +222,7 @@
                     <i class="fa fa-chart-pie me-1"></i> Lihat Dashboard
                 </a>
                 <a href="{{ route('chiller.create') }}"
-                    class="btn btn-light rounded-pill px-4 font-weight-bold d-flex align-items-center">
+                    class="btn btn-light rounded-pill px-4 font-weight-bold d-flex align-items-center justify-content-center">
                     <i class="fa fa-plus me-1"></i> Buat Checksheet
                 </a>
             </div>
