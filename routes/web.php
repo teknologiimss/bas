@@ -952,6 +952,10 @@ Route::prefix('products')->group(function () {
     )->name('asset-maintenance.mark');
 
     // Daily Activity
+
+    // Route Hapus Terpilih (Bulk Delete) Daily Activity
+    Route::delete('mro/daily-activity/bulk-delete', [App\Http\Controllers\MRO\DailyActivityController::class, 'bulkDelete'])
+        ->name('mro.daily-activity.bulk-delete');
     Route::resource('mro/daily-activity', App\Http\Controllers\MRO\DailyActivityController::class)
         ->names('mro.daily-activity');
 

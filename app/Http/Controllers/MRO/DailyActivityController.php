@@ -194,4 +194,33 @@ class DailyActivityController extends Controller
 
         return back()->with('success', 'Lampiran berhasil dihapus.');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->ids;
+
+        if (!$ids || !is_array($ids)) {
+            return redirect()->route('mro.daily-activity.index')->with('error', 'Tidak ada data yang dipilih.');
+        }
+
+        $activities = DailyActivity::with('attachments')->whereIn('id', $ids)->get();
+
+        foreach ($activities as $daily) {
+            // Hapus file lampiran fisik
+            foreach ($daily->attachments as $lampiran) {
+                $path = public_path('uploads/daily_activity/' . $lampiran->file);
+
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+
+                $lampiran->delete();
+            }
+
+            // Hapus data utama
+            $daily->delete();
+        }
+
+        return redirect()->route('mro.daily-activity.index')->with('success', 'Data yang dipilih berhasil dihapus.');
+    }
 }
