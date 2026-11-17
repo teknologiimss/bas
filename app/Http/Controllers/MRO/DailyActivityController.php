@@ -11,10 +11,22 @@ use Illuminate\Http\Request;
 
 class DailyActivityController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = DailyActivity::with(['monitoring', 'attachments'])->latest()->get();
-        return view('mro.daily_activity.index', compact('data'));
+        $search = $request->get('search');
+
+        $data = DailyActivity::with(['monitoring', 'attachments'])
+            ->when($search, function ($query, $search) {
+                $query->where('kegiatan', 'like', "%{$search}%")
+                      ->orWhereHas('monitoring', function ($q) use ($search) {
+                          $q->where('po_nota_dinas', 'like', "%{$search}%")
+                            ->orWhere('nama_pekerjaan', 'like', "%{$search}%");
+                      });
+            })
+            ->latest()
+            ->get();
+
+        return view('mro.daily_activity.index', compact('data', 'search'));
     }
 
     public function create()

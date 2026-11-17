@@ -126,7 +126,26 @@
                 </div>
             </div>
 
-            <div class="card-body table-responsive">
+            <div class="card-body">
+
+                <!-- Form Pencarian (Search by Proyek & Kegiatan) -->
+                <form action="{{ route('mro.daily-activity.index') }}" method="GET" class="mb-3">
+                    <div class="input-group" style="max-width: 400px;">
+                        <input type="text" name="search" class="form-control" placeholder="Cari Proyek atau Kegiatan..."
+                            value="{{ $search ?? '' }}">
+                        <div class="input-group-append">
+                            <button class="btn btn-navy" type="submit">
+                                <i class="fa fa-search"></i> Cari
+                            </button>
+                            @if (isset($search) && $search != '')
+                                <a href="{{ route('mro.daily-activity.index') }}" class="btn btn-secondary"
+                                    title="Reset Pencarian">
+                                    <i class="fa fa-sync"></i>
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                </form>
 
                 <!-- Form Terpisah khusus untuk Bulk Delete -->
                 <form id="form-bulk-delete" action="{{ route('mro.daily-activity.bulk-delete') }}" method="POST">
@@ -135,113 +154,115 @@
                     <div id="bulk-inputs"></div>
                 </form>
 
-                <!-- Tabel Data (Murni tanpa bungkus form utama agar tombol hapus satuan aman) -->
-                <table class="table table-bordered table-striped">
-                    <thead class="text-center">
-                        <tr>
-                            <th width="40">
-                                <input type="checkbox" id="select-all">
-                            </th>
-                            <th width="50">No</th>
-                            <th>Proyek</th>
-                            <th>Kegiatan</th>
-                            <th>Status</th>
-                            <th>Tanggal</th>
-                            <th>Keterangan</th>
-                            <th>Personil</th>
-                            <th>Lampiran</th>
-                            <th width="140">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @forelse($data as $d)
+                <!-- Tabel Data -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="text-center">
                             <tr>
-                                <td class="text-center">
-                                    <input type="checkbox" value="{{ $d->id }}" class="checkbox-item">
-                                </td>
-                                <td class="text-center">
-                                    {{ $loop->iteration }}
-                                </td>
-                                <td>
-                                    @if ($d->monitoring)
-                                        <strong>{{ $d->monitoring->po_nota_dinas }}</strong>
-                                        <br>
-                                        {{ $d->monitoring->nama_pekerjaan }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                                <td>
-                                    @foreach (preg_split("/\r\n|\n|\r/", trim($d->kegiatan)) as $item)
-                                        @if (trim($item) != '')
-                                            <div>{{ trim($item) }}</div>
+                                <th width="40">
+                                    <input type="checkbox" id="select-all">
+                                </th>
+                                <th width="50">No</th>
+                                <th>Proyek</th>
+                                <th>Kegiatan</th>
+                                <th>Status</th>
+                                <th>Tanggal</th>
+                                <th>Keterangan</th>
+                                <th>Personil</th>
+                                <th>Lampiran</th>
+                                <th width="140">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @forelse($data as $d)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" value="{{ $d->id }}" class="checkbox-item">
+                                    </td>
+                                    <td class="text-center">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td>
+                                        @if ($d->monitoring)
+                                            <strong>{{ $d->monitoring->po_nota_dinas }}</strong>
+                                            <br>
+                                            {{ $d->monitoring->nama_pekerjaan }}
+                                        @else
+                                            -
                                         @endif
-                                    @endforeach
-                                </td>
-                                <td class="text-center">
-                                    @if ($d->status == 'Open')
-                                        <span class="badge badge-open">Open</span>
-                                    @else
-                                        <span class="badge badge-close">Closed</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ date('d-m-Y', strtotime($d->tanggal)) }}
-                                </td>
-                                <td>
-                                    @foreach (preg_split("/\r\n|\n|\r/", trim($d->keterangan)) as $item)
-                                        @if (trim($item) != '')
-                                            <div>{{ trim($item) }}</div>
+                                    </td>
+                                    <td>
+                                        @foreach (preg_split("/\r\n|\n|\r/", trim($d->kegiatan)) as $item)
+                                            @if (trim($item) != '')
+                                                <div>{{ trim($item) }}</div>
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($d->status == 'Open')
+                                            <span class="badge badge-open">Open</span>
+                                        @else
+                                            <span class="badge badge-close">Closed</span>
                                         @endif
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @foreach ($d->personil ?? [] as $nama)
-                                        <span class="badge badge-primary mb-1">{{ $nama }}</span>
-                                        <br>
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @forelse($d->attachments as $file)
-                                        <a href="{{ asset('uploads/daily_activity/' . $file->file) }}" target="_blank"
-                                            class="btn btn-sm btn-info mb-1">
-                                            <i class="fa fa-file"></i> Lihat File
+                                    </td>
+                                    <td>
+                                        {{ date('d-m-Y', strtotime($d->tanggal)) }}
+                                    </td>
+                                    <td>
+                                        @foreach (preg_split("/\r\n|\n|\r/", trim($d->keterangan)) as $item)
+                                            @if (trim($item) != '')
+                                                <div>{{ trim($item) }}</div>
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($d->personil ?? [] as $nama)
+                                            <span class="badge badge-primary mb-1">{{ $nama }}</span>
+                                            <br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @forelse($d->attachments as $file)
+                                            <a href="{{ asset('uploads/daily_activity/' . $file->file) }}" target="_blank"
+                                                class="btn btn-sm btn-info mb-1">
+                                                <i class="fa fa-file"></i> Lihat File
+                                            </a>
+                                            <br>
+                                        @empty
+                                            <span class="text-muted">Tidak ada lampiran</span>
+                                        @endforelse
+                                    </td>
+                                    <td class="text-center">
+                                        <!-- Tombol Edit -->
+                                        <a href="{{ route('mro.daily-activity.edit', $d->id) }}"
+                                            class="btn btn-warning btn-sm">
+                                            <i class="fa fa-edit"></i>
                                         </a>
-                                        <br>
-                                    @empty
-                                        <span class="text-muted">Tidak ada lampiran</span>
-                                    @endforelse
-                                </td>
-                                <td class="text-center">
-                                    <!-- Tombol Edit -->
-                                    <a href="{{ route('mro.daily-activity.edit', $d->id) }}"
-                                        class="btn btn-warning btn-sm">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
 
-                                    <!-- Tombol Hapus Satuan (Form independen murni, dijamin berfungsi) -->
-                                    <form action="{{ route('mro.daily-activity.destroy', $d->id) }}" method="POST"
-                                        style="display:inline-block"
-                                        onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="10" class="text-center">
-                                    Belum ada data.
-                                </td>
-                            </tr>
-                        @endforelse
+                                        <!-- Tombol Hapus Satuan -->
+                                        <form action="{{ route('mro.daily-activity.destroy', $d->id) }}" method="POST"
+                                            style="display:inline-block"
+                                            onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="10" class="text-center">
+                                        Data tidak ditemukan.
+                                    </td>
+                                </tr>
+                            @endforelse
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
 
