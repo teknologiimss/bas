@@ -21,6 +21,8 @@ use App\Http\Controllers\FcuMonitoringController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KasbonController;
 use App\Http\Controllers\KontrakController;
+use App\Http\Controllers\LaporanHarianFasilitasController;
+use App\Http\Controllers\LaporanMingguanFasilitasController;
 use App\Http\Controllers\Lp3mController;
 use App\Http\Controllers\MemoController;
 use App\Http\Controllers\Monitoring5RController;
@@ -1003,6 +1005,9 @@ Route::prefix('products')->group(function () {
     Route::get('/aktivitas-personil', function () {
         return view('menusidebar.menu-sidebar-aktivitaspersonil');  // Menampilkan file view landing page
     })->name('aktivitas-personil.index');
+    Route::get('/laporan-harian-menu', function () {
+        return view('menusidebar.menu-sidebar-laporanharian');
+    })->name('laporan.menu');
     Route::get('/pekerjaan', function () {
         return view('menusidebar.menu-sidebar-pekerjaan');  // Menampilkan file view landing page pekerjaan
     })->name('pekerjaan.index');
@@ -1283,6 +1288,21 @@ Route::prefix('products')->group(function () {
         Route::post('/item/update-progress-utama', [PekerjaanWilayah2Controller::class, 'updateProgressUtama'])->name('pekerjaanwil2.item.update-progress-utama');
         Route::put('/item/update/{id}', [PekerjaanWilayah2Controller::class, 'updateItem'])->name('pekerjaanwil2.item.update');
         Route::delete('/item/delete/{id}', [PekerjaanWilayah2Controller::class, 'destroyItem'])->name('pekerjaanwil2.item.delete');
+    });
+
+    Route::middleware(['auth'])->group(function () {
+        Route::delete('laporan-fasilitas/bulk-delete', [LaporanHarianFasilitasController::class, 'bulkDelete'])
+            ->name('laporan-fasilitas.bulk-delete');
+        Route::post('laporan-fasilitas/{id}/duplicate', [LaporanHarianFasilitasController::class, 'duplicate'])
+            ->name('laporan-fasilitas.duplicate');
+        Route::resource('laporan-fasilitas', LaporanHarianFasilitasController::class);
+    });
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('laporan-mingguan', [LaporanMingguanFasilitasController::class, 'index'])
+            ->name('laporan-mingguan.index');
+        Route::post('laporan-mingguan', [LaporanMingguanFasilitasController::class, 'store'])
+            ->name('laporan-mingguan.store');
     });
 
     // BA JUSTIFIKASI

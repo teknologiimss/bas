@@ -537,6 +537,9 @@
                                         'pekerjaanmro.index',
                                         'pekerjaanwil1.index',
                                         'pekerjaanwil2.index',
+                                        'laporan-fasilitas.index',
+                                        'laporan-mingguan.index',
+                                        'laporan.menu',
                                     ]);
                                     $menuPemasaranActive = in_array(Route::currentRouteName(), [
                                         'kontrak.index',
@@ -614,7 +617,9 @@
                                         'dashboard.mro',
                                         'divisi.wilayah.progress',
                                         'pekerjaanmro.index',
-                                        
+                                        'laporan-fasilitas.index',
+                                        'laporan-mingguan.index',
+                                        'laporan.menu',
                                     ]);
                                 @endphp
 
@@ -719,7 +724,7 @@
                                                     @if (in_array(Auth::user()->role, [0, 2, 8, 9]))
                                                         <li class="nav-item">
                                                             <a href="{{ route('wilayah1.index') }}"
-                                                                class="nav-link {{ request()->routeIs('wilayah1.*') || request()->routeIs('proyekwil1.*') || request()->routeIs('monitoringwil1.*') || request()->routeIs('pekerjaanwil1.*') ? 'active' : ''}}">
+                                                                class="nav-link {{ request()->routeIs('wilayah1.*') || request()->routeIs('proyekwil1.*') || request()->routeIs('monitoringwil1.*') || request()->routeIs('pekerjaanwil1.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-building"></i>
                                                                 <p>Pekerjaan Wilayah 1</p>
                                                             </a>
@@ -730,7 +735,7 @@
                                                     @if (in_array(Auth::user()->role, [0, 3, 8, 9]))
                                                         <li class="nav-item">
                                                             <a href="{{ route('wilayah2.index') }}"
-                                                                class="nav-link {{ request()->routeIs('wilayah2.*') || request()->routeIs('proyekwil2.*') || request()->routeIs('monitoringwil2.*') || request()->routeIs('pekerjaanwil2.*') ? 'active' : ''}}">
+                                                                class="nav-link {{ request()->routeIs('wilayah2.*') || request()->routeIs('proyekwil2.*') || request()->routeIs('monitoringwil2.*') || request()->routeIs('pekerjaanwil2.*') ? 'active' : '' }}">
                                                                 <i class="nav-icon fas fa-city"></i>
                                                                 <p>Pekerjaan Wilayah 2</p>
                                                             </a>
@@ -1179,6 +1184,16 @@
                                                             </a>
                                                         </li>
 
+                                                        {{-- Laporan Harian --}}
+                                                        <li class="nav-item">
+                                                            <a href="{{ route('laporan.menu') }}"
+                                                                class="nav-link {{ request()->routeIs('laporan.menu') || request()->routeIs('laporan-fasilitas.*') || request()->routeIs('laporan-mingguan.*') ? 'active' : '' }}">
+                                                                <i class="nav-icon fas fa-clipboard-list"></i>
+                                                                <p>Laporan Harian Fasilitas & Jasa Lainnya</p>
+                                                            </a>
+                                                        </li>
+
+
                                                         {{-- Perencanaan Pekerjaan --}}
                                                         <li class="nav-item">
                                                             <a href="{{ route('perencanaan.proyek') }}"
@@ -1197,7 +1212,7 @@
                                                             </a>
                                                         </li>
 
-                                                        
+
 
                                                         {{-- Monitoring --}}
                                                         <li class="nav-item">
