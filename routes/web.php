@@ -49,6 +49,8 @@ use App\Http\Controllers\SuratJalanController;
 use App\Http\Controllers\ToolMutationController;
 use App\Http\Controllers\WeeklyActivityController;
 use App\Models\Kontrak;
+use App\Models\LaporanHarianFasilitas;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -1304,6 +1306,18 @@ Route::prefix('products')->group(function () {
         Route::post('laporan-mingguan', [LaporanMingguanFasilitasController::class, 'store'])
             ->name('laporan-mingguan.store');
     });
+
+    Route::get('/laporan-harian-menu', function () {
+        $today = Carbon::today()->toDateString();
+
+        $laporanHariIni = LaporanHarianFasilitas::with(['items', 'teams'])
+            ->whereDate('tanggal', $today)
+            ->first();
+
+        $hariIniLabel = Carbon::today()->locale('id')->translatedFormat('l, d F Y');
+
+        return view('menusidebar.menu-sidebar-laporanharian', compact('laporanHariIni', 'hariIniLabel'));
+    })->name('laporan.menu');
 
     // BA JUSTIFIKASI
     // resource digunakan untuk memanggil semuanya yg ada di controller kecuali destroy. contoh : nego.store
