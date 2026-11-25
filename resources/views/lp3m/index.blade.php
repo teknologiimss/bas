@@ -19,6 +19,116 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
+        /* MODERN TOAST NOTIFICATION */
+        .lp3m-toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 420px;
+            width: calc(100% - 40px);
+            pointer-events: none;
+        }
+
+        .lp3m-toast {
+            pointer-events: auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #08182b;
+            color: #f8fafc;
+            border-radius: 14px;
+            padding: 14px 16px 14px 20px;
+            box-shadow: 0 14px 32px rgba(2, 6, 23, 0.35);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateX(28px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .lp3m-toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .lp3m-toast.hide {
+            opacity: 0;
+            transform: translateX(28px);
+        }
+
+        .lp3m-toast::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: #10b981;
+        }
+
+        .lp3m-toast.toast-error::before {
+            background: #ef4444;
+        }
+
+        .lp3m-toast-icon {
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(16, 185, 129, 0.16);
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .lp3m-toast.toast-error .lp3m-toast-icon {
+            background: rgba(239, 68, 68, 0.18);
+            color: #f87171;
+        }
+
+        .lp3m-toast-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .lp3m-toast-title {
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.25;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .lp3m-toast-message {
+            font-size: 13px;
+            line-height: 1.35;
+            color: #cbd5e1;
+            word-break: break-word;
+        }
+
+        .lp3m-toast-close {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 20px;
+            line-height: 1;
+            padding: 4px 6px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: color 0.2s ease, background 0.2s ease;
+        }
+
+        .lp3m-toast-close:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
         .header-title {
             font-size: 18px;
             font-weight: 700;
@@ -191,20 +301,26 @@
         }
 
         /* FILE CARD */
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         .file-card {
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 12px;
+            border-radius: 12px;
+            padding: 10px 12px;
             transition: .2s;
         }
 
         .file-card:hover {
-            box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
+            box-shadow: 0 6px 16px rgba(15, 23, 42, .08);
         }
 
         .file-name {
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 600;
             color: var(--navy);
             word-break: break-word;
@@ -212,20 +328,32 @@
 
         .file-actions {
             display: flex;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 6px;
+            margin-top: 8px;
         }
 
         .btn-file {
-            height: 34px;
-            min-width: 80px;
-            border-radius: 10px;
-            font-size: 12px;
+            height: 30px;
+            min-width: 72px;
+            border-radius: 8px;
+            font-size: 11.5px;
             font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 4px;
+            padding: 0 10px;
+        }
+
+        .selected-files-preview {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #334155;
+            display: none;
         }
 
         /* DASHBOARD STYLES */
@@ -265,6 +393,14 @@
 
         /* RESPONSIVE */
         @media(max-width:768px) {
+            .lp3m-toast-container {
+                top: 14px;
+                right: 14px;
+                left: 14px;
+                width: auto;
+                max-width: none;
+            }
+
             .header-title {
                 font-size: 15px;
             }
@@ -301,15 +437,75 @@
             }
 
             .file-card {
-                min-width: 230px;
+                min-width: 220px;
             }
 
             .btn-file {
-                min-width: 70px;
+                min-width: 68px;
                 font-size: 11px;
             }
         }
     </style>
+
+    @php
+        $extractLampiran = function ($lampiran): array {
+            if (empty($lampiran)) {
+                return [];
+            }
+            if (is_array($lampiran)) {
+                return array_values(array_filter($lampiran));
+            }
+            $decoded = json_decode($lampiran, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return array_values(array_filter($decoded));
+            }
+            return [(string) $lampiran];
+        };
+    @endphp
+
+    {{-- TOAST NOTIFICATION CONTAINER --}}
+    @if (session('success') || session('error') || $errors->any())
+        <div class="lp3m-toast-container" id="lp3mToastContainer">
+            @if (session('success'))
+                <div class="lp3m-toast toast-success" role="alert" data-timeout="3000">
+                    <div class="lp3m-toast-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="lp3m-toast-content">
+                        <div class="lp3m-toast-title">Berhasil</div>
+                        <div class="lp3m-toast-message">{{ session('success') }}</div>
+                    </div>
+                    <button type="button" class="lp3m-toast-close" aria-label="Tutup">&times;</button>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="lp3m-toast toast-error" role="alert" data-timeout="3000">
+                    <div class="lp3m-toast-icon">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <div class="lp3m-toast-content">
+                        <div class="lp3m-toast-title">Gagal</div>
+                        <div class="lp3m-toast-message">{{ session('error') }}</div>
+                    </div>
+                    <button type="button" class="lp3m-toast-close" aria-label="Tutup">&times;</button>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="lp3m-toast toast-error" role="alert" data-timeout="3000">
+                    <div class="lp3m-toast-icon">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <div class="lp3m-toast-content">
+                        <div class="lp3m-toast-title">Gagal</div>
+                        <div class="lp3m-toast-message">{{ $errors->first() }}</div>
+                    </div>
+                    <button type="button" class="lp3m-toast-close" aria-label="Tutup">&times;</button>
+                </div>
+            @endif
+        </div>
+    @endif
 
     <div class="container-fluid mt-3">
 
@@ -465,20 +661,6 @@
                     </div>
                 </form>
 
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show mb-3">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                @endif
-
-                @if (session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show mb-3">
-                        {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                @endif
-
                 {{-- FORM BULK DELETE --}}
                 <form action="{{ route('lp3m.bulk-destroy') }}" method="POST" id="form-bulk-delete">
                     @csrf
@@ -502,6 +684,9 @@
 
                             <tbody>
                                 @forelse($data as $d)
+                                    @php
+                                        $lampiranList = $extractLampiran($d->lampiran);
+                                    @endphp
                                     <tr>
                                         <td class="col-checkbox text-center">
                                             <input type="checkbox" name="ids[]" value="{{ $d->id }}"
@@ -527,36 +712,49 @@
                                         </td>
                                         <td>{{ $d->keterangan }}</td>
                                         <td>{{ date('d-m-Y H:i', strtotime($d->created_at)) }}</td>
-                                        <td style="min-width:280px">
-                                            @if ($d->lampiran)
-                                                @php
-                                                    $namaFile = preg_replace('/^\d+_/', '', $d->lampiran);
-                                                    $ext = strtoupper(pathinfo($d->lampiran, PATHINFO_EXTENSION));
-                                                @endphp
+                                        <td style="min-width:290px">
+                                            @if (count($lampiranList) > 0)
+                                                <div class="file-list">
+                                                    @foreach ($lampiranList as $fileItem)
+                                                        @php
+                                                            $baseItem = basename($fileItem);
+                                                            $namaFile = preg_replace(
+                                                                '/^\d+_\d+_[A-Za-z0-9]+_/',
+                                                                '',
+                                                                $baseItem,
+                                                            );
+                                                            if ($namaFile === $baseItem) {
+                                                                $namaFile = preg_replace('/^\d+_/', '', $baseItem);
+                                                            }
+                                                            $ext = strtoupper(pathinfo($baseItem, PATHINFO_EXTENSION));
+                                                        @endphp
 
-                                                <div class="file-card">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <div class="me-2">
-                                                            <div class="file-name">
-                                                                <i class="fas fa-file-alt text-primary me-1"></i>
-                                                                {{ $namaFile }}
+                                                        <div class="file-card">
+                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                <div class="me-2">
+                                                                    <div class="file-name">
+                                                                        <i class="fas fa-file-alt text-primary me-1"></i>
+                                                                        {{ $namaFile }}
+                                                                    </div>
+                                                                    <span
+                                                                        class="badge bg-light text-dark border mt-1">{{ $ext ?: 'FILE' }}</span>
+                                                                </div>
                                                             </div>
-                                                            <span
-                                                                class="badge bg-light text-dark border mt-1">{{ $ext }}</span>
+
+                                                            <div class="file-actions">
+                                                                <a href="{{ asset('lampiran/' . $baseItem) }}"
+                                                                    target="_blank" class="btn btn-success btn-file">
+                                                                    <i class="fas fa-eye"></i> Lihat
+                                                                </a>
+
+                                                                <button type="button"
+                                                                    class="btn btn-outline-danger btn-file"
+                                                                    onclick="deleteSingleLampiran('{{ route('lp3m.deleteLampiran', $d->id) }}', '{{ $baseItem }}', '{{ addslashes($namaFile) }}')">
+                                                                    <i class="fas fa-trash"></i> Hapus
+                                                                </button>
+                                                            </div>
                                                         </div>
-                                                    </div>
-
-                                                    <div class="file-actions">
-                                                        <a href="{{ asset('lampiran/' . $d->lampiran) }}" target="_blank"
-                                                            class="btn btn-success btn-file">
-                                                            <i class="fas fa-eye"></i> Lihat
-                                                        </a>
-
-                                                        <button type="button" class="btn btn-outline-danger btn-file"
-                                                            onclick="deleteSingleLampiran('{{ route('lp3m.deleteLampiran', $d->id) }}')">
-                                                            <i class="fas fa-trash"></i> Hapus
-                                                        </button>
-                                                    </div>
+                                                    @endforeach
                                                 </div>
                                             @else
                                                 <span class="badge bg-secondary">Tidak Ada Lampiran</span>
@@ -626,9 +824,10 @@
     <form id="form-single-delete-lampiran" method="POST" style="display: none;">
         @csrf
         @method('DELETE')
+        <input type="hidden" name="file" id="delete_lampiran_file">
     </form>
 
-    {{-- Modal Lampiran --}}
+    {{-- Modal Lampiran (Multiple) --}}
     <div class="modal fade" id="uploadLampiranModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -637,19 +836,24 @@
                     <input type="hidden" name="id" id="lampiran_id">
 
                     <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title">Upload Lampiran</h5>
+                        <h5 class="modal-title">Upload Lampiran (Bisa Lebih dari 1)</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
 
                     <div class="modal-body">
-                        <label class="fw-bold">Pilih File</label>
-                        <input type="file" name="lampiran" class="form-control"
-                            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" required>
-                        <small class="text-muted">PDF, JPG, JPEG, PNG, DOC, DOCX</small>
+                        <label class="fw-bold">Pilih File (Bisa pilih banyak file sekaligus)</label>
+                        <input type="file" name="lampiran[]" id="lampiranInput" class="form-control"
+                            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" multiple required>
+                        <small class="text-muted"><b>(MAKSIMAL 3 lampiran)</b> PDF, JPG, JPEG, PNG, DOC, DOCX • Maks. 50MB per file</small>
+
+                        <div class="selected-files-preview" id="selectedFilesPreview"></div>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">Upload</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-upload me-1"></i> Upload Semua
+                        </button>
                     </div>
                 </form>
             </div>
@@ -662,6 +866,40 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Auto-dismiss Toast Notification setelah 3 detik
+            document.querySelectorAll('.lp3m-toast').forEach(function(toast) {
+                requestAnimationFrame(() => {
+                    toast.classList.add('show');
+                });
+
+                const timeout = parseInt(toast.dataset.timeout || '3000', 10);
+                let dismissed = false;
+
+                const dismissToast = () => {
+                    if (dismissed) return;
+                    dismissed = true;
+                    toast.classList.remove('show');
+                    toast.classList.add('hide');
+                    setTimeout(() => {
+                        toast.remove();
+                        const container = document.getElementById('lp3mToastContainer');
+                        if (container && container.children.length === 0) {
+                            container.remove();
+                        }
+                    }, 300);
+                };
+
+                const timer = setTimeout(dismissToast, timeout);
+
+                const closeBtn = toast.querySelector('.lp3m-toast-close');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', function() {
+                        clearTimeout(timer);
+                        dismissToast();
+                    });
+                }
+            });
+
             // Checkbox Handler untuk Bulk Delete
             const selectAll = document.getElementById('select-all');
             const checkboxes = document.querySelectorAll('.check-item');
@@ -695,12 +933,42 @@
                 });
             });
 
-            // Set ID Lampiran Modal
+            // Set ID Lampiran Modal & Reset Preview
+            const lampiranInput = document.getElementById('lampiranInput');
+            const selectedFilesPreview = document.getElementById('selectedFilesPreview');
+
             document.querySelectorAll('.btn-upload').forEach(function(button) {
                 button.addEventListener('click', function() {
                     document.getElementById('lampiran_id').value = this.dataset.id;
+                    if (lampiranInput) {
+                        lampiranInput.value = '';
+                    }
+                    if (selectedFilesPreview) {
+                        selectedFilesPreview.style.display = 'none';
+                        selectedFilesPreview.innerHTML = '';
+                    }
                 });
             });
+
+            if (lampiranInput && selectedFilesPreview) {
+                lampiranInput.addEventListener('change', function() {
+                    const files = Array.from(this.files || []);
+                    if (files.length === 0) {
+                        selectedFilesPreview.style.display = 'none';
+                        selectedFilesPreview.innerHTML = '';
+                        return;
+                    }
+
+                    const items = files.map((f, idx) => {
+                        const sizeKb = (f.size / 1024).toFixed(1);
+                        return `<div>${idx + 1}. <strong>${f.name}</strong> <span class="text-muted">(${sizeKb} KB)</span></div>`;
+                    }).join('');
+
+                    selectedFilesPreview.innerHTML =
+                        `<div class="fw-bold mb-1">File dipilih (${files.length}):</div>${items}`;
+                    selectedFilesPreview.style.display = 'block';
+                });
+            }
 
             // Toggle Teks Tombol Dashboard
             const dashCollapse = document.getElementById('dashboardCollapse');
@@ -765,10 +1033,13 @@
             }
         }
 
-        // Function Single Lampiran Delete
-        function deleteSingleLampiran(url) {
-            if (confirm('Yakin ingin menghapus lampiran ini?')) {
+        // Function Single Lampiran Delete (per file atau semua)
+        function deleteSingleLampiran(url, filename = '', displayName = '') {
+            const label = displayName ? `lampiran "${displayName}"` : 'semua lampiran ini';
+            if (confirm(`Yakin ingin menghapus ${label}?`)) {
                 const form = document.getElementById('form-single-delete-lampiran');
+                const fileInput = document.getElementById('delete_lampiran_file');
+                fileInput.value = filename;
                 form.action = url;
                 form.submit();
             }

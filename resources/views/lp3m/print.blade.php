@@ -8,21 +8,39 @@
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
-            font-size: 12px;
+            font-size: 11.5px;
             color: #000;
-            margin: 20px;
+            margin: 12px 20px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: -1px;
+        }
+
+        table:first-of-type {
+            margin-top: 0;
+        }
+
+        tr {
+            page-break-inside: avoid;
         }
 
         td,
         th {
             border: 1px solid #000;
-            padding: 5px;
+            padding: 4px 5px;
             vertical-align: middle;
+        }
+
+        /* Warna penanda subjudul antar bagian tabel */
+        .section-header {
+            background-color: #E5E7EB;
+            font-weight: bold;
+            text-align: center;
         }
 
         .no-border {
@@ -49,7 +67,7 @@
 
         .checkbox {
             font-family: DejaVu Sans, sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 900;
             font-weight: bold;
         }
@@ -60,16 +78,76 @@
         }
 
         .logo {
-            width: 100px;
+            width: 95px;
             height: auto;
             display: block;
             margin: auto;
+        }
+
+        /* Styling khusus list di dalam tabel print / DomPDF */
+        .print-list {
+            margin: 0;
+            padding-left: 16px;
+            list-style-type: disc;
+        }
+
+        .print-list li {
+            margin-bottom: 1px;
+            line-height: 1.3;
+        }
+
+        .print-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Menjaga blok TTD tetap menyatu dan tidak terpisah halaman */
+        .ttd-table {
+            page-break-inside: avoid;
+            margin-top: 8px;
         }
     </style>
 
 </head>
 
 <body>
+
+    @php
+        /**
+         * Mengubah teks berbaris (hasil Enter / \n / \r\n) atau array JSON menjadi array item bersih.
+         */
+        $pecahBaris = function ($nilai): array {
+            if (is_null($nilai) || $nilai === '') {
+                return [];
+            }
+
+            if (is_array($nilai)) {
+                $items = $nilai;
+            } else {
+                $decoded = json_decode($nilai, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $items = $decoded;
+                } else {
+                    $items = preg_split('/\r\n|\r|\n/', (string) $nilai) ?: [];
+                }
+            }
+
+            $hasil = [];
+            foreach ($items as $item) {
+                $teks = trim((string) $item);
+                $teks = preg_replace('/^([-•*]|\d+[\.\)])\s+/', '', $teks);
+                if ($teks !== '') {
+                    $hasil[] = $teks;
+                }
+            }
+
+            return $hasil;
+        };
+
+        $listHasilPengukuran = $pecahBaris($data->hasil_pengukuran ?? '');
+        $listPenyebabKerusakan = $pecahBaris($data->penyebab_kerusakan ?? '');
+        $listPekerjaan = $pecahBaris($data->pekerjaan ?? '');
+        $listDetailPenyelesaian = $pecahBaris($data->detail_penyelesaian ?? '');
+    @endphp
 
     {{-- HEADER --}}
     <table>
@@ -122,44 +200,24 @@
 
     </table>
 
-    <br>
-
     {{-- DATA UTAMA --}}
     <table>
 
-        {{-- <tr>
-            <td width="20%" class="fw">SPR No.</td>
-            <td width="30%">
-                {{ $data->spr_no }}
-            </td>
-
-            <td width="20%" class="fw">Status</td>
-            <td width="30%">
-                {{ $data->status }}
-            </td>
-        </tr>
-
         <tr>
-            <td class="fw">Deskripsi</td>
-            <td colspan="3">
-                {{ $data->deskripsi }}
-            </td>
-        </tr> --}}
-
-        {{-- <tr>
-            <td class="fw">Keterangan</td>
-            <td colspan="3">
-                {{ $data->keterangan }}
-            </td>
-        </tr> --}}
-
-        <tr>
-            <td class="fw">
+            <td width="25%" class="fw">
                 Hasil Pengukuran / Pengecekan
             </td>
 
             <td colspan="3">
-                {{ $data->hasil_pengukuran }}
+                @if (count($listHasilPengukuran) > 0)
+                    <ul class="print-list">
+                        @foreach ($listHasilPengukuran as $item)
+                            <li>{{ $item }}</li>
+                        @endforeach
+                    </ul>
+                @else
+                    -
+                @endif
             </td>
         </tr>
 
@@ -169,20 +227,26 @@
             </td>
 
             <td colspan="3">
-                {{ $data->penyebab_kerusakan }}
+                @if (count($listPenyebabKerusakan) > 0)
+                    <ul class="print-list">
+                        @foreach ($listPenyebabKerusakan as $item)
+                            <li>{{ $item }}</li>
+                        @endforeach
+                    </ul>
+                @else
+                    -
+                @endif
             </td>
         </tr>
 
     </table>
-
-    <br>
 
     {{-- PENYEBAB --}}
     <table>
 
         <tr>
 
-            <td colspan="4" class="fw text-center">
+            <td colspan="4" class="section-header">
                 PENYEBAB KERUSAKAN
             </td>
 
@@ -254,37 +318,14 @@
 
     </table>
 
-    <br>
-
     {{-- PEKERJAAN --}}
     <table>
 
         <tr>
-            <td colspan="4" class="fw text-center">
+            <td colspan="4" class="section-header">
                 EKSEKUSI
             </td>
         </tr>
-
-        {{-- <tr>
-
-            <td width="20%" class="fw">
-                Nama
-            </td>
-
-            <td width="30%">
-                {{ $data->nama }}
-            </td>
-
-            <td width="20%" class="fw">
-                Tanggal
-            </td>
-
-            <td width="30%">
-                {{ $data->tanggal }}
-            </td>
-
-        </tr> --}}
-
 
         <tr>
 
@@ -301,7 +342,7 @@
                 @if ($teknisi)
 
                     @foreach ($teknisi as $t)
-                        • {{ $t }} <br>
+                        - {{ $t }} <br>
                     @endforeach
 
                 @endif
@@ -345,21 +386,27 @@
             </td>
 
             <td colspan="3">
-                {{ $data->pekerjaan }}
+                @if (count($listPekerjaan) > 0)
+                    <ul class="print-list">
+                        @foreach ($listPekerjaan as $item)
+                            <li>{{ $item }}</li>
+                        @endforeach
+                    </ul>
+                @else
+                    -
+                @endif
             </td>
 
         </tr>
 
     </table>
 
-    <br>
-
     {{-- TINDAKAN --}}
     <table>
 
         <tr>
 
-            <td colspan="4" class="fw text-center">
+            <td colspan="4" class="section-header">
                 TINDAKAN
             </td>
 
@@ -424,56 +471,6 @@
 
     </table>
 
-    <br>
-
-    {{-- SPAREPART --}}
-    {{-- <table>
-
-        <tr>
-
-            <td colspan="5" class="fw text-center">
-                SPAREPART / MATERIAL YANG DIGUNAKAN
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <th>Nama</th>
-            <th>Kode</th>
-            <th>Jumlah</th>
-            <th>Tanggal</th>
-            <th>Jam</th>
-
-        </tr>
-
-        <tr>
-
-            <td>{{ $data->nama_barang }}</td>
-            <td>{{ $data->kode_barang }}</td>
-            <td>{{ $data->jumlah }}</td>
-            
-            <td>
-                {{ $data->tanggal_selesai ? \Carbon\Carbon::parse($data->tanggal_selesai)->format('d-m-Y') : '-' }}
-            </td>
-            <td>{{ $data->jam_selesai_detail }}</td>
-
-        </tr>
-
-        <tr>
-
-            <td class="fw">
-                Detail Penyelesaian
-            </td>
-
-            <td colspan="4">
-                {{ $data->detail_penyelesaian }}
-            </td>
-
-        </tr>
-
-    </table> --}}
-
     {{-- SPAREPART --}}
     @php
         $namaBarang = json_decode($data->nama_barang, true) ?? [];
@@ -484,7 +481,7 @@
     <table>
 
         <tr>
-            <td colspan="5" class="fw text-center">
+            <td colspan="5" class="section-header">
                 SPAREPART / MATERIAL YANG DIGUNAKAN
             </td>
         </tr>
@@ -542,23 +539,29 @@
             </td>
 
             <td colspan="4">
-                {{ $data->detail_penyelesaian }}
+                @if (count($listDetailPenyelesaian) > 0)
+                    <ul class="print-list">
+                        @foreach ($listDetailPenyelesaian as $item)
+                            <li>{{ $item }}</li>
+                        @endforeach
+                    </ul>
+                @else
+                    -
+                @endif
             </td>
 
         </tr>
 
     </table>
 
-    <br><br>
-
     {{-- TTD --}}
-    <table class="no-border">
+    <table class="no-border ttd-table">
 
         <tr class="no-border">
 
             <td class="no-border text-center">
 
-                Pemakai Fasilitas
+                <b>USER</b>
                 <br><br><br><br>
 
                 ____________________
@@ -567,7 +570,7 @@
 
             <td class="no-border text-center">
 
-                Personel Pemeliharaan
+                <b>IMST</b>
                 <br><br><br><br>
 
                 ____________________
