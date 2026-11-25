@@ -15,7 +15,7 @@
                             data-toggle="dropdown" data-bs-toggle="dropdown" href="#" id="kontrakNotifDropdown"
                             aria-expanded="false" title="Notifikasi Kontrak MRO">
 
-                            <i class="fas fa-bell text-primary" style="font-size: 30px;"></i>
+                            <i class="fas fa-bell text-primary" style="font-size: 22px;"></i>
 
                             @if (isset($notifications) && count($notifications) > 0)
                                 <span class="badge badge-danger bg-danger text-white navbar-badge mro-notif-badge">
@@ -39,9 +39,24 @@
                                     @foreach ($notifications as $notif)
                                         @php
                                             $msg = $notif->notifMessage();
-                                            $url = !empty($notif->proyek_id)
-                                                ? route('monitoring.index', $notif->proyek_id)
-                                                : route('mro.progress');
+                                            $queryParams = array_filter([
+                                                'monitoring_id' => $notif->id,
+                                                'po' => $notif->po_nota_dinas,
+                                            ]);
+
+                                            if (
+                                                !empty($notif->proyek_id) &&
+                                                \Illuminate\Support\Facades\Route::has('monitoring.index')
+                                            ) {
+                                                $url = route(
+                                                    'monitoring.index',
+                                                    array_merge(['id' => $notif->proyek_id], $queryParams),
+                                                );
+                                            } elseif (\Illuminate\Support\Facades\Route::has('mro.progress')) {
+                                                $url = route('mro.progress', $queryParams);
+                                            } else {
+                                                $url = '#';
+                                            }
                                         @endphp
 
                                         @if ($msg)
