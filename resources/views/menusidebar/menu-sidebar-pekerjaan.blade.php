@@ -5,7 +5,81 @@
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
-            <h1 class="m-0 text-dark">Pilih Menu</h1>
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <h1 class="m-0 text-dark">Pilih Menu</h1>
+
+                {{-- LONCENG NOTIFIKASI KONTRAK MRO --}}
+                <div class="d-flex align-items-center">
+                    <div class="nav-item dropdown mro-notif-wrapper">
+                        <a class="nav-link position-relative d-inline-flex align-items-center px-2 py-1"
+                            data-toggle="dropdown" data-bs-toggle="dropdown" href="#" id="kontrakNotifDropdown"
+                            aria-expanded="false" title="Notifikasi Kontrak MRO">
+
+                            <i class="fas fa-bell text-primary" style="font-size: 30px;"></i>
+
+                            @if (isset($notifications) && count($notifications) > 0)
+                                <span class="badge badge-danger bg-danger text-white navbar-badge mro-notif-badge">
+                                    {{ count($notifications) }}
+                                </span>
+                            @endif
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-end mro-notif-menu shadow border p-0"
+                            aria-labelledby="kontrakNotifDropdown">
+                            {{-- HEADER DROPDOWN --}}
+                            <div class="mro-notif-header text-center py-2 px-3 border-bottom">
+                                <span class="fw-bold font-weight-bold text-secondary" style="font-size: 13.5px;">
+                                    🔔 Notifikasi Kontrak MRO
+                                </span>
+                            </div>
+
+                            {{-- ISI NOTIFIKASI DARI MONITORING->notifMessage() --}}
+                            <div class="mro-notif-body">
+                                @if (isset($notifications) && count($notifications) > 0)
+                                    @foreach ($notifications as $notif)
+                                        @php
+                                            $msg = $notif->notifMessage();
+                                            $url = !empty($notif->proyek_id)
+                                                ? route('monitoring.index', $notif->proyek_id)
+                                                : route('mro.progress');
+                                        @endphp
+
+                                        @if ($msg)
+                                            <a href="{{ $url }}"
+                                                class="dropdown-item mro-notif-item py-2 px-3 border-bottom">
+                                                <div class="d-flex align-items-start gap-2">
+                                                    <div class="mro-notif-icon-wrap mt-1 mr-2 me-2">
+                                                        <i class="{{ $msg['icon'] }} text-{{ $msg['class'] }}"
+                                                            style="font-size: 18px;"></i>
+                                                    </div>
+
+                                                    <div class="mro-notif-text">
+                                                        <div class="fw-bold font-weight-bold text-dark"
+                                                            style="font-size: 14px; line-height: 1.3;">
+                                                            {{ $notif->po_nota_dinas ?: '-' }}
+                                                        </div>
+                                                        <div class="text-dark" style="font-size: 13px; line-height: 1.35;">
+                                                            {{ $msg['message'] }}
+                                                        </div>
+                                                        <div class="text-muted text-wrap"
+                                                            style="font-size: 12.5px; line-height: 1.3;">
+                                                            {{ $notif->nama_pekerjaan }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <div class="text-center py-4 px-3 text-muted small">
+                                        Tidak ada notifikasi kontrak MRO
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -78,5 +152,77 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15) !important;
         }
+
+        .mro-notif-wrapper .mro-notif-badge {
+            position: absolute;
+            top: -2px;
+            right: -3px;
+            font-size: 10px;
+            line-height: 1;
+            padding: 3px 6px;
+            border-radius: 999px;
+        }
+
+        .mro-notif-menu {
+            width: 340px;
+            max-width: 92vw;
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 1060;
+            background: #ffffff;
+        }
+
+        .mro-notif-header {
+            background: #ffffff;
+        }
+
+        .mro-notif-body {
+            max-height: 360px;
+            overflow-y: auto;
+            background: #ffffff;
+        }
+
+        .mro-notif-item {
+            white-space: normal;
+        }
+
+        .mro-notif-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .mro-notif-text {
+            min-width: 0;
+            flex: 1;
+        }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const trigger = document.getElementById('kontrakNotifDropdown');
+            if (!trigger) return;
+
+            const menu = trigger.nextElementSibling;
+            if (!menu) return;
+
+            const hasBootstrap = typeof window.bootstrap !== 'undefined' && window.bootstrap.Dropdown;
+            const hasJqueryDropdown = typeof window.jQuery !== 'undefined' && typeof window.jQuery.fn.dropdown ===
+                'function';
+
+            if (!hasBootstrap && !hasJqueryDropdown) {
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const isOpen = menu.classList.toggle('show');
+                    trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!trigger.contains(e.target) && !menu.contains(e.target)) {
+                        menu.classList.remove('show');
+                        trigger.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+        });
+    </script>
 @endsection
