@@ -343,22 +343,67 @@ class Monitoring extends Model
     //     return null;
     // }
 
+    // public function notifMessage()
+    // {
+    //     $today = Carbon::today();
+
+    //     $selesai = Carbon::parse($this->tanggal_selesai_kontrak);
+
+    //     $sisa = $today->diffInDays($selesai, false);
+
+    //     // STATUS CLOSED
+    //     // if (strtolower($this->status) == 'closed') {
+    //     //     return [
+    //     //         'message' => 'Kontrak telah selesai',
+    //     //         'class' => 'primary',
+    //     //         'icon' => 'fas fa-check-circle'
+    //     //     ];
+    //     // }
+
+    //     // EXPIRED
+    //     if ($sisa < 0) {
+    //         return [
+    //             'message' => 'Kontrak sudah expired',
+    //             'class' => 'danger',
+    //             'icon' => 'fas fa-times-circle'
+    //         ];
+    //     }
+
+    //     // HARI INI
+    //     if ($sisa == 0) {
+    //         return [
+    //             'message' => 'Kontrak berakhir hari ini',
+    //             'class' => 'warning',
+    //             'icon' => 'fas fa-exclamation-circle'
+    //         ];
+    //     }
+
+    //     // H-7
+    //     if ($sisa <= 7) {
+    //         return [
+    //             'message' => "Kontrak akan berakhir {$sisa} hari lagi",
+    //             'class' => 'warning',
+    //             'icon' => 'fas fa-bell'
+    //         ];
+    //     }
+
+    //     return null;
+    // }
+
     public function notifMessage()
     {
+        // Jika kontrak sudah Closed / selesai, tidak perlu memunculkan notifikasi
+        if (strtolower((string) $this->status) === 'closed') {
+            return null;
+        }
+
+        if (!$this->tanggal_selesai_kontrak) {
+            return null;
+        }
+
         $today = Carbon::today();
-
-        $selesai = Carbon::parse($this->tanggal_selesai_kontrak);
-
-        $sisa = $today->diffInDays($selesai, false);
-
-        // STATUS CLOSED
-        // if (strtolower($this->status) == 'closed') {
-        //     return [
-        //         'message' => 'Kontrak telah selesai',
-        //         'class' => 'primary',
-        //         'icon' => 'fas fa-check-circle'
-        //     ];
-        // }
+        $selesai = Carbon::parse($this->tanggal_selesai_kontrak)->startOfDay();
+        $sisa = (int) $today->diffInDays($selesai, false);
 
         // EXPIRED
         if ($sisa < 0) {

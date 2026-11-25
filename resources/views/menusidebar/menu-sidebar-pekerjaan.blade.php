@@ -15,7 +15,7 @@
                             data-toggle="dropdown" data-bs-toggle="dropdown" href="#" id="kontrakNotifDropdown"
                             aria-expanded="false" title="Notifikasi Kontrak MRO">
 
-                            <i class="fas fa-bell text-primary" style="font-size: 22px;"></i>
+                            <i class="fas fa-bell text-primary" style="font-size: 30px;"></i>
 
                             @if (isset($notifications) && count($notifications) > 0)
                                 <span class="badge badge-danger bg-danger text-white navbar-badge mro-notif-badge">
