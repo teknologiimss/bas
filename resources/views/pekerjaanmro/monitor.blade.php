@@ -460,6 +460,31 @@
                             @endfor
                             <td></td>
                         </tr>
+
+                        {{-- BARIS TAMBAHAN: TOTAL PROGRES % S/D MINGGU TERAKHIR --}}
+                        @php
+                            $akhirSmpaiMingguIni = 0;
+                            if ($totalWeeks > 0) {
+                                if ($hasHargaGlobal) {
+                                    $akhirSmpaiMingguIni = $sumSmpaiMingguIniPerMgg[$totalWeeks] ?? 0;
+                                } else {
+                                    $akhirSmpaiMingguIni =
+                                        $totalItemCount > 0
+                                            ? ($sumSmpaiMingguIniPerMgg[$totalWeeks] ?? 0) / $totalItemCount
+                                            : 0;
+                                }
+                            }
+                        @endphp
+                        <tr>
+                            <td colspan="5" class="text-right th-no px-3">TOTAL PROGRES S/D MINGGU INI (MINGGU
+                                {{ $totalWeeks }}):</td>
+                            <td class="th-jumlah px-3 text-warning" style="font-size: 13px;">
+                                {{ $akhirSmpaiMingguIni > 0 ? number_format($akhirSmpaiMingguIni, 2, ',', '.') . '%' : '0,00%' }}
+                            </td>
+                            <td class="th-bobot px-3"></td>
+                            <td class="th-prog"></td>
+                            <td colspan="{{ $totalWeeks * 3 + 1 }}"></td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
