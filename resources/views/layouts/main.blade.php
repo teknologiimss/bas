@@ -454,7 +454,7 @@
                                 <a class="nav-link {{ Route::current()->getName() == 'home' ? 'active' : '' }}"
                                     href="{{ route('home') }}">
                                     <i class="nav-icon fas fa-home"></i>
-                                    <p class="text">{{ __('Dashboard') }}</p>
+                                    <p class="text">{{ __('Home') }}</p>
                                 </a>
                             </li>
 
@@ -1497,7 +1497,7 @@
                             {{-- Menu --}}
 
 
-                            @if (Auth::user()->role == 0 || Auth::user()->role == 4)
+                            {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 4)
                                 <li class="nav-item">
                                     <a class="nav-link {{ Route::current()->getName() == 'products.wip' ? 'active' : '' }}"
                                         href="{{ route('products.wip') }}">
@@ -1512,7 +1512,7 @@
                                         <p class="text">{{ __('WIP History') }}</p>
                                     </a>
                                 </li>
-                            @endif
+                            @endif --}}
                             @if (Auth::user()->role == 0 || Auth::user()->role == 1 || Auth::user()->role == 4)
                                 <li class="nav-item">
                                     <a class="nav-link {{ Route::current()->getName() == 'vendor.index' ? 'active' : '' }}"
@@ -1522,7 +1522,9 @@
                                     </a>
                                 </li>
                             @endif
-                            @if (Auth::user()->role == 0 || Auth::user()->role == 4)
+
+
+                            {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 4)
                                 <li class="nav-header">Product</li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ Route::current()->getName() == 'products' ? 'active' : '' }}"
@@ -1545,15 +1547,15 @@
                                         <p class="text">{{ __('Lokasi Penyimpanan') }}</p>
                                     </a>
                                 </li>
-                            @endif
-                            @if (Auth::user()->role == 0 || Auth::user()->role == 2 || Auth::user()->role == 3 || Auth::user()->role == 4)
-                                {{-- <li class="nav-item">
+                            @endif --}}
+                            {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 2 || Auth::user()->role == 3 || Auth::user()->role == 4)
+                                <li class="nav-item">
                                     <a class="nav-link {{ Route::current()->getName() == 'keproyekan.index' ? 'active' : '' }}"
                                         href="{{ route('keproyekan.index') }}">
                                         <i class="nav-icon fas fa-hard-hat"></i>
                                         <p class="text">{{ __('Keproyekan') }}</p>
                                     </a>
-                                </li> --}}
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link {{ Route::current()->getName() == 'kode_material.index' ? 'active' : '' }}"
                                         href="{{ url('products/kode_material') }}">
@@ -1561,7 +1563,7 @@
                                         <p class="text">{{ __('Kode Material') }}</p>
                                     </a>
                                 </li>
-                            @endif
+                            @endif --}}
                             {{-- @if (Auth::user()->role == 0)
                                 <li class="nav-item">
                                     <a class="nav-link {{ Route::current()->getName() == 'keproyekan.index' ? 'active' : '' }}"
