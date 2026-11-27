@@ -168,7 +168,7 @@
                     {{-- NOTIFIKASI KONTRAK MRO --}}
                     {{-- HANYA ADMIN & USER MRO --}}
                     {{-- ===================================================== --}}
-                    @if (Auth::user()->role == 0 || Auth::user()->role == 14)
+                    {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 14)
 
                         <li class="nav-item dropdown">
 
@@ -194,7 +194,7 @@
 
                                 <div class="dropdown-divider"></div>
 
-                                {{-- 👇 INI WRAPPER SCROLL --}}
+                                
                                 <div style="max-height: 350px; overflow-y: auto;">
 
                                     @forelse($notifications as $notif)
@@ -252,12 +252,12 @@
 
                         </li>
 
-                    @endif
+                    @endif --}}
 
                     {{-- ===================================================== --}}
                     {{-- NOTIFIKASI SURAT MASUK --}}
                     {{-- ===================================================== --}}
-                    @if (Auth::user()->role == 5 || Auth::user()->role == 7)
+                    {{-- @if (Auth::user()->role == 5 || Auth::user()->role == 7)
 
                         <li class="nav-item dropdown">
 
@@ -323,12 +323,12 @@
 
                         </li>
 
-                    @endif
+                    @endif --}}
 
                     {{-- ===================================================== --}}
                     {{-- NOTIFIKASI PURCHASE REQUEST --}}
                     {{-- ===================================================== --}}
-                    @if (Auth::user()->role == 2 || Auth::user()->role == 3 || Auth::user()->role == 0 || Auth::user()->role == 1)
+                    {{-- @if (Auth::user()->role == 2 || Auth::user()->role == 3 || Auth::user()->role == 0 || Auth::user()->role == 1)
 
                         <li class="nav-item dropdown">
 
@@ -393,11 +393,9 @@
 
                         </li>
 
-                    @endif
+                    @endif --}}
 
-                    {{-- ===================================================== --}}
-                    {{-- WAREHOUSE --}}
-                    {{-- ===================================================== --}}
+                    
                     <li class="nav-item dropdown">
 
                         <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
