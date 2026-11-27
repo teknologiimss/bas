@@ -1444,7 +1444,7 @@
 
 
                                         {{-- Contoh menu role Warehouse --}}
-                                        @if (Auth::user()->role == 0 || Auth::user()->role == 4)
+                                        {{-- @if (Auth::user()->role == 0 || Auth::user()->role == 4)
                                             <li class="nav-item has-treeview">
                                                 <a href="#" class="nav-link">
                                                     <i class="nav-icon fas fa-warehouse"></i>
@@ -1456,7 +1456,7 @@
 
                                                 <ul class="nav nav-treeview">
 
-                                                    {{-- Stock In --}}
+                                                    
                                                     <li class="nav-item">
                                                         <a href="#" class="nav-link" data-toggle="modal"
                                                             data-target="#stock-form" onclick="stockForm(1)">
@@ -1465,7 +1465,7 @@
                                                         </a>
                                                     </li>
 
-                                                    {{-- Stock Out --}}
+                                                    
                                                     <li class="nav-item">
                                                         <a href="#" class="nav-link" data-toggle="modal"
                                                             data-target="#stock-form" onclick="stockForm(0)">
@@ -1474,7 +1474,7 @@
                                                         </a>
                                                     </li>
 
-                                                    {{-- Stock History --}}
+                                                    
                                                     <li class="nav-item">
                                                         <a href="{{ route('products.stock.history') }}"
                                                             class="nav-link {{ Route::current()->getName() == 'products.stock.history' ? 'active' : '' }}">
@@ -1485,7 +1485,7 @@
 
                                                 </ul>
                                             </li>
-                                        @endif
+                                        @endif --}}
                                         {{-- End menu role Warehouse --}}
 
 
